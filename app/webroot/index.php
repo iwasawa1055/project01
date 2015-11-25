@@ -1,5 +1,7 @@
 <?php
 /**
+ * Index
+ *
  * The Front Controller for handling every request
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -24,13 +26,14 @@ if (!defined('DS')) {
 }
 
 /**
- * These defines should only be edited if you have CakePHP installed in
+ * These defines should only be edited if you have cake installed in
  * a directory layout other than the way it is distributed.
  * When using custom settings be sure to use the DS and do not add a trailing DS.
  */
 
 /**
  * The full path to the directory which holds "app", WITHOUT a trailing DS.
+ *
  */
 if (!defined('ROOT')) {
 	define('ROOT', dirname(dirname(dirname(__FILE__))));
@@ -38,6 +41,7 @@ if (!defined('ROOT')) {
 
 /**
  * The actual directory name for the "app".
+ *
  */
 if (!defined('APP_DIR')) {
 	define('APP_DIR', basename(dirname(dirname(__FILE__))));
@@ -60,18 +64,9 @@ if (!defined('APP_DIR')) {
 //define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'lib');
 
 /**
- * This auto-detects CakePHP as a composer installed library.
- * You may remove this if you are not planning to use composer (not recommended, though).
- */
-$vendorPath = ROOT . DS . APP_DIR . DS . 'Vendor' . DS . 'cakephp' . DS . 'cakephp' . DS . 'lib';
-$dispatcher = 'Cake' . DS . 'Console' . DS . 'ShellDispatcher.php';
-if (!defined('CAKE_CORE_INCLUDE_PATH') && file_exists($vendorPath . DS . $dispatcher)) {
-	define('CAKE_CORE_INCLUDE_PATH', $vendorPath);
-}
-
-/**
  * Editing below this line should NOT be necessary.
  * Change at your own risk.
+ *
  */
 if (!defined('WEBROOT_DIR')) {
 	define('WEBROOT_DIR', basename(dirname(__FILE__)));
@@ -80,8 +75,8 @@ if (!defined('WWW_ROOT')) {
 	define('WWW_ROOT', dirname(__FILE__) . DS);
 }
 
-// For the built-in server
-if (PHP_SAPI === 'cli-server') {
+// for built-in server
+if (php_sapi_name() === 'cli-server') {
 	if ($_SERVER['REQUEST_URI'] !== '/' && file_exists(WWW_ROOT . $_SERVER['PHP_SELF'])) {
 		return false;
 	}
@@ -95,8 +90,10 @@ if (!defined('CAKE_CORE_INCLUDE_PATH')) {
 	if (!include 'Cake' . DS . 'bootstrap.php') {
 		$failed = true;
 	}
-} elseif (!include CAKE_CORE_INCLUDE_PATH . DS . 'Cake' . DS . 'bootstrap.php') {
-	$failed = true;
+} else {
+	if (!include CAKE_CORE_INCLUDE_PATH . DS . 'Cake' . DS . 'bootstrap.php') {
+		$failed = true;
+	}
 }
 if (!empty($failed)) {
 	trigger_error("CakePHP core could not be found. Check the value of CAKE_CORE_INCLUDE_PATH in APP/webroot/index.php. It should point to the directory containing your " . DS . "cake core directory and your " . DS . "vendors root directory.", E_USER_ERROR);

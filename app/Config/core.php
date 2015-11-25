@@ -18,9 +18,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-//setLocale(LC_ALL, 'deu');
-//Configure::write('Config.language', 'deu');
-
 /**
  * CakePHP Debug Level:
  *
@@ -51,8 +48,20 @@
  *
  * @see ErrorHandler for more information on error handling and configuration.
  */
+
+/*
+	// 2015/03 comment out by osada@terrada
 	Configure::write('Error', array(
 		'handler' => 'ErrorHandler::handleError',
+		'level' => E_ALL & ~E_DEPRECATED,
+		'trace' => true
+	));
+*/
+
+	//2015/02 comment out by osada@terrada
+	Configure::write('Error', array(
+		'handler' => 'ErrorHandler::handleError',
+		//'handler' => 'AppErrorHandler::handle',
 		'level' => E_ALL & ~E_DEPRECATED,
 		'trace' => true
 	));
@@ -77,9 +86,22 @@
  *
  * @see ErrorHandler for more information on exception handling and configuration.
  */
+
+/*
+	// 2015/03 comment out by osada@terrada
 	Configure::write('Exception', array(
 		'handler' => 'ErrorHandler::handleException',
 		'renderer' => 'ExceptionRenderer',
+		'log' => true
+	));
+*/
+
+	// 2015/11 added by goto@terrada
+	Configure::write('Exception', array(
+		//'handler' => 'ErrorHandler::handleException',
+		'handler' => 'AppExceptionHandler::handle',
+		//'renderer' => 'ExceptionRenderer',
+		'renderer' => 'AppExceptionRenderer',
 		'log' => true
 	));
 
@@ -150,11 +172,13 @@
  * Enables:
  *	`admin_index()` and `/admin/controller/index`
  *	`manager_index()` and `/manager/controller/index`
+ *
  */
 	//Configure::write('Routing.prefixes', array('admin'));
 
 /**
  * Turn off all caching application-wide.
+ *
  */
 	//Configure::write('Cache.disable', true);
 
@@ -165,6 +189,7 @@
  * public $cacheAction inside your controllers to define caching settings.
  * You can either set it controller-wide by setting public $cacheAction = true,
  * or in each action using $this->cacheAction = true.
+ *
  */
 	//Configure::write('Cache.check', true);
 
@@ -213,20 +238,75 @@
  *
  * To use database sessions, run the app/Config/Schema/sessions.php schema using
  * the cake shell command: cake schema create Sessions
+ *
  */
+
+	/*
+	// 2015/03 commont out by osada@terrada
 	Configure::write('Session', array(
 		'defaults' => 'php'
+	));
+	*/
+
+	// 2015/03 added by osada@terrada
+	Configure::write('Session', array(
+		'defaults' => 'cake',
+		//'defaults' => 'cake',
+		//* 要確認 相談
+		'cookie' => 'OPEMINIKURA',
+		'start' => 'Off',
+		// 12 hours
+		'timeout' => '240',
+		// 10 years
+		//'timeout' => '5256000',
+		'autoRegenerate' => 'Off',
+		'checkAgent' => 'Off',
+		'ini' => array(
+			//* 要確認 相談
+			'session.name' => 'OPEMINIKURA',
+			//'session.save_path' => '/var/lib/php/session',
+			'session.gc_probability' => 1,
+			'session.gc_divisor' => 10,
+			// GC 4 hours
+			'session.gc_maxlifetime' => 43200,
+			// GC 10 years
+			//'session.gc_maxlifetime' => 315360000,
+			// testing
+			'session.use_trans_sid' => 1,
+
+			// php5.5.2 から
+			//'session.use_strict_mode'=> 1,
+			// Cookie Nouse
+			'session.use_cookies' => 'On',
+			'session.use_only_cookies' => 'On',
+			'session.cookie_path' => '/',
+			'session.cookie_domain' => '.minikura.com',
+			'session.cookie_lifetime' => '0',
+			'session.cookie_httponly' => 'On',
+			'session.cookie_secure' => 'On',
+			'session.cache_limiter' => 'nocache',
+			'session.cache_expire' => 0,
+			//'session.bug_compat_42' => 'On',
+			//'session.bug_compat_warn' => 'On',
+			'session.hash_function' => 'sha256',
+			'session.hash_bits_per_character' => 5,
+			'session.referer_check'=> '',
+		)
 	));
 
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
+	// 2015/01 modified by osada@terrada
+	//Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
+	Configure::write('Security.salt', 'LKidaf874DGF94diYd6dTsaddi8Jd2dL3lLm1vK0');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '76859309657453542496749683645');
+	// 2015/01 modified by osada@terrada
+	//Configure::write('Security.cipherSeed', '76859309657453542496749683645');
+	Configure::write('Security.cipherSeed', '96754057058423704832507643310');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).

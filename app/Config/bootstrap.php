@@ -48,7 +48,22 @@ Cache::config('default', array('engine' => 'File'));
  *     'Vendor'                    => array('/path/to/vendors/', '/next/path/to/vendors/'),
  *     'Plugin'                    => array('/path/to/plugins/', '/next/path/to/plugins/'),
  * ));
+ *
  */
+
+// 2015/08 added by osada@terrada
+	App::build(array(
+		'Controller' => array(
+			ROOT . DS . APP_DIR . DS . 'Controller' . DS,
+		),
+		'View' => array(
+			ROOT . DS . APP_DIR . DS . 'View' . DS,
+		),
+		'Model' => array(
+			ROOT . DS . APP_DIR . DS . 'Model' . DS,
+		),
+	));
+
 
 /**
  * Custom Inflector rules can be set to correctly pluralize or singularize table, model, controller names or whatever other
@@ -56,6 +71,7 @@ Cache::config('default', array('engine' => 'File'));
  *
  * Inflector::rules('singular', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
  * Inflector::rules('plural', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
+ *
  */
 
 /**
@@ -64,14 +80,12 @@ Cache::config('default', array('engine' => 'File'));
  * advanced ways of loading plugins
  *
  * CakePlugin::loadAll(); // Loads all plugins at once
- * CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
+ * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
+ *
  */
 
-/**
- * To prefer app translation over plugin translation, you can set
- *
- * Configure::write('I18n.preferApp', true);
- */
+// 2015/08 added by osada@terrada
+CakePlugin::loadAll();
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
@@ -99,6 +113,9 @@ Configure::write('Dispatcher.filters', array(
  * Configures default file logging options
  */
 App::uses('CakeLog', 'Log');
+
+// 2015/08 comment out by osada@terrada
+/*
 CakeLog::config('debug', array(
 	'engine' => 'File',
 	'types' => array('notice', 'info', 'debug'),
@@ -109,3 +126,131 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+*/
+
+// 2015/08 added by osada@terrada
+// error log
+if (! is_dir(LOGS . DS . 'error')) {
+	mkdir(LOGS . DS . 'error', 2770);
+}
+$error_file = 'error' . DS . date('Ymd');
+define('ERROR_LOG', 'error');
+CakeLog::config('error', array(
+	'engine' => 'File',
+	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
+	'file' => $error_file,
+));
+
+// 2015/08 added by osada@terrada
+// access log
+if (! is_dir(LOGS . DS . 'access')) {
+	mkdir(LOGS . DS . 'access', 0770);
+}
+$access_file = 'access' . DS . date('Ymd');
+define('ACCESS_LOG', 'access');
+CakeLog::config('access', array(
+	'engine' => 'File',
+	'types' => array(),
+	'file' => $access_file,
+));
+
+// 2015/08 added by osada@terrada
+// mail log
+if (! is_dir(LOGS . DS . 'mail')) {
+	mkdir(LOGS . DS . 'mail', 2770);
+}
+$mail_file = 'mail' . DS . date('Ymd');
+define('MAIL_LOG', 'mail');
+CakeLog::config('mail', array(
+	'engine' => 'File',
+	'types' => array('mail'),
+	'file' => $mail_file,
+));
+
+// 2015/08 added by osada@terrada
+// debug log
+if (! is_dir(LOGS . DS . 'debug')) {
+	mkdir(LOGS . DS . 'debug', 2770);
+}
+$debug_file = 'debug' . DS . date('Ymd');
+define('DEBUG_LOG', 'debug');
+CakeLog::config('debug', array(
+	'engine' => 'File',
+	'types' => array('notice', 'info', 'debug'),
+	'file' => $debug_file,
+));
+
+// 2015/08 added by osada@terrada
+// bench log
+if (! is_dir(LOGS . DS . 'bench')) {
+	mkdir(LOGS . DS . 'bench', 2770);
+}
+$bench_file = 'bench' . DS . date('Ymd');
+define('BENCH_LOG', 'bench');
+CakeLog::config('bench', array(
+	'engine' => 'File',
+	'types' => array('bench'),
+	'file' => $bench_file,
+));
+
+// 2015/08 added by osada@terrada
+// error handler load
+App::uses('AppErrorHandler', 'Lib');
+App::uses('AppExceptionHandler', 'Lib');
+App::uses('AppErrorException', 'Lib');
+App::uses('AppE', 'Lib');
+App::uses('AppInternalPass', 'Lib');
+App::uses('AppInternalInfo', 'Lib');
+App::uses('AppInternalNotice', 'Lib');
+App::uses('AppInternalWarning', 'Lib');
+App::uses('AppInternalDefect', 'Lib');
+App::uses('AppInternalError', 'Lib');
+App::uses('AppInternalCritical', 'Lib');
+App::uses('AppInternalFatal', 'Lib');
+App::uses('AppMedialPass', 'Lib');
+App::uses('AppMedialInfo', 'Lib');
+App::uses('AppMedialNotice', 'Lib');
+App::uses('AppMedialWarning', 'Lib');
+App::uses('AppMedialDefect', 'Lib');
+App::uses('AppMedialError', 'Lib');
+App::uses('AppMedialCritical', 'Lib');
+App::uses('AppMedialFatal', 'Lib');
+App::uses('AppExternalPass', 'Lib');
+App::uses('AppExternalInfo', 'Lib');
+App::uses('AppExternalNotice', 'Lib');
+App::uses('AppExternalWarning', 'Lib');
+App::uses('AppExternalDefect', 'Lib');
+App::uses('AppExternalError', 'Lib');
+App::uses('AppExternalCritical', 'Lib');
+App::uses('AppExternalFatal', 'Lib');
+App::uses('AppTerminalPass', 'Lib');
+App::uses('AppTerminalInfo', 'Lib');
+App::uses('AppTerminalNotice', 'Lib');
+App::uses('AppTerminalWarning', 'Lib');
+App::uses('AppTerminalDefect', 'Lib');
+App::uses('AppTerminalError', 'Lib');
+App::uses('AppTerminalCritical', 'Lib');
+App::uses('AppTerminalFatal', 'Lib');
+App::uses('AppExceptionRenderer', 'Lib/Error');
+
+spl_autoload_register(function ($_class_name)
+{
+	if (0 === strpos($_class_name, 'App')) {
+		$class_name = preg_replace('/^App/', APP_DIR, $_class_name);
+		$class_path = ROOT . DS . $class_name;
+	} else {
+		$class_path = APP . 'Vendor' . DS . $_class_name;
+	}
+	$class_path = str_replace('\\', DS, $class_path) . '.php';
+	if (is_file($class_path)) {
+		@include_once $class_path;
+	} else {
+		$paths = explode('/', $class_path);
+		$last = end($paths);
+		//spl_autoload_call($last);
+	}
+});
+
+// 2015/08 added by osada@terrada
+Configure::load('AppConfig');
+
