@@ -1,0 +1,59 @@
+VAGRANTFILE_API_VERSION = "2"
+NAME = "minikura"
+APPDIR = "/app"
+WORKDIR = "#{APPDIR}/vagrant"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    # always use Vagrants insecure key
+    config.ssh.insert_key = false
+
+    # plugin conflict
+    if Vagrant.has_plugin?("vagrant-vbguest") then
+        config.vbguest.auto_update = true
+    end
+
+    ## Network and Folder
+
+    config.vm.hostname = NAME
+    config.vm.network :private_network, ip: "192.168.33.20"
+    config.vm.synced_folder "..", APPDIR, owner: 'root', mount_options: ['dmode=777', 'fmode=666']
+
+    [80, 8080, 443, 3000, 3306].each do |port|
+        config.vm.network :forwarded_port, guest: port, host: (50000 + port)
+    end
+    config.vm.network :forwarded_port, guest: 50022, host: 50022
+
+
+    ## Provider: virtualbox
+
+    config.vm.box = "ubuntu/trusty64"
+
+    config.vm.provider :virtualbox do |vb|
+        vb.name = NAME + "_vm"
+        vb.memory = 1024
+    end
+
+    ## Provision: docker
+
+    config.vm.provision :docker do |d|
+        # automatically install Docker
+    end
+
+    $script = <<SCRIPT
+if [[ -z `which docker-compose` ]]; then
+  curl -L https://github.com/docker/compose/releases/download/1.3.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
+fi
+docker -v
+docker-compose --version
+SCRIPT
+    config.vm.provision "shell", inline: $script, privileged: true
+
+    $script = <<SCRIPT
+cd #{WORKDIR}
+docker-compose up -d
+docker-compose ps
+SCRIPT
+    config.vm.provision "shell", run: "always", inline: $script
+
+end

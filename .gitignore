@@ -31,5 +31,8 @@ Thumbs.db
 .swp
 .swo
 
+# 2015/11 added by harasawa@movsquad
+vagrant/.vagrant/
+
 
 
