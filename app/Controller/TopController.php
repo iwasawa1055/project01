@@ -2,7 +2,7 @@
 
 App::uses('AppController', 'Controller');
 
-class ApiController extends AppController
+class TopController extends AppController
 {
 	
 	public $test = null;

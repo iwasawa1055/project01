@@ -34,9 +34,8 @@
 	// 2015/08 comment out by osada@terrada
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-	// 2015/08 added by odada@terrada
-	Router::connect('/', array('controller' => 'api', 'action' => 'index'));
-	Router::connect('/index', array('controller' => 'api', 'action' => 'index'));
+	Router::connect('/', array('controller' => 'top', 'action' => 'index'));
+	Router::connect('/index', array('controller' => 'top', 'action' => 'index'));
 
 	// 2015/08 added by osada@terrada
 	Router::connect('/:controller/:action', array());
