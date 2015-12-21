@@ -245,9 +245,9 @@ class AppHttp
 		//* json
 		} else if ($_accept === 'json') {
 			//* Patch For Asteria
-			$_content = preg_replace(array('/^{record:\[/', '/\]}$/'), array('[', ']'), $_content);
+			//$_content = preg_replace(array('/^{record:\[/', '/\]}$/'), array('[', ']'), $_content);
 			//* Patch For Yahoo
-			$_content = preg_replace(array('/^loaded\(/', '/\)$/'), array(''), $_content);
+			//$_content = preg_replace(array('/^loaded\(/', '/\)$/'), array(''), $_content);
 			//* 汎用
 			if (! $results = json_decode(trim($_content), true)) {
 				new AppInternalCritical(AppE::FUNC . 'Could not decode json', 500);

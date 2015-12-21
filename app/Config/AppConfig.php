@@ -181,4 +181,8 @@ $config['app']['security']['Call_Back'] = true;
 //debug($config);
 
 
-
+$config['api.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+$config['api.minikura.schema'] = 'https://';
+$config['api.minikura.host'] = 'a-api.minikura.com';
+$config['api.minikura.entry_point'] = '/v3/warehouse/minikura';
+$config['api.minikura.access_point'] = $config['api.minikura.schema'] . $config['api.minikura.host'] . $config['api.minikura.entry_point'];
