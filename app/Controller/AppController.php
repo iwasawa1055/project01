@@ -7,7 +7,7 @@ App::uses('DocumentModel', 'Model');
 class AppController extends Controller
 {
 
-	public $root_index_render = '/root_index';
+	// public $root_index_render = '/root_index';
 
 	/**
 	 * 制御前段処理
@@ -32,7 +32,7 @@ class AppController extends Controller
 		CakeSession::$requestCountdown = 10000;
 
 		//* Layout
-		$this->layout = null;
+		// $this->layout = null;
 	}
 
 	/**
@@ -63,4 +63,3 @@ class AppController extends Controller
 	}
 
 }
-
