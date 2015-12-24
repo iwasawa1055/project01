@@ -9,13 +9,13 @@
 <meta name="author" content="">
 <title>ログイン・ユーザー登録 | minikura</title>
 <?php
-	echo $this->Html->meta('icon');
+  echo $this->Html->meta('icon');
 
-	// echo $this->Html->css('cake.generic');
+  // echo $this->Html->css('cake.generic');
 
-	echo $this->fetch('meta');
-	echo $this->fetch('css');
-	echo $this->fetch('script');
+  echo $this->fetch('meta');
+  echo $this->fetch('css');
+  echo $this->fetch('script');
 ?>
 <!-- Bootstrap Core CSS -->
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -37,24 +37,18 @@
     <![endif]-->
 </head>
 <body>
-	<div id="wrapper" class="animsition" data-animsition-in-class="fade-in-up-lg" data-animsition-out-class="fade-out-up-lg">
-	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-	  <div class="navbar-header">
-	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-	    <a class="navbar-brand" href=""><img class="logo" src="img/logo.png" alt="minikura"></a> </div>
-	  <ul class="nav navbar-top-links navbar-right">
-	    <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> 各種情報変更 <i class="fa fa-caret-down"></i> </a>
-	      <ul class="dropdown-menu dropdown-user">
-	        <li> <a href="inquiry/index.html"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
-	      </ul>
-	    </li>
-	  </ul>
-		<?php echo $this->element('sidebar'); ?>
-	</nav>
-	<?php echo $this->Session->flash(); ?>
-
-	<?php echo $this->fetch('content'); ?>
-
+<div id="wrapper" class="animsition" data-animsition-in-class="fade-in-up-lg" data-animsition-out-class="fade-out-up-lg">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+    <a class="navbar-brand" href="/"><img class="logo" src="img/logo.png" alt="minikura"></a>
+  </div>
+  <?php echo $this->element('navbar_right'); ?>
+  <?php echo $this->element('sidebar'); ?>
+</nav>
+  <?php echo $this->Session->flash(); ?>
+  <?php echo $this->fetch('content'); ?>
+</div>
 <!-- jQuery -->
 <script src="jquery/jquery.min.js"></script> <!-- Bootstrap Core JavaScript -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
