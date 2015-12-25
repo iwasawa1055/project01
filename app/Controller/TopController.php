@@ -1,7 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('UserAddress', 'Model');
+App::uses('UserLogin', 'Model');
 
 class TopController extends AppController
 {
@@ -10,50 +10,42 @@ class TopController extends AppController
     /**
      * 制御前段処理.
      *
-     * @param		void
-     *
      * @todo		test
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        // AppController::beforeFilter();
         //* Test Double
-        $this->test = Configure::read('app.test');
+        // $this->test = Configure::read('app.test');
     }
 
     /**
      * ルートインデックス.
      *
-     * @param		void
-     *
      * @todo
      */
     public function index()
     {
-        //* Layout
-        // $this->layout = null;
 
-        // test error Critical系 ALERT
-        //new AppExternalCritical(AppE::EXTERNAL_SERVER_ERROR , $status_code=500);
-
-        // test エラーレベル追加 Error系  ABORT
-        //new AppTerminalError(AppE::NOT_FOUND, 404);
-
-        $this->loadModel('UserAddress');
-
+        // ログイン
         $email = '73@terrada.co.jp';
         $password = 'happyhappy';
-        $this->UserAddress->login($email, $password);
-        // print_rh($this->UserAddress->apiGet());
 
-        $this->UserAddress->set(['lastname' => 111]);
-        $this->UserAddress->validates();
-        $errors = $this->UserAddress->validationErrors;
+        $this->loadModel('UserLogin');
+        $this->UserLogin->set([
+          'email' => $email,
+          'password' => $password,
+        ]);
+        // $errors = $this->UserLogin->validationErrors;
         // print_rh($errors);
-        // print_rh($this->UserAddress->data);
-        // exit;
+        $this->UserLogin->login();
 
-        //* Render
-        // $this->render($this->root_index_render);
+        // 照会系API
+        $this->loadModel('User');
+        print_rh($this->User->apiGet());
+
+        $this->loadModel('Announcement');
+        print_rh($this->Announcement->apiGet());
+
     }
 }
