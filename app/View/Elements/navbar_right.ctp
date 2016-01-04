@@ -37,7 +37,7 @@
       <ul class="dropdown-menu dropdown-user">
         <li><a class="animsition-link" href="/customer/info/"><i class="fa fa-user fa-fw"></i> ユーザー情報変更</a> </li>
         <li><a class="animsition-link" href="/customer/email/edit"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>
-        <li><a class="animsition-link" href="credit/index.html"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
+        <li><a class="animsition-link" href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
         <li><a class="animsition-link" href="adress/index.html"><i class="fa fa-truck fa-fw"></i> お届け先追加・変更</a> </li>
         <li><a class="animsition-link" href="password/index.html"><i class="fa fa-lock fa-fw"></i> パスワード再発行</a> </li>
         <li class="divider"></li>
