@@ -37,6 +37,9 @@
 	Router::connect('/', array('controller' => 'top', 'action' => 'index'));
 	Router::connect('/index', array('controller' => 'top', 'action' => 'index'));
 
+	Router::connect('/customer/:controller/', array('action' => 'index'));
+	Router::connect('/customer/:controller/:action', array());
+
 	// 2015/08 added by osada@terrada
 	Router::connect('/:controller/:action', array());
 	
