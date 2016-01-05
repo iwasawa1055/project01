@@ -18,15 +18,15 @@
   echo $this->fetch('script');
 ?>
 <!-- Bootstrap Core CSS -->
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- MetisMenu CSS -->
-<link href="css/metisMenu.min.css" rel="stylesheet">
+<link href="/css/metisMenu.min.css" rel="stylesheet">
 <!-- Custom Fonts -->
-<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <!-- Animsition CSS -->
-<link href="css/animsition.min.css" rel="stylesheet">
+<link href="/css/animsition.min.css" rel="stylesheet">
 <!-- Custom Theme CSS -->
-<link href="css/app.css" rel="stylesheet">
+<link href="/css/app.css" rel="stylesheet">
 <!-- Favicon -->
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -41,7 +41,7 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-    <a class="navbar-brand" href="/"><img class="logo" src="img/logo.png" alt="minikura"></a>
+    <a class="navbar-brand" href="/"><img class="logo" src="/img/logo.png" alt="minikura"></a>
   </div>
   <?php echo $this->element('navbar_right'); ?>
   <?php echo $this->element('sidebar'); ?>
@@ -50,13 +50,13 @@
   <?php echo $this->fetch('content'); ?>
 </div>
 <!-- jQuery -->
-<script src="jquery/jquery.min.js"></script> <!-- Bootstrap Core JavaScript -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="/jquery/jquery.min.js"></script> <!-- Bootstrap Core JavaScript -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
 <!-- Metis Menu Plugin JavaScript -->
-<script src="js/metisMenu.min.js"></script> <!-- Animsition JavaScript -->
-<script src="js/animsition.min.js"></script>
+<script src="/js/metisMenu.min.js"></script> <!-- Animsition JavaScript -->
+<script src="/js/animsition.min.js"></script>
 <!-- Custom Theme JavaScript -->
-<script src="js/app.js"></script>
+<script src="/js/app.js"></script>
 <script>
   $(document).ready(function() {
     $('.animsition').animsition();

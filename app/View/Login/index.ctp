@@ -44,7 +44,7 @@
                   <option>受信しない</option>
                 </select>
               </div>
-              <a class="btn btn-default btn-xs btn-block animsition-link" href="/terms" target="_blank">魂ガレージ利用規約</a> <a class="btn btn-danger btn-lg btn-block animsition-link" href="index.html">利用規約に同意して会員登録</a> </div>
+              <a class="btn btn-default btn-xs btn-block animsition-link" href="/terms" target="_blank">魂ガレージ利用規約</a> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/register/">利用規約に同意して会員登録</a> </div>
           </div>
         </div>
       </div>

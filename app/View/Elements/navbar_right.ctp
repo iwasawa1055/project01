@@ -35,11 +35,11 @@
     </li>
     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> 各種情報変更 <i class="fa fa-caret-down"></i> </a>
       <ul class="dropdown-menu dropdown-user">
-        <li><a class="animsition-link" href="customer/index.html"><i class="fa fa-user fa-fw"></i> ユーザー情報変更</a> </li>
-        <li><a class="animsition-link" href="mail/index.html"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>
-        <li><a class="animsition-link" href="credit/index.html"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
-        <li><a class="animsition-link" href="adress/index.html"><i class="fa fa-truck fa-fw"></i> お届け先追加・変更</a> </li>
-        <li><a class="animsition-link" href="password/index.html"><i class="fa fa-lock fa-fw"></i> パスワード再発行</a> </li>
+        <li><a class="animsition-link" href="/customer/info/"><i class="fa fa-user fa-fw"></i> ユーザー情報変更</a> </li>
+        <li><a class="animsition-link" href="/customer/email/edit"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>
+        <li><a class="animsition-link" href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
+        <li><a class="animsition-link" href="/customer/address/add"><i class="fa fa-truck fa-fw"></i> お届け先追加・変更</a> </li>
+        <li><a class="animsition-link" href="/customer/password/edit"><i class="fa fa-lock fa-fw"></i> パスワード変更</a> </li>
         <li class="divider"></li>
         <li> <a class="animsition-link" href="inquiry/index.html"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
         <li> <a class="animsition-link" href="agreement/index.html"><i class="fa fa-list-alt fa-fw"></i> 契約情報</a> </li>
