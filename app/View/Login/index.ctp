@@ -9,20 +9,25 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="row">
-            <div class="col-lg-6 col-md-6">
-              <h2>ログイン</h2>
-              <div class="form-group">
-                <input class="form-control" placeholder="メールアドレス" name="email" type="email" autofocus>
+
+            <form action="/login/doing" method="post">
+              <div class="col-lg-6 col-md-6">
+                <h2>ログイン</h2>
+                <div class="form-group">
+                  <input class="form-control" placeholder="メールアドレス" name="email" type="email" autofocus>
+                </div>
+                <div class="form-group">
+                  <input class="form-control" placeholder="パスワード" name="password" type="password" value="">
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input name="remember" type="checkbox" value="Remember Me">
+                    次回ログイン時に入力を省く </label>
+                </div>
+                <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link" >ログイン</button>
               </div>
-              <div class="form-group">
-                <input class="form-control" placeholder="パスワード" name="password" type="password" value="">
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input name="remember" type="checkbox" value="Remember Me">
-                  次回ログイン時に入力を省く </label>
-              </div>
-              <a class="btn btn-danger btn-lg btn-block animsition-link" href="login/doing">ログイン</a> </div>
+            </form>
+
             <div class="col-lg-6 col-md-6">
               <h2>会員登録</h2>
               <div class="form-group">
@@ -44,7 +49,10 @@
                   <option>受信しない</option>
                 </select>
               </div>
-              <a class="btn btn-default btn-xs btn-block animsition-link" href="/terms" target="_blank">魂ガレージ利用規約</a> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/register/">利用規約に同意して会員登録</a> </div>
+              <a class="btn btn-default btn-xs btn-block animsition-link" href="/terms" target="_blank">利用規約</a>
+              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/register/">利用規約に同意して会員登録</a>
+            </div>
+
           </div>
         </div>
       </div>

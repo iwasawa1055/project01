@@ -1,7 +1,6 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('UserAddress', 'Model');
 
 class LoginController extends AppController
 {
@@ -10,7 +9,9 @@ class LoginController extends AppController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        // ログイン不要なページ
+        $this->checkLogined = false;
+        parent::beforeFilter();
     }
 
     /**
@@ -21,10 +22,29 @@ class LoginController extends AppController
     }
 
     /**
-     * 
+     * ログイン.
      */
     public function doing()
     {
-        return $this->redirect('/mypage');
+        $this->loadModel('UserLogin');
+        $this->UserLogin->set($this->request->data);
+
+        if ($this->UserLogin->validates()) {
+            $res = $this->UserLogin->login();
+            // TODO: 例外処理
+            return $this->redirect('/mypage/index');
+        } else {
+            $this->set('validerror', $this->UserLogin->validationErrors);
+
+            return $this->render('/login/index');
+        }
+    }
+
+    public function logout()
+    {
+        $this->loadModel('UserLogin');
+        $this->UserLogin->logout();
+
+        return $this->redirect('/login');
     }
 }

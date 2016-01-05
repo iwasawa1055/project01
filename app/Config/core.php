@@ -248,50 +248,50 @@
 	));
 	*/
 
-	// 2015/03 added by osada@terrada
+	// TODO: セッション設定
 	Configure::write('Session', array(
 		'defaults' => 'cake',
 		//'defaults' => 'cake',
 		//* 要確認 相談
-		'cookie' => 'OPEMINIKURA',
-		'start' => 'Off',
-		// 12 hours
-		'timeout' => '240',
-		// 10 years
-		//'timeout' => '5256000',
-		'autoRegenerate' => 'Off',
-		'checkAgent' => 'Off',
-		'ini' => array(
-			//* 要確認 相談
-			'session.name' => 'OPEMINIKURA',
-			//'session.save_path' => '/var/lib/php/session',
-			'session.gc_probability' => 1,
-			'session.gc_divisor' => 10,
-			// GC 4 hours
-			'session.gc_maxlifetime' => 43200,
-			// GC 10 years
-			//'session.gc_maxlifetime' => 315360000,
-			// testing
-			'session.use_trans_sid' => 1,
-
-			// php5.5.2 から
-			//'session.use_strict_mode'=> 1,
-			// Cookie Nouse
-			'session.use_cookies' => 'On',
-			'session.use_only_cookies' => 'On',
-			'session.cookie_path' => '/',
-			'session.cookie_domain' => '.minikura.com',
-			'session.cookie_lifetime' => '0',
-			'session.cookie_httponly' => 'On',
-			'session.cookie_secure' => 'On',
-			'session.cache_limiter' => 'nocache',
-			'session.cache_expire' => 0,
-			//'session.bug_compat_42' => 'On',
-			//'session.bug_compat_warn' => 'On',
-			'session.hash_function' => 'sha256',
-			'session.hash_bits_per_character' => 5,
-			'session.referer_check'=> '',
-		)
+		// 'cookie' => 'OPEMINIKURA',
+		// 'start' => 'Off',
+		// // 12 hours
+		// 'timeout' => '240',
+		// // 10 years
+		// //'timeout' => '5256000',
+		// 'autoRegenerate' => 'Off',
+		// 'checkAgent' => 'Off',
+		// 'ini' => array(
+		// 	//* 要確認 相談
+		// 	'session.name' => 'OPEMINIKURA',
+		// 	//'session.save_path' => '/var/lib/php/session',
+		// 	'session.gc_probability' => 1,
+		// 	'session.gc_divisor' => 10,
+		// 	// GC 4 hours
+		// 	'session.gc_maxlifetime' => 43200,
+		// 	// GC 10 years
+		// 	//'session.gc_maxlifetime' => 315360000,
+		// 	// testing
+		// 	'session.use_trans_sid' => 1,
+		//
+		// 	// php5.5.2 から
+		// 	//'session.use_strict_mode'=> 1,
+		// 	// Cookie Nouse
+		// 	'session.use_cookies' => 'On',
+		// 	'session.use_only_cookies' => 'On',
+		// 	'session.cookie_path' => '/',
+		// 	'session.cookie_domain' => '.minikura.com',
+		// 	'session.cookie_lifetime' => '0',
+		// 	'session.cookie_httponly' => 'On',
+		// 	'session.cookie_secure' => 'On',
+		// 	'session.cache_limiter' => 'nocache',
+		// 	'session.cache_expire' => 0,
+		// 	//'session.bug_compat_42' => 'On',
+		// 	//'session.bug_compat_warn' => 'On',
+		// 	'session.hash_function' => 'sha256',
+		// 	'session.hash_bits_per_character' => 5,
+		// 	'session.referer_check'=> '',
+		// )
 	));
 
 /**

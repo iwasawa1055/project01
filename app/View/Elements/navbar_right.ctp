@@ -45,7 +45,7 @@
         <li> <a class="animsition-link" href="/contact_us/add"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
         <li> <a class="animsition-link" href="agreement/index.html"><i class="fa fa-list-alt fa-fw"></i> 契約情報</a> </li>
         <li class="divider"></li>
-        <li><a class="animsition-link" href="login.html"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a> </li>
+        <li><a class="animsition-link" href="login/logout"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a> </li>
       </ul>
     </li>
   <?php } ?>
