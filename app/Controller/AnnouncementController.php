@@ -13,14 +13,21 @@ class AnnouncementController extends AppController
     }
 
     /**
-     * 
+     * 一覧.
      */
     public function index()
     {
+        $this->loadModel('Announcement');
+
+        $res = $this->Announcement->apiGet();
+
+        if ($res->status === '1') {
+            $this->set('announcements', $res->results);
+        }
     }
 
     /**
-     * 
+     *
      */
     public function detail()
     {

@@ -43,7 +43,9 @@
                   <div class="col-xs-12 col-md-1 col-lg-1"><a class="btn btn-success btn-xs animsition-link" href="news/detail.html">既読</a></div>
                 </div>
                 <hr>
-                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="/announcement">お知らせ一覧を見る</a> </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 text-center">
+                  <a class="btn btn-default btn-lg animsition-link" href="/announcement">お知らせ一覧を見る</a>
+                </div>
                 <hr>
               </div>
               <h2>最近預けたアイテム</h2>
@@ -71,7 +73,7 @@
                   <option>xxx-xxxxx</option>
                 </select>
               </div>
-              <div class="row box-list"> 
+              <div class="row box-list">
                 <!--loop-->
                 <hr>
                 <div class="row box">
@@ -86,7 +88,7 @@
                   </div>
                   <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="box/detail.html">詳細確認</a> </span> </div>
                 </div>
-                <!--loop end--> 
+                <!--loop end-->
                 <!--loop-->
                 <hr>
                 <div class="row box">
@@ -101,7 +103,7 @@
                   </div>
                   <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="box/detail.html">詳細確認</a> </span> </div>
                 </div>
-                <!--loop end--> 
+                <!--loop end-->
                 <!--loop-->
                 <hr>
                 <div class="row box">
