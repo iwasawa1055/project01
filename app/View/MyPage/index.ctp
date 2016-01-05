@@ -59,7 +59,7 @@
                   <li><a class="animsition-link" href="item/item_detail.html"><img src="img/xxx_xxxx.jpg" alt="xxx_xxxx"></a></li>
                   <!--loop end-->
                 </ul>
-                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="item/item_list.html">アイテム一覧を見る</a> </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="/item">アイテム一覧を見る</a> </div>
               </div>
               <h2>最近預けたボックス</h2>
               <hr>
