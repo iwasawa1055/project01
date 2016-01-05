@@ -43,7 +43,7 @@
                   <div class="col-xs-12 col-md-1 col-lg-1"><a class="btn btn-success btn-xs animsition-link" href="news/detail.html">既読</a></div>
                 </div>
                 <hr>
-                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="news/index.html">お知らせ一覧を見る</a> </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="/announcement">お知らせ一覧を見る</a> </div>
                 <hr>
               </div>
               <h2>最近預けたアイテム</h2>
