@@ -3,10 +3,10 @@
 App::uses('AppController', 'Controller');
 App::uses('UserAddress', 'Model');
 
-class LoginController extends AppController
+class MyPageController extends AppController
 {
     /**
-     * 制御前段処理.
+     * 制御前段処理
      */
     public function beforeFilter()
     {
@@ -18,13 +18,5 @@ class LoginController extends AppController
      */
     public function index()
     {
-    }
-
-    /**
-     * 
-     */
-    public function doing()
-    {
-        return $this->redirect('/mypage');
     }
 }

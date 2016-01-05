@@ -22,7 +22,7 @@
                   <input name="remember" type="checkbox" value="Remember Me">
                   次回ログイン時に入力を省く </label>
               </div>
-              <a class="btn btn-danger btn-lg btn-block animsition-link" href="index.html">ログイン</a> </div>
+              <a class="btn btn-danger btn-lg btn-block animsition-link" href="login/doing">ログイン</a> </div>
             <div class="col-lg-6 col-md-6">
               <h2>会員登録</h2>
               <div class="form-group">
