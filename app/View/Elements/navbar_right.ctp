@@ -40,6 +40,7 @@
         <li><a class="animsition-link" href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
         <li><a class="animsition-link" href="/customer/address/add"><i class="fa fa-truck fa-fw"></i> お届け先追加・変更</a> </li>
         <li><a class="animsition-link" href="/customer/password/edit"><i class="fa fa-lock fa-fw"></i> パスワード変更</a> </li>
+        <li><a class="animsition-link" href="/customer/password_reset/add"><i class="fa fa-lock fa-fw"></i> パスワード再発行</a> </li>
         <li class="divider"></li>
         <li> <a class="animsition-link" href="inquiry/index.html"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
         <li> <a class="animsition-link" href="agreement/index.html"><i class="fa fa-list-alt fa-fw"></i> 契約情報</a> </li>
