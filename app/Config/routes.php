@@ -40,6 +40,9 @@
 	Router::connect('/customer/:controller/', array('action' => 'index'));
 	Router::connect('/customer/:controller/:action', array());
 
+	Router::connect('/:controller/detail/:id', array('action' => 'detail'));
+	Router::connect('/:controller/detail/:id/:action', array());
+
 	// 2015/08 added by osada@terrada
 	Router::connect('/:controller/:action', array());
 	

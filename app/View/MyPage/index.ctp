@@ -86,7 +86,7 @@
                     <label>ボックスタイトル</label>
                     <p class="form-control-static">XXXXXXXXXXXXXXXX</p>
                   </div>
-                  <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="box/detail.html">詳細確認</a> </span> </div>
+                  <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                 </div>
                 <!--loop end-->
                 <!--loop-->
@@ -101,7 +101,7 @@
                     <label>ボックスタイトル</label>
                     <p class="form-control-static">XXXXXXXXXXXXXXXX</p>
                   </div>
-                  <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="box/detail.html">詳細確認</a> </span> </div>
+                  <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                 </div>
                 <!--loop end-->
                 <!--loop-->
@@ -116,10 +116,10 @@
                     <label>ボックスタイトル</label>
                     <p class="form-control-static">XXXXXXXXXXXXXXXX</p>
                   </div>
-                  <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="box/detail.html">詳細確認</a> </span> </div>
+                  <div class="col-lg-4 col-md-4"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                 </div>
                 <!--loop end-->
-                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="box/list.html">ボックス一覧を見る</a> </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 text-center"> <a class="btn btn-default btn-lg animsition-link" href="/box">ボックス一覧を見る</a> </div>
               </div>
             </div>
           </div>
