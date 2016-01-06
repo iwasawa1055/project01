@@ -40,6 +40,9 @@
 	Router::connect('/customer/:controller/', array('action' => 'index'));
 	Router::connect('/customer/:controller/:action', array());
 
+	Router::connect('/inbound/box/:action', array('controller' => 'InboundBox'));
+	Router::connect('/inbound/shoe/:action', array('controller' => 'InboundShoe'));
+
 	Router::connect('/:controller/detail/:id', array('action' => 'detail'));
 	Router::connect('/:controller/detail/:id/:action', array());
 
