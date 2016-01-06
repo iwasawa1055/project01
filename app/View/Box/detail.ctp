@@ -27,7 +27,7 @@
                       <label>ボックスタイトル</label>
                       <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
                     </div>
-                    <div class="col-lg-4 col-md-4"><span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="../takeout/list.html">取り出しリストに登録</a> </span> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="open.html">中身を見る</a> </span></div>
+                    <div class="col-lg-4 col-md-4"><span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="../takeout/list.html">取り出しリストに登録</a> </span> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/1/item">中身を見る</a> </span></div>
                   </div>
                 </div>
                 <div class="col-lg-12">

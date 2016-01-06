@@ -40,4 +40,11 @@ class BoxController extends AppController
     {
         return $this->redirect('/box/detail/1');
     }
+
+    /**
+     *
+     */
+    public function item()
+    {
+    }
 }
