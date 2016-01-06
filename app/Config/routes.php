@@ -43,6 +43,11 @@
 	Router::connect('/inbound/box/:action', array('controller' => 'InboundBox'));
 	Router::connect('/inbound/shoe/:action', array('controller' => 'InboundShoe'));
 
+	Router::connect('/outbound/box/', array('controller' => 'OutboundBox', 'action' => 'index'));
+	Router::connect('/outbound/box/:action', array('controller' => 'OutboundBox'));
+	Router::connect('/outbound/item/', array('controller' => 'OutboundItem', 'action' => 'index'));
+	Router::connect('/outbound/item/:action', array('controller' => 'OutboundItem'));
+
 	Router::connect('/:controller/detail/:id', array('action' => 'detail'));
 	Router::connect('/:controller/detail/:id/:action', array());
 

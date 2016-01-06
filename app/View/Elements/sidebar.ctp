@@ -39,8 +39,8 @@
         </li>
         <li> <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 取り出し<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <li> <a class="animsition-link" href="takeout/item.html"><i class="fa fa-arrow-circle-o-down fa-fw"></i> アイテムを取り出す</a> </li>
-            <li> <a class="animsition-link" href="takeout/box.html"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
+            <li> <a class="animsition-link" href="/outbound/item/boxlist"><i class="fa fa-arrow-circle-o-down fa-fw"></i> アイテムを取り出す</a> </li>
+            <li> <a class="animsition-link" href="/outbound/box/"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
           </ul>
         </li>
       <?php } ?>
