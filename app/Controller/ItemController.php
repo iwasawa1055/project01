@@ -25,4 +25,19 @@ class ItemController extends AppController
     public function detail()
     {
     }
+
+    /**
+     *
+     */
+    public function edit()
+    {
+    }
+
+    /**
+     *
+     */
+    public function update()
+    {
+        return $this->redirect('/item/detail/1');
+    }
 }

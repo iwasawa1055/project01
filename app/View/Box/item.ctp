@@ -15,12 +15,12 @@
               <div class="row box-list">
                 <ul class="tile">
                   <!--loop-->
-                  <li class="panel panel-default"><a class="animsition-link" href="../item/item_detail.html"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
-                  <li class="panel panel-default"><a class="animsition-link" href="../item/item_detail.html"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
-                  <li class="panel panel-default"><a class="animsition-link" href="../item/item_detail.html"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
-                  <li class="panel panel-default"><a class="animsition-link" href="../item/item_detail.html"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
-                  <li class="panel panel-default"><a class="animsition-link" href="../item/item_detail.html"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
-                  <li class="panel panel-default"><a class="animsition-link" href="../item/item_detail.html"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
+                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
+                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
+                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
+                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
+                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
+                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="../img/xxx_xxxx.jpg"></a>アイテムIDアイテム名</li>
                   <!--loop end-->
                 </ul>
               </div>
