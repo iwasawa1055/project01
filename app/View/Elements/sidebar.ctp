@@ -13,7 +13,7 @@
             <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
             </span> </div>
         </li>
-        <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
+        <li> <a class="animsition-link" href="/mypage"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/box"><i class="fa fa-tag fa-fw"></i> MONO（00箱）</a> </li>
@@ -27,7 +27,7 @@
  -->
           </ul>
         </li>
-        <li> <a class="animsition-link" href="buy/index.html"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>
+        <li> <a class="animsition-link" href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>
         <li> <a href="#"><i class="fa fa-arrow-circle-o-up fa-fw"></i> 預け入れ<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/inbound/box/add"><i class="fa fa-arrow-circle-o-up fa-fw"></i> ボックス預け入れ</a> </li>
