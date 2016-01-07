@@ -17,7 +17,6 @@ class PasswordResetController extends AppController
      */
     public function add()
     {
-        $this->render('/Customer/PasswordReset/add');
     }
 
     /**
@@ -25,7 +24,6 @@ class PasswordResetController extends AppController
      */
     public function confirm()
     {
-        $this->render('/Customer/PasswordReset/confirm');
     }
 
     /**
@@ -33,6 +31,5 @@ class PasswordResetController extends AppController
      */
     public function complete()
     {
-        $this->render('/Customer/PasswordReset/complete');
     }
 }

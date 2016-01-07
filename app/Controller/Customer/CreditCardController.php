@@ -17,7 +17,6 @@ class CreditCardController extends AppController
      */
     public function edit()
     {
-        $this->render('/Customer/CreditCard/edit');
     }
 
     /**
@@ -25,7 +24,6 @@ class CreditCardController extends AppController
      */
     public function confirm()
     {
-        $this->render('/Customer/CreditCard/confirm');
     }
 
     /**
@@ -33,6 +31,5 @@ class CreditCardController extends AppController
      */
     public function complete()
     {
-        $this->render('/Customer/CreditCard/complete');
     }
 }

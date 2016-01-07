@@ -67,6 +67,7 @@ Cache::config('default', array('engine' => 'File'));
 		),
 		'View' => array(
 			ROOT . DS . APP_DIR . DS . 'View' . DS,
+			ROOT . DS . APP_DIR . DS . 'View' . DS . 'Customer' . DS,
 		),
 		'Model' => array(
 			ROOT . DS . APP_DIR . DS . 'Model' . DS,

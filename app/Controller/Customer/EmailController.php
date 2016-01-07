@@ -17,7 +17,6 @@ class EmailController extends AppController
      */
     public function edit()
     {
-        $this->render('/Customer/Email/edit');
     }
 
     /**
@@ -25,7 +24,6 @@ class EmailController extends AppController
      */
     public function confirm()
     {
-        $this->render('/Customer/Email/confirm');
     }
 
     /**
@@ -33,6 +31,5 @@ class EmailController extends AppController
      */
     public function complete()
     {
-        $this->render('/Customer/Email/complete');
     }
 }

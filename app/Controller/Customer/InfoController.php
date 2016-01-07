@@ -16,9 +16,8 @@ class InfoController extends AppController
     /**
      * 
      */
-    public function index()
+    public function edit()
     {
-        $this->render('/Customer/Info/edit');
     }
 
     /**
@@ -26,7 +25,6 @@ class InfoController extends AppController
      */
     public function confirm()
     {
-        $this->render('/Customer/Info/confirm');
     }
 
     /**
@@ -34,6 +32,5 @@ class InfoController extends AppController
      */
     public function complete()
     {
-        $this->render('/Customer/Info/complete');
     }
 }

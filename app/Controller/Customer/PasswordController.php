@@ -17,7 +17,6 @@ class PasswordController extends AppController
      */
     public function edit()
     {
-        $this->render('/Customer/Password/edit');
     }
 
     /**
@@ -25,6 +24,5 @@ class PasswordController extends AppController
      */
     public function complete()
     {
-        $this->render('/Customer/Password/complete');
     }
 }

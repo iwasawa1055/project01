@@ -17,7 +17,6 @@ class AddressController extends AppController
      */
     public function add()
     {
-        $this->render('/Customer/Address/add');
     }
 
     /**
@@ -25,7 +24,6 @@ class AddressController extends AppController
      */
     public function edit()
     {
-        $this->render('/Customer/Address/edit');
     }
 
     /**
@@ -41,7 +39,6 @@ class AddressController extends AppController
      */
     public function confirm()
     {
-        $this->render('/Customer/Address/confirm');
     }
 
     /**
@@ -49,6 +46,5 @@ class AddressController extends AppController
      */
     public function complete()
     {
-        $this->render('/Customer/Address/complete');
     }
 }
