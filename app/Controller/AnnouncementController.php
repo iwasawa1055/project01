@@ -5,22 +5,15 @@ App::uses('AppController', 'Controller');
 class AnnouncementController extends AppController
 {
     /**
-     * 制御前段処理.
-     */
-    public function beforeFilter()
-    {
-        AppController::beforeFilter();
-    }
-
-    /**
      * 一覧.
      */
     public function index()
     {
         $this->loadModel('Announcement');
-
-        $res = $this->Announcement->apiGet();
-
+        $res = $this->Announcement->apiGet([
+    			'limit' => 10,
+    			'offset' => 0
+    		]);
         if ($res->status === '1') {
             $this->set('announcements', $res->results);
         }
@@ -31,5 +24,23 @@ class AnnouncementController extends AppController
      */
     public function detail()
     {
+        $id = $this->params['id'];
+        $this->loadModel('Announcement');
+        $res = $this->Announcement->apiGet([
+        	'limit' => 10,
+        	'offset' => 0
+        ]);
+        if ($res->status === '1') {
+            foreach($res->results as $a) {
+            	if ($a['announcement_id'] === $id) {
+            		$this->set('announcement', $a);
+            		// 既読更新
+            		$this->Announcement->apiPatch([
+            			'announcement_id' => $id
+            		]);
+            		break;
+            	}
+            }
+        }
     }
 }

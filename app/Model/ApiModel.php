@@ -86,6 +86,13 @@ class ApiModel extends AppModel
      */
     protected function request($end_point, $params, $method, $headers = [], $block = '', $accept = 'json')
     {
+		// TODO: APIの仕様を確認
+		// GET, POST以外はすべてPOSTで送る
+		if ('GET' !== $method && 'POST' !== $method) {
+			$params['request_method'] = strtolower($method);
+			$method = 'POST';
+		}
+
         $url = $this->access_point.$end_point;
         $responses = AppHttp::request($url, $params, $method, $headers, $block, $accept);
         $a = new ApiResponse($responses);
