@@ -177,7 +177,7 @@ class AppE extends Exception
 				$this->error_node = $matches[2];
 				$this->error_level = $matches[3];
 			} else {
-				throw new AppErrorException('The Error trigger class name (' . get_class($this) . ') is invalid.');
+				throw new Exception('The Error trigger class name (' . get_class($this) . ') is invalid.');
 			}
 		}
 	}
@@ -194,9 +194,9 @@ class AppE extends Exception
 	protected function handle()
 	{
 		if (empty($this->handlers)) {
-			throw new AppErrorException('The handlers is empty.', 500);
+			throw new Exception('The handlers is empty.', 500);
 		}
-		
+
 		if (! is_array($this->handlers)) {
 			$this->handlers = array($this->handlers);
 		}
@@ -208,7 +208,7 @@ class AppE extends Exception
 				}
 				if (in_array(self::LOG, $this->handlers)) {
 					$this->log();
-					}
+				}
 				if (in_array(self::MAIL, $this->handlers)) {
 					$this->mail($this);
 				}
@@ -219,7 +219,7 @@ class AppE extends Exception
 					$this->abort();
 				}
 				if (in_array(self::ALERT, $this->handlers)) {
-					$this->alert();
+					$this->abort();
 				}
 				if (in_array(self::SHUT, $this->handlers)) {
 					$this->shut();
@@ -227,7 +227,7 @@ class AppE extends Exception
 				break;
 			// Others
 			default:
-				$this->alert();
+				$this->abort();
 				break;
 		}
 	}
@@ -350,17 +350,15 @@ class AppE extends Exception
 			return false;
 		}
 
-		// Message
+		// Stack traceを除いたエラーメッセージのみ表示
 		$str = $this->vendor_prefix . ' ' . $this->error_node . ' ' . $this->error_level . ' Error: ';
 		$str .= $this->__toString();
 		$str = preg_replace('/Stack trace:.+$/s', '', $str);
 
 		// Display
-		/* 要確認 
-		echo '<div style="display: inline-block; padding: 5px 15px; border-radius: 5px; background-color: #FF9090; color: #FFFFFF;"><b>' . $str . '</b></div>';
-		*/
-		$this->display_form = $str;
-		return $this->display_form;
+		echo '<div style="display: inline-block; padding: 5px 15px; border-radius: 5px; background-color: #FF9090; color: #FFFFFF;"><b>';
+		echo  $str;
+		echo '</b></div>';
 	}
 
 	/**
@@ -382,24 +380,6 @@ class AppE extends Exception
 	 */
 	protected function abort()
 	{
-		//* core.php Exception.Handler => AppExceptionHandler
-		$this->log_disuse = true;
-		$this->mail_disuse = false;
-		throw $this;
-	}
-
-	/**
-	 * 中断発報処理
-	 *
-	 * @access	protected
-	 * @param	void
-	 * @return	void
-	 */
-	protected function alert()
-	{
-		//* core.php Exception.Handler => AppExceptionHandler
-		$this->log_disuse = true;
-		$this->mail_disuse = true;
 		throw $this;
 	}
 
@@ -413,11 +393,6 @@ class AppE extends Exception
 	protected function shut()
 	{
 		touch(TMP . DS . 'breaker');
-
-		$this->log_disuse = true;
-		$this->mail_disuse = true;
 		throw $this;
 	}
-
 }
-

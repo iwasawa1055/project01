@@ -205,12 +205,8 @@ class AppHttp
 			$options[CURLOPT_POST] = true;
 			$options[CURLOPT_POSTFIELDS] = $query;
 			$options[CURLOPT_BINARYTRANSFER] = true;
-		} else if ($_method === 'PUT') {
-			$options[CURLOPT_PUT] = true;
-		} else if ($_method === 'PATCH') {
-			// Task
-		} else if ($_method === 'DELETE') {
-			// Task
+		} else {
+			new AppInternalCritical(AppE::FUNC . 'Http method ['.$_method.'] not supported', 500);
 		}
 
 		//** Option Set
@@ -218,7 +214,8 @@ class AppHttp
 
 		//* Transfer
 		if (! $responses = curl_exec($yahoo_stream)) {
-			new AppMedialCritical(AppE::CONNECTION . 'Could not connect external server', 500);
+			$error = curl_error($yahoo_stream);
+			new AppMedialCritical(AppE::CONNECTION . 'Could not connect external server [' . $error . ']' , 500);
 		}
 		//debug($responses);
 
@@ -378,7 +375,4 @@ class AppHttp
 			header($content_language);
 		}
 	}
-
-
 }
-

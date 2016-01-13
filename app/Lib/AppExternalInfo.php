@@ -2,12 +2,11 @@
 /**
  * AppExternalInfo
  */
-class AppExternalInofo extends AppE
+class AppExternalInfo extends AppE
 {
 
-	$handlers = array(
-		AppE::LOG,
+	public $handlers = array(
+		AppE::LOG
 	);
 
 }
-

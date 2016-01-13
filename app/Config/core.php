@@ -49,19 +49,8 @@
  * @see ErrorHandler for more information on error handling and configuration.
  */
 
-/*
-	// 2015/03 comment out by osada@terrada
 	Configure::write('Error', array(
-		'handler' => 'ErrorHandler::handleError',
-		'level' => E_ALL & ~E_DEPRECATED,
-		'trace' => true
-	));
-*/
-
-	//2015/02 comment out by osada@terrada
-	Configure::write('Error', array(
-		'handler' => 'ErrorHandler::handleError',
-		//'handler' => 'AppErrorHandler::handle',
+		'handler' => 'AppErrorHandler::handle',
 		'level' => E_ALL & ~E_DEPRECATED,
 		'trace' => true
 	));
@@ -87,21 +76,9 @@
  * @see ErrorHandler for more information on exception handling and configuration.
  */
 
-/*
-	// 2015/03 comment out by osada@terrada
 	Configure::write('Exception', array(
-		'handler' => 'ErrorHandler::handleException',
-		'renderer' => 'ExceptionRenderer',
-		'log' => true
-	));
-*/
-
-	// 2015/11 added by goto@terrada
-	Configure::write('Exception', array(
-		//'handler' => 'ErrorHandler::handleException',
 		'handler' => 'AppExceptionHandler::handle',
-		//'renderer' => 'ExceptionRenderer',
-		'renderer' => 'AppExceptionRenderer',
+		// 'renderer' => 'AppExceptionRenderer', // TODO: 指定しても反映されない
 		'log' => true
 	));
 

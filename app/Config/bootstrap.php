@@ -203,11 +203,8 @@ CakeLog::config('bench', array(
 	'file' => $bench_file,
 ));
 
-// 2015/08 added by osada@terrada
-// error handler load
 App::uses('AppErrorHandler', 'Lib');
 App::uses('AppExceptionHandler', 'Lib');
-App::uses('AppErrorException', 'Lib');
 App::uses('AppE', 'Lib');
 App::uses('AppInternalPass', 'Lib');
 App::uses('AppInternalInfo', 'Lib');
@@ -241,7 +238,7 @@ App::uses('AppTerminalDefect', 'Lib');
 App::uses('AppTerminalError', 'Lib');
 App::uses('AppTerminalCritical', 'Lib');
 App::uses('AppTerminalFatal', 'Lib');
-App::uses('AppExceptionRenderer', 'Lib/Error');
+App::uses('AppExceptionRenderer', 'Lib');
 
 spl_autoload_register(function ($_class_name)
 {
@@ -263,4 +260,3 @@ spl_autoload_register(function ($_class_name)
 
 // 2015/08 added by osada@terrada
 Configure::load('AppConfig');
-

@@ -3,14 +3,12 @@ App::uses('ExceptionRenderer', 'Error');
 
 class AppExceptionRenderer extends ExceptionRenderer
 {
-	public function __construct(Exception $_exception)
+	public function render()
 	{
-		parent::__construct($_exception);
-		$this->method = 'errorApp';
-	}
-	
-	public function errorApp($_error)
-	{
+		$_error = $this->error;
+		$this->controller->layout = '';
+		$this->view = false;
+
 		$message = $_error->getMessage();
 		$url = $this->controller->request->here();
 		$code = $_error->getCode();
@@ -33,7 +31,7 @@ class AppExceptionRenderer extends ExceptionRenderer
 				$template = 'error500';
 			}
 		}
-		$this->_outputMessage($template);
+		// print_rh($template);
+		return $this->_outputMessage($template);
 	}
 }
-

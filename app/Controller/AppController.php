@@ -2,7 +2,6 @@
 
 App::uses('Controller', 'Controller');
 App::uses('AppSecurity', 'Lib');
-App::uses('DocumentModel', 'Model');
 
 class AppController extends Controller
 {
