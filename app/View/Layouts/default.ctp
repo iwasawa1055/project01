@@ -1,40 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="keywords" content="minikura,news,Information,あずける,トラクルーム,収納スペース">
-<meta name="description" content="箱であずかる収納サービスminikura。箱であずかる収納サービスminikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
+<meta name="description" content="箱であずかる収納サービスminikura。箱であずかる収納サービスminikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
 <meta name="author" content="">
-<title>ログイン・ユーザー登録 | minikura</title>
+<title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->Html->meta('icon');
-
-  // echo $this->Html->css('cake.generic');
-
   echo $this->fetch('meta');
+  $this->Html->css('bootstrap.min', ['inline' => false]);
+  $this->Html->css('font-awesome.min', ['inline' => false]);
+  $this->Html->css('metisMenu.min', ['inline' => false]);
+  $this->Html->css('animsition.min', ['inline' => false]);
+  $this->Html->css('app', ['inline' => false]);
   echo $this->fetch('css');
-  echo $this->fetch('script');
+
+  $this->Html->script('jquery.min', ['inline' => false]);
+  $this->Html->script('bootstrap.min', ['inline' => false]);
+  $this->Html->script('metisMenu.min', ['inline' => false]);
+  $this->Html->script('animsition.min', ['inline' => false]);
+  $this->Html->script('app', ['inline' => false]);
 ?>
-<!-- Bootstrap Core CSS -->
-<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- MetisMenu CSS -->
-<link href="/css/metisMenu.min.css" rel="stylesheet">
-<!-- Custom Fonts -->
-<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- Animsition CSS -->
-<link href="/css/animsition.min.css" rel="stylesheet">
-<!-- Custom Theme CSS -->
-<link href="/css/app.css" rel="stylesheet">
-<!-- Favicon -->
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
 <div id="wrapper" class="animsition" data-animsition-in-class="fade-in-up-lg" data-animsition-out-class="fade-out-up-lg">
@@ -49,15 +45,10 @@
   <?php echo $this->Session->flash(); ?>
   <?php echo $this->fetch('content'); ?>
 </div>
-<!-- jQuery -->
-<script src="/jquery/jquery.min.js"></script> <!-- Bootstrap Core JavaScript -->
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<!-- Metis Menu Plugin JavaScript -->
-<script src="/js/metisMenu.min.js"></script>
-<!-- Animsition JavaScript -->
-<script src="/js/animsition.min.js"></script>
-<!-- Custom Theme JavaScript -->
-<script src="/js/app.js"></script>
+
+<?php echo $this->fetch('script'); ?>
+<?php echo $this->fetch('scriptMinikura'); ?>
+
 <script>
   $(document).ready(function() {
     $('.animsition').animsition();

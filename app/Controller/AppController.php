@@ -7,6 +7,8 @@ class AppController extends Controller
 {
     // public $root_index_render = '/root_index';
 
+    var $helpers = ['Html', 'Title'];
+
 		// ログインチェックが必要か？
     protected $checkLogined = true;
 
