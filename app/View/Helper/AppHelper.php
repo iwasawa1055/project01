@@ -29,5 +29,32 @@ App::uses('Helper', 'View');
  *
  * @package       app.View.Helper
  */
-class AppHelper extends Helper {
+class AppHelper extends Helper
+{
+    /*
+     * クレジットカード有効期限 月
+    */
+    public function creditcardExpireMonth()
+    {
+        $select_months = [];
+        for ($i = 1; $i <= 12; ++$i) {
+            $select_months[sprintf('%02d', $i)] = $i.'月';
+        }
+
+        return $select_months;
+    }
+
+    /*
+     * クレジットカード有効期限 年
+    */
+    public function creditcardExpireYear()
+    {
+        $now_year = intval(date('Y'));
+        $select_years = [];
+        for ($i = 0; $i <= 20; ++$i) {
+            $select_years[$now_year + $i - 2000] = ($now_year + $i).'年';
+        }
+
+        return $select_years;
+    }
 }

@@ -8,10 +8,9 @@ class PaymentGMOSecurityCard extends ApiModel
 {
     public function __construct()
     {
-        // parent::__construct('PaymentGMOSecurityCard', '/security_card', 'gmopayment_v4');
         parent::__construct('PaymentGMOSecurityCard', '/security_card', 'gmopayment_v4');
 
-        // default setting
+        // init setting
         // card_seq
         $this->data['PaymentGMOSecurityCard']['card_seq'] = '0';
         // default_flag
@@ -20,44 +19,55 @@ class PaymentGMOSecurityCard extends ApiModel
 
     public $validate = [
         'card_no' => [
-            'notEmpty' => [
-                'rule'     => 'notEmpty',
-                'message'  => '必須入力です'
-            ],
-            'numeric' => [
-                'rule'     => 'numeric',
-                'message'  => 'numbers only'
-            ],
-            'between' => [
-                'rule' => ['between', 14, 16],
-                'message' => 'Between 14 to 16 characters'
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                'message'  => 'クレジットカード番号は必須です'
+             ],
+            'isCreditCardNumber' => [
+                'rule'     => ['isCreditCardNumber'],
+                'message'  => 'クレジットカード番号の形式が正しくありません'
             ],
         ],
         'holder_name' => [
-            'rule' => ['maxLength', 29],
-            'required' => true,
-            'allowEmpty' => false,
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                 'message'  => 'クレジットカード名義は必須です'
+             ],
+            'isCreditCardHolderName' => [
+                'rule'     => ['isCreditCardHolderName'],
+                'message'  => 'クレジットカード名義の形式が正しくありません'
+            ],
         ],
         'expire' => [
-            'rule' => ['maxLength', 4],
-            'required' => true,
-            'allowEmpty' => false,
-        ],
-        'card_seq' => [
-            'rule' => ['maxLength', 29],
-            'required' => true,
-            'allowEmpty' => false,
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                 'message'  => '有効期限は必須です'
+             ],
+            'isCreditCardExpireReverse' => [
+                'rule'     => ['isCreditCardExpireReverse'],
+                'message'  => '有効期限の形式が正しくありません'
+            ],
         ],
         'security_cd' => [
-            'rule' => ['maxLength', 29],
-            'required' => true,
-            'allowEmpty' => false,
-        ],
-        'card_name' => [
-            'rule' => ['maxLength', 29],
-        ],
-        'default_flag' => [
-            'rule' => ['maxLength', 29],
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                 'message'  => 'セキュリティコードは必須です'
+             ],
+            'isCreditCardSecurityCode' => [
+                'rule'     => ['isCreditCardSecurityCode'],
+                'message'  => 'セキュリティコードの形式が正しくありません'
+            ],
         ],
     ];
+
+    public function setExpire($_data)
+    {
+        $this->data['PaymentGMOSecurityCard']['expire'] = $_data['expire_month'] . $_data['expire_year'];
+    }
+
+    public function trimHyphenCardNo($_data)
+    {
+        $card_no = $_data['card_no'];
+        $this->data['PaymentGMOSecurityCard']['card_no'] = str_replace('-', '', $card_no);
+    }
 }
