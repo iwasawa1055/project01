@@ -126,6 +126,6 @@ class ApiResponse
     }
     public function isSuccess()
     {
-        return $this->status == 1;
+        return $this->status === '1';
     }
 }

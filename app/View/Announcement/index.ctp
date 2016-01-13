@@ -16,9 +16,13 @@
                 <?php foreach ($announcements as $data): ?>
                   <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
                   <div class="row">
-                    <div class="col-xs-12 col-md-2 col-lg-2"> <?php echo $data['date']; ?> </div>
-                    <div class="col-xs-12 col-md-9 col-lg-9"><a href="<?php echo $url; ?>"><?php echo $data['title']; ?></a></div>
-                    <div class="col-xs-12 col-md-1 col-lg-1">
+                      <div class="col-xs-12 col-md-2 col-lg-2">
+                          <?php echo $data['date']; ?>
+                      </div>
+                      <div class="col-xs-12 col-md-9 col-lg-9">
+                          <a href="<?php echo $url; ?>" class="animsition-link"><?php echo $data['title']; ?></a>
+                      </div>
+                      <div class="col-xs-12 col-md-1 col-lg-1">
                       <?php if ($data['read']): ?>
                       <a class="btn btn-success btn-xs animsition-link" href="<?php echo $url; ?>">既読</a>
                       <?php else: ?>

@@ -28,13 +28,22 @@ class AppController extends Controller
         CakeSession::write('session_start', true);
 
         //* Request Count
-        CakeSession::$requestCountdown = 10000;
+        // CakeSession::$requestCountdown = 10000;
 
         if ($this->checkLogined) {
             $this->loadModel('UserLogin');
             if (!$this->UserLogin->isLogined()) {
                 $this->redirect('/login');
             }
+        }
+
+        $this->loadModel('Announcement');
+        $res = $this->Announcement->apiGet([
+                'limit' => 5,
+                'offset' => 0
+            ]);
+            if ($res->isSuccess()) {
+            $this->set('notice_announcements', $res->results);
         }
     }
 

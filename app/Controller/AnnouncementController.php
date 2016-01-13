@@ -14,7 +14,7 @@ class AnnouncementController extends AppController
     			'limit' => 10,
     			'offset' => 0
     		]);
-        if ($res->status === '1') {
+            if ($res->isSuccess()) {
             $this->set('announcements', $res->results);
         }
     }
@@ -30,7 +30,7 @@ class AnnouncementController extends AppController
         	'limit' => 10,
         	'offset' => 0
         ]);
-        if ($res->status === '1') {
+        if ($res->isSuccess()) {
             foreach($res->results as $a) {
             	if ($a['announcement_id'] === $id) {
             		$this->set('announcement', $a);

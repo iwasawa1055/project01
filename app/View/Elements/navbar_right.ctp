@@ -10,27 +10,18 @@
   <?php } else { ?>
     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-bell fa-fw"></i> お知らせ <i class="fa fa-caret-down"></i> </a>
       <ul class="dropdown-menu dropdown-alerts">
-        <li> <a class="animsition-link" href="/news/detail.html">
-          <div> <i class="fa fa-bell fa-fw"></i> ボックス購入のキャンセルが完了いたしました <span class="pull-right text-muted small">00月00日</span> </div>
+      <?php foreach ($notice_announcements as $data): ?>
+        <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
+        <li> <a class="animsition-link" href="<?php echo $url; ?>">
+          <div>
+              <i class="fa fa-bell fa-fw"></i>
+              <?php echo $data['title']; ?>
+              <span class="pull-right text-muted small"><?php echo $data['date']; ?></span>
+          </div>
           </a> </li>
         <li class="divider"></li>
-        <li> <a class="animsition-link" href="/news/detail.html">
-          <div> <i class="fa fa-bell fa-fw"></i> ボックス購入のキャンセルが完了いたしました <span class="pull-right text-muted small">00月00日</span> </div>
-          </a> </li>
-        <li class="divider"></li>
-        <li> <a class="animsition-link" href="/news/detail.html">
-          <div> <i class="fa fa-bell fa-fw"></i> 写真撮影が完了しました <span class="pull-right text-muted small">00月00日</span> </div>
-          </a> </li>
-        <li class="divider"></li>
-        <li> <a class="animsition-link" href="/news/detail.html">
-          <div> <i class="fa fa-bell fa-fw"></i> 写真撮影が完了しました <span class="pull-right text-muted small">00月00日</span> </div>
-          </a> </li>
-        <li class="divider"></li>
-        <li> <a class="animsition-link" href="/news/detail.html">
-          <div> <i class="fa fa-bell fa-fw"></i> 写真撮影が完了しました <span class="pull-right text-muted small">00月00日</span> </div>
-          </a> </li>
-        <li class="divider"></li>
-        <li> <a class="animsition-link" class="text-center" href="news/index.html"> <strong>すべてのお知らせを見る</strong> <i class="fa fa-angle-right"></i> </a> </li>
+      <?php endforeach; ?>
+        <li> <a class="animsition-link" class="text-center" href="/announcement/"> <strong>すべてのお知らせを見る</strong> <i class="fa fa-angle-right"></i> </a> </li>
       </ul>
     </li>
     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> 各種情報変更 <i class="fa fa-caret-down"></i> </a>
