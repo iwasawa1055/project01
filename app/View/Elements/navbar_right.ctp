@@ -10,17 +10,20 @@
   <?php } else { ?>
     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-bell fa-fw"></i> お知らせ <i class="fa fa-caret-down"></i> </a>
       <ul class="dropdown-menu dropdown-alerts">
-      <?php foreach ($notice_announcements as $data): ?>
-        <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
-        <li> <a class="animsition-link" href="<?php echo $url; ?>">
-          <div>
-              <i class="fa fa-bell fa-fw"></i>
-              <?php echo $data['title']; ?>
-              <span class="pull-right text-muted small"><?php echo $data['date']; ?></span>
-          </div>
-          </a> </li>
-        <li class="divider"></li>
-      <?php endforeach; ?>
+        <?php if (!empty($notice_announcements) && is_array($notice_announcements)) : ?>
+        <?php foreach ($notice_announcements as $data): ?>
+          <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
+          <li> <a class="animsition-link" href="<?php echo $url; ?>">
+            <div>
+                <i class="fa fa-bell fa-fw"></i>
+                <?php echo $data['title']; ?>
+                <span class="pull-right text-muted small"><?php echo $data['date']; ?></span>
+            </div>
+            </a>
+          </li>
+          <li class="divider"></li>
+        <?php endforeach; ?>
+        <?php endif; ?>
         <li> <a class="animsition-link" class="text-center" href="/announcement/"> <strong>すべてのお知らせを見る</strong> <i class="fa fa-angle-right"></i> </a> </li>
       </ul>
     </li>

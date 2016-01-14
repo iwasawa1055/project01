@@ -7,7 +7,8 @@ class AppController extends Controller
 {
     // public $root_index_render = '/root_index';
 
-    var $helpers = ['Html', 'Title'];
+    public $helpers = ['Html', 'Title'];
+    public $uses = ['UserLogin', 'Announcement'];
 
 		// ログインチェックが必要か？
     protected $checkLogined = true;
@@ -33,19 +34,18 @@ class AppController extends Controller
         // CakeSession::$requestCountdown = 10000;
 
         if ($this->checkLogined) {
-            $this->loadModel('UserLogin');
             if (!$this->UserLogin->isLogined()) {
                 $this->redirect('/login');
+                exit;
             }
-        }
 
-        $this->loadModel('Announcement');
-        $res = $this->Announcement->apiGet([
-                'limit' => 5,
-                'offset' => 0
+            $res = $this->Announcement->apiGet([
+                    'limit' => 5,
+                    'offset' => 0
             ]);
             if ($res->isSuccess()) {
-            $this->set('notice_announcements', $res->results);
+                $this->set('notice_announcements', $res->results);
+            }
         }
     }
 

@@ -11,18 +11,20 @@
 <?php
   echo $this->Html->meta('icon');
   echo $this->fetch('meta');
+
   $this->Html->css('bootstrap.min', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
   $this->Html->css('metisMenu.min', ['inline' => false]);
   $this->Html->css('animsition.min', ['inline' => false]);
   $this->Html->css('app', ['inline' => false]);
-  echo $this->fetch('css');
 
   $this->Html->script('jquery.min', ['inline' => false]);
   $this->Html->script('bootstrap.min', ['inline' => false]);
   $this->Html->script('metisMenu.min', ['inline' => false]);
   $this->Html->script('animsition.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
+
+  echo $this->fetch('css');
 ?>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -46,8 +48,10 @@
   <?php echo $this->fetch('content'); ?>
 </div>
 
-<?php echo $this->fetch('script'); ?>
-<?php echo $this->fetch('scriptMinikura'); ?>
+<?php
+  echo $this->fetch('script');
+  echo $this->fetch('scriptMinikura');
+?>
 
 <script>
   $(document).ready(function() {
