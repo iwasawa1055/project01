@@ -12,9 +12,12 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <label>以下のメールアドレスに確認メールを送信いたしました。</label>
-                  <p class="form-control-static">email@example.com</p>
+                  <p class="form-control-static"><?php echo $email; ?></p>
                 </div>
-                <span class="col-lg-12 col-md-12 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="../index.html">マイページへ戻る</a> </span> </div>
+                <span class="col-lg-12 col-md-12 col-xs-12">
+                  <a class="btn btn-danger btn-lg btn-block animsition-link" href="/">マイページへ戻る</a>
+                </span>
+              </div>
             </div>
           </div>
         </div>

@@ -13,7 +13,6 @@ class ApiModel extends AppModel
     protected $email = null;
     protected $password = null;
     protected $end_point = null;
-    protected $model_name = null;
 
     /**
      * [__construct description].
@@ -24,10 +23,9 @@ class ApiModel extends AppModel
      */
     public function __construct($name, $end, $access_point_key = 'minikura_v3')
     {
-        parent::__construct();
+        parent::__construct($name);
         $this->oem_key = Configure::read('api.oem_key');
         $this->access_point = Configure::read('api.minikura.access_point.'.$access_point_key);
-        $this->model_name = $name;
         $this->end_point = $end;
     }
 

@@ -10,18 +10,16 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <form role="form">
-                  <div class="form-group">
-                    <label>生年月日</label>
-                    <p class="form-control-static">xxxxxxxx</p>
+                <?php echo $this->Form->create(false, ['url' => ['action' => 'complete'], 'inputDefaults' => ['label' => false, 'div' => false]]); ?>
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <?php echo $this->Form->data['email'] ?>
+                    </div>
+                    <p class="help-block">登録されたメールアドレスにご確認メールをお送りします。</p>
+                    <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="javascript:history.back();">戻る</a> </span>
+                    <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/password_reset/complete">メールを送信する</a></span>
                   </div>
-                  <div class="form-group">
-                    <label>秘密の質問</label>
-                    <p class="form-control-static">xxxxxxxx</p>
-                  </div>
-                  <p class="help-block">登録されたメールアドレスにご確認メールをお送りします。</p>
-                  <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="index.html">戻る</a> </span> <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/password_reset/complete">メールを送信する</a> </span>
-                </form>
+                <!-- </form> -->
               </div>
             </div>
           </div>
