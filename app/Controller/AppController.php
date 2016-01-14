@@ -33,6 +33,9 @@ class AppController extends Controller
         //* Request Count
         // CakeSession::$requestCountdown = 10000;
 
+        $this->set('isLogined', $this->UserLogin->isLogined());
+
+        // announcements of header
         if ($this->checkLogined) {
             if (!$this->UserLogin->isLogined()) {
                 $this->redirect('/login');

@@ -1,10 +1,9 @@
   <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
       <ul class="nav" id="side-menu">
-      <?php // TODO: ログイン状態により切り替え ?>
-      <?php if ($_SERVER["REQUEST_URI"] === '/') { ?>
+      <?php if (! $isLogined) { ?>
         </li>
-        <li> <a href="/"><i class="fa fa-home fa-fw"></i> トップページ</a> </li>
+        <li> <a href="https://minikura.com/"><i class="fa fa-home fa-fw"></i> トップページ</a> </li>
       <?php } else { ?>
         <li class="sidebar-search">
           <div class="input-group custom-search-form">
@@ -13,7 +12,7 @@
             <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
             </span> </div>
         </li>
-        <li> <a class="animsition-link" href="/mypage"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
+        <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/box"><i class="fa fa-tag fa-fw"></i> MONO（00箱）</a> </li>
