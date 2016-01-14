@@ -13,7 +13,7 @@
                 <div class="form-group">
                   <p class="form-control-static">クレジットカードの変更が完了しました。</p>
                 </div>
-                <span class="col-lg-12 col-md-12 col-xs-12"> <span class="col-lg-12 col-md-12 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="../index.html">マイページへ戻る</a> </span> </span> </div>
+                <span class="col-lg-12 col-md-12 col-xs-12"> <span class="col-lg-12 col-md-12 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/">マイページへ戻る</a> </span> </span> </div>
             </div>
           </div>
         </div>
