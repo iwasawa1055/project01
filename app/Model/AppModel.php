@@ -49,4 +49,10 @@ class AppModel extends Model
         $value = current($_check);
         return AppValid::isCreditCardExpireReverse($value);
     }
+
+    public function isMailAddress($_check)
+    {
+        $value = current($_check);
+        return AppValid::isMailAddress($value);
+    }
 }
