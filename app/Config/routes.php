@@ -34,8 +34,8 @@
 	// 2015/08 comment out by osada@terrada
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-	Router::connect('/', array('controller' => 'top', 'action' => 'index'));
-	Router::connect('/index', array('controller' => 'top', 'action' => 'index'));
+	Router::connect('/', array('controller' => 'mypage', 'action' => 'index'));
+	Router::connect('/index', array('controller' => 'mypage', 'action' => 'index'));
 
 	Router::connect('/customer/:controller/', array('action' => 'index'));
 	Router::connect('/customer/:controller/:action', array());
