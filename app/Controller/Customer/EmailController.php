@@ -20,9 +20,11 @@ class EmailController extends AppController
      */
     public function edit()
     {
-        if (! empty(CakeSession::read($this::MODEL_NAME))) {
-            CakeSession::delete($this::MODEL_NAME);
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = CakeSession::read($this::MODEL_NAME);
         }
+        CakeSession::delete($this::MODEL_NAME);
     }
 
     /**
@@ -32,7 +34,6 @@ class EmailController extends AppController
     {
         $this->CustomerEmail->set($this->request->data);
         if ($this->CustomerEmail->validates()) {
-            $this->set('customer_email', $this->CustomerEmail->data[$this::MODEL_NAME]);
             CakeSession::write($this::MODEL_NAME, $this->CustomerEmail->data);
         } else {
             return $this->render('edit');
