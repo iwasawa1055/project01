@@ -12,10 +12,12 @@
             <?php echo $this->Form->create('CustomerEmail', ['url' => ['controller' => 'email', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12">
                 <div class="form-group">
-                  <?php echo $this->Form->input('email', ['class' => "form-control", 'placeholder'=>'新しいメールアドレス']); ?>
+                  <?php echo $this->Form->input('CustomerEmail.email', ['class' => "form-control", 'placeholder'=>'新しいメールアドレス', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerEmail.email', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                  <?php echo $this->Form->input('email_confirm', ['class' => "form-control", 'placeholder'=>'新しいメールアドレス（再入力）']); ?>
+                  <?php echo $this->Form->input('CustomerEmail.email_confirm', ['class' => "form-control", 'placeholder'=>'新しいメールアドレス（再入力）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerEmail.email_confirm', null, ['wrap' => 'p']) ?>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/email/edit">クリア</a> </span>
                 <span class="col-lg-6 col-md-6 col-xs-12"> <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">確認</button> </span> 
