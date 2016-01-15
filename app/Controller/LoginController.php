@@ -32,11 +32,11 @@ class LoginController extends AppController
         if ($this->UserLogin->validates()) {
             $res = $this->UserLogin->login();
             // TODO: 例外処理
-            return $this->redirect('/mypage/index');
+            return $this->redirect('/mypage');
         } else {
             $this->set('validerror', $this->UserLogin->validationErrors);
 
-            return $this->render('/login/index');
+            return $this->render('/login');
         }
     }
 
