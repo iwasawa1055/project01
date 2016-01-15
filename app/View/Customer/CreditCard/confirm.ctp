@@ -9,6 +9,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
+            <?php echo $this->Form->create(false, ['url' => ['action' => 'complete']]); ?>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label>クレジットカード番号</label>
@@ -30,10 +31,9 @@
                   <p class="form-control-static"><?php echo $security_card['holder_name']; ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="javascript:history.back();">戻る</a> </span>
-                <form action="/customer/credit_card/complete" method="post">
                 <span class="col-lg-6 col-md-6 col-xs-12"> <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">変更する</button> </span>
-                </form>
               </div>
+            <?php echo $this->Form->end(); ?>
             </div>
           </div>
         </div>
