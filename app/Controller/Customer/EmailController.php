@@ -4,12 +4,15 @@ App::uses('AppController', 'Controller');
 
 class EmailController extends AppController
 {
+    const MODEL_NAME = 'CustomerEmail';
+
     /**
      * 制御前段処理.
      */
     public function beforeFilter()
     {
         AppController::beforeFilter();
+        $this->loadModel($this::MODEL_NAME);
     }
 
     /**
@@ -17,8 +20,8 @@ class EmailController extends AppController
      */
     public function edit()
     {
-        if (! empty(CakeSession::read('CustomerEmail'))) {
-            CakeSession::delete('CustomerEmail');
+        if (! empty(CakeSession::read($this::MODEL_NAME))) {
+            CakeSession::delete($this::MODEL_NAME);
         }
     }
 
@@ -27,12 +30,10 @@ class EmailController extends AppController
      */
     public function confirm()
     {
-        $this->loadModel('CustomerEmail');
         $this->CustomerEmail->set($this->request->data);
-
         if ($this->CustomerEmail->validates()) {
-            $this->set('customer_email', $this->CustomerEmail->data['CustomerEmail']);
-            CakeSession::write('CustomerEmail', $this->CustomerEmail->data);
+            $this->set('customer_email', $this->CustomerEmail->data[$this::MODEL_NAME]);
+            CakeSession::write($this::MODEL_NAME, $this->CustomerEmail->data);
         } else {
             return $this->render('edit');
         }
@@ -43,33 +44,29 @@ class EmailController extends AppController
      */
     public function complete()
     {
-        $session_data = CakeSession::read('CustomerEmail');
-        if (empty($session_data)) {
+        $data = CakeSession::read($this::MODEL_NAME);
+        CakeSession::delete($this::MODEL_NAME);
+        if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');
-            return $this->redirect('/customer/email/edit/');
+            return $this->redirect(['action' => 'edit']);
         }
 
-        $this->loadModel('CustomerEmail');
-        $this->CustomerEmail->set($session_data);
-
+        $this->CustomerEmail->set($data);
         if ($this->CustomerEmail->validates()) {
             // api
             $res = $this->CustomerEmail->apiPatch($this->CustomerEmail->data);
-
-            CakeSession::delete('CustomerEmail');
-            $this->set('customer_email', $this->CustomerEmail->data['CustomerEmail']);
-
-            if ($res->status !== '1') {
+            if (!$res->isSuccess()) {
                 // TODO:
                 $this->Session->setFlash('try again');
-                return $this->redirect('/customer/email/edit/');
+                return $this->redirect(['action' => 'edit']);
             }
+            // complete.ctp echo $email
+            $this->set('email', $this->CustomerEmail->toArray()['email']);
         } else {
             // TODO:
             $this->Session->setFlash('try again');
-            CakeSession::delete('CustomerEmail');
-            return $this->redirect('/customer/email/edit/');
+            return $this->redirect(['action' => 'edit']);
         }
     }
 }
