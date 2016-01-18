@@ -6,6 +6,7 @@
     // customer
     Router::connect('/customer/:controller', ['action' => 'index']);
     Router::connect('/customer/:controller/:action');
+    Router::connect('/customer/:controller/:action/:step');
 
     // inbound
     Router::connect('/inbound/box', ['controller' => 'InboundBox', 'action' => 'index']);
