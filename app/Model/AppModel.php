@@ -6,20 +6,20 @@ App::uses('AppValid', 'Lib');
 class AppModel extends Model
 {
 
-  protected $model_name = null;
+    protected $model_name = null;
 
-  /**
-   * [__construct description].
-   *
-   * @param [type] $name             [description]
-   * @param [type] $end              [description]
-   * @param string $access_point_key API種別キー
-   */
-  public function __construct($name)
-  {
-      parent::__construct();
-      $this->model_name = $name;
-  }
+    /**
+    * [__construct description].
+    *
+    * @param [type] $name             [description]
+    * @param [type] $end              [description]
+    * @param string $access_point_key API種別キー
+    */
+    public function __construct($name)
+    {
+        parent::__construct();
+        $this->model_name = $name;
+    }
 
     public function toArray()
     {
@@ -54,5 +54,23 @@ class AppModel extends Model
     {
         $value = current($_check);
         return AppValid::isMailAddress($value);
+    }
+
+    public function isPhoneNumberJp($_check)
+    {
+        $value = current($_check);
+        return AppValid::isPhoneNumberJp($value);
+    }
+
+    public function isPostalCodeJp($_check)
+    {
+        $value = current($_check);
+        return AppValid::isPostalCodeJp($value);
+    }
+
+    public function isDatetimeDelivery($_check)
+    {
+        $value = current($_check);
+        return AppValid::isDatetimeDelivery($value);
     }
 }
