@@ -22,9 +22,11 @@ class PasswordResetController extends AppController
      */
     public function add()
     {
-        if (! empty(CakeSession::read($this::MODEL_NAME))) {
-            CakeSession::delete($this::MODEL_NAME);
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = CakeSession::read($this::MODEL_NAME);
         }
+        CakeSession::delete($this::MODEL_NAME);
     }
 
     /**
