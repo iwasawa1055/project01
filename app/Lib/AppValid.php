@@ -408,5 +408,12 @@ class AppValid
 		return false;
 	}
 
+	public static function isDatetimeDelivery(&$_value)
+	{
+		if (! preg_match('/^\d{4}-\d{2}-\d{2}-\d{1}$/', $_value)) {
+			return false;
+		}
+		return true;
+	}
 }
 
