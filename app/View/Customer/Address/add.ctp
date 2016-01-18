@@ -9,12 +9,12 @@
         <div class="panel panel-default">
           <div class="panel-body">
 
-              <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => 'add', 'step' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+              <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => $action, 'step' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
 
             <div class="row">
               <div class="col-lg-12">
                 <h2>お届け先追加</h2>
-
+                <?php echo $this->Form->hidden('CustomerAddress.address_id'); ?>
                 <div class="form-group col-lg-12">
                     <?php echo $this->Form->input('CustomerAddress.postal', ['class' => "form-control", 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.postal', null, ['wrap' => 'p']) ?>

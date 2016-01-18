@@ -73,4 +73,9 @@ class AppModel extends Model
         $value = current($_check);
         return AppValid::isDatetimeDelivery($value);
     }
+    public function isPrefNameJp($_check, $_pref_pos = null)
+    {
+        $value = current($_check);
+        return Validation::inList($value, AppValid::$prefs);
+    }
 }

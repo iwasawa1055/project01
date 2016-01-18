@@ -8,7 +8,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
-            <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => 'add', 'step' => 'complete']]); ?>
+            <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => $action, 'step' => 'complete']]); ?>
             <div class="row">
               <div class="col-lg-12">
                 <h2>お届け先追加</h2>
