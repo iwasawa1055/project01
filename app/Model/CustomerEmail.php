@@ -38,7 +38,7 @@ class CustomerEmail extends ApiModel
 
     public function confirmEmail()
     {
-        if ($this->data['CustomerEmail']['email'] !== $this->data['CustomerEmail']['email_confirm']) {
+        if ($this->data[$this->model_name]['email'] !== $this->data[$this->model_name]['email_confirm']) {
             return false;
         } else {
             return true;
