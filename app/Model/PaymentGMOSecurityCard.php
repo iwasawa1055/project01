@@ -12,9 +12,9 @@ class PaymentGMOSecurityCard extends ApiModel
 
         // init setting
         // card_seq
-        $this->data['PaymentGMOSecurityCard']['card_seq'] = '0';
+        $this->data[$this->model_name]['card_seq'] = '0';
         // default_flag
-        $this->data['PaymentGMOSecurityCard']['default_flag'] = '1';
+        $this->data[$this->model_name]['default_flag'] = '1';
     }
 
     public $validate = [
@@ -58,16 +58,33 @@ class PaymentGMOSecurityCard extends ApiModel
                 'message'  => 'セキュリティコードの形式が正しくありません'
             ],
         ],
+        'expire_month' => [
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                 'message'  => '有効期限は必須です'
+             ],
+        ],
+        'expire_year' => [
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                 'message'  => '有効期限は必須です'
+             ],
+        ],
     ];
 
     public function setExpire($_data)
     {
-        $this->data['PaymentGMOSecurityCard']['expire'] = $_data['expire_month'] . $_data['expire_year'];
+        $this->data[$this->model_name]['expire'] = $_data[$this->model_name]['expire_month'] . $_data[$this->model_name]['expire_year'];
     }
 
     public function trimHyphenCardNo($_data)
     {
-        $card_no = $_data['card_no'];
-        $this->data['PaymentGMOSecurityCard']['card_no'] = str_replace('-', '', $card_no);
+        $card_no = $_data[$this->model_name]['card_no'];
+        $this->data[$this->model_name]['card_no'] = str_replace('-', '', $card_no);
+    }
+
+    public function setDisplayExpire($_data)
+    {
+        $this->data[$this->model_name]['expire_year_disp'] = $_data[$this->model_name]['expire_year'] + 2000;
     }
 }

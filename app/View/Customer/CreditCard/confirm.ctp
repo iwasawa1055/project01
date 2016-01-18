@@ -30,7 +30,7 @@
                   <label>クレジットカード名義</label>
                   <p class="form-control-static"><?php echo $security_card['holder_name']; ?></p>
                 </div>
-                <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="javascript:history.back();">戻る</a> </span>
+                <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit?back=true">戻る</a> </span>
                 <span class="col-lg-6 col-md-6 col-xs-12"> <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">変更する</button> </span>
               </div>
             <?php echo $this->Form->end(); ?>

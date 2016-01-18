@@ -20,9 +20,11 @@ class CreditCardController extends AppController
      */
     public function edit()
     {
-        if (!empty(CakeSession::read($this::MODEL_NAME))) {
-            CakeSession::delete($this::MODEL_NAME);
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = CakeSession::read($this::MODEL_NAME);
         }
+        CakeSession::delete($this::MODEL_NAME);
     }
 
     /**
@@ -38,7 +40,8 @@ class CreditCardController extends AppController
         $this->PaymentGMOSecurityCard->trimHyphenCardNo($this->request->data);
 
         if ($this->PaymentGMOSecurityCard->validates()) {
-            $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME]['expire_year_disp'] = $this->request->data['expire_year'] + 2000;
+            // Expire year 表示用
+            $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
 
             $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME]);
             CakeSession::write($this::MODEL_NAME, $this->PaymentGMOSecurityCard->data);
