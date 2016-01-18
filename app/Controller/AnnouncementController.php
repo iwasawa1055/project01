@@ -11,10 +11,10 @@ class AnnouncementController extends AppController
     {
         $this->loadModel('Announcement');
         $res = $this->Announcement->apiGet([
-    			'limit' => 10,
-    			'offset' => 0
-    		]);
-            if ($res->isSuccess()) {
+          'limit' => 10,
+          'offset' => 0
+        ]);
+        if ($res->isSuccess()) {
             $this->set('announcements', $res->results);
         }
     }
@@ -27,19 +27,19 @@ class AnnouncementController extends AppController
         $id = $this->params['id'];
         $this->loadModel('Announcement');
         $res = $this->Announcement->apiGet([
-        	'limit' => 10,
-        	'offset' => 0
+          'limit' => 10,
+          'offset' => 0
         ]);
         if ($res->isSuccess()) {
-            foreach($res->results as $a) {
-            	if ($a['announcement_id'] === $id) {
-            		$this->set('announcement', $a);
-            		// 既読更新
-            		$this->Announcement->apiPatch([
-            			'announcement_id' => $id
-            		]);
-            		break;
-            	}
+            foreach ($res->results as $a) {
+                if ($a['announcement_id'] === $id) {
+                    $this->set('announcement', $a);
+                    // 既読更新
+                    $this->Announcement->apiPatch([
+                      'announcement_id' => $id
+                    ]);
+                    break;
+                }
             }
         }
     }

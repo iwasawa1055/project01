@@ -47,28 +47,28 @@ class PasswordResetController extends AppController
      */
     public function complete()
     {
-      $data = CakeSession::read($this::MODEL_NAME);
-      CakeSession::delete($this::MODEL_NAME);
-      if (empty($data)) {
-          // TODO:
-          $this->Session->setFlash('try again');
-          return $this->redirect(['action' => 'add']);
-      }
+        $data = CakeSession::read($this::MODEL_NAME);
+        CakeSession::delete($this::MODEL_NAME);
+        if (empty($data)) {
+            // TODO:
+            $this->Session->setFlash('try again');
+            return $this->redirect(['action' => 'add']);
+        }
 
-      $this->CustomerPasswordReset->set($data);
-      if ($this->CustomerPasswordReset->validates()) {
-          // api
-          $res = $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->data);
-          if (!$res->isSuccess()) {
-              // TODO:
-              $this->Session->setFlash('try again');
-              return $this->redirect(['action' => 'add']);
-          }
-          $this->set('email', $this->CustomerPasswordReset->toArray()['email']);
-      } else {
-          // TODO:
-          $this->Session->setFlash('try again');
-          return $this->redirect(['action' => 'add']);
-      }
+        $this->CustomerPasswordReset->set($data);
+        if ($this->CustomerPasswordReset->validates()) {
+            // api
+            $res = $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->data);
+            if (!$res->isSuccess()) {
+                // TODO:
+                $this->Session->setFlash('try again');
+                return $this->redirect(['action' => 'add']);
+            }
+            $this->set('email', $this->CustomerPasswordReset->toArray()['email']);
+        } else {
+            // TODO:
+            $this->Session->setFlash('try again');
+            return $this->redirect(['action' => 'add']);
+        }
     }
 }
