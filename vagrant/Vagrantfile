@@ -16,9 +16,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.hostname = NAME
     config.vm.network :private_network, ip: "192.168.33.20"
-    config.vm.synced_folder "..", APPDIR, owner: 'root', mount_options: ['dmode=777', 'fmode=666']
+    config.vm.synced_folder "..", APPDIR, owner: 'root', mount_options: ['dmode=777', 'fmode=777']
 
-    [80, 8080, 443, 3000, 3306].each do |port|
+    [80, 8080, 443, 3000, 3306, 4444].each do |port|
         config.vm.network :forwarded_port, guest: port, host: (50000 + port)
     end
     config.vm.network :forwarded_port, guest: 50022, host: 50022
@@ -30,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.provider :virtualbox do |vb|
         vb.name = NAME + "_vm"
-        vb.memory = 1024
+        vb.memory = 1524
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
@@ -43,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     $script = <<SCRIPT
 if [[ -z `which docker-compose` ]]; then
-  curl -L https://github.com/docker/compose/releases/download/1.3.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+  curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
 fi
 docker -v
@@ -57,5 +57,11 @@ docker-compose up -d
 docker-compose ps
 SCRIPT
     config.vm.provision "shell", run: "always", inline: $script
+
+
+# curl -sS https://getcomposer.org/installer | php
+# mv composer.phar /usr/local/bin/composer
+# composer install
+# vendor/bin/phpunit  --colors app/Test/Fixture/WebTest.php
 
 end

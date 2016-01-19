@@ -1,9 +1,24 @@
 minikura:
   hostname: php
-  build: ./php
+  build: ./builds/php
   user: root
   ports:
     - "80:80"
   volumes:
     - /app:/var/www/html/
     - ./config/php/:/usr/local/etc/php/
+  links:
+    - hub
+
+hub:
+  image: selenium/hub:latest
+  ports:
+    - "4444:4444"
+
+node:
+  build: ./builds/selenium_node-chrome
+  ports:
+    - "5900"
+  links:
+    - hub
+    - minikura
