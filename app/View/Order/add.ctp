@@ -17,7 +17,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('Order.mono_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                      <?php echo $this->Form->select('PaymentGMOKitCard.mono_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -34,7 +34,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('Order.hako_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                      <?php echo $this->Form->select('PaymentGMOKitCard.hako_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -51,7 +51,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('Order.cleaning_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                      <?php echo $this->Form->select('PaymentGMOKitCard.cleaning_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -63,11 +63,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>カード情報</label>
-              <select class="form-control">
-                <option>以下からお選びください</option>
-                <option>xxxx-xxxx-xxxx-0000　TOMONOSUKE ICHIKAWA</option>
-                <option>xxxx-xxxx-xxxx-0000　TOMONOSUKE ICHIKAWA</option>
-              </select>
+              <?php echo $this->Form->select('PaymentGMOKitCard.card_seq', $this->order->setPayment($payment_card), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
             </div>
             <div class="form-group col-lg-12">
               <label>セキュリティコード</label>
@@ -127,6 +123,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>お届け先</label>
+              <?php //echo $this->Form->select('PaymentGMOKitCard.card_seq', $this->order->setAddress($address), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
               <select class="form-control">
                 <option>以下からお選びください</option>
                 <option>〒000-0000 東京都品川区東品川2-2-33 Nビル 5階　市川　倫之介</option>
@@ -135,7 +132,8 @@
               </select>
             </div>
             <div class="form-group col-lg-12">
-              <label>お届け希望日</label>
+              <label>お届け希望日時</label>
+              <?php //echo $this->Form->select('PaymentGMOKitCard.card_seq', $this->order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
               <select class="form-control">
                 <option>00月00日</option>
                 <option>00月00日</option>
@@ -144,6 +142,7 @@
                 <option>00月00日</option>
               </select>
             </div>
+<!-- 
             <div class="form-group col-lg-12">
               <label>お届け希望時間</label>
               <select class="form-control">
@@ -154,6 +153,7 @@
                 <option>18時〜</option>
               </select>
             </div>
+ -->
             <span class="col-lg-6 col-md-6 col-xs-12">
             <a class="btn btn-primary btn-lg btn-block animsition-link" href="#">クリア</a>
             </span>
