@@ -1,4 +1,3 @@
-<div id="page-wrapper">
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-truck"></i> 住所・お届け先変更</h1>
@@ -69,4 +68,3 @@
         </div>
       </div>
     </div>
-  </div>

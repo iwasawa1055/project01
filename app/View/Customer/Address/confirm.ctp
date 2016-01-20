@@ -1,4 +1,3 @@
-  <div id="page-wrapper">
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-truck"></i> お届け先追加・変更</h1>
@@ -12,40 +11,40 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>お届け先追加</h2>
-                <p class="form-control-static">以下の内容でお届け先情報を保存します。</p>
-                <div class="form-group">
+                <p class="form-control-static col-lg-12">以下の内容でお届け先情報を保存します。</p>
+                <div class="form-group col-lg-12">
                   <label>郵便番号</label>
-                  <p class="form-control-static">
+                  <p>
                       <?php echo $this->Form->data['CustomerAddress']['postal'] ?>
                   </p>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-12">
                   <label>住所</label>
-                  <p class="form-control-static">
+                  <p>
                       <?php echo $this->Form->data['CustomerAddress']['pref'] . $this->Form->data['CustomerAddress']['address1'] ?>
                   </p>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-12">
                   <label>番地</label>
-                  <p class="form-control-static">
+                  <p>
                       <?php echo $this->Form->data['CustomerAddress']['address2'] ?>
                   </p>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-12">
                   <label>建物名</label>
-                  <p class="form-control-static">
+                  <p>
                       <?php echo $this->Form->data['CustomerAddress']['address3'] ?>
                   </p>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-12">
                   <label>電話番号</label>
-                  <p class="form-control-static">
+                  <p>
                       <?php echo $this->Form->data['CustomerAddress']['tel1'] ?>
                   </p>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-12">
                   <label>名前</label>
-                  <p class="form-control-static">
+                  <p>
                       <?php echo $this->Form->data['CustomerAddress']['lastname'] . ' ' . $this->Form->data['CustomerAddress']['firstname'] ?>
                   </p>
                 </div>
@@ -61,4 +60,3 @@
         </div>
       </div>
     </div>
-  </div>
