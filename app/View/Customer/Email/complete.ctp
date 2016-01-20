@@ -1,4 +1,3 @@
-  <div id="page-wrapper">
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-envelope"></i> メールアドレス変更</h1>
@@ -10,8 +9,8 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <div class="form-group">
-                  <label>以下のメールアドレスに確認メールを送信いたしました。</label>
+                <div class="form-group col-lg-12">
+                  <p class="form-control-static">以下のメールアドレスに確認メールを送信いたしました。</p>
                   <p class="form-control-static"><?php echo $email; ?></p>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
@@ -23,4 +22,3 @@
         </div>
       </div>
     </div>
-  </div>
