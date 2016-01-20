@@ -21,9 +21,9 @@
     Router::connect('/outbound/item/:action', ['controller' => 'OutboundItem']);
 
     // ids
-    Router::connect('/:controller/detail/:id', ['action' => 'detail'], ['id' => '[0-9]+']);
-    Router::connect('/:controller/detail/:id/:action', [], ['id' => '[0-9]+']);
-    Router::connect('/:controller/:id/:action', [], ['id' => '[0-9]+']);
+    Router::connect('/:controller/detail/:id', ['action' => 'detail']);
+    Router::connect('/:controller/detail/:id/:action');
+    Router::connect('/:controller/:id/:action');
 
     // default
     Router::connect('/:controller', ['action' => 'index']);
