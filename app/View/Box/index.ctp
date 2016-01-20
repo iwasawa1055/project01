@@ -1,7 +1,6 @@
-  <div id="page-wrapper">
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-home"></i> マイページ</h1>
+        <h1 class="page-header"><i class="fa fa-tag fa-fw"></i> ご利用中のサービス</h1>
       </div>
     </div>
     <div class="row">
@@ -10,147 +9,521 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <h2>ボックスの一覧</h2>
+                <h2>minikuraMONO</h2>
                 <div class="row box-list"> 
-                  <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">MONO</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
+                  <div class="col-lg-2 col-lg-offset-10">
+                    <select class="form-control sort-form">
+                      <option>並べ替え</option>
+                      <option value="">箱NO（降順）</option>
+                      <option value="">箱NO（昇順）</option>
+                      <option value="">箱タイトル（降順）</option>
+                      <option value="">箱タイトル（昇順）</option>
+                      <option value="">個品タイトル（降順）</option>
+                      <option value="">個品タイトル（昇順）</option>
+                      <option value="">ステータス（降順）</option>
+                      <option value="">ステータス（昇順）</option>
+                      <option value="">オプション（降順）</option>
+                      <option value="">オプション（昇順）</option>
+                    </select>
                   </div>
-                  <!--loop end--> 
                   <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">HOKO</p>
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                   </div>
-                  <!--loop end--> 
+                  <!--loop end-->
                   <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">CARGO じぶんで</p>
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                   </div>
-                  <!--loop end--> 
+                  <!--loop end-->
                   <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">CARGO ひとまかせ</p>
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                   </div>
-                  <!--loop end--> 
+                  <!--loop end-->
                   <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">MONO-wine-</p>
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                   </div>
-                  <!--loop end--> 
+                  <!--loop end-->
                   <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">HAKO-wine-</p>
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                   </div>
-                  <!--loop end--> 
+                  <!--loop end-->
                   <!--loop-->
-                  <hr>
-                  <div class="row box">
-                    <div class="col-lg-2 col-md-2"> <a href="../takeout/item.html"><i class="fa fa-cube"></i></a> </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>種類</label>
-                      <p class="form-control-static">クリーニングパック</p>
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                      <label>ボックスID</label>
-                      <p class="form-control-static">xxx-xxx </p>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                      <label>ボックスタイトル</label>
-                      <p class="form-control-static">XXXXXXXXXXXXXXXXXXX</p>
-                    </div>
-                    <div class="col-lg-3 col-md-3"> <span class="col-xs-12 col-lg-12"> <a class="btn btn-default btn-md btn-block btn-detail animsition-link" href="/box/detail/1">詳細確認</a> </span> </div>
                   </div>
-                  <!--loop end--> 
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                  <!--loop-->
+                  <div class="col-lg-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <h3>79期見積書79期見積書79…</h3>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-xs-12">
+                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="/box/detail/1">ボックスの内容を確認</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel-footer">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-10 col-sm-12">
+                            <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
+                            <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12">
+                            <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
+                            <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--loop end-->
+                </div>
+                <div class="col-lg-12 text-center">
+                  <ul class="pagination">
+                    <li class="paginate_button previous disabled"><a class="animsition-link" href="#">前へ</a>
+                    </li>
+                    <li class="paginate_button active"><a class="animsition-link" href="#">1</a>
+                    </li>
+                    <li class="paginate_button"><a class="animsition-link" href="#">2</a>
+                    </li>
+                    <li class="paginate_button"><a class="animsition-link" href="#">3</a>
+                    </li>
+                    <li class="paginate_button"><a class="animsition-link" href="#">4</a>
+                    </li>
+                    <li class="paginate_button"><a class="animsition-link" href="#">5</a>
+                    </li>
+                    <li class="paginate_button next"><a class="animsition-link" href="#">次へ</a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-            <hr>
           </div>
         </div>
       </div>
     </div>
-  </div>
