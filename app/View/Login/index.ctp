@@ -23,9 +23,9 @@
               <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link" >ログイン</button>
             </form>
               <a class="btn btn-block btn-social btn-lg btn-facebook"><i class="fa fa-facebook"></i>Facebook アカウントでログイン</a>
-              <a class="btn btn-info btn-xs btn-block animsition-link" href="/customer/password_reset/add" target="_blank">パスワードを忘れた方はこちら</a>
-              <a class="btn btn-primary btn-xs btn-block animsition-link" href="register.html" target="_blank">ユーザー登録はこちら</a>
-              <a class="btn btn-default btn-xs btn-block animsition-link" href="credit_card_reset/index.html" target="_blank">※債務クレジットカードの場合</a>
+              <a class="btn btn-info btn-xs btn-block animsition-link" href="/customer/password_reset/add">パスワードを忘れた方はこちら</a>
+              <a class="btn btn-primary btn-xs btn-block animsition-link" href="/customer/register/add">ユーザー登録はこちら</a>
+              <a class="btn btn-default btn-xs btn-block animsition-link" href="credit_card_reset/index.html">※債務クレジットカードの場合</a>
             </div>
           </div>
         </div>
