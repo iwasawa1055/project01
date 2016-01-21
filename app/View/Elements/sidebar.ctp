@@ -7,14 +7,14 @@
         </li>
       <?php } else { ?>
         <li class="sidebar-search">
+        <form action="/result" method="post">
           <div class="input-group custom-search-form">
-          <form action="/result" method="post">
             <input type="text" class="form-control" placeholder="Search...">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
             </span>
-          </form>
           </div>
+        </form>
         </li>
         <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
