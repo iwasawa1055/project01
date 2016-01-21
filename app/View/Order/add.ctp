@@ -1,4 +1,3 @@
-<div id="page-wrapper" style="min-height: 483px;">
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
@@ -17,7 +16,28 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('Order.mono_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                      <select class="form-control">
+                        <option>1箱</option>
+                        <option>2箱</option>
+                        <option>3箱</option>
+                        <option>4箱</option>
+                        <option>5箱</option>
+                        <option>6箱</option>
+                        <option>7箱</option>
+                        <option>8箱</option>
+                        <option>9箱</option>
+                        <option>10箱</option>
+                        <option>11箱</option>
+                        <option>12箱</option>
+                        <option>13箱</option>
+                        <option>14箱</option>
+                        <option>15箱</option>
+                        <option>16箱</option>
+                        <option>17箱</option>
+                        <option>18箱</option>
+                        <option>19箱</option>
+                        <option>20箱</option>
+                      </select>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -34,7 +54,28 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('Order.hako_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                      <select class="form-control">
+                        <option>1箱</option>
+                        <option>2箱</option>
+                        <option>3箱</option>
+                        <option>4箱</option>
+                        <option>5箱</option>
+                        <option>6箱</option>
+                        <option>7箱</option>
+                        <option>8箱</option>
+                        <option>9箱</option>
+                        <option>10箱</option>
+                        <option>11箱</option>
+                        <option>12箱</option>
+                        <option>13箱</option>
+                        <option>14箱</option>
+                        <option>15箱</option>
+                        <option>16箱</option>
+                        <option>17箱</option>
+                        <option>18箱</option>
+                        <option>19箱</option>
+                        <option>20箱</option>
+                      </select>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -51,7 +92,28 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('Order.cleaning_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                      <select class="form-control">
+                        <option>1箱</option>
+                        <option>2箱</option>
+                        <option>3箱</option>
+                        <option>4箱</option>
+                        <option>5箱</option>
+                        <option>6箱</option>
+                        <option>7箱</option>
+                        <option>8箱</option>
+                        <option>9箱</option>
+                        <option>10箱</option>
+                        <option>11箱</option>
+                        <option>12箱</option>
+                        <option>13箱</option>
+                        <option>14箱</option>
+                        <option>15箱</option>
+                        <option>16箱</option>
+                        <option>17箱</option>
+                        <option>18箱</option>
+                        <option>19箱</option>
+                        <option>20箱</option>
+                      </select>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -82,11 +144,11 @@
                   <h4>Visa、Mastercard等の場合</h4>
                   <p>カードの裏面の署名欄に記入されている3桁の番号です。</p>
                   <p>カード番号の下3桁か、その後に記載されています。</p>
-                  <p><img src="../images/cvv2visa.gif" alt=""></p>
+                  <p><img src="../images/cvv2visa.gif" alt="" /></p>
                   <h4>American Expressの場合</h4>
                   <p>カードの表面に記入されている4桁の番号です。</p>
                   <p>カード番号の下4桁か、その後に記載されています。</p>
-                  <p><img src="../images/cvv2amex.gif" alt=""></p>
+                  <p><img src="../images/cvv2amex.gif" alt="" /></p>
                 </div>
               </div>
             </div>
@@ -107,7 +169,7 @@
                     <label>取得者名</label>
                     <p>寺田倉庫株式会社</p>
                     <label>提供先名</label>
-                    <p>株式会社日本カードネットワーク及びGMOペイメントゲートウェイ<br>
+                    <p>株式会社日本カードネットワーク及びGMOペイメントゲートウェイ<br />
                       （以下「決済代行会社」といいます）</p>
                     <label>保存期間</label>
                     <p>当社サービスのご利用にかかる契約・利用目的の終了時およびこれに付随する業務の終了時から７年間また、クレジットカード情報を決済代行会社に提供することについて以下の項目を明示いたします。</p>
@@ -158,10 +220,9 @@
             <a class="btn btn-primary btn-lg btn-block animsition-link" href="#">クリア</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="../order/confirm.html">注文内容の確認</a>
+            <a class="btn btn-danger btn-lg btn-block animsition-link" href="/order/confirm">注文内容の確認</a>
             </span>
           </div>
         </div>
       </div>
     </div>
-  </div>
