@@ -17,10 +17,7 @@ class MyPageController extends AppController
         $this->loadModel($this::MODEL_NAME_Item);
         $this->loadModel($this::MODEL_NAME_IMAGE_Item);
 
-        $res = $this->InfoBox->apiGet([
-            'limit' => 8
-        ]);
-        $boxList = $res->results;
+        $boxList = $this->InfoBox->getListForServiced();
 
         $res = $this->InfoItem->apiGet([
             'limit' => 8

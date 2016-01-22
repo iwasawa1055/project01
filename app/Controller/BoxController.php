@@ -4,12 +4,15 @@ App::uses('AppController', 'Controller');
 
 class BoxController extends AppController
 {
+    const MODEL_NAME_BOX = 'InfoBox';
+
     /**
      * 制御前段処理.
      */
     public function beforeFilter()
     {
         AppController::beforeFilter();
+        $this->loadModel($this::MODEL_NAME_BOX);
     }
 
     /**
@@ -17,6 +20,11 @@ class BoxController extends AppController
      */
     public function index()
     {
+        $product = $this->request->query('product');
+        // TODO: 並び替えキー指定
+        $sortKeyList = [];
+        $list = $this->InfoBox->getListForServiced($product, $sortKeyList);
+        $this->set('boxList', $list);
     }
 
     /**

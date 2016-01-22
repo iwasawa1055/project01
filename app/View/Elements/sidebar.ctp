@@ -19,9 +19,9 @@
         <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <li> <a class="animsition-link" href="/box"><i class="fa fa-tag fa-fw"></i> MONO（00箱）</a> </li>
-            <li> <a class="animsition-link" href="#"><i class="fa fa-tag fa-fw"></i> HAKO（00箱）</a> </li>
-            <li> <a class="animsition-link" href="#"><i class="fa fa-tag fa-fw"></i> クリーニングパック（00箱）</a> </li>
+            <li> <a class="animsition-link" href="/box?product=mono"><i class="fa fa-tag fa-fw"></i> MONO（00箱）</a> </li>
+            <li> <a class="animsition-link" href="/box?product=hako"><i class="fa fa-tag fa-fw"></i> HAKO（00箱）</a> </li>
+            <li> <a class="animsition-link" href="/box?product=cleaning"><i class="fa fa-tag fa-fw"></i> クリーニングパック（00箱）</a> </li>
           </ul>
         </li>
         <li> <a class="animsition-link" href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>
