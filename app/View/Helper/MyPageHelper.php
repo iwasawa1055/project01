@@ -2,17 +2,20 @@
 
 class MyPageHelper extends AppHelper {
 
-    private $productCdToClassName = [
-        '004025' => 'mono-box',
-        '004024' => 'hako-box',
-        '004029' => 'cleaning-box',
-        '005000' => 'cleaning-box',
+    private $KitCdToClassName = [
+        '64' => 'hako-box',
+        '65' => 'hako-box',
+        '81' => 'hako-box',
+        '66' => 'mono-box',
+        '67' => 'mono-box',
+        '82' => 'mono-box',
+        '75' => 'cleaning-box',
     ];
 
-    public function productCdToClassName($productCd) {
-        if (array_key_exists($productCd, $this->productCdToClassName)) {
-            return $this->productCdToClassName[$productCd];
+    public function kitCdToClassName($kitCd) {
+        if (array_key_exists($kitCd, $this->KitCdToClassName)) {
+            return $this->KitCdToClassName[$kitCd];
         }
-        return current($this->productCdToClassName);
+        return current($this->KitCdToClassName);
     }
 }
