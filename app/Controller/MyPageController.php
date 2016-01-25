@@ -1,22 +1,39 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('UserAddress', 'Model');
 
 class MyPageController extends AppController
 {
-    /**
-     * 制御前段処理
-     */
-    public function beforeFilter()
-    {
-        AppController::beforeFilter();
-    }
+    const MODEL_NAME_BOX = 'InfoBox';
+    const MODEL_NAME_Item = 'InfoItem';
+    const MODEL_NAME_IMAGE_Item = 'ImageItem';
 
     /**
      * ルートインデックス.
      */
     public function index()
     {
+        $this->loadModel($this::MODEL_NAME_BOX);
+        $this->loadModel($this::MODEL_NAME_Item);
+        $this->loadModel($this::MODEL_NAME_IMAGE_Item);
+
+        $boxList = $this->InfoBox->getListForServiced();
+
+        $res = $this->InfoItem->apiGet([
+            'limit' => 8
+        ]);
+        $itemList = $res->results;
+
+        $imageItemList = [];
+        foreach ($itemList as $index => $item) {
+            $res = $this->ImageItem->apiGet([
+                'item_id' => $item['item_id'],
+                'limit' => 1,
+            ]);
+            $itemList[$index]['images_item'] = $res->results[0];
+        }
+
+        $this->set('itemList', $itemList);
+        $this->set('boxList', $boxList);
     }
 }

@@ -1,4 +1,3 @@
-<div id="page-wrapper">
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header"><i class="fa fa-truck"></i> お届け先追加・変更</h1>
@@ -11,23 +10,33 @@
           <div class="row">
             <div class="col-lg-12">
               <h2>お届け先変更</h2>
-              <div class="form-group">
+              <div class="form-group col-lg-12">
                 <input class="form-control" placeholder="000-0000">
               </div>
-              <div class="form-group">
+              <div class="form-group col-lg-12">
                 <input class="form-control" placeholder="東京都品川区東品川2">
               </div>
-              <div class="form-group">
+              <div class="form-group col-lg-12">
                 <input class="form-control" placeholder="2-33">
-                <p class="help-block">ハイフンは不要です。</p>
               </div>
-              <div class="form-group">
+              <div class="form-group col-lg-12">
                 <input class="form-control" placeholder="Nビル 5階">
               </div>
-              <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="#">クリア</a> </span> <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/address/confirm">確認する</a> </span> </div>
+              <div class="form-group col-lg-12">
+                <input class="form-control" value="000-0000-0000">
+              </div>
+              <div class="form-group col-lg-12">
+                <input class="form-control" value="市川　倫之介">
+              </div>
+              <span class="col-lg-6 col-md-6 col-xs-12">
+                <a class="btn btn-primary btn-lg btn-block animsition-link" href="#">クリア</a>
+              </span>
+              <span class="col-lg-6 col-md-6 col-xs-12">
+                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/address/confirm">確認する</a>
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

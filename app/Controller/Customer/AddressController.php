@@ -5,6 +5,7 @@ App::uses('AppController', 'Controller');
 class AddressController extends AppController
 {
     const MODEL_NAME = 'CustomerAddress';
+    const MODEL_NAME_DATA = 'CustomerAddressData';
 
     /**
      * 制御前段処理.
@@ -13,13 +14,41 @@ class AddressController extends AppController
     {
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
+        $this->set('action', $this->action);
     }
 
     public function index()
     {
         $res = $this->CustomerAddress->apiGet();
         $this->set('address', $res->results);
-        pr($res->results);
+        CakeSession::write($this::MODEL_NAME_DATA, $res->results);
+    }
+
+
+    private function setRequestDataFromSession() {
+        $step = Hash::get($this->request->params, 'step');
+        $back = Hash::get($this->request->query, 'back');
+        if ($back || $step === 'complete') {
+            $data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data = $data;
+            CakeSession::delete($this::MODEL_NAME);
+        }
+    }
+
+    private function setRequestDataFromSessionList($keyName) {
+        $addressId = $this->CustomerAddress->toArray()[$keyName];
+        $list = CakeSession::read($this::MODEL_NAME_DATA);
+        foreach ($list as $data) {
+            if ($addressId === $data[$keyName]) {
+                $this->request->data[$this::MODEL_NAME] = $data;
+                break;
+            }
+        }
+        if (empty($this->request->data[$this::MODEL_NAME])) {
+            // TODO:
+            $this->Session->setFlash('try again');
+            return $this->redirect(['action' => 'add']);
+        }
     }
 
     /**
@@ -27,31 +56,64 @@ class AddressController extends AppController
      */
     public function add()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
+        $this->setRequestDataFromSession();
+        $step = Hash::get($this->request->params, 'step');
 
         if ($this->request->is('get')) {
-            // restore
-            if (!empty(Hash::get($this->request->query, 'back'))) {
-                $this->request->data = $data;
-            }
             return $this->render('add');
         } elseif ($this->request->is('post')) {
 
             // validates
             $this->CustomerAddress->set($this->request->data);
-
             if (!$this->CustomerAddress->validates()) {
                 return $this->render('add');
             }
 
-            $step = $this->request->params['step'];
             if ($step === 'confirm') {
                 CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
                 return $this->render('confirm');
             } elseif ($step === 'complete') {
                 // create
                 $res = $this->CustomerAddress->apiPost($this->CustomerAddress->data);
+                if (!$res->isSuccess()) {
+                    // TODO:
+                    $this->Session->setFlash('try again');
+                    return $this->redirect(['action' => 'add']);
+                }
+                return $this->render('complete');
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public function edit()
+    {
+        $this->setRequestDataFromSession();
+        $step = Hash::get($this->request->params, 'step');
+
+        if ($this->request->is('get')) {
+
+            // data from session
+            $this->CustomerAddress->set($this->request->query);
+            $this->setRequestDataFromSessionList('address_id');
+
+            return $this->render('add');
+        } elseif ($this->request->is('post')) {
+
+            // validates
+            $this->CustomerAddress->set($this->request->data);
+            if (!$this->CustomerAddress->validates()) {
+                return $this->render('add');
+            }
+
+            if ($step === 'confirm') {
+                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
+                return $this->render('confirm');
+            } elseif ($step === 'complete') {
+                // update
+                $res = $this->CustomerAddress->apiPut($this->CustomerAddress->data);
                 if (!$res->isSuccess()) {
                     // TODO:
                     $this->Session->setFlash('try again');
@@ -66,44 +128,29 @@ class AddressController extends AppController
     /**
      *
      */
-    public function edit()
-    {
-    }
-
-    private function _back()
-    {
-        $isBack = Hash::get($this->request->query, 'back');
-        if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
-        }
-        CakeSession::delete($this::MODEL_NAME);
-    }
-
-    /**
-     *
-     */
     public function delete()
     {
-        $this->render('/Customer/Address/confirm');
-    }
+        $this->setRequestDataFromSession();
+        $step = Hash::get($this->request->params, 'step');
 
-    /**
-     *
-     */
-    public function confirm()
-    {
-        // $this->CustomerPasswordReset->set($this->request->data);
-        // if ($this->CustomerPasswordReset->validates()) {
-        //     CakeSession::write($this::MODEL_NAME, $this->CustomerPasswordReset->data);
-        // } else {
-        //     return $this->render('add');
-        // }
-    }
+        if ($this->request->is('post')) {
 
-    /**
-     *
-     */
-    public function complete()
-    {
+            $this->CustomerAddress->set($this->request->data);
+
+            if ($step === 'confirm') {
+                $this->setRequestDataFromSessionList('address_id');
+                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
+                return $this->render('confirm');
+            } elseif ($step === 'complete') {
+                // delete
+                $res = $this->CustomerAddress->apiDelete($this->CustomerAddress->data);
+                if (!$res->isSuccess()) {
+                    // TODO:
+                    $this->Session->setFlash('try again');
+                    return $this->redirect(['action' => 'add']);
+                }
+                return $this->render('complete');
+            }
+        }
     }
 }

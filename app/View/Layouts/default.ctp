@@ -13,6 +13,7 @@
   echo $this->fetch('meta');
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
+  $this->Html->css('bootstrap-social', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
   $this->Html->css('metisMenu.min', ['inline' => false]);
   $this->Html->css('animsition.min', ['inline' => false]);
@@ -37,15 +38,46 @@
 <body>
 <div id="wrapper" class="animsition" data-animsition-in-class="fade-in-up-lg" data-animsition-out-class="fade-out-up-lg">
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-    <a class="navbar-brand" href="/"><img class="logo" src="/img/logo.png" alt="minikura"></a>
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img class="logo" src="/img/logo.png" alt="minikura"></a>
+    </div>
+    <?php echo $this->element('navbar_right'); ?>
+    <?php echo $this->element('sidebar'); ?>
+  </nav>
+  <div id="page-wrapper">
+    <?php echo $this->Session->flash(); ?>
+    <?php echo $this->fetch('content'); ?>
   </div>
-  <?php echo $this->element('navbar_right'); ?>
-  <?php echo $this->element('sidebar'); ?>
-</nav>
-  <?php echo $this->Session->flash(); ?>
-  <?php echo $this->fetch('content'); ?>
+  <div class="footer">
+    <div class="col-lg-12 col-md-12 col-xs-12">
+      <ul class="list-inline">
+        <li><a class="animsition-link" href="http://www.terrada.co.jp/company/">会社情報</a>
+        </li>
+        <li><a class="animsition-link" href="/privacy/">個人情報について</a>
+        </li>
+        <li><a class="animsition-link" href="/security_policy/">セキュリティポリシー</a>
+        </li>
+        <li><a class="animsition-link" href="/commercial_transaction/">特定商取引に関する表記について</a>
+        </li>
+        <li><a class="animsition-link" href="/use_agreement/">利用規約</a>
+        </li>
+        <li><a class="animsition-link" href="/contact_us/">お問い合わせ</a>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-xs-12">
+        <p>Copyright © TERRADA WAREHOUSE COMPANY. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <?php

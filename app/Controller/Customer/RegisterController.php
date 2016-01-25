@@ -1,7 +1,6 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('UserAddress', 'Model');
 
 class RegisterController extends AppController
 {
@@ -10,15 +9,23 @@ class RegisterController extends AppController
      */
     public function beforeFilter()
     {
+        // ログイン不要なページ
+        $this->checkLogined = false;
         AppController::beforeFilter();
     }
 
     /**
      * 
      */
-    public function index()
+    public function add()
     {
-        return $this->redirect('/mypage');
     }
 
+    /**
+     * 
+     */
+    public function create()
+    {
+        $this->redirect('/mypage');
+    }
 }
