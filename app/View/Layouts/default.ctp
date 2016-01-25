@@ -87,7 +87,7 @@
 
 <script>
   $(document).ready(function() {
-    $('a').addClass('animsition-link');
+    $('a[href^="/"]').addClass('animsition-link');
     $('.animsition').animsition();
   });
 </script>
