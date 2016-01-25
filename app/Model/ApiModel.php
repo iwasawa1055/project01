@@ -107,6 +107,22 @@ class ApiModel extends AppModel
         $params['token'] = $token;
 
         return $this->request($end_point, $params, $method, $headers, $block, $accept);
+
+
+    public function paginateCount($conditions, $recursive)
+    {
+        //レコード件数を取得するコードを記述
+        $count = count($conditions);
+        return $count;
+    }
+    public function paginate($conditions, $fields, $order, $limit, $page, $recursive)
+    {
+        $count = $page * $limit - $limit;
+        //レコードを取得するコードを記述
+        for ($i = 0; $i < $limit; $i++) {
+            $list[$i] = $conditions[$count + $i];
+        }
+        return $list;
     }
 }
 

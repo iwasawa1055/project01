@@ -22,14 +22,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-// TODO: デバック関数
-function print_rh($e)
-{
-	echo '<pre>';
-	print_r($e);
-	echo '</pre>';
-}
-
 // Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
 
@@ -260,3 +252,5 @@ spl_autoload_register(function ($_class_name)
 
 // 2015/08 added by osada@terrada
 Configure::load('AppConfig');
+// 定数ファイルを読み込む
+require_once(ROOT . DS . APP_DIR . DS . 'Config' . DS . 'constants.php');

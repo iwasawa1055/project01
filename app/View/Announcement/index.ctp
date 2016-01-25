@@ -33,24 +33,7 @@
               <?php endforeach; ?>
                 </div>
               </div>
-              <div class="col-lg-12 text-center">
-                <ul class="pagination">
-                  <li class="paginate_button previous disabled"><a class="animsition-link" href="#">前へ</a>
-                  </li>
-                  <li class="paginate_button active"><a class="animsition-link" href="#">1</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">2</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">3</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">4</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">5</a>
-                  </li>
-                  <li class="paginate_button next"><a class="animsition-link" href="#">次へ</a>
-                  </li>
-                </ul>
-              </div>
+              <?php echo $this->element('paginator'); ?>
             </div>
           </div>
         </div>

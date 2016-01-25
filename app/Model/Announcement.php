@@ -6,14 +6,14 @@ App::uses('ApiModel', 'Model');
 
 class Announcement extends ApiModel
 {
-	public function __construct()
-	{
-		parent::__construct('Announcement', '/announcement');
-	}
+    public function __construct()
+    {
+        parent::__construct('Announcement', '/announcement');
+    }
 
-	public $validate = [
-		'announcement_id' => [
-			'required' => false,
-		],
-	];
+    public $validate = [
+        'announcement_id' => [
+            'required' => false,
+        ],
+    ];
 }

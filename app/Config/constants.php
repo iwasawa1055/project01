@@ -1,0 +1,38 @@
+<?php
+
+const KIT_CD_HAKO = '64';
+const KIT_CD_HAKO_APPAREL = '65';
+const KIT_CD_HAKO_BOOK = '81';
+const KIT_CD_MONO = '66';
+const KIT_CD_MONO_APPAREL = '67';
+const KIT_CD_MONO_BOOK = '82';
+const KIT_CD_WINE_HAKO = '77';
+const KIT_CD_WINE_MONO = '83';
+const KIT_CD_CLEANING_PACK = '75';
+
+const PRODUCT_CD_MONO = '004025';
+const PRODUCT_CD_HAKO = '004024';
+const PRODUCT_CD_CLEANING_PACK = '004029';
+const PRODUCT_CD_SHOES_PACK = '005000';
+
+// box_status, item_status
+// キット購入・依頼
+const BOXITEM_STATUS_BUYKIT_START = '10';
+const BOXITEM_STATUS_BUYKIT_IN_PROGRESS = '20';
+const BOXITEM_STATUS_BUYKIT_DONE = '30';
+// 入庫・依頼
+const BOXITEM_STATUS_INBOUND_START = '40';
+const BOXITEM_STATUS_INBOUND_IN_PROGRESS = '60';
+const BOXITEM_STATUS_INBOUND_DONE = '70';
+// 出庫・依頼
+const BOXITEM_STATUS_OUTBOUND_START = '180';
+const BOXITEM_STATUS_OUTBOUND_IN_PROGRESS = '200';
+const BOXITEM_STATUS_OUTBOUND_DONE = '210';
+// 再入庫・依頼
+// 220	完了
+// 230	進行中
+// オプション・依頼
+// 130	進行中
+// 140	完了
+// 150	進行中
+// 160	完了

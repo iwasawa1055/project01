@@ -10,12 +10,10 @@ class AnnouncementController extends AppController
     public function index()
     {
         $this->loadModel('Announcement');
-        $res = $this->Announcement->apiGet([
-          'limit' => 10,
-          'offset' => 0
-        ]);
+        $res = $this->Announcement->apiGet();
         if ($res->isSuccess()) {
-            $this->set('announcements', $res->results);
+            $list = $this->paginate($res->results);
+            $this->set('announcements', $list);
         }
     }
 

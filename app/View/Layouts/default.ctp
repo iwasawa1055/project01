@@ -58,17 +58,17 @@
   <div class="footer">
     <div class="col-lg-12 col-md-12 col-xs-12">
       <ul class="list-inline">
-        <li><a class="animsition-link" href="http://www.terrada.co.jp/company/">会社情報</a>
+        <li><a href="http://www.terrada.co.jp/company/">会社情報</a>
         </li>
-        <li><a class="animsition-link" href="/privacy/">個人情報について</a>
+        <li><a href="/privacy/">個人情報について</a>
         </li>
-        <li><a class="animsition-link" href="/security_policy/">セキュリティポリシー</a>
+        <li><a href="/security_policy/">セキュリティポリシー</a>
         </li>
-        <li><a class="animsition-link" href="/commercial_transaction/">特定商取引に関する表記について</a>
+        <li><a href="/commercial_transaction/">特定商取引に関する表記について</a>
         </li>
-        <li><a class="animsition-link" href="/use_agreement/">利用規約</a>
+        <li><a href="/use_agreement/">利用規約</a>
         </li>
-        <li><a class="animsition-link" href="/contact_us/">お問い合わせ</a>
+        <li><a href="/contact_us/">お問い合わせ</a>
         </li>
       </ul>
     </div>
@@ -87,6 +87,7 @@
 
 <script>
   $(document).ready(function() {
+    $('a').addClass('animsition-link');
     $('.animsition').animsition();
   });
 </script>
