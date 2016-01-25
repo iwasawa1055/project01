@@ -13,7 +13,7 @@ class UserLogin extends ApiModel
 
     public function isLogined()
     {
-        return !empty(CakeSession::read('api.token'));
+        return !empty(CakeSession::read($this::SESSION_API_TOKEN));
     }
 
     public function login()
@@ -27,15 +27,15 @@ class UserLogin extends ApiModel
         $this->data[$this->model_name]['oem_key'] = $this->oem_key;
         $responses = $this->request('/login', $this->data[$this->model_name], 'GET');
 
-        CakeSession::write('api.token', $responses->results['token']);
-        CakeSession::write('api.division', $responses->results['division']);
+        CakeSession::write($this::SESSION_API_TOKEN, $responses->results['token']);
+        CakeSession::write($this::SESSION_API_DIVISION, $responses->results['division']);
         return $responses;
     }
 
     public function logout()
     {
-        CakeSession::delete('api.token');
-        CakeSession::delete('api.division');
+        CakeSession::delete($this::SESSION_API_TOKEN);
+        CakeSession::delete($this::SESSION_API_DIVISION);
     }
 
     public $validate = [

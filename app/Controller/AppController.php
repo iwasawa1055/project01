@@ -5,13 +5,16 @@ App::uses('AppSecurity', 'Lib');
 
 class AppController extends Controller
 {
-    // public $root_index_render = '/root_index';
-
     public $helpers = ['Html', 'Title'];
     public $uses = ['UserLogin', 'Announcement'];
 
-		// ログインチェックが必要か？
+    // ログインチェックが必要か？
     protected $checkLogined = true;
+
+    protected $paginate = array(
+        'limit' => 10,
+        'paramType' => 'querystring'
+    );
 
     /**
      * 制御前段処理
