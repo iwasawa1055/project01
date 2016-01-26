@@ -19,6 +19,6 @@ class TitleHelper extends AppHelper {
                 $str = $this->titles[$controller][$action];
             }
         }
-        echo $str . ' | minikura';
+        echo $str . '｜モノをあずけて、写真でみれる minikura';
     }
 }

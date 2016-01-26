@@ -554,11 +554,9 @@ tfoot td {
 	background-color: #666666 !important;
 	border-color: #666666 !important;
 }
-
-.btn-yahoo{
-	background-color:#ffda45;
-	
-	}
+.btn-yahoo {
+	background-color: #ffda45;
+}
 .lh25 {
 	line-height: 2.5;
 }
@@ -580,15 +578,17 @@ tfoot td {
 	margin-top: 15px;
 	margin-bottom: 0;
 }
-
 .security_code a:link,
 .security_code a:hover,
 .security_code a:active,
 .security_code a:focus {
-    color: #ff0000;
-    text-decoration: none;
+	color: #ff0000;
+	text-decoration: none;
 }
-
+.error-number {
+	font-size: 80%;
+	font-weight: bold;
+}
 
 @media screen and (max-width: 991px) {
 .form-control {
@@ -677,5 +677,8 @@ div.panel-body .col-lg-12 {
 .box_note,
 .item_note {
 	margin: 15px;
+}
+.sidebar .arrow {
+    line-height: 3.8;
 }
 }
