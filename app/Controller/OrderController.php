@@ -9,7 +9,7 @@ class OrderController extends AppController
     const MODEL_NAME_ADDRESS = 'CustomerAddress';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
 
-    public $payment = null;
+    public $default_payment = null;
     public $address = null;
     public $datetime = null;
 
@@ -33,10 +33,6 @@ class OrderController extends AppController
         $res_address = $this->CustomerAddress->apiGet();
         $this->address = $res_address->results;
         $this->set('address', $this->address);
-
-        // // 配送日時
-        // $res_datetime = $this->getDatetimeDeliveryKit($this->address[0]['address_id']);
-        // $this->set('datetime', $res_datetime);
     }
 
     /**
@@ -73,8 +69,9 @@ class OrderController extends AppController
         }
     }
 
-    private function getDatetime($datetime_cd) {
-        foreach ($this->datetime as $datetime) {
+    private function getDatetime($address_id, $datetime_cd) {
+        $result = $this->getDatetimeDeliveryKit($address_id);
+        foreach ($result as $datetime) {
             if ($datetime['datetime_cd'] === $datetime_cd) {
                 return $datetime;
             }
@@ -86,18 +83,14 @@ class OrderController extends AppController
      */
     public function add()
     {
-        // 配送日時
-        // $res_datetime = $this->DatetimeDeliveryKit->apiGet([
-        //     'postal' => $this->address[0]['postal'],
-        // ]);
-        // $this->datetime = $res_datetime->results;
-        // $this->set('datetime', $this->datetime);
-        $res_datetime = $this->getDatetimeDeliveryKit($this->address[0]['address_id']);
-        $this->set('datetime', $res_datetime);
-
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
             $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $res_datetime = $this->getDatetimeDeliveryKit($this->request->data['PaymentGMOKitCard']['address_id']);
+            $this->set('datetime', $res_datetime);
+        } else {
+            $res_datetime = $this->getDatetimeDeliveryKit($this->address[0]['address_id']);
+            $this->set('datetime', $res_datetime);
         }
         CakeSession::delete($this::MODEL_NAME);
     }
@@ -109,16 +102,9 @@ class OrderController extends AppController
     {
         $this->PaymentGMOKitCard->set($this->request->data);
 
-        // カード
-        $this->set('default_payment', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
-
-        // お届け先
-        $address = $this->getAddress($this->request->data['PaymentGMOKitCard']['address_id']);
-        $this->set('address', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
-
-        // お届け希望日時
-        $datetime = $this->getDatetime($this->request->data['PaymentGMOKitCard']['datetime_cd']);
-        $this->set('datetime', $datetime['text']);
+        // TODO: 先にaddress_idのバリデーションをかける
+        $address_id = $this->request->data['PaymentGMOKitCard']['address_id'];
+        $address = $this->getAddress($address_id);
 
         // お届け先情報
         $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['name'] = "{$address['lastname']}　{$address['firstname']}";
@@ -126,12 +112,32 @@ class OrderController extends AppController
         $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['postal'] = $address['postal'];
         $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
 
+        // TODO: 先にオーダー数のバリデーションをかける
         // キット
-        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['kit'] = "66:1";
+        $mono_num = $this->request->data['PaymentGMOKitCard']['mono_num'];
+        $mono_num = empty($mono_num) ? '' : '66:' . $mono_num;
+        $hako_num = $this->request->data['PaymentGMOKitCard']['hako_num'];
+        $hako_num = empty($hako_num) ? '' : '64:' . $hako_num;
+        $cleaning_num = $this->request->data['PaymentGMOKitCard']['cleaning_num'];
+        $cleaning_num = empty($cleaning_num) ? '' : '75:' . $cleaning_num;
+
+        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['kit'] = implode(",", [$mono_num, $hako_num, $cleaning_num]);
 
         if ($this->PaymentGMOKitCard->validates()) {
+            // カード
+            $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+            // お届け先
+            $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
+            // お届け希望日時
+            $datetime = $this->getDatetime($address_id, $this->request->data['PaymentGMOKitCard']['datetime_cd']);
+            $this->set('datetime', $datetime['text']);
+
             CakeSession::write($this::MODEL_NAME, $this->PaymentGMOKitCard->data);
         } else {
+            // 配送日時
+            $res_datetime = $this->getDatetimeDeliveryKit($address_id);
+            $this->set('datetime', $res_datetime);
+
             return $this->render('add');
         }
     }

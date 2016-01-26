@@ -7,8 +7,10 @@ $(function() {
   function getDatetime() {
     var elem_address = $('#PaymentGMOKitCardAddressId');
     var elem_datetime = $('#PaymentGMOKitCardDatetimeCd');
+
     $('option:first', elem_datetime).prop('selected', true);
     elem_datetime.attr("disabled", "disabled");
+
     $.post('/order/getAddressDatetime',
       { address_id: elem_address.val() },
       function(data){
@@ -26,5 +28,4 @@ $(function() {
       elem_datetime.removeAttr("disabled");
     });
   };
-
 });
