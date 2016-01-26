@@ -6,10 +6,36 @@ class PaymentGMOKitCard extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentGMOKitCard', '/kit');
+        parent::__construct('PaymentGMOKitCard', '/kit_card', 'gmopayment_v4');
     }
 
     public $validate = [
+        'mono_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => 'いずれかのボックスを選択してください',
+            ],
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => 'オーダー数の形式が正しくありません（minikuraMONO）',
+            ],
+        ],
+        'hako_num' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => 'オーダー数の形式が正しくありません（minikurHAKO）',
+            ],
+        ],
+        'cleaning_num' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => 'オーダー数の形式が正しくありません（クリーニングパック）',
+            ],
+        ],
+
         'card_seq' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -18,12 +44,12 @@ class PaymentGMOKitCard extends ApiModel
         ],
         'security_cd' => [
             'notBlank' => [
-                'rule'     => 'notBlank',
-                 'message'  => 'セキュリティコードは必須です'
-             ],
+                'rule' => 'notBlank',
+                 'message' => 'セキュリティコードは必須です',
+            ],
             'isCreditCardSecurityCode' => [
-                'rule'     => 'isCreditCardSecurityCode',
-                'message'  => 'セキュリティコードの形式が正しくありません'
+                'rule' => 'isCreditCardSecurityCode',
+                'message' => 'セキュリティコードの形式が正しくありません',
             ],
         ],
         'kit' => [
@@ -73,6 +99,10 @@ class PaymentGMOKitCard extends ApiModel
             ],
         ],
         'datetime_cd' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => '配送日時は必須です',
+            ],
             'isDatetimeDelivery' => [
                 'rule' => 'isDatetimeDelivery',
                 'message' => '配送日時の形式が正しくありません',
@@ -80,12 +110,14 @@ class PaymentGMOKitCard extends ApiModel
         ],
     ];
 
-    // public function confirmEmail()
-    // {
-    //     if ($this->data[$this->model_name]['email'] !== $this->data[$this->model_name]['email_confirm']) {
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // }
+    public function checkNotEmpty()
+    {
+        if (!empty($this->data[$this->model_name]['mono_num']) ||
+            !empty($this->data[$this->model_name]['hako_num']) ||
+            !empty($this->data[$this->model_name]['cleaning_num'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
