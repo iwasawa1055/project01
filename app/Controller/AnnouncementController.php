@@ -4,12 +4,22 @@ App::uses('AppController', 'Controller');
 
 class AnnouncementController extends AppController
 {
+    const MODEL_NAME = 'Announcement';
+
+    /**
+     * 制御前段処理.
+     */
+    public function beforeFilter()
+    {
+        AppController::beforeFilter();
+        $this->loadModel($this::MODEL_NAME);
+    }
+
     /**
      * 一覧.
      */
     public function index()
     {
-        $this->loadModel('Announcement');
         $res = $this->Announcement->apiGet();
         if ($res->isSuccess()) {
             $list = $this->paginate($res->results);
@@ -22,8 +32,9 @@ class AnnouncementController extends AppController
      */
     public function detail()
     {
+        // TODO: セッションから取得
+        
         $id = $this->params['id'];
-        $this->loadModel('Announcement');
         $res = $this->Announcement->apiGet([
           'limit' => 10,
           'offset' => 0

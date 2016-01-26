@@ -1,14 +1,17 @@
 <?php
 
-App::uses('AppHttp', 'Lib');
-App::uses('AppValid', 'Lib');
-App::uses('ApiModel', 'Model');
+App::uses('ApiCachedModel', 'Model');
 
-class Announcement extends ApiModel
+class Announcement extends ApiCachedModel
 {
+    const SESSION_CACHE_KEY = 'ANNOUNCEMENT_CACHE';
+
+    private $defaultSortKey = [
+    ];
+
     public function __construct()
     {
-        parent::__construct('Announcement', '/announcement');
+        parent::__construct($this::SESSION_CACHE_KEY, 'Announcement', '/announcement');
     }
 
     public $validate = [

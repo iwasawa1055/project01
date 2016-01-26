@@ -2,6 +2,7 @@
 
 App::uses('Model', 'Model');
 App::uses('AppValid', 'Lib');
+App::uses('ArraySorter', 'Model');
 
 class AppModel extends Model
 {
@@ -25,6 +26,43 @@ class AppModel extends Model
     {
         return $this->data[$this->model_name];
     }
+
+    /* sort */
+
+    public function sort(&$list, $sortKey = [], $defaultSortKey = []) {
+        $sortKeyList = array_merge($sortKey, $defaultSortKey);
+        $sorter = new ArraySorter($sortKeyList);
+        usort($list, [$sorter, 'cmp']);
+    }
+
+    /* paginate */
+
+    public function paginateCount($conditions, $recursive)
+    {
+        //レコード件数を取得するコードを記述
+        $count = count($conditions);
+        return $count;
+    }
+
+    public function paginate($conditions, $fields, $order, $limit, $page, $recursive)
+    {
+        $start = ($page - 1) * $limit;
+        $end = ($page) * $limit;
+        $count = count($conditions);
+        if ($count < $end) {
+            $end = $count;
+        }
+
+        //レコードを取得するコードを記述
+        for ($i = 0; ($start + $i) < $end; $i++) {
+            $list[$i] = $conditions[$start + $i];
+        }
+
+        return $list;
+    }
+
+
+    /* Valid */
 
     public function isCreditCardNumber($_check)
     {

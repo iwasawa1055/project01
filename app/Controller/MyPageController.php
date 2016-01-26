@@ -18,11 +18,7 @@ class MyPageController extends AppController
         $this->loadModel($this::MODEL_NAME_IMAGE_Item);
 
         $boxList = $this->InfoBox->getListForServiced();
-
-        $res = $this->InfoItem->apiGet([
-            'limit' => 8
-        ]);
-        $itemList = $res->results;
+        $itemList = $this->InfoItem->apiGetResults(['limit' => 8]);
 
         $imageItemList = [];
         foreach ($itemList as $index => $item) {

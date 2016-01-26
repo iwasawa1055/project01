@@ -55,6 +55,32 @@ class ApiModel extends AppModel
         $this->end_point = $end;
     }
 
+    public function apiGetResults($data = [])
+    {
+        $apiRes = $this->apiGet($data);
+        return $apiRes->results;
+    }
+    public function apiPostResults($data = [])
+    {
+        $apiRes = $this->apiPost($data);
+        return $apiRes->results;
+    }
+    public function apiPutResults($data = [])
+    {
+        $apiRes = $this->apiPut($data);
+        return $apiRes->results;
+    }
+    public function apiPatchResults($data = [])
+    {
+        $apiRes = $this->apiPatch($data);
+        return $apiRes->results;
+    }
+    public function apiDeleteResults($data = [])
+    {
+        $apiRes = $this->apiDelete($data);
+        return $apiRes->results;
+    }
+
     public function apiGet($data = [])
     {
         return $this->requestWithDataAndToken($data, 'GET');
@@ -76,7 +102,7 @@ class ApiModel extends AppModel
         return $this->requestWithDataAndToken($data, 'DELETE');
     }
 
-    public function beforeApiRequest(&$params, $method)
+    public function beforeApiRequest($url, &$params, $method)
     {
         // TODO: ログ出力？
     }
@@ -95,9 +121,6 @@ class ApiModel extends AppModel
         $token = CakeSession::read('api.token');
         $params['token'] = $token;
 
-        // 前処理
-        $this->beforeApiRequest($params, $method);
-
         // API問い合わせを行う　レスポンス型クラスを生成
         $apiRes = $this->request($this->end_point, $params, $method);
 
@@ -105,8 +128,6 @@ class ApiModel extends AppModel
         // ネットワーク例外は、AppHttp::requestで実装。
         // 問い合わせ失敗、JSON形式でない場合は例外
 
-        // 後処理
-        $this->afterApiRequest($params, $method, $apiRes);
 
         return $apiRes;
     }
@@ -130,25 +151,19 @@ class ApiModel extends AppModel
             $method = 'POST';
         }
         $url = $this->access_point.$end_point;
+
+
+        // 前処理
+        $this->beforeApiRequest($url, $params, $method);
+
+
         $responses = AppHttp::request($url, $params, $method, $headers);
         $apiRes = new ApiResponse($responses);
-        return $apiRes;
-    }
 
-    public function paginateCount($conditions, $recursive)
-    {
-        //レコード件数を取得するコードを記述
-        $count = count($conditions);
-        return $count;
-    }
-    public function paginate($conditions, $fields, $order, $limit, $page, $recursive)
-    {
-        $count = $page * $limit - $limit;
-        //レコードを取得するコードを記述
-        for ($i = 0; $i < $limit; $i++) {
-            $list[$i] = $conditions[$count + $i];
-        }
-        return $list;
+        // 後処理
+        $this->afterApiRequest($params, $method, $apiRes);
+
+        return $apiRes;
     }
 }
 

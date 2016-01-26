@@ -6,7 +6,7 @@ App::uses('AppSecurity', 'Lib');
 class AppController extends Controller
 {
     public $helpers = ['Html', 'Title'];
-    public $uses = ['UserLogin', 'Announcement'];
+    public $uses = ['UserLogin', 'Announcement', 'InfoBox'];
 
     // ログインチェックが必要か？
     protected $checkLogined = true;
@@ -45,13 +45,12 @@ class AppController extends Controller
                 exit;
             }
 
-            $res = $this->Announcement->apiGet([
-                    'limit' => 5,
-                    'offset' => 0
-            ]);
-            if ($res->isSuccess()) {
-                $this->set('notice_announcements', $res->results);
-            }
+            $res = $this->Announcement->apiGetResults(['limit' => 5]);
+            $this->set('notice_announcements', $res);
+
+            $summary = $this->InfoBox->getProductSummary();
+            $this->set('product_summary', $summary);
+
         }
     }
 
