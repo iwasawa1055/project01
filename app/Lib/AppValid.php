@@ -413,6 +413,10 @@ class AppValid
 		if (! preg_match('/^\d{4}-\d{2}-\d{2}-\d{1}$/', $_value)) {
 			return false;
 		}
+		$array_ymd = implode('-', explode('-', $_value, -1));
+		if (! AppValid::isDate($array_ymd)) {
+			return false;
+		}
 		return true;
 	}
 }

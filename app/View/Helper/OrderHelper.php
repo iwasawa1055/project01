@@ -24,6 +24,13 @@ class OrderHelper extends Helper
         return $data;
     }
 
+    public function setDefalutPayment($payment_card)
+    {
+        $data = [];
+        $data[$payment_card['card_seq']] = "{$payment_card['card_no']}　{$payment_card['holder_name']}";
+        return $data;
+    }
+
     public function setAddress($addresses)
     {
         $data = [];

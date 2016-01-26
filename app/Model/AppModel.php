@@ -26,6 +26,12 @@ class AppModel extends Model
         return $this->data[$this->model_name];
     }
 
+    public function isStringInteger($_check)
+    {
+        $value = current($_check);
+        return AppValid::isStringInteger($value);
+    }
+
     public function isCreditCardNumber($_check)
     {
         $value = current($_check);

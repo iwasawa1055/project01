@@ -6,6 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
+          <?php echo $this->Form->create(false, ['url' => ['controller' => 'order', 'action' => 'complete']]); ?>
           <div class="panel-body">
             <div class="col-lg-12 col-xs-12 order none-title none-float">
               <div class="form-group col-lg-12">
@@ -14,7 +15,7 @@
                     minikuraMONO
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo $this->Form->data['PaymentGMOKitCard']['mono_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -25,7 +26,7 @@
                     minikuraHAKO
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo $this->Form->data['PaymentGMOKitCard']['hako_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -36,7 +37,7 @@
                     クリーニングパック
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo $this->Form->data['PaymentGMOKitCard']['cleaning_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -56,19 +57,15 @@
               </div>
               <div class="col-lg-12">
                 <label>カード情報</label>
-                <p class="form-control-static">xxxx-xxxx-xxxx-0000　TOMONOSUKE ICHIKAWA</p>
+                <p class="form-control-static"><?php echo $default_payment; ?></p>
               </div>
               <div class="col-lg-12">
                 <label>お届け先</label>
-                <p class="form-control-static">〒000-0000 東京都品川区東品川2-2-33 Nビル 5階　市川　倫之介</p>
+                <p class="form-control-static"><?php echo $address; ?></p>
               </div>
               <div class="form-group col-lg-12">
-                <label>お届け希望日</label>
-                <p class="form-control-static">00月00日</p>
-              </div>
-              <div class="form-group col-lg-12">
-                <label>お届け希望時間</label>
-                <p class="form-control-static">午前中</p>
+                <label>お届け希望日時</label>
+                <p class="form-control-static"><?php echo $datetime; ?></p>
               </div>
             </div>
             <div class="form-group col-lg-12">
@@ -91,15 +88,16 @@
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-primary btn-lg btn-block animsition-link" href="../order/index.html">戻る</a>
+              <a class="btn btn-primary btn-lg btn-block animsition-link" href="/order/add?back=true">戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
             <a class="btn btn-danger btn-lg btn-block animsition-link" href="credit/index.html">会員登録して注文する</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12 col-lg-offset-6 col-md-offset-6">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="/order/complete">注文を確定する</a>
+              <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">注文を確定する</button>
             </span>
           </div>
+          <?php echo $this->Form->end(); ?>
         </div>
       </div>
     </div>
