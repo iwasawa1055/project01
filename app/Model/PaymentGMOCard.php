@@ -11,4 +11,14 @@ class PaymentGMOCard extends ApiModel
 
     public $validate = [
     ];
+
+    public function apiGetDefaultCard()
+    {
+        $d = $this->apiGet();
+        foreach ($d->results['contents'] as $card) {
+            if ($card['default_flag'] === '1') {
+                return $card;
+            }
+        }
+    }
 }

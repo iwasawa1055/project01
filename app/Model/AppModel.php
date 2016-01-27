@@ -64,6 +64,12 @@ class AppModel extends Model
 
     /* Valid */
 
+    public function isStringInteger($_check)
+    {
+        $value = current($_check);
+        return AppValid::isStringInteger($value);
+    }
+
     public function isCreditCardNumber($_check)
     {
         $value = current($_check);
