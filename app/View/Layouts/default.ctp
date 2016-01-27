@@ -20,12 +20,6 @@
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
 
-  $this->Html->script('jquery.min', ['inline' => false]);
-  $this->Html->script('bootstrap.min', ['inline' => false]);
-  $this->Html->script('metisMenu.min', ['inline' => false]);
-  $this->Html->script('animsition.min', ['inline' => false]);
-  $this->Html->script('app', ['inline' => false]);
-
   echo $this->fetch('css');
 ?>
 
@@ -82,15 +76,16 @@
 </div>
 
 <?php
+  $this->Html->script('jquery.min', ['inline' => false]);
+  $this->Html->script('bootstrap.min', ['inline' => false]);
+  $this->Html->script('metisMenu.min', ['inline' => false]);
+  $this->Html->script('animsition.min', ['inline' => false]);
+  $this->Html->script('app', ['inline' => false]);
+  $this->Html->script('app_dev', ['inline' => false]);
+
   echo $this->fetch('script');
   echo $this->fetch('scriptMinikura');
 ?>
 
-<script>
-  $(document).ready(function() {
-    $('a[href^="/"]').addClass('animsition-link');
-    $('.animsition').animsition();
-  });
-</script>
 </body>
 </html>
