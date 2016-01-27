@@ -12,9 +12,15 @@ class DatetimeDeliveryKit extends ApiModel
 	}
 
 	public $validate = [
-		'postal' => [
-			'rule' => '/^\d{3}\-\d{4}$/i',
-			'required' => true,
-		],
+        'postal' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => '郵便番号は必須です',
+            ],
+            'isPostalCodeJp' => [
+                'rule' => 'isPostalCodeJp',
+                'message' => '郵便番号の形式が正しくありません',
+            ],
+        ],
 	];
 }
