@@ -29,7 +29,7 @@ class InfoBox extends ApiCachedModel
             return $summary;
         }
 
-        $all = $this->apiGetResults();
+        $all = $this->getListForServiced();
         $summary = [];
         foreach ($all as $a) {
             $productCd = $a['product_cd'];
@@ -74,8 +74,14 @@ class InfoBox extends ApiCachedModel
         $all = $this->apiGetResults();
         // filter
         $list = [];
+        $okStatus = [
+            BOXITEM_STATUS_INBOUND_IN_PROGRESS,
+            BOXITEM_STATUS_INBOUND_DONE,
+            BOXITEM_STATUS_OUTBOUND_START,
+            BOXITEM_STATUS_OUTBOUND_IN_PROGRESS
+        ];
         foreach ($all as $a) {
-            if ($a['box_status'] === BOXITEM_STATUS_INBOUND_DONE &&
+            if (in_array($a['box_status'], $okStatus, true) &&
                 (empty($productCd) || $a['product_cd'] === $productCd)) {
                 $list[] = $a;
             }

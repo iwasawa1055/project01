@@ -54,6 +54,7 @@ class AppModel extends Model
         }
 
         //レコードを取得するコードを記述
+        $list = [];
         for ($i = 0; ($start + $i) < $end; $i++) {
             $list[$i] = $conditions[$start + $i];
         }

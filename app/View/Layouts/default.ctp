@@ -18,6 +18,7 @@
   $this->Html->css('metisMenu.min', ['inline' => false]);
   $this->Html->css('animsition.min', ['inline' => false]);
   $this->Html->css('app', ['inline' => false]);
+  $this->Html->css('app_dev', ['inline' => false]);
 
   $this->Html->script('jquery.min', ['inline' => false]);
   $this->Html->script('bootstrap.min', ['inline' => false]);

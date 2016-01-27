@@ -55,6 +55,33 @@ class ApiModel extends AppModel
         $this->end_point = $end;
     }
 
+    public function apiGetResultsFind($data = [], $where = [])
+    {
+        return $this->apiGetResultsWhere($data, $where, true);
+    }
+
+    public function apiGetResultsWhere($data = [], $where = [], $firstOnly = false)
+    {
+        $apiRes = $this->apiGetResults($data);
+        $findList = [];
+        foreach ($apiRes as $a) {
+            $notMatch = false;
+            foreach ($where as $key => $value) {
+                if (!array_key_exists($key, $a) || $a[$key] !== $value) {
+                    $notMatch = true;
+                    break;
+                }
+            }
+            if (!$notMatch) {
+                $findList[] = $a;
+                if ($firstOnly) {
+                    return $a;
+                }
+            }
+        }
+        return $findList;
+    }
+
     public function apiGetResults($data = [])
     {
         $apiRes = $this->apiGet($data);
