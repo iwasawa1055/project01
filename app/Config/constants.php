@@ -1,5 +1,39 @@
 <?php
+/* Code */
 
+// ユーザ区分
+const CUSTOMER_DIVISION_CORPORATE = 1; // 法人
+const CUSTOMER_DIVISION_PRIVATE = 2; // 個人
+
+// 支払い方法
+const PAYMENT_METHOD_CREDITCARD = 0; // クレジットカード
+const PAYMENT_METHOD_ACCOUNTTRANSFER = 1; // 口座振替
+
+// 支払い口座登録状況
+const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
+const ACCOUNT_SITUATION_REGISTRATION = 'registration';
+
+// 配送業者コード
+const CARRIER_CD_JPPOST = '0';
+const CARRIER_CD_YAMATO = '1';
+const CARRIER_CD_SAGAWA = '2';
+const CARRIER_CD_OTHER = '99';
+
+// 配送パターン
+const DELIVERY_ID_PICKUP_COOL = '2';
+const DELIVERY_ID_PICKUP = '6';
+const DELIVERY_ID_MANUAL = '7';
+
+// 問い合わせ区分
+const CONTACT_DIVISION_SERVICE = '1'; // サービスについて
+const CONTACT_DIVISION_OUTBOUND = '2'; // 取り出しについて
+const CONTACT_DIVISION_OPINION = '3'; // サービスへのご意見・ご相談
+
+// 通知カテゴリID
+const ANNOUNCEMENT_CATEGORY_ID_RECEIPT = '283';
+const ANNOUNCEMENT_CATEGORY_ID_BILLING = '284';
+
+// キットコード
 const KIT_CD_HAKO = '64';
 const KIT_CD_HAKO_APPAREL = '65';
 const KIT_CD_HAKO_BOOK = '81';
@@ -10,6 +44,7 @@ const KIT_CD_WINE_HAKO = '77';
 const KIT_CD_WINE_MONO = '83';
 const KIT_CD_CLEANING_PACK = '75';
 
+// 商品コード
 const PRODUCT_CD_MONO = '004025';
 const PRODUCT_CD_HAKO = '004024';
 const PRODUCT_CD_CLEANING_PACK = '004029';
@@ -36,3 +71,38 @@ const BOXITEM_STATUS_OUTBOUND_DONE = '210';
 // 140	完了
 // 150	進行中
 // 160	完了
+
+/* Selecter */
+
+// 入庫時選択オプション
+const KIT_OPTION = [
+    KIT_CD_MONO => ['MH' => 'あんしんオプション'],
+    KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション'],
+    KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション'],
+    KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション'],
+];
+
+const KIT_NAME = [
+    KIT_CD_HAKO => 'minikuraHAKO（レギュラーボックス）',
+    KIT_CD_HAKO_APPAREL => 'minikuraHAKO（アパレルボックス）',
+    KIT_CD_HAKO_BOOK => 'minikuraHAKO（ブックボックス）',
+    KIT_CD_MONO => 'minikuraMONO（レギュラーボックス）',
+    KIT_CD_MONO_APPAREL => 'minikuraMONO（アパレルボックス）',
+    KIT_CD_MONO_BOOK => 'minikuraMONO（ブックボックス）',
+    KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
+    KIT_CD_WINE_MONO => 'minikuraWine-MONO',
+    KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
+];
+
+const PRODUCT_NAME = [
+    PRODUCT_CD_MONO => 'minikuraMONO',
+    PRODUCT_CD_HAKO => 'minikuraHAKO',
+    PRODUCT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
+    PRODUCT_CD_SHOES_PACK => 'minikuraシューズパック',
+];
+
+const INBOUND_CARRIER_DELIVERY = [
+    '6_2' => 'ヤマト運輸に集荷依頼する',
+    '6_0' => '日本郵便に集荷依頼する',
+    '7' => '自分で発送する',
+];
