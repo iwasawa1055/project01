@@ -167,6 +167,11 @@ class AppValid
 		return preg_match('/[^' . self::$ascii . self::$kanji . self::$hiragana . self::$fw_kana . ']/u', $_value) ? false : true;
 	}
 
+	public static function isFwKana(&$_value)
+	{
+		return preg_match('/[^' . self::$fw_kana . ']/u', $_value) ? false : true;
+	}
+
 	public static function isAscii(&$_value)
 	{
 		return preg_match('/[^' . self::$ascii . ']/u', $_value) ? false : true;
