@@ -2,11 +2,11 @@
 
 App::uses('ApiModel', 'Model');
 
-class Customer extends ApiModel
+class CustomerInfo extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('Customer', '/user');
+        parent::__construct('CustomerInfo', '/user');
     }
 
     public $validate = [

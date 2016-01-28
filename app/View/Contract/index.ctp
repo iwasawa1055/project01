@@ -24,15 +24,17 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お名前</label>
-                  <p class="form-control-static"><?php echo $data['firstname']; ?>　<?php echo $data['firstname']; ?></p>
+                  <p class="form-control-static"><?php echo $data['lastname']; ?>　<?php echo $data['firstname']; ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お名前（カナ）</label>
                   <p><?php echo $data['lastname_kana']; ?>　<?php echo $data['firstname_kana']; ?></p>
                 </div>
+                <?php if (!$data['applying']): ?>
                 <div class="col-lg-12 col-md-12 col-xs-12">
                   <a class="btn btn-info btn-md animsition-link pull-right" href="/customer/info/edit">情報を変更する</a>
                 </div>
+                <?php endif; ?>
               </div>
             </div>
           </div>

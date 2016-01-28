@@ -5,6 +5,18 @@
 const CUSTOMER_DIVISION_CORPORATE = 1; // 法人
 const CUSTOMER_DIVISION_PRIVATE = 2; // 個人
 
+// 性別
+const CUSTOMER_GENDER = [
+    'm' => '男性',
+    'f' => '女性',
+];
+
+// メールマガジン配信
+const CUSTOMER_NEWSLETTER = [
+    '0' => '配信しない',
+    '1' => '配信する',
+];
+
 // 支払い方法
 const PAYMENT_METHOD_CREDITCARD = 0; // クレジットカード
 const PAYMENT_METHOD_ACCOUNTTRANSFER = 1; // 口座振替
