@@ -28,123 +28,21 @@
               <div class="col-lg-12">
                 <ul class="tile">
                   <!--loop-->
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
+                  <?php foreach ($itemList as $item): ?>
+                  <li class="panel panel-default">
+                      <a href="/item/detail/<?php echo $item['item_id'] ?>">
+                          <img src="<?php echo $item['images_item']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>">
+                      </a>
                     <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
+                      <p class="box-list-caption"><span>アイテム名</span><?php echo $item['item_name']; ?></p>
+                      <p class="box-list-caption"><span>アイテムID</span><?php echo $item['item_id']; ?></p>
                     </div>
                   </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
-                  <li class="panel panel-default"><a class="animsition-link" href="/item/detail/1"><img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx"></a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span>S.H.Figuarts ファースト・オー…</p>
-                      <p class="box-list-caption"><span>アイテムID</span>xxx-xxx</p>
-                    </div>
-                  </li>
+                  <?php endforeach; ?>
                   <!--loop end-->
                 </ul>
               </div>
-              <div class="col-lg-12 text-center">
-                <ul class="pagination">
-                  <li class="paginate_button previous disabled"><a class="animsition-link" href="#">前へ</a>
-                  </li>
-                  <li class="paginate_button active"><a class="animsition-link" href="#">1</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">2</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">3</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">4</a>
-                  </li>
-                  <li class="paginate_button"><a class="animsition-link" href="#">5</a>
-                  </li>
-                  <li class="paginate_button next"><a class="animsition-link" href="#">次へ</a>
-                  </li>
-                </ul>
-              </div>
+              <?php echo $this->element('paginator'); ?>
             </div>
           </div>
         </div>

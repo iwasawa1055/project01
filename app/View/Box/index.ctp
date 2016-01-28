@@ -9,7 +9,17 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <h2>minikuraMONO</h2>
+                  <?php
+                  $productName = '';
+                    if ($product === 'mono') {
+                        $productName = 'minikuraMONO';
+                    } else if ($product === 'hako') {
+                        $productName = 'minikuraHAKO';
+                    } else if ($product === 'cleaning') {
+                        $productName = 'クリーニングパック';
+                    } else
+                  ?>
+                <h2><?php echo $productName; ?></h2>
                 <div class="row box-list">
                   <div class="col-lg-2 col-lg-offset-10">
                     <select class="form-control sort-form">
@@ -55,8 +65,8 @@
                       </div>
                     </div>
                   </div>
-                  <!--loop end-->
                   <?php endforeach; ?>
+                  <!--loop end-->
                 </div>
                 <?php echo $this->element('paginator'); ?>
               </div>

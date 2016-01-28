@@ -1,12 +1,14 @@
 <?php
 
-App::uses('ApiModel', 'Model');
+App::uses('ApiCachedModel', 'Model');
 
-class ImageItem extends ApiModel
+class ImageItem extends ApiCachedModel
 {
+    const SESSION_CACHE_KEY = 'IMAGE_ITEM_CACHE';
+
     public function __construct()
     {
-        parent::__construct('ImageItem', '/image_item');
+        parent::__construct($this::SESSION_CACHE_KEY, 'ImageItem', '/image_item');
     }
 
     public $validate = [

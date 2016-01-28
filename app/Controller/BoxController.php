@@ -13,6 +13,7 @@ class BoxController extends AppController
     {
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
+        $this->loadModel('InfoItem');
     }
 
     /**
@@ -28,9 +29,10 @@ class BoxController extends AppController
         // paginate
         $list = $this->paginate($this::MODEL_NAME, $results);
         $this->set('boxList', $list);
+        $this->set('product', $product);
     }
 
-    public function getRequestSortKey()
+    private function getRequestSortKey()
     {
         $order = $this->request->query('order');
         $direction = $this->request->query('direction');
@@ -45,6 +47,12 @@ class BoxController extends AppController
      */
     public function detail()
     {
+        $id = $this->params['id'];
+        $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $id]);
+        $this->set('box', $box);
+
+        $itemList = $this->InfoItem->apiGetResultsWhere([], ['box_id' => $id]);
+        $this->set('itemList', $itemList);
     }
 
     /**
