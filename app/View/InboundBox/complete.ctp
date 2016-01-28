@@ -12,7 +12,7 @@
             <h2>預け入れ完了</h2>
             <p class="form-control-static col-lg-12">預け入れの手続きがが完了しました。</p>
             <span class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="/">マイページへ戻る</a>
+            <a class="btn btn-danger btn-lg btn-block" href="/">マイページへ戻る</a>
             </span>
           </div>
         </div>

@@ -6,6 +6,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="panel panel-default">
+      <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12 none-float">
@@ -13,107 +14,72 @@
             <p class="form-control-static col-lg-12">以下の内容で預け入れ手続きを行います。</p>
             <div class="row box-list">
               <!--loop-->
+              <?php foreach ($boxList as $i => $box): ?>
+              <?php
+                    $formBox = $this->data['Inbound']['box_list'][$box['box_id']];
+                    if (empty($formBox) || $formBox['checkbox'] === '0') {
+                        continue;
+                    }
+                    $kitCd = $box['kit_cd'];
+                    $kitName = '';
+                    if (!empty($formBox['option'])) {
+                        $kitName = KIT_OPTION[$kitCd][$formBox['option']];
+                    }
+                ?>
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <div class="panel-body">
+                  <div class="panel-body <?php echo $this->MyPage->kitCdToClassName($box['kit_cd']); ?>">
                     <div class="row">
                       <div class="col-lg-10 col-md-10 col-sm-12">
-                        <h3>SIDE MS MS-09 ドム ver. A.N.I.M.E.…</h3>
+                        <h3><?php echo $formBox['title']; ?></h3>
                       </div>
                       <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="photo-control">写真撮影する</p>
+                        <p class="photo-control"><?php echo $kitName; ?></p>
                       </div>
                     </div>
                   </div>
                   <div class="panel-footer">
                     <div class="row">
                       <div class="col-lg-10 col-md-10 col-sm-12">
-                        <p class="box-list-caption"><span>商品名</span>デラックスコースボックス</p>
-                        <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
+                        <p class="box-list-caption"><span>商品名</span><?php echo $box['product_name'] ?></p>
+                        <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id'] ?></p>
                       </div>
                       <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
-                        <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
+                        <p class="box-list-caption"><span>入庫日</span>--</p>
+                        <p class="box-list-caption"><span>出庫日</span>--</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!--loop end-->
-              <!--loop-->
-              <div class="col-lg-12">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <div class="row">
-                      <div class="col-lg-10 col-md-10 col-sm-12">
-                        <h3>SIDE MS MS-09 ドム ver. A.N.I.M.E.…</h3>
-                      </div>
-                      <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="photo-control">写真撮影する</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    <div class="row">
-                      <div class="col-lg-10 col-md-10 col-sm-12">
-                        <p class="box-list-caption"><span>商品名</span>デラックスコースボックス</p>
-                        <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
-                      </div>
-                      <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
-                        <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--loop end-->
-              <!--loop-->
-              <div class="col-lg-12">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <div class="row">
-                      <div class="col-lg-10 col-md-10 col-sm-12">
-                        <h3>SIDE MS MS-09 ドム ver. A.N.I.M.E.…</h3>
-                      </div>
-                      <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="photo-control">写真撮影する</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    <div class="row">
-                      <div class="col-lg-10 col-md-10 col-sm-12">
-                        <p class="box-list-caption"><span>商品名</span>デラックスコースボックス</p>
-                        <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
-                      </div>
-                      <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
-                        <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <?php endforeach; ?>
               <!--loop end-->
             </div>
           </div>
         </div>
         <div class="form-group col-lg-12">
           <label>預け入れ方法</label>
-          <p class="form-control-static">ヤマト運輸に集荷依頼する</p>
+          <p class="form-control-static">
+              <?php echo INBOUND_CARRIER_DELIVERY[$this->data['Inbound']['delivery_carrier']] ?>
+          </p>
         </div>
         <div class="form-group col-lg-12">
           <label>集荷の住所</label>
-          <p class="form-control-static">〒000-0000 東京都品川区東品川2-2-33 Nビル 5階　市川　倫之介</p>
+          <p class="form-control-static">
+              <?php echo $this->order->setAddress($address)[$this->data['Inbound']['address_id']] ?>
+          </p>
         </div>
         <div class="form-group col-lg-12">
           <label>集荷の日程</label>
-          <p class="form-control-static">00月00日</p>
+          <p class="form-control-static">
+              <?php echo $this->order->echoOption($dateList, 'date_cd', 'text', $this->data['Inbound']['day_cd']) ?>
+          </p>
         </div>
         <div class="form-group col-lg-12">
           <label>集荷の時間</label>
-          <p class="form-control-static">午前中</p>
+          <p class="form-control-static">
+              <?php echo $this->order->echoOption($timeList, 'time_cd', 'text', $this->data['Inbound']['time_cd']) ?>
+          </p>
         </div>
         <div class="form-group col-lg-12">
           <div class="panel panel-red">
@@ -142,12 +108,13 @@
           </div>
         </div>
         <span class="col-lg-6 col-md-6 col-xs-12">
-        <a class="btn btn-primary btn-lg btn-block animsition-link" href="/inbound/box/add">戻る</a>
+        <a class="btn btn-primary btn-lg btn-block" href="/inbound/box/add?back=true">戻る</a>
         </span>
         <span class="col-lg-6 col-md-6 col-xs-12">
-        <a class="btn btn-danger btn-lg btn-block animsition-link" href="/inbound/box/complete">この内容で預け入れる</a>
+            <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で預け入れる</button>
         </span>
       </div>
+      <?php echo $this->Form->end(); ?>
     </div>
   </div>
 </div>

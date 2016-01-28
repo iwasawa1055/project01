@@ -54,4 +54,27 @@ class OrderHelper extends Helper
 
         return $data;
     }
+
+    public function setOption($list, $idKey, $valueKey)
+    {
+        $data = [];
+        if (is_array($list)) {
+            foreach ($list as $a) {
+                $data[$a[$idKey]] = $a[$valueKey];
+            }
+        }
+        return $data;
+    }
+
+    public function echoOption($list, $idKey, $valueKey, $idValue)
+    {
+        if (is_array($list)) {
+            foreach ($list as $a) {
+                if ($a[$idKey] === $idValue) {
+                    echo $a[$valueKey];
+                    break;
+                }
+            }
+        }
+    }
 }

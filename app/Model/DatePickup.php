@@ -1,6 +1,5 @@
 <?php
 
-App::uses('AppHttp', 'Lib');
 App::uses('AppValid', 'Lib');
 App::uses('ApiModel', 'Model');
 
