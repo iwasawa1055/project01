@@ -1,6 +1,6 @@
   <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
-      <ul class="nav" id="side-menu">
+      <ul class="nav in" id="side-menu">
       <?php if (!$isLogined) { ?>
         <li>
           <a href="https://minikura.com/"><i class="fa fa-home fa-fw"></i> トップページ</a>
