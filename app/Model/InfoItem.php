@@ -8,6 +8,9 @@ class InfoItem extends ApiCachedModel
 
     const SESSION_CACHE_KEY = 'INFO_ITEM_CACHE';
 
+    // 結果ゼロ件チェック
+    protected $checkZeroResultsKey = 'item_id';
+
     public function __construct()
     {
         parent::__construct($this::SESSION_CACHE_KEY, 'InfoItem', '/info_item');
