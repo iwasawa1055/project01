@@ -6,11 +6,12 @@
  */
 class ApiCachedModel extends ApiModel
 {
+    const SESSION_BASE_KEY = 'ApiCachedModel';
     private $sessionKey = '';
 
     public function __construct($sessionKey, $name, $end, $access_point_key = 'minikura_v3')
     {
-        $this->sessionKey = $sessionKey;
+        $this->sessionKey = ApiCachedModel::SESSION_BASE_KEY . '.' . $sessionKey;
         parent::__construct($name, $end, $access_point_key);
     }
 
@@ -74,6 +75,11 @@ class ApiCachedModel extends ApiModel
     public function deleteCache()
     {
         CakeSession::delete($this->sessionKey);
+    }
+
+    public static function deleteAllCache()
+    {
+        CakeSession::delete(ApiCachedModel::SESSION_BASE_KEY);
     }
 
     private function apiGetResultsWithCache($arg = [])

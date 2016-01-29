@@ -40,6 +40,9 @@ class ApiModel extends AppModel
     protected $password = null;
     protected $end_point = null;
 
+    // 結果ゼロ件チェック
+    protected $checkZeroResultsKey = null;
+
     /**
      * [__construct description].
      *
@@ -110,7 +113,16 @@ class ApiModel extends AppModel
 
     public function apiGet($data = [])
     {
-        return $this->requestWithDataAndToken($data, 'GET');
+        $list = $this->requestWithDataAndToken($data, 'GET');
+        // 結果ゼロ件チェックして空配列を返す
+        if (!empty($this->checkZeroResultsKey)) {
+            if (count($list->results) === 1 &&
+                    array_key_exists($this->checkZeroResultsKey, $list->results[0]) &&
+                    empty($list->results[0][$this->checkZeroResultsKey])) {
+                $list->results = [];
+            }
+        }
+        return $list;
     }
     public function apiPost($data)
     {
@@ -131,10 +143,19 @@ class ApiModel extends AppModel
 
     public function beforeApiRequest($url, &$params, $method)
     {
+        // $d = date('H:i:s', time());
+        // $d .= ' bigen -> ' . $url . "\n";
+        // $d .= print_r($params, true);
+        // CakeLog::write(ERROR_LOG, $d);
+
         // TODO: ログ出力？
     }
     public function afterApiRequest($params, $method, &$apiRes)
     {
+        // $d = date('H:i:s', time());
+        // $d .= ' end ';
+        // CakeLog::write(ERROR_LOG, $d);
+
         // 基準となる例外処理
         if (!$apiRes->isSuccess()) {
             new AppMedialCritical(AppE::MEDIAL_SERVER_ERROR.$apiRes->message.', '.$apiRes->results['support'], 500);

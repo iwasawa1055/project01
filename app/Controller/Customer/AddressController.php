@@ -74,12 +74,7 @@ class AddressController extends AppController
                 return $this->render('confirm');
             } elseif ($step === 'complete') {
                 // create
-                $res = $this->CustomerAddress->apiPost($this->CustomerAddress->data);
-                if (!$res->isSuccess()) {
-                    // TODO:
-                    $this->Session->setFlash('try again');
-                    return $this->redirect(['action' => 'add']);
-                }
+                $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
                 return $this->render('complete');
             }
         }
@@ -113,13 +108,7 @@ class AddressController extends AppController
                 return $this->render('confirm');
             } elseif ($step === 'complete') {
                 // update
-                $res = $this->CustomerAddress->apiPut($this->CustomerAddress->data);
-                if (!$res->isSuccess()) {
-                    // TODO:
-                    $this->Session->setFlash('try again');
-                    return $this->redirect(['action' => 'add']);
-                }
-
+                $this->CustomerAddress->apiPut($this->CustomerAddress->toArray());
                 return $this->render('complete');
             }
         }

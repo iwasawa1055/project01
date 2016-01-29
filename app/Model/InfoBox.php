@@ -47,7 +47,7 @@ class InfoBox extends ApiCachedModel
     }
 
     // 入庫画面で表示
-    public function getListForInbound($sortKeyList = [])
+    public function getListForInbound()
     {
         $all = $this->apiGetResults();
         $list = [];
@@ -56,6 +56,7 @@ class InfoBox extends ApiCachedModel
                 $list[] = $a;
             }
         }
+        $this->sort($list, [], $this->defaultSortKey);
         return $list;
     }
 
@@ -110,6 +111,7 @@ class InfoBox extends ApiCachedModel
                 $list[] = $a;
             }
         }
+        $this->sort($list, [], $this->defaultSortKey);
         return $list;
     }
 

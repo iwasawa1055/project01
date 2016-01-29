@@ -20,15 +20,6 @@ class MyPageController extends AppController
         $boxList = $this->InfoBox->getListForServiced();
         $itemList = $this->InfoItem->apiGetResults(['limit' => 8]);
 
-        $imageItemList = [];
-        foreach ($itemList as $index => $item) {
-            $res = $this->ImageItem->apiGet([
-                'item_id' => $item['item_id'],
-                'limit' => 1,
-            ]);
-            $itemList[$index]['images_item'] = $res->results[0];
-        }
-
         $this->set('itemList', $itemList);
         $this->set('boxList', $boxList);
     }

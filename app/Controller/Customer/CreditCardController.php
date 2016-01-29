@@ -67,12 +67,7 @@ class CreditCardController extends AppController
         $this->PaymentGMOSecurityCard->set($session_data);
         if ($this->PaymentGMOSecurityCard->validates()) {
             // api
-            $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->data);
-            if (!$res->isSuccess()) {
-                // TODO:
-                $this->Session->setFlash('try again');
-                return $this->redirect(['action' => 'edit']);
-            }
+            $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
         } else {
             // TODO:
             $this->Session->setFlash('try again');
