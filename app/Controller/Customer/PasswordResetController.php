@@ -58,12 +58,7 @@ class PasswordResetController extends AppController
         $this->CustomerPasswordReset->set($data);
         if ($this->CustomerPasswordReset->validates()) {
             // api
-            $res = $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->data);
-            if (!$res->isSuccess()) {
-                // TODO:
-                $this->Session->setFlash('try again');
-                return $this->redirect(['action' => 'add']);
-            }
+            $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->toArray());
             $this->set('email', $this->CustomerPasswordReset->toArray()['email']);
         } else {
             // TODO:
