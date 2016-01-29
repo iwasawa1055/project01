@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('ApiCachedModel', 'Model');
 
 class LoginController extends AppController
 {
@@ -32,7 +33,9 @@ class LoginController extends AppController
         if ($this->UserLogin->validates()) {
             $res = $this->UserLogin->login();
             // TODO: 例外処理
+            // TODO: カスタマー情報を取得しセッションに保存する
             return $this->redirect('/mypage');
+
         } else {
             $this->set('validerror', $this->UserLogin->validationErrors);
 
@@ -44,6 +47,9 @@ class LoginController extends AppController
     {
         $this->loadModel('UserLogin');
         $this->UserLogin->logout();
+
+        // セッション値をクリア
+        ApiCachedModel::deleteAllCache();
 
         return $this->redirect('/login');
     }
