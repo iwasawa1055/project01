@@ -136,4 +136,10 @@ class AppModel extends Model
         $value = current($_check);
         return AppValid::isFwKana($value);
     }
+
+    public function isLoginPassword($_check)
+    {
+        $value = current($_check);
+        return AppValid::isLoginPassword($value);
+    }
 }

@@ -424,5 +424,13 @@ class AppValid
 		}
 		return true;
 	}
+
+	public static function isLoginPassword(&$_value)
+	{
+		if (! preg_match('/^[0-9a-zA-Z!,.:?@^_~]{6,64}$/', $_value)) {
+			return false;
+		}
+		return true;
+	}
 }
 
