@@ -4,9 +4,9 @@
     Router::connect('/', ['controller' => 'mypage', 'action' => 'index']);
 
     // customer
-    Router::connect('/customer/:controller', ['action' => 'index']);
-    Router::connect('/customer/:controller/:action');
-    Router::connect('/customer/:controller/:action/:step');
+    Router::connect('/customer/:controller', ['action' => 'index', 'customer' => true]);
+    Router::connect('/customer/:controller/:action', ['customer' => true]);
+    Router::connect('/customer/:controller/:action/:step', ['customer' => true]);
 
     // inbound
     Router::connect('/inbound/box', ['controller' => 'InboundBox', 'action' => 'index']);

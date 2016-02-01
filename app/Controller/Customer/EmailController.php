@@ -18,7 +18,7 @@ class EmailController extends AppController
     /**
      * 入力
      */
-    public function edit()
+    public function customer_edit()
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
@@ -30,20 +30,20 @@ class EmailController extends AppController
     /**
      * 確認
      */
-    public function confirm()
+    public function customer_confirm()
     {
         $this->CustomerEmail->set($this->request->data);
         if ($this->CustomerEmail->validates()) {
             CakeSession::write($this::MODEL_NAME, $this->CustomerEmail->data);
         } else {
-            return $this->render('edit');
+            return $this->render('customer_edit');
         }
     }
 
     /**
      * 完了
      */
-    public function complete()
+    public function customer_complete()
     {
         $data = CakeSession::read($this::MODEL_NAME);
         CakeSession::delete($this::MODEL_NAME);

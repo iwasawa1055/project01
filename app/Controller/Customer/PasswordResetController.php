@@ -38,7 +38,7 @@ class PasswordResetController extends AppController
         if ($this->CustomerPasswordReset->validates()) {
             CakeSession::write($this::MODEL_NAME, $this->CustomerPasswordReset->data);
         } else {
-            return $this->render('add');
+            return $this->render('customer_add');
         }
     }
 
