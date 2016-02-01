@@ -4,11 +4,11 @@ App::uses('AppHttp', 'Lib');
 App::uses('AppValid', 'Lib');
 App::uses('ApiModel', 'Model');
 
-class UserLogin extends ApiModel
+class CustomerLogin extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('UserLogin', '/login');
+        parent::__construct('CustomerLogin', '/login');
     }
 
     public function isLogined()

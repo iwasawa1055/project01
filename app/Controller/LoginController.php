@@ -27,17 +27,18 @@ class LoginController extends AppController
      */
     public function doing()
     {
-        $this->loadModel('UserLogin');
-        $this->UserLogin->set($this->request->data);
+        $this->loadModel('CustomerLogin');
+        $this->CustomerLogin->set($this->request->data);
 
-        if ($this->UserLogin->validates()) {
-            $res = $this->UserLogin->login();
+        if ($this->CustomerLogin->validates()) {
+            $res = $this->CustomerLogin->login();
             // TODO: 例外処理
             // TODO: カスタマー情報を取得しセッションに保存する
             return $this->redirect('/mypage');
 
         } else {
-            $this->set('validerror', $this->UserLogin->validationErrors);
+            $this->set('validerror', $this->CustomerLogin->validationErrors);
+// pr($this->CustomerLogin->validationErrors);
 
             return $this->render('/login');
         }
@@ -45,8 +46,8 @@ class LoginController extends AppController
 
     public function logout()
     {
-        $this->loadModel('UserLogin');
-        $this->UserLogin->logout();
+        $this->loadModel('CustomerLogin');
+        $this->CustomerLogin->logout();
 
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
