@@ -150,14 +150,19 @@ class ApiModel extends AppModel
 
         // TODO: ログ出力？
     }
+
     public function afterApiRequest($params, $method, &$apiRes)
     {
-        // $d = date('H:i:s', time());
-        // $d .= ' end ';
-        // CakeLog::write(ERROR_LOG, $d);
-
+        if ($apiRes->http_code === 400) {
+            // TODO:
+            $apiRes->error_message = '不正なリクエストです。';
+        }
+        if ($apiRes->http_code === 402) {
+            // TODO:どんな状況？
+            $apiRes->error_message = 'Payment Required（未払い）';
+        }
         // 基準となる例外処理
-        if (!$apiRes->isSuccess()) {
+        if (500 <= $apiRes->http_code) {
             new AppMedialCritical(AppE::MEDIAL_SERVER_ERROR.$apiRes->message.', '.$apiRes->results['support'], 500);
         }
     }
@@ -219,13 +224,18 @@ class ApiResponse
 {
     public $status = null;
     public $message = null;
-    public $results = null;
+    public $respults = null;
+    public $http_code = null;
+    public $error_message = null;
 
-    public function __construct($json)
+    public function __construct($resp)
     {
+        $json = $resp['body_parsed']; 
         $this->status = $json['status'];
         $this->message = $json['message'];
         $this->results = $json['results'];
+
+        $this->http_code = $resp['headers']['http_code'];
     }
     public function isSuccess()
     {
