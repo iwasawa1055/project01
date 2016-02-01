@@ -1,7 +1,5 @@
 <?php
 
-App::uses('AppHttp', 'Lib');
-App::uses('AppValid', 'Lib');
 App::uses('ApiModel', 'Model');
 
 class CustomerLogin extends ApiModel
@@ -18,17 +16,17 @@ class CustomerLogin extends ApiModel
 
     public function login()
     {
-        // $params = [
-            // 		'oem_key' => $this->oem_key,
-            // 		'email' => $email,
-            // 		'password' => $password,
-            // ];
-
         $this->data[$this->model_name]['oem_key'] = $this->oem_key;
         $responses = $this->request('/login', $this->data[$this->model_name], 'GET');
 
-        CakeSession::write($this::SESSION_API_TOKEN, $responses->results['token']);
-        CakeSession::write($this::SESSION_API_DIVISION, $responses->results['division']);
+        // api error
+        if (empty($responses->error_message)) {
+            CakeSession::write($this::SESSION_API_TOKEN, $responses->results['token']);
+            CakeSession::write($this::SESSION_API_DIVISION, $responses->results['division']);
+        } else {
+            $responses->error_message = 'メールアドレスまたはパスワードに誤りがあるか、登録されていません。';
+        }
+
         return $responses;
     }
 
@@ -39,16 +37,21 @@ class CustomerLogin extends ApiModel
     }
 
     public $validate = [
-        // 'oem_key' => [
-        // 	'required' => true,
-        // ],
         'email' => [
-            'rule' => ['maxLength', 29],
-            'required' => true,
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => 'メールアドレスは必須です',
+            ],
+            'isMailAddress' => [
+                'rule' => 'isMailAddress',
+                'message' => 'メールアドレスの形式が正しくありません',
+            ],
         ],
         'password' => [
-            'rule' => '/^[0-9a-zA-Z!,.:?@^_~]{6,64}$/i',
-            'required' => true,
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => 'パスワードは必須です',
+             ],
         ],
     ];
 }
