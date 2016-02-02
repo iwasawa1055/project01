@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 .box_select_checkbox input {
     position: absolute;
     top: 0;
@@ -9,8 +11,8 @@
     content: "ボックス選択"
 }
 .box_select_checkbox input[type="checkbox"]:checked + button {
-    background-color: #ff0000;
-    border-color: rgb(212, 63, 58);
+    background-color: #727272;
+    border-color: #727272;
 }
 .box_select_checkbox input[type="checkbox"]:checked + button:after {
     content: "選択解除"
