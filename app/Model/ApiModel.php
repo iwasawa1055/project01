@@ -70,7 +70,10 @@ class ApiModel extends AppModel
         foreach ($apiRes as $a) {
             $notMatch = false;
             foreach ($where as $key => $value) {
-                if (!array_key_exists($key, $a) || $a[$key] !== $value) {
+                if (!is_array($value)) {
+                    $value = [$value];
+                }
+                if (!array_key_exists($key, $a) || !in_array($a[$key], $value, true)) {
                     $notMatch = true;
                     break;
                 }
