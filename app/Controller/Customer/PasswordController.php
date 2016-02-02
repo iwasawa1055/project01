@@ -13,16 +13,16 @@ class PasswordController extends AppController
     }
 
     /**
-     * 
+     *
      */
-    public function edit()
+    public function customer_edit()
     {
     }
 
     /**
-     * 
+     *
      */
-    public function complete()
+    public function customer_complete()
     {
     }
 }

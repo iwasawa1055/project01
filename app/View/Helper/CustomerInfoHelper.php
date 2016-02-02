@@ -13,12 +13,6 @@ class CustomerInfoHelper extends Helper
         return "{$data['lastname']}　{$data['firstname']}（{$data['lastname_kana']}　{$data['firstname_kana']}）";
     }
 
-    public function setName($data)
-    {
-        // 姓　名（セイ　名）
-        return "{$data['lastname']}　{$data['firstname']}（{$data['lastname_kana']}　{$data['firstname_kana']}）";
-    }
-
     public function setBirth($data)
     {
         // year年month月day日

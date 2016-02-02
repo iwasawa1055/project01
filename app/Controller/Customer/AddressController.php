@@ -17,7 +17,7 @@ class AddressController extends AppController
         $this->set('action', $this->action);
     }
 
-    public function index()
+    public function customer_index()
     {
         $res = $this->CustomerAddress->apiGet();
         $this->set('address', $res->results);
@@ -54,19 +54,19 @@ class AddressController extends AppController
     /**
      *
      */
-    public function add()
+    public function customer_add()
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
 
         if ($this->request->is('get')) {
-            return $this->render('add');
+            return $this->render('customer_add');
         } elseif ($this->request->is('post')) {
 
             // validates
             $this->CustomerAddress->set($this->request->data);
             if (!$this->CustomerAddress->validates()) {
-                return $this->render('add');
+                return $this->render('customer_add');
             }
 
             if ($step === 'confirm') {
@@ -75,7 +75,7 @@ class AddressController extends AppController
             } elseif ($step === 'complete') {
                 // create
                 $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
-                return $this->render('complete');
+                return $this->render('customer_complete');
             }
         }
     }
@@ -83,7 +83,7 @@ class AddressController extends AppController
     /**
      *
      */
-    public function edit()
+    public function customer_edit()
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
@@ -94,22 +94,22 @@ class AddressController extends AppController
             $this->CustomerAddress->set($this->request->query);
             $this->setRequestDataFromSessionList('address_id');
 
-            return $this->render('add');
+            return $this->render('customer_add');
         } elseif ($this->request->is('post')) {
 
             // validates
             $this->CustomerAddress->set($this->request->data);
             if (!$this->CustomerAddress->validates()) {
-                return $this->render('add');
+                return $this->render('customer_add');
             }
 
             if ($step === 'confirm') {
-                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
-                return $this->render('confirm');
+                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->toArray());
+                return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // update
                 $this->CustomerAddress->apiPut($this->CustomerAddress->toArray());
-                return $this->render('complete');
+                return $this->render('customer_complete');
             }
         }
     }
@@ -117,7 +117,7 @@ class AddressController extends AppController
     /**
      *
      */
-    public function delete()
+    public function customer_delete()
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
@@ -129,7 +129,7 @@ class AddressController extends AppController
             if ($step === 'confirm') {
                 $this->setRequestDataFromSessionList('address_id');
                 CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
-                return $this->render('confirm');
+                return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // delete
                 $res = $this->CustomerAddress->apiDelete($this->CustomerAddress->data);
@@ -138,7 +138,7 @@ class AddressController extends AppController
                     $this->Session->setFlash('try again');
                     return $this->redirect(['action' => 'add']);
                 }
-                return $this->render('complete');
+                return $this->render('customer_complete');
             }
         }
     }

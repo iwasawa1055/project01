@@ -39,13 +39,13 @@ class InfoController extends AppController
     /**
      * ユーザー情報変更
      */
-    public function edit()
+    public function customer_edit()
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
 
         if ($this->request->is('get')) {
-            return $this->render('edit');
+            return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
             // validates
             $this->CustomerInfo->set($this->request->data);
@@ -56,17 +56,17 @@ class InfoController extends AppController
             $this->CustomerInfo->data[$this::MODEL_NAME_CUSTOMER]['birth'] = implode('-', $birth);
 
             if (!$this->CustomerInfo->validates()) {
-                return $this->render('edit');
+                return $this->render('customer_edit');
             }
 
             if ($step === 'confirm') {
                 CakeSession::write($this::MODEL_NAME_CUSTOMER, $this->CustomerInfo->data);
-                return $this->render('confirm');
+                return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // update
                 $res = $this->CustomerInfo->apiPatchResults($this->CustomerInfo->toArray());
 
-                return $this->render('complete');
+                return $this->render('customer_complete');
             }
         }
     }
