@@ -4,7 +4,8 @@ App::uses('AppController', 'Controller');
 
 class CreditCardController extends AppController
 {
-    const MODEL_NAME = 'PaymentGMOSecurityCard';
+    const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
+    const MODEL_NAME_CARD = 'PaymentGMOCard';
 
     /**
      * 制御前段処理.
@@ -12,7 +13,8 @@ class CreditCardController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        $this->loadModel($this::MODEL_NAME_SECURITY);
+        $this->loadModel($this::MODEL_NAME_CARD);
     }
 
     /**
@@ -22,9 +24,12 @@ class CreditCardController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data = CakeSession::read($this::MODEL_NAME_SECURITY);
+        } else {
+            $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
+            $this->request->data[$this::MODEL_NAME_SECURITY] = $default_payment;
         }
-        CakeSession::delete($this::MODEL_NAME);
+        CakeSession::delete($this::MODEL_NAME_SECURITY);
     }
 
     /**
@@ -43,8 +48,8 @@ class CreditCardController extends AppController
             // Expire year 表示用
             $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
 
-            $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME]);
-            CakeSession::write($this::MODEL_NAME, $this->PaymentGMOSecurityCard->data);
+            $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME_SECURITY]);
+            CakeSession::write($this::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
         } else {
             return $this->render('customer_edit');
         }
@@ -55,8 +60,8 @@ class CreditCardController extends AppController
      */
     public function customer_complete()
     {
-        $session_data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
+        $session_data = CakeSession::read($this::MODEL_NAME_SECURITY);
+        CakeSession::delete($this::MODEL_NAME_SECURITY);
 
         if (empty($session_data)) {
             // TODO:
@@ -67,7 +72,12 @@ class CreditCardController extends AppController
         $this->PaymentGMOSecurityCard->set($session_data);
         if ($this->PaymentGMOSecurityCard->validates()) {
             // api
-            $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+            $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+            if (!empty($res->error_message)) {
+                // TODO: 例外処理
+                $this->Session->setFlash($res->error_message);
+                return $this->redirect(['action' => 'edit']);
+            }
         } else {
             // TODO:
             $this->Session->setFlash('try again');
