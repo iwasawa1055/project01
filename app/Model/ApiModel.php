@@ -65,12 +65,19 @@ class ApiModel extends AppModel
 
     public function apiGetResultsWhere($data = [], $where = [], $firstOnly = false)
     {
+        $keyList = array_keys($where);
+        if (count($keyList) === 0) {
+            return [];
+        }
         $apiRes = $this->apiGetResults($data);
         $findList = [];
         foreach ($apiRes as $a) {
             $notMatch = false;
             foreach ($where as $key => $value) {
-                if (!array_key_exists($key, $a) || $a[$key] !== $value) {
+                if (!is_array($value)) {
+                    $value = [$value];
+                }
+                if (!array_key_exists($key, $a) || !in_array($a[$key], $value, true)) {
                     $notMatch = true;
                     break;
                 }
