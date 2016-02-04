@@ -12,12 +12,9 @@ class LoginTest extends MinikuraTestCase
         $this->byName('data[CustomerLogin][password]')->value('happyhappy');
         $this->byXPath("//button[@type='submit']")->click();
         $this->waitPageLoad();
-        try {
-            $result = $this->byCssSelector("p.error-message")->text();
-            $this->assertEquals("メールアドレスは必須です", $result);
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
-            array_push($this->verificationErrors, $e->__toString());
-        }
+
+        $result = $this->byCssSelector("p.error-message")->text();
+        $this->assertEquals("メールアドレスは必須です", $result);
     }
 
     public function testInvalidWithoutPassword()
@@ -28,12 +25,9 @@ class LoginTest extends MinikuraTestCase
         $this->byName('data[CustomerLogin][password]')->value('');
         $this->byXPath("//button[@type='submit']")->click();
         $this->waitPageLoad();
-        try {
-            $result = $this->byCssSelector("p.error-message")->text();
-            $this->assertEquals("パスワードは必須です", $result);
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
-            array_push($this->verificationErrors, $e->__toString());
-        }
+
+        $result = $this->byCssSelector("p.error-message")->text();
+        $this->assertEquals("パスワードは必須です", $result);
     }
 
     public function testInvalidUserNotRegistered()
@@ -44,12 +38,9 @@ class LoginTest extends MinikuraTestCase
         $this->byName('data[CustomerLogin][password]')->value('happyhappy');
         $this->byXPath("//button[@type='submit']")->click();
         $this->waitPageLoad();
-        try {
-            $result = $this->byId("flashMessage")->text();
-            $this->assertEquals("メールアドレスまたはパスワードに誤りがあるか、登録されていません。", $result);
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
-            array_push($this->verificationErrors, $e->__toString());
-        }
+
+        $result = $this->byId("flashMessage")->text();
+        $this->assertEquals("メールアドレスまたはパスワードに誤りがあるか、登録されていません。", $result);
     }
 
     public function testLoginSuccess()
@@ -60,11 +51,8 @@ class LoginTest extends MinikuraTestCase
         $this->byName('data[CustomerLogin][password]')->value('happyhappy');
         $this->byXPath("//button[@type='submit']")->click();
         $this->waitPageLoad();
-        try {
-            $result = $this->byCssSelector('h1.page-header')->text();
-            $this->assertEquals('マイページ', $result);
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
-            array_push($this->verificationErrors, $e->__toString());
-        }
+
+        $result = $this->byCssSelector('h1.page-header')->text();
+        $this->assertEquals('マイページ', $result);
     }
 }
