@@ -13,7 +13,7 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <h3><?php echo $announcement['title'] ?></h3>
-                      <h4 class="date"><?php echo $announcement['date'] ?></h4>
+                      <h4 class="date"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>
                       <h5 class="date">お知らせID：<?php echo $announcement['announcement_id'] ?></h5>
                     </div>
                   </div>
