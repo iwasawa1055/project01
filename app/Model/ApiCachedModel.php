@@ -84,6 +84,7 @@ class ApiCachedModel extends ApiModel
 
     private function apiGetResultsWithCache($arg = [])
     {
+        // TODO: 引数からキャッシュキーを作る
         $key = 'apiGet';
         $list = $this->readCache($key);
         if (!empty($list)) {

@@ -2,6 +2,7 @@
 
 App::uses('AppController', 'Controller');
 App::uses('ApiCachedModel', 'Model');
+App::uses('OutboundList', 'Model');
 
 class LoginController extends AppController
 {
@@ -20,36 +21,39 @@ class LoginController extends AppController
      */
     public function index()
     {
-    }
+        if ($this->request->is('post')) {
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->set($this->request->data);
 
-    /**
-     * ログイン.
-     */
-    public function doing()
-    {
-        $this->loadModel('UserLogin');
-        $this->UserLogin->set($this->request->data);
+            if ($this->CustomerLogin->validates()) {
 
-        if ($this->UserLogin->validates()) {
-            $res = $this->UserLogin->login();
-            // TODO: 例外処理
-            // TODO: カスタマー情報を取得しセッションに保存する
-            return $this->redirect('/mypage');
+                $res = $this->CustomerLogin->login();
+                if (!empty($res->error_message)) {
+                    // TODO: 例外処理
+                    $this->request->data['CustomerLogin']['password'] = '';
+                    $this->Session->setFlash($res->error_message);
+                    return $this->render('index');
+                }
 
-        } else {
-            $this->set('validerror', $this->UserLogin->validationErrors);
+                // TODO: 債務ユーザーの場合
+                // TODO: カスタマー情報を取得しセッションに保存する
+                return $this->redirect('/');
 
-            return $this->render('/login');
+            } else {
+                $this->request->data['CustomerLogin']['password'] = '';
+                return $this->render('index');
+            }
         }
     }
 
     public function logout()
     {
-        $this->loadModel('UserLogin');
-        $this->UserLogin->logout();
+        $this->loadModel('CustomerLogin');
+        $this->CustomerLogin->logout();
 
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
+        OutboundList::delete();
 
         return $this->redirect('/login');
     }

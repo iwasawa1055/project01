@@ -8,24 +8,21 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="col-lg-12 col-md-12 none-title">
-            <form action="/login/doing" method="post">
+            <?php echo $this->Form->create('CustomerLogin', ['url' => '/login', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="form-group">
-                <input class="form-control" placeholder="メールアドレス" name="email" type="email" autofocus>
+                <!-- <input class="form-control" placeholder="メールアドレス" name="email" type="email" autofocus> -->
+                <?php echo $this->Form->input('CustomerLogin.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
+                <?php echo $this->Form->error('CustomerLogin.email', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <input class="form-control" placeholder="パスワード" name="password" type="password" value="">
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input name="remember" type="checkbox" value="Remember Me">
-                  次回ログイン時に入力を省く </label>
+                <!-- <input class="form-control" placeholder="パスワード" name="password" type="password" value=""> -->
+                <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false]); ?>
+                <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link" >ログイン</button>
-            </form>
-              <a class="btn btn-block btn-social btn-lg btn-facebook"><i class="fa fa-facebook"></i>Facebook アカウントでログイン</a>
+            <?php echo $this->Form->end(); ?>
               <a class="btn btn-info btn-xs btn-block animsition-link" href="/customer/password_reset/add">パスワードを忘れた方はこちら</a>
               <a class="btn btn-primary btn-xs btn-block animsition-link" href="/customer/register/add">ユーザー登録はこちら</a>
-              <a class="btn btn-default btn-xs btn-block animsition-link" href="credit_card_reset/index.html">※債務クレジットカードの場合</a>
             </div>
           </div>
         </div>

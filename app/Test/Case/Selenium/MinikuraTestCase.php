@@ -18,7 +18,7 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
     public function waitPageLoad()
     {
         // wait
-        usleep(0.5 * 1000000);
+        usleep(1.5 * 1000000);
     }
 
     // 失敗時
@@ -35,5 +35,20 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
 
         $filedata = $this->currentScreenshot();
         file_put_contents($fileName, $filedata);
+    }
+
+    // テスト実施前ログイン
+    public function setLogin()
+    {
+        $this->url('/login');
+        $this->waitPageLoad();
+        $this->byName('data[CustomerLogin][email]')->value('150@terrada.co.jp');
+        $this->byName('data[CustomerLogin][password]')->value('happyhappy');
+        $this->byXPath("//button[@type='submit']")->click();
+    }
+
+    public function getCurrentUrlPath()
+    {
+        return '/'.str_replace($this->getBrowserUrl(), '', $this->url());
     }
 }

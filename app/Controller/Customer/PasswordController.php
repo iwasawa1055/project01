@@ -4,12 +4,15 @@ App::uses('AppController', 'Controller');
 
 class PasswordController extends AppController
 {
+    const MODEL_NAME = 'CustomerPassword';
+
     /**
      * 制御前段処理.
      */
     public function beforeFilter()
     {
         AppController::beforeFilter();
+        $this->loadModel($this::MODEL_NAME);
     }
 
     /**
@@ -24,5 +27,17 @@ class PasswordController extends AppController
      */
     public function customer_complete()
     {
+        $this->CustomerPassword->set($this->request->data);
+        if ($this->CustomerPassword->validates()) {
+            // api
+            $res = $this->CustomerPassword->apiPatch($this->CustomerPassword->toArray());
+            if (!empty($res->error_message)) {
+                // TODO:　モデル
+                $this->Session->setFlash('パスワードを変更できませんでした。現在のパスワードが正しいかご確認ください。');
+                return $this->redirect(['action' => 'edit']);
+            }
+        } else {
+            return $this->render('customer_edit');
+        }
     }
 }

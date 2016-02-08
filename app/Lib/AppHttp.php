@@ -9,8 +9,8 @@ class AppHttp
         //debug($curls);
 
         // json形式として分解
-        $result = self::_parse($curls['body'], 'json');
-        return $result;
+        $curls['body_parsed'] = self::_parse($curls['body'], 'json');
+        return $curls;
     }
 
     protected static function _curl($_url, $_requests, $_method = null, $_headers = array())

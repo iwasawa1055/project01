@@ -6,7 +6,7 @@ App::uses('AppSecurity', 'Lib');
 class AppController extends Controller
 {
     public $helpers = ['Html', 'Title'];
-    public $uses = ['UserLogin', 'Announcement', 'InfoBox'];
+    public $uses = ['CustomerLogin', 'Announcement', 'InfoBox'];
 
     // ログインチェックが必要か？
     protected $checkLogined = true;
@@ -36,11 +36,11 @@ class AppController extends Controller
         //* Request Count
         // CakeSession::$requestCountdown = 10000;
 
-        $this->set('isLogined', $this->UserLogin->isLogined());
+        $this->set('isLogined', $this->CustomerLogin->isLogined());
 
         // announcements of header
         if ($this->checkLogined) {
-            if (!$this->UserLogin->isLogined()) {
+            if (!$this->CustomerLogin->isLogined()) {
                 $this->redirect('/login');
                 exit;
             }
