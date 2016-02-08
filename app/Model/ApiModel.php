@@ -180,6 +180,8 @@ class ApiModel extends AppModel
         // トークンを指定する
         $token = CakeSession::read('api.token');
         $params['token'] = $token;
+        // TODO: 設定を外出し
+        $params['debug'] = 1;
 
         // API問い合わせを行う　レスポンス型クラスを生成
         $apiRes = $this->request($this->end_point, $params, $method);
@@ -237,7 +239,7 @@ class ApiResponse
 
     public function __construct($resp)
     {
-        $json = $resp['body_parsed']; 
+        $json = $resp['body_parsed'];
         $this->status = $json['status'];
         $this->message = $json['message'];
         $this->results = $json['results'];
