@@ -8,7 +8,8 @@ class OutboundController extends AppController
 {
     const MODEL_NAME = 'Outbound';
 
-    private $outboundList = null;
+    private $outboundList = [];
+    private $addressList = [];
 
     /**
      * 制御前段処理.
@@ -19,25 +20,79 @@ class OutboundController extends AppController
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
         $this->loadModel('CustomerAddress');
-        $this->loadModel('OutboundDeliveryDatetime');
+        $this->loadModel('DatetimeDeliveryOutbound');
         $this->loadModel('Outbound');
 
         // 配送先
         // TODO 契約情報も取得する
-        $addressList = $this->CustomerAddress->apiGetResults();
-        // $this->address = $addressList;
-        $this->set('addressList', $addressList);
-        // TODO: 都度取得？
-        $dateTimeList = $this->OutboundDeliveryDatetime->apiGetResults();
-        foreach ($dateTimeList as &$dt) {
-            $dt['text'] = $dt['datetime_cd'];
-        }
-        $this->set('dateItemList', $dateTimeList);
+        $this->addressList = $this->CustomerAddress->apiGetResults();
+        // $this->address = $this->addressList;
+        $this->set('addressList', $this->addressList);
 
         // 取り出しリスト
         $this->outboundList = OutboundList::restore();
     }
 
+    /**
+     *
+     */
+    public function getAddressDatetime()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+        $this->autoRender = false;
+        $addressId = $this->request->data['address_id'];
+        $address = $this->getAddress($addressId);
+        $datetime = $this->getDatetime($address['postal']);
+        $status = !empty($datetime);
+        return json_encode(compact('status', 'result'));
+    }
+    private function getDatetime($postal)
+    {
+        $result = $this->DatetimeDeliveryOutbound->apiGet([
+            'postal' => $postal,
+        ]);
+        return $result->results;
+    }
+    private function getAddress($addressId)
+    {
+        foreach ($this->addressList as $address) {
+            if ($address['address_id'] === $addressId) {
+                return $address;
+            }
+        }
+    }
+    private function getDatetimeOne($postal, $datetimeCd)
+    {
+        $list = $this->getDatetime($postal);
+        foreach ($list as $datetime) {
+            if ($datetime['datetime_cd'] === $datetimeCd) {
+                return $datetime;
+            }
+        }
+    }
+
+    public function mono()
+    {
+        if ($this->request->is('post')) {
+            // item
+            $itemIdList = Hash::get($this->request->data, 'item_list');
+            $where = $this->getCheckedItemToArray($itemIdList, 'checkbox', 'item_id');
+            $itemList = $this->InfoItem->apiGetResultsWhere([], $where);
+            $this->outboundList->setItemAndSave($itemList);
+            $this->redirect(['action' => 'index']);
+        }
+
+        // mono
+        $outItemList = $this->outboundList->getItemList();
+        $outItemKeyList = array_keys($outItemList);
+        $list = $this->InfoItem->getListForServiced();
+        foreach ($list as &$item) {
+            $item['outbound_list'] = in_array($item['item_id'], $outItemKeyList, true);
+        }
+        $this->set('itemList', $list);
+    }
 
     public function item()
     {
@@ -65,7 +120,6 @@ class OutboundController extends AppController
      */
     public function box()
     {
-        // $outItemList = $this->outboundList->getItemList();
         if ($this->request->is('post')) {
             // box
             $boxIdList = Hash::get($this->request->data, 'box_list');
@@ -92,6 +146,22 @@ class OutboundController extends AppController
     {
         $this->set('boxList', $this->outboundList->getBoxList());
         $this->set('itemList', $this->outboundList->getItemList());
+
+        $postal = $this->addressList[0]['postal'];
+
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $addressId = $this->request->data['Outbound']['address_id'];
+            $address = $this->getAddress($addressId);
+            $postal = $address['postal'];
+        }
+
+        // お届け希望日と時間
+        $dateTimeList = $this->DatetimeDeliveryOutbound->apiGetResults(['postal' => $postal]);
+        $this->set('dateItemList', $dateTimeList);
+
+        CakeSession::delete($this::MODEL_NAME);
     }
 
     /**
@@ -124,13 +194,7 @@ class OutboundController extends AppController
      */
     public function confirm()
     {
-        // $out = OutboundList::restore();
-
         if ($this->request->is('post')) {
-
-            // $boxList = Hash::get($this->request->data, 'box_list');
-            // $itemList = Hash::get($this->request->data, 'item_list');
-            // $this->Outbound->set(['Outbound' => $this->request->data['Outbound']]);
 
             // box
             $boxIdList = Hash::get($this->request->data, 'box_list');
@@ -149,19 +213,12 @@ class OutboundController extends AppController
             unset($data['box_list']);
             unset($data['item_list']);
 
-
-            // params
-            // $product = '';
-            // foreach ($boxList as $box) {
-            //     $product .= "${box['product_cd']}:${box['box_id']}:,";
-            // }
-            // $product = rtrim($product, ',');
+            // product
             $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
 
             // お届け先
             $addressId = $data['Outbound']['address_id'];
             $address = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
-            unset($data['Outbound']['address_id']);
 
             $data['Outbound']['lastname'] = $address['lastname'];
             $data['Outbound']['lastname_kana'] = $address['lastname_kana'];
@@ -174,16 +231,12 @@ class OutboundController extends AppController
             $data['Outbound']['address2'] = $address['address2'];
             $data['Outbound']['address3'] = $address['address3'];
 
-            // お届け
-            // $datetime = $data['Outbound']['datetime_cd'];
-            // $data
-
             $this->Outbound->set($data);
             if ($this->Outbound->validates()) {
                 $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
                 // お届け希望日時
-                $datetime = $data['Outbound']['datetime_cd'];
-                $this->set('datetime', $datetime);
+                $datetime = $this->getDatetimeOne($address['postal'], $data['Outbound']['datetime_cd']);
+                $this->set('datetime_text', $datetime['text']);
                 CakeSession::write($this::MODEL_NAME, $this->Outbound->data);
             } else {
                 return $this->render('index');
@@ -198,6 +251,7 @@ class OutboundController extends AppController
     {
         $data = CakeSession::read($this::MODEL_NAME);
         CakeSession::delete($this::MODEL_NAME);
+        unset($data['Outbound']['address_id']);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');

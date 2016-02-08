@@ -52,7 +52,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>
-              <p class="form-control-static"><?php echo $datetime; ?></p>
+              <p class="form-control-static"><?php echo $datetime_text; ?></p>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
             <a class="btn btn-primary btn-lg btn-block" href="/outbound/?back=true">戻る</a>

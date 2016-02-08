@@ -2,6 +2,7 @@
 
 App::uses('AppController', 'Controller');
 App::uses('ApiCachedModel', 'Model');
+App::uses('OutboundList', 'Model');
 
 class LoginController extends AppController
 {
@@ -52,6 +53,7 @@ class LoginController extends AppController
 
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
+        OutboundList::delete();
 
         return $this->redirect('/login');
     }

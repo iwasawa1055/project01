@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/outbound', ['block' => 'scriptMinikura']); ?>
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i>取り出し</h1>
@@ -106,7 +107,7 @@
         </div>
         <div class="form-group col-lg-12">
           <label>お届け希望日と時間帯</label>
-          <?php echo $this->Form->select("Outbound.datetime_cd", $this->order->setDatetime($dateItemList, 'datetime_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
+          <?php echo $this->Form->select("Outbound.datetime_cd", $this->order->setDatetime($dateItemList), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
           <?php echo $this->Form->error("Outbound.datetime_cd", null, ['wrap' => 'p']) ?>
         </div>
         <span class="col-lg-6 col-md-6 col-xs-6">

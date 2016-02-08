@@ -12,7 +12,7 @@ class Outbound extends ApiModel
     public function buildParamProduct($boxList = [], $itemList = []) {
         $product = '';
         foreach ($boxList as $box) {
-            $product .= "${box['product_cd']}:${box['box_id']}:,";
+            $product .= "${box['product_cd']}:${box['box_id']},";
         }
         return rtrim($product, ',');
     }

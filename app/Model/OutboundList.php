@@ -11,6 +11,7 @@ class OutboundList
 
     private $boxList = [];
     private $itemList = [];
+    private $monoList = [];
 
     public function __construct()
     {

@@ -1,12 +1,14 @@
 <?php
 
-App::uses('ApiModel', 'Model');
+App::uses('ApiCachedModel', 'Model');
 
-class CustomerAddress extends ApiModel
+class CustomerAddress extends ApiCachedModel
 {
+    const SESSION_CACHE_KEY = 'CUSTOMER_ADDRESS_CACHE';
+
     public function __construct()
     {
-        parent::__construct('CustomerAddress', '/address');
+        parent::__construct($this::SESSION_CACHE_KEY, 'CustomerAddress', '/address');
     }
 
     public $validate = [
