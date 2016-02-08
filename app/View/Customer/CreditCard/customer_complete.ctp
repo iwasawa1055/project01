@@ -9,7 +9,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <h2>クレジットカード追加</h2>
+                <h2>クレジットカード変更</h2>
                 <div class="form-group col-lg-12">
                   <p class="form-control-static">クレジットカードの変更が完了しました。</p>
                 </div>

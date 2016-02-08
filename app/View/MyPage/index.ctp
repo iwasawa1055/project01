@@ -14,7 +14,7 @@
               <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
               <div class="row list">
                 <div class="col-xs-12 col-md-3 col-lg-3">
-                  <?php echo $data['date']; ?>
+                  <?php echo $this->Html->formatYmdKanji($data['date']); ?>
                 </div>
                 <div class="col-xs-12 col-md-8 col-lg-8">
                   <span class="detail"><a href="<?php echo $url; ?>" class="animsition-link"><?php echo $data['title']; ?></a></span>

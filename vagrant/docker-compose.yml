@@ -18,7 +18,7 @@ hub:
 node:
   build: ./builds/selenium_node-chrome
   ports:
-    - "5900"
+    - "3000:5900"
   links:
     - hub
     - minikura

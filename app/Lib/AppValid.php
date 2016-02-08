@@ -415,11 +415,12 @@ class AppValid
 
 	public static function isDatetimeDelivery(&$_value)
 	{
-		if (! preg_match('/^\d{4}-\d{2}-\d{2}-\d{1}$/', $_value)) {
+		if (! preg_match('/^\d{4}-\d{2}-\d{2}(-\d{1})?$/', $_value)) {
 			return false;
 		}
-		$array_ymd = implode('-', explode('-', $_value, -1));
-		if (! AppValid::isDate($array_ymd)) {
+		$array_ymd = explode('-', $_value);
+		$ymd = $array_ymd[0].'-'.$array_ymd[1].'-'.$array_ymd[2];
+		if (! AppValid::isDate($ymd)) {
 			return false;
 		}
 		return true;

@@ -57,4 +57,13 @@ class AppHelper extends Helper
 
         return $select_years;
     }
+
+    public function formatYmdKanji($date)
+    {
+        $ymd = preg_split('/[-\/]/', $date);
+        if (count($ymd) !== 3) {
+            return $date;
+        }
+        return "{$ymd[0]}年{$ymd[1]}月{$ymd[2]}日";
+    }
 }

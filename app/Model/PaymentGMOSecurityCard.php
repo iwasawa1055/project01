@@ -9,12 +9,6 @@ class PaymentGMOSecurityCard extends ApiModel
     public function __construct()
     {
         parent::__construct('PaymentGMOSecurityCard', '/security_card', 'gmopayment_v4');
-
-        // init setting
-        // card_seq
-        $this->data[$this->model_name]['card_seq'] = '0';
-        // default_flag
-        $this->data[$this->model_name]['default_flag'] = '1';
     }
 
     public $validate = [
@@ -24,7 +18,7 @@ class PaymentGMOSecurityCard extends ApiModel
                 'message'  => 'クレジットカード番号は必須です'
              ],
             'isCreditCardNumber' => [
-                'rule'     => ['isCreditCardNumber'],
+                'rule'     => 'isCreditCardNumber',
                 'message'  => 'クレジットカード番号の形式が正しくありません'
             ],
         ],
@@ -34,7 +28,7 @@ class PaymentGMOSecurityCard extends ApiModel
                  'message'  => 'クレジットカード名義は必須です'
              ],
             'isCreditCardHolderName' => [
-                'rule'     => ['isCreditCardHolderName'],
+                'rule'     => 'isCreditCardHolderName',
                 'message'  => 'クレジットカード名義の形式が正しくありません'
             ],
         ],
@@ -44,8 +38,18 @@ class PaymentGMOSecurityCard extends ApiModel
                  'message'  => '有効期限は必須です'
              ],
             'isCreditCardExpireReverse' => [
-                'rule'     => ['isCreditCardExpireReverse'],
+                'rule'     => 'isCreditCardExpireReverse',
                 'message'  => '有効期限の形式が正しくありません'
+            ],
+        ],
+        'card_seq' => [
+            'notBlank' => [
+                'rule'     => 'notBlank',
+                 'message'  => 'カード登録シーケンス値は必須です'
+             ],
+            'isStringInteger' => [
+                'rule'     => 'isStringInteger',
+                'message'  => 'カード登録シーケンス値の形式が正しくありません'
             ],
         ],
         'security_cd' => [
