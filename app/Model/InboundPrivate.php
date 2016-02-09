@@ -1,8 +1,8 @@
 <?php
 
-App::uses('ApiModel', 'Model');
+App::uses('InboundBase', 'Model');
 
-class InboundPrivate extends ApiModel
+class InboundPrivate extends InboundBase
 {
     public function __construct()
     {
@@ -10,18 +10,18 @@ class InboundPrivate extends ApiModel
     }
 
     public $validate = [
-        'delivery_carrier' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'message' => '預け入れ方法は必須です',
-            ],
-        ],
-        'address_cd' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'message' => '集荷の住所は必須です',
-            ],
-        ],
+        // 'delivery_carrier' => [
+        //     'notBlank' => [
+        //         'rule' => 'notBlank',
+        //         'message' => '預け入れ方法は必須です',
+        //     ],
+        // ],
+        // 'address_cd' => [
+        //     'notBlank' => [
+        //         'rule' => 'notBlank',
+        //         'message' => '集荷の住所は必須です',
+        //     ],
+        // ],
         'date_cd' => [
             'notBlank' => [
                 'rule' => 'notBlank',

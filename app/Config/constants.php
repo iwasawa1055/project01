@@ -102,7 +102,7 @@ const KIT_NAME = [
     KIT_CD_MONO_APPAREL => 'minikuraMONO（アパレルボックス）',
     KIT_CD_MONO_BOOK => 'minikuraMONO（ブックボックス）',
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
-    KIT_CD_WINE_MONO => 'minikuraWine-MONO',
+    KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
 ];
 
@@ -113,8 +113,13 @@ const PRODUCT_NAME = [
     PRODUCT_CD_SHOES_PACK => 'minikuraシューズパック',
 ];
 
+const INBOUND_DELIVERY_PICKUP = '6';
+const INBOUND_DELIVERY_MANUAL = '7';
+const INBOUND_CARRIER_YAMAYO = '0';
+const INBOUND_CARRIER_JPPOST = '1';
+
 const INBOUND_CARRIER_DELIVERY = [
-    '6_2' => 'ヤマト運輸に集荷依頼する',
-    '6_0' => '日本郵便に集荷依頼する',
-    '7' => '自分で発送する',
+    INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_YAMAYO => 'ヤマト運輸に集荷依頼する',
+    INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_JPPOST => '日本郵便に集荷依頼する',
+    INBOUND_DELIVERY_MANUAL => '自分で発送する',
 ];

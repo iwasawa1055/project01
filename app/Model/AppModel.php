@@ -22,6 +22,10 @@ class AppModel extends Model
         $this->model_name = $name;
     }
 
+    public function getModelName() {
+        return $this->model_name;
+    }
+
     public function toArray()
     {
         return $this->data[$this->model_name];

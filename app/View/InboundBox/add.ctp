@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/inbound', ['block' => 'scriptMinikura']); ?>
 <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
@@ -22,7 +23,7 @@
                   echo $this->Form->hidden("Inbound.box_list.${i}.box_id", ['value' => $box['box_id']]); ?>
                   <?php echo $this->Form->hidden("Inbound.box_list.${i}.product_cd", ['value' => $box['product_cd']]); ?>
                   <?php echo $this->Form->hidden("Inbound.box_list.${i}.product_name", ['value' => $box['product_name']]); ?>
-                  <?php echo $this->Form->hidden("Inbound.box_list.${i}.box_id", ['value' => $box['box_id']]); ?>
+                  <?php echo $this->Form->hidden("Inbound.box_list.${i}.kit_cd", ['value' => $box['kit_cd']]); ?>
                   <?php echo $this->Form->hidden("Inbound.box_list.${i}.box_id", ['value' => $box['box_id']]); ?>
                   <div class="col-lg-12">
                     <div class="panel panel-default">

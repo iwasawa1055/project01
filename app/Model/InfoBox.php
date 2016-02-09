@@ -117,4 +117,32 @@ class InfoBox extends ApiCachedModel
 
     public $validate = [
     ];
+
+
+    /**
+     * kit_cdからproduct_cdに変換
+     * @param  [type] $kitCd [description]
+     * @return [type]        [description]
+     */
+    public static function kitCd2ProductCd($kitCd) {
+        $productCd = '';
+        switch ($kitCd) {
+            case KIT_CD_MONO:
+            case KIT_CD_MONO_BOOK:
+            case KIT_CD_MONO_APPAREL:
+                $productCd = PRODUCT_CD_MONO;
+                break;
+            case KIT_CD_HAKO:
+            case KIT_CD_HAKO_BOOK:
+            case KIT_CD_HAKO_APPAREL:
+                $productCd = PRODUCT_CD_HAKO;
+                break;
+            case KIT_CD_CLEANING_PACK:
+                $productCd = PRODUCT_CD_CLEANING_PACK;
+                break;
+            default:
+                break;
+        }
+        return $productCd;
+    }
 }
