@@ -8,5 +8,4 @@ class InboundManual extends InboundBase
     {
         parent::__construct('InboundManual', '/inbound_manual');
     }
-
 }

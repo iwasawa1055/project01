@@ -2,6 +2,44 @@
 
 App::uses('DatePickup', 'Model');
 App::uses('TimePickup', 'Model');
+App::uses('InboundManual', 'Model');
+App::uses('InboundPrivate', 'Model');
+
+class InboundComponent extends Component
+{
+    private $set = null;
+
+    public function init($data)
+    {
+        $data = $this->convertData($data);
+        $carrierCd = $data['carrier_cd'];
+        $deliveryType = $data['delivery_type'];
+        $this->set = InboundSet::create($carrierCd, $deliveryType);
+    }
+    private function convertData($data = [])
+    {
+        $a = explode('_', $data['delivery_carrier']);
+        $carrierCd = Hash::get($a, 0);
+        $deliveryType = Hash::get($a, 1);
+        $data['delivery_type'] = $deliveryType;
+        $data['carrier_cd'] = $carrierCd;
+        return $data;
+    }
+    public function date()
+    {
+        return $this->set->getDate();
+    }
+    public function time()
+    {
+        return $this->set->getTime();
+    }
+    public function model($data)
+    {
+        $data = $this->convertData($data);
+        return $this->set->getModel($data);
+    }
+}
+
 
 abstract class InboundSet
 {
@@ -13,17 +51,17 @@ abstract class InboundSet
         $set = null;
         if ($carrierCd === INBOUND_DELIVERY_PICKUP) {
             if ($deliveryType === INBOUND_CARRIER_YAMAYO) {
-                $set = new InboundPrivateYamato();
+                $set = new SetInboundPrivateYamato();
             } elseif ($deliveryType === INBOUND_CARRIER_JPPOST) {
-                $set = new InboundPrivateJppost();
+                $set = new SetInboundPrivateJppost();
             }
         } elseif ($carrierCd === INBOUND_DELIVERY_MANUAL) {
-            $set = new InboundManual();
+            $set = new SetInboundManual();
         }
         return $set;
     }
 }
-class InboundPrivateYamato extends InboundSet
+class SetInboundPrivateYamato extends InboundSet
 {
     public function getDate()
     {
@@ -44,7 +82,7 @@ class InboundPrivateYamato extends InboundSet
         return $model;
     }
 }
-class InboundPrivateJppost extends InboundSet
+class SetInboundPrivateJppost extends InboundSet
 {
     public function getDate()
     {
@@ -65,7 +103,7 @@ class InboundPrivateJppost extends InboundSet
         return $model;
     }
 }
-class InboundManual extends InboundSet
+class SetInboundManual extends InboundSet
 {
     public function getDate()
     {

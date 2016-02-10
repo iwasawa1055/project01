@@ -1,4 +1,4 @@
-<?php $this->Html->script('minikura/inbound', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/inboundbox', ['block' => 'scriptMinikura']); ?>
 <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
@@ -71,17 +71,17 @@
               <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
             </div>
-            <div class="form-group col-lg-12">
+            <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の住所</label>
-              <?php echo $this->Form->select("Inbound.address_id", $this->order->setAddress($address), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php echo $this->Form->select("Inbound.address_id", $this->order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
             </div>
-            <div class="form-group col-lg-12">
+            <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の日程</label>
               <?php echo $this->Form->select("Inbound.day_cd", $this->order->setOption($dateList, 'date_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
             </div>
-            <div class="form-group col-lg-12">
+            <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の時間</label>
               <?php echo $this->Form->select("Inbound.time_cd", $this->order->setOption($timeList, 'time_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>

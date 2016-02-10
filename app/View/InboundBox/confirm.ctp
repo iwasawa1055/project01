@@ -63,10 +63,11 @@
               <?php echo INBOUND_CARRIER_DELIVERY[$this->data['Inbound']['delivery_carrier']] ?>
           </p>
         </div>
+        <?php if (strpos($this->Form->data['Inbound']['delivery_carrier'], INBOUND_DELIVERY_PICKUP) !== FALSE): ?>
         <div class="form-group col-lg-12">
           <label>集荷の住所</label>
           <p class="form-control-static">
-              <?php echo $this->order->setAddress($address)[$this->data['Inbound']['address_id']] ?>
+              <?php echo $this->order->setAddress($addressList)[$this->data['Inbound']['address_id']] ?>
           </p>
         </div>
         <div class="form-group col-lg-12">
@@ -107,6 +108,8 @@
             </div>
           </div>
         </div>
+        <?php endif; ?>
+        <div class="form-group col-lg-12">
         <span class="col-lg-6 col-md-6 col-xs-12">
         <a class="btn btn-primary btn-lg btn-block" href="/inbound/box/add?back=true">戻る</a>
         </span>
