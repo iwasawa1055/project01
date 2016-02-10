@@ -35,8 +35,26 @@ class LoginController extends AppController
                     return $this->render('index');
                 }
 
+                // カスタマー情報を取得しセッションに保存
+                // token
+                $this->customer->setTokenAndSave($res->results[0]);
+
+                if ($this->customer->isEntry()) {
+                    // 仮登録情報取得
+                    $this->loadModel('CustomerEntry');
+                    $res = $this->CustomerEntry->apiGet();
+                    // entry
+                    $this->customer->setEntryAndSave($res->results[0]);
+                } else {
+                    // 本登録情報取得
+                    $this->loadModel('CustomerInfo');
+                    $res = $this->CustomerInfo->apiGet();
+                    // info
+                    $this->customer->setInfoAndSave($res->results[0]);
+                }
+
                 // TODO: 債務ユーザーの場合
-                // TODO: カスタマー情報を取得しセッションに保存する
+
                 return $this->redirect('/');
 
             } else {
@@ -54,6 +72,7 @@ class LoginController extends AppController
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
         OutboundList::delete();
+        CustomerData::delete();
 
         return $this->redirect('/login');
     }

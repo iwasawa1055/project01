@@ -2,6 +2,7 @@
 
 App::uses('Controller', 'Controller');
 App::uses('AppSecurity', 'Lib');
+App::uses('CustomerData', 'Model');
 
 class AppController extends Controller
 {
@@ -15,6 +16,8 @@ class AppController extends Controller
         'limit' => 10,
         'paramType' => 'querystring'
     );
+
+    protected $customer = [];
 
     /**
      * 制御前段処理
@@ -37,6 +40,8 @@ class AppController extends Controller
         // CakeSession::$requestCountdown = 10000;
 
         $this->set('isLogined', $this->CustomerLogin->isLogined());
+        // Customer Information
+        $this->customer = CustomerData::restore();
 
         // announcements of header
         if ($this->checkLogined) {

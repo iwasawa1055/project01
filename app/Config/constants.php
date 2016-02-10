@@ -2,8 +2,16 @@
 /* Code */
 
 // ユーザ区分
-const CUSTOMER_DIVISION_CORPORATE = 1; // 法人
-const CUSTOMER_DIVISION_PRIVATE = 2; // 個人
+const CUSTOMER_DIVISION_CORPORATE = '1'; // 法人
+const CUSTOMER_DIVISION_PRIVATE = '2'; // 個人
+
+// 登録レベル
+const CUSTOMER_REGIST_LEVEL_ENTRY = '1'; // 仮登録
+const CUSTOMER_REGIST_LEVEL_CUSTOMER = '2'; // 本登録
+
+// 支払状況
+const CUSTOMER_PAYMENT_OK = '1'; // OK
+const CUSTOMER_PAYMENT_NG = '2'; // NG
 
 // 性別
 const CUSTOMER_GENDER = [
