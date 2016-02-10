@@ -15,7 +15,7 @@ class PaymentGMOCard extends ApiModel
     public function apiGetDefaultCard()
     {
         $d = $this->apiGetResults();
-        foreach ($d['contents'] as $card) {
+        foreach ($d as $card) {
             if ($card['default_flag'] === '1') {
                 $card['expire_month'] = substr($card['expire'], 0, 2);
                 $card['expire_year'] = substr($card['expire'], 2, 2);

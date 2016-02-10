@@ -242,7 +242,12 @@ class ApiResponse
         $json = $resp['body_parsed'];
         $this->status = $json['status'];
         $this->message = $json['message'];
-        $this->results = $json['results'];
+        if (is_array($json['results']) && array_key_exists('contents', $json['results'])) {
+            // v5
+            $this->results = $json['results']['contents'];
+        } else {
+            $this->results = $json['results'];
+        }
 
         $this->http_code = $resp['headers']['http_code'];
     }

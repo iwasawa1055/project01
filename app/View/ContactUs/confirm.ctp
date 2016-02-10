@@ -8,24 +8,25 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
+            <?php echo $this->Form->create(false, ['url' => ['controller' => 'contact_us', 'action' => 'complete']]); ?>
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別</label>
-                  <p class="form-control-static">料金支払いについて</p>
+                  <p class="form-control-static"><?php echo CONTACTUS_DIVISION[$this->Form->data['ContactUs']['division']] ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
-                  <p class="form-control-static">はじめまして。作品お預けを検討しておりますと申します。<br>
-                    ちなみに、保管期間1年未満：5,000円、保管期間1年以上：2,000円とありますが、こちらは作品1点についての料金で2点だと10000円、4000円となりますか？<br>
-                    また、取り出し送料・手数料についても、1点（縦+横＝150cm（厚さ：10cm以内））での手数料の料金と、まとめて3点取り出しする場合も同額なのかをお教えください。<br>
-                    どうぞよろしくお願いします。</p>
+                  <p class="form-control-static">
+                    <?php echo nl2br($this->Form->data['ContactUs']['text']); ?>
+                  </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="index.html">戻る</a>
+                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="/contact_us/add?back=true">戻る</a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-danger btn-lg btn-block animsition-link" href="/contact_us/complete">この内容で問い合わせる</a>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で問い合わせる</button>
                 </span>
+                <?php if (false) : ?>
                 <div class="col-lg-12 announcement">
                   <div class="row">
                     <div class="col-lg-12">
@@ -67,7 +68,9 @@
                     </div>
                   </div>
                 </div>
+              <?php endif; ?>
               </div>
+            <?php echo $this->Form->end(); ?>
             </div>
           </div>
         </div>

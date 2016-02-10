@@ -14,7 +14,7 @@
               </div>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="../index.html">マイページへ戻る</a>
+            <a class="btn btn-danger btn-lg btn-block animsition-link" href="/">マイページへ戻る</a>
             </span>
           </div>
         </div>

@@ -2,8 +2,16 @@
 /* Code */
 
 // ユーザ区分
-const CUSTOMER_DIVISION_CORPORATE = 1; // 法人
-const CUSTOMER_DIVISION_PRIVATE = 2; // 個人
+const CUSTOMER_DIVISION_CORPORATE = '1'; // 法人
+const CUSTOMER_DIVISION_PRIVATE = '2'; // 個人
+
+// 登録レベル
+const CUSTOMER_REGIST_LEVEL_ENTRY = '1'; // 仮登録
+const CUSTOMER_REGIST_LEVEL_CUSTOMER = '2'; // 本登録
+
+// 支払状況
+const CUSTOMER_PAYMENT_OK = '1'; // OK
+const CUSTOMER_PAYMENT_NG = '2'; // NG
 
 // 性別
 const CUSTOMER_GENDER = [
@@ -122,4 +130,19 @@ const INBOUND_CARRIER_DELIVERY = [
     INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_YAMAYO => 'ヤマト運輸に集荷依頼する',
     INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_JPPOST => '日本郵便に集荷依頼する',
     INBOUND_DELIVERY_MANUAL => '自分で発送する',
+];
+
+const CONTACTUS_DIVISION = [
+    '8' => 'お知らせについて',
+    '11' => '退会について',
+    '16' => 'minikuraへのご意見・ご相談',
+    '17' => '溶解の申し込みについて',
+    '12' => 'その他',
+];
+
+const INQUIRY_DIVISION = [
+    '8' => 'minikuraについて',
+    '16' => 'minikuraへのご意見・ご相談',
+    '18' => 'アニメイト・コレクションについて',
+    '12' => 'その他',
 ];

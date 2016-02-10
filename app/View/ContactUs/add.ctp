@@ -8,29 +8,25 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
+            <?php echo $this->Form->create('ContactUs', ['url' => ['controller' => 'contact_us', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別</label>
-                  <select class="form-control">
-                    <option>以下からお選びください</option>
-                    <option>料金支払いについて</option>
-                    <option>ボックス購入について</option>
-                    <option>預け入れについて</option>
-                    <option>取り出しについて</option>
-                    <option>退会について</option>
-                    <option>その他</option>
-                  </select>
+                  <?php echo $this->Form->select('ContactUs.division', CONTACTUS_DIVISION, ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.division', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
-                  <textarea class="form-control" rows="5"></textarea>
+                  <?php echo $this->Form->textarea('ContactUs.text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.text', null, ['wrap' => 'p']) ?>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="#">クリア</a>
+                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="/contact_us/add">クリア</a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-danger btn-lg btn-block animsition-link" href="/contact_us/confirm">確認</a>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">確認</button>
                 </span>
+                <?php if (false) : ?>
                 <div class="col-lg-12 announcement">
                   <div class="row">
                     <div class="col-lg-12">
@@ -72,7 +68,9 @@
                     </div>
                   </div>
                 </div>
+              <?php endif; ?>
               </div>
+            <?php echo $this->Form->end(); ?>
             </div>
           </div>
         </div>
