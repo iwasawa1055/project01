@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 class InfoController extends AppController
 {
-    const MODEL_NAME_CUSTOMER = 'CustomerInfo';
+    const MODEL_NAME_CUSTOMER = 'CustomerInfoV3';
 
     /**
      * 制御前段処理.
@@ -27,7 +27,7 @@ class InfoController extends AppController
         } elseif (empty($back) && empty($step)) {
             // edit 初期表示データ取得
             // 個人
-            $data = $this->CustomerInfo->apiGetResults();
+            $data = $this->CustomerInfoV3->apiGetResults();
             $this->request->data[$this::MODEL_NAME_CUSTOMER] = $data[0];
             $ymd = explode('-', $data[0]['birth']);
             $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_year'] = $ymd[0];
@@ -48,23 +48,23 @@ class InfoController extends AppController
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
             // validates
-            $this->CustomerInfo->set($this->request->data);
+            $this->CustomerInfoV3->set($this->request->data);
             $birth = [];
             $birth[0] = $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_year'];
             $birth[1] = $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_month'];
             $birth[2] = $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_day'];
-            $this->CustomerInfo->data[$this::MODEL_NAME_CUSTOMER]['birth'] = implode('-', $birth);
+            $this->CustomerInfoV3->data[$this::MODEL_NAME_CUSTOMER]['birth'] = implode('-', $birth);
 
-            if (!$this->CustomerInfo->validates()) {
+            if (!$this->CustomerInfoV3->validates()) {
                 return $this->render('customer_edit');
             }
 
             if ($step === 'confirm') {
-                CakeSession::write($this::MODEL_NAME_CUSTOMER, $this->CustomerInfo->data);
+                CakeSession::write($this::MODEL_NAME_CUSTOMER, $this->CustomerInfoV3->data);
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // update
-                $res = $this->CustomerInfo->apiPatchResults($this->CustomerInfo->toArray());
+                $res = $this->CustomerInfoV3->apiPatchResults($this->CustomerInfoV3->toArray());
 
                 return $this->render('customer_complete');
             }
