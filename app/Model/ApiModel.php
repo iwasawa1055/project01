@@ -233,7 +233,7 @@ class ApiResponse
 {
     public $status = null;
     public $message = null;
-    public $respults = null;
+    public $results = null;
     public $http_code = null;
     public $error_message = null;
 

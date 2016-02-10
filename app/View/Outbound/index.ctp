@@ -17,7 +17,6 @@
             <?php
             $i = $item['item_id'];
             $url = '/item/detail/' . $item['item_id'];
-            echo $this->Form->hidden("item_list.${i}.item_id", ['value' => $item['item_id']]);
             ?>
             <!--loop-->
             <div class="col-lg-12">
@@ -35,7 +34,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-12 outbound_select_checkbox">
                         <input type="checkbox">
-                        <?php echo $this->Form->checkbox("item_list.${i}.checkbox", ['checked' => 'checked']); ?>
+                        <?php echo $this->Form->checkbox("item_id.${i}", ['checked' => 'checked', 'hiddenField' => false]); ?>
                         <button class="btn btn-danger btn-md btn-block btn-detail"></button>
                     </div>
                   </div>
@@ -63,7 +62,6 @@
               <?php
               $i = $box['box_id'];
               $url = '/box/detail/' . $box['box_id'];
-              echo $this->Form->hidden("box_list.${i}.box_id", ['value' => $box['box_id']]);
               ?>
               <!--loop-->
               <div class="col-lg-12">
@@ -76,7 +74,7 @@
                       </div>
                       <div class="col-lg-4 col-md-4 col-xs-12 outbound_select_checkbox">
                           <input type="checkbox">
-                          <?php echo $this->Form->checkbox("box_list.${i}.checkbox", ['checked' => 'checked']); ?>
+                          <?php echo $this->Form->checkbox("box_id.${i}", ['hiddenField' => false]); ?>
                           <button class="btn btn-danger btn-md btn-block btn-detail"></button>
                       </div>
                     </div>

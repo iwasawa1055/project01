@@ -1,17 +1,29 @@
 <?php
 
 App::uses('CustomerAddress', 'Model');
+App::uses('CustomerInfo', 'Model');
 
 class AddressComponent extends Component
 {
+
+    const CUSTOMER_INFO_ADDRESS_ID = '-10';
+
     private $list = null;
 
     public function get()
     {
-        // TODO 契約情報も取得する
         if (empty($this->list)) {
             $ca = new CustomerAddress();
             $this->list = $ca->apiGetResults();
+
+            // 契約情報を先頭に追加
+            $info = new CustomerInfo();
+            $res = $info->apiGet();
+            if ($res->isSuccess() && count($res->results) === 1) {
+                $new['address_id'] = self::CUSTOMER_INFO_ADDRESS_ID;
+                $this->copy($res->results[0], $new);
+                array_unshift($this->list, $new);
+            }
         }
         return $this->list;
     }
@@ -28,17 +40,22 @@ class AddressComponent extends Component
     {
         $a = $this->find($id);
         if (!empty($a)) {
-            $data['lastname'] = $a['lastname'];
-            $data['lastname_kana'] = $a['lastname_kana'];
-            $data['firstname'] = $a['firstname'];
-            $data['firstname_kana'] = $a['firstname_kana'];
-            $data['tel1'] = $a['tel1'];
-            $data['postal'] = $a['postal'];
-            $data['pref'] = $a['pref'];
-            $data['address1'] = $a['address1'];
-            $data['address2'] = $a['address2'];
-            $data['address3'] = $a['address3'];
+            $this->copy($a, $data);
         }
         return $data;
+    }
+    private function copy($from, &$to)
+    {
+        $to['lastname'] = $from['lastname'];
+        $to['lastname_kana'] = $from['lastname_kana'];
+        $to['firstname'] = $from['firstname'];
+        $to['firstname_kana'] = $from['firstname_kana'];
+        $to['tel1'] = $from['tel1'];
+        $to['postal'] = $from['postal'];
+        $to['pref'] = $from['pref'];
+        $to['address1'] = $from['address1'];
+        $to['address2'] = $from['address2'];
+        $to['address3'] = $from['address3'];
+        return $to;
     }
 }

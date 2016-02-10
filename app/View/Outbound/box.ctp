@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('OutboundBox', ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('Outbound', ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
@@ -18,7 +18,6 @@
                   <?php
                   $i = $box['box_id'];
                   $url = '/box/detail/' . $box['box_id'];
-                  echo $this->Form->hidden("box_list.${i}.box_id", ['value' => $box['box_id']]);
                   ?>
                   <!--loop-->
                   <div class="col-lg-12">
@@ -31,7 +30,7 @@
                           </div>
                           <div class="col-lg-4 col-md-4 col-xs-12 outbound_select_checkbox">
                               <input type="checkbox">
-                              <?php echo $this->Form->checkbox("box_list.${i}.checkbox", ['checked' => $box['outbound_list']]); ?>
+                              <?php echo $this->Form->checkbox("box_id.${i}", ['checked' => $box['outbound_list'], 'hiddenField' => false]); ?>
                               <button class="btn btn-danger btn-md btn-block btn-detail"></button>
                           </div>
                         </div>
