@@ -24,7 +24,7 @@ class InfoBox extends ApiCachedModel
     public function getProductSummary()
     {
         $key = 'summary';
-        $summary = $this->readCache($key);
+        $summary = $this->readCache($key, []);
         if (!empty($summary)) {
             return $summary;
         }
@@ -42,7 +42,7 @@ class InfoBox extends ApiCachedModel
                 $summary[$productCd]++;
             }
         }
-        $this->writeCache($key, $summary);
+        $this->writeCache($key, [], $summary);
         return $summary;
     }
 

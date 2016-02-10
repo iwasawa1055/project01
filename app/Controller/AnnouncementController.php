@@ -33,23 +33,11 @@ class AnnouncementController extends AppController
     public function detail()
     {
         // TODO: セッションから取得
-        
+
         $id = $this->params['id'];
-        $res = $this->Announcement->apiGet([
-          'limit' => 10,
-          'offset' => 0
-        ]);
-        if ($res->isSuccess()) {
-            foreach ($res->results as $a) {
-                if ($a['announcement_id'] === $id) {
-                    $this->set('announcement', $a);
-                    // 既読更新
-                    $this->Announcement->apiPatch([
-                      'announcement_id' => $id
-                    ]);
-                    break;
-                }
-            }
-        }
+        $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
+        $this->set('announcement', $data);
+        // 既読更新
+        $this->Announcement->apiPatch(['announcement_id' => $id]);
     }
 }

@@ -8,10 +8,12 @@ class ApiCachedModel extends ApiModel
 {
     const SESSION_BASE_KEY = 'ApiCachedModel';
     private $sessionKey = '';
+    private $lifetime = 300;
 
-    public function __construct($sessionKey, $name, $end, $access_point_key = 'minikura_v3')
+    public function __construct($sessionKey, $name, $end, $access_point_key = 'minikura_v3', $lifetime = 300)
     {
         $this->sessionKey = ApiCachedModel::SESSION_BASE_KEY . '.' . $sessionKey;
+        $this->lifetime = $lifetime;
         parent::__construct($name, $end, $access_point_key);
     }
 
@@ -62,15 +64,31 @@ class ApiCachedModel extends ApiModel
         return $data;
     }
 
-    protected function readCache($key)
+    protected function readCache($key, $arg)
     {
         $sessionKey = $this->sessionKey . '.' . $key;
-        return CakeSession::read($sessionKey);
+        $session = CakeSession::read($sessionKey);
+        if (!empty($session) && !empty(Hash::get($session, 'expires')) && time() < $session['expires'] &&
+                (Hash::get($session, 'arg') === $arg)) {
+
+            // if ($this->getModelName() == 'Announcement') {
+            //     pr($this->getModelName() . ' cached xx ' . date('H:i:s', $session['expires']) . ' ... ' . date('H:i:s'));
+            // }
+            return Hash::get($session, 'data');
+        }
+        return null;
     }
-    protected function writeCache($key, $data)
+    protected function writeCache($key, $arg, $data)
     {
+        // if ($this->getModelName() == 'Announcement') {
+        //     pr($this->getModelName() . ' writeCache ... ' . date('H:i:s'));
+        // }
         $sessionKey = $this->sessionKey . '.' . $key;
-        CakeSession::write($sessionKey, $data);
+        CakeSession::write($sessionKey, [
+            'arg' => $arg,
+            'expires' => time() + $this->lifetime,
+            'data' => $data
+        ]);
     }
     public function deleteCache()
     {
@@ -86,7 +104,7 @@ class ApiCachedModel extends ApiModel
     {
         // TODO: 引数からキャッシュキーを作る
         $key = 'apiGet';
-        $list = $this->readCache($key);
+        $list = $this->readCache($key, $arg);
         if (!empty($list)) {
             return $list;
         }
@@ -97,14 +115,16 @@ class ApiCachedModel extends ApiModel
         $count = 0;
         $limit = 1000;
         do {
-            $arg['offset'] = $offset;
-            $arg['limit'] = $limit;
-            $addList = parent::apiGetResults($arg);;
+            $newArg = $arg;
+            $newArg['offset'] = $offset;
+            $newArg['limit'] = $limit;
+            $addList = parent::apiGetResults($newArg);
             $count = count($addList);
             $list = array_merge($list, $addList);
             $offset++;
         } while ($limit === $count);
-        $this->writeCache($key, $list);
+        $this->writeCache($key, $arg, $list);
+        // 期限を設定
         return $list;
     }
 }
