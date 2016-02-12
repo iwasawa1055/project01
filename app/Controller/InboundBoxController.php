@@ -1,7 +1,8 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('InboundSet', 'Model');
+App::uses('DatePrivate', 'Model');
+App::uses('TimePrivate', 'Model');
 
 class InboundBoxController extends AppController
 {

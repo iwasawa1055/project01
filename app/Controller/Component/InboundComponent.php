@@ -93,7 +93,7 @@ class SetInboundPrivateJppost extends InboundSet
     public function getTime()
     {
         $date = new TimePrivate();
-        $list = $date->apiGetResults(['calendar' => 7]);
+        $list = $date->apiGetResults(['time' => 7]);
         return $list;
     }
     public function getModel($data = [])
