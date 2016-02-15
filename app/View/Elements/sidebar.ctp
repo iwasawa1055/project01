@@ -7,9 +7,9 @@
         </li>
       <?php } else { ?>
         <li class="sidebar-search">
-        <form action="/result" method="post">
+        <form action="/result" method="get">
           <div class="input-group custom-search-form">
-            <input type="text" class="form-control" placeholder="Search...">
+            <?php echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => 'Search...']); ?>
             <span class="input-group-btn">
               <button type="submit" class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
             </span>

@@ -49,15 +49,17 @@ class InfoItem extends ApiCachedModel
       return $list;
     }
 
-    public function apiGetResults($data = [])
+    public function apiGet($data = [])
     {
         $imageModel = new ImageItem();
-        $list = parent::apiGetResults($data);
-        foreach ($list as $index => $item) {
-            $image = $imageModel->apiGetResultsFind([], ['item_id' => $item['item_id']]);
-            $list[$index]['images_item'] = $image;
+        $res = parent::apiGet($data);
+        if ($res->isSuccess()) {
+            foreach ($res->results as $index => $item) {
+                $image = $imageModel->apiGetResultsFind([], ['item_id' => $item['item_id']]);
+                $res->results[$index]['images_item'] = $image;
+            }
         }
-        return $list;
+        return $res;
     }
 
     public $validate = [
