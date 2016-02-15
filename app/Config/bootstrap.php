@@ -63,6 +63,7 @@ Cache::config('default', array('engine' => 'File'));
 		),
 		'Model' => array(
 			ROOT . DS . APP_DIR . DS . 'Model' . DS,
+            ROOT . DS . APP_DIR . DS . 'Model' . DS . 'Dev' . DS,
 		),
 	));
 
