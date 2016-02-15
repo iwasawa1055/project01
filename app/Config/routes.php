@@ -15,9 +15,9 @@
     Router::connect('/inbound/shoe/:action', ['controller' => 'InboundShoe']);
 
     // ids
-    Router::connect('/:controller/detail/:id', ['action' => 'detail']);
-    Router::connect('/:controller/detail/:id/:action');
-    Router::connect('/:controller/:id/:action');
+    Router::connect('/:controller/:id/:action', [], ['id' => '[HKMNCL\-0-9]+']);
+    Router::connect('/:controller/detail/:id', ['action' => 'detail'], ['id' => '[HKMNCL\-0-9]+']);
+    Router::connect('/:controller/detail/:id/:action', [], ['id' => '[HKMNCL\-0-9]+']);
 
     // default
     Router::connect('/:controller', ['action' => 'index']);
