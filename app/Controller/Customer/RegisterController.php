@@ -52,7 +52,7 @@ class RegisterController extends AppController
                 $this->customer->setTokenAndSave($res->results[0]);
                 // entry
                 $res = $this->CustomerEntry->apiGet();
-                $this->customer->setEntryAndSave($res->results[0]);
+                $this->customer->setInfoAndSave($res->results[0]);
 
                 return $this->redirect('/');
 

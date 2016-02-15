@@ -10,7 +10,8 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>クレジットカード変更</h2>
-              <?php echo $this->Form->create(false, ['url' => ['action' => 'complete']]); ?>
+              <?php //echo $this->Form->create(false, ['url' => ['action' => 'complete']]); ?>
+              <?php echo $this->Form->create('CustomerInfoV3', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete']]); ?>
                 <div class="form-group col-lg-12">
                   <label>クレジットカード番号</label>
                   <p><?php echo $security_card['card_no']; ?></p>
@@ -28,7 +29,8 @@
                   <p><?php echo $security_card['holder_name']; ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit?back=true">戻る</a>
+                  <!-- <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit?back=true">戻る</a> -->
+                  <?php echo $this->Html->link('戻る', ['controller' => 'credit_card', 'action' => $action, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block animsition-link']); ?>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">変更する</button>

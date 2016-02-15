@@ -50,6 +50,9 @@ class AppController extends Controller
                 exit;
             }
 
+            // ユーザー名
+            $this->set('customer_name', $this->customer->getCustomerName());
+
             $res = $this->Announcement->apiGetResults(['limit' => 5]);
             $this->set('notice_announcements', $res);
 

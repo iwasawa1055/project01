@@ -8,7 +8,6 @@ class CustomerData
     const SESSION_KEY = 'CUSTOMER_DATA_CACHE';
 
     public $token = [];
-    public $entry = [];
     public $info = [];
 
     public function __construct()
@@ -40,12 +39,6 @@ class CustomerData
         CustomerData::save($this);
     }
 
-    public function setEntryAndSave($data = [])
-    {
-        $this->entry = $data;
-        CustomerData::save($this);
-    }
-
     public function setInfoAndSave($data = [])
     {
         $this->info = $data;
@@ -60,5 +53,10 @@ class CustomerData
     public function isPaymentNG()
     {
         return $this->token['payment'] === CUSTOMER_PAYMENT_NG;
+    }
+
+    public function getCustomerName()
+    {
+        return "{$this->info['lastname']}{$this->info['firstname']}";
     }
 }
