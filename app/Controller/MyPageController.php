@@ -4,23 +4,18 @@ App::uses('AppController', 'Controller');
 
 class MyPageController extends AppController
 {
-    const MODEL_NAME_BOX = 'InfoBox';
-    const MODEL_NAME_Item = 'InfoItem';
-    const MODEL_NAME_IMAGE_Item = 'ImageItem';
-
     /**
      * ルートインデックス.
      */
     public function index()
     {
-        $this->loadModel($this::MODEL_NAME_BOX);
-        $this->loadModel($this::MODEL_NAME_Item);
-        $this->loadModel($this::MODEL_NAME_IMAGE_Item);
+        $this->loadModel('InfoBox');
+        $this->loadModel('InfoItem');
 
         $boxList = $this->InfoBox->getListForServiced();
-        $itemList = $this->InfoItem->apiGetResults(['limit' => 8]);
+        $this->set('boxList', array_slice($boxList, 0, 8));
 
-        $this->set('itemList', $itemList);
-        $this->set('boxList', $boxList);
+        $itemList = $this->InfoItem->getListForServiced();
+        $this->set('itemList',  array_slice($itemList, 0, 8));
     }
 }
