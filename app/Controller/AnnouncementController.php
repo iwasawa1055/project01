@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('Receipt', 'Model');
 
 class AnnouncementController extends AppController
 {
@@ -32,12 +33,38 @@ class AnnouncementController extends AppController
      */
     public function detail()
     {
-        // TODO: セッションから取得
-
         $id = $this->params['id'];
         $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
         $this->set('announcement', $data);
         // 既読更新
         $this->Announcement->apiPatch(['announcement_id' => $id]);
+    }
+
+    public function receit()
+    {
+        $id = $this->params['id'];
+        $receit = new Receipt();
+        $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
+        $res = $receit->apiGet([
+            'announcement_id' => $id,
+            'category_id' => $data['category_id']
+
+        ]);
+        if ($res->isSuccess() || count($res->results) === 1) {
+            // TODO: 単体テスト未完
+            $name = $res->results[0]['file_name'];
+            $binary = $res->results[0]['receipt'];
+            $this->autoRender = false;
+            $this->response->type('pdf');
+            $this->response->download($name);
+            $this->response->body($binary);
+        } else {
+            if ($res->message === 'Parameter Invalid - used receipt') {
+                $this->Session->setFlash('発行済です。');
+            } else {
+                $this->Session->setFlash('try again');
+            }
+            return $this->redirect(['action' => 'detail', 'id' => $id]);
+        }
     }
 }

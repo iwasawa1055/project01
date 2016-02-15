@@ -1,5 +1,5 @@
 // animsition
 $(function() {
-    $('a[href^="/"]').addClass('animsition-link');
+    $('a[href^="/"]a[target!="_blank"]').addClass('animsition-link');
     $('.animsition').animsition();
 });
