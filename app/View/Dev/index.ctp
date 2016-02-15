@@ -56,15 +56,24 @@ dd {
 <?php foreach ($data as $k => $list): ?>
     <h2><?php echo $k; ?></h2>
     <?php foreach ($list as $key => $value): ?>
-        <dt><?php echo $key; ?></dt><dd id="<?php echo $key; ?>"><?php echo $value; ?></dd>
+        <dt><?php echo $key; ?></dt><dd id="<?php echo $key; ?>"><?php echo $value; ?>　</dd>
     <?php endforeach; ?>
 <?php endforeach; ?>
+<br>
+<dt>情報変更申請</dt>
+    <dd><a href="/dev/user_applying?approval=1">承認</a></dd>
+    <dd><a href="/dev/user_applying?approval=0">却下</a></dd>
+<dt>債務ランク</dt>
+    <dd><a href="/dev/user_debt?payment=1">債務解除</a></dd>
+    <dd><a href="/dev/user_debt?payment=2">債務状態</a></dd>
 </dl>
 </div>
 
+
 <div class="container">
+<h2>注文ID、作業ID</h2>
 <div class="col-md-3">
-<h2>注文ID</h2><dl><dt>order_id</dt>
+<dl><dt>注文ID</dt>
 <?php foreach ($order_ids as $data): ?>
 <dd><?php echo $data['order_id']; ?></dd>
 <?php endforeach; ?>
@@ -72,28 +81,13 @@ dd {
 </div>
 
 <div class="col-md-3">
-<h2>作業ID（入庫）</h2><dl><dt>work_id</dt>
-<?php foreach ($work_ids_001 as $data): ?>
-<dd><?php echo $data['work_id']; ?></dd>
-<?php endforeach; ?>
-</dl>
-</div>
-
-<div class="col-md-3">
-<h2>作業ID（出庫）</h2><dl><dt>work_id</dt>
+<dl><dt>作業ID（出庫）</dt>
 <?php foreach ($work_ids_003 as $data): ?>
 <dd><?php echo $data['work_id']; ?></dd>
 <?php endforeach; ?>
 </dl>
 </div>
 
-<div class="col-md-3">
-<h2>作業ID（出庫（期限付き））</h2><dl><dt>work_id</dt>
-<?php foreach ($work_ids_006 as $data): ?>
-<dd><?php echo $data['work_id']; ?></dd>
-<?php endforeach; ?>
-</dl>
-</div>
 </div>
 
 <div class="container">

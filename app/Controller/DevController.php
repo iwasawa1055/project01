@@ -12,6 +12,7 @@ App::uses('DevOutboundDone', 'Model');
 App::uses('DevBilling', 'Model');
 App::uses('DevUserApplying', 'Model');
 App::uses('DevUserDebt', 'Model');
+App::uses('OutboundList', 'Model');
 
 class DevController extends AppController
 {
@@ -134,5 +135,13 @@ class DevController extends AppController
         pr($res);
         $this->layout = false;
         $this->render(false);
+    }
+    public function cache_clear()
+    {
+        $this->layout = "";
+        ApiCachedModel::deleteAllCache();
+        // CustomerData::delete();
+        // OutboundList::delete();
+        return $this->redirect(['action' => 'index']);
     }
 }
