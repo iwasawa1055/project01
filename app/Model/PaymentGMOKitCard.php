@@ -101,11 +101,19 @@ class PaymentGMOKitCard extends ApiModel
         'datetime_cd' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => '配送日時は必須です',
             ],
             'isDatetimeDelivery' => [
                 'rule' => 'isDatetimeDelivery',
                 'message' => '配送日時の形式が正しくありません',
+            ],
+        ],
+        'address_id' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => 'お届け先は必須です',
             ],
         ],
     ];

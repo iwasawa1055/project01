@@ -43,15 +43,12 @@ class LoginController extends AppController
                     // 仮登録情報取得
                     $this->loadModel('CustomerEntry');
                     $res = $this->CustomerEntry->apiGet();
-                    // entry
-                    $this->customer->setEntryAndSave($res->results[0]);
                 } else {
                     // 本登録情報取得
                     $this->loadModel('CustomerInfo');
                     $res = $this->CustomerInfo->apiGet();
-                    // info
-                    $this->customer->setInfoAndSave($res->results[0]);
                 }
+                $this->customer->setInfoAndSave($res->results[0]);
 
                 // TODO: 債務ユーザーの場合
 

@@ -10,7 +10,8 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>クレジットカード変更</h2>
-            <?php echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'credit_card', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php //echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'credit_card', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('PaymentGMOSecurityCard.card_no', ['class' => "form-control", 'maxlength' => 19, 'placeholder'=>'クレジットカード番号', 'error' => false]); ?>
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.card_no', null, ['wrap' => 'p']) ?>
@@ -20,6 +21,21 @@
                   <?php echo $this->Form->input('PaymentGMOSecurityCard.security_cd', ['class' => "form-control", 'maxlength' => 4, 'placeholder'=>'セキュリティコード', 'error' => false]); ?>
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.security_cd', null, ['wrap' => 'p']) ?>
                   <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a>
+                  <div id="collapseOne" class="panel-collapse collapse panel panel-default">
+                    <div class="panel-body">
+                      <p>セキュリティコードとは、クレジットカード番号とは異なる、3桁または4桁の番号で、第三者がお客様のクレジットカードを不正利用出来ないようにする役割があります。</p>
+                      <p>カードの種類によってセキュリティコードの記載位置が異なりますので、下記をご覧ください。</p>
+                      <h4>Visa、Mastercard等の場合</h4>
+                      <p>カードの裏面の署名欄に記入されている3桁の番号です。</p>
+                      <p>カード番号の下3桁か、その後に記載されています。</p>
+                      <p><img src="/img/cvv2visa.gif" alt="" /></p>
+                      <h4>American Expressの場合</h4>
+                      <p>カードの表面に記入されている4桁の番号です。</p>
+                      <p>カード番号の下4桁か、その後に記載されています。</p>
+                      <p><img src="/img/cvv2amex.gif" alt="" /></p>
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>有効期限</label>
@@ -35,7 +51,9 @@
                   <p class="help-block">（※半角大文字英字 半角スペース）</p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit">クリア</a> </span>
+                  <!-- <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit">クリア</a> </span> -->
+                  <?php echo $this->Html->link('クリア', ['controller' => 'credit_card', 'action' => $action], ['class' => 'btn btn-primary btn-lg btn-block animsition-link']); ?>
+                </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">確認</button>
                 </span>

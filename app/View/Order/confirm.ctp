@@ -55,6 +55,7 @@
                   </div>
                 </div>
               </div>
+            <?php if (!$isEntry) : ?>
               <div class="col-lg-12">
                 <label>カード情報</label>
                 <p class="form-control-static"><?php echo $default_payment_text; ?></p>
@@ -67,7 +68,9 @@
                 <label>お届け希望日時</label>
                 <p class="form-control-static"><?php echo $datetime; ?></p>
               </div>
+            <?php endif; ?>
             </div>
+          <?php if (!$isEntry) : ?>
             <div class="form-group col-lg-12">
               <div class="panel panel-red">
                 <div class="panel-heading">
@@ -87,15 +90,25 @@
                 </div>
               </div>
             </div>
+          <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-primary btn-lg btn-block animsition-link" href="/order/add?back=true">戻る</a>
             </span>
+        <?php if ($isEntry) : ?>
+          <?php if (empty($default_payment)) : ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="credit/index.html">会員登録して注文する</a>
+              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/credit_card/add">会員登録して注文する</a>
             </span>
-            <span class="col-lg-6 col-md-6 col-xs-12 col-lg-offset-6 col-md-offset-6">
+          <?php else: ?>
+            <span class="col-lg-6 col-md-6 col-xs-12">
+              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/info/add">会員登録して注文する</a>
+            </span>
+          <?php endif; ?>
+        <?php else: ?>
+            <span class="col-lg-6 col-md-6 col-xs-12">
               <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">注文を確定する</button>
             </span>
+        <?php endif; ?>
           </div>
           <?php echo $this->Form->end(); ?>
         </div>

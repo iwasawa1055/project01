@@ -15,7 +15,7 @@
                     minikuraMONO
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo $data['PaymentGMOKitCard']['mono_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -26,7 +26,7 @@
                     minikuraHAKO
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo $data['PaymentGMOKitCard']['hako_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -37,7 +37,7 @@
                     クリーニングパック
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo $data['PaymentGMOKitCard']['cleaning_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -57,15 +57,15 @@
               </div>
               <div class="form-group col-lg-12">
                 <label>カード情報</label>
-                <p class="form-control-static">xxxx-xxxx-xxxx-0000　TOMONOSUKE ICHIKAWA</p>
+                <p class="form-control-static"><?php echo $default_payment_text; ?></p>
               </div>
               <div class="form-group col-lg-12">
                 <label>お届け先</label>
-                <p class="form-control-static">〒000-0000 東京都品川区東品川2-2-33 Nビル 5階</p>
+                <p class="form-control-static"><?php echo $address_text; ?></p>
               </div>
               <div class="col-lg-12">
                 <label>お届け希望日</label>
-                <p class="form-control-static">00月00日午前中</p>
+                <p class="form-control-static"><?php echo $datetime; ?></p>
               </div>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
