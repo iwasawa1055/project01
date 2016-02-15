@@ -65,6 +65,7 @@
               <?php echo $this->Form->error('PaymentGMOKitCard.hako_num', null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('PaymentGMOKitCard.cleaning_num', null, ['wrap' => 'p']) ?>
             </div>
+          <?php if (!$isEntry) : ?>
             <div class="form-group col-lg-12">
               <label>カード情報</label>
               <?php echo $this->Form->select('PaymentGMOKitCard.card_seq', $this->order->setDefalutPayment($default_payment), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
@@ -72,7 +73,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>セキュリティコード</label>
-              <?php echo $this->Form->input('PaymentGMOKitCard.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコードを入力してください', 'error' => false]); ?>
+              <?php echo $this->Form->input('PaymentGMOKitCard.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコードを入力してください', 'maxlength' => 4, 'error' => false]); ?>
               <?php echo $this->Form->error('PaymentGMOKitCard.security_cd', null, ['wrap' => 'p']) ?>
               <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
               <p class="security_code"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a>
@@ -129,7 +130,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>お届け先</label>
-              <?php echo $this->Form->select('PaymentGMOKitCard.address_id', $this->order->setAddress($address), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->select('PaymentGMOKitCard.address_id', $this->order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
               <?php echo $this->Form->error('PaymentGMOKitCard.address_id', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
@@ -137,6 +138,7 @@
               <?php echo $this->Form->select('PaymentGMOKitCard.datetime_cd', $this->order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
               <?php echo $this->Form->error('PaymentGMOKitCard.datetime_cd', null, ['wrap' => 'p']) ?>
             </div>
+          <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-primary btn-lg btn-block animsition-link" href="/order/add">クリア</a>
             </span>
