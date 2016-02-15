@@ -46,7 +46,7 @@
               <a class="btn btn-primary btn-lg btn-block" href="/announcement/">お知らせ一覧に戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block" href="/contact_us/add/<?php echo $announcement['announcement_id'] ?>">この内容について問い合わせる</a>
+              <a class="btn btn-danger btn-lg btn-block" href="/contact_us/<?php echo $announcement['announcement_id'] ?>/add">この内容について問い合わせる</a>
             </span>
             <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT): ?></h3>
             <span class="col-lg-12 col-md-12 col-xs-12">
