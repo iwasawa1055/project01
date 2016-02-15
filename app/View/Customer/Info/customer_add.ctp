@@ -1,3 +1,5 @@
+<?php $this->Html->script('http://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-truck"></i> お客さま情報変更</h1>
@@ -13,19 +15,19 @@
                 <h2>お客さま情報変更</h2>
                 <p class="form-control-static col-lg-12">変更されるお客さまの情報をご入力してください。</p>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.postal', ['class' => "form-control", 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.postal', ['class' => "form-control search_address_postal", 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.postal', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.pref', ['class' => "form-control", 'placeholder'=>'都道府県', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.pref', ['class' => "form-control address_pref", 'placeholder'=>'都道府県', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.pref', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.address1', ['class' => "form-control", 'placeholder'=>'住所', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.address1', ['class' => "form-control address_address1", 'placeholder'=>'住所', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.address1', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.address2', ['class' => "form-control", 'placeholder'=>'番地', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.address2', ['class' => "form-control address_address2", 'placeholder'=>'番地', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.address2', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
