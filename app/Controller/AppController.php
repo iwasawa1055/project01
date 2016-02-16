@@ -59,6 +59,10 @@ class AppController extends Controller
             $summary = $this->InfoBox->getProductSummary();
             $this->set('product_summary', $summary);
 
+            // 債務ユーザーの場合はクレジットカード変更以外は遷移不可
+            if ($this->customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
+                return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
+            }
         }
     }
 

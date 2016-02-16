@@ -26,7 +26,7 @@ class CreditCardController extends AppController
             $data = CakeSession::read($this::MODEL_NAME_SECURITY);
             $this->request->data = $data;
             CakeSession::delete($this::MODEL_NAME_SECURITY);
-        } elseif ($this->action === 'customer_edit' && empty($step)) {
+        } elseif (($this->action === 'customer_edit' || $this->action === 'paymentng_edit') && empty($step)) {
             // edit 初期表示データ取得
             $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
             $this->request->data[$this::MODEL_NAME_SECURITY] = $default_payment;
@@ -97,6 +97,51 @@ class CreditCardController extends AppController
      * 修正
      */
     public function customer_edit()
+    {
+        $this->setRequestDataFromSession();
+        $step = Hash::get($this->request->params, 'step');
+
+        if ($this->request->is('get')) {
+            return $this->render('customer_edit');
+        } elseif ($this->request->is('post')) {
+
+            $this->PaymentGMOSecurityCard->set($this->request->data);
+            // Expire
+            $this->PaymentGMOSecurityCard->setExpire($this->request->data);
+            // ハイフン削除
+            $this->PaymentGMOSecurityCard->trimHyphenCardNo($this->request->data);
+
+            // validates
+            if (!$this->PaymentGMOSecurityCard->validates()) {
+                return $this->render('customer_edit');
+            }
+
+            if ($step === 'confirm') {
+                // Expire year 表示用
+                $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
+
+                $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME_SECURITY]);
+                CakeSession::write($this::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
+
+                return $this->render('customer_confirm');
+            } elseif ($step === 'complete') {
+                // update
+                $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+                if (!empty($res->error_message)) {
+                    // TODO: 例外処理
+                    $this->Session->setFlash($res->error_message);
+                    return $this->redirect(['action' => 'edit']);
+                }
+
+                return $this->render('customer_complete');
+            }
+        }
+    }
+
+    /**
+     * 債務ユーザー
+     */
+    public function paymentng_edit()
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');

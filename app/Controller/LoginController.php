@@ -50,7 +50,10 @@ class LoginController extends AppController
                 }
                 $this->customer->setInfoAndSave($res->results[0]);
 
-                // TODO: 債務ユーザーの場合
+                // 債務ユーザーの場合
+                if ($this->customer->isPaymentNG()) {
+                    return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
+                }
 
                 return $this->redirect('/');
 

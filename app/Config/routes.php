@@ -8,6 +8,10 @@
     Router::connect('/customer/:controller/:action', ['customer' => true]);
     Router::connect('/customer/:controller/:action/:step', ['customer' => true]);
 
+    // paymentng
+    Router::connect('/paymentng/:controller/:action', ['paymentng' => true]);
+    Router::connect('/paymentng/:controller/:action/:step', ['paymentng' => true]);
+
     // inbound
     Router::connect('/inbound/box', ['controller' => 'InboundBox', 'action' => 'index']);
     Router::connect('/inbound/box/:action', ['controller' => 'InboundBox']);
