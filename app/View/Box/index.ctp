@@ -41,28 +41,8 @@
                   <!--loop-->
                   <div class="col-lg-12">
                     <div class="panel panel-default">
-                      <div class="panel-body <?php echo $this->MyPage->kitCdToClassName($box['kit_cd']); ?>">
-                        <div class="row">
-                          <div class="col-lg-8 col-md-8 col-sm-12">
-                            <h3><?php echo $box['box_name'] ?></h3>
-                          </div>
-                          <div class="col-lg-4 col-md-4 col-xs-12">
-                            <a class="btn btn-danger btn-md btn-block btn-detail" href="<?php echo $url; ?>">ボックスの内容を確認</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                        <div class="row">
-                          <div class="col-lg-10 col-md-10 col-sm-12">
-                            <p class="box-list-caption"><span>商品名</span><?php echo $box['product_name'] ?></p>
-                            <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id'] ?></p>
-                          </div>
-                          <div class="col-lg-2 col-md-2 col-sm-12">
-                            <p class="box-list-caption"><span>入庫日</span><?php echo $box['inbound_date'] ?></p>
-                            <p class="box-list-caption"><span>出庫日</span><?php echo $box['outbound_date'] ?></p>
-                          </div>
-                        </div>
-                      </div>
+                      <?php echo $this->element('List/box_body', ['box' => $box]); ?>
+                      <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
                     </div>
                   </div>
                   <?php endforeach; ?>

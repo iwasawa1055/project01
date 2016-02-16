@@ -111,21 +111,27 @@ class OutboundController extends AppController
      */
     public function box()
     {
+        $outBoxList = $this->outboundList->getBoxList();
+        $outBoxKeyList = array_keys($outBoxList);
+
         if ($this->request->is('post')) {
             // box
             $where = Hash::get($this->request->data, 'box_id');
             $boxList = [];
             if (is_array($where)) {
                 $ids = array_keys($where);
+                // 既存リストに追加
+                if (!empty(Hash::get($this->request->data, 'is_add'))) {
+                    $ids = array_merge($outBoxKeyList, $ids);
+                }
                 $boxList = $this->InfoBox->apiGetResultsWhere([], ['box_id' => $ids]);
             }
+
             $this->outboundList->setBoxAndSave($boxList);
             $this->redirect(['action'=>'index']);
         }
 
         // Box
-        $outBoxList = $this->outboundList->getBoxList();
-        $outBoxKeyList = array_keys($outBoxList);
         $list = $this->InfoBox->getListForServiced();
         foreach ($list as &$box) {
             $box['outbound_list'] = in_array($box['box_id'], $outBoxKeyList, true);
