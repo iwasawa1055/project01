@@ -21,6 +21,12 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
         usleep(1.5 * 1000000);
     }
 
+    public function urlAndWait($url)
+    {
+        $this->url($url);
+        $this->waitPageLoad();
+    }
+
     // 失敗時
     public function onNotSuccessfulTest(Exception $e)
     {
@@ -50,5 +56,38 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
     public function getCurrentUrlPath()
     {
         return '/'.str_replace($this->getBrowserUrl(), '', $this->url());
+    }
+
+
+    protected function firstEl($css)
+    {
+        return $this->byCssSelector($css);
+    }
+    protected function lastEl($css)
+    {
+        $els = $this->elements($this->using('css selector')->value('.outbound_select_checkbox input[type=checkbox]'));
+        return end($els);
+    }
+    protected function selectEl($css)
+    {
+        $el = $this->firstEl($css);
+        return $this->select($el);
+    }
+    protected function selectOption($css, $index = null, $tryCount = 1)
+    {
+        $values = [];
+        $sl = $this->selectEl($css);
+        for (;0 < $tryCount; $tryCount--) {
+            $values = $sl->selectOptionLabels();
+            if (0 < count($values)) {
+                break;
+            }
+            $this->waitPageLoad();
+        }
+
+        if (empty($index)) {
+            $index = count($values) - 1;
+        }
+        $sl->selectOptionByLabel($values[$index]);
     }
 }

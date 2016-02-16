@@ -7,7 +7,7 @@
         </li>
       <?php } else { ?>
         <li class="sidebar-search">
-          <?php echo $this->Form->create(false, ['url' => ['controller' => 'result', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create(false, ['id' => 'sidebar-search', 'url' => ['controller' => 'result', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="input-group custom-search-form">
             <?php echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => 'Search...']); ?>
             <span class="input-group-btn">

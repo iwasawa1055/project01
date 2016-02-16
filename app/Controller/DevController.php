@@ -67,14 +67,23 @@ class DevController extends AppController
         $this->set('timeData', $data);
     }
 
+    private function after($res)
+    {
+        if ($res->isSuccess()) {
+            return $this->redirect(['action' => 'index']);
+        } else {
+            pr($res);
+            $this->layout = false;
+            $this->render(false);
+        }
+    }
+
     public function delivery_done()
     {
         $id = Hash::get($this->request->query, 'order_id');
         $dev = new DevDeliVeryDone();
         $res = $dev->apiPatch(['order_id' => $id]);
-        pr($res);
-        $this->layout = false;
-        $this->render(false);
+        return $this->after($res);
     }
     public function delivery_cancel()
     {
@@ -82,9 +91,7 @@ class DevController extends AppController
         $id = Hash::get($this->request->query, 'order_id');
         $dev = new DevDeliVeryCancel();
         $res = $dev->apiPatch(['order_id' => $id]);
-        pr($res);
-        $this->layout = false;
-        $this->render(false);
+        return $this->after($res);
     }
     public function inbound_done()
     {
@@ -93,9 +100,7 @@ class DevController extends AppController
         $number = Hash::get($this->request->query, 'number');
         $dev = new DevInboundDone();
         $res = $dev->apiPatch(['box_id' => $boxId, 'number' => $number]);
-        pr($res);
-        $this->layout = false;
-        $this->render(false);
+        return $this->after($res);
     }
     public function outbound_done()
     {
@@ -103,9 +108,7 @@ class DevController extends AppController
         $id = Hash::get($this->request->query, 'work_id');
         $dev = new DevOutboundDone();
         $res = $dev->apiPatch(['work_id' => $id]);
-        pr($res);
-        $this->layout = false;
-        $this->render(false);
+        return $this->after($res);
     }
     public function billing()
     {

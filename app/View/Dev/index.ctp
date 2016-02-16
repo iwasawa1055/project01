@@ -72,18 +72,38 @@ dd {
 
 <div class="container">
 <h2>注文ID、作業ID</h2>
-<div class="col-md-3">
+<div class="col-md-3 order_id">
 <dl><dt>注文ID</dt>
 <?php foreach ($order_ids as $data): ?>
-<dd><?php echo $data['order_id']; ?></dd>
+<dd>
+    <span><?php echo $data['order_id']; ?></span>
+    <a href="/dev/delivery_done?order_id=<?php echo $data['order_id']; ?>">done</a>
+</dd>
 <?php endforeach; ?>
 </dl>
 </div>
 
-<div class="col-md-3">
+<div class="col-md-3 inbound_box_id">
+<dl><dt>入庫</dt>
+<?php if (array_key_exists(BOXITEM_STATUS_INBOUND_START, $boxData)): ?>
+<?php foreach ($boxData[BOXITEM_STATUS_INBOUND_START] as $data): ?>
+<dd>
+    <span><?php echo $data['box_id']; ?></span>
+    <a href="/dev/inbound_done?number=2&box_id=<?php echo $data['box_id']; ?>">done</a>
+</dd>
+<?php endforeach; ?>
+<?php endif; ?>
+</dl>
+</div>
+
+
+<div class="col-md-3 outbound_work_id">
 <dl><dt>作業ID（出庫）</dt>
 <?php foreach ($work_ids_003 as $data): ?>
-<dd><?php echo $data['work_id']; ?></dd>
+<dd>
+    <span><?php echo $data['work_id']; ?></span>
+    <a href="/dev/outbound_done?work_id=<?php echo $data['work_id']; ?>">done</a>
+</dd>
 <?php endforeach; ?>
 </dl>
 </div>
@@ -100,7 +120,7 @@ $a = [
     BOXITEM_STATUS_INBOUND_START => '入庫受付',
     BOXITEM_STATUS_INBOUND_DONE => '入庫終了',
     BOXITEM_STATUS_OUTBOUND_START => '出庫受付',
-    BOXITEM_STATUS_OUTBOUND_DONE => '出庫終了',
+    // BOXITEM_STATUS_OUTBOUND_DONE => '出庫終了',
 ];
 foreach ($a as $status => $label): ?>
     <div class="col-md-2">

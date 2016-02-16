@@ -29,7 +29,6 @@
                             </h3>
                           </div>
                           <div class="col-lg-4 col-md-4 col-xs-12 outbound_select_checkbox">
-                              <input type="checkbox">
                               <?php echo $this->Form->checkbox("box_id.${i}", ['checked' => $box['outbound_list'], 'hiddenField' => false]); ?>
                               <button class="btn btn-danger btn-md btn-block btn-detail"></button>
                           </div>

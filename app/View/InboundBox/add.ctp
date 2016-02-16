@@ -45,7 +45,6 @@
                               </div>
                           <?php endif; ?>
                           <div class="col-lg-3 col-md-3 col-xs-12 box_select_checkbox">
-                              <input type="checkbox">
                               <?php echo $this->Form->checkbox("Inbound.box_list.${i}.checkbox"); ?>
                               <button class="btn btn-danger btn-md btn-block btn-detail inbound-btn"></button>
                           </div>
