@@ -12,8 +12,9 @@ class ResultController extends AppController
      */
     public function index()
     {
-        $maxCount = 5;
-        $keyword = Hash::get($this->request->query, 'data.keyword');
+        $maxCount = 8;
+        $keyword = Hash::get($this->request->data, 'keyword');
+
         // お知らせ
         $res = $this->Announcement->apiGet();
         if ($res->isSuccess()) {
@@ -25,7 +26,7 @@ class ResultController extends AppController
                     $d['title'],
                     $d['text'],
                 ]);
-                if (!empty($keyword) && strpos(implode($d), $keyword) !== false) {
+                if (!empty($keyword) && strpos(implode($d), $keyword) != false) {
                     $hits[] = $d;
                     if ($maxCount < count($hits)) {
                         break;

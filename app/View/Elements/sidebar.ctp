@@ -7,13 +7,14 @@
         </li>
       <?php } else { ?>
         <li class="sidebar-search">
-        <form action="/result" method="get">
+          <?php echo $this->Form->create(false, ['url' => ['controller' => 'result', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="input-group custom-search-form">
             <?php echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => 'Search...']); ?>
             <span class="input-group-btn">
               <button type="submit" class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
             </span>
           </div>
+          <?php echo $this->Form->end(); ?>
         </form>
         </li>
         <li> <a href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
