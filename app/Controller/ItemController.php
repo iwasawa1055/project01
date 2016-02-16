@@ -48,7 +48,7 @@ class ItemController extends AppController
     {
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
-        $results = $this->InfoItem->getListForServiced(null, $sortKey);
+        $results = $this->InfoItem->getListForServiced($sortKey);
         // paginate
         $list = $this->paginate($this::MODEL_NAME, $results);
         $this->set('itemList', $list);
