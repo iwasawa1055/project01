@@ -34,8 +34,10 @@ class AppModel extends Model
     /* sort */
 
     public function sort(&$list, $sortKey = [], $defaultSortKey = []) {
-        $sortKeyList = array_merge($sortKey, $defaultSortKey);
-        $sorter = new ArraySorter($sortKeyList);
+        if (is_array($sortKey) && count($sortKey) === 1) {
+            $defaultSortKey = $sortKey;
+        }
+        $sorter = new ArraySorter($defaultSortKey);
         usort($list, [$sorter, 'cmp']);
     }
 

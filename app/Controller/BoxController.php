@@ -5,6 +5,12 @@ App::uses('AppController', 'Controller');
 class BoxController extends AppController
 {
     const MODEL_NAME = 'InfoBox';
+    const SELECT_SORT_KEY = [
+        'box_id' => '箱NO',
+        'box_name' => '箱タイトル',
+        'product_name' => 'サービス名',
+        'box_status' => 'ステータス'
+    ];
 
     /**
      * 制御前段処理.
@@ -14,6 +20,25 @@ class BoxController extends AppController
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
         $this->loadModel('InfoItem');
+
+        $this->set('sortSelectList', $this->makeSelectSortUrl());
+        $this->set('select_sort_value', Router::reverse($this->request));
+    }
+
+    private function makeSelectSortUrl()
+    {
+        $product = $this->request->query('product');
+
+        $data = [];
+        foreach ($this::SELECT_SORT_KEY as $key => $value) {
+            $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc']]);
+            $data[$desc] = $value . '（降順）';
+
+            $asc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'asc']]);
+            $data[$asc] = $value . '（昇順）';
+        }
+
+        return $data;
     }
 
     /**
