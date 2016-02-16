@@ -13,11 +13,11 @@ class ArraySorter
         foreach ($this->sortKeyList as $key => $isAsc) {
             $aKeyExist = array_key_exists($key, $a);
             $bKeyExist = array_key_exists($key, $b);
-            if ($a && $b && $a[$key] !== $b[$key]) {
+            if ($aKeyExist && $bKeyExist && $a[$key] !== $b[$key]) {
                 $result = strcmp($a[$key], $b[$key]);
                 break;
-            } elseif (!$a && !$b) {
-                $result = $a ? 1 : -1;
+            } elseif (!$aKeyExist || !$bKeyExist) {
+                $result = $aKeyExist ? 1 : -1;
                 break;
             }
         }
