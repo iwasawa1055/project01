@@ -11,7 +11,7 @@
               <div class="col-lg-12">
                 <h2>クレジットカード変更</h2>
               <?php //echo $this->Form->create(false, ['url' => ['action' => 'complete']]); ?>
-              <?php echo $this->Form->create('CustomerInfoV3', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete']]); ?>
+              <?php echo $this->Form->create(false, ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete']]); ?>
                 <div class="form-group col-lg-12">
                   <label>クレジットカード番号</label>
                   <p><?php echo $security_card['card_no']; ?></p>

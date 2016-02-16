@@ -151,7 +151,7 @@
  *	`manager_index()` and `/manager/controller/index`
  *
  */
-	Configure::write('Routing.prefixes', array('customer'));
+	Configure::write('Routing.prefixes', ['customer', 'paymentng']);
 
 /**
  * Turn off all caching application-wide.
