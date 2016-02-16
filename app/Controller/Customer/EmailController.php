@@ -5,6 +5,7 @@ App::uses('AppController', 'Controller');
 class EmailController extends AppController
 {
     const MODEL_NAME = 'CustomerEmail';
+    const MODEL_NAME_INFO = 'CustomerInfo';
 
     /**
      * 制御前段処理.
@@ -13,6 +14,9 @@ class EmailController extends AppController
     {
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
+        $this->loadModel($this::MODEL_NAME_INFO);
+
+        $this->set('current_email', $this->customer->info['email']);
     }
 
     /**
@@ -56,13 +60,15 @@ class EmailController extends AppController
         $this->CustomerEmail->set($data);
         if ($this->CustomerEmail->validates()) {
             // api
-            $res = $this->CustomerEmail->apiPatch($this->CustomerEmail->data);
-            if (!$res->isSuccess()) {
+            $res = $this->CustomerEmail->apiPatch($this->CustomerEmail->toArray());
+            if (!empty($res->error_message)) {
                 // TODO:
                 $this->Session->setFlash('try again');
                 return $this->redirect(['action' => 'edit']);
             }
-            // complete.ctp echo $email
+
+            $res = $this->CustomerInfo->apiGet();
+            $this->customer->setInfoAndSave($res->results[0]);
             $this->set('email', $this->CustomerEmail->toArray()['email']);
         } else {
             // TODO:

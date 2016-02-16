@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/box', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-tag"></i> ご利用中のサービス</h1>
@@ -21,20 +22,8 @@
                   ?>
                 <h2><?php echo $productName; ?></h2>
                 <div class="row box-list">
-                  <div class="col-lg-2 col-lg-offset-10">
-                    <select class="form-control sort-form">
-                      <option>並べ替え</option>
-                      <option value="">箱NO（降順）</option>
-                      <option value="">箱NO（昇順）</option>
-                      <option value="">箱タイトル（降順）</option>
-                      <option value="">箱タイトル（昇順）</option>
-                      <option value="">個品タイトル（降順）</option>
-                      <option value="">個品タイトル（昇順）</option>
-                      <option value="">ステータス（降順）</option>
-                      <option value="">ステータス（昇順）</option>
-                      <option value="">オプション（降順）</option>
-                      <option value="">オプション（昇順）</option>
-                    </select>
+                  <div class="col-lg-3 col-lg-offset-9">
+                    <?php echo $this->Form->input(false, ['type' => 'select', 'options' => $sortSelectList, 'selected' => $select_sort_value, 'id' => 'select_sort', 'class' => 'form-control sort-form', 'empty' => '並べ替え', 'label'=>false, 'div'=>false]); ?>
                   </div>
                   <?php foreach ($boxList as $box): ?>
                   <?php $url = '/box/detail/' . $box['box_id']; ?>

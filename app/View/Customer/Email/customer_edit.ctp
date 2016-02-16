@@ -12,7 +12,7 @@
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>古いメールアドレス</label>
-                  <p class="form-control-static">email@example.com</p>
+                  <p class="form-control-static"><?php echo $current_email ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerEmail.email', ['class' => "form-control", 'placeholder'=>'新しいメールアドレス', 'error' => false]); ?>
