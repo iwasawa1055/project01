@@ -50,6 +50,11 @@ class CustomerData
         return $this->token['regist_level'] === CUSTOMER_REGIST_LEVEL_ENTRY;
     }
 
+    public function isPrivateCustomer()
+    {
+        return $this->token['division'] === CUSTOMER_DIVISION_PRIVATE;
+    }
+
     public function isPaymentNG()
     {
         return $this->token['payment'] === CUSTOMER_PAYMENT_NG;
@@ -57,6 +62,23 @@ class CustomerData
 
     public function getCustomerName()
     {
-        return "{$this->info['lastname']}{$this->info['firstname']}";
+        if ($this->isPrivateCustomer()) {
+            return "{$this->info['lastname']}{$this->info['firstname']}";
+        } else {
+            return $this->info['company_name'];
+        }
+    }
+
+    public function getCorporatePayment()
+    {
+        /*
+        * null：クレジットカード
+        * unregistered：口座未登録（キットの購入・ボックスの入庫が出来ません）
+        * registration：口座登録完了（キットの購入・ボックスの入庫ができます）
+        */
+        if (!$this->isPrivateCustomer()) {
+            return $this->info['account_situation'];
+        }
+        return null;
     }
 }

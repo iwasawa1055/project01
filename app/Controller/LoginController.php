@@ -39,14 +39,22 @@ class LoginController extends AppController
                 // token
                 $this->customer->setTokenAndSave($res->results[0]);
 
-                if ($this->customer->isEntry()) {
-                    // 仮登録情報取得
-                    $this->loadModel('CustomerEntry');
-                    $res = $this->CustomerEntry->apiGet();
+                if ($this->customer->isPrivateCustomer()) {
+                    // 個人
+                    if ($this->customer->isEntry()) {
+                        // 仮登録情報取得
+                        $this->loadModel('CustomerEntry');
+                        $res = $this->CustomerEntry->apiGet();
+                    } else {
+                        // 本登録情報取得
+                        $this->loadModel('CustomerInfo');
+                        $res = $this->CustomerInfo->apiGet();
+                    }
                 } else {
+                    // 法人
                     // 本登録情報取得
-                    $this->loadModel('CustomerInfo');
-                    $res = $this->CustomerInfo->apiGet();
+                    $this->loadModel('CorporateInfo');
+                    $res = $this->CorporateInfo->apiGet();
                 }
                 $this->customer->setInfoAndSave($res->results[0]);
 
