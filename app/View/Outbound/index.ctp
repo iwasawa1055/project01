@@ -33,7 +33,6 @@
                       </h3>
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-12 outbound_select_checkbox">
-                        <input type="checkbox">
                         <?php echo $this->Form->checkbox("item_id.${i}", ['checked' => 'checked', 'hiddenField' => false]); ?>
                         <button class="btn btn-danger btn-md btn-block btn-detail"></button>
                     </div>
@@ -66,7 +65,7 @@
               <!--loop-->
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <?php echo $this->element('List/box_body_outbound', ['box' => $box]); ?>
+                  <?php echo $this->element('List/box_body_outbound', ['box' => $box, 'default' => true]); ?>
                   <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
                 </div>
               </div>

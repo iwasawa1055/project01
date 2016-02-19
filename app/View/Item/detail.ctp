@@ -43,18 +43,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="panel-footer">
-                    <div class="row">
-                      <div class="col-lg-10 col-md-10 col-sm-12">
-                        <p class="box-list-caption"><span>アイテムID</span><?php echo $item['item_name'] ?></p>
-                        <p class="box-list-caption"><span>ボックスID</span><?php echo $item['item_id'] ?></p>
-                      </div>
-                      <div class="col-lg-2 col-md-2 col-sm-12">
-                        <p class="box-list-caption"><span>入庫日</span><?php echo $box['inbound_date']; ?></p>
-                        <p class="box-list-caption"><span>出庫日</span><?php echo $box['outbound_date']; ?></p>
-                      </div>
-                    </div>
-                  </div>
+
+                  <?php echo $this->element('List/item_footer', ['item' => $item, 'box' => $box]); ?>
                 </div>
                 <!--loop end-->
               </div>

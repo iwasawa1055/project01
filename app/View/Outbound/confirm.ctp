@@ -9,6 +9,24 @@
           <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="row">
+
+
+                <div class="col-lg-12">
+                  <h2>取り出すアイテム</h2>
+                  <div class="row box-list">
+                    <?php foreach ($itemList as $item): ?>
+                    <!--loop-->
+                    <div class="col-lg-12">
+                      <div class="panel panel-default">
+                        <?php echo $this->element('List/item_body', ['item' => $item]); ?>
+                        <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
+                      </div>
+                    </div>
+                    <!--loop end-->
+                    <?php endforeach; ?>
+                  </div>
+                </div>
+
               <div class="col-lg-12">
                 <h2>取り出すボックス</h2>
                 <div class="row box-list">
@@ -27,18 +45,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="panel-footer">
-                        <div class="row">
-                          <div class="col-lg-10 col-md-10 col-sm-12">
-                            <p class="box-list-caption"><span>商品名</span><?php echo $box['product_name'] ?></p>
-                            <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id'] ?></p>
-                          </div>
-                          <div class="col-lg-2 col-md-2 col-sm-12">
-                            <p class="box-list-caption"><span>入庫日</span><?php echo $box['inbound_date'] ?></p>
-                            <p class="box-list-caption"><span>出庫日</span><?php echo $box['outbound_date'] ?></p>
-                          </div>
-                        </div>
-                      </div>
+                      <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
                     </div>
                   </div>
                   <!--loop end-->

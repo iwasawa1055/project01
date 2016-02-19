@@ -64,44 +64,88 @@ class OutboundController extends AppController
         }
     }
 
+    /**
+     * data [
+     *   'box_id' => ['001' => 1, '002' => 1, '003' => 1]
+     * ]
+     * @param $beforeList
+     * @param $dataKey
+     */
+    private function mergeDataKey($dataKey, $beforeList = [])
+    {
+        $newIdList = Hash::get($this->request->data, $dataKey);
+
+        $beforeKeyList = array_keys($beforeList);
+        foreach ($newIdList as $value => $isAdd) {
+            if ($isAdd === '1' && !in_array($value, $beforeKeyList, true)) {
+                $beforeList[$value] = [];
+            } else if ($isAdd === '0' && in_array($value, $beforeKeyList, true)) {
+                unset($beforeList[$value]);
+            }
+        }
+        return array_keys($beforeList);
+    }
+
     public function mono()
     {
+        // 保持しているデータ
+        $outMonoList = $this->outboundList->getMonoList();
+
+        // 増減処理
         if ($this->request->is('post')) {
-            // item
-            $itemIdList = Hash::get($this->request->data, 'item_list');
-            $where = $this->getCheckedItemToArray($itemIdList, 'checkbox', 'item_id');
-            $itemList = $this->InfoItem->apiGetResultsWhere([], $where);
-            $this->outboundList->setItemAndSave($itemList);
-            $this->redirect(['action' => 'index']);
+
+            $idList = $this->mergeDataKey('box_id', $outMonoList);
+            $errorList = $this->outboundList->setMono($idList);
+            if (empty($errorList)) {
+                $this->redirect(['action' => 'item']);
+            } else {
+                // has error
+                $outMonoList = $this->outboundList->getMonoList();
+                $this->set('errorList', $errorList);
+            }
         }
 
-        // mono
-        $outItemList = $this->outboundList->getItemList();
-        $outItemKeyList = array_keys($outItemList);
-        $list = $this->InfoItem->getListForServiced();
-        foreach ($list as &$item) {
-            $item['outbound_list'] = in_array($item['item_id'], $outItemKeyList, true);
+        // 表示
+        $list = $this->InfoBox->getListForServiced('mono');
+        $keyList = array_keys($outMonoList);
+        // 選択フラグ
+        foreach ($list as &$box) {
+            $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
         }
-        $this->set('itemList', $list);
+        $this->set('boxList', $list);
     }
 
     public function item()
     {
+        $outItemList = $this->outboundList->getItemList();
+
+
         if ($this->request->is('post')) {
-            // item
-            $itemIdList = Hash::get($this->request->data, 'item_id');
-            $where = $this->getCheckedItemToArray($itemIdList, 'checkbox', 'item_id');
-            $itemList = $this->InfoItem->apiGetResultsWhere([], $where);
-            $this->outboundList->setItemAndSave($itemList);
-            $this->redirect(['action'=>'index']);
+
+            // TODO: 追加削除が入り乱れる
+            // $isAdd = !empty(Hash::get($this->request->data, 'is_add'));
+            // TODO: ここで増減を吸収する？
+            $idList = $this->mergeDataKey('item_id', $outItemList);
+
+            $errorList = $this->outboundList->setItem($idList);
+            if (empty($errorList)) {
+                $this->redirect(['action' => 'index']);
+            } else {
+                // has error
+                $outItemList = $this->outboundList->getItemList();
+                $this->set('errorList', $errorList);
+            }
         }
 
+        // 対象MONOボックス
+        $outMonoList = $this->outboundList->getMonoList();
+        $outMonoKeyList = array_keys($outMonoList);
+
         // item
-        $outItemList = $this->outboundList->getItemList();
-        $outItemKeyList = array_keys($outItemList);
-        $list = $this->InfoItem->getListForServiced();
+        $list = $this->InfoItem->getListForServiced(null, ['box_id' => $outMonoKeyList]);
+        $keyList = array_keys($outItemList);
         foreach ($list as &$item) {
-            $item['outbound_list'] = in_array($item['item_id'], $outItemKeyList, true);
+            $item['outbound_list'] = in_array($item['item_id'], $keyList, true);
         }
         $this->set('itemList', $list);
     }
@@ -112,29 +156,28 @@ class OutboundController extends AppController
     public function box()
     {
         $outBoxList = $this->outboundList->getBoxList();
-        $outBoxKeyList = array_keys($outBoxList);
 
         if ($this->request->is('post')) {
-            // box
-            $where = Hash::get($this->request->data, 'box_id');
-            $boxList = [];
-            if (is_array($where)) {
-                $ids = array_keys($where);
-                // 既存リストに追加
-                if (!empty(Hash::get($this->request->data, 'is_add'))) {
-                    $ids = array_merge($outBoxKeyList, $ids);
-                }
-                $boxList = $this->InfoBox->apiGetResultsWhere([], ['box_id' => $ids]);
-            }
 
-            $this->outboundList->setBoxAndSave($boxList);
-            $this->redirect(['action'=>'index']);
+            // ids
+            $idList = $this->mergeDataKey('box_id', $outBoxList);
+
+            // check and save
+            $errorList = $this->outboundList->setBox($idList);
+            if (empty($errorList)) {
+                $this->redirect(['action' => 'index']);
+            } else {
+                // has error
+                $outBoxList = $this->outboundList->getBoxList();
+                $this->set('errorList', $errorList);
+            }
         }
 
         // Box
         $list = $this->InfoBox->getListForServiced();
+        $keyList = array_keys($outBoxList);
         foreach ($list as &$box) {
-            $box['outbound_list'] = in_array($box['box_id'], $outBoxKeyList, true);
+            $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
         }
         $this->set('boxList', $list);
     }
@@ -192,9 +235,9 @@ class OutboundController extends AppController
             $this->set('boxList', $boxList);
             // item
             $itemIdList = Hash::get($data, 'item_id');
-            if (is_array($boxIdList)) {
-                $ids = array_keys($boxIdList);
-                $itemList = $this->InfoBox->apiGetResultsWhere([], ['item_id' => $ids]);
+            if (is_array($itemIdList)) {
+                $ids = array_keys($itemIdList);
+                $itemList = $this->InfoItem->apiGetResultsWhere([], ['item_id' => $ids]);
             }
             $this->set('itemList', $itemList);
             // unset

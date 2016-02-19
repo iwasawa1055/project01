@@ -27,26 +27,21 @@ class InfoItem extends ApiCachedModel
 
 
     // 入庫済み一覧
-    public function getListForServiced($sortKey = [])
+    public function getListForServiced($sortKey = [], $where = [])
     {
 
-      $all = $this->apiGetResults();
-      $list = [];
-      $okStatus = [
-          BOXITEM_STATUS_INBOUND_IN_PROGRESS,
-          BOXITEM_STATUS_INBOUND_DONE,
-          BOXITEM_STATUS_OUTBOUND_START,
-          BOXITEM_STATUS_OUTBOUND_IN_PROGRESS
-      ];
-      foreach ($all as $a) {
-          if (in_array($a['item_status'] . '', $okStatus, true)) {
-              $list[] = $a;
-          }
-      }
+        $where['item_status'] = [
+            BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
+            BOXITEM_STATUS_INBOUND_DONE * 1,
+            BOXITEM_STATUS_OUTBOUND_START * 1,
+            BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
+        ];
 
-      // sort
-      $this->sort($list, $sortKey, $this->defaultSortKey);
-      return $list;
+        $list = $this->apiGetResultsWhere([], $where);
+
+        // sort
+        $this->sort($list, $sortKey, $this->defaultSortKey);
+        return $list;
     }
 
     public function apiGet($data = [])

@@ -36,7 +36,6 @@ class OutboundList
         CakeSession::delete(OutboundList::SESSION_KEY);
     }
 
-
     public function getBoxList()
     {
         return $this->boxList;
@@ -47,67 +46,84 @@ class OutboundList
         return $this->itemList;
     }
 
-    public function setCheckboxBoxAndSave($boxList = [])
+    public function getMonoList()
     {
-        $where = [];
-        foreach ($boxList as $k => $a) {
-            if (!empty($a['checkbox'])) {
-                $where['box_id'][] = $k;
-            }
-        }
-        $infoBox = new InfoBox();
-        $add = $infoBox->apiGetResultsWhere([], $where);
-        $this->boxList = [];
-        return $this->addBoxAndSave($add);
+        return $this->monoList;
     }
 
-    public function setBoxAndSave($list = [])
+    public function  setMono($idList = [], $needClear = true, $needSave = true)
     {
-        $this->boxList = [];
-        return $this->addBoxAndSave($list);
-    }
-    public function setItemAndSave($list = [])
-    {
-        $this->itemList = [];
-        return $this->addItemAndSave($list);
-    }
+        $box = new InfoBox();
+        $list = $box->apiGetResultsWhere([], ['box_id' => $idList]);
 
-    public function addBoxAndSave($list = [])
-    {
-        $r = $this->addBox($list);
-        if ($r === true) {
-            OutboundList::save($this);
-        }
-        return $r;
-    }
-    public function addItemAndSave($list = [])
-    {
-        $r = $this->addItem($list);
-        if ($r === true) {
-            OutboundList::save($this);
-        }
-    }
-
-    public function addBox($list = [])
-    {
-        // ボックスステータス
-        // アイテムステータスチェック
-        $msg = [];
+        $this->monoList = [];
+        $errorList = [];
         foreach ($list as $a) {
             $boxId = $a['box_id'];
-            $this->boxList[$boxId] = $a;
+            $this->monoList[$boxId] = $a;
         }
-        return true;
+        OutboundList::save($this);
+        return $errorList;
     }
 
-    public function addItem($list = [])
+    public function setBox($idList = [], $needClear = true, $needSave = true)
     {
-        $msg = [];
+        $okStatus = [
+            BOXITEM_STATUS_INBOUND_DONE,
+        ];
+
+        $itemListBoxId = Hash::extract($this->getItemList(), '{s}.box_id');
+
+        // list
+        $box = new InfoBox();
+        $list = $box->apiGetResultsWhere([], ['box_id' => $idList]);
+
+        $this->boxList = [];
+        $errorList = [];
+        foreach ($list as $a) {
+            $boxId = $a['box_id'];
+            // check status
+            if (!in_array($a['box_status'], $okStatus, true)) {
+                $errorList[$boxId][] = '追加出来るステータスではありません';
+            }
+            // chcek item
+            if (in_array($boxId, $itemListBoxId, true)) {
+                $errorList[$boxId][] = 'アイテムが既に追加されています。';
+            }
+            $this->boxList[$boxId] = $a;
+        }
+        OutboundList::save($this);
+        return $errorList;
+    }
+
+    public function setItem($idList = [])
+    {
+        $okStatus = [
+            BOXITEM_STATUS_INBOUND_DONE * 1,
+        ];
+
+        $boxKeyList = array_keys($this->getBoxList());
+
+        // list
+        $item = new InfoItem();
+        $list = $item->apiGetResultsWhere([], ['item_id' => $idList]);
+
+        $this->itemList = [];
+        $errorList = [];
         foreach ($list as $a) {
             $itemId = $a['item_id'];
+            // check status
+            if (!in_array($a['item_status'], $okStatus, true)) {
+                $errorList[$itemId][] = '追加出来るステータスではありません';
+            }
+            // chcek item
+            if (in_array($a['box_id'], $boxKeyList, true)) {
+                $errorList[$itemId][] = 'ボックスが既に追加されています。';
+            }
             $this->itemList[$itemId] = $a;
         }
-        return true;
+        OutboundList::save($this);
+        return $errorList;
     }
 
     public function canAddBox()
