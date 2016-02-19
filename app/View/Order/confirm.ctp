@@ -15,7 +15,7 @@
                     minikuraMONO
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo $this->Form->data['PaymentGMOKitCard']['mono_num']; ?>箱
+                    <?php echo $this->Form->data['OrderKit']['mono_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -26,7 +26,7 @@
                     minikuraHAKO
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo $this->Form->data['PaymentGMOKitCard']['hako_num']; ?>箱
+                    <?php echo $this->Form->data['OrderKit']['hako_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -37,7 +37,7 @@
                     クリーニングパック
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo $this->Form->data['PaymentGMOKitCard']['cleaning_num']; ?>箱
+                    <?php echo $this->Form->data['OrderKit']['cleaning_num']; ?>箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
                     00円
@@ -56,10 +56,12 @@
                 </div>
               </div>
             <?php if (!$isEntry) : ?>
+              <?php if ($isPrivateCustomer || empty($corporatePayment))  : ?>
               <div class="col-lg-12">
                 <label>カード情報</label>
                 <p class="form-control-static"><?php echo $default_payment_text; ?></p>
               </div>
+              <?php endif; ?>
               <div class="col-lg-12">
                 <label>お届け先</label>
                 <p class="form-control-static"><?php echo $address_text; ?></p>

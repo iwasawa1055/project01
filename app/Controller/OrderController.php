@@ -4,16 +4,17 @@ App::uses('AppController', 'Controller');
 
 class OrderController extends AppController
 {
-    const MODEL_NAME = 'PaymentGMOKitCard';
+    // const MODEL_NAME = 'PaymentGMOKitCard';
+    // const MODEL_NAME_ACCOUNT = 'PaymentAccountTransferKit';
+    const MODEL_NAME = 'OrderKit';
     const MODEL_NAME_CARD = 'PaymentGMOCard';
-    const MODEL_NAME_ADDRESS = 'CustomerAddress';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
 
     public $default_payment = null;
-    public $address = null;
-    public $datetime = null;
+    // public $address = null;
+    // public $datetime = null;
 
-    public $components = ['Address'];
+    public $components = ['Address', 'Order'];
 
     /**
      * 制御前段処理.
@@ -21,19 +22,22 @@ class OrderController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        // $this->loadModel($this::MODEL_NAME);
+        $this->Order->init($this->customer->token['division']);
         $this->loadModel($this::MODEL_NAME_CARD);
-        $this->loadModel($this::MODEL_NAME_ADDRESS);
         $this->loadModel($this::MODEL_NAME_DATETIME);
+        $this->set('validErrors', []);
 
         // 仮登録か
         $this->set('isEntry', $this->customer->isEntry());
         if (!$this->customer->isEntry()) {
-            // クレジットカード
-            $this->default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
-            $this->set('default_payment', $this->default_payment);
+            if ($this->customer->isPrivateCustomer() || empty($this->customer->getCorporatePayment())) {
+                // クレジットカード
+                $this->default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
+                $this->set('default_payment', $this->default_payment);
+            }
             // 配送先
-            $this->set('address', $this->Address->get());
+            $this->set('address', $this->Address->get($this->customer->isPrivateCustomer()));
         }
     }
 
@@ -81,7 +85,7 @@ class OrderController extends AppController
         if ($isBack) {
             $this->request->data = CakeSession::read($this::MODEL_NAME);
             if (!$this->customer->isEntry()) {
-                $res_datetime = $this->getDatetimeDeliveryKit($this->request->data['PaymentGMOKitCard']['address_id']);
+                $res_datetime = $this->getDatetimeDeliveryKit($this->request->data[$this::MODEL_NAME]['address_id']);
                 $this->set('datetime', $res_datetime);
             }
         } else {
@@ -95,12 +99,14 @@ class OrderController extends AppController
      */
     public function confirm()
     {
-        $this->PaymentGMOKitCard->set($this->request->data);
+        // $this->PaymentGMOKitCard->set($this->request->data);
+        $model = $this->Order->model($this->request->data[$this::MODEL_NAME]);
+        $paymentModelName = $model->getModelName();
 
         // 仮登録ユーザーの場合
         if ($this->customer->isEntry()) {
-            if ($this->PaymentGMOKitCard->validates(['fieldList' => ['mono_num', 'hako_num', 'cleaning_num']])) {
-                CakeSession::write($this::MODEL_NAME, $this->PaymentGMOKitCard->data);
+            if ($model->validates(['fieldList' => ['mono_num', 'hako_num', 'cleaning_num']])) {
+                CakeSession::write($this::MODEL_NAME, $model->data);
                 return $this->render('confirm');
             } else {
                 return $this->render('add');
@@ -109,37 +115,44 @@ class OrderController extends AppController
 
         // 本登録ユーザーの場合
         // address_id
-        $address_id = $this->request->data['PaymentGMOKitCard']['address_id'];
+        $address_id = $this->request->data[$this::MODEL_NAME]['address_id'];
         $address = $this->Address->find($address_id);
 
-        // お届け先情報
-        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['name'] = "{$address['lastname']}　{$address['firstname']}";
-        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['tel1'] = $address['tel1'];
-        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['postal'] = $address['postal'];
-        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
+        // // お届け先情報
+        // $model->data[$this::MODEL_NAME]['name'] = "{$address['lastname']}　{$address['firstname']}";
+        // $model->data[$this::MODEL_NAME]['tel1'] = $address['tel1'];
+        // $model->data[$this::MODEL_NAME]['postal'] = $address['postal'];
+        // $model->data[$this::MODEL_NAME]['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
+        $model = $this->Order->setAddress($model->data[$paymentModelName], $address);
 
         // キット
         $kit = '';
-        $mono_num = $this->request->data['PaymentGMOKitCard']['mono_num'];
+        $mono_num = $this->request->data[$this::MODEL_NAME]['mono_num'];
         $kit .= empty($mono_num) ? '' : '66:' . $mono_num;
-        $hako_num = $this->request->data['PaymentGMOKitCard']['hako_num'];
+        $hako_num = $this->request->data[$this::MODEL_NAME]['hako_num'];
         $kit .= empty($hako_num) ? '' : '64:' . $hako_num;
-        $cleaning_num = $this->request->data['PaymentGMOKitCard']['cleaning_num'];
+        $cleaning_num = $this->request->data[$this::MODEL_NAME]['cleaning_num'];
         $kit .= empty($cleaning_num) ? '' : '75:' . $cleaning_num;
 
-        $this->PaymentGMOKitCard->data['PaymentGMOKitCard']['kit'] = rtrim($kit, ',');
+        // $model->data[$this::MODEL_NAME]['kit'] = rtrim($kit, ',');
+        $model->data[$paymentModelName]['kit'] = rtrim($kit, ',');
 
-        if ($this->PaymentGMOKitCard->validates()) {
-            // カード
-            $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+        if ($model->validates()) {
+            if ($this->customer->isPrivateCustomer() || empty($this->customer->getCorporatePayment())) {
+                // カード
+                $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+            }
             // お届け先
             $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
             // お届け希望日時
-            $datetime = $this->getDatetime($address_id, $this->request->data['PaymentGMOKitCard']['datetime_cd']);
+            $datetime = $this->getDatetime($address_id, $this->request->data[$this::MODEL_NAME]['datetime_cd']);
             $this->set('datetime', $datetime['text']);
 
-            CakeSession::write($this::MODEL_NAME, $this->PaymentGMOKitCard->data);
+            // CakeSession::write($this::MODEL_NAME, $model->data);
+            CakeSession::write($this::MODEL_NAME, $model->data[$paymentModelName]);
         } else {
+            $this->set('validErrors', $model->validationErrors);
+
             // 配送日時
             $res_datetime = [];
             if (!empty($address_id)) {
@@ -157,33 +170,35 @@ class OrderController extends AppController
     public function complete()
     {
         $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
+        // CakeSession::delete($this::MODEL_NAME);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');
             return $this->redirect(['action' => 'add']);
         }
-
-        $this->PaymentGMOKitCard->set($data);
-        if ($this->PaymentGMOKitCard->validates()) {
+        // $this->PaymentGMOKitCard->set($data);
+        $model = $this->Order->model($data);
+        if ($model->validates()) {
             // api
-            $res = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+            $res = $model->apiPost($model->toArray());
             if (!$res->isSuccess()) {
                 // TODO:
                 $this->Session->setFlash('try again');
                 return $this->redirect(['action' => 'add']);
             }
 
-            $address_id = $data['PaymentGMOKitCard']['address_id'];
+            $address_id = $data['address_id'];
             $address = $this->Address->find($address_id);
             $this->set('data', $data);
 
-            // カード
-            $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+            if ($this->customer->isPrivateCustomer() || empty($this->customer->getCorporatePayment())) {
+                // カード
+                $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+            }
             // お届け先
             $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
             // お届け希望日時
-            $datetime = $this->getDatetime($address_id, $data['PaymentGMOKitCard']['datetime_cd']);
+            $datetime = $this->getDatetime($address_id, $data['datetime_cd']);
             $this->set('datetime', $datetime['text']);
 
         } else {

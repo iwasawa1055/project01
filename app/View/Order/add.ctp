@@ -1,5 +1,6 @@
 <?php $this->Html->script('minikura/order', ['block' => 'scriptMinikura']); ?>
-  <div class="row">
+<?php $this->validationErrors['OrderKit'] = $validErrors; ?>
+    <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
       </div>
@@ -7,7 +8,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('PaymentGMOKitCard', ['url' => ['controller' => 'order', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('OrderKit', ['url' => ['controller' => 'order', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="row col-lg-12 none-title">
               <div class="col-lg-4 col-md-12">
@@ -18,7 +19,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('PaymentGMOKitCard.mono_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                      <?php echo $this->Form->select('OrderKit.mono_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -35,7 +36,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('PaymentGMOKitCard.hako_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                      <?php echo $this->Form->select('OrderKit.hako_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -52,7 +53,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('PaymentGMOKitCard.cleaning_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                      <?php echo $this->Form->select('OrderKit.cleaning_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -61,20 +62,21 @@
                   </div>
                 </div>
               </div>
-              <?php echo $this->Form->error('PaymentGMOKitCard.mono_num', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('PaymentGMOKitCard.hako_num', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('PaymentGMOKitCard.cleaning_num', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.mono_num', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.hako_num', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.cleaning_num', null, ['wrap' => 'p']) ?>
             </div>
           <?php if (!$isEntry) : ?>
+            <?php if ($isPrivateCustomer || empty($corporatePayment))  : ?>
             <div class="form-group col-lg-12">
               <label>カード情報</label>
-              <?php echo $this->Form->select('PaymentGMOKitCard.card_seq', $this->order->setDefalutPayment($default_payment), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
-              <?php echo $this->Form->error('PaymentGMOKitCard.card_seq', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->select('OrderKit.card_seq', $this->order->setDefalutPayment($default_payment), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->error('OrderKit.card_seq', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
               <label>セキュリティコード</label>
-              <?php echo $this->Form->input('PaymentGMOKitCard.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコードを入力してください', 'maxlength' => 4, 'error' => false]); ?>
-              <?php echo $this->Form->error('PaymentGMOKitCard.security_cd', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->input('OrderKit.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコードを入力してください', 'maxlength' => 4, 'error' => false]); ?>
+              <?php echo $this->Form->error('OrderKit.security_cd', null, ['wrap' => 'p']) ?>
               <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
               <p class="security_code"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a>
               </p>
@@ -128,15 +130,16 @@
                 </div>
               </div>
             </div>
+            <?php endif; ?>
             <div class="form-group col-lg-12">
               <label>お届け先</label>
-              <?php echo $this->Form->select('PaymentGMOKitCard.address_id', $this->order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-              <?php echo $this->Form->error('PaymentGMOKitCard.address_id', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->select('OrderKit.address_id', $this->order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+              <?php echo $this->Form->error('OrderKit.address_id', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>
-              <?php echo $this->Form->select('PaymentGMOKitCard.datetime_cd', $this->order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
-              <?php echo $this->Form->error('PaymentGMOKitCard.datetime_cd', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->select('OrderKit.datetime_cd', $this->order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->error('OrderKit.datetime_cd', null, ['wrap' => 'p']) ?>
             </div>
           <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
