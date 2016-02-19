@@ -1,12 +1,14 @@
 <?php
 
-App::uses('ApiModel', 'Model');
+App::uses('ApiCachedModel', 'Model');
 
-class PaymentGMOCard extends ApiModel
+class PaymentGMOCard extends ApiCachedModel
 {
+    const SESSION_CACHE_KEY = 'PaymentGMOCard_CACHE';
+
     public function __construct()
     {
-        parent::__construct('PaymentGMOCard', '/card', 'gmopayment_v4');
+        parent::__construct($this::SESSION_CACHE_KEY, 'PaymentGMOCard', '/card', 'gmopayment_v4');
     }
 
     public $validate = [

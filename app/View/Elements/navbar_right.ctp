@@ -41,13 +41,17 @@
       </a>
       <ul class="dropdown-menu dropdown-user">
         <li><a class="animsition-link" href="/customer/email/edit"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>
-      <?php if ($isPrivateCustomer || empty($corporatePayment))  : ?>
+      <?php if ($hasCreditCard)  : ?>
         <?php // 個人アカウントまたは、法人(クレジットカード)のみ表示 ?>
         <li><a class="animsition-link" href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
       <?php endif; ?>
+      <?php if (!$isEntry)  : ?>
         <li><a class="animsition-link" href="/customer/address/"><i class="fa fa-truck fa-fw"></i> 住所・お届け先変更</a> </li>
+      <?php endif; ?>
         <li><a class="animsition-link" href="/customer/password/edit"><i class="fa fa-lock fa-fw"></i> パスワード変更</a> </li>
+      <?php if (!$isEntry)  : ?>
         <li><a class="animsition-link" href="/contract"><i class="fa fa-list-alt fa-fw"></i> 契約情報</a> </li>
+      <?php endif; ?>
         <li class="divider"></li>
         <li><a class="animsition-link" href="/contact_us/add"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
         <li class="divider"></li>

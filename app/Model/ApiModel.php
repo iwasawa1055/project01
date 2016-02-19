@@ -248,6 +248,9 @@ class ApiResponse
         } else {
             $this->results = $json['results'];
         }
+        if (empty($this->results)) {
+            $this->results = [];
+        }
 
         $this->http_code = $resp['headers']['http_code'];
     }

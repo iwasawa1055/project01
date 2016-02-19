@@ -1,7 +1,6 @@
 <?php
 
-// App::uses('InfoBox', 'Model');
-// App::uses('InfoItem', 'Model');
+App::uses('PaymentGMOCard', 'Model');
 
 class CustomerData
 {
@@ -80,5 +79,16 @@ class CustomerData
             return $this->info['account_situation'];
         }
         return null;
+    }
+
+    public function hasCreditCard()
+    {
+        if ($this->isPrivateCustomer()) {
+            $ca = new PaymentGMOCard();
+            $dc = $ca->apiGetDefaultCard();
+            return 0 < count($dc);
+        } else {
+            return empty($this->getCorporatePayment());
+        }
     }
 }

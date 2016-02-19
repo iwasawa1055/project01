@@ -56,6 +56,11 @@ class AppController extends Controller
             $this->set('isPrivateCustomer', $this->customer->isPrivateCustomer());
             // 法人：支払区分
             $this->set('corporatePayment', $this->customer->getCorporatePayment());
+            // クレジットカード登録済み
+            $this->set('hasCreditCard', $this->customer->hasCreditCard());
+            // 仮登録
+            $this->set('isEntry', $this->customer->isEntry());
+
             // お知らせ
             $res = $this->Announcement->apiGetResults(['limit' => 5]);
             $this->set('notice_announcements', $res);
