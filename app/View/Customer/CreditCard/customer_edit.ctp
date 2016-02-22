@@ -21,7 +21,7 @@
                   <?php echo $this->Form->input('PaymentGMOSecurityCard.security_cd', ['class' => "form-control", 'maxlength' => 4, 'placeholder'=>'セキュリティコード', 'error' => false]); ?>
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.security_cd', null, ['wrap' => 'p']) ?>
                   <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a>
+                  <p class="security_code"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a></p>
                   <div id="collapseOne" class="panel-collapse collapse panel panel-default">
                     <div class="panel-body">
                       <p>セキュリティコードとは、クレジットカード番号とは異なる、3桁または4桁の番号で、第三者がお客様のクレジットカードを不正利用出来ないようにする役割があります。</p>
@@ -34,6 +34,41 @@
                       <p>カードの表面に記入されている4桁の番号です。</p>
                       <p>カード番号の下4桁か、その後に記載されています。</p>
                       <p><img src="/img/cvv2amex.gif" alt="" /></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-lg-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <span class="credit-notice"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">クレジットカード情報の取扱について</a>
+                        </span>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <p>クレジットカード情報をご本人様より直接ご提供いただく事に関し、以下の項目を明示いたします。
+                          ご同意いただける場合は注文手続きへお進みください。</p>
+                        <label>クレジットカード情報の利用目的</label>
+                        <p>当社サービスのご利用にクレジットカード決済を希望するお客様のサービス代金決済処理のため、および同決済に関するお問い合わせに対応するため</p>
+                        <label>取得者名</label>
+                        <p>寺田倉庫株式会社</p>
+                        <label>提供先名</label>
+                        <p>株式会社日本カードネットワーク及びGMOペイメントゲートウェイ<br />
+                          （以下「決済代行会社」といいます）</p>
+                        <label>保存期間</label>
+                        <p>当社サービスのご利用にかかる契約・利用目的の終了時およびこれに付随する業務の終了時から７年間また、クレジットカード情報を決済代行会社に提供することについて以下の項目を明示いたします。</p>
+                        <label>決済代行会社に提供する目的</label>
+                        <p>当社サービスのご利用にクレジットカード決済を希望するお客様のサービス代金決済処理のため、および同決済に関するお問い合わせに対応するため</p>
+                        <label>決済代行会社に提供する個人情報の項目</label>
+                        <p>クレジットカード契約者名、クレジットカード番号、有効期限、セキュリティコード（CVV）</p>
+                        <label>クレジットカード情報提供の手段または方法</label>
+                        <p>WebサイトからのSSL通信による伝送</p>
+                        <label>クレジットカード情報の提供を受ける者または提供を受ける者の組織の種類および属性</label>
+                        <p>クレジットカード決済代行会社</p>
+                        <label>当社と決済代行会社との間の個人情報の取り扱いに関する契約</label>
+                        <p>有り</p>
+                      </div>
                     </div>
                   </div>
                 </div>
