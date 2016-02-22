@@ -1,7 +1,6 @@
 <?php
 
-// App::uses('InfoBox', 'Model');
-// App::uses('InfoItem', 'Model');
+App::uses('PaymentGMOCard', 'Model');
 
 class CustomerData
 {
@@ -50,6 +49,11 @@ class CustomerData
         return $this->token['regist_level'] === CUSTOMER_REGIST_LEVEL_ENTRY;
     }
 
+    public function isPrivateCustomer()
+    {
+        return $this->token['division'] === CUSTOMER_DIVISION_PRIVATE;
+    }
+
     public function isPaymentNG()
     {
         return $this->token['payment'] === CUSTOMER_PAYMENT_NG;
@@ -57,6 +61,34 @@ class CustomerData
 
     public function getCustomerName()
     {
-        return "{$this->info['lastname']}{$this->info['firstname']}";
+        if ($this->isPrivateCustomer()) {
+            return "{$this->info['lastname']}{$this->info['firstname']}";
+        } else {
+            return $this->info['company_name'];
+        }
+    }
+
+    public function getCorporatePayment()
+    {
+        /*
+        * null：クレジットカード
+        * unregistered：口座未登録（キットの購入・ボックスの入庫が出来ません）
+        * registration：口座登録完了（キットの購入・ボックスの入庫ができます）
+        */
+        if (!$this->isPrivateCustomer()) {
+            return $this->info['account_situation'];
+        }
+        return null;
+    }
+
+    public function hasCreditCard()
+    {
+        if ($this->isPrivateCustomer()) {
+            $ca = new PaymentGMOCard();
+            $dc = $ca->apiGetDefaultCard();
+            return 0 < count($dc);
+        } else {
+            return empty($this->getCorporatePayment());
+        }
     }
 }

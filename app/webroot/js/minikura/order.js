@@ -1,12 +1,12 @@
 $(function() {
 
-  $('#PaymentGMOKitCardAddressId').change(function() {
+  $('#OrderKitAddressId').change(function() {
       getDatetime();
   });
 
   function getDatetime() {
-    var elem_address = $('#PaymentGMOKitCardAddressId');
-    var elem_datetime = $('#PaymentGMOKitCardDatetimeCd');
+    var elem_address = $('#OrderKitAddressId');
+    var elem_datetime = $('#OrderKitDatetimeCd');
 
     $('option:first', elem_datetime).prop('selected', true);
     elem_datetime.attr("disabled", "disabled");

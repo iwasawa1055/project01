@@ -43,19 +43,28 @@ class AppController extends Controller
         // Customer Information
         $this->customer = CustomerData::restore();
 
-        // announcements of header
+        // header
         if ($this->checkLogined) {
+            // 未ログイン
             if (!$this->CustomerLogin->isLogined()) {
                 $this->redirect('/login');
                 exit;
             }
-
             // ユーザー名
             $this->set('customer_name', $this->customer->getCustomerName());
+            // ユーザー区分
+            $this->set('isPrivateCustomer', $this->customer->isPrivateCustomer());
+            // 法人：支払区分
+            $this->set('corporatePayment', $this->customer->getCorporatePayment());
+            // クレジットカード登録済み
+            $this->set('hasCreditCard', $this->customer->hasCreditCard());
+            // 仮登録
+            $this->set('isEntry', $this->customer->isEntry());
 
+            // お知らせ
             $res = $this->Announcement->apiGetResults(['limit' => 5]);
             $this->set('notice_announcements', $res);
-
+            // 利用中サービス
             $summary = $this->InfoBox->getProductSummary();
             $this->set('product_summary', $summary);
 
