@@ -28,7 +28,6 @@
                     </div>
                     <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                     <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
-                    <?php echo $this->Form->hidden("is_add", ['value' => '1']); ?>
                     <div class="col-lg-4 col-md-4 col-xs-12">
                       <span class="col-xs-12 col-lg-12">
                           <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist page-transition-link">取り出しリスト登録</button>

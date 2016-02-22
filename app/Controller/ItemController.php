@@ -76,6 +76,12 @@ class ItemController extends AppController
         $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $item['box_id']]);
         $this->set('box', $box);
 
+        $linkToAuction = null;
+        if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK], true)) {
+            $linkToAuction = "/mini_auction/lite/item/${item['box_id']}/${item['item_id']}";
+        }
+        $this->set('linkToAuction', $linkToAuction);
+
     }
 
     /**
