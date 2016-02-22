@@ -1,3 +1,5 @@
+<?php $this->Html->css('lightbox.min', ['block' => 'css']); ?>
+<?php $this->Html->script('lightbox.min', ['block' => 'scriptMinikura']); ?>
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header"><i class="fa fa-heart-o"></i> アイテム</h1>
@@ -18,7 +20,7 @@
                     <div class="row">
                       <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="item-detail ">
-                          <a href="" data-lightbox="item-photo" data-title="<?php echo $item['item_name'] ?>">
+                          <a href="<?php echo $item['images_item']['image_url'] ?>" data-lightbox="item-photo" data-title="<?php echo $item['item_name'] ?>">
                               <img src="<?php echo $item['images_item']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item"></a>
                         </div>
                         <h3><?php echo $item['item_name'] ?></h3>
