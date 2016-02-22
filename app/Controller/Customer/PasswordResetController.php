@@ -20,11 +20,13 @@ class PasswordResetController extends AppController
     /**
      *
      */
-    public function add()
+    public function customer_add()
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
             $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data[$this::MODEL_NAME]['new_password'] = '';
+            $this->request->data[$this::MODEL_NAME]['new_password_confirm'] = '';
         }
         CakeSession::delete($this::MODEL_NAME);
     }
@@ -32,7 +34,7 @@ class PasswordResetController extends AppController
     /**
      *
      */
-    public function confirm()
+    public function customer_confirm()
     {
         $this->CustomerPasswordReset->set($this->request->data);
         if ($this->CustomerPasswordReset->validates()) {
@@ -45,7 +47,7 @@ class PasswordResetController extends AppController
     /**
      *
      */
-    public function complete()
+    public function customer_complete()
     {
         $data = CakeSession::read($this::MODEL_NAME);
         CakeSession::delete($this::MODEL_NAME);
