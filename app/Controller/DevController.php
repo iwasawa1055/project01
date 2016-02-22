@@ -38,15 +38,9 @@ class DevController extends AppController
 
         InfoBox::deleteAllCache();
         $ib = new InfoBox();
-        $r = $ib->apiGet();
-        $boxList = $r->results;
+        $boxList = $ib->apiGetResults();
         $data = [];
         foreach ($boxList as $b) {
-            // $a = [];
-            // $a['product_cd'] = $b['product_cd'];
-            // $a['box_id'] = $b['box_id'];
-            // $a['box_name'] = $b['box_name'];
-            // $a['kit_cd'] = $b['kit_cd'];
             $data[$b['box_status']][] = $b;
         }
         ksort($data);
@@ -55,15 +49,10 @@ class DevController extends AppController
 
         InfoItem::deleteAllCache();
         $ii = new InfoItem();
-        $r = $ii->apiGet();
-        $itemList = $r->results;
+        $itemList = $ii->apiGetResults();
         $data = [];
         foreach ($itemList as $b) {
-            $a = [];
-            $a['item_status'] = $b['item_status'];
-            $a['item_id'] = $b['item_id'];
-            $a['item_name'] = $b['item_name'];
-            $data[$b['box_id']][] = $a;
+            $data[$b['box_id']][] = $b;
         }
         $this->set('timeData', $data);
     }

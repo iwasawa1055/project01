@@ -8,7 +8,7 @@
       $class = 'outbound_select_checkbox';
   }
 ?>
-<div class="panel-body <?php echo $this->MyPage->kitCdToClassName($box['kit_cd']); ?>">
+<div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
   <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12">
       <h3><a href="<?php echo $url ?>"><?php echo $box['box_name']; ?></a>

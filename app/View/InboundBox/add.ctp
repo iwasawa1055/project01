@@ -27,7 +27,7 @@
                   <?php echo $this->Form->hidden("Inbound.box_list.${i}.box_id", ['value' => $box['box_id']]); ?>
                   <div class="col-lg-12">
                     <div class="panel panel-default">
-                      <div class="panel-body <?php echo $this->MyPage->kitCdToClassName($box['kit_cd']); ?>">
+                      <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
                         <div class="row">
                           <?php $kitCd = $box['kit_cd'];
                           if (array_key_exists($kitCd, KIT_OPTION)) : ?>

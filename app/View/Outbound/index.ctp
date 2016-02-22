@@ -21,7 +21,7 @@
             <!--loop-->
             <div class="col-lg-12">
               <div class="panel panel-default">
-                <div class="panel-body <?php echo $this->MyPage->kitCdToClassName($item['kit_cd']); ?>">
+                <div class="panel-body">
                   <div class="row">
                     <div class="col-lg-2 col-md-2 col-sm-12">
                       <a href="<?php echo $url ?>">
