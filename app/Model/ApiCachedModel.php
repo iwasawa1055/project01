@@ -17,9 +17,46 @@ class ApiCachedModel extends ApiModel
         parent::__construct($name, $end, $access_point_key);
     }
 
+    public function apiGetResultsFind($data = [], $where = [])
+    {
+        return $this->apiGetResultsWhere($data, $where, true);
+    }
+
+    public function apiGetResultsWhere($data = [], $where = [], $firstOnly = false)
+    {
+        $keyList = array_keys($where);
+        if (count($keyList) === 0) {
+            return [];
+        }
+        $apiRes = $this->apiGetResults($data);
+        $findList = [];
+        foreach ($apiRes as $a) {
+            $notMatch = false;
+            foreach ($where as $key => $value) {
+                if (!is_array($value)) {
+                    $value = [$value];
+                }
+                if (!array_key_exists($key, $a) || !in_array($a[$key], $value, true)) {
+                    $notMatch = true;
+                    break;
+                }
+            }
+            if (!$notMatch) {
+                $findList[] = $a;
+                if ($firstOnly) {
+                    return $a;
+                }
+            }
+        }
+        return $findList;
+    }
+
     public function apiGetResults($arg = [])
     {
-        $list = $this->apiGetResultsWithCache();
+        $list = $this->apiGetListWithCache($arg);
+        if (!is_array($list)) {
+            return $list;
+        }
         $offset = 0;
         if (!empty($arg['offset']) && is_int($arg['offset'])) {
             $offset = $arg['offset'];
@@ -39,6 +76,12 @@ class ApiCachedModel extends ApiModel
         return array_slice($list, $offset, $limit);
     }
 
+    public function apiGet($data = [])
+    {
+        $data = parent::apiGet($data);
+        $this->deleteCache();
+        return $data;
+    }
     public function apiPost($data)
     {
         $data = parent::apiPost($data);
@@ -100,7 +143,7 @@ class ApiCachedModel extends ApiModel
         CakeSession::delete(ApiCachedModel::SESSION_BASE_KEY);
     }
 
-    private function apiGetResultsWithCache($arg = [])
+    private function apiGetListWithCache($arg = [])
     {
         // TODO: 引数からキャッシュキーを作る
         $key = 'apiGet';
@@ -118,7 +161,11 @@ class ApiCachedModel extends ApiModel
             $newArg = $arg;
             $newArg['offset'] = $offset;
             $newArg['limit'] = $limit;
-            $addList = parent::apiGetResults($newArg);
+            $r = parent::apiGet($newArg);
+            if (!$r->isSuccess()) {
+                return $r;
+            }
+            $addList = $r->results;
             $count = count($addList);
             $list = array_merge($list, $addList);
             $offset++;

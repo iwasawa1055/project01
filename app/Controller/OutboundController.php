@@ -79,7 +79,7 @@ class OutboundController extends AppController
         foreach ($newIdList as $value => $isAdd) {
             if ($isAdd === '1' && !in_array($value, $beforeKeyList, true)) {
                 $beforeList[$value] = [];
-            } else if ($isAdd === '0' && in_array($value, $beforeKeyList, true)) {
+            } elseif ($isAdd === '0' && in_array($value, $beforeKeyList, true)) {
                 unset($beforeList[$value]);
             }
         }
@@ -93,7 +93,6 @@ class OutboundController extends AppController
 
         // 増減処理
         if ($this->request->is('post')) {
-
             $idList = $this->mergeDataKey('box_id', $outMonoList);
             $errorList = $this->outboundList->setMono($idList);
             if (empty($errorList)) {
@@ -210,8 +209,12 @@ class OutboundController extends AppController
             }
         }
         // お届け希望日と時間
-        $dateTimeList = $this->DatetimeDeliveryOutbound->apiGetResults(['postal' => $postal]);
-        $this->set('dateItemList', $dateTimeList);
+        $r = $this->DatetimeDeliveryOutbound->apiGet(['postal' => $postal]);
+        if (!$r->isSuccess()) {
+            // TODO: 例外処理
+            return;
+        }
+        $this->set('dateItemList', $r->results);
 
         CakeSession::delete($this::MODEL_NAME . 'FORM');
     }

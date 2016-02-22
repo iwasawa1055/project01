@@ -58,66 +58,6 @@ class ApiModel extends AppModel
         $this->end_point = $end;
     }
 
-    public function apiGetResultsFind($data = [], $where = [])
-    {
-        return $this->apiGetResultsWhere($data, $where, true);
-    }
-
-    public function apiGetResultsWhere($data = [], $where = [], $firstOnly = false)
-    {
-        $keyList = array_keys($where);
-        if (count($keyList) === 0) {
-            return [];
-        }
-        $apiRes = $this->apiGetResults($data);
-        $findList = [];
-        foreach ($apiRes as $a) {
-            $notMatch = false;
-            foreach ($where as $key => $value) {
-                if (!is_array($value)) {
-                    $value = [$value];
-                }
-                if (!array_key_exists($key, $a) || !in_array($a[$key], $value, true)) {
-                    $notMatch = true;
-                    break;
-                }
-            }
-            if (!$notMatch) {
-                $findList[] = $a;
-                if ($firstOnly) {
-                    return $a;
-                }
-            }
-        }
-        return $findList;
-    }
-
-    public function apiGetResults($data = [])
-    {
-        $apiRes = $this->apiGet($data);
-        return $apiRes->results;
-    }
-    public function apiPostResults($data = [])
-    {
-        $apiRes = $this->apiPost($data);
-        return $apiRes->results;
-    }
-    public function apiPutResults($data = [])
-    {
-        $apiRes = $this->apiPut($data);
-        return $apiRes->results;
-    }
-    public function apiPatchResults($data = [])
-    {
-        $apiRes = $this->apiPatch($data);
-        return $apiRes->results;
-    }
-    public function apiDeleteResults($data = [])
-    {
-        $apiRes = $this->apiDelete($data);
-        return $apiRes->results;
-    }
-
     public function apiGet($data = [])
     {
         $list = $this->requestWithDataAndToken($data, 'GET');

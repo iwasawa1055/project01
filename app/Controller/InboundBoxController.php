@@ -119,7 +119,10 @@ class InboundBoxController extends AppController
         }
         if ($model->validates()) {
             // api
-            $model->apiPostResults($model->toArray());
+            $r = $model->apiPost($model->toArray());
+            if (!$r->isSuccess()) {
+                // TODO: 例外処理
+            }
         } else {
             // TODO:
             $this->Session->setFlash('try again');

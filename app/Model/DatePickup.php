@@ -1,15 +1,11 @@
 <?php
 
-App::uses('AppValid', 'Lib');
-App::uses('ApiModel', 'Model');
+App::uses('ApiCachedModel', 'Model');
 
-class DatePickup extends ApiModel
+class DatePickup extends ApiCachedModel
 {
-	public function __construct()
-	{
-		parent::__construct('DatePickup', '/date_pickup');
-	}
-
-	public $validate = [
-	];
+    public function __construct()
+    {
+        parent::__construct('DATE_PICKUP_CACHE', 'DatePickup', '/date_pickup');
+    }
 }

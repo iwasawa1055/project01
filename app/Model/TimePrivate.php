@@ -1,15 +1,11 @@
 <?php
 
-App::uses('AppValid', 'Lib');
-App::uses('ApiModel', 'Model');
+App::uses('ApiCachedModel', 'Model');
 
-class TimePrivate extends ApiModel
+class TimePrivate extends ApiCachedModel
 {
-	public function __construct()
-	{
-		parent::__construct('TimePrivate', '/time_private');
-	}
-
-	public $validate = [
-	];
+    public function __construct()
+    {
+        parent::__construct('TIME_PRIVATE_CACHE', 'TimePrivate', '/time_private');
+    }
 }
