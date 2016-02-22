@@ -18,7 +18,7 @@
                         <div class="row">
                           <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="item-detail">
-                              <img src="/img/xxx_xxxx.jpg" alt="xxx_xxxx" width="100px" height="100px" class="item">
+                              <img src="/images/xxx_xxxx.jpg" alt="xxx_xxxx" width="100px" height="100px" class="item">
                             </div>
                             <h3>
                               <input class="form-control" value="S.H.Figuarts ファースト・オーダー">

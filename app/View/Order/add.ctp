@@ -87,11 +87,11 @@
                   <h4>Visa、Mastercard等の場合</h4>
                   <p>カードの裏面の署名欄に記入されている3桁の番号です。</p>
                   <p>カード番号の下3桁か、その後に記載されています。</p>
-                  <p><img src="/img/cvv2visa.gif" alt="" /></p>
+                  <p><img src="/images/cvv2visa.gif" alt="" /></p>
                   <h4>American Expressの場合</h4>
                   <p>カードの表面に記入されている4桁の番号です。</p>
                   <p>カード番号の下4桁か、その後に記載されています。</p>
-                  <p><img src="/img/cvv2amex.gif" alt="" /></p>
+                  <p><img src="/images/cvv2amex.gif" alt="" /></p>
                 </div>
               </div>
             </div>

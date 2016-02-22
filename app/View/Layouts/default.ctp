@@ -40,7 +40,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><img class="logo" src="/img/logo.png" alt="minikura"></a>
+      <a class="navbar-brand" href="/"><img class="logo" src="/images/logo.png" alt="minikura"></a>
     </div>
     <?php echo $this->element('navbar_right'); ?>
     <?php echo $this->element('sidebar'); ?>
