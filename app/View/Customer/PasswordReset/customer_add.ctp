@@ -10,14 +10,22 @@
             <div class="row">
             <?php echo $this->Form->create('CustomerPasswordReset', ['url' => ['controller' => 'password_reset', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12">
-                <p class="form-control-static col-lg-12">ご登録されているメールアドレスを入力して「メールを送信する」を押しください。<br />
-                  追ってパスワード再発行URLが記載されたご確認メールをお送りいたします。</p>
+                <p class="form-control-static col-lg-12">ご登録されているメールアドレスを入力してください。</p>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerPasswordReset.email', ['class' => "form-control", 'placeholder'=>'ご登録されているメールアドレス', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerPasswordReset.email', null, ['wrap' => 'p']) ?>
                 </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerPasswordReset.new_password', ['class' => "form-control", 'placeholder'=>'新しいパスワード', 'type' => 'password', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerPasswordReset.new_password', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerPasswordReset.new_password_confirm', ['class' => "form-control", 'placeholder'=>'新しいパスワード（再入力）', 'type' => 'password', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerPasswordReset.new_password_confirm', null, ['wrap' => 'p']) ?>
+                </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">メールを送信する</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">確認</button>
+                  <a class="btn btn-primary btn-xs btn-block animsition-link" href="/login">ログインはこちら</a>
                 </span>
               </div>
             <?php echo $this->Form->end(); ?>

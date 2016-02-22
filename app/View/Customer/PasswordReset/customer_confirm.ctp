@@ -15,10 +15,8 @@
                   <p class="form-control-static"><?php echo $this->Form->data['CustomerPasswordReset']['email'] ?></p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <input class="form-control" placeholder="新しいパスワード">
-                </div>
-                <div class="form-group col-lg-12">
-                  <input class="form-control" placeholder="新しいパスワード（再入力）">
+                  <label>新しいパスワード</label>
+                  <p class="form-control-static">入力したパスワード</p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/password_reset/add?back=true">戻る</a>
