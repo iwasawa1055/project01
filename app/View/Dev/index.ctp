@@ -136,6 +136,7 @@ foreach ($a as $status => $label): ?>
                     }  ?>
                 <p>
                     <?php echo $box['product_cd']; ?>,
+                    <?php echo $box['kit_cd']; ?>,
                     <?php echo $box['box_id'];  ?>
                     <?php if (count($timeData[$box['box_id']]) !== 0) {
                             echo ' (' . count($timeData[$box['box_id']]) . ')';

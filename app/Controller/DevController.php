@@ -42,11 +42,12 @@ class DevController extends AppController
         $boxList = $r->results;
         $data = [];
         foreach ($boxList as $b) {
-            $a = [];
-            $a['product_cd'] = $b['product_cd'];
-            $a['box_id'] = $b['box_id'];
-            $a['box_name'] = $b['box_name'];
-            $data[$b['box_status']][] = $a;
+            // $a = [];
+            // $a['product_cd'] = $b['product_cd'];
+            // $a['box_id'] = $b['box_id'];
+            // $a['box_name'] = $b['box_name'];
+            // $a['kit_cd'] = $b['kit_cd'];
+            $data[$b['box_status']][] = $b;
         }
         ksort($data);
         $this->set('boxData', $data);
