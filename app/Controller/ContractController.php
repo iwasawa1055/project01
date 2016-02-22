@@ -23,11 +23,19 @@ class ContractController extends AppController
         if ($this->customer->isPrivateCustomer()) {
             // 個人
             $this->loadModel($this::MODEL_NAME);
-            $data = $this->CustomerInfo->apiGetResults();
+            $r = $this->CustomerInfo->apiGet();
+            if ($r->error_message) {
+                return;
+            }
+            $data = $r->results;
         } else {
             // 法人
             $this->loadModel($this::MODEL_NAME_CORPORATE);
-            $data = $this->CorporateInfo->apiGetResults();
+            $r = $this->CorporateInfo->apiGet();
+            if ($r->error_message) {
+                return;
+            }
+            $data = $r->results;
         }
 
         $this->set('data', $data[0]);

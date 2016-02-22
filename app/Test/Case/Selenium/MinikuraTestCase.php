@@ -46,11 +46,14 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
     // テスト実施前ログイン
     public function setLogin()
     {
-        $this->url('/login');
-        $this->waitPageLoad();
+        $this->urlAndWait('/login');
         $this->byName('data[CustomerLogin][email]')->value('150@terrada.co.jp');
         $this->byName('data[CustomerLogin][password]')->value('happyhappy');
         $this->byXPath("//button[@type='submit']")->click();
+    }
+    public function setLogout()
+    {
+        $this->urlAndWait('/login/logout');
     }
 
     public function getCurrentUrlPath()
@@ -89,5 +92,55 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
             $index = count($values) - 1;
         }
         $sl->selectOptionByLabel($values[$index]);
+    }
+    protected function getLongText()
+    {
+        return <<<EOT
+雨＝きゅうりってゅうコト。。。
+９割以上が水分。。。
+浅漬けにしょ。。。。
+雨ってゅうのゎ。。
+空から降る一億のきゅうり。。。
+そしてきゅうりも、９割以上が水分。。。
+浅漬けにしょ。。。。
+空から降る一億のきゅうり。。。
+もぅﾏﾁﾞ無理。。。
+空から降る一億のきゅうり。。。
+空から降る一億のきゅうり。。。
+９割以上が水分。。。
+雨ってゅうのゎ。。
+雨＝きゅうりってゅうコト。。。
+浅漬けにしょ。。。。
+９割以上が水分。。。
+もぅﾏﾁﾞ無理。。。
+これゎもぅ。。。
+９割以上が水分。。。
+これゎもぅ。。。
+雨ってゅうのゎ。。
+空から降る一億のきゅうり。。。
+これゎもぅ。。。
+そしてきゅうりも、９割以上が水分。。。
+もぅﾏﾁﾞ無理。。。
+そしてきゅうりも、９割以上が水分。。。
+これゎもぅ。。。
+そぅ。。
+そしてきゅうりも、９割以上が水分。。。
+これゎもぅ。。。
+そぅ。。
+そぅ。。
+そぅ。。
+雨＝きゅうりってゅうコト。。。
+もぅﾏﾁﾞ無理。。。
+雨ってゅうのゎ。。
+９割以上が水分。。。
+浅漬けにしょ。。。。
+もぅﾏﾁﾞ無理。。。
+雨ってゅうのゎ。。
+浅漬けにしょ。。。。
+そしてきゅうりも、９割以上が水分。。。
+そぅ。。
+雨＝きゅうりってゅうコト。。。
+雨＝きゅうりってゅうコト。。。
+EOT;
     }
 }

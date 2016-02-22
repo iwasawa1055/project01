@@ -5,7 +5,13 @@ class TitleHelper extends AppHelper {
     private $titles = [
         'announcement' => [
             'index' => 'お知らせ',
-            'detail' => 'お知らせ詳細'
+            'detail' => 'お知らせ詳細',
+        ],
+        'register' => [
+            'index' => 'ユーザー登録',
+        ],
+        'inquiry' => [
+            'index' => 'お問い合わせ',
         ]
     ];
 

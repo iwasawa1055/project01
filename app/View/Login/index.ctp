@@ -19,10 +19,10 @@
                 <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
               </div>
-              <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link" >ログイン</button>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">ログイン</button>
             <?php echo $this->Form->end(); ?>
-              <a class="btn btn-info btn-xs btn-block animsition-link" href="/customer/password_reset/add">パスワードを忘れた方はこちら</a>
-              <a class="btn btn-primary btn-xs btn-block animsition-link" href="/customer/register/add">ユーザー登録はこちら</a>
+              <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset/add">パスワードを忘れた方はこちら</a>
+              <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add">ユーザー登録はこちら</a>
             </div>
           </div>
         </div>

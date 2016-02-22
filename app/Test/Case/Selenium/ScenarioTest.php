@@ -21,14 +21,14 @@ class ScenarioTest extends MinikuraTestCase
         $this->urlAndWait('/order/add');
         //-入力画面
         // 個数
-        $this->selectOption('#PaymentGMOKitCardHakoNum', 1);
+        $this->selectOption('#OrderKitHakoNum', 1);
         // セキュリティコード
-        $this->firstEl("#PaymentGMOKitCardSecurityCd")->value('123');
+        $this->firstEl("#OrderKitSecurityCd")->value('123');
         // お届け先 お届希望日時
-        $this->selectOption('#PaymentGMOKitCardAddressId');
-        $this->selectOption('#PaymentGMOKitCardDatetimeCd', null, 5);
+        $this->selectOption('#OrderKitAddressId');
+        $this->selectOption('#OrderKitDatetimeCd', null, 5);
         // 確定ボタン
-        $this->firstEl('#PaymentGMOKitCardAddForm button[type=submit]')->click();
+        $this->firstEl('#OrderKitAddForm button[type=submit]')->click();
         $this->waitPageLoad();
         //-確認画面
         $this->firstEl('#confirmForm button[type=submit]')->click();

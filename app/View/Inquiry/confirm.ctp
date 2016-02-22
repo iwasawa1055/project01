@@ -8,7 +8,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-            <?php echo $this->Form->create(false, ['url' => ['controller' => 'inquiry', 'action' => 'complete']]); ?>
+            <?php echo $this->Form->create('Inquiry', ['url' => ['controller' => 'inquiry', 'action' => 'complete']]); ?>
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>お名前</label>
@@ -29,16 +29,17 @@
                   </p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <a class="btn btn-info btn-xs btn-block animsition-link" href="#" target="_blank">魂ガレージ利用規約</a>
+                  <a class="btn btn-info btn-xs btn-block" href="#" target="_blank">魂ガレージ利用規約</a>
                   <label>
-                    <input name="remember" type="checkbox" value="Remember Me">
-                    魂ガレージ利用規約に同意する </label>
+                    <input class="agree-before-submit" type="checkbox">
+                    魂ガレージ利用規約に同意する
+                  </label>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="/inquiry/add?back=true">戻る</a>
+                  <a class="btn btn-primary btn-lg btn-block" href="/inquiry/add?back=true">戻る</a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で問い合わせる</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で問い合わせる</button>
                 </span>
               </div>
             <?php echo $this->Form->end(); ?>
