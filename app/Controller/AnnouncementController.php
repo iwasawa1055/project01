@@ -40,6 +40,10 @@ class AnnouncementController extends AppController
         $this->Announcement->apiPatch(['announcement_id' => $id]);
     }
 
+    /**
+     * 領収証ダウンロード
+     * @return [type] [description]
+     */
     public function receit()
     {
         $id = $this->params['id'];
@@ -48,12 +52,11 @@ class AnnouncementController extends AppController
         $res = $receit->apiGet([
             'announcement_id' => $id,
             'category_id' => $data['category_id']
-
         ]);
         if ($res->isSuccess() || count($res->results) === 1) {
             // TODO: 単体テスト未完
             $name = $res->results[0]['file_name'];
-            $binary = $res->results[0]['receipt'];
+            $binary = base64_decode($res->results[0]['receipt']);
             $this->autoRender = false;
             $this->response->type('pdf');
             $this->response->download($name);
