@@ -11,6 +11,7 @@ class BoxController extends AppController
         'product_name' => 'サービス名',
         'box_status' => 'ステータス'
     ];
+    const MODEL_NAME_BOX_EDIT = 'Box';
 
     /**
      * 制御前段処理.
@@ -20,6 +21,7 @@ class BoxController extends AppController
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
         $this->loadModel('InfoItem');
+        $this->loadModel($this::MODEL_NAME_BOX_EDIT);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -85,20 +87,30 @@ class BoxController extends AppController
      */
     public function edit()
     {
-    }
+        $id = $this->params['id'];
+        $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $id]);
+        $this->set('box', $box);
 
-    /**
-     *
-     */
-    public function update()
-    {
-        return $this->redirect('/box/detail/1');
-    }
+        if ($this->request->is('get')) {
 
-    /**
-     *
-     */
-    public function item()
-    {
+            $this->request->data[$this::MODEL_NAME_BOX_EDIT] = $box;
+            return $this->render('edit');
+
+        } elseif ($this->request->is('post')) {
+
+            $this->Box->set($this->request->data);
+            if (!$this->Box->validates()) {
+                return $this->render('edit');
+            }
+
+            $res = $this->Box->apiPatch($this->Box->toArray());
+            if (!empty($res->error_message)) {
+                // TODO: 例外処理
+                $this->Session->setFlash($res->error_message);
+                return $this->render('edit');
+            }
+
+            return $this->redirect(['controller' => 'box', 'action' => 'detail', 'id' => $id]);
+        }
     }
 }

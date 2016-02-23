@@ -13,7 +13,6 @@
   echo $this->fetch('meta');
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
-  $this->Html->css('bootstrap-social', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
   $this->Html->css('metisMenu.min', ['inline' => false]);
   $this->Html->css('animsition.min', ['inline' => false]);

@@ -7,9 +7,10 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
+          <?php echo $this->Form->create('Box', ['url' => '/box/detail/'.$box['box_id'].'/edit', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="row">
               <div class="col-lg-12">
-                <h2>minikuraMONO</h2>
+                <h2><?php echo $box['product_name']; ?></h2>
               </div>
             </div>
             <div class="col-lg-12">
@@ -18,35 +19,28 @@
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-xs-12">
                       <h3>
-                        <input class="form-control" value="79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書79期見積書">
+                        <?php echo $this->Form->input('Box.box_name', ['class' => "form-control", 'error' => false]); ?>
                       </h3>
+                      <?php echo $this->Form->error('Box.box_name', null, ['wrap' => 'p']) ?>
                       <p class="box-list-caption"><span>写真撮影</span>あり</p>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12">
-                      <textarea class="form-control box_note" rows="5">ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。ここにボックスの説明が入ります。</textarea>
+                      <?php echo $this->Form->textarea('Box.box_note', ['class' => "form-control box_note", 'rows' => 5, 'error' => false]); ?>
+                      <?php echo $this->Form->error('Box.box_note', null, ['wrap' => 'p']) ?>
                     </div>
                   </div>
                 </div>
-                <div class="panel-footer">
-                  <div class="row">
-                    <div class="col-lg-10 col-md-10 col-sm-12">
-                      <p class="box-list-caption"><span>商品名</span>minikuraMONO</p>
-                      <p class="box-list-caption"><span>ボックスID</span>xxx-xxx</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-12">
-                      <p class="box-list-caption"><span>入庫日</span>0000/00/00</p>
-                      <p class="box-list-caption"><span>出庫日</span>0000/00/00</p>
-                    </div>
-                  </div>
-                </div>
+                <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-primary btn-lg btn-block" href="/box/detail/1">ボックスの詳細に戻る</a>
+              <a class="btn btn-primary btn-lg btn-block" href="/box/detail/<?php echo $box['box_id'] ?>">ボックスの詳細に戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block" href="/box/detail/1/update">ボックス情報を保存する</a>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">ボックス情報を保存する</button>
             </span>
+            <?php echo $this->Form->hidden('Box.box_id'); ?>
+          <?php echo $this->Form->end(); ?>
           </div>
         </div>
       </div>

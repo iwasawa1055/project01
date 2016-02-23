@@ -35,7 +35,7 @@
                     </div>
                     <?php echo $this->Form->end(); ?>
                     <div class="col-lg-12 col-md-12 col-xs-12">
-                      <p class="box_note"><?php echo $box['box_note']; ?></p>
+                      <p class="box_note"><?php echo nl2br($box['box_note']); ?></p>
                     </div>
                   </div>
                 </div>
