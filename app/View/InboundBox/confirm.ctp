@@ -82,6 +82,7 @@
               <?php echo $this->order->echoOption($timeList, 'time_cd', 'text', $this->data['Inbound']['time_cd']) ?>
           </p>
         </div>
+        <?php endif; ?>
         <div class="form-group col-lg-12">
           <div class="panel panel-red">
             <div class="panel-heading">
@@ -108,7 +109,6 @@
             </div>
           </div>
         </div>
-        <?php endif; ?>
         <div class="form-group col-lg-12">
         <span class="col-lg-6 col-md-6 col-xs-12">
         <a class="btn btn-primary btn-lg btn-block" href="/inbound/box/add?back=true">戻る</a>

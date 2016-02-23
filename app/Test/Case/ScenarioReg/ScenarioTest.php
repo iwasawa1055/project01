@@ -38,6 +38,7 @@ class ScenarioTest extends MinikuraTestCase
         $this->firstEl('#OrderKitAddForm button[type=submit]')->click();
         $this->waitPageLoad();
         //-確認画面
+        $this->firstEl('.agree-before-submit[type="checkbox"]')->click();
         $this->firstEl('#confirmForm button[type=submit]')->click();
         $this->waitPageLoad();
     }
@@ -56,6 +57,10 @@ class ScenarioTest extends MinikuraTestCase
         $this->firstEl('#InboundAddForm button[type=submit]')->click();
         $this->waitPageLoad();
         //-確認画面
+        $els = $this->allEl('.agree-before-submit[type="checkbox"]');
+        $els[0]->click();
+        $els[1]->click();
+        $els[2]->click();
         $this->firstEl('#InboundConfirmForm button[type=submit]')->click();
         $this->waitPageLoad();
     }

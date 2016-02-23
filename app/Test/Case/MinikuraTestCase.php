@@ -61,14 +61,17 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
         return '/'.str_replace($this->getBrowserUrl(), '', $this->url());
     }
 
-
+    protected function allEl($css)
+    {
+        return $this->elements($this->using('css selector')->value($css));
+    }
     protected function firstEl($css)
     {
         return $this->byCssSelector($css);
     }
     protected function lastEl($css)
     {
-        $els = $this->elements($this->using('css selector')->value('.outbound_select_checkbox input[type=checkbox]'));
+        $els = $this->allEl($css);
         return end($els);
     }
     protected function selectEl($css)

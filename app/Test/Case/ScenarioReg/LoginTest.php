@@ -57,7 +57,7 @@ class LoginTest extends MinikuraTestCase
      */
     public function ログイン成功()
     {
-        $this->byName('data[CustomerLogin][email]')->value('150@example.com');
+        $this->byName('data[CustomerLogin][email]')->value('150@terrada.co.jp');
         $this->byName('data[CustomerLogin][password]')->value('happyhappy');
         $this->byXPath("//button[@type='submit']")->click();
         $this->waitPageLoad();
