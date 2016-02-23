@@ -23,6 +23,7 @@ class LoginController extends AppController
     {
         if ($this->request->is('post')) {
             $this->loadModel('CustomerLogin');
+            $this->loadModel('CustomerEnvAuthed');
             $this->CustomerLogin->set($this->request->data);
 
             if ($this->CustomerLogin->validates()) {
@@ -57,6 +58,9 @@ class LoginController extends AppController
                     $res = $this->CorporateInfo->apiGet();
                 }
                 $this->customer->setInfoAndSave($res->results[0]);
+
+                // ユーザー環境値登録
+                $this->CustomerEnvAuthed->apiPostEnv($this->customer->info['email']);
 
                 // 債務ユーザーの場合
                 if ($this->customer->isPaymentNG()) {
