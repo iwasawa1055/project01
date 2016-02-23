@@ -1,13 +1,20 @@
 <?php
 
-require 'MinikuraTestCase.php';
+require_once TESTS .'Case\MinikuraTestCase.php';
 
 class ScenarioTest extends MinikuraTestCase
 {
-    public function testInvalidWithoutRequired()
+    public function setUpPage()
     {
         $this->setLogin();
 
+    }
+
+    /**
+     * @test
+     */
+    public function ボックスをキット購入から出庫まで()
+    {
         $this->createOrder();
         $this->donefirstOrderId();
         $this->createInboundBoxHako();
