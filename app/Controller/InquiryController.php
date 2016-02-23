@@ -6,6 +6,7 @@ App::uses('UserAddress', 'Model');
 class InquiryController extends AppController
 {
     const MODEL_NAME = 'Inquiry';
+    const MODEL_NAME_ENV = 'CustomerEnvUnAuth';
 
     /**
      * 制御前段処理
@@ -16,6 +17,7 @@ class InquiryController extends AppController
         $this->checkLogined = false;
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
+        $this->loadModel($this::MODEL_NAME_ENV);
     }
 
     /**
@@ -64,6 +66,10 @@ class InquiryController extends AppController
                 $this->Session->setFlash('try again');
                 return $this->redirect(['action' => 'add']);
             }
+
+            // ユーザー環境値登録
+            $this->CustomerEnvUnAuth->apiPostEnv($data[$this::MODEL_NAME]['email']);
+
         } else {
             // TODO:
             $this->Session->setFlash('try again');

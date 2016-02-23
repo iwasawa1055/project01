@@ -6,6 +6,7 @@ class ContactUsController extends AppController
 {
     const MODEL_NAME = 'ContactUs';
     const MODEL_NAME_ANNOUNCEMENT = 'Announcement';
+    const MODEL_NAME_ENV = 'CustomerEnvAuthed';
 
     public $components = ['ContactUs'];
 
@@ -17,6 +18,7 @@ class ContactUsController extends AppController
         AppController::beforeFilter();
         $this->ContactUs->init($this->customer->token['division']);
         $this->loadModel($this::MODEL_NAME_ANNOUNCEMENT);
+        $this->loadModel($this::MODEL_NAME_ENV);
     }
 
     /**
@@ -87,6 +89,10 @@ class ContactUsController extends AppController
                 $this->Session->setFlash('try again');
                 return $this->redirect(['action' => 'add']);
             }
+
+            // ユーザー環境値登録
+            $this->CustomerEnvAuthed->apiPostEnv($this->customer->info['email']);
+
         } else {
             // TODO:
             $this->Session->setFlash('try again');
