@@ -19,9 +19,9 @@ class BoxController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoItem');
-        $this->loadModel($this::MODEL_NAME_BOX_EDIT);
+        $this->loadModel(self::MODEL_NAME_BOX_EDIT);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -32,7 +32,7 @@ class BoxController extends AppController
         $product = $this->request->query('product');
 
         $data = [];
-        foreach ($this::SELECT_SORT_KEY as $key => $value) {
+        foreach (self::SELECT_SORT_KEY as $key => $value) {
             $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc']]);
             $data[$desc] = $value . '（降順）';
 
@@ -54,7 +54,7 @@ class BoxController extends AppController
         $sortKey = $this->getRequestSortKey();
         $results = $this->InfoBox->getListForServiced($product, $sortKey);
         // paginate
-        $list = $this->paginate($this::MODEL_NAME, $results);
+        $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('boxList', $list);
         $this->set('product', $product);
     }
@@ -93,7 +93,7 @@ class BoxController extends AppController
 
         if ($this->request->is('get')) {
 
-            $this->request->data[$this::MODEL_NAME_BOX_EDIT] = $box;
+            $this->request->data[self::MODEL_NAME_BOX_EDIT] = $box;
             return $this->render('edit');
 
         } elseif ($this->request->is('post')) {

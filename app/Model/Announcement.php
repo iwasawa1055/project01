@@ -11,7 +11,7 @@ class Announcement extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct($this::SESSION_CACHE_KEY, 'Announcement', '/announcement');
+        parent::__construct(self::SESSION_CACHE_KEY, 'Announcement', '/announcement');
     }
 
     public $validate = [

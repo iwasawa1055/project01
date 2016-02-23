@@ -15,7 +15,7 @@ class InfoBox extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct($this::SESSION_CACHE_KEY, 'InfoBox', '/info_box');
+        parent::__construct(self::SESSION_CACHE_KEY, 'InfoBox', '/info_box');
     }
 
     // 購入済みキット一覧

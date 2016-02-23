@@ -13,7 +13,7 @@ class AddressController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME);
         $this->set('action', $this->action);
     }
 
@@ -21,7 +21,7 @@ class AddressController extends AppController
     {
         $res = $this->CustomerAddress->apiGet();
         $this->set('address', $res->results);
-        CakeSession::write($this::MODEL_NAME_DATA, $res->results);
+        CakeSession::write(self::MODEL_NAME_DATA, $res->results);
     }
 
 
@@ -29,22 +29,22 @@ class AddressController extends AppController
         $step = Hash::get($this->request->params, 'step');
         $back = Hash::get($this->request->query, 'back');
         if ($back || $step === 'complete') {
-            $data = CakeSession::read($this::MODEL_NAME);
+            $data = CakeSession::read(self::MODEL_NAME);
             $this->request->data = $data;
-            CakeSession::delete($this::MODEL_NAME);
+            CakeSession::delete(self::MODEL_NAME);
         }
     }
 
     private function setRequestDataFromSessionList($keyName) {
         $addressId = $this->CustomerAddress->toArray()[$keyName];
-        $list = CakeSession::read($this::MODEL_NAME_DATA);
+        $list = CakeSession::read(self::MODEL_NAME_DATA);
         foreach ($list as $data) {
             if ($addressId === $data[$keyName]) {
-                $this->request->data[$this::MODEL_NAME] = $data;
+                $this->request->data[self::MODEL_NAME] = $data;
                 break;
             }
         }
-        if (empty($this->request->data[$this::MODEL_NAME])) {
+        if (empty($this->request->data[self::MODEL_NAME])) {
             // TODO:
             $this->Session->setFlash('try again');
             return $this->redirect(['action' => 'add']);
@@ -70,7 +70,7 @@ class AddressController extends AppController
             }
 
             if ($step === 'confirm') {
-                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
+                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->data);
                 return $this->render('confirm');
             } elseif ($step === 'complete') {
                 // create
@@ -104,7 +104,7 @@ class AddressController extends AppController
             }
 
             if ($step === 'confirm') {
-                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->toArray());
+                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->toArray());
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // update
@@ -128,7 +128,7 @@ class AddressController extends AppController
 
             if ($step === 'confirm') {
                 $this->setRequestDataFromSessionList('address_id');
-                CakeSession::write($this::MODEL_NAME, $this->CustomerAddress->data);
+                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->data);
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // delete

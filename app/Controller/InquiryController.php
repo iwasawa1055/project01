@@ -16,8 +16,8 @@ class InquiryController extends AppController
         // ログイン不要なページ
         $this->checkLogined = false;
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
-        $this->loadModel($this::MODEL_NAME_ENV);
+        $this->loadModel(self::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME_ENV);
     }
 
     /**
@@ -27,9 +27,9 @@ class InquiryController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data = CakeSession::read(self::MODEL_NAME);
         }
-        CakeSession::delete($this::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
     }
 
     /**
@@ -39,7 +39,7 @@ class InquiryController extends AppController
     {
         $this->Inquiry->set($this->request->data);
         if ($this->Inquiry->validates()) {
-            CakeSession::write($this::MODEL_NAME, $this->Inquiry->data);
+            CakeSession::write(self::MODEL_NAME, $this->Inquiry->data);
         } else {
             return $this->render('add');
         }
@@ -50,8 +50,8 @@ class InquiryController extends AppController
      */
     public function complete()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');
@@ -68,7 +68,7 @@ class InquiryController extends AppController
             }
 
             // ユーザー環境値登録
-            $this->CustomerEnvUnAuth->apiPostEnv($data[$this::MODEL_NAME]['email']);
+            $this->CustomerEnvUnAuth->apiPostEnv($data[self::MODEL_NAME]['email']);
 
         } else {
             // TODO:

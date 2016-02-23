@@ -17,8 +17,8 @@ class ContactUsController extends AppController
     {
         AppController::beforeFilter();
         $this->ContactUs->init($this->customer->token['division']);
-        $this->loadModel($this::MODEL_NAME_ANNOUNCEMENT);
-        $this->loadModel($this::MODEL_NAME_ENV);
+        $this->loadModel(self::MODEL_NAME_ANNOUNCEMENT);
+        $this->loadModel(self::MODEL_NAME_ENV);
     }
 
     /**
@@ -28,9 +28,9 @@ class ContactUsController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data = CakeSession::read(self::MODEL_NAME);
         }
-        CakeSession::delete($this::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
 
         // お知らせからの場合は内容を取得
         $id = $this->params['id'];
@@ -50,10 +50,10 @@ class ContactUsController extends AppController
         $data = $this->getAnnouncement($id);
         $this->set('announcement', $data);
 
-        $model = $this->ContactUs->model($this->request->data[$this::MODEL_NAME]);
+        $model = $this->ContactUs->model($this->request->data[self::MODEL_NAME]);
         if ($model->validates()) {
-            CakeSession::write($this::MODEL_NAME, $model->data[$model->getModelName()]);
-            CakeSession::write($this::MODEL_NAME_ANNOUNCEMENT, $data);
+            CakeSession::write(self::MODEL_NAME, $model->data[$model->getModelName()]);
+            CakeSession::write(self::MODEL_NAME_ANNOUNCEMENT, $data);
         } else {
             return $this->render('add');
         }
@@ -64,10 +64,10 @@ class ContactUsController extends AppController
      */
     public function complete()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
-        $announcement = CakeSession::read($this::MODEL_NAME_ANNOUNCEMENT);
-        CakeSession::delete($this::MODEL_NAME_ANNOUNCEMENT);
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        $announcement = CakeSession::read(self::MODEL_NAME_ANNOUNCEMENT);
+        CakeSession::delete(self::MODEL_NAME_ANNOUNCEMENT);
 
         if (empty($data)) {
             // TODO:

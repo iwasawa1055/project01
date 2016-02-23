@@ -13,8 +13,8 @@ class EmailController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
-        $this->loadModel($this::MODEL_NAME_INFO);
+        $this->loadModel(self::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME_INFO);
 
         $this->set('current_email', $this->customer->info['email']);
     }
@@ -26,9 +26,9 @@ class EmailController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data = CakeSession::read(self::MODEL_NAME);
         }
-        CakeSession::delete($this::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
     }
 
     /**
@@ -38,7 +38,7 @@ class EmailController extends AppController
     {
         $this->CustomerEmail->set($this->request->data);
         if ($this->CustomerEmail->validates()) {
-            CakeSession::write($this::MODEL_NAME, $this->CustomerEmail->data);
+            CakeSession::write(self::MODEL_NAME, $this->CustomerEmail->data);
         } else {
             return $this->render('customer_edit');
         }
@@ -49,8 +49,8 @@ class EmailController extends AppController
      */
     public function customer_complete()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');

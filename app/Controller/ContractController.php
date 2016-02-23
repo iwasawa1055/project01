@@ -22,7 +22,7 @@ class ContractController extends AppController
     {
         if ($this->customer->isPrivateCustomer()) {
             // 個人
-            $this->loadModel($this::MODEL_NAME);
+            $this->loadModel(self::MODEL_NAME);
             $r = $this->CustomerInfo->apiGet();
             if ($r->error_message) {
                 return;
@@ -30,7 +30,7 @@ class ContractController extends AppController
             $data = $r->results;
         } else {
             // 法人
-            $this->loadModel($this::MODEL_NAME_CORPORATE);
+            $this->loadModel(self::MODEL_NAME_CORPORATE);
             $r = $this->CorporateInfo->apiGet();
             if ($r->error_message) {
                 return;

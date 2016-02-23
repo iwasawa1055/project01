@@ -37,14 +37,14 @@ class InfoController extends AppController
             // edit 初期表示データ取得
             // 個人
             $data = $this->CustomerInfoV3->apiGetResults();
-            $this->request->data[$this::MODEL_NAME_CUSTOMER] = $data[0];
+            $this->request->data[self::MODEL_NAME_CUSTOMER] = $data[0];
             $ymd = explode('-', $data[0]['birth']);
-            $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_year'] = $ymd[0];
-            $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_month'] = $ymd[1];
-            $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_day'] = $ymd[2];
+            $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_year'] = $ymd[0];
+            $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_month'] = $ymd[1];
+            $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_day'] = $ymd[2];
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create 仮登録情報をセット
-            $this->request->data[$this::MODEL_NAME]['newsletter'] = $this->customer->info['newsletter'];
+            $this->request->data[self::MODEL_NAME]['newsletter'] = $this->customer->info['newsletter'];
         }
     }
 
@@ -62,17 +62,17 @@ class InfoController extends AppController
             // validates
             $this->CustomerInfo->set($this->request->data);
             $birth = [];
-            $birth[0] = $this->request->data[$this::MODEL_NAME]['birth_year'];
-            $birth[1] = $this->request->data[$this::MODEL_NAME]['birth_month'];
-            $birth[2] = $this->request->data[$this::MODEL_NAME]['birth_day'];
-            $this->CustomerInfo->data[$this::MODEL_NAME]['birth'] = implode('-', $birth);
+            $birth[0] = $this->request->data[self::MODEL_NAME]['birth_year'];
+            $birth[1] = $this->request->data[self::MODEL_NAME]['birth_month'];
+            $birth[2] = $this->request->data[self::MODEL_NAME]['birth_day'];
+            $this->CustomerInfo->data[self::MODEL_NAME]['birth'] = implode('-', $birth);
 
             if (!$this->CustomerInfo->validates()) {
                 return $this->render('customer_add');
             }
 
             if ($step === 'confirm') {
-                CakeSession::write($this::MODEL_NAME, $this->CustomerInfo->data);
+                CakeSession::write(self::MODEL_NAME, $this->CustomerInfo->data);
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // create
@@ -107,17 +107,17 @@ class InfoController extends AppController
             // validates
             $this->CustomerInfoV3->set($this->request->data);
             $birth = [];
-            $birth[0] = $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_year'];
-            $birth[1] = $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_month'];
-            $birth[2] = $this->request->data[$this::MODEL_NAME_CUSTOMER]['birth_day'];
-            $this->CustomerInfoV3->data[$this::MODEL_NAME_CUSTOMER]['birth'] = implode('-', $birth);
+            $birth[0] = $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_year'];
+            $birth[1] = $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_month'];
+            $birth[2] = $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_day'];
+            $this->CustomerInfoV3->data[self::MODEL_NAME_CUSTOMER]['birth'] = implode('-', $birth);
 
             if (!$this->CustomerInfoV3->validates()) {
                 return $this->render('customer_edit');
             }
 
             if ($step === 'confirm') {
-                CakeSession::write($this::MODEL_NAME_CUSTOMER, $this->CustomerInfoV3->data);
+                CakeSession::write(self::MODEL_NAME_CUSTOMER, $this->CustomerInfoV3->data);
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // update

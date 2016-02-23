@@ -14,7 +14,7 @@ class PasswordResetController extends AppController
         // ログイン不要なページ
         $this->checkLogined = false;
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME);
     }
 
     /**
@@ -24,11 +24,11 @@ class PasswordResetController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
-            $this->request->data[$this::MODEL_NAME]['new_password'] = '';
-            $this->request->data[$this::MODEL_NAME]['new_password_confirm'] = '';
+            $this->request->data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data[self::MODEL_NAME]['new_password'] = '';
+            $this->request->data[self::MODEL_NAME]['new_password_confirm'] = '';
         }
-        CakeSession::delete($this::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
     }
 
     /**
@@ -38,7 +38,7 @@ class PasswordResetController extends AppController
     {
         $this->CustomerPasswordReset->set($this->request->data);
         if ($this->CustomerPasswordReset->validates()) {
-            CakeSession::write($this::MODEL_NAME, $this->CustomerPasswordReset->data);
+            CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
         } else {
             return $this->render('customer_add');
         }
@@ -49,8 +49,8 @@ class PasswordResetController extends AppController
      */
     public function customer_complete()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');

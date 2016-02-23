@@ -22,10 +22,10 @@ class OrderController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        // $this->loadModel($this::MODEL_NAME);
+        // $this->loadModel(self::MODEL_NAME);
         $this->Order->init($this->customer->token['division']);
-        $this->loadModel($this::MODEL_NAME_CARD);
-        $this->loadModel($this::MODEL_NAME_DATETIME);
+        $this->loadModel(self::MODEL_NAME_CARD);
+        $this->loadModel(self::MODEL_NAME_DATETIME);
         $this->set('validErrors', []);
 
         // 仮登録か
@@ -83,15 +83,15 @@ class OrderController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME);
+            $this->request->data = CakeSession::read(self::MODEL_NAME);
             if (!$this->customer->isEntry()) {
-                $res_datetime = $this->getDatetimeDeliveryKit($this->request->data[$this::MODEL_NAME]['address_id']);
+                $res_datetime = $this->getDatetimeDeliveryKit($this->request->data[self::MODEL_NAME]['address_id']);
                 $this->set('datetime', $res_datetime);
             }
         } else {
             $this->set('datetime', []);
         }
-        CakeSession::delete($this::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
     }
 
     /**
@@ -100,13 +100,13 @@ class OrderController extends AppController
     public function confirm()
     {
         // $this->PaymentGMOKitCard->set($this->request->data);
-        $model = $this->Order->model($this->request->data[$this::MODEL_NAME]);
+        $model = $this->Order->model($this->request->data[self::MODEL_NAME]);
         $paymentModelName = $model->getModelName();
 
         // 仮登録ユーザーの場合
         if ($this->customer->isEntry()) {
             if ($model->validates(['fieldList' => ['mono_num', 'hako_num', 'cleaning_num']])) {
-                CakeSession::write($this::MODEL_NAME, $model->data);
+                CakeSession::write(self::MODEL_NAME, $model->data);
                 return $this->render('confirm');
             } else {
                 return $this->render('add');
@@ -115,26 +115,26 @@ class OrderController extends AppController
 
         // 本登録ユーザーの場合
         // address_id
-        $address_id = $this->request->data[$this::MODEL_NAME]['address_id'];
+        $address_id = $this->request->data[self::MODEL_NAME]['address_id'];
         $address = $this->Address->find($address_id);
 
         // // お届け先情報
-        // $model->data[$this::MODEL_NAME]['name'] = "{$address['lastname']}　{$address['firstname']}";
-        // $model->data[$this::MODEL_NAME]['tel1'] = $address['tel1'];
-        // $model->data[$this::MODEL_NAME]['postal'] = $address['postal'];
-        // $model->data[$this::MODEL_NAME]['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
+        // $model->data[self::MODEL_NAME]['name'] = "{$address['lastname']}　{$address['firstname']}";
+        // $model->data[self::MODEL_NAME]['tel1'] = $address['tel1'];
+        // $model->data[self::MODEL_NAME]['postal'] = $address['postal'];
+        // $model->data[self::MODEL_NAME]['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
         $model = $this->Order->setAddress($model->data[$paymentModelName], $address);
 
         // キット
         $kit = '';
-        $mono_num = $this->request->data[$this::MODEL_NAME]['mono_num'];
+        $mono_num = $this->request->data[self::MODEL_NAME]['mono_num'];
         $kit .= empty($mono_num) ? '' : '66:' . $mono_num;
-        $hako_num = $this->request->data[$this::MODEL_NAME]['hako_num'];
+        $hako_num = $this->request->data[self::MODEL_NAME]['hako_num'];
         $kit .= empty($hako_num) ? '' : '64:' . $hako_num;
-        $cleaning_num = $this->request->data[$this::MODEL_NAME]['cleaning_num'];
+        $cleaning_num = $this->request->data[self::MODEL_NAME]['cleaning_num'];
         $kit .= empty($cleaning_num) ? '' : '75:' . $cleaning_num;
 
-        // $model->data[$this::MODEL_NAME]['kit'] = rtrim($kit, ',');
+        // $model->data[self::MODEL_NAME]['kit'] = rtrim($kit, ',');
         $model->data[$paymentModelName]['kit'] = rtrim($kit, ',');
 
         if ($model->validates()) {
@@ -145,11 +145,11 @@ class OrderController extends AppController
             // お届け先
             $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
             // お届け希望日時
-            $datetime = $this->getDatetime($address_id, $this->request->data[$this::MODEL_NAME]['datetime_cd']);
+            $datetime = $this->getDatetime($address_id, $this->request->data[self::MODEL_NAME]['datetime_cd']);
             $this->set('datetime', $datetime['text']);
 
-            // CakeSession::write($this::MODEL_NAME, $model->data);
-            CakeSession::write($this::MODEL_NAME, $model->data[$paymentModelName]);
+            // CakeSession::write(self::MODEL_NAME, $model->data);
+            CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
         } else {
             $this->set('validErrors', $model->validationErrors);
 
@@ -169,8 +169,8 @@ class OrderController extends AppController
      */
     public function complete()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        // CakeSession::delete($this::MODEL_NAME);
+        $data = CakeSession::read(self::MODEL_NAME);
+        // CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');

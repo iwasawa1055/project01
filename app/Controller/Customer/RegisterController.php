@@ -22,7 +22,7 @@ class RegisterController extends AppController
     public function customer_add()
     {
         if ($this->request->is('post')) {
-            $this->loadModel($this::MODEL_NAME);
+            $this->loadModel(self::MODEL_NAME);
             $this->CustomerEntry->set($this->request->data);
 
             if ($this->CustomerEntry->validates()) {
@@ -30,16 +30,16 @@ class RegisterController extends AppController
                 $res = $this->CustomerEntry->entry();
                 if (!empty($res->error_message)) {
                     // TODO: 例外処理
-                    $this->request->data[$this::MODEL_NAME]['password'] = '';
-                    $this->request->data[$this::MODEL_NAME]['password_confirm'] = '';
+                    $this->request->data[self::MODEL_NAME]['password'] = '';
+                    $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
                     $this->Session->setFlash($res->error_message);
                     return $this->render('customer_add');
                 }
 
                 // TODO: ログイン
                 $this->loadModel('CustomerLogin');
-                $this->CustomerLogin->data['CustomerLogin']['email'] = $this->request->data[$this::MODEL_NAME]['email'];
-                $this->CustomerLogin->data['CustomerLogin']['password'] = $this->request->data[$this::MODEL_NAME]['password'];
+                $this->CustomerLogin->data['CustomerLogin']['email'] = $this->request->data[self::MODEL_NAME]['email'];
+                $this->CustomerLogin->data['CustomerLogin']['password'] = $this->request->data[self::MODEL_NAME]['password'];
 
                 $res = $this->CustomerLogin->login();
                 if (!empty($res->error_message)) {
@@ -57,8 +57,8 @@ class RegisterController extends AppController
                 return $this->redirect('/');
 
             } else {
-                $this->request->data[$this::MODEL_NAME]['password'] = '';
-                $this->request->data[$this::MODEL_NAME]['password_confirm'] = '';
+                $this->request->data[self::MODEL_NAME]['password'] = '';
+                $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
                 return $this->render('customer_add');
             }
 

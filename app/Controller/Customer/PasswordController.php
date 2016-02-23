@@ -12,7 +12,7 @@ class PasswordController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME);
     }
 
     /**

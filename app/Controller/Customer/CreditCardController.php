@@ -13,8 +13,8 @@ class CreditCardController extends AppController
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME_SECURITY);
-        $this->loadModel($this::MODEL_NAME_CARD);
+        $this->loadModel(self::MODEL_NAME_SECURITY);
+        $this->loadModel(self::MODEL_NAME_CARD);
         $this->set('action', $this->action);
     }
 
@@ -23,13 +23,13 @@ class CreditCardController extends AppController
         $back = Hash::get($this->request->query, 'back');
 
         if ($back || $step === 'complete') {
-            $data = CakeSession::read($this::MODEL_NAME_SECURITY);
+            $data = CakeSession::read(self::MODEL_NAME_SECURITY);
             $this->request->data = $data;
-            CakeSession::delete($this::MODEL_NAME_SECURITY);
+            CakeSession::delete(self::MODEL_NAME_SECURITY);
         } elseif (($this->action === 'customer_edit' || $this->action === 'paymentng_edit') && empty($step)) {
             // edit 初期表示データ取得
             $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
-            $this->request->data[$this::MODEL_NAME_SECURITY] = $default_payment;
+            $this->request->data[self::MODEL_NAME_SECURITY] = $default_payment;
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create カード登録確認
             $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
@@ -70,8 +70,8 @@ class CreditCardController extends AppController
                 // Expire year 表示用
                 $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
 
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME_SECURITY]);
-                CakeSession::write($this::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
+                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]);
+                CakeSession::write(self::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
 
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
@@ -120,8 +120,8 @@ class CreditCardController extends AppController
                 // Expire year 表示用
                 $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
 
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME_SECURITY]);
-                CakeSession::write($this::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
+                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]);
+                CakeSession::write(self::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
 
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
@@ -165,8 +165,8 @@ class CreditCardController extends AppController
                 // Expire year 表示用
                 $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
 
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[$this::MODEL_NAME_SECURITY]);
-                CakeSession::write($this::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
+                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]);
+                CakeSession::write(self::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
 
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {

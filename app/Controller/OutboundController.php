@@ -195,7 +195,7 @@ class OutboundController extends AppController
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read($this::MODEL_NAME . 'FORM');
+            $this->request->data = CakeSession::read(self::MODEL_NAME . 'FORM');
             $addressId = $this->request->data['Outbound']['address_id'];
             $address = $this->Address->find($addressId);
             $postal = $address['postal'];
@@ -216,7 +216,7 @@ class OutboundController extends AppController
         }
         $this->set('dateItemList', $r->results);
 
-        CakeSession::delete($this::MODEL_NAME . 'FORM');
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
     /**
@@ -262,8 +262,8 @@ class OutboundController extends AppController
                 $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
                 $datetime = $this->getDatetimeOne($address['postal'], $data['Outbound']['datetime_cd']);
                 $this->set('datetime_text', $datetime['text']);
-                CakeSession::write($this::MODEL_NAME . 'FORM', $this->request->data);
-                CakeSession::write($this::MODEL_NAME, $this->Outbound->data);
+                CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
+                CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
             } else {
                 return $this->render('index');
             }
@@ -275,9 +275,9 @@ class OutboundController extends AppController
      */
     public function complete()
     {
-        $data = CakeSession::read($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME . 'FORM');
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
 
         // unset($data['Outbound']['address_id']);
         if (empty($data)) {

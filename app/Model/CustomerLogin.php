@@ -11,7 +11,7 @@ class CustomerLogin extends ApiModel
 
     public function isLogined()
     {
-        return !empty(CakeSession::read($this::SESSION_API_TOKEN));
+        return !empty(CakeSession::read(self::SESSION_API_TOKEN));
     }
 
     public function login()
@@ -20,8 +20,8 @@ class CustomerLogin extends ApiModel
         $responses = $this->request('/login', $this->data[$this->model_name], 'GET');
         // api error
         if (empty($responses->error_message)) {
-            CakeSession::write($this::SESSION_API_TOKEN, $responses->results[0]['token']);
-            CakeSession::write($this::SESSION_API_DIVISION, $responses->results[0]['division']);
+            CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
+            CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
         } else {
             $responses->error_message = 'メールアドレスまたはパスワードに誤りがあるか、登録されていません。';
         }
@@ -31,8 +31,8 @@ class CustomerLogin extends ApiModel
 
     public function logout()
     {
-        CakeSession::delete($this::SESSION_API_TOKEN);
-        CakeSession::delete($this::SESSION_API_DIVISION);
+        CakeSession::delete(self::SESSION_API_TOKEN);
+        CakeSession::delete(self::SESSION_API_DIVISION);
     }
 
     public $validate = [

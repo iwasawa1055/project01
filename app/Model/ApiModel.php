@@ -53,8 +53,8 @@ class ApiModel extends AppModel
     public function __construct($name, $end, $access_point_key = 'minikura_v3')
     {
         parent::__construct($name);
-        $this->oem_key = Configure::read($this::CONFIG_API_OEMKEY);
-        $this->access_point = Configure::read($this::CONFIG_API_ACCESSPOINT_BASE.$access_point_key);
+        $this->oem_key = Configure::read(self::CONFIG_API_OEMKEY);
+        $this->access_point = Configure::read(self::CONFIG_API_ACCESSPOINT_BASE.$access_point_key);
         $this->end_point = $end;
     }
 

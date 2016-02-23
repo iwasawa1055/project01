@@ -102,8 +102,8 @@ class InboundBoxController extends AppController
     public function complete()
     {
         $data = CakeSession::read(self::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME);
-        CakeSession::delete($this::MODEL_NAME . 'FORM');
+        CakeSession::delete(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
 
         if (empty($data)) {
             // TODO:
