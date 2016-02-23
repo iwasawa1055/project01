@@ -1,8 +1,8 @@
 <?php
 
-require 'MinikuraTestCase.php';
+require_once TESTS .'Case\MinikuraTestCase.php';
 
-class ScenarioUnregisterTest extends MinikuraTestCase
+class InquiryTest extends MinikuraTestCase
 {
 
     public function setUpPage()
@@ -10,15 +10,10 @@ class ScenarioUnregisterTest extends MinikuraTestCase
         $this->setLogout();
     }
 
-    public function testUnregister01()
-    {
-        $url = '/customer/register/add';
-        $this->urlAndWait($url);
-        $this->assertRegExp('/^ユーザー登録.+/', $this->title());
-        $this->assertStringEndsWith($url, $this->url());
-    }
-
-    public function testUnregister02()
+    /**
+     * @test
+     */
+    public function 表示()
     {
         $url = '/inquiry/add';
         $this->urlAndWait($url);
@@ -28,7 +23,10 @@ class ScenarioUnregisterTest extends MinikuraTestCase
         $this->assertGreaterThanOrEqual(2, count($this->selectEl('#InquiryDivision')->selectOptionLabels()));
     }
 
-    public function testUnregister02_01()
+    /**
+     * @test
+     */
+    public function 未入力()
     {
         $url = '/inquiry/add';
         $this->urlAndWait($url);
@@ -45,7 +43,10 @@ class ScenarioUnregisterTest extends MinikuraTestCase
         $this->assertRegExp('/.+必須.+/', $this->firstEl('#InquiryText + p')->text());
     }
 
-    public function testUnregister02_02()
+    /**
+     * @test
+     */
+    public function 問合せ成功()
     {
         $url = '/inquiry/add';
         $this->urlAndWait($url);
@@ -54,7 +55,7 @@ class ScenarioUnregisterTest extends MinikuraTestCase
         $this->firstEl('#InquiryLastnameKana')->value('テス');
         $this->firstEl('#InquiryFirstname')->value('都');
         $this->firstEl('#InquiryFirstnameKana')->value('ト');
-        $this->firstEl('#InquiryEmail')->value($this->getName() . '@example.com');
+        $this->firstEl('#InquiryEmail')->value(time() . '@example.com');
         $this->selectOption('#InquiryDivision');
         $this->firstEl('#InquiryText')->value($this->getLongText());
 
@@ -63,6 +64,7 @@ class ScenarioUnregisterTest extends MinikuraTestCase
         $this->assertStringEndsWith('/inquiry/confirm', $this->url());
 
         $this->firstEl('.agree-before-submit[type="checkbox"]')->click();
+        $this->waitPageLoad();
         $this->firstEl('#InquiryConfirmForm button[type=submit]')->click();
         $this->waitPageLoad();
 
@@ -71,27 +73,6 @@ class ScenarioUnregisterTest extends MinikuraTestCase
         // return my page
         $this->firstEl('a.btn')->click();
         $this->waitPageLoad();
-        $this->assertStringEndsWith('/login', $this->url());
-    }
-
-    public function testUnregister03()
-    {
-        $this->urlAndWait('/order/add');
-        $this->assertStringEndsWith('/login', $this->url());
-    }
-    public function testUnregister04()
-    {
-        $this->urlAndWait('/inbound/box/add');
-        $this->assertStringEndsWith('/login', $this->url());
-    }
-    public function testUnregister05()
-    {
-        $this->urlAndWait('/outbound/box');
-        $this->assertStringEndsWith('/login', $this->url());
-    }
-    public function testUnregister06()
-    {
-        $this->urlAndWait('/contract');
         $this->assertStringEndsWith('/login', $this->url());
     }
 }

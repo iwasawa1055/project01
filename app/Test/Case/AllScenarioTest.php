@@ -4,7 +4,10 @@
 class AllScenarioTest extends CakeTestSuite {
     public static function suite() {
         $suite = new CakeTestSuite('All scenario tests');
+        $suite->addTestDirectory(TESTS . 'Case/ScenarioUnReg');
+        // $suite->addTestDirectory(TESTS . 'Case/ScenarioTempReg');
         $suite->addTestDirectory(TESTS . 'Case/ScenarioReg');
+
         // $suite->addTestFile(TESTS . 'Case/Selenium/LoginTest.php');
         // $suite->addTestDirectory(TESTS . 'Case/Selenium');
         // $suite->addTestDirectoryRecursive(TESTS . 'Case/Selenium');
