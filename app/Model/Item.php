@@ -9,6 +9,12 @@ class Item extends ApiModel
         parent::__construct('Item', '/item');
     }
 
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new InfoItem())->deleteCache();
+    }
+
     public $validate = [
         'item_id' => [
             'notBlank' => [
