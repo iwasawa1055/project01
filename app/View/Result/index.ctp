@@ -74,7 +74,7 @@
                             </h3>
                           </div>
                           <div class="col-lg-4 col-md-4 col-xs-12">
-                            <a class="btn btn-danger btn-md btn-block btn-detail animsition-link" href="<?php echo $url; ?>">詳細を確認する</a>
+                            <a class="btn btn-danger btn-md btn-block btn-detail" href="<?php echo $url; ?>">詳細を確認する</a>
                           </div>
                         </div>
                       </div>

@@ -29,10 +29,10 @@
                 <input class="form-control" value="市川　倫之介">
               </div>
               <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-primary btn-lg btn-block animsition-link" href="#">クリア</a>
+                <a class="btn btn-primary btn-lg btn-block" href="#">クリア</a>
               </span>
               <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/address/confirm">確認する</a>
+                <a class="btn btn-danger btn-lg btn-block" href="/customer/address/confirm">確認する</a>
               </span>
             </div>
           </div>

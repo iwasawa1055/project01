@@ -42,10 +42,10 @@
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-primary btn-lg btn-block animsition-link" href="/box/detail/1">ボックスの詳細に戻る</a>
+              <a class="btn btn-primary btn-lg btn-block" href="/box/detail/1">ボックスの詳細に戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/box/detail/1/update">ボックス情報を保存する</a>
+              <a class="btn btn-danger btn-lg btn-block" href="/box/detail/1/update">ボックス情報を保存する</a>
             </span>
           </div>
         </div>

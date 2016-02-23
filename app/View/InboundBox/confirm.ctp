@@ -97,7 +97,7 @@
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
-                  発火性・引火性のある危険物、液体・生物・その他<a class="animsition-link" href="/terms" target="_blank">利用規約</a>
+                  発火性・引火性のある危険物、液体・生物・その他<a href="/terms" target="_blank">利用規約</a>
                   で定められたものはお預かりできません。 </label>
               </p>
             </div>
@@ -114,7 +114,7 @@
         <a class="btn btn-primary btn-lg btn-block" href="/inbound/box/add?back=true">戻る</a>
         </span>
         <span class="col-lg-6 col-md-6 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で預け入れる</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で預け入れる</button>
         </span>
       </div>
       <?php echo $this->Form->end(); ?>

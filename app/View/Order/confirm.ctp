@@ -82,7 +82,7 @@
                   <p>ご購入いただいたキットは、弊社の保管サービス専用の梱包資材になります。専用の梱包キット以外でのサービスのご利用はできません。</p>
                   <p>お預け入れの際は、画面上部の「預ける」より別途お申し込みください。</p>
                   <p>月額保管料はお荷物が弊社に到着した翌月より発生いたします。</p>
-                  <p><a class="animsition-link" href="/terms" target="_blank">利用規約</a>
+                  <p><a href="/terms" target="_blank">利用規約</a>
                     をご確認ください。</p>
                 </div>
                 <div class="panel-footer">
@@ -94,21 +94,21 @@
             </div>
           <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-primary btn-lg btn-block animsition-link" href="/order/add?back=true">戻る</a>
+              <a class="btn btn-primary btn-lg btn-block" href="/order/add?back=true">戻る</a>
             </span>
         <?php if ($isEntry) : ?>
           <?php if (empty($default_payment)) : ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/credit_card/add">会員登録して注文する</a>
+              <a class="btn btn-danger btn-lg btn-block" href="/customer/credit_card/add">会員登録して注文する</a>
             </span>
           <?php else: ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/info/add">会員登録して注文する</a>
+              <a class="btn btn-danger btn-lg btn-block" href="/customer/info/add">会員登録して注文する</a>
             </span>
           <?php endif; ?>
         <?php else: ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">注文を確定する</button>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">注文を確定する</button>
             </span>
         <?php endif; ?>
           </div>

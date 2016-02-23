@@ -16,9 +16,9 @@ class InfoController extends AppController
         AppController::beforeFilter();
 
         if ($this->action === 'customer_edit') {
-            $this->modelName = $this::MODEL_NAME_CUSTOMER;
+            $this->modelName = self::MODEL_NAME_CUSTOMER;
         } else {
-            $this->modelName = $this::MODEL_NAME;
+            $this->modelName = self::MODEL_NAME;
         }
         $this->loadModel($this->modelName);
         $this->set('model', $this->modelName);
@@ -82,7 +82,7 @@ class InfoController extends AppController
                     $this->Session->setFlash($res->error_message);
                     return $this->redirect(['action' => 'add']);
                 }
-                
+
                 $this->customer->token['regist_level'] = CUSTOMER_REGIST_LEVEL_CUSTOMER;
 
                 $res = $this->CustomerInfo->apiGet();

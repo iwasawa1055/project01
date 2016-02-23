@@ -86,7 +86,7 @@
               <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">預け入れボックスの確認</button>
+                <button type="submit" class="btn btn-danger btn-lg btn-block">預け入れボックスの確認</button>
             </span>
           </div>
           <?php echo $this->Form->end(); ?>

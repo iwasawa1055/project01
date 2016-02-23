@@ -82,7 +82,7 @@
         <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを選択に戻る</a>
         </span>
         <span class="col-lg-12 col-md-12 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で確認する</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で確認する</button>
         </span>
       </div>
       <?php echo $this->Form->end(); ?>

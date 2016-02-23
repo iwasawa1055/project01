@@ -49,10 +49,10 @@
                   <p><?php echo CUSTOMER_NEWSLETTER[$this->Form->data[$model]['newsletter']] ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <?php echo $this->Html->link('戻る', ['controller' => 'info', 'action' => $action, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block animsition-link']); ?>
+                  <?php echo $this->Html->link('戻る', ['controller' => 'info', 'action' => $action, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">保存する</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">保存する</button>
                 </span>
               </div>
             <?php echo $this->Form->end(); ?>

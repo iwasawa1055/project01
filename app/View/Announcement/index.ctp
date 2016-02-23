@@ -19,13 +19,13 @@
                         <?php echo $this->Html->formatYmdKanji($data['date']); ?>
                     </div>
                     <div class="col-xs-12 col-md-8 col-lg-8">
-                      <span class="detail"><a href="<?php echo $url; ?>" class="animsition-link"><?php echo $data['title']; ?></a></span>
+                      <span class="detail"><a href="<?php echo $url; ?>"><?php echo $data['title']; ?></a></span>
                     </div>
                     <div class="col-xs-12 col-md-1 col-lg-1">
                     <?php if ($data['read']): ?>
-                      <a class="btn btn-success btn-xs animsition-link" href="<?php echo $url; ?>">既読</a>
+                      <a class="btn btn-success btn-xs" href="<?php echo $url; ?>">既読</a>
                     <?php else: ?>
-                      <a class="btn btn-danger btn-xs animsition-link" href="<?php echo $url; ?>">未読</a>
+                      <a class="btn btn-danger btn-xs" href="<?php echo $url; ?>">未読</a>
                     <?php endif; ?>
                     </div>
                   </div>

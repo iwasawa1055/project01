@@ -41,7 +41,7 @@ if (!empty($errorList)) {
           <a class="btn btn-primary btn-lg btn-block" href="/outbound/mono">ボックス一覧に戻る</a>
         </span>
         <span class="col-lg-6 col-md-6 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">取り出しリストを確認する</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">取り出しリストを確認する</button>
         </span>
       </div>
       <?php echo $this->Form->end(); ?>

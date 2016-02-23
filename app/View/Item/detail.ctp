@@ -37,7 +37,7 @@
                         <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                         <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '1']); ?>
                         <span class="col-xs-12 col-lg-12">
-                            <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist page-transition-link">取り出しリスト登録</button>
+                            <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
                         </span>
                         <?php echo $this->Form->end(); ?>
                         <?php if (!empty($linkToAuction)): ?>

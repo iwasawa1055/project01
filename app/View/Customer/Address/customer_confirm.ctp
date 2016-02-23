@@ -49,10 +49,10 @@
                   </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                    <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/address/add?back=true"> 戻る </a>
+                    <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add?back=true"> 戻る </a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                    <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">保存する</button>
+                    <button type="submit" class="btn btn-danger btn-lg btn-block">保存する</button>
                 </span>
                 </div>
             </div>

@@ -34,7 +34,7 @@
                 </div>
                 <?php if (!$data['applying']): ?>
                 <div class="col-lg-12 col-md-12 col-xs-12">
-                  <a class="btn btn-info btn-md animsition-link pull-right" href="/customer/info/edit">情報を変更する</a>
+                  <a class="btn btn-info btn-md pull-right" href="/customer/info/edit">情報を変更する</a>
                 </div>
                 <?php endif; ?>
               <?php else : ?>

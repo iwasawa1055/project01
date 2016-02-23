@@ -37,7 +37,7 @@ if (!empty($errorList)) {
           </div>
         </div>
         <span class="col-lg-12 col-md-12 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">取り出しリストを確認する</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">取り出しリストを確認する</button>
         </span>
       </div>
       <?php echo $this->Form->end(); ?>

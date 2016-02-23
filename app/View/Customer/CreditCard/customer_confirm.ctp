@@ -29,11 +29,11 @@
                   <p><?php echo $security_card['holder_name']; ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <!-- <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit?back=true">戻る</a> -->
-                  <?php echo $this->Html->link('戻る', ['controller' => 'credit_card', 'action' => $action, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block animsition-link']); ?>
+                  <!-- <a class="btn btn-primary btn-lg btn-block" href="/customer/credit_card/edit?back=true">戻る</a> -->
+                  <?php echo $this->Html->link('戻る', ['controller' => 'credit_card', 'action' => $action, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">変更する</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">変更する</button>
                 </span>
               <?php echo $this->Form->end(); ?>
               </div>

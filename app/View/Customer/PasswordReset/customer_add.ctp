@@ -24,8 +24,8 @@
                   <?php echo $this->Form->error('CustomerPasswordReset.new_password_confirm', null, ['wrap' => 'p']) ?>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">確認</button>
-                  <a class="btn btn-primary btn-xs btn-block animsition-link" href="/login">ログインはこちら</a>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">確認</button>
+                  <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>
                 </span>
               </div>
             <?php echo $this->Form->end(); ?>

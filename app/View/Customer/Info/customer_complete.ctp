@@ -14,7 +14,7 @@
                   minikuraカスタマーサポートにてご変更内容を確認した後、変更完了のメールをお送りします。<br />
                   しばらくお待ちください。</p>
                 <span class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/">マイページへ戻る</a>
+                <a class="btn btn-danger btn-lg btn-block" href="/">マイページへ戻る</a>
                 </span>
               </div>
             </div>

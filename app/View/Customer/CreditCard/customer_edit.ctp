@@ -86,11 +86,11 @@
                   <p class="help-block">（※半角大文字英字 半角スペース）</p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <!-- <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/credit_card/edit">クリア</a> </span> -->
-                  <?php echo $this->Html->link('クリア', ['controller' => 'credit_card', 'action' => $action], ['class' => 'btn btn-primary btn-lg btn-block animsition-link']); ?>
+                  <!-- <a class="btn btn-primary btn-lg btn-block" href="/customer/credit_card/edit">クリア</a> </span> -->
+                  <?php echo $this->Html->link('クリア', ['controller' => 'credit_card', 'action' => $action], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">確認</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">確認</button>
                 </span>
                 <?php echo $this->Form->hidden('PaymentGMOSecurityCard.card_seq'); ?>
             <?php echo $this->Form->end(); ?>

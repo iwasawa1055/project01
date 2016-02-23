@@ -41,10 +41,10 @@
                   </div>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block animsition-link" href="/item/detail/<?php echo $item['item_id'] ?>">アイテムの詳細に戻る</a>
+                  <a class="btn btn-primary btn-lg btn-block" href="/item/detail/<?php echo $item['item_id'] ?>">アイテムの詳細に戻る</a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">アイテム情報を保存する</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">アイテム情報を保存する</button>
                 </span>
               </div>
               <?php echo $this->Form->hidden('Item.item_id'); ?>

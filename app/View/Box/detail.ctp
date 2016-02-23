@@ -30,7 +30,7 @@
                     <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
                     <div class="col-lg-4 col-md-4 col-xs-12">
                       <span class="col-xs-12 col-lg-12">
-                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist page-transition-link">取り出しリスト登録</button>
+                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
                       </span>
                     </div>
                     <?php echo $this->Form->end(); ?>
@@ -50,7 +50,7 @@
                 <!--loop-->
                 <?php foreach($itemList as $item): ?>
                 <li class="panel panel-default">
-                    <a class="animsition-link" href="/item/detail/<?php echo $item['item_id'] ?>">
+                    <a href="/item/detail/<?php echo $item['item_id'] ?>">
                         <img src="<?php echo $item['images_item']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>"></a>
                   <div class="panel-footer">
                     <p class="box-list-caption"><span>アイテム名</span><?php echo $item['item_name'] ?></p>

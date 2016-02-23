@@ -43,7 +43,7 @@
               <label>集荷の日程</label>
               <p class="form-control-static">0月00日午前中</p>
             </div>
-            <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block animsition-link" href="shoes.html">戻る</a> </span> <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/inbound/shoe/complete">この内容で預け入れる</a> </span> < </div>
+            <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-primary btn-lg btn-block" href="shoes.html">戻る</a> </span> <span class="col-lg-6 col-md-6 col-xs-12"> <a class="btn btn-danger btn-lg btn-block" href="/inbound/shoe/complete">この内容で預け入れる</a> </span> < </div>
         </div>
       </div>
     </div>

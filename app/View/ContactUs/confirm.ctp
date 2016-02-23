@@ -21,10 +21,10 @@
                   </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <?php echo $this->Html->link('戻る', ['controller' => 'contact_us', 'action' => 'add', 'id' => $id, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block animsition-link']); ?>
+                  <?php echo $this->Html->link('戻る', ['controller' => 'contact_us', 'action' => 'add', 'id' => $id, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で問い合わせる</button>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で問い合わせる</button>
                 </span>
                 <?php if ($id) : ?>
                 <div class="col-lg-12 announcement">

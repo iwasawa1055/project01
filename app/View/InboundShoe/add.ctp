@@ -53,7 +53,7 @@
                 <option>00月00日18時〜</option>
               </select>
             </div>
-            <span class="col-lg-12 col-md-12 col-xs-12"> <a class="btn btn-danger btn-lg btn-block animsition-link" href="/inbound/shoe/confirm">預け入れるシューズの確認</a> </span> </div>
+            <span class="col-lg-12 col-md-12 col-xs-12"> <a class="btn btn-danger btn-lg btn-block" href="/inbound/shoe/confirm">預け入れるシューズの確認</a> </span> </div>
         </div>
       </div>
     </div>

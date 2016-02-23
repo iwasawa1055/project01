@@ -65,7 +65,7 @@
             <a class="btn btn-primary btn-lg btn-block" href="/outbound/?back=true">戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">この内容で取り出す</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で取り出す</button>
             </span>
           </div>
           <?php echo $this->Form->end(); ?>

@@ -26,18 +26,18 @@
                <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => 'delete', 'step' => 'confirm']]); ?>
                <span class="col-lg-6 col-md-6 col-xs-12">
                    <input type="hidden" class="address_id" name="address_id" value="">
-                   <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">削除する</button>
+                   <button type="submit" class="btn btn-danger btn-lg btn-block">削除する</button>
                </span>
                <?php echo $this->Form->end(); ?>
                <?php echo $this->Form->create('CustomerAddress', ['type' => 'get', 'url' => ['controller' => 'address', 'action' => 'edit', 'step' => 'confirm']]); ?>
                <span class="col-lg-6 col-md-6 col-xs-12">
                    <input type="hidden" class="address_id" name="address_id" value="">
-                   <button type="submit" class="btn btn-danger btn-lg btn-block page-transition-link">変更する</button>
+                   <button type="submit" class="btn btn-danger btn-lg btn-block">変更する</button>
                </span>
                <?php echo $this->Form->end(); ?>
              <?php endif ?>
                <span class="col-lg-12 col-md-12 col-xs-12">
-               <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/address/add"> 新規追加する </a>
+               <a class="btn btn-danger btn-lg btn-block" href="/customer/address/add"> 新規追加する </a>
                </span>
              </div>
            </div>
