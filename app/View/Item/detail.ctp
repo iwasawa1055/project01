@@ -47,7 +47,7 @@
                         <?php endif; ?>
                       </div>
                       <div class="col-lg-12 col-md-12 col-xs-12 item-detail-text">
-                        <p class="box_note"><?php echo $box['box_note']; ?></p>
+                        <p class="box_note"><?php echo nl2br($item['item_note']); ?></p>
                       </div>
                     </div>
                   </div>
@@ -60,7 +60,7 @@
             <a class="btn btn-primary btn-lg btn-block " href="/item/">アイテムの一覧に戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block " href="/item/detail<?php echo $item['item_id'] ?>/edit">アイテム情報を編集する</a>
+            <a class="btn btn-danger btn-lg btn-block " href="/item/detail/<?php echo $item['item_id'] ?>/edit">アイテム情報を編集する</a>
             </span>
           </div>
         </div>

@@ -90,20 +90,20 @@
             <div class="panel-body">
               <p>
                 <label>
-                  <input type="checkbox">
+                  <input type="checkbox" class="agree-before-submit">
                   重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。</label>
               </p>
               <p>※明らかに20kgを超えた場合は保管料を別途頂戴することがございます。あらかじめご了承ください。</p>
               <p>
                 <label>
-                  <input type="checkbox">
+                  <input type="checkbox" class="agree-before-submit">
                   発火性・引火性のある危険物、液体・生物・その他<a class="animsition-link" href="/terms" target="_blank">利用規約</a>
                   で定められたものはお預かりできません。 </label>
               </p>
             </div>
             <div class="panel-footer">
               <label>
-                <input type="checkbox">
+                <input type="checkbox" class="agree-before-submit">
                 利用規約に同意する。</label>
             </div>
           </div>

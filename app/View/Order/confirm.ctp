@@ -87,7 +87,7 @@
                 </div>
                 <div class="panel-footer">
                   <label>
-                    <input type="checkbox">
+                    <input type="checkbox" class="agree-before-submit">
                     利用規約に同意する。</label>
                 </div>
               </div>

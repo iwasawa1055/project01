@@ -13,6 +13,7 @@ class ItemController extends AppController
         'item_status' => 'ステータス',
         'item_group_cd' => 'カテゴリ'
     ];
+    const MODEL_NAME_ITEM_EDIT = 'Item';
 
     /**
      * 制御前段処理.
@@ -22,6 +23,7 @@ class ItemController extends AppController
         AppController::beforeFilter();
         $this->loadModel($this::MODEL_NAME);
         $this->loadModel('InfoBox');
+        $this->loadModel($this::MODEL_NAME_ITEM_EDIT);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -89,13 +91,33 @@ class ItemController extends AppController
      */
     public function edit()
     {
-    }
+        $id = $this->params['id'];
+        $item = $this->InfoItem->apiGetResultsFind([], ['item_id' => $id]);
+        $this->set('item', $item);
 
-    /**
-     *
-     */
-    public function update()
-    {
-        return $this->redirect('/item/detail/1');
+        $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $item['box_id']]);
+        $this->set('box', $box);
+
+        if ($this->request->is('get')) {
+
+            $this->request->data[$this::MODEL_NAME_ITEM_EDIT] = $item;
+            return $this->render('edit');
+
+        } elseif ($this->request->is('post')) {
+
+            $this->Item->set($this->request->data);
+            if (!$this->Item->validates()) {
+                return $this->render('edit');
+            }
+
+            $res = $this->Item->apiPatch($this->Item->toArray());
+            if (!empty($res->error_message)) {
+                // TODO: 例外処理
+                $this->Session->setFlash($res->error_message);
+                return $this->render('edit');
+            }
+
+            return $this->redirect(['controller' => 'item', 'action' => 'detail', 'id' => $id]);
+        }
     }
 }
