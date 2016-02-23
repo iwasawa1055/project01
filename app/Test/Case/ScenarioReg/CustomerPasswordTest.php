@@ -1,19 +1,25 @@
 <?php
 
-require 'MinikuraTestCase.php';
+require_once TESTS .'Case\MinikuraTestCase.php';
 
 class CustomerPasswordTest extends MinikuraTestCase
 {
-    public function testInvalidWithoutRequired()
+
+    public function setUpPage()
     {
         $this->setLogin();
-
-        $this->url('/customer/password/edit');
-        $this->waitPageLoad();
+        $this->urlAndWait('/customer/password/edit');
 
         $this->byId("CustomerPasswordPassword")->clear();
         $this->byId("CustomerPasswordNewPassword")->clear();
         $this->byId("CustomerPasswordNewPasswordConfirm")->clear();
+    }
+
+    /**
+     * @test
+     */
+    public function 未入力()
+    {
 
         $this->byXPath("(//button[@type='submit'])[2]")->click();
         $this->waitPageLoad();
@@ -24,12 +30,11 @@ class CustomerPasswordTest extends MinikuraTestCase
         $this->assertEquals("新しいパスワード（再入力）は必須です", $elements[2]->text());
     }
 
-    public function testInvalidFormat()
+    /**
+     * @test
+     */
+    public function 形式不正()
     {
-        $this->setLogin();
-
-        $this->url('/customer/password/edit');
-        $this->waitPageLoad();
 
         $this->byId('CustomerPasswordPassword')->value('asdf');
         $this->byId('CustomerPasswordNewPassword')->value('asdf');
@@ -43,13 +48,11 @@ class CustomerPasswordTest extends MinikuraTestCase
         $this->assertEquals("新しいパスワード（再入力）の形式が正しくありません", $elements[1]->text());
     }
 
-    public function testInvalidConfirm()
+    /**
+     * @test
+     */
+    public function 確認入力不一致()
     {
-        $this->setLogin();
-
-        $this->url('/customer/password/edit');
-        $this->waitPageLoad();
-
         $this->byId('CustomerPasswordPassword')->value('happyhappy');
         $this->byId('CustomerPasswordNewPassword')->value('happyhappy');
         $this->byId('CustomerPasswordNewPasswordConfirm')->value('happyhappy123');
@@ -61,17 +64,14 @@ class CustomerPasswordTest extends MinikuraTestCase
         $this->assertEquals("新しいパスワード（再入力）が一致していません", $elements[0]->text());
     }
 
-    public function testSuccess()
+    /**
+     * @test
+     */
+    public function 変更成功()
     {
         $expectedPassword = 'happyhappy';
         $expectedNewPassword = 'happyhappy';
         $expectedNewPasswordConfirm = 'happyhappy';
-
-        $this->setLogin();
-
-        // 入力画面
-        $this->url('/customer/password/edit');
-        $this->waitPageLoad();
 
         $result = $this->byCssSelector('h1.page-header')->text();
         $this->assertEquals('パスワード変更', $result);

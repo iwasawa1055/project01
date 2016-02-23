@@ -76,35 +76,8 @@ class ApiCachedModel extends ApiModel
         return array_slice($list, $offset, $limit);
     }
 
-    public function apiGet($data = [])
-    {
-        $data = parent::apiGet($data);
+    protected function triggerDataChanged() {
         $this->deleteCache();
-        return $data;
-    }
-    public function apiPost($data)
-    {
-        $data = parent::apiPost($data);
-        $this->deleteCache();
-        return $data;
-    }
-    public function apiPut($data)
-    {
-        $data = parent::apiPut($data);
-        $this->deleteCache();
-        return $data;
-    }
-    public function apiPatch($data)
-    {
-        $data = parent::apiPatch($data);
-        $this->deleteCache();
-        return $data;
-    }
-    public function apiDelete($data)
-    {
-        $data = parent::apiDelete($data);
-        $this->deleteCache();
-        return $data;
     }
 
     protected function readCache($key, $arg)
