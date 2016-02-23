@@ -7,13 +7,15 @@ class ContactUsController extends AppController
     const MODEL_NAME = 'ContactUs';
     const MODEL_NAME_ANNOUNCEMENT = 'Announcement';
 
+    public $components = ['ContactUs'];
+
     /**
      * 制御前段処理
      */
     public function beforeFilter()
     {
         AppController::beforeFilter();
-        $this->loadModel($this::MODEL_NAME);
+        $this->ContactUs->init($this->customer->token['division']);
         $this->loadModel($this::MODEL_NAME_ANNOUNCEMENT);
     }
 
@@ -46,9 +48,9 @@ class ContactUsController extends AppController
         $data = $this->getAnnouncement($id);
         $this->set('announcement', $data);
 
-        $this->ContactUs->set($this->request->data);
-        if ($this->ContactUs->validates()) {
-            CakeSession::write($this::MODEL_NAME, $this->ContactUs->data);
+        $model = $this->ContactUs->model($this->request->data[$this::MODEL_NAME]);
+        if ($model->validates()) {
+            CakeSession::write($this::MODEL_NAME, $model->data[$model->getModelName()]);
             CakeSession::write($this::MODEL_NAME_ANNOUNCEMENT, $data);
         } else {
             return $this->render('add');
@@ -71,15 +73,15 @@ class ContactUsController extends AppController
             return $this->redirect(['action' => 'add']);
         }
 
-        $this->ContactUs->set($data);
-        if ($this->ContactUs->validates()) {
+        $model = $this->ContactUs->model($data);
+        if ($model->validates()) {
 
             if (!empty($announcement)) {
                 // お知らせの内容を追加
-                $this->ContactUs->data[$this::MODEL_NAME]['text'] .= $this->setPostText($announcement);
+                $model->data[$model->getModelName()]['text'] .= $this->setPostText($announcement);
             }
 
-            $res = $this->ContactUs->apiPost($this->ContactUs->toArray());
+            $res = $model->apiPost($model->toArray());
             if (!empty($res->error_message)) {
                 // TODO:
                 $this->Session->setFlash('try again');
