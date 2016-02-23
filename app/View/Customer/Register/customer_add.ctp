@@ -28,7 +28,7 @@
               <a class="btn btn-info btn-xs btn-block" href="#" target="_blank">魂ガレージ利用規約</a>
               <div class="checkbox">
                 <label>
-                  <input name="remember" type="checkbox" value="Remember Me">
+                  <input name="remember" type="checkbox" value="Remember Me" class="agree-before-submit">
                   魂ガレージ利用規約に同意する </label>
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録</button>
