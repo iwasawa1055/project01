@@ -60,35 +60,54 @@ class ApiModel extends AppModel
 
     public function apiGet($data = [])
     {
-        $list = $this->requestWithDataAndToken($data, 'GET');
+        $r = $this->requestWithDataAndToken($data, 'GET');
         // 結果ゼロ件チェックして空配列を返す
         if (!empty($this->checkZeroResultsKey)) {
-            if (count($list->results) === 1 &&
-                    array_key_exists($this->checkZeroResultsKey, $list->results[0]) &&
-                    empty($list->results[0][$this->checkZeroResultsKey])) {
-                $list->results = [];
+            if (count($r->results) === 1 &&
+                    array_key_exists($this->checkZeroResultsKey, $r->results[0]) &&
+                    empty($r->results[0][$this->checkZeroResultsKey])) {
+                $r->results = [];
             }
         }
-        return $list;
+        return $r;
     }
     public function apiPost($data)
     {
-        return $this->requestWithDataAndToken($data, 'POST');
+        $r = $this->requestWithDataAndToken($data, 'POST');
+        if ($r->isSuccess()) {
+            $this->triggerDataChanged();
+        }
+        return $r;
     }
     public function apiPut($data)
     {
-        return $this->requestWithDataAndToken($data, 'PUT');
+        $r = $this->requestWithDataAndToken($data, 'PUT');
+        if ($r->isSuccess()) {
+            $this->triggerDataChanged();
+        }
+        return $r;
     }
     public function apiPatch($data)
     {
-        return $this->requestWithDataAndToken($data, 'PATCH');
+        $r = $this->requestWithDataAndToken($data, 'PATCH');
+        if ($r->isSuccess()) {
+            $this->triggerDataChanged();
+        }
+        return $r;
     }
     public function apiDelete($data)
     {
-        return $this->requestWithDataAndToken($data, 'DELETE');
+        $r = $this->requestWithDataAndToken($data, 'DELETE');
+        if ($r->isSuccess()) {
+            $this->triggerDataChanged();
+        }
+        return $r;
     }
 
-    public function beforeApiRequest($url, &$params, $method)
+    protected function triggerDataChanged() {
+    }
+
+    protected function beforeApiRequest($url, &$params, $method)
     {
         // $d = date('H:i:s', time());
         // $d .= ' bigen -> ' . $url . "\n";
@@ -98,7 +117,7 @@ class ApiModel extends AppModel
         // TODO: ログ出力？
     }
 
-    public function afterApiRequest($params, $method, &$apiRes)
+    protected function afterApiRequest($params, $method, &$apiRes)
     {
         if ($apiRes->http_code === 400) {
             // TODO:

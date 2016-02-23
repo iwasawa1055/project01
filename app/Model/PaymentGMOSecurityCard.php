@@ -11,6 +11,12 @@ class PaymentGMOSecurityCard extends ApiModel
         parent::__construct('PaymentGMOSecurityCard', '/security_card', 'gmopayment_v4');
     }
 
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new PaymentGMOCard())->deleteCache();
+    }
+
     public $validate = [
         'card_no' => [
             'notBlank' => [
