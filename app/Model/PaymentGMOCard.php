@@ -8,7 +8,7 @@ class PaymentGMOCard extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct(self::SESSION_CACHE_KEY, 'PaymentGMOCard', '/card', 'gmopayment_v4');
+        parent::__construct(self::SESSION_CACHE_KEY, 0, 'PaymentGMOCard', '/card', 'gmopayment_v4');
     }
 
     public $validate = [

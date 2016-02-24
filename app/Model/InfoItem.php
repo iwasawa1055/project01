@@ -22,7 +22,7 @@ class InfoItem extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct(self::SESSION_CACHE_KEY, 'InfoItem', '/info_item', 0);
+        parent::__construct(self::SESSION_CACHE_KEY, 0, 'InfoItem', '/info_item');
     }
 
 

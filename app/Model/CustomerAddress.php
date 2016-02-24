@@ -8,7 +8,7 @@ class CustomerAddress extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct(self::SESSION_CACHE_KEY, 'CustomerAddress', '/address');
+        parent::__construct(self::SESSION_CACHE_KEY, 0, 'CustomerAddress', '/address');
     }
 
     public $validate = [
