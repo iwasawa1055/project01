@@ -21,9 +21,18 @@ class RegisterController extends AppController
      */
     public function customer_add()
     {
+        // 紹介コード
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
+
         if ($this->request->is('post')) {
             $this->loadModel(self::MODEL_NAME);
             $this->CustomerEntry->set($this->request->data);
+
+            // 紹介コード
+            if (!empty($code)) {
+                $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd'] = $code;
+            }
 
             if ($this->CustomerEntry->validates()) {
                 // 仮登録
