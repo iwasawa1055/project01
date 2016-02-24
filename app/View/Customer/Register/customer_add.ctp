@@ -1,3 +1,10 @@
+  <?php if (!empty($code))  : ?>
+    <div class="row">
+      <div class="col-lg-12" align="center">
+        <img src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
+      </div>
+    </div>
+  <?php endif; ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-keyboard-o"></i> ユーザー登録</h1>
@@ -7,7 +14,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
-          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'add'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'add', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group">
                 <?php echo $this->Form->input('CustomerEntry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'autofocus'=>'autofocus', 'error' => false]); ?>
