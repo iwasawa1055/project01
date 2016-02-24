@@ -22,7 +22,7 @@ class ContactUsController extends AppController
     }
 
     /**
-     * 
+     *
      */
     public function add()
     {
@@ -40,7 +40,7 @@ class ContactUsController extends AppController
     }
 
     /**
-     * 
+     *
      */
     public function confirm()
     {
@@ -60,7 +60,7 @@ class ContactUsController extends AppController
     }
 
     /**
-     * 
+     *
      */
     public function complete()
     {
@@ -71,7 +71,7 @@ class ContactUsController extends AppController
 
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
 
@@ -85,8 +85,7 @@ class ContactUsController extends AppController
 
             $res = $model->apiPost($model->toArray());
             if (!empty($res->error_message)) {
-                // TODO:
-                $this->Session->setFlash('try again');
+                $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);
             }
 
@@ -95,7 +94,7 @@ class ContactUsController extends AppController
 
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }

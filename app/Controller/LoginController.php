@@ -30,9 +30,8 @@ class LoginController extends AppController
 
                 $res = $this->CustomerLogin->login();
                 if (!empty($res->error_message)) {
-                    // TODO: 例外処理
                     $this->request->data['CustomerLogin']['password'] = '';
-                    $this->Session->setFlash($res->error_message);
+                    $this->Flash->set($res->error_message);
                     return $this->render('index');
                 }
 

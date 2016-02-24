@@ -107,7 +107,7 @@ class InboundBoxController extends AppController
 
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
 
@@ -120,12 +120,13 @@ class InboundBoxController extends AppController
         if ($model->validates()) {
             // api
             $r = $model->apiPost($model->toArray());
-            if (!$r->isSuccess()) {
-                // TODO: 例外処理
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'add']);
             }
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }

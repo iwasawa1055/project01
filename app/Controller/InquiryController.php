@@ -54,7 +54,7 @@ class InquiryController extends AppController
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
 
@@ -63,7 +63,7 @@ class InquiryController extends AppController
             $res = $this->Inquiry->apiPost($this->Inquiry->toArray());
             if (!empty($res->error_message)) {
                 // TODO:
-                $this->Session->setFlash('try again');
+                $this->Flash->set('try again');
                 return $this->redirect(['action' => 'add']);
             }
 
@@ -72,7 +72,7 @@ class InquiryController extends AppController
 
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }

@@ -46,7 +46,7 @@ class AddressController extends AppController
         }
         if (empty($this->request->data[self::MODEL_NAME])) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }
@@ -135,7 +135,7 @@ class AddressController extends AppController
                 $res = $this->CustomerAddress->apiDelete($this->CustomerAddress->data);
                 if (!$res->isSuccess()) {
                     // TODO:
-                    $this->Session->setFlash('try again');
+                    $this->Flash->set('try again');
                     return $this->redirect(['action' => 'add']);
                 }
                 return $this->render('customer_complete');

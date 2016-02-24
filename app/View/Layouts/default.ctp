@@ -45,7 +45,7 @@
     <?php echo $this->element('sidebar'); ?>
   </nav>
   <div id="page-wrapper">
-    <?php echo $this->Session->flash(); ?>
+    <?php echo $this->Flash->render(); ?>
     <?php echo $this->fetch('content'); ?>
   </div>
   <div class="footer">

@@ -112,9 +112,8 @@ class ItemController extends AppController
 
             $res = $this->Item->apiPatch($this->Item->toArray());
             if (!empty($res->error_message)) {
-                // TODO: 例外処理
-                $this->Session->setFlash($res->error_message);
-                return $this->render('edit');
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['controller' => 'item', 'action' => 'detail', 'id' => $id]);
             }
 
             return $this->redirect(['controller' => 'item', 'action' => 'detail', 'id' => $id]);

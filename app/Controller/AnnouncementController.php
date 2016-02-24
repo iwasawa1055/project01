@@ -63,9 +63,9 @@ class AnnouncementController extends AppController
             $this->response->body($binary);
         } else {
             if ($res->message === 'Parameter Invalid - used receipt') {
-                $this->Session->setFlash('発行済です。');
+                $this->Flash->set('発行済です。');
             } else {
-                $this->Session->setFlash('try again');
+                $this->Flash->set('try again');
             }
             return $this->redirect(['action' => 'detail', 'id' => $id]);
         }

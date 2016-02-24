@@ -121,9 +121,6 @@ class OutboundController extends AppController
 
         if ($this->request->is('post')) {
 
-            // TODO: 追加削除が入り乱れる
-            // $isAdd = !empty(Hash::get($this->request->data, 'is_add'));
-            // TODO: ここで増減を吸収する？
             $idList = $this->mergeDataKey('item_id', $outItemList);
 
             $errorList = $this->outboundList->setItem($idList);
@@ -279,10 +276,9 @@ class OutboundController extends AppController
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
 
-        // unset($data['Outbound']['address_id']);
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
 
@@ -291,8 +287,7 @@ class OutboundController extends AppController
             // api
             $res = $this->Outbound->apiPost($this->Outbound->toArray());
             if (!empty($res->error_message)) {
-                // TODO: 例外処理
-                $this->Session->setFlash($res->error_message);
+                $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'index']);
             }
             // 取り出しリストクリア
@@ -302,7 +297,7 @@ class OutboundController extends AppController
             Announcement::deleteAllCache();
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }

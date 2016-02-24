@@ -105,8 +105,7 @@ class BoxController extends AppController
 
             $res = $this->Box->apiPatch($this->Box->toArray());
             if (!empty($res->error_message)) {
-                // TODO: 例外処理
-                $this->Session->setFlash($res->error_message);
+                $this->Flash->set($res->error_message);
                 return $this->render('edit');
             }
 

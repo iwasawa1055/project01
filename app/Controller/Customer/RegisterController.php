@@ -41,7 +41,7 @@ class RegisterController extends AppController
                     // TODO: 例外処理
                     $this->request->data[self::MODEL_NAME]['password'] = '';
                     $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
-                    $this->Session->setFlash($res->error_message);
+                    $this->Flash->set($res->error_message);
                     return $this->render('customer_add');
                 }
 
@@ -52,7 +52,7 @@ class RegisterController extends AppController
 
                 $res = $this->CustomerLogin->login();
                 if (!empty($res->error_message)) {
-                    $this->Session->setFlash($res->error_message);
+                    $this->Flash->set($res->error_message);
                     return $this->render('customer_add');
                 }
 

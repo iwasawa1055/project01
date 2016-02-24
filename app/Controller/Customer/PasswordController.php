@@ -33,7 +33,7 @@ class PasswordController extends AppController
             $res = $this->CustomerPassword->apiPatch($this->CustomerPassword->toArray());
             if (!empty($res->error_message)) {
                 // TODO:　モデル
-                $this->Session->setFlash('パスワードを変更できませんでした。現在のパスワードが正しいかご確認ください。');
+                $this->Flash->set('パスワードを変更できませんでした。現在のパスワードが正しいかご確認ください。');
                 return $this->redirect(['action' => 'edit']);
             }
         } else {

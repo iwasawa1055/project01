@@ -53,7 +53,7 @@ class EmailController extends AppController
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'edit']);
         }
 
@@ -63,7 +63,7 @@ class EmailController extends AppController
             $res = $this->CustomerEmail->apiPatch($this->CustomerEmail->toArray());
             if (!empty($res->error_message)) {
                 // TODO:
-                $this->Session->setFlash('try again');
+                $this->Flash->set('try again');
                 return $this->redirect(['action' => 'edit']);
             }
 
@@ -72,7 +72,7 @@ class EmailController extends AppController
             $this->set('email', $this->CustomerEmail->toArray()['email']);
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'edit']);
         }
     }

@@ -53,7 +53,7 @@ class PasswordResetController extends AppController
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
 
@@ -64,7 +64,7 @@ class PasswordResetController extends AppController
             $this->set('email', $this->CustomerPasswordReset->toArray()['email']);
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }

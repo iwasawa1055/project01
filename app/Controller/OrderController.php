@@ -190,7 +190,7 @@ class OrderController extends AppController
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
         $model = $this->Order->model($data);
@@ -199,7 +199,7 @@ class OrderController extends AppController
             $res = $model->apiPost($model->toArray());
             if (!$res->isSuccess()) {
                 // TODO:
-                $this->Session->setFlash('try again');
+                $this->Flash->set('try again');
                 return $this->redirect(['action' => 'add']);
             }
 
@@ -223,7 +223,7 @@ class OrderController extends AppController
 
         } else {
             // TODO:
-            $this->Session->setFlash('try again');
+            $this->Flash->set('try again');
             return $this->redirect(['action' => 'add']);
         }
     }
