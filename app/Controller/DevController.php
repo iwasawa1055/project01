@@ -22,7 +22,7 @@ class DevController extends AppController
         $data = [
             'oem_key' => ['oem_key' => Configure::read(ApiModel::CONFIG_API_OEMKEY)],
             'token' => $this->customer->token,
-            'info' => $this->customer->info,
+            'info' => $this->customer->getInfo(),
         ];
         $this->set('data', $data);
 

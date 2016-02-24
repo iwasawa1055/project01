@@ -3,6 +3,7 @@
 App::uses('AppController', 'Controller');
 App::uses('ApiCachedModel', 'Model');
 App::uses('OutboundList', 'Model');
+App::uses('CustomerEnvAuthed', 'Model');
 
 class LoginController extends AppController
 {
@@ -23,7 +24,6 @@ class LoginController extends AppController
     {
         if ($this->request->is('post')) {
             $this->loadModel('CustomerLogin');
-            $this->loadModel('CustomerEnvAuthed');
             $this->CustomerLogin->set($this->request->data);
 
             if ($this->CustomerLogin->validates()) {
@@ -39,27 +39,10 @@ class LoginController extends AppController
                 // token
                 $this->customer->setTokenAndSave($res->results[0]);
 
-                if ($this->customer->isPrivateCustomer()) {
-                    // 個人
-                    if ($this->customer->isEntry()) {
-                        // 仮登録情報取得
-                        $this->loadModel('CustomerEntry');
-                        $res = $this->CustomerEntry->apiGet();
-                    } else {
-                        // 本登録情報取得
-                        $this->loadModel('CustomerInfo');
-                        $res = $this->CustomerInfo->apiGet();
-                    }
-                } else {
-                    // 法人
-                    // 本登録情報取得
-                    $this->loadModel('CorporateInfo');
-                    $res = $this->CorporateInfo->apiGet();
-                }
-                $this->customer->setInfoAndSave($res->results[0]);
 
                 // ユーザー環境値登録
-                $this->CustomerEnvAuthed->apiPostEnv($this->customer->info['email']);
+                $env = new CustomerEnvAuthed();
+                $env->apiPostEnv($this->customer->getInfo()['email']);
 
                 // 債務ユーザーの場合
                 if ($this->customer->isPaymentNG()) {

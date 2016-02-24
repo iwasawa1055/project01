@@ -16,7 +16,7 @@ class EmailController extends AppController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_INFO);
 
-        $this->set('current_email', $this->customer->info['email']);
+        $this->set('current_email', $this->customer->getInfo()['email']);
     }
 
     /**
@@ -62,13 +62,11 @@ class EmailController extends AppController
             // api
             $res = $this->CustomerEmail->apiPatch($this->CustomerEmail->toArray());
             if (!empty($res->error_message)) {
-                // TODO:
-                $this->Flash->set('try again');
+                $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'edit']);
             }
 
-            $res = $this->CustomerInfo->apiGet();
-            $this->customer->setInfoAndSave($res->results[0]);
+            $this->customer->reloadInfo();
             $this->set('email', $this->CustomerEmail->toArray()['email']);
         } else {
             // TODO:

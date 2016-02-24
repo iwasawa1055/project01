@@ -18,7 +18,7 @@ class PaymentGMOCard extends ApiCachedModel
     {
         $d = $this->apiGetResults();
         if (empty($d)) {
-            return [];
+            return null;
         }
         foreach ($d as $card) {
             if ($card['default_flag'] === '1') {
@@ -27,5 +27,6 @@ class PaymentGMOCard extends ApiCachedModel
                 return $card;
             }
         }
+        return null;
     }
 }

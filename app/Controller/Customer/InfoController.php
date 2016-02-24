@@ -44,7 +44,7 @@ class InfoController extends AppController
             $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_day'] = $ymd[2];
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create 仮登録情報をセット
-            $this->request->data[self::MODEL_NAME]['newsletter'] = $this->customer->info['newsletter'];
+            $this->request->data[self::MODEL_NAME]['newsletter'] = $this->customer->getInfo()['newsletter'];
         }
     }
 
@@ -77,18 +77,14 @@ class InfoController extends AppController
             } elseif ($step === 'complete') {
                 // create
                 $res = $this->CustomerInfo->apiPost($this->CustomerInfo->toArray());
+
                 if (!empty($res->error_message)) {
-                    // TODO: 例外処理
                     $this->Flash->set($res->error_message);
                     return $this->redirect(['action' => 'add']);
                 }
 
-                $this->customer->token['regist_level'] = CUSTOMER_REGIST_LEVEL_CUSTOMER;
-
-                $res = $this->CustomerInfo->apiGet();
-                $this->customer->setInfoAndSave($res->results[0]);
-
-                return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
+                $this->customer->switchEntryToCustomer();
+                return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
             }
         }
     }

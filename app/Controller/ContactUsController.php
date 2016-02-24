@@ -90,7 +90,7 @@ class ContactUsController extends AppController
             }
 
             // ユーザー環境値登録
-            $this->CustomerEnvAuthed->apiPostEnv($this->customer->info['email']);
+            $this->CustomerEnvAuthed->apiPostEnv($this->customer->getInfo()['email']);
 
         } else {
             // TODO:
