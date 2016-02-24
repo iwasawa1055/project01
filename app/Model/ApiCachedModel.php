@@ -84,13 +84,14 @@ class ApiCachedModel extends ApiModel
     {
         $sessionKey = $this->sessionKey . '.' . $key;
         $session = CakeSession::read($sessionKey);
-        if (!empty($session) && !empty(Hash::get($session, 'expires')) && time() < $session['expires'] &&
-                (Hash::get($session, 'arg') === $arg)) {
-
-            // if ($this->getModelName() == 'Announcement') {
-            //     pr($this->getModelName() . ' cached xx ' . date('H:i:s', $session['expires']) . ' ... ' . date('H:i:s'));
-            // }
-            return Hash::get($session, 'data');
+        if (!empty($session) && (Hash::get($session, 'arg') === $arg)) {
+            $expires = Hash::get($session, 'expires');
+            if (empty($expires) || $expires < time()) {
+                // if ($this->getModelName() == 'Announcement') {
+                //     pr($this->getModelName() . ' cached xx ' . date('H:i:s', $session['expires']) . ' ... ' . date('H:i:s'));
+                // }
+                return Hash::get($session, 'data');
+            }
         }
         return null;
     }

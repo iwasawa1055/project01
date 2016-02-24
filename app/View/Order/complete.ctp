@@ -10,48 +10,28 @@
             <div class="col-lg-12 col-xs-12 order">
               <p class="notice">下記の内容で注文を承りました。</p>
               <div class="form-group col-lg-12">
+                <?php foreach ($kitList as $kitCd => $kit): ?>
                 <div class="row list">
                   <div class="col-xs-12 col-md-8 col-lg-8">
-                    minikuraMONO
+                    <?php echo KIT_NAME[$kitCd]; ?>
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo $data['mono_num']; ?>箱
+                    <?php echo number_format($kit['num']); ?> 箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00円
+                    <?php echo number_format($kit['price']); ?> 円
                   </div>
                 </div>
-                <div class="row list">
-                  <div class="col-xs-12 col-md-8 col-lg-8">
-                    minikuraHAKO
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo $data['hako_num']; ?>箱
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    00円
-                  </div>
-                </div>
-                <div class="row list">
-                  <div class="col-xs-12 col-md-8 col-lg-8">
-                    クリーニングパック
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo $data['cleaning_num']; ?>箱
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    00円
-                  </div>
-                </div>
+                <?php endforeach; ?>
                 <div class="row list">
                   <div class="col-xs-12 col-md-8 col-lg-8">
                     合計
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00箱
+                    <?php echo number_format($total['num']); ?> 箱
                   </div>
                   <div class="col-xs-12 col-md-2 col-lg-2">
-                    00円
+                    <?php echo number_format($total['price']); ?> 円
                   </div>
                 </div>
               </div>

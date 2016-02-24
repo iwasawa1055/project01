@@ -1,18 +1,15 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('CustomerKitPrice', 'Model');
 
 class OrderController extends AppController
 {
-    // const MODEL_NAME = 'PaymentGMOKitCard';
-    // const MODEL_NAME_ACCOUNT = 'PaymentAccountTransferKit';
     const MODEL_NAME = 'OrderKit';
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
 
     public $default_payment = null;
-    // public $address = null;
-    // public $datetime = null;
 
     public $components = ['Address', 'Order'];
 
@@ -83,7 +80,7 @@ class OrderController extends AppController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data[self::MODEL_NAME] = CakeSession::read(self::MODEL_NAME);
             if (!$this->customer->isEntry()) {
                 $res_datetime = $this->getDatetimeDeliveryKit($this->request->data[self::MODEL_NAME]['address_id']);
                 $this->set('datetime', $res_datetime);
@@ -99,7 +96,6 @@ class OrderController extends AppController
      */
     public function confirm()
     {
-        // $this->PaymentGMOKitCard->set($this->request->data);
         $model = $this->Order->model($this->request->data[self::MODEL_NAME]);
         $paymentModelName = $model->getModelName();
 
@@ -114,28 +110,30 @@ class OrderController extends AppController
         }
 
         // 本登録ユーザーの場合
-        // address_id
         $address_id = $this->request->data[self::MODEL_NAME]['address_id'];
         $address = $this->Address->find($address_id);
 
         // // お届け先情報
-        // $model->data[self::MODEL_NAME]['name'] = "{$address['lastname']}　{$address['firstname']}";
-        // $model->data[self::MODEL_NAME]['tel1'] = $address['tel1'];
-        // $model->data[self::MODEL_NAME]['postal'] = $address['postal'];
-        // $model->data[self::MODEL_NAME]['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
         $model = $this->Order->setAddress($model->data[$paymentModelName], $address);
 
         // キット
-        $kit = '';
-        $mono_num = $this->request->data[self::MODEL_NAME]['mono_num'];
-        $kit .= empty($mono_num) ? '' : '66:' . $mono_num;
-        $hako_num = $this->request->data[self::MODEL_NAME]['hako_num'];
-        $kit .= empty($hako_num) ? '' : '64:' . $hako_num;
-        $cleaning_num = $this->request->data[self::MODEL_NAME]['cleaning_num'];
-        $kit .= empty($cleaning_num) ? '' : '75:' . $cleaning_num;
+        $dataKeyNum = [
+            KIT_CD_MONO => 'mono_num',
+            KIT_CD_HAKO => 'hako_num',
+            KIT_CD_CLEANING_PACK => 'cleaning_num',
+        ];
 
-        // $model->data[self::MODEL_NAME]['kit'] = rtrim($kit, ',');
-        $model->data[$paymentModelName]['kit'] = rtrim($kit, ',');
+        $kitList = [];
+        foreach ($dataKeyNum as $kitCd => $dataKey) {
+            $kitList[$kitCd] = ['num' => 0];
+            $num = Hash::get($this->request->data, self::MODEL_NAME . '.' . $dataKey);
+            if (!empty($num)) {
+                $kitList[$kitCd]['num'] = $num;
+                $kitList[$kitCd]['kit'] = $kitCd . ':' . $num;
+            }
+        }
+
+        $model->data[$paymentModelName]['kit'] = implode(Hash::extract($kitList, '{n}.kit'), ',');
 
         if ($model->validates()) {
             if ($this->customer->isPrivateCustomer() || empty($this->customer->getCorporatePayment())) {
@@ -147,8 +145,27 @@ class OrderController extends AppController
             // お届け希望日時
             $datetime = $this->getDatetime($address_id, $this->request->data[self::MODEL_NAME]['datetime_cd']);
             $this->set('datetime', $datetime['text']);
+            // 料金
+            $kitPrice = new CustomerKitPrice();
+            $total = ['num' => 0, 'price' => 0];
+            foreach ($dataKeyNum as $kitCd => $dataKey) {
+                $kitList[$kitCd]['price'] = 0;
+                if (!empty($kitList[$kitCd]['kit'])) {
+                    $r = $kitPrice->apiGet([
+                        'kit' => $kitList[$kitCd]['kit']
+                    ]);
+                    if ($r->isSuccess()) {
+                        $kitList[$kitCd]['price'] = $r->results[0]['total_price'] * 1;
+                        $total['num'] += $kitList[$kitCd]['num'] ;
+                        $total['price'] += $kitList[$kitCd]['price'];
+                    }
+                }
+            }
+            $this->set('kitList', $kitList);
+            $this->set('total', $total);
 
-            // CakeSession::write(self::MODEL_NAME, $model->data);
+            $model->data[$paymentModelName]['view_data_kitList'] = serialize($kitList);
+            $model->data[$paymentModelName]['view_data_total'] = serialize($total);
             CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
         } else {
             $this->set('validErrors', $model->validationErrors);
@@ -170,13 +187,12 @@ class OrderController extends AppController
     public function complete()
     {
         $data = CakeSession::read(self::MODEL_NAME);
-        // CakeSession::delete(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             // TODO:
             $this->Session->setFlash('try again');
             return $this->redirect(['action' => 'add']);
         }
-        // $this->PaymentGMOKitCard->set($data);
         $model = $this->Order->model($data);
         if ($model->validates()) {
             // api
@@ -200,6 +216,10 @@ class OrderController extends AppController
             // お届け希望日時
             $datetime = $this->getDatetime($address_id, $data['datetime_cd']);
             $this->set('datetime', $datetime['text']);
+
+            // 料金
+            $this->set('kitList', unserialize($data['view_data_kitList']));
+            $this->set('total', unserialize($data['view_data_total']));
 
         } else {
             // TODO:
