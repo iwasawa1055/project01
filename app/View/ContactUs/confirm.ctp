@@ -26,19 +26,12 @@
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で問い合わせる</button>
                 </span>
-                <?php if ($id) : ?>
-                <div class="col-lg-12 announcement">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <h3><?php echo $announcement['title'] ?></h3>
-                      <h4 class="date"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>
-                      <h5 class="date">お知らせID：<?php echo $announcement['announcement_id'] ?></h5>
-                    </div>
-                  </div>
+              <?php if ($id) : ?>
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                  <h3 class="col-lg-12"><?php echo $announcement['title'] ?></h3>
+                  <h4 class="date col-lg-12"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>
                   <div class="col-lg-12">
-                    <div class="row body">
-                      <?php echo nl2br($announcement['text']) ?>
-                    </div>
+                    <?php echo nl2br($announcement['text']) ?>
                   </div>
                 </div>
               <?php endif; ?>
