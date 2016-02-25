@@ -114,11 +114,10 @@ class ContactUsController extends AppController
 
 
 お知らせ内容：
-{$announcement['title']}
-{$announcement['date']}
+タイトル：{$announcement['title']}
+日付：{$announcement['date']}
 
-お知らせID：{$announcement['announcement_id']}
-
+本文：
 {$announcement['text']}
 EOF;
     }
