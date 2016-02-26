@@ -707,7 +707,7 @@ div.panel-body .col-lg-12 {
 	padding: 0 15px;
 	min-height: 30px;
 }
-.footer {
-	display: none;
+.footer p{
+	font-size:8px;
 }
 }

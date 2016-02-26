@@ -139,6 +139,7 @@ class OrderController extends MinikuraController
                 CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
                 return $this->render('confirm');
             } else {
+                $this->set('validErrors', $model->validationErrors);
                 return $this->render('add');
             }
         }
