@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('CustomerKitPrice', 'Model');
 
-class OrderController extends AppController
+class OrderController extends MinikuraController
 {
     const MODEL_NAME = 'OrderKit';
     const MODEL_NAME_CARD = 'PaymentGMOCard';

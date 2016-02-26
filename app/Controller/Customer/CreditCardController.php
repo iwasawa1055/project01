@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class CreditCardController extends AppController
+class CreditCardController extends MinikuraController
 {
     const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
     const MODEL_NAME_CARD = 'PaymentGMOCard';

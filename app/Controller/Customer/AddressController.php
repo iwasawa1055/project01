@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class AddressController extends AppController
+class AddressController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerAddress';
     const MODEL_NAME_DATA = 'CustomerAddressData';

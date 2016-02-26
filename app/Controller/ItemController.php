@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class ItemController extends AppController
+class ItemController extends MinikuraController
 {
     const MODEL_NAME = 'InfoItem';
     const SELECT_SORT_KEY = [

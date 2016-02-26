@@ -1,10 +1,10 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('DatePrivate', 'Model');
 App::uses('TimePrivate', 'Model');
 
-class InboundBoxController extends AppController
+class InboundBoxController extends MinikuraController
 {
     public $components = array('Address', 'Inbound');
 

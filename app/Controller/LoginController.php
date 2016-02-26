@@ -1,11 +1,11 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('ApiCachedModel', 'Model');
 App::uses('OutboundList', 'Model');
 App::uses('CustomerEnvAuthed', 'Model');
 
-class LoginController extends AppController
+class LoginController extends MinikuraController
 {
     /**
      * 制御前段処理.

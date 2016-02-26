@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class PasswordController extends AppController
+class PasswordController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerPassword';
 

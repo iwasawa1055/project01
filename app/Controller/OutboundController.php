@@ -1,10 +1,10 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('OutboundList', 'Model');
 App::uses('Outbound', 'Model');
 
-class OutboundController extends AppController
+class OutboundController extends MinikuraController
 {
     public $components = array('Address');
 

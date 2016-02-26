@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class PasswordResetController extends AppController
+class PasswordResetController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerPasswordReset';
 

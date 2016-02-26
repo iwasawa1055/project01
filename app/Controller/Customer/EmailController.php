@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class EmailController extends AppController
+class EmailController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerEmail';
     const MODEL_NAME_INFO = 'CustomerInfo';

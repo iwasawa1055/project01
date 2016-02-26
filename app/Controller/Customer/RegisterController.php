@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class RegisterController extends AppController
+class RegisterController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerEntry';
 
@@ -17,7 +17,7 @@ class RegisterController extends AppController
     }
 
     /**
-     * 
+     *
      */
     public function customer_add()
     {

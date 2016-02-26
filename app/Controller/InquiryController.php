@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('UserAddress', 'Model');
 
-class InquiryController extends AppController
+class InquiryController extends MinikuraController
 {
     const MODEL_NAME = 'Inquiry';
     const MODEL_NAME_ENV = 'CustomerEnvUnAuth';

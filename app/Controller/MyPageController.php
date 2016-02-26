@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 
-class MyPageController extends AppController
+class MyPageController extends MinikuraController
 {
     /**
      * ルートインデックス.

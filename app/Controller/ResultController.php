@@ -1,11 +1,11 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('Announcement', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
 
-class ResultController extends AppController
+class ResultController extends MinikuraController
 {
     /**
      *

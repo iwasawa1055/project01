@@ -1,6 +1,6 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('MinikuraController', 'Controller');
 App::uses('InfoItem', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('DevOrderId', 'Model');
@@ -14,7 +14,7 @@ App::uses('DevUserApplying', 'Model');
 App::uses('DevUserDebt', 'Model');
 App::uses('OutboundList', 'Model');
 
-class DevController extends AppController
+class DevController extends MinikuraController
 {
     public function index()
     {
