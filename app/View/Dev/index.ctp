@@ -89,7 +89,9 @@ dd {
 <?php foreach ($boxData[BOXITEM_STATUS_INBOUND_START] as $data): ?>
 <dd>
     <span><?php echo $data['box_id']; ?></span>
-    <a href="/dev/inbound_done?number=2&box_id=<?php echo $data['box_id']; ?>">done</a>
+    <a href="/dev/inbound_done?number=1&box_id=<?php echo $data['box_id']; ?>">done_1</a>
+    <a href="/dev/inbound_done?number=5&box_id=<?php echo $data['box_id']; ?>">done_5</a>
+    <a href="/dev/inbound_done?number=10&box_id=<?php echo $data['box_id']; ?>">done_10</a>
 </dd>
 <?php endforeach; ?>
 <?php endif; ?>
