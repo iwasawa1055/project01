@@ -6,15 +6,8 @@ class RegisterController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerEntry';
 
-    /**
-     * 制御前段処理.
-     */
-    public function beforeFilter()
-    {
-        // ログイン不要なページ
-        $this->checkLogined = false;
-        parent::beforeFilter();
-    }
+    // ログイン不要なページ
+    protected $checkLogined = false;
 
     /**
      *

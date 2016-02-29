@@ -7,14 +7,6 @@ class PasswordController extends MinikuraController
     const MODEL_NAME = 'CustomerPassword';
 
     /**
-     * 制御前段処理.
-     */
-    public function beforeFilter()
-    {
-        parent::beforeFilter();
-    }
-
-    /**
      *
      */
     public function customer_edit()

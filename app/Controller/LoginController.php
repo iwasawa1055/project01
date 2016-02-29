@@ -7,15 +7,8 @@ App::uses('CustomerEnvAuthed', 'Model');
 
 class LoginController extends MinikuraController
 {
-    /**
-     * 制御前段処理.
-     */
-    public function beforeFilter()
-    {
-        // ログイン不要なページ
-        $this->checkLogined = false;
-        parent::beforeFilter();
-    }
+    // ログイン不要なページ
+    protected $checkLogined = false;
 
     /**
      * ルートインデックス.

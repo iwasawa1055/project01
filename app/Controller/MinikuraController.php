@@ -10,7 +10,9 @@ class MinikuraController extends AppController
     public $uses = ['CustomerLogin', 'Announcement', 'InfoBox'];
     public $components = ['Customer', 'Address'];
 
+    // アクセス許可
     protected $checkLogined = true;
+    protected $denyEntry = false;
 
     protected $paginate = array(
         'limit' => 10,
@@ -44,6 +46,9 @@ class MinikuraController extends AppController
             if (!$this->Customer->isLogined()) {
                 $this->redirect('/login');
                 exit;
+            }
+            if ($this->denyEntry && $this->Customer->isEntry()) {
+                new AppTerminalCritical('denyEntry', 403);
             }
 
             $res = $this->Announcement->apiGetResults(['limit' => 5]);

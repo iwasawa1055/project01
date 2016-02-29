@@ -7,6 +7,8 @@ class InfoController extends MinikuraController
     const MODEL_NAME = 'CustomerInfo';
     public $modelName = null;
 
+    protected $denyEntry = true;
+
     /**
      * 制御前段処理.
      */

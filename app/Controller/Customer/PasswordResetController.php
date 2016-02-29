@@ -6,13 +6,14 @@ class PasswordResetController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerPasswordReset';
 
+    // ログイン不要なページ
+    protected $checkLogined = false;
+
     /**
      * 制御前段処理.
      */
     public function beforeFilter()
     {
-        // ログイン不要なページ
-        $this->checkLogined = false;
         parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
     }
