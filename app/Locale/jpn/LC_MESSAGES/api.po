@@ -197,5 +197,8 @@ msgstr "不明パラメーター"
 msgid "402 Payment Required - user"
 msgstr "ユーザー未入金により現在使用不可"
 
+msgid "403 Forbidden - customer"
+msgstr "情報が取得できませんでした。"
+
 msgid "Parameter Invalid - used receipt"
 msgstr "発行済です。"

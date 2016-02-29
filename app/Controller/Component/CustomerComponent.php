@@ -2,6 +2,7 @@
 
 App::uses('CustomerAddress', 'Model');
 App::uses('CustomerInfo', 'Model');
+App::uses('CustomerInfoV3', 'Model');
 App::uses('CorporateInfo', 'Model');
 App::uses('CustomerLogin', 'Model');
 
@@ -56,6 +57,47 @@ class CustomerComponent extends Component
         return $model;
     }
 
+    public function getInfoGetModel($data = [])
+    {
+        $model = null;
+        if ($this->isLogined()) {
+            if ($this->isPrivateCustomer()) {
+                $model = new CustomerInfo();
+            } else {
+                $model = new CustomerInfoV3();
+            }
+        }
+        return $model;
+    }
+
+    public function getInfoPostModel($data = [])
+    {
+        $model = null;
+        if ($this->isLogined()) {
+            if ($this->isPrivateCustomer()) {
+                $model = new CustomerInfo();
+            }
+        }
+        if (!empty($model)) {
+            $model->set([$model->getModelName() => $data]);
+        }
+        return $model;
+    }
+
+    public function getInfoPatchModel($data = [])
+    {
+        $model = null;
+        if ($this->isLogined()) {
+            if ($this->isPrivateCustomer()) {
+                $model = new CustomerInfoV3();
+            }
+        }
+        if (!empty($model)) {
+            $model->set([$model->getModelName() => $data]);
+        }
+        return $model;
+    }
+
     public function getContactModel($data = [])
     {
         $model = null;
@@ -63,10 +105,10 @@ class CustomerComponent extends Component
             if ($this->isEntry()) {
                 // TODO: ログイン前と同じ設定
                 $model = new EntryContactUs();
-            } else if ($this->toke['division'] === CUSTOMER_DIVISION_CORPORATE) {
-                $model = new ContactUsCorporate();
-            } else {
+            } else if ($this->isPrivateCustomer()) {
                 $model = new ContactUs();
+            } else {
+                $model = new ContactUsCorporate();
             }
         }
         if (!empty($model)) {

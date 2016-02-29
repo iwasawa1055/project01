@@ -4,7 +4,6 @@ App::uses('MinikuraController', 'Controller');
 
 class InfoController extends MinikuraController
 {
-    const MODEL_NAME_CUSTOMER = 'CustomerInfoV3';
     const MODEL_NAME = 'CustomerInfo';
     public $modelName = null;
 
@@ -14,14 +13,6 @@ class InfoController extends MinikuraController
     public function beforeFilter()
     {
         parent::beforeFilter();
-
-        if ($this->action === 'customer_edit') {
-            $this->modelName = self::MODEL_NAME_CUSTOMER;
-        } else {
-            $this->modelName = self::MODEL_NAME;
-        }
-        $this->loadModel($this->modelName);
-        $this->set('model', $this->modelName);
         $this->set('action', $this->action);
     }
 
@@ -30,18 +21,23 @@ class InfoController extends MinikuraController
         $back = Hash::get($this->request->query, 'back');
 
         if ($back || $step === 'complete') {
-            $data = CakeSession::read($this->modelName);
-            $this->request->data = $data;
-            CakeSession::delete($this->modelName);
+            $data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data = [self::MODEL_NAME => $data];
+            CakeSession::delete(self::MODEL_NAME);
         } elseif ($this->action === 'customer_edit' && empty($step)) {
             // edit 初期表示データ取得
-            // 個人
-            $data = $this->CustomerInfoV3->apiGetResults();
-            $this->request->data[self::MODEL_NAME_CUSTOMER] = $data[0];
-            $ymd = explode('-', $data[0]['birth']);
-            $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_year'] = $ymd[0];
-            $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_month'] = $ymd[1];
-            $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_day'] = $ymd[2];
+            $model = $this->Customer->getInfoGetModel();
+            $res = $model->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+            } else {
+                $data = $res->results[0];
+                $this->request->data[self::MODEL_NAME] = $data;
+                $ymd = explode('-', $data['birth']);
+                $this->request->data[self::MODEL_NAME]['birth_year'] = $ymd[0];
+                $this->request->data[self::MODEL_NAME]['birth_month'] = $ymd[1];
+                $this->request->data[self::MODEL_NAME]['birth_day'] = $ymd[2];
+            }
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create 仮登録情報をセット
             $this->request->data[self::MODEL_NAME]['newsletter'] = $this->Customer->getInfo()['newsletter'];
@@ -60,30 +56,34 @@ class InfoController extends MinikuraController
             return $this->render('customer_add');
         } elseif ($this->request->is('post')) {
             // validates
-            $this->CustomerInfo->set($this->request->data);
+            $data = $this->request->data[self::MODEL_NAME];
             $birth = [];
-            $birth[0] = $this->request->data[self::MODEL_NAME]['birth_year'];
-            $birth[1] = $this->request->data[self::MODEL_NAME]['birth_month'];
-            $birth[2] = $this->request->data[self::MODEL_NAME]['birth_day'];
-            $this->CustomerInfo->data[self::MODEL_NAME]['birth'] = implode('-', $birth);
+            $birth[0] = $data['birth_year'];
+            $birth[1] = $data['birth_month'];
+            $birth[2] = $data['birth_day'];
+            $data['birth'] = implode('-', $birth);
+            $model = $this->Customer->getInfoPostModel($data);
 
-            if (!$this->CustomerInfo->validates()) {
+            if (!$model->validates()) {
+                $this->set('validErrors', $model->validationErrors);
                 return $this->render('customer_add');
             }
 
             if ($step === 'confirm') {
-                CakeSession::write(self::MODEL_NAME, $this->CustomerInfo->data);
+                CakeSession::write(self::MODEL_NAME, $model->toArray());
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // create
-                $res = $this->CustomerInfo->apiPost($this->CustomerInfo->toArray());
-
+                $res = $model->apiPost($model->toArray());
                 if (!empty($res->error_message)) {
                     $this->Flash->set($res->error_message);
-                    return $this->redirect(['action' => 'add']);
+                    return $this->render('customer_add');
                 }
 
                 $this->Customer->switchEntryToCustomer();
+
+                // TODO: 紹介コードありはキット購入へ
+
                 return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
             }
         }
@@ -101,24 +101,29 @@ class InfoController extends MinikuraController
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
             // validates
-            $this->CustomerInfoV3->set($this->request->data);
+            $data = $this->request->data[self::MODEL_NAME];
             $birth = [];
-            $birth[0] = $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_year'];
-            $birth[1] = $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_month'];
-            $birth[2] = $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_day'];
-            $this->CustomerInfoV3->data[self::MODEL_NAME_CUSTOMER]['birth'] = implode('-', $birth);
+            $birth[0] = $data['birth_year'];
+            $birth[1] = $data['birth_month'];
+            $birth[2] = $data['birth_day'];
+            $data['birth'] = implode('-', $birth);
+            $model = $this->Customer->getInfoPatchModel($data);
 
-            if (!$this->CustomerInfoV3->validates()) {
+            if (!$model->validates()) {
+                $this->set('validErrors', $model->validationErrors);
                 return $this->render('customer_edit');
             }
 
             if ($step === 'confirm') {
-                CakeSession::write(self::MODEL_NAME_CUSTOMER, $this->CustomerInfoV3->data);
+                CakeSession::write(self::MODEL_NAME, $model->toArray());
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // update
-                $res = $this->CustomerInfoV3->apiPatchResults($this->CustomerInfoV3->toArray());
-
+                $res = $model->apiPatch($model->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->render('customer_edit');
+                }
                 return $this->render('customer_complete');
             }
         }

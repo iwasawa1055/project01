@@ -20,24 +20,14 @@ class ContractController extends MinikuraController
      */
     public function index()
     {
-        if ($this->Customer->isPrivateCustomer()) {
-            // 個人
-            $this->loadModel(self::MODEL_NAME);
-            $r = $this->CustomerInfo->apiGet();
-            if ($r->error_message) {
-                return;
-            }
-            $data = $r->results;
+        $data = [];
+        $model = $this->Customer->getInfoGetModel();
+        $res = $model->apiGet();
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
         } else {
-            // 法人
-            $this->loadModel(self::MODEL_NAME_CORPORATE);
-            $r = $this->CorporateInfo->apiGet();
-            if ($r->error_message) {
-                return;
-            }
-            $data = $r->results;
+            $data = $res->results[0];
         }
-
-        $this->set('data', $data[0]);
+        $this->set('data', $data);
     }
 }

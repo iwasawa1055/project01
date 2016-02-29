@@ -13,7 +13,6 @@ class EmailController extends MinikuraController
     {
         parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
-        $this->loadModel(self::MODEL_NAME_INFO);
 
         $this->set('current_email', $this->Customer->getInfo()['email']);
     }

@@ -1,5 +1,6 @@
 <?php $this->Html->script('http://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
+<?php if (!empty($validErrors)) { $this->validationErrors['CustomerInfo'] = $validErrors; } ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-truck"></i> お客さま情報変更</h1>

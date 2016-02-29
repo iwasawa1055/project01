@@ -10,6 +10,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>ご契約者情報</h2>
+              <?php if (!empty($data))  : ?>
               <?php if ($isPrivateCustomer)  : ?>
               <?php // 個人 ?>
                 <div class="form-group col-lg-12">
@@ -67,6 +68,7 @@
                   <label>担当者名（カナ）</label>
                   <p class="form-control-static"><?php echo $data['staff_name_kana']; ?></p>
                 </div>
+              <?php endif; ?>
               <?php endif; ?>
               </div>
             </div>
