@@ -18,6 +18,9 @@ class InfoBox extends ApiCachedModel
         parent::__construct(self::SESSION_CACHE_KEY, 0, 'InfoBox', '/info_box');
     }
 
+    // 結果ゼロ件チェック
+    protected $checkZeroResultsKey = 'box_id';
+
     // 購入済みキット一覧
     // 利用中のBOX一覧　と　並び替え
     // 商品別集計
