@@ -8,6 +8,15 @@ msgstr "メールアドレス（再入力）"
 msgid "password"
 msgstr "パスワード"
 
+msgid "current_password"
+msgstr "現在のパスワード"
+
+msgid "new_password"
+msgstr "新しいパスワード"
+
+msgid "new_password_confirm"
+msgstr "新しいパスワード（再入力）"
+
 msgid "newsletter"
 msgstr "お知らせ配信"
 

@@ -8,7 +8,7 @@ class MinikuraController extends AppController
 {
     public $helpers = ['Html', 'Title'];
     public $uses = ['CustomerLogin', 'Announcement', 'InfoBox'];
-
+    public $components = ['Customer', 'Address'];
 
     protected $checkLogined = true;
 
@@ -17,7 +17,7 @@ class MinikuraController extends AppController
         'paramType' => 'querystring'
     );
 
-    protected $customer = [];
+    // protected $customer = [];
 
     public function beforeFilter()
     {
@@ -34,29 +34,27 @@ class MinikuraController extends AppController
         //* Request Count
         // CakeSession::$requestCountdown = 10000;
 
-        $this->set('isLogined', $this->CustomerLogin->isLogined());
-        // Customer Information
-        $this->customer = CustomerData::restore();
+        $this->set('isLogined', $this->Customer->isLogined());
+
+        $this->set('customerName', $this->Customer->getName());
+        $this->set('isPrivateCustomer', $this->Customer->isPrivateCustomer());
+        $this->set('corporatePayment', $this->Customer->getCorporatePayment());
+        $this->set('hasCreditCard', $this->Customer->hasCreditCard());
+        $this->set('isEntry', $this->Customer->isEntry());
 
         // header
         if ($this->checkLogined) {
-            // pr(get_class($this));
-            if (!$this->CustomerLogin->isLogined()) {
+            if (!$this->Customer->isLogined()) {
                 $this->redirect('/login');
                 exit;
             }
-            $this->set('customer_name', $this->customer->getCustomerName());
-            $this->set('isPrivateCustomer', $this->customer->isPrivateCustomer());
-            $this->set('corporatePayment', $this->customer->getCorporatePayment());
-            $this->set('hasCreditCard', $this->customer->hasCreditCard());
-            $this->set('isEntry', $this->customer->isEntry());
 
             $res = $this->Announcement->apiGetResults(['limit' => 5]);
             $this->set('notice_announcements', $res);
             $summary = $this->InfoBox->getProductSummary();
             $this->set('product_summary', $summary);
 
-            if ($this->customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
+            if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
                 return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
             }
         }

@@ -92,17 +92,26 @@ class CustomerData
 
     public function isEntry()
     {
-        return $this->token['regist_level'] === CUSTOMER_REGIST_LEVEL_ENTRY;
+        if (is_array($this->token) && array_key_exists('regist_level', $this->token)) {
+            return $this->token['regist_level'] === CUSTOMER_REGIST_LEVEL_ENTRY;
+        }
+        return null;
     }
 
     public function isPrivateCustomer()
     {
-        return $this->token['division'] === CUSTOMER_DIVISION_PRIVATE;
+        if (is_array($this->token) && array_key_exists('division', $this->token)) {
+            return $this->token['division'] === CUSTOMER_DIVISION_PRIVATE;
+        }
+        return null;
     }
 
     public function isPaymentNG()
     {
-        return $this->token['payment'] === CUSTOMER_PAYMENT_NG;
+        if (is_array($this->token) && array_key_exists('payment', $this->token)) {
+            return $this->token['payment'] === CUSTOMER_PAYMENT_NG;
+        }
+        return null;
     }
 
     public function getCustomerName()

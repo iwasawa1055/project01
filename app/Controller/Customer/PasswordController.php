@@ -4,7 +4,7 @@ App::uses('MinikuraController', 'Controller');
 
 class PasswordController extends MinikuraController
 {
-    const MODEL_NAME = 'CustomerPassword';
+    // const MODEL_NAME = 'CustomerPassword';
 
     /**
      * 制御前段処理.
@@ -12,7 +12,7 @@ class PasswordController extends MinikuraController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->loadModel(self::MODEL_NAME);
+        // $this->loadModel(self::MODEL_NAME);
     }
 
     /**
@@ -27,16 +27,21 @@ class PasswordController extends MinikuraController
      */
     public function customer_complete()
     {
-        $this->CustomerPassword->set($this->request->data);
-        if ($this->CustomerPassword->validates()) {
+        $formName = 'CustomerPassword';
+        $model = $this->Customer->getPasswordModel();
+// pr($model->getModelName());
+// pr($this->request->data[$formName]);
+        $model->set([$model->getModelName() => $this->request->data[$formName]]);
+
+        if ($model->validates()) {
             // api
-            $res = $this->CustomerPassword->apiPatch($this->CustomerPassword->toArray());
+            $res = $model->apiPatch($model->toArray());
             if (!empty($res->error_message)) {
-                // TODO:　モデル
-                $this->Flash->set('パスワードを変更できませんでした。現在のパスワードが正しいかご確認ください。');
+                $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'edit']);
             }
         } else {
+            $this->set('validErrors', $model->validationErrors);
             return $this->render('customer_edit');
         }
     }

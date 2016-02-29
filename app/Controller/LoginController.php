@@ -37,15 +37,16 @@ class LoginController extends MinikuraController
 
                 // カスタマー情報を取得しセッションに保存
                 // token
-                $this->customer->setTokenAndSave($res->results[0]);
+                $this->Customer->setTokenAndSave($res->results[0]);
 
 
                 // ユーザー環境値登録
-                $env = new CustomerEnvAuthed();
-                $env->apiPostEnv($this->customer->getInfo()['email']);
+                $this->Customer->postEnvAuthed();
+                // $env = new CustomerEnvAuthed();
+                // $env->apiPostEnv($this->customer->getInfo()['email']);
 
                 // 債務ユーザーの場合
-                if ($this->customer->isPaymentNG()) {
+                if ($this->Customer->isPaymentNG()) {
                     return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
                 }
 

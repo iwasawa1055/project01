@@ -9,11 +9,6 @@ class CustomerLogin extends ApiModel
         parent::__construct('CustomerLogin', '/login', 'minikura_v5');
     }
 
-    public function isLogined()
-    {
-        return !empty(CakeSession::read(self::SESSION_API_TOKEN));
-    }
-
     public function login()
     {
         $this->data[$this->model_name]['oem_key'] = $this->oem_key;

@@ -109,19 +109,22 @@ class ApiModel extends AppModel
 
     protected function beforeApiRequest($url, &$params, $method)
     {
-        // $d = date('H:i:s', time());
-        // $d .= ' bigen -> ' . $url . "\n";
-        // $d .= print_r($params, true);
-        // CakeLog::write(ERROR_LOG, $d);
-// pr($url);
-// pr($params);
-// pr($method);
-
-        // TODO: ログ出力？
+        $d = date('H:i:s', time());
+        $d .= ' bigen -> ' . $url;
+        CakeLog::write(DEBUG_LOG, $d, ['bench']);
+        $d .= print_r($params, true);
+        CakeLog::write(DEBUG_LOG, $d);
     }
 
     protected function afterApiRequest($params, $method, &$apiRes)
     {
+        $d = date('H:i:s', time());
+        $d .= " end ->";
+        CakeLog::write(DEBUG_LOG, $d, ['bench']);
+        $d .= print_r($params, true);
+        $d .= print_r($apiRes, true);
+        CakeLog::write(DEBUG_LOG, $d);
+
         // メッセージ
         if (400 <= $apiRes->http_code) {
             $msgKey = $apiRes->http_code . ' ' . $apiRes->message;

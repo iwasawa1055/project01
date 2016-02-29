@@ -1,11 +1,7 @@
   <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
       <ul class="nav in" id="side-menu">
-      <?php if (!$isLogined) { ?>
-        <li>
-          <a href="https://minikura.com/"><i class="fa fa-home fa-fw"></i> トップページ</a>
-        </li>
-      <?php } else { ?>
+      <?php if (!empty($isLogined) && $isLogined === true): ?>
         <li class="sidebar-search">
           <?php echo $this->Form->create(false, ['id' => 'sidebar-search', 'url' => ['controller' => 'result', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="input-group custom-search-form">
@@ -40,7 +36,11 @@
         <li>
           <a href="/mini_auction/"><i class="fa fa-gavel fa-fw"></i> ヤフオク出品</a>
         </li>
-      <?php } ?>
+        <?php else: ?>
+        <li>
+          <a href="https://minikura.com/"><i class="fa fa-home fa-fw"></i> トップページ</a>
+        </li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>
