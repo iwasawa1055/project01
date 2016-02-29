@@ -1,4 +1,6 @@
 <?php
+App::uses('AppInternalCritical', 'Lib');
+App::uses('AppExceptionRenderer', 'Lib');
 
 /**
  * Final Exception Handler
@@ -10,17 +12,21 @@
  * （エラ処理ーのエラーで本来のエラーを不透明にしないため）
  *
  */
-class AppExceptionHandler extends Exception
-{
-	public static function handle($_e)
-	{
-		// AppE継承クラスではない場合はログ出力
-		if ('AppE' !== get_parent_class($_e)) {
-			AppE::log();
-		}
 
-		//* view
-		$error = new AppExceptionRenderer($_e);
-		$error->render();
-	}
+class AppExceptionHandler
+{
+    public static function handle($_e)
+    {
+        CakeLog::write(DEBUG_LOG, 'AppExceptionHandler::handle');
+        if ('AppE' !== get_parent_class($_e)) {
+            // AppE継承クラスではない場合はAppInternalCriticalの例外処理を行う
+            try {
+                new AppInternalCritical($_e->getMessage(), $_e->getCode());
+            } catch (Exception $e) {
+            }
+        }
+        // 例外表示
+        $error = new AppExceptionRenderer($_e);
+        $error->render();
+    }
 }

@@ -35,9 +35,10 @@ class AnnouncementController extends MinikuraController
     {
         $id = $this->params['id'];
         $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
-        $this->set('announcement', $data);
-        // 既読更新
-        $this->Announcement->apiPatch(['announcement_id' => $id]);
+        if (!empty($data)) {
+            $this->set('announcement', $data);
+            $this->Announcement->apiPatch(['announcement_id' => $id]);
+        }
     }
 
     /**

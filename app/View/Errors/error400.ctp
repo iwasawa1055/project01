@@ -9,8 +9,8 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
-            <h2>400お探しのページがみつかりません。</h2>
-            <p class="form-control-static col-lg-12"><?php echo $message; ?></p>
+            <h2>お探しのページがみつかりません。</h2>
+            <p class="form-control-static col-lg-12">一時的にアクセスできない状態か、移動もしくは削除されてしまった可能性があります。</p>
             <p class="col-lg-12 error-number"><?php echo $message; ?></p>
             <?php
             if (Configure::read('debug') > 0) {
