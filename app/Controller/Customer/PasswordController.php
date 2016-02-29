@@ -26,9 +26,7 @@ class PasswordController extends MinikuraController
      */
     public function customer_complete()
     {
-        $model = $this->Customer->getPasswordModel();
-        $model->set([$model->getModelName() => $this->request->data[self::MODEL_NAME]]);
-
+        $model = $this->Customer->getPasswordModel($this->request->data[self::MODEL_NAME]);
         if ($model->validates()) {
             // api
             $res = $model->apiPatch($model->toArray());

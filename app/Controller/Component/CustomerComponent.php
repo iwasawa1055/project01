@@ -8,10 +8,12 @@ App::uses('CustomerLogin', 'Model');
 App::uses('CustomerEnvAuthed', 'Model');
 App::uses('CustomerPassword', 'Model');
 App::uses('ContactUs', 'Model');
+App::uses('CustomerEmail', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');
 App::uses('EntryContactUs', 'Model');
+App::uses('EntryCustomerEmail', 'Model');
 
 class CustomerComponent extends Component
 {
@@ -22,24 +24,36 @@ class CustomerComponent extends Component
         $this->data = CustomerData::restore();
     }
 
-    public function getEmailModel()
+    public function getEmailModel($data = [])
     {
-    }
-
-    public function getCardModel()
-    {
-    }
-
-    public function getPasswordModel()
-    {
+        $model = null;
         if ($this->isLogined()) {
             if ($this->isEntry()) {
-                return new EntryCustomerPassword();
+                $model = new EntryCustomerEmail();
             } else {
-                return new CustomerPassword();
+                $model = new CustomerEmail();
             }
         }
-        return null;
+        if (!empty($model)) {
+            $model->set([$model->getModelName() => $data]);
+        }
+        return $model;
+    }
+
+    public function getPasswordModel($data = [])
+    {
+        $model = null;
+        if ($this->isLogined()) {
+            if ($this->isEntry()) {
+                $model = new EntryCustomerPassword();
+            } else {
+                $model = new CustomerPassword();
+            }
+        }
+        if (!empty($model)) {
+            $model->set([$model->getModelName() => $data]);
+        }
+        return $model;
     }
 
     public function getContactModel($data = [])
@@ -114,16 +128,25 @@ class CustomerComponent extends Component
     {
         return $this->data->setTokenAndSave($data);
     }
+    public function getInfo()
+    {
+        return $this->data->getInfo();
+    }
+
+    public function reloadInfo()
+    {
+        return $this->data->reloadInfo();
+    }
 
     public function postEnvAuthed()
     {
         if ($this->isLogined()) {
             if ($this->data->isEntry()) {
                 $o = new EntryCustomerEnv();
-                $env->apiPostEnv($this->data->getInfo()['email']);
+                $o->apiPostEnv($this->getInfo()['email']);
             } else {
-                $env = new CustomerEnvAuthed();
-                $env->apiPostEnv($this->data->getInfo()['email']);
+                $o = new CustomerEnvAuthed();
+                $o->apiPostEnv($this->getInfo()['email']);
             }
         }
     }

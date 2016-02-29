@@ -5,7 +5,6 @@ App::uses('MinikuraController', 'Controller');
 class EmailController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerEmail';
-    const MODEL_NAME_INFO = 'CustomerInfo';
 
     /**
      * 制御前段処理.
@@ -16,7 +15,7 @@ class EmailController extends MinikuraController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_INFO);
 
-        $this->set('current_email', $this->customer->getInfo()['email']);
+        $this->set('current_email', $this->Customer->getInfo()['email']);
     }
 
     /**
@@ -26,7 +25,7 @@ class EmailController extends MinikuraController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
         }
         CakeSession::delete(self::MODEL_NAME);
     }
@@ -36,10 +35,11 @@ class EmailController extends MinikuraController
      */
     public function customer_confirm()
     {
-        $this->CustomerEmail->set($this->request->data);
-        if ($this->CustomerEmail->validates()) {
-            CakeSession::write(self::MODEL_NAME, $this->CustomerEmail->data);
+        $model = $this->Customer->getEmailModel($this->request->data[self::MODEL_NAME]);
+        if ($model->validates()) {
+            CakeSession::write(self::MODEL_NAME, $model->toArray());
         } else {
+            $this->set('validErrors', $model->validationErrors);
             return $this->render('customer_edit');
         }
     }
@@ -51,26 +51,25 @@ class EmailController extends MinikuraController
     {
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
+
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'edit']);
         }
 
-        $this->CustomerEmail->set($data);
-        if ($this->CustomerEmail->validates()) {
+        $model = $this->Customer->getEmailModel($data);
+        if ($model->validates()) {
             // api
-            $res = $this->CustomerEmail->apiPatch($this->CustomerEmail->toArray());
+            $res = $model->apiPatch($model->toArray());
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'edit']);
             }
 
-            $this->customer->reloadInfo();
-            $this->set('email', $this->CustomerEmail->toArray()['email']);
+            $this->Customer->reloadInfo();
+            $this->set('email', $model->toArray()['email']);
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'edit']);
         }
     }

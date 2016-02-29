@@ -14,7 +14,7 @@ class ContactUsController extends MinikuraController
     {
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
         }
         CakeSession::delete(self::MODEL_NAME);
 
@@ -78,8 +78,7 @@ class ContactUsController extends MinikuraController
             $this->Customer->postEnvAuthed();
 
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }

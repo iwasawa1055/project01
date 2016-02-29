@@ -4,9 +4,9 @@ App::uses('ApiModel', 'Model');
 
 class CustomerEmail extends ApiModel
 {
-    public function __construct()
+    public function __construct($name = 'CustomerEmail', $end = '/email', $access_point_key = 'minikura_v3')
     {
-        parent::__construct('CustomerEmail', '/email');
+        parent::__construct($name, $end, $access_point_key);
     }
 
     public $validate = [
