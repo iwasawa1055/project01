@@ -18,6 +18,9 @@ class TitleHelper extends AppHelper {
         ],
         'password_reset' => [
             'index' => 'パスワード再発行',
+        ],
+        'email' => [
+            'index' => 'メールアドレス変更',
         ]
     ];
 
