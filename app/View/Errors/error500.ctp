@@ -1,34 +1,28 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.View.Errors
- * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
-?>
-<?php echo $this->element('first'); ?>
-<?php echo $this->element('header'); ?>
-
-<h2><?php echo $message; ?></h2>
-<p class="error">
-	<?php 
-		if (! empty($error->display_form)){
-			echo $error->display_form;
-		}
-	?>
-</p>
-<?php
-if (Configure::read('debug') > 0):
-	echo $this->element('exception_stack_trace');
-endif;
-?>
-<?php echo $this->element('footer'); ?>
-<?php echo $this->element('last'); ?>
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header"><i class="fa fa-home"></i> マイページ</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h2>500お探しのページがみつかりません。</h2>
+            <p class="form-control-static col-lg-12"><?php echo $message; ?></p>
+            <p class="col-lg-12 error-number"><?php echo $message; ?></p>
+            <?php
+            if (Configure::read('debug') > 0) {
+                echo $this->element('exception_stack_trace');
+            }
+            ?>
+            <span class="col-lg-12 col-md-12 col-xs-12">
+            <a class="btn btn-danger btn-lg btn-block" href="/">マイページへ戻る</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

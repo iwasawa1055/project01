@@ -126,7 +126,7 @@ define('MAIL_LOG', 'mail');
 CakeLog::levels([MAIL_LOG]);
 
 // create log folder
-$folders = ['error', 'mail', 'bench', 'bench'];
+$folders = ['error', 'mail', 'bench', 'debug'];
 foreach ($folders as $folderName) {
     if (! is_dir(LOGS . DS . $folderName)) {
         mkdir(LOGS . DS . $folderName, 2770);

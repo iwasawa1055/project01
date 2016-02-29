@@ -38,5 +38,5 @@ $config['app']['e']['mail']['receiver'] = array(
 ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
 ini_set('display_errors', '1');
 Configure::write('debug', '2');
-$config['app']['e']['mail'] = false;
-$config['app']['e']['mail']['flag'] = false;
+// $config['app']['e']['mail'] = false;
+$config['app']['e']['mail']['flag'] = true;

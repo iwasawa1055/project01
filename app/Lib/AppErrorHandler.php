@@ -1,4 +1,5 @@
 <?php
+App::uses('AppInternalCritical', 'Lib');
 
 /**
  * Final Error ハンドラー
@@ -10,25 +11,23 @@
  */
 class AppErrorHandler
 {
+    public static function handle($_level, $_message, $_file, $_line, $_traces)
+    {
+        $traces = debug_backtrace();
+        $stack = '';
+        foreach ($traces as $i => $trace) {
+            $num = '#' . $i . ' ';
+            $file = isset($trace['file']) ? $trace['file'] : '';
+            $line = isset($trace['line']) ? '(' . $trace['line'] . '): ': '';
+            $class = isset($trace['class']) ? $trace['class'] : '';
+            $type = isset($trace['type']) ? $trace['type'] : '';
+            $func = isset($trace['function']) ? $trace['function'] : '';
+            $stack .= $num . $file . $line . $class . $type . $func . "\n";
+        }
+        $to_string = $_message . " in " . $_file . ": " . $_line . "\n" .
+        "Stack Trace:" . "\n" . $stack;
 
-	public static function handle($_level, $_message, $_file, $_line, $_traces)
-	{
-		$traces = debug_backtrace();
-		$stack = '';
-		foreach ($traces as $i => $trace) {
-			$num = '#' . $i . ' ';
-			$file = isset($trace['file']) ? $trace['file'] : '';
-			$line = isset($trace['line']) ? '(' . $trace['line'] . '): ': '';
-			$class = isset($trace['class']) ? $trace['class'] : '';
-			$type = isset($trace['type']) ? $trace['type'] : '';
-			$func = isset($trace['function']) ? $trace['function'] : '';
-			$stack .= $num . $file . $line . $class . $type . $func . "\n";
-		}
-		$to_string = $_message . " in " . $_file . ": " . $_line . "\n" .
-		"Stack Trace:" . "\n" .
-		$stack;
-
-		new AppInternalCritical($to_string, 500);
-	}
-
+        // CakeLog::write(ERROR_LOG, $to_string);
+        new AppInternalCritical($to_string, 500);
+    }
 }
