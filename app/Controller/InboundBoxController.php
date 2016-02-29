@@ -106,8 +106,7 @@ class InboundBoxController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME . 'FORM');
 
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
 
@@ -125,8 +124,7 @@ class InboundBoxController extends MinikuraController
                 return $this->redirect(['action' => 'add']);
             }
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }

@@ -71,24 +71,16 @@ class InfoBox extends ApiCachedModel
             $productCd = PRODUCT_CD_MONO;
         } elseif ($product === 'cleaning') {
             $productCd = PRODUCT_CD_CLEANING_PACK;
+        } elseif ($product === 'outbounditem') {
+            $productCd = [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK];
         }
-        $all = $this->apiGetResults();
-        // filter
-        $list = [];
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
             BOXITEM_STATUS_INBOUND_DONE,
             BOXITEM_STATUS_OUTBOUND_START,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS
         ];
-        foreach ($all as $a) {
-            if (in_array($a['box_status'], $okStatus, true) &&
-                (empty($productCd) || $a['product_cd'] === $productCd)) {
-                $list[] = $a;
-            }
-        }
-
-        // sort
+        $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus, 'product_cd' => $productCd]);
         $this->sort($list, $sortKey, $this->defaultSortKey);
         return $list;
     }
@@ -103,14 +95,10 @@ class InfoBox extends ApiCachedModel
         } elseif ($product === 'mono') {
             $productCd = PRODUCT_CD_MONO;
         }
-        $all = $this->getList();
-        $list = [];
-        foreach ($all as $a) {
-            if ($a['box_status'] === BOXITEM_STATUS_INBOUND_DONE &&
-                (empty($productCd) || $a['product_cd'] === $productCd)) {
-                $list[] = $a;
-            }
-        }
+        $okStatus = [
+            BOXITEM_STATUS_INBOUND_DONE,
+        ];
+        $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus, 'product_cd' => $productCd]);
         $this->sort($list, [], $this->defaultSortKey);
         return $list;
     }

@@ -33,7 +33,7 @@ class InquiryController extends MinikuraController
     }
 
     /**
-     * 
+     *
      */
     public function confirm()
     {
@@ -46,15 +46,14 @@ class InquiryController extends MinikuraController
     }
 
     /**
-     * 
+     *
      */
     public function complete()
     {
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
 
@@ -62,8 +61,7 @@ class InquiryController extends MinikuraController
         if ($this->Inquiry->validates()) {
             $res = $this->Inquiry->apiPost($this->Inquiry->toArray());
             if (!empty($res->error_message)) {
-                // TODO:
-                $this->Flash->set('try again');
+                $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);
             }
 
@@ -71,8 +69,7 @@ class InquiryController extends MinikuraController
             $this->CustomerEnvUnAuth->apiPostEnv($data[self::MODEL_NAME]['email']);
 
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }

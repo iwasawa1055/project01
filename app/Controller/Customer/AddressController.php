@@ -45,8 +45,7 @@ class AddressController extends MinikuraController
             }
         }
         if (empty($this->request->data[self::MODEL_NAME])) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }
@@ -134,8 +133,7 @@ class AddressController extends MinikuraController
                 // delete
                 $res = $this->CustomerAddress->apiDelete($this->CustomerAddress->data);
                 if (!$res->isSuccess()) {
-                    // TODO:
-                    $this->Flash->set('try again');
+                    $this->Flash->set(__('empty_session_data'));
                     return $this->redirect(['action' => 'add']);
                 }
                 return $this->render('customer_complete');

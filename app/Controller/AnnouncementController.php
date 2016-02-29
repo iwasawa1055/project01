@@ -54,7 +54,6 @@ class AnnouncementController extends MinikuraController
             'category_id' => $data['category_id']
         ]);
         if ($res->isSuccess() || count($res->results) === 1) {
-            // TODO: 単体テスト未完
             $name = $res->results[0]['file_name'];
             $binary = base64_decode($res->results[0]['receipt']);
             $this->autoRender = false;
@@ -62,11 +61,7 @@ class AnnouncementController extends MinikuraController
             $this->response->download($name);
             $this->response->body($binary);
         } else {
-            if ($res->message === 'Parameter Invalid - used receipt') {
-                $this->Flash->set('発行済です。');
-            } else {
-                $this->Flash->set('try again');
-            }
+            $this->Flash->set($res->error_message);
             return $this->redirect(['action' => 'detail', 'id' => $id]);
         }
     }

@@ -12,9 +12,6 @@ class MyPageController extends MinikuraController
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
 
-        // お知らせ
-        // AppControllerで取得(ヘッダー部と同一)
-
         // 最近預けたボックス
         $boxList = $this->InfoBox->getListForServiced();
         $this->set('boxList', array_slice($boxList, 0, 5));

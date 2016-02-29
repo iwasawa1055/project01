@@ -78,7 +78,6 @@ class CreditCardController extends MinikuraController
                 // create
                 $res = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
                 if (!empty($res->error_message)) {
-                    // TODO: 例外処理
                     $this->Flash->set($res->error_message);
                     return $this->redirect(['action' => 'add']);
                 }
@@ -128,7 +127,6 @@ class CreditCardController extends MinikuraController
                 // update
                 $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
                 if (!empty($res->error_message)) {
-                    // TODO: 例外処理
                     $this->Flash->set($res->error_message);
                     return $this->redirect(['action' => 'edit']);
                 }

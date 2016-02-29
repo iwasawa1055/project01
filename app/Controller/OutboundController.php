@@ -105,7 +105,7 @@ class OutboundController extends MinikuraController
         }
 
         // 表示
-        $list = $this->InfoBox->getListForServiced('mono');
+        $list = $this->InfoBox->getListForServiced('outbounditem');
         $keyList = array_keys($outMonoList);
         // 選択フラグ
         foreach ($list as &$box) {
@@ -207,9 +207,8 @@ class OutboundController extends MinikuraController
         }
         // お届け希望日と時間
         $r = $this->DatetimeDeliveryOutbound->apiGet(['postal' => $postal]);
-        if (!$r->isSuccess()) {
-            // TODO: 例外処理
-            return;
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
         }
         $this->set('dateItemList', $r->results);
 
@@ -277,8 +276,7 @@ class OutboundController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME . 'FORM');
 
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
 
@@ -296,8 +294,7 @@ class OutboundController extends MinikuraController
             InfoItem::deleteAllCache();
             Announcement::deleteAllCache();
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }

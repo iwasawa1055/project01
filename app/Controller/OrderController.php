@@ -189,17 +189,15 @@ class OrderController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
         $model = $this->Order->model($data);
         if ($model->validates()) {
             // api
             $res = $model->apiPost($model->toArray());
-            if (!$res->isSuccess()) {
-                // TODO:
-                $this->Flash->set('try again');
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);
             }
 
@@ -222,8 +220,7 @@ class OrderController extends MinikuraController
             $this->set('total', unserialize($data['view_data_total']));
 
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }

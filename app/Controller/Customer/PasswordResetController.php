@@ -52,8 +52,7 @@ class PasswordResetController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
 
@@ -63,8 +62,7 @@ class PasswordResetController extends MinikuraController
             $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->toArray());
             $this->set('email', $this->CustomerPasswordReset->toArray()['email']);
         } else {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
     }
