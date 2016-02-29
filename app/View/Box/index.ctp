@@ -22,9 +22,13 @@
                   ?>
                 <h2><?php echo $productName; ?></h2>
                 <div class="row box-list">
+                <?php if (empty($boxList)) : ?>
+                  <?php echo $this->element('List/empty'); ?>
+                <?php else: ?>
                   <div class="col-lg-3 col-lg-offset-9">
                     <?php echo $this->Form->input(false, ['type' => 'select', 'options' => $sortSelectList, 'selected' => $select_sort_value, 'id' => 'select_sort', 'class' => 'form-control sort-form', 'empty' => '並べ替え', 'label'=>false, 'div'=>false]); ?>
                   </div>
+                <?php endif; ?>
                   <?php foreach ($boxList as $box): ?>
                   <?php $url = '/box/detail/' . $box['box_id']; ?>
                   <!--loop-->
