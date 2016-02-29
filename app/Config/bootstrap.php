@@ -52,20 +52,20 @@ Cache::config('default', array('engine' => 'File'));
  */
 
 // 2015/08 added by osada@terrada
-	App::build(array(
-		'Controller' => array(
-			ROOT . DS . APP_DIR . DS . 'Controller' . DS,
-			ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'Customer' . DS,
-		),
-		'View' => array(
-			ROOT . DS . APP_DIR . DS . 'View' . DS,
-			ROOT . DS . APP_DIR . DS . 'View' . DS . 'Customer' . DS,
-		),
-		'Model' => array(
-			ROOT . DS . APP_DIR . DS . 'Model' . DS,
+    App::build(array(
+        'Controller' => array(
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS,
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'Customer' . DS,
+        ),
+        'View' => array(
+            ROOT . DS . APP_DIR . DS . 'View' . DS,
+            ROOT . DS . APP_DIR . DS . 'View' . DS . 'Customer' . DS,
+        ),
+        'Model' => array(
+            ROOT . DS . APP_DIR . DS . 'Model' . DS,
             ROOT . DS . APP_DIR . DS . 'Model' . DS . 'Dev' . DS,
-		),
-	));
+        ),
+    ));
 
 
 /**
@@ -108,8 +108,8 @@ CakePlugin::loadAll();
  * ));
  */
 Configure::write('Dispatcher.filters', array(
-	'AssetDispatcher',
-	'CacheDispatcher'
+    'AssetDispatcher',
+    'CacheDispatcher'
 ));
 
 /**
@@ -117,83 +117,45 @@ Configure::write('Dispatcher.filters', array(
  */
 App::uses('CakeLog', 'Log');
 
-// 2015/08 comment out by osada@terrada
-/*
-CakeLog::config('debug', array(
-	'engine' => 'File',
-	'types' => array('notice', 'info', 'debug'),
-	'file' => 'debug',
-));
-CakeLog::config('error', array(
-	'engine' => 'File',
-	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
-	'file' => 'error',
-));
-*/
-
-// 2015/08 added by osada@terrada
-// error log
-if (! is_dir(LOGS . DS . 'error')) {
-	mkdir(LOGS . DS . 'error', 2770);
-}
-$error_file = 'error' . DS . date('Ymd');
 define('ERROR_LOG', 'error');
-CakeLog::config('error', array(
-	'engine' => 'File',
-	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
-	'file' => $error_file,
-));
-
-// 2015/08 added by osada@terrada
-// access log
-if (! is_dir(LOGS . DS . 'access')) {
-	mkdir(LOGS . DS . 'access', 0770);
-}
-$access_file = 'access' . DS . date('Ymd');
-define('ACCESS_LOG', 'access');
-CakeLog::config('access', array(
-	'engine' => 'File',
-	'types' => array(),
-	'file' => $access_file,
-));
-
-// 2015/08 added by osada@terrada
-// mail log
-if (! is_dir(LOGS . DS . 'mail')) {
-	mkdir(LOGS . DS . 'mail', 2770);
-}
-$mail_file = 'mail' . DS . date('Ymd');
-define('MAIL_LOG', 'mail');
-CakeLog::config('mail', array(
-	'engine' => 'File',
-	'types' => array('mail'),
-	'file' => $mail_file,
-));
-
-// 2015/08 added by osada@terrada
-// debug log
-if (! is_dir(LOGS . DS . 'debug')) {
-	mkdir(LOGS . DS . 'debug', 2770);
-}
-$debug_file = 'debug' . DS . date('Ymd');
 define('DEBUG_LOG', 'debug');
-CakeLog::config('debug', array(
-	'engine' => 'File',
-	'types' => array('notice', 'info', 'debug'),
-	'file' => $debug_file,
+define('MAIL_LOG', 'mail');
+
+
+// add mail level
+CakeLog::levels([MAIL_LOG]);
+
+// create log folder
+$folders = ['error', 'mail', 'bench', 'bench'];
+foreach ($folders as $folderName) {
+    if (! is_dir(LOGS . DS . $folderName)) {
+        mkdir(LOGS . DS . $folderName, 2770);
+    }
+}
+
+CakeLog::config('error', array(
+    'engine' => 'File',
+    'types' => array('error'),
+    'file' => 'error' . DS . date('Ymd'),
 ));
 
-// 2015/08 added by osada@terrada
-// bench log
-if (! is_dir(LOGS . DS . 'bench')) {
-	mkdir(LOGS . DS . 'bench', 2770);
-}
-$bench_file = 'bench' . DS . date('Ymd');
-define('BENCH_LOG', 'bench');
+CakeLog::config('mail', array(
+    'engine' => 'File',
+    'types' => array('mail'),
+    'file' => 'mail' . DS . date('Ymd') . '_' . time(),
+));
+
+CakeLog::config('debug', array(
+    'engine' => 'File',
+    'types' => array('debug'),
+    'file' => 'debug' . DS . date('Ymd'),
+));
+
 CakeLog::config('bench', array(
-	'engine' => 'File',
-	'types' => array('bench'),
-	'file' => $bench_file,
+    'engine' => 'File',
+    'types' => array('debug'),
+    'file' => 'bench' . DS . date('Ymd'),
+    'scopes' => array('bench'),
 ));
 
 App::uses('AppErrorHandler', 'Lib');
@@ -233,22 +195,22 @@ App::uses('AppTerminalCritical', 'Lib');
 App::uses('AppTerminalFatal', 'Lib');
 App::uses('AppExceptionRenderer', 'Lib');
 
-spl_autoload_register(function ($_class_name)
-{
-	if (0 === strpos($_class_name, 'App')) {
-		$class_name = preg_replace('/^App/', APP_DIR, $_class_name);
-		$class_path = ROOT . DS . $class_name;
-	} else {
-		$class_path = APP . 'Vendor' . DS . $_class_name;
-	}
-	$class_path = str_replace('\\', DS, $class_path) . '.php';
-	if (is_file($class_path)) {
-		@include_once $class_path;
-	} else {
-		$paths = explode('/', $class_path);
-		$last = end($paths);
-		//spl_autoload_call($last);
-	}
+
+spl_autoload_register(function ($_class_name) {
+    if (0 === strpos($_class_name, 'App')) {
+        $class_name = preg_replace('/^App/', APP_DIR, $_class_name);
+        $class_path = ROOT . DS . $class_name;
+    } else {
+        $class_path = APP . 'Vendor' . DS . $_class_name;
+    }
+    $class_path = str_replace('\\', DS, $class_path) . '.php';
+    if (is_file($class_path)) {
+        @include_once $class_path;
+    } else {
+        $paths = explode('/', $class_path);
+        $last = end($paths);
+        //spl_autoload_call($last);
+    }
 });
 
 // 2015/08 added by osada@terrada

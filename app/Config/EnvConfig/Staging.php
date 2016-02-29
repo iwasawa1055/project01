@@ -40,3 +40,7 @@ ini_set('display_errors', '0');
 Configure::write('debug', '0');
 $config['app']['e']['mail'] = false;
 $config['app']['e']['mail']['flag'] = false;
+
+//*** Log
+CakeLog::drop('bench');
+CakeLog::drop('debug');

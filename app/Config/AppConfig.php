@@ -17,15 +17,15 @@ $config['app.user_agent'] = 'Minikura';
 
 
 //* Request Method
-if (! empty($_GET['request_method'])) {
-    if (preg_match('/^(?:get|post|put|patch|delete)$/i', $_GET['request_method'])) {
-        $config['app.request.method'] = strtoupper($_GET['request_method']);
-    } else {
-        new AppTerminalWarning(AppE::NOT_FOUND . 'request_method invalid', 404);
-    }
-} else {
-    $config['app.request.method'] = 'GET';
-}
+// if (! empty($_GET['request_method'])) {
+//     if (preg_match('/^(?:get|post|put|patch|delete)$/i', $_GET['request_method'])) {
+//         $config['app.request.method'] = strtoupper($_GET['request_method']);
+//     } else {
+//         new AppTerminalWarning(AppE::NOT_FOUND . 'request_method invalid', 404);
+//     }
+// } else {
+//     $config['app.request.method'] = 'GET';
+// }
 
 //* Env
 switch (true) {
@@ -34,20 +34,17 @@ switch (true) {
         break;
     case $_SERVER['SERVER_NAME'] === 'minikura.com':
         // production
-        CakeLog::drop('debug');
-        CakeLog::drop('bench');
         Configure::load('EnvConfig/Production');
         break;
     case $_SERVER['SERVER_NAME'] === 'stag.minikura.com':
         // staging
-        CakeLog::drop('debug');
-        CakeLog::drop('bench');
         Configure::load('EnvConfig/Staging');
         break;
     default:
     // case $_SERVER['SERVER_NAME'] === 'dev.minikura.com':
         // development
         Configure::load('EnvConfig/Development');
+        // TODO: move to EnvConfig
         $config['api.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
         $config['api.minikura.schema'] = 'https://';
         $config['api.minikura.host'] = 'a-api.minikura.com';
