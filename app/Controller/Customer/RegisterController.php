@@ -13,7 +13,7 @@ class RegisterController extends MinikuraController
     {
         // ログイン不要なページ
         $this->checkLogined = false;
-        AppController::beforeFilter();
+        parent::beforeFilter();
     }
 
     /**

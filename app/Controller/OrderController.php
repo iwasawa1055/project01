@@ -18,7 +18,7 @@ class OrderController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         // $this->loadModel(self::MODEL_NAME);
         $this->Order->init($this->customer->token['division']);
         $this->loadModel(self::MODEL_NAME_CARD);

@@ -12,7 +12,7 @@ class AddressController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->set('action', $this->action);
     }

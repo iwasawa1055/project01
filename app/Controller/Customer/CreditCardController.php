@@ -12,7 +12,7 @@ class CreditCardController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME_SECURITY);
         $this->loadModel(self::MODEL_NAME_CARD);
         $this->set('action', $this->action);

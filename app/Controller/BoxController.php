@@ -18,7 +18,7 @@ class BoxController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoItem');
         $this->loadModel(self::MODEL_NAME_BOX_EDIT);

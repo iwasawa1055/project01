@@ -3,6 +3,9 @@
 class TitleHelper extends AppHelper {
 
     private $titles = [
+        'login' => [
+            'index' => 'ログイン',
+        ],
         'announcement' => [
             'index' => 'お知らせ',
             'detail' => 'お知らせ詳細',
@@ -12,6 +15,9 @@ class TitleHelper extends AppHelper {
         ],
         'inquiry' => [
             'index' => 'お問い合わせ',
+        ],
+        'password_reset' => [
+            'index' => 'パスワード再発行',
         ]
     ];
 

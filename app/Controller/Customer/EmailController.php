@@ -12,7 +12,7 @@ class EmailController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_INFO);
 

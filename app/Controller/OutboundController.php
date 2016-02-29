@@ -17,7 +17,7 @@ class OutboundController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
