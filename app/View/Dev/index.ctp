@@ -123,7 +123,7 @@ $a = [
     // BOXITEM_STATUS_INBOUND_IN_PROGRESS => '入庫進行中',
     BOXITEM_STATUS_INBOUND_DONE => '入庫終了',
     BOXITEM_STATUS_OUTBOUND_START => '出庫受付',
-    // BOXITEM_STATUS_OUTBOUND_DONE => '出庫終了',
+    BOXITEM_STATUS_OUTBOUND_DONE => '出庫終了',
 ];
 foreach ($a as $status => $label): ?>
     <div class="col-md-2">

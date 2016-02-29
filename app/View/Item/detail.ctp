@@ -25,10 +25,12 @@
                         </div>
                         <h3><?php echo $item['item_name'] ?></h3>
                         <div class="box-list-caption">
-                          <span>カテゴリ</span>スポーツ用品
+                          <!-- <span>カテゴリ</span>スポーツ用品 -->
                         </div>
                         <span class="col-xs-12 col-lg-12">
-                            <a class="btn btn-warning btn-md btn-block btn-detail btn-regist disabled">預け入れ中</a>
+                            <a class="btn btn-warning btn-md btn-block btn-detail btn-regist disabled">
+                                <?php echo __('boxitem_status_' . $item['item_status']); ?>
+                            </a>
                         </span>
                         <!--span class="col-xs-12 col-lg-12"><a class="btn btn-warning btn-md btn-block btn-detail btn-regist disabled">出庫済み</a>
                         </span-->

@@ -31,12 +31,14 @@ class ItemController extends MinikuraController
 
     private function makeSelectSortUrl()
     {
+        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud'));
+        $page = $this->request->query('page');
         $data = [];
         foreach (self::SELECT_SORT_KEY as $key => $value) {
-            $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc']]);
+            $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
             $data[$desc] = $value . '（降順）';
 
-            $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc']]);
+            $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
             $data[$asc] = $value . '（昇順）';
         }
 
@@ -50,10 +52,21 @@ class ItemController extends MinikuraController
     {
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
-        $results = $this->InfoItem->getListForServiced($sortKey);
+        $withOutboudDone = true;
+        if (!empty(Hash::get($this->request->query, 'hide_outboud'))) {
+            $withOutboudDone = false;
+        }
+        $results = $this->InfoItem->getListForServiced($sortKey, [], $withOutboudDone);
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('itemList', $list);
+        $this->set('hideOutboud', $withOutboudDone);
+
+        $query = $this->request->query;
+        $query['hide_outboud'] = !empty($withOutboudDone);
+        $query['page'] = 1;
+        $url = Router::url(['action'=>'index', '?' => http_build_query($query)]);
+        $this->set('hideOutboudSwitchUrl', $url);
     }
 
     private function getRequestSortKey()

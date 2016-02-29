@@ -29,14 +29,15 @@ class BoxController extends MinikuraController
 
     private function makeSelectSortUrl()
     {
+        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud'));
         $product = $this->request->query('product');
-
+        $page = $this->request->query('page');
         $data = [];
         foreach (self::SELECT_SORT_KEY as $key => $value) {
-            $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc']]);
+            $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
             $data[$desc] = $value . '（降順）';
 
-            $asc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'asc']]);
+            $asc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'asc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
             $data[$asc] = $value . '（昇順）';
         }
 
@@ -48,15 +49,26 @@ class BoxController extends MinikuraController
      */
     public function index()
     {
+        $withOutboudDone = true;
+        if (!empty(Hash::get($this->request->query, 'hide_outboud'))) {
+            $withOutboudDone = false;
+        }
         // 商品指定
         $product = $this->request->query('product');
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
-        $results = $this->InfoBox->getListForServiced($product, $sortKey);
+        $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone);
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('boxList', $list);
         $this->set('product', $product);
+        $this->set('hideOutboud', $withOutboudDone);
+
+        $query = $this->request->query;
+        $query['hide_outboud'] = !empty($withOutboudDone);
+        $query['page'] = 1;
+        $url = Router::url(['action'=>'index', '?' => http_build_query($query)]);
+        $this->set('hideOutboudSwitchUrl', $url);
     }
 
     private function getRequestSortKey()

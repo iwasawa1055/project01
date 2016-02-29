@@ -20,10 +20,12 @@
                     <div class="col-lg-8 col-md-8 col-sm-12">
                       <h3><?php echo $box['box_name']; ?></h3>
                       <div class="box-list-caption">
-                        <span>写真撮影</span>あり
+                        <!-- <span>写真撮影</span>あり -->
                       </div>
                       <span class="col-xs-12 col-lg-12">
-                          <a class="btn btn-warning btn-md btn-block btn-detail btn-regist disabled">預け入れ中</a>
+                          <a class="btn btn-warning btn-md btn-block btn-detail btn-regist disabled">
+                              <?php echo __('boxitem_status_' . $box['box_status']); ?>
+                          </a>
                       </span>
                     </div>
                     <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>

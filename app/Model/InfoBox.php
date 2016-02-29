@@ -61,7 +61,7 @@ class InfoBox extends ApiCachedModel
     }
 
     // 入庫済み一覧
-    public function getListForServiced($product = null, $sortKey = [])
+    public function getListForServiced($product = null, $sortKey = [], $withOutboudDone = true)
     {
         // productCd
         $productCd = [];
@@ -78,8 +78,12 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
             BOXITEM_STATUS_INBOUND_DONE,
             BOXITEM_STATUS_OUTBOUND_START,
-            BOXITEM_STATUS_OUTBOUND_IN_PROGRESS
+            BOXITEM_STATUS_OUTBOUND_IN_PROGRESS,
         ];
+        if ($withOutboudDone) {
+            $okStatus[] = BOXITEM_STATUS_OUTBOUND_DONE;
+        }
+
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus, 'product_cd' => $productCd]);
         $this->sort($list, $sortKey, $this->defaultSortKey);
         return $list;
