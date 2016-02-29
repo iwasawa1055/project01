@@ -13,7 +13,7 @@ class InfoController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
 
         if ($this->action === 'customer_edit') {
             $this->modelName = self::MODEL_NAME_CUSTOMER;

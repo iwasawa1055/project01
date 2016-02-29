@@ -13,7 +13,7 @@ class PasswordResetController extends MinikuraController
     {
         // ログイン不要なページ
         $this->checkLogined = false;
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
     }
 
