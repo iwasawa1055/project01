@@ -11,6 +11,9 @@ class CustomerAddress extends ApiCachedModel
         parent::__construct(self::SESSION_CACHE_KEY, 0, 'CustomerAddress', '/address');
     }
 
+    // 結果ゼロ件チェック
+    protected $checkZeroResultsKey = 'address_id';
+
     public $validate = [
       'lastname' => [
         'notBlank' => [
