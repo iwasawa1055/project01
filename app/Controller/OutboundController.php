@@ -6,7 +6,7 @@ App::uses('Outbound', 'Model');
 
 class OutboundController extends MinikuraController
 {
-    public $components = array('Address');
+    // public $components = array('Address');
 
     const MODEL_NAME = 'Outbound';
 

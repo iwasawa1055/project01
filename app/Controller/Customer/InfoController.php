@@ -44,7 +44,7 @@ class InfoController extends MinikuraController
             $this->request->data[self::MODEL_NAME_CUSTOMER]['birth_day'] = $ymd[2];
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create 仮登録情報をセット
-            $this->request->data[self::MODEL_NAME]['newsletter'] = $this->customer->getInfo()['newsletter'];
+            $this->request->data[self::MODEL_NAME]['newsletter'] = $this->Customer->getInfo()['newsletter'];
         }
     }
 
@@ -83,7 +83,7 @@ class InfoController extends MinikuraController
                     return $this->redirect(['action' => 'add']);
                 }
 
-                $this->customer->switchEntryToCustomer();
+                $this->Customer->switchEntryToCustomer();
                 return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
             }
         }

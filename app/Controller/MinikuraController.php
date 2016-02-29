@@ -17,8 +17,6 @@ class MinikuraController extends AppController
         'paramType' => 'querystring'
     );
 
-    // protected $customer = [];
-
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -35,7 +33,6 @@ class MinikuraController extends AppController
         // CakeSession::$requestCountdown = 10000;
 
         $this->set('isLogined', $this->Customer->isLogined());
-
         $this->set('customerName', $this->Customer->getName());
         $this->set('isPrivateCustomer', $this->Customer->isPrivateCustomer());
         $this->set('corporatePayment', $this->Customer->getCorporatePayment());

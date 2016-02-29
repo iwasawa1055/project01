@@ -64,13 +64,13 @@ class InfoBox extends ApiCachedModel
     public function getListForServiced($product = null, $sortKey = [])
     {
         // productCd
-        $productCd = null;
+        $productCd = [];
         if ($product === 'hako') {
-            $productCd = PRODUCT_CD_HAKO;
+            $productCd = [PRODUCT_CD_HAKO];
         } elseif ($product === 'mono') {
-            $productCd = PRODUCT_CD_MONO;
+            $productCd = [PRODUCT_CD_MONO];
         } elseif ($product === 'cleaning') {
-            $productCd = PRODUCT_CD_CLEANING_PACK;
+            $productCd = [PRODUCT_CD_CLEANING_PACK];
         } elseif ($product === 'outbounditem') {
             $productCd = [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK];
         }
@@ -89,11 +89,11 @@ class InfoBox extends ApiCachedModel
     // 出庫画面で表示
     public function getListForOutbound($product = null)
     {
-        $productCd = null;
+        $productCd = [];
         if ($product === 'hako') {
-            $productCd = PRODUCT_CD_HAKO;
+            $productCd = [PRODUCT_CD_HAKO];
         } elseif ($product === 'mono') {
-            $productCd = PRODUCT_CD_MONO;
+            $productCd = [PRODUCT_CD_MONO];
         }
         $okStatus = [
             BOXITEM_STATUS_INBOUND_DONE,

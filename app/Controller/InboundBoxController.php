@@ -6,8 +6,6 @@ App::uses('TimePrivate', 'Model');
 
 class InboundBoxController extends MinikuraController
 {
-    public $components = array('Address', 'Inbound');
-
     const MODEL_NAME = 'Inbound';
 
     /**
@@ -17,6 +15,7 @@ class InboundBoxController extends MinikuraController
     {
         parent::beforeFilter();
 
+        $this->Inbound = $this->Components->load('Inbound');
         $this->loadModel('InboundPrivate');
 
         $list = $this->InfoBox->getListForInbound();

@@ -21,8 +21,8 @@ class DevController extends MinikuraController
         $this->layout = "";
         $data = [
             'oem_key' => ['oem_key' => Configure::read(ApiModel::CONFIG_API_OEMKEY)],
-            'token' => $this->customer->token,
-            'info' => $this->customer->getInfo(),
+            'token' => $this->Customer->getToken(),
+            'info' => $this->Customer->getInfo(),
         ];
         $this->set('data', $data);
 

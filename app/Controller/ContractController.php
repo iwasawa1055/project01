@@ -20,7 +20,7 @@ class ContractController extends MinikuraController
      */
     public function index()
     {
-        if ($this->customer->isPrivateCustomer()) {
+        if ($this->Customer->isPrivateCustomer()) {
             // 個人
             $this->loadModel(self::MODEL_NAME);
             $r = $this->CustomerInfo->apiGet();

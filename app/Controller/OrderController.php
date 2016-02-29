@@ -11,27 +11,26 @@ class OrderController extends MinikuraController
 
     public $default_payment = null;
 
-    public $components = ['Address', 'Order'];
-
     /**
      * 制御前段処理.
      */
     public function beforeFilter()
     {
         parent::beforeFilter();
-        // $this->loadModel(self::MODEL_NAME);
-        $this->Order->init($this->customer->token['division']);
+
+        $this->Order = $this->Components->load('Order');
+        $this->Order->init($this->Customer->getToken()['division']);
         $this->loadModel(self::MODEL_NAME_CARD);
         $this->loadModel(self::MODEL_NAME_DATETIME);
         $this->set('validErrors', []);
 
         // 仮登録か
-        if (!$this->customer->isEntry()) {
+        if (!$this->Customer->isEntry()) {
             // 配送先
-            $this->set('address', $this->Address->get($this->customer->isPrivateCustomer()));
+            $this->set('address', $this->Address->get($this->Customer->isPrivateCustomer()));
 
         }
-        $this->set('default_payment', $this->customer->getDefaultCard());
+        $this->set('default_payment', $this->Customer->getDefaultCard());
     }
 
     /**
@@ -134,7 +133,7 @@ class OrderController extends MinikuraController
         $this->set('total', $total);
 
         // 仮登録ユーザーの場合
-        if ($this->customer->isEntry()) {
+        if ($this->Customer->isEntry()) {
             if ($model->validates(['fieldList' => ['mono_num', 'hako_num', 'cleaning_num']])) {
                 CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
                 return $this->render('confirm');
@@ -154,7 +153,7 @@ class OrderController extends MinikuraController
         $model->data[$paymentModelName]['kit'] = implode(Hash::extract($kitList, '{n}.kit'), ',');
 
         if ($model->validates()) {
-            if ($this->customer->isPrivateCustomer() || empty($this->customer->getCorporatePayment())) {
+            if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
                 // カード
                 $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
             }
@@ -205,7 +204,7 @@ class OrderController extends MinikuraController
             $address = $this->Address->find($address_id);
             $this->set('data', $data);
 
-            if ($this->customer->isPrivateCustomer() || empty($this->customer->getCorporatePayment())) {
+            if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
                 // カード
                 $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
             }

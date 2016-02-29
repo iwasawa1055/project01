@@ -61,6 +61,7 @@ class CustomerComponent extends Component
         $model = null;
         if ($this->isLogined()) {
             if ($this->isEntry()) {
+                // TODO: ログイン前と同じ設定
                 $model = new EntryContactUs();
             } else if ($this->toke['division'] === CUSTOMER_DIVISION_CORPORATE) {
                 $model = new ContactUsCorporate();
@@ -128,11 +129,26 @@ class CustomerComponent extends Component
     {
         return $this->data->setTokenAndSave($data);
     }
+    public function setInfoAndSave($data)
+    {
+        return $this->data->setInfoAndSave($data);
+    }
     public function getInfo()
     {
         return $this->data->getInfo();
     }
-
+    public function getToken()
+    {
+        return $this->data->token;
+    }
+    public function switchEntryToCustomer()
+    {
+        return $this->data->switchEntryToCustomer();
+    }
+    public function getDefaultCard()
+    {
+        return $this->data->getDefaultCard();
+    }
     public function reloadInfo()
     {
         return $this->data->reloadInfo();

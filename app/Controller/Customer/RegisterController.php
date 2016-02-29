@@ -58,10 +58,10 @@ class RegisterController extends MinikuraController
 
                 // カスタマー情報を取得しセッションに保存
                 // token
-                $this->customer->setTokenAndSave($res->results[0]);
+                $this->Customer->setTokenAndSave($res->results[0]);
                 // entry
                 $res = $this->CustomerEntry->apiGet();
-                $this->customer->setInfoAndSave($res->results[0]);
+                $this->Customer->setInfoAndSave($res->results[0]);
 
                 return $this->redirect('/');
 

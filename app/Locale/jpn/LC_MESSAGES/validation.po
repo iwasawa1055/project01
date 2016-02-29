@@ -42,13 +42,13 @@ msgstr "名（カナ）"
 
 # Validation
 msgid "notBlank"
-msgstr "%s は必須です"
+msgstr "%sは必須です"
 
 msgid "format"
-msgstr "%s の形式が正しくありません"
+msgstr "%sの形式が正しくありません"
 
 msgid "confirm"
-msgstr "%s が一致していません"
+msgstr "%sが一致していません"
 
 
 
