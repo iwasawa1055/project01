@@ -1,0 +1,4 @@
+
+
+msgid "empty_session_data"
+msgstr "もう一度実施してください。"

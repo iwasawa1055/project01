@@ -4,22 +4,22 @@ App::uses('ApiCachedModel', 'Model');
 
 class ContactUs extends ApiModel
 {
-    public function __construct()
+    public function __construct($name = 'ContactUs', $end = '/contact', $access_point_key = 'minikura_v3')
     {
-        parent::__construct('ContactUs', '/contact');
+        parent::__construct($name, $end, $access_point_key);
     }
 
     public $validate = [
         'division' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'お問い合わせ種別は必須です',
+                'message' => ['notBlank', 'contact_division'],
              ],
         ],
         'text' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'お問い合わせ内容は必須です',
+                'message' => ['notBlank', 'contact_text'],
              ],
         ],
     ];

@@ -5,21 +5,7 @@ App::uses('MinikuraController', 'Controller');
 class ContactUsController extends MinikuraController
 {
     const MODEL_NAME = 'ContactUs';
-    const MODEL_NAME_ANNOUNCEMENT = 'Announcement';
-    const MODEL_NAME_ENV = 'CustomerEnvAuthed';
-
-    public $components = ['ContactUs'];
-
-    /**
-     * 制御前段処理
-     */
-    public function beforeFilter()
-    {
-        parent::beforeFilter();
-        $this->ContactUs->init($this->customer->token['division']);
-        $this->loadModel(self::MODEL_NAME_ANNOUNCEMENT);
-        $this->loadModel(self::MODEL_NAME_ENV);
-    }
+    const MODEL_NAME_ANNOUNCEMENT = 'ContactUs_Announcement';
 
     /**
      *
@@ -50,11 +36,12 @@ class ContactUsController extends MinikuraController
         $data = $this->getAnnouncement($id);
         $this->set('announcement', $data);
 
-        $model = $this->ContactUs->model($this->request->data[self::MODEL_NAME]);
+        $model = $this->Customer->getContactModel($this->request->data[self::MODEL_NAME]);
         if ($model->validates()) {
-            CakeSession::write(self::MODEL_NAME, $model->data[$model->getModelName()]);
+            CakeSession::write(self::MODEL_NAME, $model->toArray());
             CakeSession::write(self::MODEL_NAME_ANNOUNCEMENT, $data);
         } else {
+            $this->set('validErrors', $model->validationErrors);
             return $this->render('add');
         }
     }
@@ -70,14 +57,12 @@ class ContactUsController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME_ANNOUNCEMENT);
 
         if (empty($data)) {
-            // TODO:
-            $this->Flash->set('try again');
+            $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
 
-        $model = $this->ContactUs->model($data);
+        $model = $this->Customer->getContactModel($data);
         if ($model->validates()) {
-
             if (!empty($announcement)) {
                 // お知らせの内容を追加
                 $model->data[$model->getModelName()]['text'] .= $this->setPostText($announcement);
@@ -90,7 +75,7 @@ class ContactUsController extends MinikuraController
             }
 
             // ユーザー環境値登録
-            $this->CustomerEnvAuthed->apiPostEnv($this->customer->getInfo()['email']);
+            $this->Customer->postEnvAuthed();
 
         } else {
             // TODO:
@@ -105,7 +90,8 @@ class ContactUsController extends MinikuraController
             return [];
         }
 
-        return $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
+        $o = new Announcement();
+        return $o->apiGetResultsFind([], ['announcement_id' => $id]);
     }
 
     private function setPostText($announcement)

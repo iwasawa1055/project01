@@ -6,6 +6,6 @@ class EntryContactUs extends ContactUs
 {
     public function __construct()
     {
-        parent::__construct('ContactUsCorporate', '/contact_corporate');
+        parent::__construct('EntryContactUs', '/entry_contact', 'minikura_v5');
     }
 }

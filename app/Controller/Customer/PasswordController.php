@@ -4,7 +4,7 @@ App::uses('MinikuraController', 'Controller');
 
 class PasswordController extends MinikuraController
 {
-    // const MODEL_NAME = 'CustomerPassword';
+    const MODEL_NAME = 'CustomerPassword';
 
     /**
      * 制御前段処理.
@@ -12,7 +12,6 @@ class PasswordController extends MinikuraController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        // $this->loadModel(self::MODEL_NAME);
     }
 
     /**
@@ -27,11 +26,8 @@ class PasswordController extends MinikuraController
      */
     public function customer_complete()
     {
-        $formName = 'CustomerPassword';
         $model = $this->Customer->getPasswordModel();
-// pr($model->getModelName());
-// pr($this->request->data[$formName]);
-        $model->set([$model->getModelName() => $this->request->data[$formName]]);
+        $model->set([$model->getModelName() => $this->request->data[self::MODEL_NAME]]);
 
         if ($model->validates()) {
             // api

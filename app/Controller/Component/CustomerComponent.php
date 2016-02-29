@@ -5,14 +5,13 @@ App::uses('CustomerInfo', 'Model');
 App::uses('CorporateInfo', 'Model');
 App::uses('CustomerLogin', 'Model');
 
-
-
 App::uses('CustomerEnvAuthed', 'Model');
 App::uses('CustomerPassword', 'Model');
-
+App::uses('ContactUs', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');
+App::uses('EntryContactUs', 'Model');
 
 class CustomerComponent extends Component
 {
@@ -23,17 +22,15 @@ class CustomerComponent extends Component
         $this->data = CustomerData::restore();
     }
 
-    public function getEmailModel($data = [])
+    public function getEmailModel()
     {
-
     }
 
-    public function getCardModel($data)
+    public function getCardModel()
     {
-
     }
 
-    public function getPasswordModel($data = [])
+    public function getPasswordModel()
     {
         if ($this->isLogined()) {
             if ($this->isEntry()) {
@@ -42,18 +39,33 @@ class CustomerComponent extends Component
                 return new CustomerPassword();
             }
         }
-        // $model->set($data);
         return null;
     }
 
-    public function getContactModel($data)
+    public function getContactModel($data = [])
     {
-
+        $model = null;
+        if ($this->isLogined()) {
+            if ($this->isEntry()) {
+                $model = new EntryContactUs();
+            } else if ($this->toke['division'] === CUSTOMER_DIVISION_CORPORATE) {
+                $model = new ContactUsCorporate();
+            } else {
+                $model = new ContactUs();
+            }
+        }
+        if (!empty($model)) {
+            $model->set([$model->getModelName() => $data]);
+        }
+        return $model;
     }
 
     public function isLogined()
     {
-        return !empty(CakeSession::read(CustomerLogin::SESSION_API_TOKEN));
+        if (empty(CakeSession::read(CustomerLogin::SESSION_API_TOKEN))) {
+            return false;
+        }
+        return true;
     }
 
     public function getName()
