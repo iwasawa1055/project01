@@ -8,13 +8,15 @@ class InquiryController extends MinikuraController
     const MODEL_NAME = 'Inquiry';
     const MODEL_NAME_ENV = 'CustomerEnvUnAuth';
 
+    // ログイン不要なページ
+    protected $checkLogined = false;
+
     /**
      * 制御前段処理
      */
     public function beforeFilter()
     {
         // ログイン不要なページ
-        $this->checkLogined = false;
         parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_ENV);
