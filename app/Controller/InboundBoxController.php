@@ -15,7 +15,7 @@ class InboundBoxController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
 
         $this->loadModel('InboundPrivate');
 

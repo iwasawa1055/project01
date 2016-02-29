@@ -20,7 +20,7 @@ class ItemController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoBox');
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);

@@ -15,7 +15,7 @@ class ContactUsController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->ContactUs->init($this->customer->token['division']);
         $this->loadModel(self::MODEL_NAME_ANNOUNCEMENT);
         $this->loadModel(self::MODEL_NAME_ENV);

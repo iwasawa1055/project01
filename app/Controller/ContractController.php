@@ -12,7 +12,7 @@ class ContractController extends MinikuraController
      */
     public function beforeFilter()
     {
-        AppController::beforeFilter();
+        parent::beforeFilter();
     }
 
     /**

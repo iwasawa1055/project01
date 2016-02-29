@@ -15,7 +15,7 @@ class InquiryController extends MinikuraController
     {
         // ログイン不要なページ
         $this->checkLogined = false;
-        AppController::beforeFilter();
+        parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_ENV);
     }
