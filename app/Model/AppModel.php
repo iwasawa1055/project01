@@ -6,9 +6,8 @@ App::uses('ArraySorter', 'Model');
 
 class AppModel extends Model
 {
-
     protected $model_name = null;
-
+    public $validationDomain = 'validation';
     /**
     * [__construct description].
     *

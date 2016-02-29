@@ -8,6 +8,7 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
+          <?php if (!empty($announcement)): ?>
           <div class="col-lg-12">
             <div class="col-lg-12 announcement">
               <div class="row">
@@ -54,6 +55,7 @@
             </span>
             <?php endif; ?>
           </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>

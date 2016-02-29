@@ -113,23 +113,26 @@ class ApiModel extends AppModel
         // $d .= ' bigen -> ' . $url . "\n";
         // $d .= print_r($params, true);
         // CakeLog::write(ERROR_LOG, $d);
+// pr($url);
+// pr($params);
+// pr($method);
 
         // TODO: ログ出力？
     }
 
     protected function afterApiRequest($params, $method, &$apiRes)
     {
-        if ($apiRes->http_code === 400) {
-            // TODO:
-            $apiRes->error_message = '不正なリクエストです。';
+        // メッセージ
+        if (400 <= $apiRes->http_code) {
+            $msgKey = $apiRes->http_code . ' ' . $apiRes->message;
+            $msg = __d('api', $msgKey);
+            $apiRes->error_message = $msg;
+            Cakelog::write(DEBUG_LOG, "error_message: ${msgKey} -> ${msg}");
         }
-        if ($apiRes->http_code === 402) {
-            // TODO:どんな状況？
-            $apiRes->error_message = 'Payment Required（未払い）';
-        }
+
         // 基準となる例外処理
         if (500 <= $apiRes->http_code) {
-            new AppMedialCritical(AppE::MEDIAL_SERVER_ERROR.$apiRes->message.', '.$apiRes->results['support'], 500);
+            new AppMedialCritical($apiRes->error_message, $apiRes->http_code);
         }
     }
 

@@ -1,0 +1,195 @@
+
+msgid "401 Unauthorized - login"
+msgstr "ログインデータなし"
+
+msgid "400 Bad Request"
+msgstr "不正リクエスト"
+
+msgid "401 Unautorized"
+msgstr "未認証"
+
+msgid "402 Payment Required"
+msgstr "未払い"
+
+msgid "403 Forbidden"
+msgstr "アクセス権限なし"
+
+msgid "404 Not Found"
+msgstr "不明URL"
+
+msgid "405 Method Not Allowed"
+msgstr "不許可リクエストメソッド"
+
+msgid "406 Not Accetable"
+msgstr "未サポートリクエストアクセプト"
+
+msgid "409 Conflict"
+msgstr "矛盾リソース"
+
+msgid "413 Request Entity Too Large"
+msgstr "リクエストデータ超過"
+
+msgid "429 Too Many Requests"
+msgstr "リクエスト数超過"
+
+msgid "500 Internal Server Error"
+msgstr "内部サーバーエラー"
+
+msgid "500 External Server Error"
+msgstr "外部サーバーエラー"
+
+msgid "501 Not Implemented"
+msgstr "未実装リクエストメソッド"
+
+msgid "502 Bad Gateway"
+msgstr "不正ゲートウェイ"
+
+msgid "503 Service Unavailable"
+msgstr "サービス一時不能"
+
+msgid "504 Gateway Timeout"
+msgstr "ゲートウェイタイムアウト"
+
+msgid "505 HTTP Version Not Supported"
+msgstr "未サポートHTTPバージョン"
+
+msgid "400 Parameter Invalid"
+msgstr "パラメータが不正"
+
+msgid "400 Parameter Invalid - token"
+msgstr "トークンが不正"
+
+msgid "400 Parameter Invalid - login"
+msgstr "メールアドレスまたはパスワードに誤りがあるか、登録されていません。"
+
+msgid "400 Parameter Invalid - required"
+msgstr "必須パラメータ不足"
+
+msgid "400 Parameter Invalid - used email"
+msgstr "登録済メールアドレス"
+
+msgid "400 Parameter Invalid - email"
+msgstr "メールアドレスが不正"
+
+msgid "400 Parameter Invalid - password"
+msgstr "パスワードが不正"
+
+msgid "400 Parameter Invalid - division"
+msgstr "ユーザー区分が不正"
+
+msgid "400 Parameter Invalid - gender"
+msgstr "性別が不正"
+
+msgid "400 Parameter Invalid - nickname"
+msgstr "ニックネームが不正"
+
+msgid "400 Parameter Invalid - lastname"
+msgstr "苗字が不正"
+
+msgid "400 Parameter Invalid - firstname"
+msgstr "名前が不正"
+
+msgid "400 Parameter Invalid - lastname_kana"
+msgstr "苗字カナが不正"
+
+msgid "400 Parameter Invalid - firstname_kana"
+msgstr "名前カナが不正"
+
+msgid "400 Parameter Invalid - birth"
+msgstr "生年月日が不正"
+
+msgid "400 Parameter Invalid - tel1"
+msgstr "電話番号が不正"
+
+msgid "400 Parameter Invalid - tel2"
+msgstr "電話番号（予備）が不正"
+
+msgid "400 Parameter Invalid - newsletter"
+msgstr "メルマガ配信情報が不正"
+
+msgid "400 Parameter Invalid - postal"
+msgstr "郵便番号が不正"
+
+msgid "400 Parameter Invalid - pref"
+msgstr "都道府県が不正"
+
+msgid "400 Parameter Invalid - address1"
+msgstr "市区が不正"
+
+msgid "400 Parameter Invalid - address2"
+msgstr "町村番地が不正"
+
+msgid "400 Parameter Invalid - address3"
+msgstr "建物名が不正"
+
+msgid "400 Parameter Invalid - oem_cd"
+msgstr "OEMコードが不正"
+
+msgid "400 Parameter Invalid - payment_method"
+msgstr "支払い方法が不正"
+
+msgid "400 Parameter Invalid - question_id"
+msgstr "秘密の質問IDが不正"
+
+msgid "400 Parameter Invalid - question_answer"
+msgstr "秘密の質問回答が不正"
+
+msgid "400 Parameter Invalid - pending"
+msgstr "現在申請中のため変更不可"
+
+msgid "400 Parameter Invalid - unmatch password"
+msgstr "現在のパスワードが不一致"
+
+msgid "400 Parameter Invalid - account_situation"
+msgstr "支払い口座登録状況が不正"
+
+msgid "400 Parameter Invalid - delivery datetime"
+msgstr "配達日時コードが不正"
+
+msgid "400 Parameter Invalid - ampaign_cd"
+msgstr "キャンペーンコードが不正"
+
+msgid "400 Parameter Invalid - used campaign_cd"
+msgstr "使用済キャンペーンコード"
+
+msgid "400 Parameter Invalid - receipt"
+msgstr "ダウンロード済領収証"
+
+msgid "400 Parameter Invalid - datetime_cd"
+msgstr "（新規追加）日時コードが不正"
+
+msgid "400 Parameter Invalid - time_cd"
+msgstr "時間コードが不正"
+
+msgid "400 Parameter Invalid - date_cd"
+msgstr "日付コードが不正"
+
+msgid "400 Parameter Invalid - my box"
+msgstr "マイボックス設定が不正"
+
+msgid "400 Parameter Invalid - address book"
+msgstr "アドレスブックIDが不正"
+
+msgid "400 Parameter Invalid - product_cd"
+msgstr "商品コードが不正"
+
+msgid "400 Parameter Invalid - product combination"
+msgstr "商品・保管品の組み合わせが不正"
+
+msgid "400 Parameter Invalid - product box_id"
+msgstr "商品のボックスIDが不正"
+
+msgid "400 Parameter Invalid - product item_id"
+msgstr "商品のアイテムIDが不正"
+
+msgid "400 Parameter Invalid - applying"
+msgstr "ユーザー情報変更申請中ではない為不可"
+
+msgid "400 Parameter Invalid - ip_address"
+msgstr "IPアドレスが不正"
+
+msgid "400 Parameter Unknown"
+msgstr "不明パラメーター"
+
+msgid "402 Payment Required - user"
+msgstr "ユーザー未入金により現在使用不可"

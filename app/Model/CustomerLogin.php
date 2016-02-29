@@ -22,8 +22,6 @@ class CustomerLogin extends ApiModel
         if (empty($responses->error_message)) {
             CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
             CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
-        } else {
-            $responses->error_message = 'メールアドレスまたはパスワードに誤りがあるか、登録されていません。';
         }
 
         return $responses;
@@ -39,17 +37,17 @@ class CustomerLogin extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'メールアドレスは必須です',
+                'message' => ['notBlank', 'mail'],
             ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => 'メールアドレスの形式が正しくありません',
+                'message' => ['isMailAddress'],
             ],
         ],
         'password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'パスワードは必須です',
+                'message' => ['notBlank', 'password'],
              ],
         ],
     ];

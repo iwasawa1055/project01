@@ -217,3 +217,6 @@ spl_autoload_register(function ($_class_name) {
 Configure::load('AppConfig');
 // 定数ファイルを読み込む
 require_once(ROOT . DS . APP_DIR . DS . 'Config' . DS . 'constants.php');
+
+
+Configure::write('Config.language', 'ja');
