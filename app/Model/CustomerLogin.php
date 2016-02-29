@@ -37,11 +37,11 @@ class CustomerLogin extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => ['notBlank', 'mail'],
+                'message' => ['notBlank', 'email'],
             ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => ['isMailAddress'],
+                'message' => ['format', 'email'],
             ],
         ],
         'password' => [

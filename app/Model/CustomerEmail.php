@@ -13,25 +13,25 @@ class CustomerEmail extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'メールアドレスは必須です',
+                'message' => ['notBlank', 'email'],
              ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => 'メールアドレスの形式が正しくありません',
+                'message' => ['format', 'email'],
             ],
         ],
         'email_confirm' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'メールアドレス（再入力）は必須です',
+                'message' => ['notBlank', 'email_confirm'],
              ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => 'メールアドレス（再入力）の形式が正しくありません',
+                'message' => ['notBlank', 'email_confirm'],
             ],
             'confirmEmail' => [
                 'rule' => 'confirmEmail',
-                'message' => 'メールアドレスが一致していません',
+                'message' => ['confirm', 'email'],
             ],
         ],
     ];

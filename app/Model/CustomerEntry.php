@@ -26,37 +26,37 @@ class CustomerEntry extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'メールアドレスは必須です',
+                'message' => ['notBlank', 'email'],
              ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => 'メールアドレスの形式が正しくありません',
+                'message' => ['format', 'email'],
             ],
         ],
         'password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'パスワードは必須です',
+                'message' => ['notBlank', 'password'],
              ],
             'isLoginPassword' => [
                 'rule' => 'isLoginPassword',
-                'message' => 'パスワードの形式が正しくありません',
+                'message' => ['format', 'password'],
             ],
         ],
         'password_confirm' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'パスワード（確認用）は必須です',
+                'message' => ['notBlank', 'password_confirm'],
              ],
             'isLoginPassword' => [
                 'rule' => 'isLoginPassword',
-                'message' => 'パスワード（確認用）の形式が正しくありません',
+                'message' => ['format', 'password_confirm'],
             ],
         ],
         'newsletter' => [
             'allowedChoice' => [
                 'rule' => ['inList', ['0', '1']],
-                'message' => 'お知らせ配信の形式が正しくありません',
+                'message' => ['format', 'newsletter'],
             ],
         ],
     ];

@@ -13,11 +13,11 @@ class CustomerInfoV3 extends ApiModel
         'lastname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '姓は必須です',
+                'message' => ['notBlank', 'lastname']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '姓は29文字以内で入力してください',
+                'message' => ['maxLength', 'lastname', 29]
             ],
         ],
         'lastname_kana' => [

@@ -1,9 +1,15 @@
 # Name
-msgid "mail"
+msgid "email"
 msgstr "メールアドレス"
+
+msgid "email_confirm"
+msgstr "メールアドレス（再入力）"
 
 msgid "password"
 msgstr "パスワード"
+
+msgid "newsletter"
+msgstr "お知らせ配信"
 
 msgid "lastname"
 msgstr "姓"
@@ -20,7 +26,15 @@ msgstr "名（カナ）"
 
 # Validation
 msgid "notBlank"
-msgstr "%s は必須項目です"
+msgstr "%s は必須です"
+
+msgid "format"
+msgstr "%s の形式が正しくありません"
+
+msgid "confirm"
+msgstr "%s が一致していません"
+
+
 
 msgid "alphanumeric"
 msgstr "半角英数字ではありません"

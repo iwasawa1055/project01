@@ -1,0 +1,2 @@
+msgid "token"
+msgstr "トークン"
