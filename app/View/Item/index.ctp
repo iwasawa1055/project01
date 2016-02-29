@@ -11,9 +11,13 @@
           <div class="row">
             <div class="col-lg-12">
               <h2>アイテムの一覧</h2>
+            <?php if (empty($itemList)) : ?>
+              <?php echo $this->element('List/empty'); ?>
+            <?php else: ?>
               <div class="col-lg-3 col-lg-offset-9">
                 <?php echo $this->Form->input(false, ['type' => 'select', 'options' => $sortSelectList, 'selected' => $select_sort_value, 'id' => 'select_sort', 'class' => 'form-control sort-form', 'empty' => '並べ替え', 'label'=>false, 'div'=>false]); ?>
               </div>
+            <?php endif; ?>
               <div class="col-lg-12">
                 <ul class="tile">
                   <!--loop-->

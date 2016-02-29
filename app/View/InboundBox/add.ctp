@@ -12,8 +12,13 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>預け入れボックスを選択</h2>
+              <?php if (empty($boxList)) : ?>
+                <p class="form-control-static col-lg-12">ご購入済みのキットがございません。<br />
+                  預け入れの際はまず弊社指定の専用キットをご購入ください。</p>
+              <?php else: ?>
                 <p class="form-control-static col-lg-12">ご購入済みの専用ボックスの一覧です。<br />
                   預け入れるボックスのタイトルを入力してボックスを選択しましたら「預け入れボックスの確認」にすすんでください。</p>
+              <?php endif; ?>
                 <div class="row box-list">
                   <!--loop-->
                   <?php foreach ($boxList as $box): ?>
@@ -65,6 +70,7 @@
                 </div>
               </div>
             </div>
+          <?php if (!empty($boxList)) : ?>
             <div class="form-group col-lg-12">
               <label>預け入れ方法</label>
               <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
@@ -88,6 +94,7 @@
             <span class="col-lg-12 col-md-12 col-xs-12">
                 <button type="submit" class="btn btn-danger btn-lg btn-block">預け入れボックスの確認</button>
             </span>
+          <?php endif; ?>
           </div>
           <?php echo $this->Form->end(); ?>
         </div>
