@@ -1,5 +1,6 @@
 <?php
 
+App::uses('ApiModel', 'Model');
 
 /**
  *
@@ -29,6 +30,9 @@ class ApiCachedModel extends ApiModel
             return [];
         }
         $apiRes = $this->apiGetResults($data);
+        if (!is_array($apiRes)) {
+            return [];
+        }
         $findList = [];
         foreach ($apiRes as $a) {
             $notMatch = false;
@@ -36,6 +40,7 @@ class ApiCachedModel extends ApiModel
                 if (!is_array($value)) {
                     $value = [$value];
                 }
+
                 if (!array_key_exists($key, $a) || !in_array($a[$key], $value, true)) {
                     $notMatch = true;
                     break;
@@ -53,6 +58,7 @@ class ApiCachedModel extends ApiModel
 
     public function apiGetResults($arg = [])
     {
+
         $list = $this->apiGetListWithCache($arg);
         if (!is_array($list)) {
             return $list;
