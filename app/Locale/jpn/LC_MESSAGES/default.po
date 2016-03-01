@@ -4,28 +4,28 @@ msgid "empty_session_data"
 msgstr "もう一度実施してください。"
 
 msgid "boxitem_status_10"
-msgstr "キット購入依頼済み"
+msgstr "ボックス購入依頼済"
 
 msgid "boxitem_status_20"
-msgstr "キット購入進行中"
+msgstr "ボックス発送準備中"
 
 msgid "boxitem_status_30"
-msgstr "キット購入完了"
+msgstr "ボックス発送完了"
 
 msgid "boxitem_status_40"
-msgstr "入庫依頼済み"
+msgstr "預け入れ依頼済"
 
 msgid "boxitem_status_60"
-msgstr "入庫進行中"
+msgstr "預け入れ作業中"
 
 msgid "boxitem_status_70"
-msgstr "入庫済み"
+msgstr "預け入れ中"
 
 msgid "boxitem_status_180"
-msgstr "出庫依頼済み"
+msgstr "取り出し依頼済"
 
 msgid "boxitem_status_200"
-msgstr "出庫進行中"
+msgstr "取り出し作業中"
 
 msgid "boxitem_status_210"
-msgstr "出庫済み"
+msgstr "取り出し済"

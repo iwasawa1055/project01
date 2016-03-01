@@ -1,6 +1,7 @@
 <?php
 
 App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class CustomerEntry extends ApiModel
 {
@@ -20,6 +21,12 @@ class CustomerEntry extends ApiModel
         }
 
         return $responses;
+    }
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
     }
 
     public $validate = [

@@ -1,12 +1,19 @@
 <?php
 
 App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class CustomerInfo extends ApiModel
 {
     public function __construct()
     {
         parent::__construct('CustomerInfo', '/customer', 'minikura_v5');
+    }
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
     }
 
     public $validate = [

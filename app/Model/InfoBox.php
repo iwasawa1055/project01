@@ -52,13 +52,11 @@ class InfoBox extends ApiCachedModel
     // 入庫画面で表示
     public function getListForInbound()
     {
+        $okStatus = [
+            BOXITEM_STATUS_BUYKIT_DONE,
+        ];
         $all = $this->apiGetResults();
-        $list = [];
-        foreach ($all as $a) {
-            if (empty($a['product_cd'])) {
-                $list[] = $a;
-            }
-        }
+        $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
         $this->sort($list, [], $this->defaultSortKey);
         return $list;
     }

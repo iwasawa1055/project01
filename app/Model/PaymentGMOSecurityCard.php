@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppHttp', 'Lib');
-App::uses('AppValid', 'Lib');
 App::uses('ApiModel', 'Model');
+App::uses('PaymentGMOCard', 'Model');
+App::uses('Announcement', 'Model');
 
 class PaymentGMOSecurityCard extends ApiModel
 {
@@ -15,6 +15,7 @@ class PaymentGMOSecurityCard extends ApiModel
     {
         parent::triggerDataChanged();
         (new PaymentGMOCard())->deleteCache();
+        (new Announcement())->deleteCache();
     }
 
     public $validate = [

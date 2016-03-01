@@ -1,6 +1,7 @@
 <?php
 
 App::uses('ApiCachedModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class CustomerAddress extends ApiCachedModel
 {
@@ -13,6 +14,12 @@ class CustomerAddress extends ApiCachedModel
 
     // 結果ゼロ件チェック
     protected $checkZeroResultsKey = 'address_id';
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
+    }
 
     public $validate = [
       'lastname' => [

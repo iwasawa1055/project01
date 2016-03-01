@@ -1,12 +1,19 @@
 <?php
 
 App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class PaymentGMOKitCard extends ApiModel
 {
     public function __construct()
     {
         parent::__construct('PaymentGMOKitCard', '/kit_card', 'gmopayment_v4');
+    }
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
     }
 
     public $validate = [

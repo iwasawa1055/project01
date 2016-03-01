@@ -1,12 +1,19 @@
 <?php
 
 App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class CustomerInfoV3 extends ApiModel
 {
     public function __construct()
     {
         parent::__construct('CustomerInfoV3', '/user');
+    }
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
     }
 
     public $validate = [

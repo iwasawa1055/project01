@@ -1,12 +1,19 @@
 <?php
 
 App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class Outbound extends ApiModel
 {
     public function __construct()
     {
         parent::__construct('Outbound', '/outbound');
+    }
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
     }
 
     public function buildParamProduct($boxList = [], $itemList = []) {
