@@ -9,13 +9,13 @@
          <div class="panel-body">
            <div class="row">
              <div class="col-lg-12">
-               <?php if (0 < count($address)) : ?>
+               <?php if (0 < count($addressList)) : ?>
                <h2>お届け先変更</h2>
                <div class="form-group col-lg-12">
                  <form>
                    <select class="form-control" onchange="$('.address_id').val($(this).val());">
                      <option>以下からお選びください</option>
-                     <?php foreach ($address as $data): ?>
+                     <?php foreach ($addressList as $data): ?>
                        <option value="<?php echo $data['address_id']; ?>">
                          <?php echo "〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"; ?>
                        </option>
@@ -29,7 +29,7 @@
                    <button type="submit" class="btn btn-danger btn-lg btn-block">削除する</button>
                </span>
                <?php echo $this->Form->end(); ?>
-               <?php echo $this->Form->create('CustomerAddress', ['type' => 'get', 'url' => ['controller' => 'address', 'action' => 'edit', 'step' => 'confirm']]); ?>
+               <?php echo $this->Form->create('CustomerAddress', ['type' => 'get', 'url' => ['controller' => 'address', 'action' => 'edit']]); ?>
                <span class="col-lg-6 col-md-6 col-xs-12">
                    <input type="hidden" class="address_id" name="address_id" value="">
                    <button type="submit" class="btn btn-danger btn-lg btn-block">変更する</button>

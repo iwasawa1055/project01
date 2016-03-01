@@ -5,7 +5,6 @@ App::uses('MinikuraController', 'Controller');
 class AddressController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerAddress';
-    const MODEL_NAME_DATA = 'CustomerAddressData';
 
     /**
      * 制御前段処理.
@@ -20,33 +19,30 @@ class AddressController extends MinikuraController
     public function customer_index()
     {
         $res = $this->CustomerAddress->apiGet();
-        $this->set('address', $res->results);
-        CakeSession::write(self::MODEL_NAME_DATA, $res->results);
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
+            return $this->redirect('/');
+        }
+        $this->set('addressList', $res->results);
     }
 
 
     private function setRequestDataFromSession() {
         $step = Hash::get($this->request->params, 'step');
         $back = Hash::get($this->request->query, 'back');
+
         if ($back || $step === 'complete') {
             $data = CakeSession::read(self::MODEL_NAME);
-            $this->request->data = $data;
+            $this->request->data[self::MODEL_NAME] = $data;
             CakeSession::delete(self::MODEL_NAME);
-        }
-    }
-
-    private function setRequestDataFromSessionList($keyName) {
-        $addressId = $this->CustomerAddress->toArray()[$keyName];
-        $list = CakeSession::read(self::MODEL_NAME_DATA);
-        foreach ($list as $data) {
-            if ($addressId === $data[$keyName]) {
-                $this->request->data[self::MODEL_NAME] = $data;
-                break;
-            }
-        }
-        if (empty($this->request->data[self::MODEL_NAME])) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
+        } else if ($this->action === 'customer_edit' && empty($step)) {
+            $addressId = Hash::get($this->request->query, 'address_id');
+            $data = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
+            $this->request->data[self::MODEL_NAME] = $data;
+        } else if ($this->action === 'customer_delete' && $step === 'confirm') {
+            $addressId = Hash::get($this->request->data, 'address_id');
+            $data = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
+            $this->request->data[self::MODEL_NAME] = $data;
         }
     }
 
@@ -61,7 +57,6 @@ class AddressController extends MinikuraController
         if ($this->request->is('get')) {
             return $this->render('customer_add');
         } elseif ($this->request->is('post')) {
-
             // validates
             $this->CustomerAddress->set($this->request->data);
             if (!$this->CustomerAddress->validates()) {
@@ -69,8 +64,8 @@ class AddressController extends MinikuraController
             }
 
             if ($step === 'confirm') {
-                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->data);
-                return $this->render('confirm');
+                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->toArray());
+                return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // create
                 $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
@@ -90,9 +85,8 @@ class AddressController extends MinikuraController
         if ($this->request->is('get')) {
 
             // data from session
-            $this->CustomerAddress->set($this->request->query);
-            $this->setRequestDataFromSessionList('address_id');
-
+            $this->CustomerAddress->set($this->request->data);
+            $this->set('address_id', $this->request->data[self::MODEL_NAME]['address_id']);
             return $this->render('customer_add');
         } elseif ($this->request->is('post')) {
 
@@ -126,15 +120,14 @@ class AddressController extends MinikuraController
             $this->CustomerAddress->set($this->request->data);
 
             if ($step === 'confirm') {
-                $this->setRequestDataFromSessionList('address_id');
-                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->data);
+                CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->toArray());
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // delete
-                $res = $this->CustomerAddress->apiDelete($this->CustomerAddress->data);
-                if (!$res->isSuccess()) {
-                    $this->Flash->set(__('empty_session_data'));
-                    return $this->redirect(['action' => 'add']);
+                $res = $this->CustomerAddress->apiDelete($this->CustomerAddress->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'customer_index']);
                 }
                 return $this->render('customer_complete');
             }

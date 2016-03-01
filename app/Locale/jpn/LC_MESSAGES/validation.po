@@ -39,6 +39,37 @@ msgstr "名"
 msgid "firstname_kana"
 msgstr "名（カナ）"
 
+msgid "tel1"
+msgstr "電話番号"
+
+msgid "postal"
+msgstr "郵便番号"
+
+msgid "pref"
+msgstr "都道府県"
+
+msgid "address1"
+msgstr "住所"
+
+msgid "address2"
+msgstr "番地"
+
+msgid "address2"
+msgstr "番地"
+
+msgid "address3"
+msgstr "建物名"
+
+msgid "gender"
+msgstr "性別"
+
+msgid "birth"
+msgstr "生年月日"
+
+msgid "newsletter"
+msgstr "配信希望"
+
+
 
 # Validation
 msgid "notBlank"
@@ -47,85 +78,14 @@ msgstr "%sは必須です"
 msgid "format"
 msgstr "%sの形式が正しくありません"
 
+msgid "format_format"
+msgstr "%sは%s形式が正しくありません"
+
 msgid "confirm"
 msgstr "%sが一致していません"
 
+msgid "maxLength"
+msgstr "%sは%d文字以下です"
 
-
-msgid "alphanumeric"
-msgstr "半角英数字ではありません"
-
-msgid "between"
-msgstr "文字数が指定範囲内ではありません"
-
-msgid "blank"
-msgstr "空白ではありません"
-
-msgid "cc"
-msgstr "クレジットカード番号ではありません"
-
-msgid "comparison"
-msgstr "比較結果が正しい値ではありません"
-
-msgid "custom"
-msgstr "マッチした結果が正しい値ではありません"
-
-msgid "date"
-msgstr "日付ではありません"
-
-msgid "time"
-msgstr "時間ではありません"
-
-msgid "boolean"
-msgstr "論理値ではありません"
-
-msgid "decimal"
-msgstr "十進数の数値ではありません"
-
-msgid "isMailAddress"
-msgstr "メールアドレスの形式が正しくありません"
-
-msgid "equalto"
-msgstr "チェック値と同じではありません"
-
-msgid "extension"
-msgstr "拡張子が対象ではありません"
-
-msgid "ip"
-msgstr "ＩＰアドレスではありません"
-
-msgid "minlength"
-msgstr "指定以上の長さの文字列ではありません"
-
-msgid "maxlength"
-msgstr "%s は %d 文字以内で入力してください"
-
-msgid "money"
-msgstr "金額ではありません"
-
-msgid "multiple"
-msgstr "選択されたアイテムの個数、または内容が正しい値ではありません"
-
-msgid "numeric"
-msgstr "数値ではありません"
-
-msgid "phone"
-msgstr "電話番号ではありません"
-
-msgid "postal"
-msgstr "郵便番号ではありません"
-
-msgid "range"
-msgstr "数値が指定範囲内ではありません"
-
-msgid "uuid"
-msgstr "ユニークではありません"
-
-msgid "url"
-msgstr "URLではありません"
-
-msgid "inlist"
-msgstr "リストに含まれた値ではありません"
-
-msgid "userdefined"
-msgstr "定義した内容ではありません"
+msgid "isFwKana"
+msgstr "%sは全角カタカナで入力してください"

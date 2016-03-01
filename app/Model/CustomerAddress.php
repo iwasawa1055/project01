@@ -22,85 +22,110 @@ class CustomerAddress extends ApiCachedModel
     }
 
     public $validate = [
-      'lastname' => [
-        'notBlank' => [
-            'rule' => 'notBlank',
-            'message' => '苗字は必須です',
+        'lastname' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'lastname']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'lastname', 29]
+            ],
         ],
-        'notBlank' => [
-            'rule' => 'notBlank',
-            'message' => '苗字は必須です',
+        'lastname_kana' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'lastname_kana']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'lastname_kana', 29]
+            ],
+            'isFwKana' => [
+                'rule' => 'isFwKana',
+                'message' => ['isFwKana', 'lastname_kana']
+            ],
         ],
-      ],
-      'lastname_kana' => [
-        'notBlank' => [
-            'rule' => 'notBlank',
-            'message' => '苗字カナは必須です',
+        'firstname' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'firstname']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'firstname', 29]
+            ],
         ],
-      ],
-      'firstname' => [
-        'notBlank' => [
-          'rule' => 'notBlank',
-          'message' => '名前は必須です',
+        'firstname_kana' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'firstname_kana']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'firstname_kana', 29]
+            ],
+            'isFwKana' => [
+                'rule' => 'isFwKana',
+                'message' => ['isFwKana', 'firstname_kana']
+            ],
         ],
-      ],
-      'firstname_kana' => [
-        'notBlank' => [
-            'rule' => 'notBlank',
-            'message' => '名前カナは必須です',
+        'tel1' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'tel1']
+            ],
+            'isPhoneNumberJp' => [
+                'rule' => 'isPhoneNumberJp',
+                'message' => ['format', 'tel1']
+            ],
         ],
-      ],
-      'tel1' => [
-        'notBlank' => [
-             'rule' => 'notBlank',
-             'message' => 'メールアドレスは必須です',
+        'postal' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'postal']
+            ],
+            'isPostalCodeJp' => [
+                'rule' => 'isPostalCodeJp',
+                'message' => ['format', 'postal']
+            ],
         ],
-      ],
-      'postal' => [
-        'notBlank' => [
-              'rule' => 'notBlank',
-              'message' => '郵便番号は必須です',
+        'pref' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'pref']
+            ],
+            'isPrefNameJp' => [
+                'rule' => 'isPrefNameJp',
+                'message' => ['format', 'pref']
+            ],
         ],
-        'notBlank' => [
-              'rule' => '/^\d{3}\-\d{4}$/i',
-              'message' => '999-9999形式で入力してください',
+        'address1' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'address1']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 8],
+                'message' => ['maxLength', 'address1', 8]
+            ],
         ],
-      ],
-      'pref' => [
-        'notBlank' => [
-         'rule' => 'notBlank',
-         'message' => '都道府県は必須です',
+        'address2' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'message' => ['notBlank', 'address2']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 18],
+                'message' => ['maxLength', 'address2', 18]
+            ],
         ],
-        'notBlank22' => [
-         'rule' => 'isPrefNameJp',
-         'message' => '値が正しくありません',
+        'address3' => [
+            'maxLength' => [
+                'rule' => ['maxLength', 30],
+                'allowEmpty' => true,
+                'message' => ['maxLength', 'address3', 30]
+            ],
         ],
-      ],
-      'address1' => [
-        'notBlank' => [
-         'rule' => 'notBlank',
-         'message' => '市区は必須です',
-        ],
-        'maxLength' => [
-         'rule' => ['maxLength', '8'],
-         'message' => '市区は8文字以下です',
-        ],
-      ],
-      'address2' => [
-        'notBlank' => [
-         'rule' => 'notBlank',
-         'message' => '町村番地は必須です',
-        ],
-        'maxLength' => [
-         'rule' => ['maxLength', '18'],
-         'message' => '町村番地は18文字以下です',
-        ],
-      ],
-      'address3' => [
-        'maxLength' => [
-         'rule' => ['maxLength', '30'],
-         'message' => '建物名は30文字以下です',
-        ],
-      ],
     ];
 }
