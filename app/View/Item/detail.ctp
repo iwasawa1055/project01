@@ -20,8 +20,8 @@
                     <div class="row">
                       <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="item-detail ">
-                          <a href="<?php echo $item['images_item']['image_url'] ?>" data-lightbox="item-photo" data-title="<?php echo $item['item_name'] ?>">
-                              <img src="<?php echo $item['images_item']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item"></a>
+                          <a href="<?php echo $item['image_first']['image_url'] ?>" data-lightbox="item-photo" data-title="<?php echo $item['item_name'] ?>">
+                              <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item"></a>
                         </div>
                         <h3><?php echo $item['item_name'] ?></h3>
                         <div class="box-list-caption">

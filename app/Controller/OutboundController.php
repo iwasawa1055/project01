@@ -105,7 +105,7 @@ class OutboundController extends MinikuraController
         }
 
         // 表示
-        $list = $this->InfoBox->getListForServiced('outbounditem');
+        $list = $this->InfoBox->getListForServiced('outbounditem', [], false);
         $keyList = array_keys($outMonoList);
         // 選択フラグ
         foreach ($list as &$box) {
@@ -117,12 +117,9 @@ class OutboundController extends MinikuraController
     public function item()
     {
         $outItemList = $this->outboundList->getItemList();
-
-
         if ($this->request->is('post')) {
 
             $idList = $this->mergeDataKey('item_id', $outItemList);
-
             $errorList = $this->outboundList->setItem($idList);
             if (empty($errorList)) {
                 $this->redirect(['action' => 'index']);
@@ -170,7 +167,7 @@ class OutboundController extends MinikuraController
         }
 
         // Box
-        $list = $this->InfoBox->getListForServiced();
+        $list = $this->InfoBox->getListForServiced([], [], false);
         $keyList = array_keys($outBoxList);
         foreach ($list as &$box) {
             $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
@@ -245,7 +242,6 @@ class OutboundController extends MinikuraController
 
             // product
             $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
-
             // お届け先
             $addressId = $data['Outbound']['address_id'];
 

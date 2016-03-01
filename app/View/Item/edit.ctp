@@ -19,7 +19,7 @@
                         <div class="row">
                           <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="item-detail">
-                              <img src="<?php echo $item['images_item']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
+                              <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
                             </div>
                             <h3>
                               <?php echo $this->Form->input('Item.item_name', ['class' => "form-control", 'error' => false]); ?>

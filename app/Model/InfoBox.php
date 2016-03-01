@@ -108,10 +108,6 @@ class InfoBox extends ApiCachedModel
         return $list;
     }
 
-    public $validate = [
-    ];
-
-
     /**
      * kit_cdからproduct_cdに変換
      * @param  [type] $kitCd [description]

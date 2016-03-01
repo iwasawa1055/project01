@@ -47,7 +47,7 @@
                 <?php $url = '/item/detail/' . $item['item_id']; ?>
                 <!--loop-->
                 <li class="panel panel-default"><a href="<?php echo $url; ?>">
-                    <img src="<?php echo $item['images_item']['image_url']; ?>" alt="<?php echo $item['item_name']; ?>">
+                    <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['item_name']; ?>">
                 </a>
                   <div class="panel-footer">
                     <p class="box-list-caption"><span>アイテム名</span><?php echo $item['item_name']; ?></p>

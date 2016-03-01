@@ -16,14 +16,17 @@ if (!empty($errorList)) {
         <div class="row">
           <div class="col-lg-12">
             <h2>取り出すアイテムを選択</h2>
+            <?php if (empty($itemList)) : ?>
+              <?php echo $this->element('List/empty'); ?>
+            <?php else: ?>
             <p class="form-control-static col-lg-12">選択した専用ボックスに収納されているアイテムの一覧です。<br />
               取り出すアイテムにチェックを入れて「取り出しリストを確認する」にすすんでください。</p>
+            <?php endif; ?>
             <div class="row box-list">
               <?php foreach ($itemList as $item): ?>
               <?php
               $i = $item['item_id'];
               $url = '/item/detail/' . $item['item_id'];
-              echo $this->Form->hidden("item_list.${i}.item_id", ['value' => $item['item_id']]);
               ?>
               <!--loop-->
               <div class="col-lg-12">
