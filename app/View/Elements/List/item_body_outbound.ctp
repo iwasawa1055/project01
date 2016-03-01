@@ -25,5 +25,5 @@
         <button class="btn btn-danger btn-md btn-block btn-detail"></button>
     </div>
   </div>
-  <?php echo $this->Form->error("item_id.${item['item_id']}", null, ['wrap' => 'div']) ?>
+  <?php echo $this->Form->error("item_id.${item['item_id']}", null, ['wrap' => 'p']) ?>
 </div>
