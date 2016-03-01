@@ -56,7 +56,12 @@ class RegisterController extends MinikuraController
                 $res = $this->CustomerEntry->apiGet();
                 $this->Customer->setInfoAndSave($res->results[0]);
 
-                return $this->redirect('/');
+                if (empty($code)) {
+                    return $this->redirect('/');
+                } else {
+                    // 紹介コードがある場合はキット購入へ遷移
+                    return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
+                }
 
             } else {
                 $this->request->data[self::MODEL_NAME]['password'] = '';
