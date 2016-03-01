@@ -2,6 +2,8 @@
 
 App::uses('ApiModel', 'Model');
 App::uses('Announcement', 'Model');
+App::uses('InfoBox', 'Model');
+App::uses('InfoItem', 'Model');
 
 class Outbound extends ApiModel
 {
@@ -14,6 +16,8 @@ class Outbound extends ApiModel
     {
         parent::triggerDataChanged();
         (new Announcement())->deleteCache();
+        (new InfoBox())->deleteCache();
+        (new InfoItem())->deleteCache();
     }
 
     public function buildParamProduct($boxList = [], $itemList = []) {

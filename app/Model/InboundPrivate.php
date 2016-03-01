@@ -2,6 +2,7 @@
 
 App::uses('ApiModel', 'Model');
 App::uses('Announcement', 'Model');
+App::uses('InfoBox', 'Model');
 
 class InboundPrivate extends ApiModel
 {
@@ -14,6 +15,7 @@ class InboundPrivate extends ApiModel
     {
         parent::triggerDataChanged();
         (new Announcement())->deleteCache();
+        (new InfoBox())->deleteCache();
     }
 
     public $validate = [
