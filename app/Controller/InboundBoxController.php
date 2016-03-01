@@ -16,7 +16,6 @@ class InboundBoxController extends MinikuraController
         parent::beforeFilter();
 
         $this->Inbound = $this->Components->load('Inbound');
-        $this->loadModel('InboundPrivate');
 
         $list = $this->InfoBox->getListForInbound();
         $this->set('boxList', $list);
@@ -71,7 +70,7 @@ class InboundBoxController extends MinikuraController
         $box = '';
         foreach ($data['box_list'] as $item) {
             if (!empty($item['checkbox'])) {
-                $box .= InboundBase::createBoxParam($item) . ',';
+                $box .= InboundComponent::createBoxParam($item) . ',';
             }
         }
         $data['box'] = rtrim($box, ',');
@@ -112,12 +111,9 @@ class InboundBoxController extends MinikuraController
         $data = current($data);
         $this->Inbound->init($data);
         $model = $this->Inbound->model($data);
-        if (empty($model)) {
-            return $this->render('add');
-        }
-        if ($model->validates()) {
+        if (!empty($model) && $model->validates()) {
             // api
-            $r = $model->apiPost($model->toArray());
+            $res = $model->apiPost($model->toArray());
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);

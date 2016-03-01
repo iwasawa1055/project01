@@ -1,7 +1,6 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
-App::uses('UserAddress', 'Model');
 
 class InquiryController extends MinikuraController
 {

@@ -112,8 +112,7 @@ class ApiModel extends AppModel
         $d = date('H:i:s', time());
         $d .= ' bigen -> ' . $url;
         CakeLog::write(DEBUG_LOG, $d, ['bench']);
-        $d .= print_r($params, true);
-        CakeLog::write(DEBUG_LOG, $d);
+        CakeLog::write(DEBUG_LOG, print_r($params, true));
     }
 
     protected function afterApiRequest($params, $method, &$apiRes)
@@ -121,9 +120,7 @@ class ApiModel extends AppModel
         $d = date('H:i:s', time());
         $d .= " end ->";
         CakeLog::write(DEBUG_LOG, $d, ['bench']);
-        $d .= print_r($params, true);
-        $d .= print_r($apiRes, true);
-        CakeLog::write(DEBUG_LOG, $d);
+        CakeLog::write(DEBUG_LOG, print_r($apiRes, true));
 
         // メッセージ
         if (400 <= $apiRes->http_code) {

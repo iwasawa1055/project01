@@ -1,12 +1,19 @@
 <?php
 
-App::uses('InboundBase', 'Model');
+App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
-class InboundPrivate extends InboundBase
+class InboundPrivate extends ApiModel
 {
     public function __construct()
     {
         parent::__construct('InboundPrivate', '/inbound_private');
+    }
+
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
     }
 
     public $validate = [

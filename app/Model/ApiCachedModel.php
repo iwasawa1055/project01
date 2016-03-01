@@ -13,7 +13,7 @@ class ApiCachedModel extends ApiModel
 
     public function __construct($sessionKey, $lifetime, $name, $end, $access_point_key = 'minikura_v3')
     {
-        $this->sessionKey = ApiCachedModel::SESSION_BASE_KEY . '.' . $sessionKey;
+        $this->sessionKey = self::SESSION_BASE_KEY . '.' . $sessionKey;
         $this->lifetime = $lifetime;
         parent::__construct($name, $end, $access_point_key);
     }

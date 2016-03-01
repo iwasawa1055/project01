@@ -19,8 +19,8 @@ class InboundComponent extends Component
     private function convertData($data = [])
     {
         $a = explode('_', $data['delivery_carrier']);
-        $carrierCd = Hash::get($a, 0);
-        $deliveryType = Hash::get($a, 1);
+        $deliveryType = Hash::get($a, 0);
+        $carrierCd = Hash::get($a, 1);
         $data['delivery_type'] = $deliveryType;
         $data['carrier_cd'] = $carrierCd;
         return $data;
@@ -38,6 +38,24 @@ class InboundComponent extends Component
         $data = $this->convertData($data);
         return $this->set->getModel($data);
     }
+
+    public static function createBoxParam($item)
+    {
+        $kitCd = self::getDefualt($item, 'kit_cd');
+        $productCd = InfoBox::kitCd2ProductCd($kitCd);
+        $boxId = self::getDefualt($item, 'box_id');
+        $title = self::getDefualt($item, 'title');
+        $option = self::getDefualt($item, 'option');
+        return "${productCd}:${boxId}:${title}:${option}";
+    }
+
+    public static function getDefualt($a, $k, $d = '')
+    {
+        if (array_key_exists($k, $a)) {
+            return $a[$k];
+        }
+        return $d;
+    }
 }
 
 
@@ -49,13 +67,13 @@ abstract class InboundSet
     public static function create($carrierCd, $deliveryType)
     {
         $set = null;
-        if ($carrierCd === INBOUND_DELIVERY_PICKUP) {
-            if ($deliveryType === INBOUND_CARRIER_YAMAYO) {
+        if ($deliveryType === INBOUND_DELIVERY_PICKUP) {
+            if ($carrierCd === INBOUND_CARRIER_YAMAYO) {
                 $set = new SetInboundPrivateYamato();
-            } elseif ($deliveryType === INBOUND_CARRIER_JPPOST) {
+            } elseif ($carrierCd === INBOUND_CARRIER_JPPOST) {
                 $set = new SetInboundPrivateJppost();
             }
-        } elseif ($carrierCd === INBOUND_DELIVERY_MANUAL) {
+        } elseif ($deliveryType === INBOUND_DELIVERY_MANUAL) {
             $set = new SetInboundManual();
         }
         return $set;
