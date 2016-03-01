@@ -13,6 +13,11 @@
               <?php if (!empty($data))  : ?>
               <?php if ($isPrivateCustomer)  : ?>
               <?php // 個人 ?>
+                <?php if ($data['applying']): ?>
+                  <p class="form-control-static col-lg-12">変更申請中です。<br />
+                    変更内容を確認させていただきますので、変更の反映にはお時間をいただきます。<br />
+                    ※変更内容によっては確認のご連絡をさせていただく場合がございます。あらかじめご了承ください。</p>
+                <?php endif; ?>
                 <div class="form-group col-lg-12">
                   <label>郵便番号</label>
                   <p><?php echo $data['postal']; ?></p>
