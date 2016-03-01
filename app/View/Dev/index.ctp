@@ -66,6 +66,9 @@ dd {
 <dt>債務ランク</dt>
     <dd><a href="/dev/user_debt?payment=1">債務解除</a></dd>
     <dd><a href="/dev/user_debt?payment=2">債務状態</a></dd>
+<dt>紹介コードリンク</dt>
+    <dd><a href="/customer/register/add?code=yahoo" target="_blank">yahoo</a></dd>
+    <dd><a href="/customer/register/add?code=daito" target="_blank">daito</a></dd>
 </dl>
 </div>
 
@@ -88,10 +91,18 @@ dd {
 <?php if (array_key_exists(BOXITEM_STATUS_INBOUND_START, $boxData)): ?>
 <?php foreach ($boxData[BOXITEM_STATUS_INBOUND_START] as $data): ?>
 <dd>
+<?php //pr($data); ?>
     <span><?php echo $data['box_id']; ?></span>
+  <?php if ($data['product_cd'] === PRODUCT_CD_HAKO) : ?>
+    <a href="/dev/inbound_done?number=1&box_id=<?php echo $data['box_id']; ?>">done</a>
+  <?php else : ?>
     <a href="/dev/inbound_done?number=1&box_id=<?php echo $data['box_id']; ?>">done_1</a>
     <a href="/dev/inbound_done?number=5&box_id=<?php echo $data['box_id']; ?>">done_5</a>
     <a href="/dev/inbound_done?number=10&box_id=<?php echo $data['box_id']; ?>">done_10</a>
+    <?php if ($data['product_cd'] === PRODUCT_CD_MONO) : ?>
+      <a href="/dev/inbound_done?number=25&box_id=<?php echo $data['box_id']; ?>">done_25</a>
+    <?php endif; ?>
+  <?php endif; ?>
 </dd>
 <?php endforeach; ?>
 <?php endif; ?>

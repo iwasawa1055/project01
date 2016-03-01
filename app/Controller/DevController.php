@@ -16,6 +16,8 @@ App::uses('OutboundList', 'Model');
 
 class DevController extends MinikuraController
 {
+    protected $checkLogined = false;
+
     public function index()
     {
         $this->layout = "";
