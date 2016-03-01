@@ -64,7 +64,7 @@ class CustomerComponent extends Component
             if ($this->isPrivateCustomer()) {
                 $model = new CustomerInfo();
             } else {
-                $model = new CustomerInfoV3();
+                $model = new CorporateInfo();
             }
         }
         return $model;
