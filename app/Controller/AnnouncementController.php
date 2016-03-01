@@ -21,11 +21,9 @@ class AnnouncementController extends MinikuraController
      */
     public function index()
     {
-        $res = $this->Announcement->apiGet();
-        if ($res->isSuccess()) {
-            $list = $this->paginate($res->results);
-            $this->set('announcements', $list);
-        }
+        $all = $this->Announcement->apiGetResults();
+        $list = $this->paginate($all);
+        $this->set('announcements', $list);
     }
 
     /**
