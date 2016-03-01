@@ -9,8 +9,6 @@ class OrderController extends MinikuraController
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
 
-    public $default_payment = null;
-
     /**
      * 制御前段処理.
      */
@@ -155,7 +153,8 @@ class OrderController extends MinikuraController
         if ($model->validates()) {
             if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
                 // カード
-                $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+                $default_payment = $this->Customer->getDefaultCard();
+                $this->set('default_payment_text', "{$default_payment['card_no']}　{$default_payment['holder_name']}");
             }
             // お届け先
             $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
@@ -206,7 +205,8 @@ class OrderController extends MinikuraController
 
             if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
                 // カード
-                $this->set('default_payment_text', "{$this->default_payment['card_no']}　{$this->default_payment['holder_name']}");
+                $default_payment = $this->Customer->getDefaultCard();
+                $this->set('default_payment_text', "{$default_payment['card_no']}　{$default_payment['holder_name']}");
             }
             // お届け先
             $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
