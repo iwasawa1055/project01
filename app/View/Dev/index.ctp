@@ -41,6 +41,15 @@ h2 {
     font-size: .7em;
     margin-bottom: 2px;
 }
+.boxitem .box .outbound {
+    background-color: #6cb362;
+    border: 1px solid #328f12;
+    padding: 1px;
+    margin: 0;
+    font-size: .7em;
+    margin-bottom: 2px;
+}
+}
 dl {
 }
 dt {
@@ -159,7 +168,7 @@ foreach ($a as $status => $label): ?>
                     <?php echo $box['box_name']; ?>
                 </p>
                     <?php foreach ($timeData[$box['box_id']] as $item): ?>
-                        <div class="item">
+                        <div class="<?php echo (BOXITEM_STATUS_INBOUND_DONE < $item['item_status']) ? 'outbound' : 'item'; ?>">
                             <p>
                                 <?php echo $item['item_status']; ?>,
                                 <?php echo $item['item_id']; ?><br>
