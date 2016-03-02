@@ -147,7 +147,11 @@ class OutboundController extends MinikuraController
         $outMonoKeyList = array_keys($outMonoList);
 
         // item
-        $list = $this->InfoItem->getListForServiced(null, ['box_id' => $outMonoKeyList]);
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE * 1],
+            'box_id' => $outMonoKeyList
+        ];
+        $list = $this->InfoItem->apiGetResultsWhere([], $where);
         $keyList = array_keys($outItemList);
         foreach ($list as &$item) {
             $item['outbound_list'] = in_array($item['item_id'], $keyList, true);
@@ -179,7 +183,8 @@ class OutboundController extends MinikuraController
         }
 
         // Box
-        $list = $this->InfoBox->getListForServiced([], [], false);
+        $where = ['box_status' => [BOXITEM_STATUS_INBOUND_DONE]];
+        $list = $this->InfoBox->apiGetResultsWhere([], $where);
         $keyList = array_keys($outBoxList);
         foreach ($list as &$box) {
             $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
