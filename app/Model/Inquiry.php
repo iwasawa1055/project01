@@ -1,83 +1,83 @@
 <?php
 
-App::uses('ApiCachedModel', 'Model');
+App::uses('ApiModel', 'Model');
 
 class Inquiry extends ApiModel
 {
-    public function __construct()
+    public function __construct($name = 'Inquiry', $end = '/contact', $access_point_key = 'minikura_v3')
     {
-        parent::__construct('Inquiry', '/contact');
+        parent::__construct($name, $end, $access_point_key);
     }
 
     public $validate = [
         'lastname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '姓は必須です',
+                'message' => ['notBlank', 'lastname']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '姓は29文字以内で入力してください',
+                'message' => ['maxLength', 'lastname', 29]
             ],
         ],
         'lastname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '姓（カナ）は必須です',
+                'message' => ['notBlank', 'lastname_kana']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '姓（カナ）は29文字以内で入力してください',
+                'message' => ['maxLength', 'lastname_kana', 29]
             ],
             'isFwKana' => [
                 'rule' => 'isFwKana',
-                'message' => '姓（カナ）は全角カタカナで入力してください',
+                'message' => ['isFwKana', 'lastname_kana']
             ],
         ],
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '名は必須です',
+                'message' => ['notBlank', 'firstname']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '名は29文字以内で入力してください',
+                'message' => ['maxLength', 'firstname', 29]
             ],
         ],
         'firstname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '名（カナ）は必須です',
+                'message' => ['notBlank', 'firstname_kana']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '名（カナ）は29文字以内で入力してください',
+                'message' =>  ['maxLength', 'firstname_kana', 29]
             ],
             'isFwKana' => [
                 'rule' => 'isFwKana',
-                'message' => '名（カナ）は全角カタカナで入力してください',
+                'message' => ['isFwKana', 'firstname_kana']
             ],
         ],
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'メールアドレスは必須です',
+                'message' => ['notBlank', 'email']
              ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => 'メールアドレスの形式が正しくありません',
+                'message' => ['format', 'email']
             ],
         ],
         'division' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'お問い合わせ種別は必須です',
+                'message' => ['notBlank', 'contact_division'],
              ],
         ],
         'text' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'お問い合わせ内容は必須です',
+                'message' => ['notBlank', 'contact_text'],
              ],
         ],
     ];

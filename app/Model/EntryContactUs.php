@@ -1,8 +1,8 @@
 <?php
 
-App::uses('ContactUs', 'Model');
+App::uses('Inquiry', 'Model');
 
-class EntryContactUs extends ContactUs
+class EntryContactUs extends Inquiry
 {
     public function __construct()
     {

@@ -11,6 +11,28 @@
             <div class="row">
             <?php echo $this->Form->create('ContactUs', ['url' => ['controller' => 'contact_us', 'action' => 'confirm', 'id' => $id], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12 none-title">
+                <?php if ($isEntry) : ?>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('ContactUs.lastname', ['class' => "form-control", 'placeholder'=>'姓', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.lastname', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('ContactUs.lastname_kana', ['class' => "form-control", 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.lastname_kana', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('ContactUs.firstname', ['class' => "form-control", 'placeholder'=>'名', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.firstname', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('ContactUs.firstname_kana', ['class' => "form-control", 'placeholder'=>'名（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.firstname_kana', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('ContactUs.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ContactUs.email', null, ['wrap' => 'p']) ?>
+                </div>
+                <?php endif; ?>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別</label>
                   <?php echo $this->Form->select('ContactUs.division', CONTACTUS_DIVISION, ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>

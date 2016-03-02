@@ -25,6 +25,11 @@ class CustomerComponent extends Component
         $this->data = CustomerData::restore();
     }
 
+    /**
+     * カスタム状態を見てメールアドレス操作モデルを取得
+     * @param  array $data モデルデータ（モデル名不要）
+     * @return object
+     */
     public function getEmailModel($data = [])
     {
         $model = null;
@@ -41,6 +46,11 @@ class CustomerComponent extends Component
         return $model;
     }
 
+    /**
+     * カスタム状態を見てパスワード操作モデルを取得
+     * @param  array $data モデルデータ（モデル名不要）
+     * @return object
+     */
     public function getPasswordModel($data = [])
     {
         $model = null;
@@ -57,7 +67,12 @@ class CustomerComponent extends Component
         return $model;
     }
 
-    public function getInfoGetModel($data = [])
+
+    /**
+     * カスタム状態を見て契約情報取得モデルを取得
+     * @return object
+     */
+    public function getInfoGetModel()
     {
         $model = null;
         if ($this->isLogined()) {
@@ -70,6 +85,11 @@ class CustomerComponent extends Component
         return $model;
     }
 
+    /**
+     * カスタム状態を見て契約情報登録モデルを取得
+     * @param  array $data モデルデータ（モデル名不要）
+     * @return object
+     */
     public function getInfoPostModel($data = [])
     {
         $model = null;
@@ -84,6 +104,11 @@ class CustomerComponent extends Component
         return $model;
     }
 
+    /**
+     * カスタム状態を見て契約情報更新モデルを取得
+     * @param  array $data モデルデータ（モデル名不要）
+     * @return object
+     */
     public function getInfoPatchModel($data = [])
     {
         $model = null;
@@ -98,14 +123,18 @@ class CustomerComponent extends Component
         return $model;
     }
 
+    /**
+     * カスタム状態を見て契約情報操作モデルを取得
+     * @param  array $data モデルデータ（モデル名不要）
+     * @return object
+     */
     public function getContactModel($data = [])
     {
         $model = null;
         if ($this->isLogined()) {
             if ($this->isEntry()) {
-                // TODO: ログイン前と同じ設定
                 $model = new EntryContactUs();
-            } else if ($this->isPrivateCustomer()) {
+            } elseif ($this->isPrivateCustomer()) {
                 $model = new ContactUs();
             } else {
                 $model = new ContactUsCorporate();

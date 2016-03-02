@@ -4,17 +4,6 @@ App::uses('MinikuraController', 'Controller');
 
 class ContractController extends MinikuraController
 {
-    const MODEL_NAME = 'CustomerInfo';
-    const MODEL_NAME_CORPORATE = 'CorporateInfo';
-
-    /**
-     * 制御前段処理.
-     */
-    public function beforeFilter()
-    {
-        parent::beforeFilter();
-    }
-
     /**
      *
      */
