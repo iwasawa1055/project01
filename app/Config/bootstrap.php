@@ -137,6 +137,8 @@ CakeLog::config('error', array(
     'engine' => 'File',
     'types' => array('error'),
     'file' => 'error' . DS . date('Ymd'),
+    'size' => '10M',
+    'rotate' => 10,
 ));
 
 CakeLog::config('mail', array(
@@ -149,6 +151,8 @@ CakeLog::config('debug', array(
     'engine' => 'File',
     'types' => array('debug'),
     'file' => 'debug' . DS . date('Ymd'),
+    'size' => '10M',
+    'rotate' => 2,
 ));
 
 CakeLog::config('bench', array(
@@ -156,6 +160,8 @@ CakeLog::config('bench', array(
     'types' => array('debug'),
     'file' => 'bench' . DS . date('Ymd'),
     'scopes' => array('bench'),
+    'size' => '10M',
+    'rotate' => 2,
 ));
 
 App::uses('AppErrorHandler', 'Lib');
