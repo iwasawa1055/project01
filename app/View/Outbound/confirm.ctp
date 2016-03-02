@@ -12,7 +12,9 @@
 
 
                 <div class="col-lg-12">
+                  <?php if (!empty($itemList)) : ?>
                   <h2>取り出すアイテム</h2>
+                  <?php endif; ?>
                   <div class="row box-list">
                     <?php foreach ($itemList as $item): ?>
                     <!--loop-->
@@ -28,7 +30,9 @@
                 </div>
 
               <div class="col-lg-12">
+                <?php if (!empty($boxList)) : ?>
                 <h2>取り出すボックス</h2>
+                <?php endif; ?>
                 <div class="row box-list">
                   <?php foreach ($boxList as $box): ?>
                   <?php $url = '/box/detail/' . $box['box_id']; ?>
