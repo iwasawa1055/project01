@@ -79,14 +79,14 @@
           <?php echo $this->Form->select("Outbound.datetime_cd", $this->order->setDatetime($dateItemList), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
           <?php echo $this->Form->error("Outbound.datetime_cd", null, ['wrap' => 'p']) ?>
         </div>
-        <span class="col-lg-6 col-md-6 col-xs-6">
-        <a class="btn btn-primary btn-lg btn-block" href="/outbound/item">アイテムを選択に戻る</a>
+        <span class="col-lg-6 col-md-6 col-xs-12">
+          <a class="btn btn-primary btn-lg btn-block" href="/outbound/item">アイテムを選択に戻る</a>
         </span>
-        <span class="col-lg-6 col-md-6 col-xs-6">
-        <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを選択に戻る</a>
+        <span class="col-lg-6 col-md-6 col-xs-12">
+          <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを選択に戻る</a>
         </span>
         <span class="col-lg-12 col-md-12 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で確認する</button>
+          <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で確認する</button>
         </span>
       </div>
       <?php echo $this->Form->end(); ?>
