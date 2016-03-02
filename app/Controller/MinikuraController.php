@@ -31,9 +31,6 @@ class MinikuraController extends AppController
         CakeSession::start();
         CakeSession::write('session_start', true);
 
-        //* Request Count
-        // CakeSession::$requestCountdown = 10000;
-
         $this->set('isLogined', $this->Customer->isLogined());
         $this->set('customerName', $this->Customer->getName());
         $this->set('isPrivateCustomer', $this->Customer->isPrivateCustomer());
@@ -41,12 +38,25 @@ class MinikuraController extends AppController
         $this->set('hasCreditCard', $this->Customer->hasCreditCard());
         $this->set('isEntry', $this->Customer->isEntry());
 
+        $this->set('canOrder', $this->Customer->canOrder());
+        $this->set('canInbound', $this->Customer->canInbound());
+        $this->set('canOutbound', $this->Customer->canOutbound());
+
         // header
         if ($this->checkLogined) {
             if (!$this->Customer->isLogined()) {
-                $this->redirect('/login');
-                exit;
+                return $this->redirect(['controller' => 'login', 'action' => 'index']);
             }
+
+            if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
+                if ($this->Customer->hasCreditCard()) {
+                    return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
+                } else {
+                    $this->Flash->set(__('paymentng_no_credit_card'));
+                    return $this->redirect(['controller' => 'login', 'action' => 'logout']);
+                }
+            }
+
             if ($this->denyEntry && $this->Customer->isEntry()) {
                 new AppTerminalCritical('denyEntry', 403);
             }
@@ -56,9 +66,6 @@ class MinikuraController extends AppController
             $summary = $this->InfoBox->getProductSummary();
             $this->set('product_summary', $summary);
 
-            if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
-                return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
-            }
         }
     }
 

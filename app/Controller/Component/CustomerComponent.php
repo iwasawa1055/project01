@@ -196,6 +196,24 @@ class CustomerComponent extends Component
         }
         return null;
     }
+
+    public function canOrder()
+    {
+        if (!$this->isEntry() &&
+            ($this->hasCreditCard() || $this->getCorporatePayment() === ACCOUNT_SITUATION_REGISTRATION)) {
+            return true;
+        }
+        return false;
+    }
+    public function canInbound()
+    {
+        return $this->canOrder();
+    }
+    public function canOutbound()
+    {
+        return $this->canOrder();
+    }
+
     public function setTokenAndSave($data)
     {
         return $this->data->setTokenAndSave($data);

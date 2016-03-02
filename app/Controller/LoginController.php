@@ -23,6 +23,7 @@ class LoginController extends MinikuraController
 
                 $res = $this->CustomerLogin->login();
                 if (!empty($res->error_message)) {
+                    // パスワード不正など
                     $this->request->data['CustomerLogin']['password'] = '';
                     $this->Flash->set($res->error_message);
                     return $this->render('index');
@@ -34,11 +35,6 @@ class LoginController extends MinikuraController
 
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
-
-                // 債務ユーザーの場合
-                if ($this->Customer->isPaymentNG()) {
-                    return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
-                }
 
                 return $this->redirect('/');
 

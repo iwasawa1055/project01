@@ -124,38 +124,43 @@ class CustomerData
         }
     }
 
+    /**
+     * 法人口座振替状態
+     * null クレジットカード
+     * ACCOUNT_SITUATION_REGISTRATION　口座未登録（キットの購入・ボックスの入庫が出来ません）
+     * ACCOUNT_SITUATION_REGISTRATION　口座登録完了（キットの購入・ボックスの入庫ができます）
+     * @return string|null [description]
+     */
     public function getCorporatePayment()
     {
-        /*
-        * null：クレジットカード
-        * unregistered：口座未登録（キットの購入・ボックスの入庫が出来ません）
-        * registration：口座登録完了（キットの購入・ボックスの入庫ができます）
-        */
         $info = $this->getInfo();
-        if (!$this->isPrivateCustomer()) {
-            return $info['account_situation'];
+        if (!$this->isPrivateCustomer() && !empty($info['account_situation'])) {
+            if ($info['account_situation'] === ACCOUNT_SITUATION_REGISTRATION) {
+                return ACCOUNT_SITUATION_REGISTRATION;
+            }
+            return ACCOUNT_SITUATION_UNREGISTERED;
         }
         return null;
     }
 
+    /**
+     * クレジットカード登録有無
+     * @return boolean [description]
+     */
     public function hasCreditCard()
     {
-        if ($this->isPrivateCustomer()) {
-            $ca = new PaymentGMOCard();
-            $dc = $ca->apiGetDefaultCard();
-            return 0 < count($dc);
-        } else {
-            return empty($this->getCorporatePayment());
-        }
+        return !empty($this->getDefaultCard());
     }
+
+    /**
+     * 利用可能なクレジットカードを1つ取得
+     * @return array|null クレジットカード情報
+     */
     public function getDefaultCard()
     {
         if ($this->isPrivateCustomer() || empty($this->getCorporatePayment())) {
             $ca = new PaymentGMOCard();
-            $dc = $ca->apiGetDefaultCard();
-            if (!empty($dc)) {
-                return $dc;
-            }
+            return $ca->apiGetDefaultCard();
         }
         return null;
     }
