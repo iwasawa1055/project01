@@ -31,7 +31,7 @@ if (!empty($errorList)) {
               <!--loop-->
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <?php echo $this->element('List/item_body_outbound', ['item' => $item, 'default' => false]); ?>
+                  <?php echo $this->element('List/item_body_checkbox', ['item' => $item, 'default' => false]); ?>
                   <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
                 </div>
               </div>

@@ -7,7 +7,6 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="panel panel-default">
-    <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
       <div class="panel-body">
         <div class="row">
         <div class="col-lg-12">
@@ -23,23 +22,7 @@
             <!--loop-->
             <div class="col-lg-12">
               <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-12">
-                      <a href="<?php echo $url ?>">
-                        <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
-                      </a>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                      <h3><a href="<?php echo $url ?>"><?php echo $item['item_name'] ?></a>
-                      </h3>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-xs-12 outbound_select_checkbox">
-                        <?php echo $this->Form->checkbox("item_id.${i}", ['checked' => 'checked', 'hiddenField' => false]); ?>
-                        <button class="btn btn-danger btn-md btn-block btn-detail"></button>
-                    </div>
-                  </div>
-                </div>
+                <?php echo $this->element('List/item_body_outbound', ['item' => $item]); ?>
                 <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
               </div>
             </div>
@@ -53,14 +36,10 @@
           <?php endif; ?>
             <div class="row box-list">
               <?php foreach ($boxList as $box): ?>
-              <?php
-              $i = $box['box_id'];
-              $url = '/box/detail/' . $box['box_id'];
-              ?>
               <!--loop-->
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <?php echo $this->element('List/box_body_outbound', ['box' => $box, 'default' => true]); ?>
+                  <?php echo $this->element('List/box_body_outbound', ['box' => $box]); ?>
                   <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
                 </div>
               </div>
@@ -69,6 +48,8 @@
             </div>
           </div>
         </div>
+
+        <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div class="form-group col-lg-12">
           <label>お届け先住所</label>
           <?php echo $this->Form->select("Outbound.address_id", $this->order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>

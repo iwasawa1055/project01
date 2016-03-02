@@ -1,29 +1,26 @@
 <?php
-  $url = '/item/detail/' . $item['item_id'];
-  $checked = $default;
-  if (array_key_exists('outbound_list', $item)) {
-      $checked = $item['outbound_list'];
-  }
-  if (empty($class)) {
-      $class = 'outbound_select_checkbox';
-  }
+$url = '/item/detail/' . $item['item_id'];
+$box = $item['box'];
 ?>
-
-<div class="panel-body">
+<div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
   <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-12">
       <a href="<?php echo $url ?>">
-          <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
+        <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
       </a>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
-      <h3><a href="<?php echo $url ?>"><?php echo $item['item_name']; ?></a>
+      <h3>
+          <a href="<?php echo $url ?>"><?php echo $item['item_name'] ?></a>
       </h3>
     </div>
-    <div class="col-lg-4 col-md-4 col-xs-12 <?php echo $class; ?>">
-        <?php echo $this->Form->checkbox("item_id.${item['item_id']}", ['checked' => $checked, 'hiddenField' => true]); ?>
-        <button class="btn btn-danger btn-md btn-block btn-detail"></button>
+    <div class="col-lg-4 col-md-4 col-xs-12">
+    <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+    <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '0']); ?>
+    <span class="col-xs-12 col-lg-12">
+        <button type="submit" class="btn btn-warning btn-md btn-block btn-detail">取り出しリストから削除</button>
+    </span>
+    <?php echo $this->Form->end(); ?>
     </div>
   </div>
-  <?php echo $this->Form->error("item_id.${item['item_id']}", null, ['wrap' => 'p']) ?>
 </div>
