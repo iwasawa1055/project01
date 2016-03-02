@@ -53,8 +53,8 @@ class OutboundController extends MinikuraController
         $this->autoRender = false;
         $addressId = $this->request->data['address_id'];
         $address = $this->Address->find($addressId);
-        $datetime = $this->getDatetime($address['postal']);
-        $status = !empty($datetime);
+        $result = $this->getDatetime($address['postal']);
+        $status = !empty($result);
         return json_encode(compact('status', 'result'));
     }
 
@@ -86,7 +86,9 @@ class OutboundController extends MinikuraController
     private function mergeDataKey($dataKey, $beforeList = [])
     {
         $newIdList = Hash::get($this->request->data, $dataKey);
-
+        if (empty($newIdList)) {
+            return [];
+        }
         $beforeKeyList = array_keys($beforeList);
         foreach ($newIdList as $value => $isAdd) {
             if ($isAdd === '1' && !in_array($value, $beforeKeyList, true)) {
@@ -205,8 +207,7 @@ class OutboundController extends MinikuraController
         $this->set('boxList', $boxList);
         $itemList = $this->outboundList->getItemList();
         $this->set('itemList', $itemList);
-
-        $postal = $this->Address->get()[0]['postal'];
+        $dateItemList = [];
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
@@ -214,23 +215,11 @@ class OutboundController extends MinikuraController
             $addressId = $this->request->data['Outbound']['address_id'];
             $address = $this->Address->find($addressId);
             $postal = $address['postal'];
-        } else {
-            // 初期は選択済み
-            foreach ($boxList as $box) {
-                $this->request->data['box_id'][$box['box_id']] = 1;
-            }
-            foreach ($itemList as $item) {
-                $this->request->data['item_id'][$item['item_id']] = 1;
-            }
+            // お届け希望日と時間
+            $dateItemList = $this->getDatetime($postal);
         }
-        // お届け希望日と時間
-        $r = $this->DatetimeDeliveryOutbound->apiGet(['postal' => $postal]);
-        if (!empty($res->error_message)) {
-            $this->Flash->set($res->error_message);
-        }
-        $this->set('dateItemList', $r->results);
-
-        CakeSession::delete(self::MODEL_NAME . 'FORM');
+        $this->set('dateItemList', $dateItemList);
+        // CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
     /**
@@ -238,33 +227,21 @@ class OutboundController extends MinikuraController
      */
     public function confirm()
     {
+        $boxList = $this->outboundList->getBoxList();
+        $this->set('boxList', $boxList);
+        $itemList = $this->outboundList->getItemList();
+        $this->set('itemList', $itemList);
+        $dateItemList = [];
+
         if ($this->request->is('post')) {
             $data = $this->request->data;
-            $boxList = [];
-            $itemList = [];
-
-            // box
-            $boxIdList = Hash::get($data, 'box_id');
-            if (is_array($boxIdList)) {
-                $ids = array_keys($boxIdList);
-                $boxList = $this->InfoBox->apiGetResultsWhere([], ['box_id' => $ids]);
-            }
-            $this->set('boxList', $boxList);
-            // item
-            $itemIdList = Hash::get($data, 'item_id');
-            if (is_array($itemIdList)) {
-                $ids = array_keys($itemIdList);
-                $itemList = $this->InfoItem->apiGetResultsWhere([], ['item_id' => $ids]);
-            }
-            $this->set('itemList', $itemList);
-            // unset
-            unset($data['box_id']);
-            unset($data['item_id']);
 
             // product
             $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
             // お届け先
             $addressId = $data['Outbound']['address_id'];
+            $address = $this->Address->find($addressId);
+            $postal = $address['postal'];
 
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 
@@ -278,6 +255,12 @@ class OutboundController extends MinikuraController
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
             } else {
+                // お届け希望日と時間
+                $dateItemList = [];
+                if (!empty($postal)) {
+                    $dateItemList = $this->getDatetime($postal);
+                }
+                $this->set('dateItemList', $dateItemList);
                 return $this->render('index');
             }
         }

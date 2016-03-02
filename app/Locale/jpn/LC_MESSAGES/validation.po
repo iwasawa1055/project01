@@ -53,9 +53,6 @@ msgstr "住所"
 msgid "address2"
 msgstr "番地"
 
-msgid "address2"
-msgstr "番地"
-
 msgid "address3"
 msgstr "建物名"
 
@@ -92,6 +89,14 @@ msgstr "オプション"
 msgid "carrier"
 msgstr "配送業者"
 
+msgid "outboud_address"
+msgstr "お届け先住所"
+
+msgid "outboud_datetime"
+msgstr "お届け希望日と時間帯"
+
+msgid "product"
+msgstr "商品"
 
 
 # Validation

@@ -1,4 +1,5 @@
 <?php $this->Html->script('minikura/outbound', ['block' => 'scriptMinikura']); ?>
+<?php $noSelect = (count($itemList) === 0 && count($boxList) === 0)  ?>
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i>取り出し</h1>
@@ -9,6 +10,11 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
+        <?php if ($noSelect) : ?>
+        <div class="col-lg-12">
+          <?php echo $this->element('List/empty'); ?>
+        </div>
+        <?php endif; ?>
         <div class="col-lg-12">
           <?php if (!empty($itemList)) : ?>
           <h2>取り出すアイテム</h2>
@@ -29,26 +35,36 @@
             <!--loop end-->
             <?php endforeach; ?>
           </div>
+          <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p']) ?>
         </div>
-          <div class="col-lg-12">
+        <div class="col-lg-12">
           <?php if (!empty($boxList)) : ?>
-            <h2>取り出すボックス</h2>
+          <h2>取り出すボックス</h2>
           <?php endif; ?>
-            <div class="row box-list">
-              <?php foreach ($boxList as $box): ?>
-              <!--loop-->
-              <div class="col-lg-12">
-                <div class="panel panel-default">
-                  <?php echo $this->element('List/box_body_outbound', ['box' => $box]); ?>
-                  <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
-                </div>
+          <div class="row box-list">
+            <?php foreach ($boxList as $box): ?>
+            <!--loop-->
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                <?php echo $this->element('List/box_body_outbound', ['box' => $box]); ?>
+                <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
               </div>
-              <!--loop end-->
-              <?php endforeach; ?>
             </div>
+            <!--loop end-->
+            <?php endforeach; ?>
           </div>
+          <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p']) ?>
         </div>
+      </div>
 
+        <?php if ($noSelect) : ?>
+          <span class="col-lg-6 col-md-6 col-xs-12">
+            <a class="btn btn-primary btn-lg btn-block" href="/outbound/item">アイテムを選択に戻る</a>
+          </span>
+          <span class="col-lg-6 col-md-6 col-xs-12">
+            <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを選択に戻る</a>
+          </span>
+        <?php else : ?>
         <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div class="form-group col-lg-12">
           <label>お届け先住所</label>
@@ -71,6 +87,7 @@
         </span>
       </div>
       <?php echo $this->Form->end(); ?>
+      <?php endif; ?>
     </div>
   </div>
 </div>
