@@ -72,8 +72,6 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_MONO];
         } elseif ($product === 'cleaning') {
             $productCd = [PRODUCT_CD_CLEANING_PACK];
-        } elseif ($product === 'outbounditem') {
-            $productCd = [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK];
         }
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,

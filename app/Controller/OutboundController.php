@@ -117,7 +117,11 @@ class OutboundController extends MinikuraController
         }
 
         // 表示
-        $list = $this->InfoBox->getListForServiced('outbounditem', [], false);
+        $where = [
+            'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK],
+        ];
+        $list = $this->InfoBox->apiGetResultsWhere([], $where);
         $keyList = array_keys($outMonoList);
         // 選択フラグ
         foreach ($list as &$box) {
