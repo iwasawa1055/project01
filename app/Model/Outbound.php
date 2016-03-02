@@ -23,13 +23,35 @@ class Outbound extends ApiModel
     public function buildParamProduct($boxList = [], $itemList = []) {
         $list = [];
         foreach ($boxList as $box) {
-            $list[] = "${box['product_cd']}:${box['box_id']}";
+            if ($box['product_cd'] === PRODUCT_CD_MONO || $box['product_cd'] === PRODUCT_CD_CLEANING_PACK) {
+                $this->buildParamProductMono($list, $box);
+            } else {
+                $list[] = "${box['product_cd']}:${box['box_id']}";
+            }
         }
         foreach ($itemList as $item) {
             $box = $item['box'];
             $list[] = "${box['product_cd']}:${item['box_id']}:${item['item_id']}";
         }
         return implode(',', $list);
+    }
+
+    /**
+     * MONOなどをボックスごと出庫する場合はアイテムを展開する
+     * @param  [type] $list [description]
+     * @param  [type] $box  [description]
+     * @return [type]       [description]
+     */
+    private function buildParamProductMono(&$list, $box) {
+        $model = new InfoItem();
+        $monoList = $model->apiGetResultsWhere([], [
+            'box_id' => $box['box_id'],
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE * 1]
+        ]);
+        foreach ($monoList as $item) {
+            $box = $item['box'];
+            $list[] = "${box['product_cd']}:${item['box_id']}:${item['item_id']}";
+        }
     }
 
     public $validate = [
