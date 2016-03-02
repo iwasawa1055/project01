@@ -62,6 +62,7 @@ if ($action === 'customer_edit') {
                 <?php echo $this->Form->input('CustomerAddress.firstname', ['class' => "form-control", 'placeholder'=>'名', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.firstname', null, ['wrap' => 'p']) ?>
             </div>
+          </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
                 <?php if ($action === 'customer_add'): ?>
                 <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add"> クリア </a>
@@ -73,7 +74,6 @@ if ($action === 'customer_edit') {
             <span class="col-lg-6 col-md-6 col-xs-12">
                 <button type="submit" class="btn btn-danger btn-lg btn-block">確認</button>
             </span>
-          </div>
         </div>
         <?php echo $this->Form->end(); ?>
       </div>

@@ -89,11 +89,12 @@ class AddressController extends MinikuraController
             return $this->redirect('/customer/address/');
         }
 
+        $this->set('address_id', $this->request->data[self::MODEL_NAME]['address_id']);
+
         if ($this->request->is('get')) {
 
             // data from session
             $this->CustomerAddress->set($this->request->data);
-            $this->set('address_id', $this->request->data[self::MODEL_NAME]['address_id']);
             return $this->render('customer_add');
         } elseif ($this->request->is('post')) {
 
