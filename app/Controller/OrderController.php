@@ -16,19 +16,32 @@ class OrderController extends MinikuraController
     {
         parent::beforeFilter();
 
+        // 法人口座未登録用遷移
+        $actionCannot = 'cannot';
+        if ($this->action !== $actionCannot && !$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
+            return $this->redirect(['action' => $actionCannot]);
+        }
+
         $this->Order = $this->Components->load('Order');
         $this->Order->init($this->Customer->getToken()['division']);
         $this->loadModel(self::MODEL_NAME_CARD);
         $this->loadModel(self::MODEL_NAME_DATETIME);
         $this->set('validErrors', []);
 
-        // 仮登録か
-        if (!$this->Customer->isEntry()) {
-            // 配送先
-            $this->set('address', $this->Address->get($this->Customer->isPrivateCustomer()));
-
-        }
+        // 配送先
+        $this->set('address', $this->Address->get());
         $this->set('default_payment', $this->Customer->getDefaultCard());
+    }
+
+    /**
+     * アクセス拒否
+     */
+    protected function isAccessDeny()
+    {
+        if (!$this->Customer->canOrderKit() && $this->action === 'complete') {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -222,5 +235,8 @@ class OrderController extends MinikuraController
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
+    }
+    public function cannot()
+    {
     }
 }

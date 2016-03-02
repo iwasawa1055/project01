@@ -197,7 +197,7 @@ class CustomerComponent extends Component
         return null;
     }
 
-    public function canOrder()
+    public function canOrderKit()
     {
         if (!$this->isEntry() &&
             ($this->hasCreditCard() || $this->getCorporatePayment() === ACCOUNT_SITUATION_REGISTRATION)) {
@@ -207,11 +207,11 @@ class CustomerComponent extends Component
     }
     public function canInbound()
     {
-        return $this->canOrder();
+        return $this->canOrderKit();
     }
     public function canOutbound()
     {
-        return $this->canOrder();
+        return $this->canOrderKit();
     }
 
     public function setTokenAndSave($data)

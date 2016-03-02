@@ -26,6 +26,14 @@ class InboundBoxController extends MinikuraController
     }
 
     /**
+     * アクセス拒否
+     */
+    protected function isAccessDeny()
+    {
+        return !$this->Customer->canInbound();
+    }
+
+    /**
      *
      */
     public function getInboundDatetime()

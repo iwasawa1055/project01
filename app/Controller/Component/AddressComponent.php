@@ -11,31 +11,24 @@ class AddressComponent extends Component
 
     private $list = null;
 
+    public function initialize(Controller $controller) {
+        $this->Controller = $controller;
+	}
+
     public function get($isPrivateCustomer = true)
     {
+        if ($this->Controller->Customer->isEntry()) {
+            return [];
+        }
         if (empty($this->list)) {
             $ca = new CustomerAddress();
             $this->list = $ca->apiGetResults();
 
-            if ($isPrivateCustomer) {
-                // 契約情報を先頭に追加
-                $info = new CustomerInfo();
-                $res = $info->apiGet();
-                if ($res->isSuccess() && count($res->results) === 1) {
-                    $new['address_id'] = self::CUSTOMER_INFO_ADDRESS_ID;
-                    $this->copy($res->results[0], $new);
-                    array_unshift($this->list, $new);
-                }
-            } else {
-                // 契約情報を先頭に追加
-                $info = new CorporateInfo();
-                $res = $info->apiGet();
-                if ($res->isSuccess() && count($res->results) === 1) {
-                    $new['address_id'] = self::CUSTOMER_INFO_ADDRESS_ID;
-                    $this->copy_corporate($res->results[0], $new);
-                    array_unshift($this->list, $new);
-                }
-            }
+            // 契約情報を先頭に追加
+            $info = $this->Controller->Customer->getInfo();
+            $this->copy($info, $new);
+            $new['address_id'] = self::CUSTOMER_INFO_ADDRESS_ID;
+            array_unshift($this->list, $new);
         }
         return $this->list;
     }
@@ -58,24 +51,17 @@ class AddressComponent extends Component
     }
     private function copy($from, &$to)
     {
-        $to['lastname'] = $from['lastname'];
-        $to['lastname_kana'] = $from['lastname_kana'];
-        $to['firstname'] = $from['firstname'];
-        $to['firstname_kana'] = $from['firstname_kana'];
-        $to['tel1'] = $from['tel1'];
-        $to['postal'] = $from['postal'];
-        $to['pref'] = $from['pref'];
-        $to['address1'] = $from['address1'];
-        $to['address2'] = $from['address2'];
-        $to['address3'] = $from['address3'];
-        return $to;
-    }
-    private function copy_corporate($from, &$to)
-    {
-        $to['lastname'] = $from['company_name'];
-        $to['lastname_kana'] = $from['company_name_kana'];
-        $to['firstname'] = $from['staff_name'];
-        $to['firstname_kana'] = $from['staff_name_kana'];
+        if ($this->Controller->Customer->isPrivateCustomer()) {
+            $to['lastname'] = $from['lastname'];
+            $to['lastname_kana'] = $from['lastname_kana'];
+            $to['firstname'] = $from['firstname'];
+            $to['firstname_kana'] = $from['firstname_kana'];
+        } else {
+            $to['lastname'] = $from['company_name'];
+            $to['lastname_kana'] = $from['company_name_kana'];
+            $to['firstname'] = $from['staff_name'];
+            $to['firstname_kana'] = $from['staff_name_kana'];
+        }
         $to['tel1'] = $from['tel1'];
         $to['postal'] = $from['postal'];
         $to['pref'] = $from['pref'];

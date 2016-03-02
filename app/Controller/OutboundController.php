@@ -6,8 +6,6 @@ App::uses('Outbound', 'Model');
 
 class OutboundController extends MinikuraController
 {
-    // public $components = array('Address');
-
     const MODEL_NAME = 'Outbound';
 
     private $outboundList = [];
@@ -18,6 +16,12 @@ class OutboundController extends MinikuraController
     public function beforeFilter()
     {
         parent::beforeFilter();
+
+        $actionCannot = 'cannot';
+        if ($this->action !== $actionCannot && !$this->Customer->canOutbound()) {
+            return $this->redirect(['action' => $actionCannot]);
+        }
+
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
@@ -28,6 +32,14 @@ class OutboundController extends MinikuraController
 
         // 取り出しリスト
         $this->outboundList = OutboundList::restore();
+    }
+
+    /**
+     * アクセス拒否
+     */
+    protected function isAccessDeny()
+    {
+        return !$this->Customer->canOutbound();
     }
 
     /**

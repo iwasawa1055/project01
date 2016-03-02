@@ -7,8 +7,6 @@ class InfoController extends MinikuraController
     const MODEL_NAME = 'CustomerInfo';
     public $modelName = null;
 
-    protected $denyEntry = true;
-
     /**
      * 制御前段処理.
      */
@@ -16,6 +14,23 @@ class InfoController extends MinikuraController
     {
         parent::beforeFilter();
         $this->set('action', $this->action);
+
+        // アクセス制御
+        if ($this->Customer->isEntry() && $this->action === 'customer_edit') {
+            return $this->deny();
+        } else if (!$this->Customer->isEntry() && $this->action === 'customer_add') {
+            return $this->deny();
+        }
+    }
+
+    protected function isAccessDeny()
+    {
+        if ($this->Customer->isEntry() && $this->action === 'customer_edit') {
+            return true;
+        } else if (!$this->Customer->isEntry() && $this->action === 'customer_add') {
+            return true;
+        }
+        return false;
     }
 
     private function setRequestDataFromSession() {
