@@ -37,9 +37,6 @@ class ApiCachedModel extends ApiModel
         foreach ($apiRes as $a) {
             $notMatch = false;
             foreach ($where as $key => $value) {
-                if (empty($value)) {
-                    continue;
-                }
                 if (!is_array($value)) {
                     $value = [$value];
                 }

@@ -70,7 +70,6 @@ msgid "newsletter"
 msgstr "配信希望"
 
 
-
 # Validation
 msgid "notBlank"
 msgstr "%sは必須です"
@@ -89,3 +88,6 @@ msgstr "%sは%d文字以下です"
 
 msgid "isFwKana"
 msgstr "%sは全角カタカナで入力してください"
+
+msgid "select"
+msgstr "%sを選択してください"

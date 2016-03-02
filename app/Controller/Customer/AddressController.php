@@ -36,10 +36,12 @@ class AddressController extends MinikuraController
             $this->request->data[self::MODEL_NAME] = $data;
             CakeSession::delete(self::MODEL_NAME);
         } else if ($this->action === 'customer_edit' && empty($step)) {
+            // address_idパラメータから復元
             $addressId = Hash::get($this->request->query, 'address_id');
             $data = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
             $this->request->data[self::MODEL_NAME] = $data;
         } else if ($this->action === 'customer_delete' && $step === 'confirm') {
+            // address_idパラメータから復元
             $addressId = Hash::get($this->request->data, 'address_id');
             $data = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
             $this->request->data[self::MODEL_NAME] = $data;
@@ -82,6 +84,11 @@ class AddressController extends MinikuraController
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
 
+        if (empty($this->request->data[self::MODEL_NAME])) {
+            $this->Flash->set(__d('validation', 'select', __('address')));
+            return $this->redirect('/customer/address/');
+        }
+
         if ($this->request->is('get')) {
 
             // data from session
@@ -115,10 +122,13 @@ class AddressController extends MinikuraController
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
 
+        if (empty($this->request->data[self::MODEL_NAME])) {
+            $this->Flash->set(__d('validation', 'select', __('address')));
+            return $this->redirect('/customer/address/');
+        }
+
         if ($this->request->is('post')) {
-
             $this->CustomerAddress->set($this->request->data);
-
             if ($step === 'confirm') {
                 CakeSession::write(self::MODEL_NAME, $this->CustomerAddress->toArray());
                 return $this->render('customer_confirm');

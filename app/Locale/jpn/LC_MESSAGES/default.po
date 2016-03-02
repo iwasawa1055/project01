@@ -5,6 +5,10 @@ msgstr "大変申し訳ございません。お客様は現在ご利用頂けな
 msgid "cannot_order_kit"
 msgstr "大変申し訳ございません。お客様は現在ボックス購入できない状態でございます。お手数をお掛けしますが、詳細はご問い合わせください。"
 
+msgid "address"
+msgstr "お届け先"
+
+
 msgid "empty_session_data"
 msgstr "もう一度実施してください。"
 
