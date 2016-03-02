@@ -11,7 +11,9 @@
       <div class="panel-body">
         <div class="row">
         <div class="col-lg-12">
+          <?php if (!empty($itemList)) : ?>
           <h2>取り出すアイテム</h2>
+          <?php endif; ?>
           <div class="row box-list">
             <?php foreach ($itemList as $item): ?>
             <?php
@@ -46,7 +48,9 @@
           </div>
         </div>
           <div class="col-lg-12">
+          <?php if (!empty($boxList)) : ?>
             <h2>取り出すボックス</h2>
+          <?php endif; ?>
             <div class="row box-list">
               <?php foreach ($boxList as $box): ?>
               <?php
