@@ -65,7 +65,7 @@ class InfoBox extends ApiCachedModel
     public function getListForServiced($product = null, $sortKey = [], $withOutboudDone = true)
     {
         // productCd
-        $productCd = [];
+        $productCd = null;
         if ($product === 'hako') {
             $productCd = [PRODUCT_CD_HAKO];
         } elseif ($product === 'mono') {
@@ -84,8 +84,11 @@ class InfoBox extends ApiCachedModel
         if ($withOutboudDone) {
             $okStatus[] = BOXITEM_STATUS_OUTBOUND_DONE;
         }
-
-        $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus, 'product_cd' => $productCd]);
+        $where = ['box_status' => $okStatus, 'product_cd' => $productCd];
+        if (empty($where['product_cd'])) {
+            unset($where['product_cd']);
+        }
+        $list = $this->apiGetResultsWhere([], $where);
         $this->sort($list, $sortKey, $this->defaultSortKey);
         return $list;
     }
@@ -94,7 +97,7 @@ class InfoBox extends ApiCachedModel
     // 出庫画面で表示
     public function getListForOutbound($product = null)
     {
-        $productCd = [];
+        $productCd = null;
         if ($product === 'hako') {
             $productCd = [PRODUCT_CD_HAKO];
         } elseif ($product === 'mono') {
@@ -103,7 +106,11 @@ class InfoBox extends ApiCachedModel
         $okStatus = [
             BOXITEM_STATUS_INBOUND_DONE,
         ];
-        $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus, 'product_cd' => $productCd]);
+        $where = ['box_status' => $okStatus, 'product_cd' => $productCd];
+        if (empty($where['product_cd'])) {
+            unset($where['product_cd']);
+        }
+        $list = $this->apiGetResultsWhere([], $where);
         $this->sort($list, [], $this->defaultSortKey);
         return $list;
     }

@@ -29,7 +29,6 @@ class InfoItem extends ApiCachedModel
     // 入庫済み一覧
     public function getListForServiced($sortKey = [], $where = [], $withOutboudDone = true)
     {
-
         $where['item_status'] = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
             BOXITEM_STATUS_INBOUND_DONE * 1,
