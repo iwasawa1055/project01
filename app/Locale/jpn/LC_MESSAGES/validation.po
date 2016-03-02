@@ -26,7 +26,6 @@ msgstr "お問い合わせ種別"
 msgid "contact_text"
 msgstr "お問い合わせ内容"
 
-
 msgid "lastname"
 msgstr "姓"
 
@@ -69,6 +68,31 @@ msgstr "生年月日"
 msgid "newsletter"
 msgstr "配信希望"
 
+msgid "inbound_delivery_carrier"
+msgstr "預け入れ方法"
+
+msgid "pickup_address"
+msgstr "集荷の住所"
+
+msgid "pickup_date"
+msgstr "集荷の日程"
+
+msgid "pickup_time"
+msgstr "集荷の時間"
+
+msgid "box"
+msgstr "ボックス"
+
+msgid "box_name"
+msgstr "ボックス名"
+
+msgid "box_option"
+msgstr "オプション"
+
+msgid "carrier"
+msgstr "配送業者"
+
+
 
 # Validation
 msgid "notBlank"
@@ -84,7 +108,7 @@ msgid "confirm"
 msgstr "%sが一致していません"
 
 msgid "maxLength"
-msgstr "%sは%d文字以下です"
+msgstr "%sは%d文字以内で入力してください"
 
 msgid "isFwKana"
 msgstr "%sは全角カタカナで入力してください"

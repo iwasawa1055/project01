@@ -18,4 +18,14 @@ class InboundManual extends ApiModel
         (new InfoBox())->deleteCache();
     }
 
+
+    public $validate = [
+        'box' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['select', 'box'],
+            ],
+        ],
+    ];
 }

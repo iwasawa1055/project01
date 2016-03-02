@@ -1,3 +1,8 @@
+<?php
+if (!empty($validErrors)) {
+    $this->Form->validationErrors = $validErrors;
+}
+?>
 <?php $this->Html->script('minikura/inboundbox', ['block' => 'scriptMinikura']); ?>
 <div class="row">
       <div class="col-lg-12">
@@ -54,18 +59,14 @@
                               <button class="btn btn-danger btn-md btn-block btn-detail inbound-btn"></button>
                           </div>
                         </div>
+                        <?php echo $this->Form->error("box_list.${box['box_id']}.title", null, ['wrap' => 'p']) ?>
+                        <?php echo $this->Form->error("box_list.${box['box_id']}.option", null, ['wrap' => 'p']) ?>
                       </div>
-                      <div class="panel-footer">
-                        <div class="row">
-                          <div class="col-lg-12 col-md-12 col-sm-12">
-                            <p class="box-list-caption"><span>商品名</span><?php echo $box['product_name'] ?></p>
-                            <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id'] ?></p>
-                          </div>
-                        </div>
-                      </div>
+                      <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
                     </div>
                   </div>
                   <?php endforeach; ?>
+                  <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p']) ?>
                   <!--loop end-->
                 </div>
               </div>

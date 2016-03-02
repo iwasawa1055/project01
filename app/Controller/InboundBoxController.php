@@ -3,6 +3,7 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('DatePrivate', 'Model');
 App::uses('TimePrivate', 'Model');
+App::uses('InboundSelectedBox', 'Model');
 
 class InboundBoxController extends MinikuraController
 {
@@ -61,6 +62,7 @@ class InboundBoxController extends MinikuraController
             $this->set('dateList', $this->Inbound->date());
             $this->set('timeList', $this->Inbound->time());
         }
+        CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
@@ -74,30 +76,56 @@ class InboundBoxController extends MinikuraController
             return $this->render('add');
         }
 
-        // TODO: box_listをチェック
-        $box = '';
-        foreach ($data['box_list'] as $item) {
-            if (!empty($item['checkbox'])) {
-                $box .= InboundComponent::createBoxParam($item) . ',';
-            }
-        }
-        $data['box'] = rtrim($box, ',');
+        $dataBoxList = $data['box_list'];
         unset($data['box_list']);
 
-        // お届け先情報
-        $data = $this->Address->merge($data['address_id'], $data);
-        $this->Inbound->init($data);
-        $model = $this->Inbound->model($data);
+        $validErrors = [];
 
-        if (empty($model)) {
-            return $this->render('add');
+        // 選択されたボックスを処理
+        $selectedList = [];
+        foreach ($dataBoxList as $item) {
+            if (!empty($item['checkbox'])) {
+                $boxModel = new InboundSelectedBox();
+                $boxModel->set([$boxModel->getModelName() => $item]);
+                if (!$boxModel->validates()) {
+                    $validErrors['box_list'][$item['box_id']] = $boxModel->validationErrors;
+                }
+                $selectedList[] = InboundComponent::createBoxParam($item);
+            }
         }
-        if ($model->validates()) {
-            CakeSession::write(self::MODEL_NAME, $model->data);
-            CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
+        // 選択なしはエラー表示
+        if (empty($selectedList)) {
+            $validErrors['Inbound']['box'] = __d('validation', 'select', __d('validation', 'box'));
+        }
+        $data['box'] = implode(',', $selectedList);
+
+        // 預け入れ方法入力チェック
+        if (empty($data['delivery_carrier'])) {
+            $validErrors['Inbound']['delivery_carrier'] = __d('validation', 'notBlank', __d('validation', 'inbound_delivery_carrier'));
+        } else {
+
+            $this->Inbound->init($data);
             $this->set('dateList', $this->Inbound->date());
             $this->set('timeList', $this->Inbound->time());
-        } else {
+
+            // モデル取得
+            $data = $this->Address->merge($data['address_id'], $data);
+            $model = $this->Inbound->model($data);
+            if (empty($model)) {
+                $this->Flash->set(__('empty_session_data'));
+                return $this->redirect(['action' => 'add']);
+            }
+
+            if ($model->validates()) {
+                CakeSession::write(self::MODEL_NAME, $model->data);
+                CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
+            } else {
+                $validErrors['Inbound'] = $model->validationErrors;
+            }
+        }
+
+        if (!empty($validErrors)) {
+            $this->set('validErrors', $validErrors);
             return $this->render('add');
         }
     }
