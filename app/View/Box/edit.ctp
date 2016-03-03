@@ -17,15 +17,15 @@
               <div class="panel panel-default">
                 <div class="panel-body">
                   <div class="row">
-                    <div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                       <h3>
                         <?php echo $this->Form->input('Box.box_name', ['class' => "form-control", 'error' => false]); ?>
                       </h3>
                       <?php echo $this->Form->error('Box.box_name', null, ['wrap' => 'p']) ?>
                       <p class="box-list-caption"><span>写真撮影</span>あり</p>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12">
-                      <?php echo $this->Form->textarea('Box.box_note', ['class' => "form-control box_note", 'rows' => 5, 'error' => false]); ?>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <?php echo $this->Form->textarea('Box.box_note', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
                       <?php echo $this->Form->error('Box.box_note', null, ['wrap' => 'p']) ?>
                     </div>
                   </div>
