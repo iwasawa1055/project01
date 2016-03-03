@@ -10,7 +10,4 @@ class ImageItem extends ApiCachedModel
     {
         parent::__construct(self::SESSION_CACHE_KEY, 300, 'ImageItem', '/image_item');
     }
-
-    public $validate = [
-    ];
 }

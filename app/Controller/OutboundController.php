@@ -290,9 +290,9 @@ class OutboundController extends MinikuraController
             }
             // 取り出しリストクリア
             OutboundList::delete();
-            InfoBox::deleteAllCache();
-            InfoItem::deleteAllCache();
-            Announcement::deleteAllCache();
+            InfoBox::deleteCache();
+            InfoItem::deleteCache();
+            Announcement::deleteCache();
         } else {
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);

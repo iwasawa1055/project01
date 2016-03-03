@@ -49,12 +49,9 @@ class LoginController extends MinikuraController
     {
         $this->loadModel('CustomerLogin');
         $this->CustomerLogin->logout();
-
         // セッション値をクリア
-        ApiCachedModel::deleteAllCache();
-        OutboundList::delete();
-        CustomerData::delete();
+        $this->Session->destroy();
 
-        return $this->redirect('/login');
+        return $this->redirect(['controller' => 'login', 'action' => 'index']);
     }
 }

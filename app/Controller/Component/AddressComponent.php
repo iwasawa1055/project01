@@ -15,7 +15,7 @@ class AddressComponent extends Component
         $this->Controller = $controller;
 	}
 
-    public function get($isPrivateCustomer = true)
+    public function get()
     {
         if ($this->Controller->Customer->isEntry()) {
             return [];
