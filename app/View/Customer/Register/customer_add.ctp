@@ -1,7 +1,7 @@
   <?php if (!empty($code))  : ?>
     <div class="row">
       <div class="col-lg-12" align="center">
-        <img src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
+        <img class="alliance" src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
       </div>
     </div>
   <?php endif; ?>

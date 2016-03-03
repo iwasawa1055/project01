@@ -66,3 +66,10 @@ p.error-message::before {
   font-size: 1.2em;
   content: '\f06a\0020\0020';
 }
+
+.alliance {
+  width: 100%;
+  height: 100%;
+  max-width: 800px;
+  max-height: 180px;
+}
