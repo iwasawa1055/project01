@@ -31,7 +31,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-	Configure::write('debug', 2);
+    Configure::write('debug', 2);
 
 /**
  * Configure the Error handler used to handle errors for your application. By default
@@ -48,12 +48,12 @@
  *
  * @see ErrorHandler for more information on error handling and configuration.
  */
-	Configure::write('Error', array(
-		// 'handler' => 'AppErrorHandler::handle',
-		'handler' => 'ErrorHandler::handleError',
-		'level' => E_ALL & ~E_DEPRECATED,
-		'trace' => true
-	));
+    Configure::write('Error', array(
+        // 'handler' => 'AppErrorHandler::handle',
+        'handler' => 'ErrorHandler::handleError',
+        'level' => E_ALL & ~E_DEPRECATED,
+        'trace' => true
+    ));
 
 /**
  * Configure the Exception handler used for uncaught exceptions. By default,
@@ -75,17 +75,17 @@
  *
  * @see ErrorHandler for more information on exception handling and configuration.
  */
-	Configure::write('Exception', array(
-		'handler' => 'AppExceptionHandler::handle',
+    Configure::write('Exception', array(
+        'handler' => 'AppExceptionHandler::handle',
         // 'handler' => 'ErrorHandler::handleException',
-		'renderer' => 'ExceptionRenderer',
-		'log' => true
-	));
+        'renderer' => 'ExceptionRenderer',
+        'log' => true
+    ));
 
 /**
  * Application wide charset encoding
  */
-	Configure::write('App.encoding', 'UTF-8');
+    Configure::write('App.encoding', 'UTF-8');
 
 /**
  * To configure CakePHP *not* to use mod_rewrite and to
@@ -106,7 +106,7 @@
  * included primarily as a development convenience - and
  * thus not recommended for production applications.
  */
-	//Configure::write('App.baseUrl', env('SCRIPT_NAME'));
+    //Configure::write('App.baseUrl', env('SCRIPT_NAME'));
 
 /**
  * To configure CakePHP to use a particular domain URL
@@ -115,25 +115,25 @@
  * will override the automatic detection of full base URL and can be
  * useful when generating links from the CLI (e.g. sending emails)
  */
-	//Configure::write('App.fullBaseUrl', 'http://example.com');
+    //Configure::write('App.fullBaseUrl', 'http://example.com');
 
 /**
  * Web path to the public images directory under webroot.
  * If not set defaults to 'img/'
  */
-	//Configure::write('App.imageBaseUrl', 'img/');
+    //Configure::write('App.imageBaseUrl', 'img/');
 
 /**
  * Web path to the CSS files directory under webroot.
  * If not set defaults to 'css/'
  */
-	//Configure::write('App.cssBaseUrl', 'css/');
+    //Configure::write('App.cssBaseUrl', 'css/');
 
 /**
  * Web path to the js files directory under webroot.
  * If not set defaults to 'js/'
  */
-	//Configure::write('App.jsBaseUrl', 'js/');
+    //Configure::write('App.jsBaseUrl', 'js/');
 
 /**
  * Uncomment the define below to use CakePHP prefix routes.
@@ -151,13 +151,13 @@
  *	`manager_index()` and `/manager/controller/index`
  *
  */
-	Configure::write('Routing.prefixes', ['customer', 'paymentng']);
+    Configure::write('Routing.prefixes', ['customer', 'paymentng']);
 
 /**
  * Turn off all caching application-wide.
  *
  */
-	//Configure::write('Cache.disable', true);
+    //Configure::write('Cache.disable', true);
 
 /**
  * Enable cache checking.
@@ -168,7 +168,7 @@
  * or in each action using $this->cacheAction = true.
  *
  */
-	//Configure::write('Cache.check', true);
+    //Configure::write('Cache.check', true);
 
 /**
  * Enable cache view prefixes.
@@ -178,7 +178,7 @@
  * for instance. Each version can then have its own view cache namespace.
  * Note: The final cache file name will then be `prefix_cachefilename`.
  */
-	//Configure::write('Cache.viewPrefix', 'prefix');
+    //Configure::write('Cache.viewPrefix', 'prefix');
 
 /**
  * Session configuration.
@@ -218,72 +218,31 @@
  *
  */
 
-	/*
-	// 2015/03 commont out by osada@terrada
-	Configure::write('Session', array(
-		'defaults' => 'php'
-	));
-	*/
+    // クッキーのライフタイム＜セッションタイムアウト時間＜ガベージコレクション
 
-	// TODO: セッション設定
-	Configure::write('Session', array(
-		'defaults' => 'cake',
-		//'defaults' => 'cake',
-		//* 要確認 相談
-		// 'cookie' => 'OPEMINIKURA',
-		// 'start' => 'Off',
-		// // 12 hours
-		// 'timeout' => '240',
-		// // 10 years
-		// //'timeout' => '5256000',
-		// 'autoRegenerate' => 'Off',
-		// 'checkAgent' => 'Off',
-		// 'ini' => array(
-		// 	//* 要確認 相談
-		// 	'session.name' => 'OPEMINIKURA',
-		// 	//'session.save_path' => '/var/lib/php/session',
-		// 	'session.gc_probability' => 1,
-		// 	'session.gc_divisor' => 10,
-		// 	// GC 4 hours
-		// 	'session.gc_maxlifetime' => 43200,
-		// 	// GC 10 years
-		// 	//'session.gc_maxlifetime' => 315360000,
-		// 	// testing
-		// 	'session.use_trans_sid' => 1,
-		//
-		// 	// php5.5.2 から
-		// 	//'session.use_strict_mode'=> 1,
-		// 	// Cookie Nouse
-		// 	'session.use_cookies' => 'On',
-		// 	'session.use_only_cookies' => 'On',
-		// 	'session.cookie_path' => '/',
-		// 	'session.cookie_domain' => '.minikura.com',
-		// 	'session.cookie_lifetime' => '0',
-		// 	'session.cookie_httponly' => 'On',
-		// 	'session.cookie_secure' => 'On',
-		// 	'session.cache_limiter' => 'nocache',
-		// 	'session.cache_expire' => 0,
-		// 	//'session.bug_compat_42' => 'On',
-		// 	//'session.bug_compat_warn' => 'On',
-		// 	'session.hash_function' => 'sha256',
-		// 	'session.hash_bits_per_character' => 5,
-		// 	'session.referer_check'=> '',
-		// )
-	));
+    // セッション設定
+    //
+    Configure::write('Session', [
+        'defaults' => 'cake',
+        'cookie' => 'MINIKURACOM',  // セッションID名
+        'start' => false,  // 自動開始
+        'autoRegenerate' => true,  // クッキー再生成
+        'timeout' => 30,  // 1day = 1440分
+        'ini' => [
+            "session.cookie_lifetime" => 0,  // ブラウザを閉じたらセッション破棄
+            "session.gc_maxlifetime" => 3600,  // 1day = 86400秒
+        ]
+    ]);
 
 /**
  * A random string used in security hashing methods.
  */
-	// 2015/01 modified by osada@terrada
-	//Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
-	Configure::write('Security.salt', 'LKidaf874DGF94diYd6dTsaddi8Jd2dL3lLm1vK0');
+    Configure::write('Security.salt', 'TxKw7dbsgMnDN7rw7HdMsgnCeseKe9UWUqyqKhGJ');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	// 2015/01 modified by osada@terrada
-	//Configure::write('Security.cipherSeed', '76859309657453542496749683645');
-	Configure::write('Security.cipherSeed', '96754057058423704832507643310');
+    Configure::write('Security.cipherSeed', '53912777133764492090333423704');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
@@ -293,7 +252,7 @@
  * Set to `true` to apply timestamps when debug > 0. Set to 'force' to always enable
  * timestamping regardless of debug value.
  */
-	//Configure::write('Asset.timestamp', true);
+    //Configure::write('Asset.timestamp', true);
 
 /**
  * Compress CSS output by removing comments, whitespace, repeating tags, etc.
@@ -302,7 +261,7 @@
  *
  * To use, prefix the CSS link URL with '/ccss/' instead of '/css/' or use HtmlHelper::css().
  */
-	//Configure::write('Asset.filter.css', 'css.php');
+    //Configure::write('Asset.filter.css', 'css.php');
 
 /**
  * Plug in your own custom JavaScript compressor by dropping a script in your webroot to handle the
@@ -310,20 +269,20 @@
  *
  * To use, prefix your JavaScript link URLs with '/cjs/' instead of '/js/' or use JsHelper::link().
  */
-	//Configure::write('Asset.filter.js', 'custom_javascript_output_filter.php');
+    //Configure::write('Asset.filter.js', 'custom_javascript_output_filter.php');
 
 /**
  * The class name and database used in CakePHP's
  * access control lists.
  */
-	Configure::write('Acl.classname', 'DbAcl');
-	Configure::write('Acl.database', 'default');
+    Configure::write('Acl.classname', 'DbAcl');
+    Configure::write('Acl.database', 'default');
 
 /**
  * Uncomment this line and correct your server timezone to fix
  * any date & time related errors.
  */
-	//date_default_timezone_set('UTC');
+    //date_default_timezone_set('UTC');
 
 /**
  * `Config.timezone` is available in which you can set users' timezone string.
@@ -331,7 +290,7 @@
  * then the value of `Config.timezone` will be used. This feature allows you to set users' timezone just
  * once instead of passing it each time in function calls.
  */
-	//Configure::write('Config.timezone', 'Europe/Paris');
+    //Configure::write('Config.timezone', 'Europe/Paris');
 
 /**
  * Cache Engine Configuration
@@ -411,7 +370,7 @@ $engine = 'File';
 // In development mode, caches should expire quickly.
 $duration = '+999 days';
 if (Configure::read('debug') > 0) {
-	$duration = '+10 seconds';
+    $duration = '+10 seconds';
 }
 
 // Prefix each application on the same server with a different string, to avoid Memcache and APC conflicts.
@@ -422,11 +381,11 @@ $prefix = 'myapp_';
  * object listings, and translation cache files are stored with this configuration.
  */
 Cache::config('_cake_core_', array(
-	'engine' => $engine,
-	'prefix' => $prefix . 'cake_core_',
-	'path' => CACHE . 'persistent' . DS,
-	'serialize' => ($engine === 'File'),
-	'duration' => $duration
+    'engine' => $engine,
+    'prefix' => $prefix . 'cake_core_',
+    'path' => CACHE . 'persistent' . DS,
+    'serialize' => ($engine === 'File'),
+    'duration' => $duration
 ));
 
 /**
@@ -434,9 +393,9 @@ Cache::config('_cake_core_', array(
  * is used to store schema descriptions, and table listings in connections.
  */
 Cache::config('_cake_model_', array(
-	'engine' => $engine,
-	'prefix' => $prefix . 'cake_model_',
-	'path' => CACHE . 'models' . DS,
-	'serialize' => ($engine === 'File'),
-	'duration' => $duration
+    'engine' => $engine,
+    'prefix' => $prefix . 'cake_model_',
+    'path' => CACHE . 'models' . DS,
+    'serialize' => ($engine === 'File'),
+    'duration' => $duration
 ));
