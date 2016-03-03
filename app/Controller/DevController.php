@@ -36,8 +36,8 @@ class DevController extends MinikuraController
         $work = (new DevWorkId())->apiGet(['work_type' => '006']);
         $this->set('work_ids_006', $work->results);
 
-        InfoBox::deleteCache();
         $ib = new InfoBox();
+        $ib->deleteCache();
         $boxList = $ib->apiGetResults();
         $data = [];
         foreach ($boxList as $b) {
@@ -47,8 +47,8 @@ class DevController extends MinikuraController
         $this->set('boxData', $data);
         unset($data);
 
-        InfoItem::deleteCache();
         $ii = new InfoItem();
+        $ii->deleteCache();
         $itemList = $ii->apiGetResults();
         $data = [];
         foreach ($itemList as $b) {
