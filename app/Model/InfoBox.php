@@ -58,7 +58,7 @@ class InfoBox extends ApiCachedModel
         ];
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
-        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
+        HashSorter::sort($list, $this->defaultSortKey);
         return $list;
     }
 
