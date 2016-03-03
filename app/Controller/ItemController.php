@@ -10,8 +10,8 @@ class ItemController extends MinikuraController
         'box_name' => '箱タイトル',
         'item_id' => '個品NO',
         'item_name' => '個品タイトル',
-        'item_status' => 'ステータス',
-        'item_group_cd' => 'カテゴリ'
+        'item_status' => 'ステータス'
+        // 'item_group_cd' => 'カテゴリ'
     ];
     const MODEL_NAME_ITEM_EDIT = 'Item';
 
