@@ -1,6 +1,7 @@
 <?php
 
 App::uses('ApiCachedModel', 'Model');
+App::uses('HashSorter', 'Model');
 
 class InfoBox extends ApiCachedModel
 {
@@ -57,7 +58,7 @@ class InfoBox extends ApiCachedModel
         ];
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
-        $this->sort($list, [], $this->defaultSortKey);
+        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
         return $list;
     }
 
@@ -87,7 +88,7 @@ class InfoBox extends ApiCachedModel
             unset($where['product_cd']);
         }
         $list = $this->apiGetResultsWhere([], $where);
-        $this->sort($list, $sortKey, $this->defaultSortKey);
+        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
         return $list;
     }
 
@@ -109,7 +110,7 @@ class InfoBox extends ApiCachedModel
             unset($where['product_cd']);
         }
         $list = $this->apiGetResultsWhere([], $where);
-        $this->sort($list, [], $this->defaultSortKey);
+        HashSorter::sort($list, $this->defaultSortKey);
         return $list;
     }
 
@@ -138,5 +139,19 @@ class InfoBox extends ApiCachedModel
                 break;
         }
         return $productCd;
+    }
+
+    public function getListLastInbound() {
+        $where = [
+            'box_status' => [
+                BOXITEM_STATUS_INBOUND_DONE,
+                BOXITEM_STATUS_OUTBOUND_START,
+                BOXITEM_STATUS_OUTBOUND_IN_PROGRESS,
+            ]
+        ];
+        $list = $this->apiGetResultsWhere([], $where);
+        $sortKey = ['inbound_date' => false];
+        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
+        return $list;
     }
 }

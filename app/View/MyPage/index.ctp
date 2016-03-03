@@ -41,9 +41,12 @@
         <div class="panel-body">
           <h2>最近預けたアイテム</h2>
           <div class="col-lg-12">
-            <div class="col-lg-12 announcement">
+            <div class="col-lg-12">
               <ul class="tile">
-            <?php foreach ($itemList as $item): ?>
+              <?php if (count($itemList) === 0) : ?>
+                  <?php echo $this->element('List/empty'); ?>
+              <?php endif; ?>
+              <?php foreach ($itemList as $item): ?>
                 <?php $url = '/item/detail/' . $item['item_id']; ?>
                 <!--loop-->
                 <li class="panel panel-default"><a href="<?php echo $url; ?>">
@@ -55,7 +58,7 @@
                   </div>
                 </li>
                 <!--loop end-->
-            <?php endforeach; ?>
+              <?php endforeach; ?>
               </ul>
               <div class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-info btn-md pull-right" href="/item">アイテム一覧を見る</a>
@@ -71,6 +74,9 @@
           <h2>最近預けたボックス</h2>
           <div class="col-lg-12">
             <div class="row box-list">
+              <?php if (count($boxList) === 0) : ?>
+                  <?php echo $this->element('List/empty'); ?>
+              <?php endif; ?>
               <?php foreach ($boxList as $box): ?>
                 <?php $url = '/box/detail/' . $box['box_id']; ?>
                 <!--loop-->

@@ -1,6 +1,8 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('InfoBox', 'Model');
+App::uses('InfoItem', 'Model');
 
 class MyPageController extends MinikuraController
 {
@@ -9,15 +11,14 @@ class MyPageController extends MinikuraController
      */
     public function index()
     {
-        $this->loadModel('InfoBox');
-        $this->loadModel('InfoItem');
-
         // 最近預けたボックス
-        $boxList = $this->InfoBox->getListForServiced();
-        $this->set('boxList', array_slice($boxList, 0, 5));
+        $box = new InfoBox();
+        $list = $box->getListLastInbound();
+        $this->set('boxList', array_slice($list, 0, 5));
 
         // 最近預けたアイテム
-        $itemList = $this->InfoItem->getListForServiced();
-        $this->set('itemList',  array_slice($itemList, 0, 10));
+        $item = new InfoItem();
+        $list = $item->getListLastInbound();
+        $this->set('itemList', array_slice($list, 0, 10));
     }
 }

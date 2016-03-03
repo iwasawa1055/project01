@@ -30,16 +30,6 @@ class AppModel extends Model
         return $this->data[$this->model_name];
     }
 
-    /* sort */
-
-    public function sort(&$list, $sortKey = [], $defaultSortKey = []) {
-        if (is_array($sortKey) && count($sortKey) === 1) {
-            $defaultSortKey = $sortKey;
-        }
-        $sorter = new ArraySorter($defaultSortKey);
-        usort($list, [$sorter, 'cmp']);
-    }
-
     /* paginate */
 
     public function paginateCount($conditions, $recursive)

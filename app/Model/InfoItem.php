@@ -2,6 +2,7 @@
 
 App::uses('ApiCachedModel', 'Model');
 App::uses('ImageItem', 'Model');
+App::uses('HashSorter', 'Model');
 
 class InfoItem extends ApiCachedModel
 {
@@ -42,7 +43,7 @@ class InfoItem extends ApiCachedModel
         $list = $this->apiGetResultsWhere([], $where);
 
         // sort
-        $this->sort($list, $sortKey, $this->defaultSortKey);
+        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
         return $list;
     }
 
@@ -55,6 +56,20 @@ class InfoItem extends ApiCachedModel
             $list[$index]['image_first'] = $imageModel->apiGetResultsFind([], ['item_id' => $item['item_id']]);
             $list[$index]['box'] = $boxModel->apiGetResultsFind([], ['box_id' => $item['box_id']]);
         }
+        return $list;
+    }
+
+    public function getListLastInbound() {
+        $where = [
+            'item_status' => [
+                BOXITEM_STATUS_INBOUND_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_START * 1,
+                BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
+            ]
+        ];
+        $list = $this->apiGetResultsWhere([], $where);
+        $sortKey = ['box.inbound_date' => false];
+        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
         return $list;
     }
 }
