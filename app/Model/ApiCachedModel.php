@@ -14,7 +14,7 @@ class ApiCachedModel extends ApiModel
     public function __construct($sessionKey, $lifetime, $name, $end, $access_point_key = 'minikura_v3')
     {
         $this->sessionKey = self::SESSION_BASE_KEY . '.' . $sessionKey;
-        $this->lifetime = $lifetime;
+        $this->lifetime = $lifetime * 1;
         parent::__construct($name, $end, $access_point_key);
     }
 
@@ -81,6 +81,10 @@ class ApiCachedModel extends ApiModel
         return array_slice($list, $offset, $limit);
     }
 
+    public function apiGet($data = []) {
+        new AppInternalCritical('donot call apiGet() in ApiCachedModel', 500);
+    }
+
     protected function triggerDataChanged() {
         $this->deleteCache();
     }
@@ -91,10 +95,7 @@ class ApiCachedModel extends ApiModel
         $session = CakeSession::read($sessionKey);
         if (!empty($session) && (Hash::get($session, 'arg') === $arg)) {
             $expires = Hash::get($session, 'expires');
-            if (empty($expires) || $expires < time()) {
-                // if ($this->getModelName() == 'Announcement') {
-                //     pr($this->getModelName() . ' cached xx ' . date('H:i:s', $session['expires']) . ' ... ' . date('H:i:s'));
-                // }
+            if (empty($expires) || time() <= $expires) {
                 return Hash::get($session, 'data');
             }
         }
@@ -102,13 +103,14 @@ class ApiCachedModel extends ApiModel
     }
     protected function writeCache($key, $arg, $data)
     {
-        // if ($this->getModelName() == 'Announcement') {
-        //     pr($this->getModelName() . ' writeCache ... ' . date('H:i:s'));
-        // }
         $sessionKey = $this->sessionKey . '.' . $key;
+        $expires = 0;
+        if (!empty($this->lifetime) && 0 < $this->lifetime) {
+            $expires = time() + $this->lifetime;
+        }
         CakeSession::write($sessionKey, [
             'arg' => $arg,
-            'expires' => time() + $this->lifetime,
+            'expires' => $expires,
             'data' => $data
         ]);
     }
