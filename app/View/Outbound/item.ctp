@@ -17,7 +17,7 @@ if (!empty($errorList)) {
           <div class="col-lg-12">
             <h2>取り出すアイテムを選択</h2>
             <?php if (empty($itemList)) : ?>
-              <?php echo $this->element('List/empty'); ?>
+              <?php echo $this->element('List/empty_outbound_item'); ?>
             <?php else: ?>
             <p class="form-control-static col-lg-12">選択した専用ボックスに収納されているアイテムの一覧です。<br />
               取り出すアイテムにチェックを入れて「取り出しリストを確認する」にすすんでください。</p>
