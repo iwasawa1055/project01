@@ -18,12 +18,8 @@ class AddressController extends MinikuraController
 
     public function customer_index()
     {
-        $res = $this->CustomerAddress->apiGet();
-        if (!empty($res->error_message)) {
-            $this->Flash->set($res->error_message);
-            return $this->redirect('/');
-        }
-        $this->set('addressList', $res->results);
+        $res = $this->CustomerAddress->apiGetResults();
+        $this->set('addressList', $res);
     }
 
 
