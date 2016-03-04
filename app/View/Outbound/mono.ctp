@@ -20,7 +20,7 @@ if (!empty($errorList)) {
             <?php echo $this->element('List/empty'); ?>
           <?php else: ?>
             <p class="form-control-static col-lg-12">お預かり済みの専用ボックスの一覧です。<br />
-              取り出すしたいアイテムが入っているボックスの「ボックス選択」にチェックを入れて「内容を確認する」にすすんでください。</p>
+              取り出したいアイテムが入っているボックスの「ボックス選択」にチェックを入れて「内容を確認する」にすすんでください。</p>
           <?php endif; ?>
             <div class="row box-list">
                 <?php foreach ($boxList as $box): ?>
