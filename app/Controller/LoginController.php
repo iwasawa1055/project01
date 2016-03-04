@@ -29,19 +29,24 @@ class LoginController extends MinikuraController
                     return $this->render('index');
                 }
 
+                // セッション値をクリア
+                ApiCachedModel::deleteAllCache();
+
                 // カスタマー情報を取得しセッションに保存
-                // token
                 $this->Customer->setTokenAndSave($res->results[0]);
 
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
 
-                return $this->redirect('/');
+                return $this->redirect(['controller' => 'mypage', 'action' => 'index']);
 
             } else {
                 $this->request->data['CustomerLogin']['password'] = '';
                 return $this->render('index');
             }
+        } else if ($this->Customer->isLogined()) {
+            // ログイン済
+            return $this->redirect(['controller' => 'mypage', 'action' => 'index']);
         }
     }
 
@@ -50,6 +55,7 @@ class LoginController extends MinikuraController
         $this->loadModel('CustomerLogin');
         $this->CustomerLogin->logout();
         // セッション値をクリア
+        ApiCachedModel::deleteAllCache();
         $this->Session->destroy();
 
         return $this->redirect(['controller' => 'login', 'action' => 'index']);
