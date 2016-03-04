@@ -1,6 +1,12 @@
+<?php
+$actionName = '変更';
+if ($action === 'customer_add') {
+    $actionName = '登録';
+}
+?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-truck"></i> お客さま情報変更</h1>
+        <h1 class="page-header"><i class="fa fa-truck"></i> お客さま情報<?php echo $actionName; ?></h1>
       </div>
     </div>
     <div class="row">
@@ -10,7 +16,7 @@
             <div class="row">
             <?php echo $this->Form->create('CustomerInfo', ['url' => ['controller' => 'info', 'action' => $action, 'step' => 'complete']]); ?>
               <div class="col-lg-12">
-                <h2>お客さま情報変更</h2>
+                <h2>お客さま情報<?php echo $actionName; ?></h2>
                 <p class="form-control-static col-lg-12">以下の内容でお客さま情報を保存します。</p>
                 <div class="form-group col-lg-12">
                   <label>郵便番号</label>

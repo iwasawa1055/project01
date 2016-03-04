@@ -3,7 +3,7 @@
 <?php if (!empty($validErrors)) { $this->validationErrors['CustomerInfo'] = $validErrors; } ?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-truck"></i> お客さま情報変更</h1>
+        <h1 class="page-header"><i class="fa fa-truck"></i> お客さま情報登録</h1>
       </div>
     </div>
     <div class="row">
@@ -13,8 +13,8 @@
             <div class="row">
               <?php echo $this->Form->create('CustomerInfo', ['url' => ['controller' => 'info', 'action' => $action, 'step' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12">
-                <h2>お客さま情報変更</h2>
-                <p class="form-control-static col-lg-12">変更されるお客さまの情報をご入力してください。</p>
+                <h2>お客さま情報登録</h2>
+                <p class="form-control-static col-lg-12">登録されるお客さまの情報をご入力してください。</p>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerInfo.postal', ['class' => "form-control search_address_postal", 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.postal', null, ['wrap' => 'p']) ?>
