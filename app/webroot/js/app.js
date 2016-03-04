@@ -27,8 +27,8 @@ $(function() {
     });
 
     var url = window.location;
-    var element = $('ul.nav a').filter(function() {
-        return this.href == url || url.href.indexOf(this.href) == 0;
+    var element = $('.sidebar-nav ul.nav a').filter(function() {
+        return (this.href == url.href) || (url.pathname === '/' && url.href.indexOf(this.href) == 0);
     }).addClass('active').parent().parent().addClass('in').parent();
     if (element.is('li')) {
         element.addClass('active');
