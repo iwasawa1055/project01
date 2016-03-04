@@ -200,5 +200,5 @@ msgstr "ユーザー未入金により現在使用不可"
 msgid "403 Forbidden - customer"
 msgstr "情報が取得できませんでした。"
 
-msgid "Parameter Invalid - used receipt"
+msgid "400 Parameter Invalid - used receipt"
 msgstr "発行済です。"
