@@ -28,7 +28,7 @@
                             <span class="col-xs-12 col-lg-12"><a class="btn btn-warning btn-md btn-block btn-detail disabled">預け入れ中</a>
                             </span>
                           </div>
-                          <div class="col-lg-12 col-md-12 col-xs-12 item-detail-text">
+                          <div class="col-lg-12 col-md-12 col-sm-12 item-detail-text">
                             <?php echo $this->Form->textarea('Item.item_note', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
                             <?php echo $this->Form->error('Item.item_note', null, ['wrap' => 'p']) ?>
                           </div>
