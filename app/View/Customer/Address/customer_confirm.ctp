@@ -19,7 +19,7 @@ if ($action === 'customer_edit') {
         <div class="row">
           <div class="col-lg-12">
             <h2>お届け先<?php echo $actionName; ?></h2>
-            <p class="form-control-static col-lg-12">以下の内容でお届け先情報を保存します。</p>
+            <p class="form-control-static col-lg-12">以下の内容でお届け先情報を<?php echo $actionName; ?>します。</p>
             <div class="form-group col-lg-12">
               <label>郵便番号</label>
               <p>
