@@ -1,58 +1,31 @@
 @charset "utf-8";
 
-.box_select_checkbox input {
-    position: absolute;
-    top: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-}
-.box_select_checkbox input[type="checkbox"] + button:after {
-    content: "ボックス選択"
-}
-.box_select_checkbox input[type="checkbox"]:checked + button {
-    background-color: #727272;
-    border-color: #727272;
-}
-.box_select_checkbox input[type="checkbox"]:checked + button:after {
-    content: "選択解除"
-}
-
+.box_select_checkbox input,
 .outbound_select_checkbox input {
     position: absolute;
     top: 0;
     opacity: 0;
     width: 100%;
     height: 100%;
+    margin: 0px;
 }
-.outbound_select_checkbox input[type="checkbox"] + button:after {
-    content: "取り出しリストに登録"
+.box_select_checkbox input[type="checkbox"] + button:after {
+    content: "ボックス選択"
 }
+.box_select_checkbox input[type="checkbox"]:checked + button,
 .outbound_select_checkbox input[type="checkbox"]:checked + button {
     background-color: #727272;
     border-color: #727272;
 }
+.box_select_checkbox input[type="checkbox"]:checked + button:after,
 .outbound_select_checkbox input[type="checkbox"]:checked + button:after {
     content: "選択解除"
 }
 
-.outbound_mono_select_checkbox input {
-    position: absolute;
-    top: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
+.outbound_select_checkbox input[type="checkbox"] + button:after {
+    content: "取り出しリストに登録"
 }
-.outbound_mono_select_checkbox input[type="checkbox"] + button:after {
-    content: "ボックス選択"
-}
-.outbound_mono_select_checkbox input[type="checkbox"]:checked + button {
-    background-color: #727272;
-    border-color: #727272;
-}
-.outbound_mono_select_checkbox input[type="checkbox"]:checked + button:after {
-    content: "選択解除"
-}
+
 
 p.error-message {
   border: 1px solid #f5e79e;
