@@ -5,12 +5,6 @@ App::uses('MinikuraController', 'Controller');
 class BoxController extends MinikuraController
 {
     const MODEL_NAME = 'InfoBox';
-    const SELECT_SORT_KEY = [
-        'box_id' => '箱NO',
-        'box_name' => '箱タイトル',
-        'product_name' => 'サービス名',
-        'box_status' => 'ステータス'
-    ];
     const MODEL_NAME_BOX_EDIT = 'Box';
 
     /**
@@ -29,16 +23,23 @@ class BoxController extends MinikuraController
 
     private function makeSelectSortUrl()
     {
+        // 並び替え選択
+        $selectSortKeys = [
+            'box_id' => __('box_id'),
+            'box_name' => __('box_name'),
+            'product_name' => __('product_name'),
+            'box_status' => __('box_status')
+        ];
+
         $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud'));
         $product = $this->request->query('product');
         $page = $this->request->query('page');
         $data = [];
-        foreach (self::SELECT_SORT_KEY as $key => $value) {
+        foreach ($selectSortKeys as $key => $value) {
             $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
-            $data[$desc] = $value . '（降順）';
-
+            $data[$desc] = $value . __('select_sort_desc');
             $asc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'asc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
-            $data[$asc] = $value . '（昇順）';
+            $data[$asc] = $value . __('select_sort_asc');
         }
 
         return $data;

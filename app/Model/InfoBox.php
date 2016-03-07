@@ -88,7 +88,7 @@ class InfoBox extends ApiCachedModel
             unset($where['product_cd']);
         }
         $list = $this->apiGetResultsWhere([], $where);
-        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
         return $list;
     }
 
@@ -151,7 +151,7 @@ class InfoBox extends ApiCachedModel
         ];
         $list = $this->apiGetResultsWhere([], $where);
         $sortKey = ['inbound_date' => false];
-        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
         return $list;
     }
 }

@@ -38,3 +38,33 @@ msgstr "取り出し作業中"
 
 msgid "boxitem_status_210"
 msgstr "取り出し済"
+
+msgid "select_sort_desc"
+msgstr "（降順）"
+
+msgid "select_sort_asc"
+msgstr "（昇順）"
+
+msgid "box_id"
+msgstr "ボックスID"
+
+msgid "box_name"
+msgstr "ボックスタイトル"
+
+msgid "item_id"
+msgstr "アイテムID"
+
+msgid "item_name"
+msgstr "アイテムタイトル"
+
+msgid "product_name"
+msgstr "商品名"
+
+msgid "item_status"
+msgstr "ステータス"
+
+msgid "box_status"
+msgstr "ステータス"
+
+msgid "item_group_cd"
+msgstr "カテゴリ"

@@ -43,7 +43,7 @@ class InfoItem extends ApiCachedModel
         $list = $this->apiGetResultsWhere([], $where);
 
         // sort
-        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
         return $list;
     }
 
@@ -69,7 +69,7 @@ class InfoItem extends ApiCachedModel
         ];
         $list = $this->apiGetResultsWhere([], $where);
         $sortKey = ['box.inbound_date' => false];
-        HashSorter::sort($list, array_merge($sortKey, $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
         return $list;
     }
 }
