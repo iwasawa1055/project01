@@ -17,7 +17,7 @@
           <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'add', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'autofocus'=>'autofocus', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerEntry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.email', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
