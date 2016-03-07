@@ -84,7 +84,7 @@ msgid "box"
 msgstr "ボックス"
 
 msgid "box_name"
-msgstr "ボックス名"
+msgstr "ボックスタイトル"
 
 msgid "box_option"
 msgstr "オプション"

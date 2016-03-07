@@ -30,13 +30,8 @@
                   <!--loop-->
                   <?php foreach ($itemList as $item): ?>
                   <li class="panel panel-default">
-                      <a href="/item/detail/<?php echo $item['item_id'] ?>">
-                          <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>">
-                      </a>
-                    <div class="panel-footer">
-                      <p class="box-list-caption"><span>アイテム名</span><?php echo $item['item_name']; ?></p>
-                      <p class="box-list-caption"><span>アイテムID</span><?php echo $item['item_id']; ?></p>
-                    </div>
+                    <?php echo $this->element('List/item_icon_body', ['item' => $item]); ?>
+                    <?php echo $this->element('List/item_icon_footer', ['item' => $item]); ?>
                   </li>
                   <?php endforeach; ?>
                   <!--loop end-->
