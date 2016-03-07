@@ -62,11 +62,13 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
               <?php echo $this->Form->error('OrderKit.mono_num', null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('OrderKit.hako_num', null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('OrderKit.cleaning_num', null, ['wrap' => 'p']) ?>
             </div>
-          <?php if (!$isEntry) : ?>
+            <?php if (!$isEntry) : ?>
             <?php if ($isPrivateCustomer || empty($corporatePayment))  : ?>
             <div class="form-group col-lg-12">
               <label>カード情報</label>
