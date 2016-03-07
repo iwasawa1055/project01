@@ -22,7 +22,9 @@
                         <?php echo $this->Form->input('Box.box_name', ['class' => "form-control", 'error' => false]); ?>
                       </h3>
                       <?php echo $this->Form->error('Box.box_name', null, ['wrap' => 'p']) ?>
-                      <p class="box-list-caption"><span>写真撮影</span>あり</p>
+                      <p class="box-list-caption">
+                          <!-- <span>写真撮影</span>あり -->
+                      </p>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <?php echo $this->Form->textarea('Box.box_note', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
