@@ -65,10 +65,8 @@
         </li>
       </ul>
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-xs-12">
-        <p>Copyright © TERRADA WAREHOUSE COMPANY. All Rights Reserved.</p>
-      </div>
+    <div class="col-lg-12 col-md-12 col-xs-12">
+      <p>Copyright © TERRADA WAREHOUSE COMPANY. All Rights Reserved.</p>
     </div>
   </div>
 </div>
