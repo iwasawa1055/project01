@@ -145,6 +145,7 @@ class CreditCardController extends MinikuraController
         $step = Hash::get($this->request->params, 'step');
 
         if ($this->request->is('get')) {
+            $this->Flash->paymentng_card_edit('');
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
 
@@ -171,9 +172,8 @@ class CreditCardController extends MinikuraController
                 // update
                 $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
                 if (!empty($res->error_message)) {
-                    // TODO: 例外処理
                     $this->Flash->set($res->error_message);
-                    return $this->redirect(['action' => 'edit']);
+                    return $this->redirect(['action' => 'customer_edit']);
                 }
 
                 $this->Flash->paymentng_card_edited('');
