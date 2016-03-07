@@ -110,7 +110,7 @@ class ApiModel extends AppModel
     protected function beforeApiRequest($url, &$params, $method)
     {
         $d = date('H:i:s', time());
-        $d .= ' bigen -> ' . $url;
+        $d .= ' bigen -> ' . $method . ': ' . $url;
         CakeLog::write(DEBUG_LOG, $d, ['bench']);
         CakeLog::write(DEBUG_LOG, print_r($params, true));
     }

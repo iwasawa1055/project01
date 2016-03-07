@@ -8,6 +8,9 @@ msgstr "メールアドレス（再入力）"
 msgid "password"
 msgstr "パスワード"
 
+msgid "password_confirm"
+msgstr "パスワード（確認用）"
+
 msgid "current_password"
 msgstr "現在のパスワード"
 
