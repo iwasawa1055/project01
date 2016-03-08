@@ -79,7 +79,7 @@
               <label>セキュリティコード</label>
               <?php echo $this->Form->input('OrderKit.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコードを入力してください', 'maxlength' => 4, 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.security_cd', null, ['wrap' => 'p']) ?>
-              <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
+              <p class="help-block">カード裏面に記載された 3〜4桁の番号をご入力ください。</p>
               <p class="security_code"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a>
               </p>
               <div id="collapseOne" class="panel-collapse collapse panel panel-default">

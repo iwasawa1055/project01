@@ -25,7 +25,7 @@ if ($action === 'customer_add') {
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('PaymentGMOSecurityCard.security_cd', ['class' => "form-control", 'maxlength' => 4, 'placeholder'=>'セキュリティコード', 'error' => false]); ?>
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.security_cd', null, ['wrap' => 'p']) ?>
-                  <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
+                  <p class="help-block">カード裏面に記載された 3〜4桁の番号をご入力ください。</p>
                   <p class="security_code"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a></p>
                   <div id="collapseOne" class="panel-collapse collapse panel panel-default">
                     <div class="panel-body">
