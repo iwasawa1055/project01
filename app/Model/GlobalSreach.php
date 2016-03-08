@@ -20,8 +20,8 @@ class GlobalSreach extends AppModel
                 'message' => ['notBlank', 'keyword'],
             ],
             'maxLength' => [
-                'rule' => ['minLength', 3],
-                'message' => ['minLength', 'keyword', 3],
+                'rule' => ['minLength', 2],
+                'message' => ['minLength', 'keyword', 2],
             ],
         ],
     ];

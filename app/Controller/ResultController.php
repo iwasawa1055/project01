@@ -14,7 +14,6 @@ class ResultController extends MinikuraController
     public function index()
     {
         $maxCount = 8;
-        $keyword = Hash::get($this->request->data, 'keyword');
 
         $this->set('announcementList', []);
         $this->set('itemList', []);
@@ -25,6 +24,8 @@ class ResultController extends MinikuraController
         if (!$o->validates()) {
             return $this->render('index');
         }
+        // キーワード
+        $keyword = $o->toArray()['keyword'];
 
         // お知らせ
         $list = $this->Announcement->apiGetResults();
