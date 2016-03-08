@@ -46,3 +46,7 @@ p.error-message::before {
   max-width: 800px;
   max-height: 180px;
 }
+
+.placeholder {
+  color: #aaa;
+}

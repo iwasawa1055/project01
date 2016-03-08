@@ -82,6 +82,14 @@
   echo $this->fetch('script');
   echo $this->fetch('scriptMinikura');
 ?>
+<!--[if lte IE 9]>
+    <script type="text/javascript" src="/js/jquery.placeholder.min.js"></script>
+    <script>
+    $(function () {
+        $('input, textarea').placeholder();
+    });
+    </script>
+<![endif]-->
 
 </body>
 </html>
