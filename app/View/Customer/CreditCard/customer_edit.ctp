@@ -88,7 +88,7 @@ if ($action === 'customer_add') {
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('PaymentGMOSecurityCard.holder_name', ['class' => "form-control", 'placeholder'=>'クレジットカード名義', 'error' => false]); ?>
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.holder_name', null, ['wrap' => 'p']) ?>
-                  <p class="help-block">（※半角大文字英字 半角スペース）</p>
+                  <p class="help-block">（※半角大文字英数字、半角スペース）</p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <!-- <a class="btn btn-primary btn-lg btn-block" href="/customer/credit_card/edit">クリア</a> </span> -->

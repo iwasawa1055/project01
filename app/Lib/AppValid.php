@@ -293,7 +293,7 @@ class AppValid
 
 	public static function isCreditCardHolderName(&$_value)
 	{
-		if (preg_match('/[^\da-z ]/i', $_value)) {
+		if (preg_match('/[^\dA-Z ]/', $_value)) {
 			return false;
 		}
 		return true;
