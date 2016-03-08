@@ -44,26 +44,22 @@
             <div class="col-lg-12">
               <ul class="tile">
               <?php if (count($itemList) === 0) : ?>
-                  <?php echo $this->element('List/empty'); ?>
+                <?php echo $this->element('List/empty'); ?>
               <?php endif; ?>
               <?php foreach ($itemList as $item): ?>
                 <?php $url = '/item/detail/' . $item['item_id']; ?>
                 <!--loop-->
-                <li class="panel panel-default"><a href="<?php echo $url; ?>">
-                    <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['item_name']; ?>">
-                </a>
-                  <div class="panel-footer">
-                    <p class="box-list-caption"><span>アイテム名</span><?php echo $item['item_name']; ?></p>
-                    <p class="box-list-caption"><span>アイテムID</span><?php echo $item['item_id']; ?></p>
-                  </div>
+                <li class="panel panel-default">
+                  <?php echo $this->element('List/item_icon_body', ['item' => $item]); ?>
+                  <?php echo $this->element('List/item_icon_footer', ['item' => $item]); ?>
                 </li>
                 <!--loop end-->
               <?php endforeach; ?>
               </ul>
-              <div class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-info btn-md pull-right" href="/item">アイテム一覧を見る</a>
-              </div>
             </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-xs-12">
+            <a class="btn btn-info btn-md pull-right" href="/item">アイテム一覧を見る</a>
           </div>
         </div>
       </div>
@@ -88,10 +84,10 @@
                 </div>
                 <!--loop end-->
               <?php endforeach; ?>
-              <div class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-info btn-md pull-right" href="/box">ボックス一覧を見る</a>
-              </div>
             </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-xs-12">
+              <a class="btn btn-info btn-md pull-right" href="/box">ボックス一覧を見る</a>
           </div>
         </div>
       </div>
