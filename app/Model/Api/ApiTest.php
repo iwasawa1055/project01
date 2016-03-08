@@ -6,8 +6,8 @@ App::uses('ApiModel', 'Model');
 
 class ApiTest extends ApiModel
 {
-	public function __construct()
-	{
-		parent::__construct('/test');
-	}
+    public function __construct()
+    {
+        parent::__construct('/test');
+    }
 }

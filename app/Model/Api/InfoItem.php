@@ -10,8 +10,10 @@ class InfoItem extends ApiCachedModel
     const SESSION_CACHE_KEY = 'INFO_ITEM_CACHE';
 
     private $defaultSortKey = [
-        'box_id' => true,
-        'box_name' => true,
+        'box.kit_cd' => true,
+        'box.product_name' => true,
+        'box.box_id' => true,
+        'box.box_name' => true,
         'item_id' => true,
         'item_name' => true,
         'item_status' => true,
