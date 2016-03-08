@@ -101,6 +101,9 @@ msgstr "お届け希望日と時間帯"
 msgid "product"
 msgstr "商品"
 
+msgid "keyword"
+msgstr "キーワード"
+
 
 # Validation
 msgid "notBlank"
@@ -117,6 +120,9 @@ msgstr "%sが一致していません"
 
 msgid "maxLength"
 msgstr "%sは%d文字以内で入力してください"
+
+msgid "minLength"
+msgstr "%sは%d文字以上で入力してください"
 
 msgid "isFwKana"
 msgstr "%sは全角カタカナで入力してください"
