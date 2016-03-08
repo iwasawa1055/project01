@@ -8,9 +8,10 @@ class InfoBox extends ApiCachedModel
     const SESSION_CACHE_KEY = 'INFO_BOX_CACHE';
 
     private $defaultSortKey = [
+        'kit_cd' => true,
+        'product_name' => true,
         'box_id' => true,
         'box_name' => true,
-        'product_name' => true,
         'box_status' => true,
     ];
 
