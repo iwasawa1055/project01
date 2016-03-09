@@ -107,7 +107,7 @@ class OutboundController extends MinikuraController
         // 保持しているデータ
         $outMonoList = $this->outboundList->getMonoList();
 
-        // 増減処理
+        // 更新処理し成功した場合アイテム選択へ遷移
         if ($this->request->is('post')) {
             $idList = $this->mergeDataKey('box_id', $outMonoList);
             $errorList = $this->outboundList->setMono($idList);
@@ -120,16 +120,16 @@ class OutboundController extends MinikuraController
             }
         }
 
-        // 表示
+        // 対象ボックス一覧
         $where = [
             'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
             'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK],
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
-        $keyList = array_keys($outMonoList);
-        // 選択フラグ
+        // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
-            $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
+            $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromMonoList(), true);
+            $box['outbound_list_deny_item'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
         }
         HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);
@@ -138,6 +138,8 @@ class OutboundController extends MinikuraController
     public function item()
     {
         $outItemList = $this->outboundList->getItemList();
+
+        // 更新処理し成功した場合取り出しリストへ遷移
         if ($this->request->is('post')) {
 
             $idList = $this->mergeDataKey('item_id', $outItemList);
@@ -155,15 +157,16 @@ class OutboundController extends MinikuraController
         $outMonoList = $this->outboundList->getMonoList();
         $outMonoKeyList = array_keys($outMonoList);
 
-        // item
+        // 対象アイテム一覧
         $where = [
             'item_status' => [BOXITEM_STATUS_INBOUND_DONE * 1],
             'box_id' => $outMonoKeyList
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
-        $keyList = array_keys($outItemList);
+        // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$item) {
-            $item['outbound_list'] = in_array($item['item_id'], $keyList, true);
+            $item['outbound_list_cehcked'] = in_array($item['item_id'], $this->outboundList->getBoxIdFromItemList(), true);
+            $item['outbound_list_deny_item'] = in_array($item['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
         }
         HashSorter::sort($list, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $list);
@@ -176,11 +179,10 @@ class OutboundController extends MinikuraController
     {
         $outBoxList = $this->outboundList->getBoxList();
 
+        // 更新処理し成功した場合取り出しリストへ遷移
         if ($this->request->is('post')) {
-
-            // ids
+            // 更新キーIDと増減情報
             $idList = $this->mergeDataKey('box_id', $outBoxList);
-
             // check and save
             $errorList = $this->outboundList->setBox($idList);
             if (empty($errorList)) {
@@ -192,12 +194,13 @@ class OutboundController extends MinikuraController
             }
         }
 
-        // Box
+        // 対象ボックス一覧
         $where = ['box_status' => [BOXITEM_STATUS_INBOUND_DONE]];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
-        $keyList = array_keys($outBoxList);
+        // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
-            $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
+            $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
+            $box['outbound_list_deny_box'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromItemList(), true);
         }
         HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);

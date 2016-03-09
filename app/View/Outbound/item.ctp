@@ -24,14 +24,10 @@ if (!empty($errorList)) {
             <?php endif; ?>
             <div class="row box-list">
               <?php foreach ($itemList as $item): ?>
-              <?php
-              $i = $item['item_id'];
-              $url = '/item/detail/' . $item['item_id'];
-              ?>
               <!--loop-->
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <?php echo $this->element('List/item_body_checkbox', ['item' => $item, 'default' => false]); ?>
+                  <?php echo $this->element('List/item_body_outbound_checkbox', ['item' => $item, 'default' => false]); ?>
                   <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
                 </div>
               </div>

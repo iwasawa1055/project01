@@ -1,6 +1,7 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('OutboundList', 'Model');
 
 class ItemController extends MinikuraController
 {
@@ -98,6 +99,9 @@ class ItemController extends MinikuraController
         }
         $this->set('linkToAuction', $linkToAuction);
 
+        // 取り出しリスト追加許可
+        $outboundList = OutboundList::restore();
+        $this->set('denyOutboundList', in_array($item['box_id'], $outboundList->getBoxIdFromBoxList(), true));
     }
 
     /**
