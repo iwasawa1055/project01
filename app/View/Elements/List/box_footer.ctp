@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-lg-10 col-md-10 col-sm-12">
         <?php if (!empty($box['product_name'])) : ?>
-        <p class="box-list-caption"><span>商品名</span><?php echo $box['product_name']; ?></p>
+        <p class="box-list-caption"><span>商品名</span><?php echo h($box['product_name']); ?></p>
         <?php endif;?>
         <?php if (!empty($box['box_id'])) : ?>
         <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id']; ?></p>

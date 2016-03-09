@@ -39,16 +39,16 @@
               <?php if ($isPrivateCustomer || empty($corporatePayment))  : ?>
               <div class="col-lg-12">
                 <label>カード情報</label>
-                <p class="form-control-static"><?php echo $default_payment_text; ?></p>
+                <p class="form-control-static"><?php echo h($default_payment_text); ?></p>
               </div>
               <?php endif; ?>
               <div class="col-lg-12">
                 <label>お届け先</label>
-                <p class="form-control-static"><?php echo $address_text; ?></p>
+                <p class="form-control-static"><?php echo h($address_text); ?></p>
               </div>
               <div class="form-group col-lg-12">
                 <label>お届け希望日時</label>
-                <p class="form-control-static"><?php echo $datetime; ?></p>
+                <p class="form-control-static"><?php echo h($datetime); ?></p>
               </div>
             <?php endif; ?>
             </div>

@@ -42,7 +42,7 @@
                       <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
                         <div class="row">
                           <div class="col-lg-8 col-md-8 col-sm-12">
-                            <h3><a href="<?php echo $url ?>"><?php echo $box['box_name'] ?></a>
+                            <h3><a href="<?php echo $url; ?>"><?php echo h($box['box_name']); ?></a>
                             </h3>
                           </div>
                           <div class="col-lg-4 col-md-4 col-xs-12">
@@ -59,7 +59,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>お届け先住所</label>
-              <p class="form-control-static"><?php echo $address_text; ?></p>
+              <p class="form-control-static"><?php echo h($address_text); ?></p>
             </div>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>

@@ -11,7 +11,7 @@
           <li> <a href="<?php echo $url; ?>">
             <div>
                 <i class="fa fa-bell fa-fw"></i>
-                <?php echo $data['title']; ?>
+                <?php echo h($data['title']); ?>
                 <span class="pull-right text-muted small"><?php echo $data['date']; ?></span>
             </div>
             </a>
@@ -28,7 +28,7 @@
     </li>
     <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="fa fa-user fa-fw"></i> <?php echo $customerName; ?> <i class="fa fa-caret-down"></i>
+        <i class="fa fa-user fa-fw"></i> <?php echo h($customerName); ?> <i class="fa fa-caret-down"></i>
       </a>
       <ul class="dropdown-menu dropdown-user">
         <li><a href="/customer/email/edit"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>

@@ -12,7 +12,7 @@
             <h2>お探しのページはサーバ側のエラーにより表示ができません。</h2>
             <p class="form-control-static col-lg-12">また、実行された内容がサーバへ反映されていない可能性あります。<br />
             お手数ですが、しばらく経ってから再度アクセスしてください。</p>
-            <p class="col-lg-12 error-number"><?php echo $message; ?></p>
+            <p class="col-lg-12 error-number"><?php echo h($message); ?></p>
             <?php
             if (Configure::read('debug') > 0) {
                 echo $this->element('exception_stack_trace');

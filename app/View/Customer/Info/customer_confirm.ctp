@@ -28,11 +28,11 @@ if ($action === 'customer_add') {
                 </div>
                 <div class="form-group col-lg-12">
                   <label>番地</label>
-                  <p><?php echo $this->Form->data['CustomerInfo']['address2']; ?></p>
+                  <p><?php echo h($this->Form->data['CustomerInfo']['address2']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>建物名</label>
-                  <p><?php echo $this->Form->data['CustomerInfo']['address3']; ?></p>
+                  <p><?php echo h($this->Form->data['CustomerInfo']['address3']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>電話番号</label>

@@ -36,7 +36,7 @@ class OrderHelper extends Helper
         $data = [];
         if (is_array($addresses)) {
             foreach ($addresses as $address) {
-                $data[$address['address_id']] = "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}";
+                $data[$address['address_id']] = h("〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
             }
         }
 
@@ -48,7 +48,7 @@ class OrderHelper extends Helper
         $data = [];
         if (is_array($datetimes)) {
             foreach ($datetimes as $datetime) {
-                $data[$datetime['datetime_cd']] = "{$datetime['text']}";
+                $data[$datetime['datetime_cd']] = h("{$datetime['text']}");
             }
         }
 
@@ -60,7 +60,7 @@ class OrderHelper extends Helper
         $data = [];
         if (is_array($list)) {
             foreach ($list as $a) {
-                $data[$a[$idKey]] = $a[$valueKey];
+                $data[$a[$idKey]] = h($a[$valueKey]);
             }
         }
         return $data;
@@ -71,7 +71,7 @@ class OrderHelper extends Helper
         if (is_array($list)) {
             foreach ($list as $a) {
                 if ($a[$idKey] === $idValue) {
-                    echo $a[$valueKey];
+                    echo h($a[$valueKey]);
                     break;
                 }
             }

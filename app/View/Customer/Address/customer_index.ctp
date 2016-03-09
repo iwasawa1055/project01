@@ -18,7 +18,7 @@
                  <option>以下からお選びください</option>
                  <?php foreach ($addressList as $data): ?>
                    <option value="<?php echo $data['address_id']; ?>">
-                     <?php echo "〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"; ?>
+                     <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
                    </option>
                  <?php endforeach; ?>;
                </select>

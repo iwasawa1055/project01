@@ -17,9 +17,9 @@
         <li> <a href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <li> <a href="/box?product=mono"><i class="fa fa-tag fa-fw"></i> MONO（<?php echo array_key_exists('004025', $product_summary) ? ($product_summary['004025']) : 0; ?>箱）</a> </li>
-            <li> <a href="/box?product=hako"><i class="fa fa-tag fa-fw"></i> HAKO（<?php echo array_key_exists('004024', $product_summary) ? ($product_summary['004024']) : 0; ?>箱）</a> </li>
-            <li> <a href="/box?product=cleaning"><i class="fa fa-tag fa-fw"></i> クリーニングパック（<?php echo array_key_exists('004029', $product_summary) ? ($product_summary['004029']) : 0; ?>箱）</a> </li>
+            <li> <a href="/box?product=mono"><i class="fa fa-tag fa-fw"></i> MONO（<?php echo array_key_exists(PRODUCT_CD_MONO, $product_summary) ? ($product_summary[PRODUCT_CD_MONO]) : 0; ?>箱）</a> </li>
+            <li> <a href="/box?product=hako"><i class="fa fa-tag fa-fw"></i> HAKO（<?php echo array_key_exists(PRODUCT_CD_HAKO, $product_summary) ? ($product_summary[PRODUCT_CD_HAKO]) : 0; ?>箱）</a> </li>
+            <li> <a href="/box?product=cleaning"><i class="fa fa-tag fa-fw"></i> クリーニングパック（<?php echo array_key_exists(PRODUCT_CD_CLEANING_PACK, $product_summary) ? ($product_summary[PRODUCT_CD_CLEANING_PACK]) : 0; ?>箱）</a> </li>
           </ul>
         </li>
         <li> <a href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>

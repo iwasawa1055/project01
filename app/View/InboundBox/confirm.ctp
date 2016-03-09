@@ -31,7 +31,7 @@
                   <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
                     <div class="row">
                       <div class="col-lg-10 col-md-10 col-sm-12">
-                        <h3><?php echo $formBox['title']; ?></h3>
+                        <h3><?php echo h($formBox['title']); ?></h3>
                       </div>
                       <div class="col-lg-2 col-md-2 col-sm-12">
                         <p class="photo-control"><?php echo $kitName; ?></p>

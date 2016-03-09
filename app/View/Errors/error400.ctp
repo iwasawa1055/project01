@@ -11,7 +11,7 @@
           <div class="panel-body">
             <h2>お探しのページがみつかりません。</h2>
             <p class="form-control-static col-lg-12">一時的にアクセスできない状態か、移動もしくは削除されてしまった可能性があります。</p>
-            <p class="col-lg-12 error-number"><?php echo $message; ?></p>
+            <p class="col-lg-12 error-number"><?php echo h($message); ?></p>
             <?php
             if (Configure::read('debug') > 0) {
                 echo $this->element('exception_stack_trace');

@@ -10,7 +10,7 @@
           <?php echo $this->Form->create('Box', ['url' => '/box/detail/'.$box['box_id'].'/edit', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="row">
               <div class="col-lg-12">
-                <h2><?php echo $box['product_name']; ?></h2>
+                <h2><?php echo h($box['product_name']); ?></h2>
               </div>
             </div>
             <div class="col-lg-12">

@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>住所</label>
-                  <p><?php echo $data['pref'].$data['address1'].$data['address2'].$data['address3']; ?></p>
+                  <p><?php echo h($data['pref'].$data['address1'].$data['address2'].$data['address3']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>電話番号</label>
@@ -32,11 +32,11 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お名前</label>
-                  <p class="form-control-static"><?php echo $data['lastname']; ?>　<?php echo $data['firstname']; ?></p>
+                  <p class="form-control-static"><?php echo h($data['lastname'] . '　' . $data['firstname']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お名前（カナ）</label>
-                  <p><?php echo $data['lastname_kana']; ?>　<?php echo $data['firstname_kana']; ?></p>
+                  <p><?php echo h($data['lastname_kana'] . '　' . $data['firstname_kana']); ?></p>
                 </div>
                 <?php if (!$data['applying']): ?>
                 <div class="col-lg-12 col-md-12 col-xs-12">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>住所</label>
-                  <p><?php echo $data['pref'].$data['address1'].$data['address2'].$data['address3']; ?></p>
+                  <p><?php echo h($data['pref'].$data['address1'].$data['address2'].$data['address3']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>電話番号</label>
@@ -59,19 +59,19 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>会社名</label>
-                  <p class="form-control-static"><?php echo $data['company_name']; ?></p>
+                  <p class="form-control-static"><?php echo h($data['company_name']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>会社名（カナ）</label>
-                  <p class="form-control-static"><?php echo $data['company_name_kana']; ?></p>
+                  <p class="form-control-static"><?php echo h($data['company_name_kana']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>担当者名</label>
-                  <p class="form-control-static"><?php echo $data['staff_name']; ?></p>
+                  <p class="form-control-static"><?php echo h($data['staff_name']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>担当者名（カナ）</label>
-                  <p class="form-control-static"><?php echo $data['staff_name_kana']; ?></p>
+                  <p class="form-control-static"><?php echo h($data['staff_name_kana']); ?></p>
                 </div>
               <?php endif; ?>
               <?php endif; ?>

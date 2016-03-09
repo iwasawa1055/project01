@@ -17,7 +17,7 @@
                             <?php echo $this->Html->formatYmdKanji($data['date']); ?>
                         </div>
                         <div class="col-xs-12 col-md-8 col-lg-8">
-                          <span class="detail"><a href="<?php echo $url; ?>"><?php echo $data['title']; ?></a></span>
+                          <span class="detail"><a href="<?php echo $url; ?>"><?php echo h($data['title']); ?></a></span>
                         </div>
                         <div class="col-xs-12 col-md-1 col-lg-1">
                         <?php if ($data['read']): ?>

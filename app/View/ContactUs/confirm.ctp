@@ -27,7 +27,7 @@
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
                   <p class="form-control-static">
-                    <?php echo nl2br($this->Form->data['ContactUs']['text']); ?>
+                    <?php echo h(nl2br($this->Form->data['ContactUs']['text'])); ?>
                   </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
@@ -38,10 +38,10 @@
                 </span>
               <?php if ($id) : ?>
                 <div class="col-lg-12 col-md-12 col-xs-12">
-                  <h3 class="col-lg-12"><?php echo $announcement['title'] ?></h3>
+                  <h3 class="col-lg-12"><?php echo h($announcement['title']); ?></h3>
                   <h4 class="date col-lg-12"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>
                   <div class="col-lg-12">
-                    <?php echo nl2br($announcement['text']) ?>
+                    <?php echo h(nl2br($announcement['text'])); ?>
                   </div>
                 </div>
               <?php endif; ?>

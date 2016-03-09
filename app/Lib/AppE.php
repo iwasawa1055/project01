@@ -365,7 +365,7 @@ class AppE extends Exception
 
         // Display
         echo '<div style="display: inline-block; padding: 5px 15px; border-radius: 5px; background-color: #FF9090; color: #FFFFFF;"><b>';
-        echo  $str;
+        echo  h($str);
         echo '</b></div>';
     }
 

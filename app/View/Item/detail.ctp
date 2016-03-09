@@ -20,10 +20,10 @@
                     <div class="row">
                       <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="item-detail ">
-                          <a href="<?php echo $item['image_first']['image_url'] ?>" data-lightbox="item-photo" data-title="<?php echo $item['item_name'] ?>">
-                              <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item"></a>
+                          <a href="<?php echo $item['image_first']['image_url']; ?>" data-lightbox="item-photo" data-title="<?php echo h($item['item_name']); ?>">
+                              <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['item_id']; ?>" width="100px" height="100px" class="item"></a>
                         </div>
-                        <h3><?php echo $item['item_name'] ?></h3>
+                        <h3><?php echo h($item['item_name']); ?></h3>
                         <div class="box-list-caption">
                           <!-- <span>カテゴリ</span>スポーツ用品 -->
                         </div>
@@ -51,7 +51,7 @@
                         <?php endif; ?>
                       </div>
                       <div class="col-lg-12 col-md-12 col-xs-12 item-detail-text">
-                        <p class="box_note"><?php echo nl2br($item['item_note']); ?></p>
+                        <p class="box_note"><?php echo h(nl2br($item['item_note'])); ?></p>
                       </div>
                     </div>
                   </div>

@@ -9,7 +9,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <h2><?php echo $box['product_name']; ?></h2>
+                <h2><?php echo h($box['product_name']); ?></h2>
               </div>
             </div>
 
@@ -18,7 +18,7 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12">
-                      <h3><?php echo $box['box_name']; ?></h3>
+                      <h3><?php echo h($box['box_name']); ?></h3>
                       <div class="box-list-caption">
                         <!-- <span>写真撮影</span>あり -->
                       </div>
@@ -39,7 +39,7 @@
                       <?php endif; ?>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12">
-                      <p class="box_note"><?php echo nl2br($box['box_note']); ?></p>
+                      <p class="box_note"><?php echo h(nl2br($box['box_note'])); ?></p>
                     </div>
                   </div>
                 </div>

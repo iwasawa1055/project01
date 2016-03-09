@@ -51,10 +51,10 @@
                 </span>
               <?php if ($id) : ?>
                 <div class="col-lg-12 col-md-12 col-xs-12">
-                  <h3 class="col-lg-12"><?php echo $announcement['title'] ?></h3>
+                  <h3 class="col-lg-12"><?php echo h($announcement['title']); ?></h3>
                   <h4 class="date col-lg-12"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>
                   <div class="col-lg-12">
-                    <?php echo nl2br($announcement['text']) ?>
+                    <?php echo h(nl2br($announcement['text'])); ?>
                   </div>
                 </div>
               <?php endif; ?>

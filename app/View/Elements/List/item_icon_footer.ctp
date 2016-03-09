@@ -1,7 +1,7 @@
 <div class="panel-footer">
   <?php if (!empty($item['item_name'])) : ?>
   <p class="box-list-caption">
-    <span><?php echo __('item_name'); ?></span><?php echo $item['item_name']; ?>
+    <span><?php echo __('item_name'); ?></span><?php echo h($item['item_name']); ?>
   </p>
   <?php endif; ?>
   <?php if (!empty($item['item_id'])) : ?>

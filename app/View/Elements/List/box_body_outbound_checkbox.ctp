@@ -10,7 +10,7 @@ if (empty($class)) {
   <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12">
       <h3>
-        <a href="<?php echo $url; ?>"><?php echo $box['box_name']; ?></a>
+        <a href="<?php echo $url; ?>"><?php echo h($box['box_name']); ?></a>
       </h3>
     </div>
     <?php if (Hash::get($box, 'outbound_list_deny_box', $default)) : ?>

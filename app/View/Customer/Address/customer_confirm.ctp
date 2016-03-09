@@ -23,37 +23,37 @@ if ($action === 'customer_edit') {
             <div class="form-group col-lg-12">
               <label>郵便番号</label>
               <p>
-                  <?php echo $this->Form->data['CustomerAddress']['postal'] ?>
+                  <?php echo h($this->Form->data['CustomerAddress']['postal']); ?>
               </p>
             </div>
             <div class="form-group col-lg-12">
               <label>住所</label>
               <p>
-                  <?php echo $this->Form->data['CustomerAddress']['pref'] . $this->Form->data['CustomerAddress']['address1'] ?>
+                  <?php echo h($this->Form->data['CustomerAddress']['pref'] . $this->Form->data['CustomerAddress']['address1']); ?>
               </p>
             </div>
             <div class="form-group col-lg-12">
               <label>番地</label>
               <p>
-                  <?php echo $this->Form->data['CustomerAddress']['address2'] ?>
+                  <?php echo h($this->Form->data['CustomerAddress']['address2']); ?>
               </p>
             </div>
             <div class="form-group col-lg-12">
               <label>建物名</label>
               <p>
-                  <?php echo $this->Form->data['CustomerAddress']['address3'] ?>
+                  <?php echo h($this->Form->data['CustomerAddress']['address3']); ?>
               </p>
             </div>
             <div class="form-group col-lg-12">
               <label>電話番号</label>
               <p>
-                  <?php echo $this->Form->data['CustomerAddress']['tel1'] ?>
+                  <?php echo $this->Form->data['CustomerAddress']['tel1']; ?>
               </p>
             </div>
             <div class="form-group col-lg-12">
               <label>名前</label>
               <p>
-                  <?php echo $this->Form->data['CustomerAddress']['lastname'] . ' ' . $this->Form->data['CustomerAddress']['firstname'] ?>
+                  <?php echo h($this->Form->data['CustomerAddress']['lastname'] . ' ' . $this->Form->data['CustomerAddress']['firstname']); ?>
               </p>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">

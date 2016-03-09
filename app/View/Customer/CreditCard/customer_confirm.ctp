@@ -32,7 +32,7 @@ if ($action === 'customer_edit') {
                 </div>
                 <div class="form-group col-lg-12">
                   <label>クレジットカード名義</label>
-                  <p><?php echo $security_card['holder_name']; ?></p>
+                  <p><?php echo h($security_card['holder_name']); ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <!-- <a class="btn btn-primary btn-lg btn-block" href="/customer/credit_card/edit?back=true">戻る</a> -->
