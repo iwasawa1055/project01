@@ -9,7 +9,7 @@ class InfoItem extends ApiCachedModel
 
     const SESSION_CACHE_KEY = 'INFO_ITEM_CACHE';
 
-    private $defaultSortKey = [
+    const DEFAULTS_SORT_KEY = [
         'box.kit_cd' => true,
         'box.product_name' => true,
         'box.box_id' => true,
@@ -28,6 +28,11 @@ class InfoItem extends ApiCachedModel
         parent::__construct(self::SESSION_CACHE_KEY, 0, 'InfoItem', '/info_item');
     }
 
+    protected function triggerNotUsingCache() {
+        parent::triggerNotUsingCache();
+        (new ImageItem())->deleteCache();
+
+    }
 
     // 入庫済み一覧
     public function getListForServiced($sortKey = [], $where = [], $withOutboudDone = true)
@@ -45,7 +50,7 @@ class InfoItem extends ApiCachedModel
         $list = $this->apiGetResultsWhere([], $where);
 
         // sort
-        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
 
@@ -71,7 +76,7 @@ class InfoItem extends ApiCachedModel
         ];
         $list = $this->apiGetResultsWhere([], $where);
         $sortKey = ['box.inbound_date' => false];
-        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
 }

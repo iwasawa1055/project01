@@ -28,14 +28,16 @@
                           </a>
                       </span>
                     </div>
-                    <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-                    <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
                     <div class="col-lg-4 col-md-4 col-xs-12">
+                      <?php if (empty($denyOutboundList)) : ?>
+                      <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                      <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
                       <span class="col-xs-12 col-lg-12">
                           <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
                       </span>
+                      <?php echo $this->Form->end(); ?>
+                      <?php endif; ?>
                     </div>
-                    <?php echo $this->Form->end(); ?>
                     <div class="col-lg-12 col-md-12 col-xs-12">
                       <p class="box_note"><?php echo nl2br($box['box_note']); ?></p>
                     </div>

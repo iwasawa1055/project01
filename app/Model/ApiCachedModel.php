@@ -88,6 +88,12 @@ class ApiCachedModel extends ApiModel
     protected function triggerDataChanged() {
         $this->deleteCache();
     }
+    protected function triggerUsingCache() {
+        CakeLog::write(DEBUG_LOG, 'UsingCache: ' . get_class($this));
+    }
+    protected function triggerNotUsingCache() {
+        CakeLog::write(DEBUG_LOG, 'NotUsingCache: ' . get_class($this));
+    }
 
     protected function readCache($key, $arg)
     {
@@ -126,12 +132,13 @@ class ApiCachedModel extends ApiModel
 
     private function apiGetListWithCache($arg = [])
     {
-        // TODO: 引数からキャッシュキーを作る
         $key = 'apiGet';
         $list = $this->readCache($key, $arg);
         if (!empty($list)) {
+            $this->triggerUsingCache();
             return $list;
         }
+        $this->triggerNotUsingCache();
 
         // すべて取得
         $list = [];

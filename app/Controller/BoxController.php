@@ -1,6 +1,7 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('OutboundList', 'Model');
 
 class BoxController extends MinikuraController
 {
@@ -93,6 +94,10 @@ class BoxController extends MinikuraController
 
         $itemList = $this->InfoItem->apiGetResultsWhere([], ['box_id' => $id]);
         $this->set('itemList', $itemList);
+
+        // 取り出しリスト追加許可
+        $outboundList = OutboundList::restore();
+        $this->set('denyOutboundList', in_array($box['box_id'], $outboundList->getBoxIdFromItemList(), true));
     }
 
     /**

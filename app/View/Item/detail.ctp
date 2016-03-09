@@ -36,12 +36,14 @@
                         </span-->
                       </div>
                       <div class="col-lg-6 col-md-6 col-xs-12">
+                        <?php if (empty($denyOutboundList)) : ?>
                         <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                         <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '1']); ?>
                         <span class="col-xs-12 col-lg-12">
                             <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
                         </span>
                         <?php echo $this->Form->end(); ?>
+                        <?php endif; ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">
                             <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToAuction; ?>">ヤフオク!に出品</a>

@@ -2,6 +2,7 @@
 $url = '/item/detail/' . $item['item_id'];
 $box = $item['box'];
 ?>
+<a name="<?php echo $item['item_id'] ?>">
 <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
   <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-12">
@@ -11,7 +12,7 @@ $box = $item['box'];
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
       <h3>
-          <a href="<?php echo $url ?>"><?php echo $item['item_name'] ?></a>
+          <a href="<?php echo $url; ?>"><?php echo $item['item_name'] ?></a>
       </h3>
     </div>
     <div class="col-lg-4 col-md-4 col-xs-12">

@@ -40,15 +40,27 @@ class OutboundList
     {
         return $this->boxList;
     }
+    public function getBoxIdFromBoxList()
+    {
+        return Hash::extract($this->getBoxList(), '{s}.box_id');
+    }
 
     public function getItemList()
     {
         return $this->itemList;
     }
+    public function getBoxIdFromItemList()
+    {
+        return Hash::extract($this->getItemList(), '{s}.box_id');
+    }
 
     public function getMonoList()
     {
         return $this->monoList;
+    }
+    public function getBoxIdFromMonoList()
+    {
+        return Hash::extract($this->getMonoList(), '{s}.box_id');
     }
 
     public function  setMono($idList = [], $needClear = true, $needSave = true)
@@ -62,6 +74,17 @@ class OutboundList
             $boxId = $a['box_id'];
             $this->monoList[$boxId] = $a;
         }
+
+        // 選択ボックス以外のアイテムは外す
+        $boxIdList = Hash::extract($list, '{n}.box_id');
+        $newList = [];
+        foreach ($this->itemList as $key => $a) {
+            if (in_array($a['box_id'], $boxIdList, true)) {
+                $newList[$key] = $a;
+            }
+        }
+        $this->itemList = $newList;
+
         OutboundList::save($this);
         return $errorList;
     }

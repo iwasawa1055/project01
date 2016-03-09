@@ -7,7 +7,9 @@ class InfoBox extends ApiCachedModel
 {
     const SESSION_CACHE_KEY = 'INFO_BOX_CACHE';
 
-    private $defaultSortKey = [
+
+
+    const DEFAULTS_SORT_KEY = [
         'kit_cd' => true,
         'product_name' => true,
         'box_id' => true,
@@ -59,7 +61,7 @@ class InfoBox extends ApiCachedModel
         ];
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
-        HashSorter::sort($list, $this->defaultSortKey);
+        HashSorter::sort($list, self::DEFAULTS_SORT_KEY);
         return $list;
     }
 
@@ -89,7 +91,7 @@ class InfoBox extends ApiCachedModel
             unset($where['product_cd']);
         }
         $list = $this->apiGetResultsWhere([], $where);
-        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
 
@@ -111,7 +113,7 @@ class InfoBox extends ApiCachedModel
             unset($where['product_cd']);
         }
         $list = $this->apiGetResultsWhere([], $where);
-        HashSorter::sort($list, $this->defaultSortKey);
+        HashSorter::sort($list, self::DEFAULTS_SORT_KEY);
         return $list;
     }
 
@@ -152,7 +154,7 @@ class InfoBox extends ApiCachedModel
         ];
         $list = $this->apiGetResultsWhere([], $where);
         $sortKey = ['inbound_date' => false];
-        HashSorter::sort($list, ($sortKey + $this->defaultSortKey));
+        HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
 }
