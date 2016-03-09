@@ -28,7 +28,7 @@ if ($action === 'customer_edit') {
                 </div>
                 <div class="form-group col-lg-12">
                   <label>有効期限</label>
-                  <p><?php echo $security_card['expire_month']; ?>月/<?php echo $security_card['expire_year_disp']; ?>年</p>
+                  <p><?php echo $security_card['expire_month']; ?>月<?php echo $security_card['expire_year_disp']; ?>年</p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>クレジットカード名義</label>

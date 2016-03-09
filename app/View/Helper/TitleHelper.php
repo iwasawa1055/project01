@@ -3,25 +3,68 @@
 class TitleHelper extends AppHelper {
 
     private $titles = [
-        'login' => [
-            'index' => 'ログイン',
+        // customer
+        'address' => [
+            'index' => '住所・お届け先・変更',
         ],
-        'announcement' => [
-            'index' => 'お知らせ',
-            'detail' => 'お知らせ詳細',
+        'credit_card' => [
+            'index' => 'クレジットカード変更',
+            'customer_add' => 'クレジットカード登録',
         ],
-        'register' => [
-            'index' => 'ユーザー登録',
+        'email' => [
+            'index' => 'メールアドレス変更',
         ],
-        'inquiry' => [
-            'index' => 'お問い合わせ',
+        'info' => [
+            'index' => '契約情報',
+            'customer_add' => 'お客さま情報登録',
+        ],
+        'password' => [
+            'index' => 'パスワード変更',
         ],
         'password_reset' => [
             'index' => 'パスワード再発行',
         ],
-        'email' => [
-            'index' => 'メールアドレス変更',
-        ]
+        'register' => [
+            'index' => 'ユーザー登録',
+        ],
+
+        'announcement' => [
+            'index' => 'お知らせ一覧',
+            'detail' => 'お知らせ',
+        ],
+        'box' => [
+            'index' => 'ボックス一覧',
+        ],
+        'contact_us' => [
+            'index' => 'お問い合わせ',
+        ],
+        'contract' => [
+            'index' => '契約情報',
+        ],
+        'InboundBox' => [
+            'index' => 'ボックス預け入れ',
+        ],
+        'inquiry' => [
+            'index' => 'お問い合わせ',
+        ],
+        'item' => [
+            'index' => 'アイテム一覧',
+        ],
+        'login' => [
+            'index' => 'ログイン',
+        ],
+        'mypage' => [
+            'index' => 'マイページ',
+        ],
+        'order' => [
+            'index' => 'ボックス購入',
+        ],
+        'outbound' => [
+            'index' => '取り出し',
+        ],
+        'result' => [
+            'index' => '検索結果',
+        ],
     ];
 
     public function p() {
@@ -31,6 +74,7 @@ class TitleHelper extends AppHelper {
         if (array_key_exists($controller, $this->titles) && array_key_exists('index', $this->titles[$controller])) {
             $str = $this->titles[$controller]['index'];
             if (array_key_exists($action, $this->titles[$controller])) {
+
                 $str = $this->titles[$controller][$action];
             }
         }
