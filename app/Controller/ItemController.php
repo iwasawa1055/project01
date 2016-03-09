@@ -7,6 +7,11 @@ class ItemController extends MinikuraController
     const MODEL_NAME = 'InfoItem';
     const MODEL_NAME_ITEM_EDIT = 'Item';
 
+    protected $paginate = array(
+        'limit' => 20,
+        'paramType' => 'querystring'
+    );
+
     /**
      * 制御前段処理.
      */
