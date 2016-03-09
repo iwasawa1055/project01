@@ -175,8 +175,6 @@ class CreditCardController extends MinikuraController
                     $this->Flash->set($res->error_message);
                     return $this->redirect(['action' => 'customer_edit']);
                 }
-
-                $this->Flash->paymentng_card_edited('');
                 return $this->redirect(['controller' => 'login', 'action' => 'logout', 'paymentng' => false]);
             }
         }
