@@ -46,21 +46,21 @@ if ($action === 'customer_edit') {
                 <?php echo $this->Form->input('CustomerAddress.tel1', ['class' => "form-control", 'placeholder'=>'電話番号', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.tel1', null, ['wrap' => 'p']) ?>
             </div>
-            <div class="form-group col-md-6">
-                <?php echo $this->Form->input('CustomerAddress.lastname_kana', ['class' => "form-control", 'placeholder'=>'姓カナ', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerAddress.lastname_kana', null, ['wrap' => 'p']) ?>
-            </div>
-            <div class="form-group col-md-6">
-                <?php echo $this->Form->input('CustomerAddress.firstname_kana', ['class' => "form-control", 'placeholder'=>'名カナ', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerAddress.firstname_kana', null, ['wrap' => 'p']) ?>
-            </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
                 <?php echo $this->Form->input('CustomerAddress.lastname', ['class' => "form-control", 'placeholder'=>'姓', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.lastname', null, ['wrap' => 'p']) ?>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
+                <?php echo $this->Form->input('CustomerAddress.lastname_kana', ['class' => "form-control", 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                <?php echo $this->Form->error('CustomerAddress.lastname_kana', null, ['wrap' => 'p']) ?>
+            </div>
+            <div class="form-group col-md-12">
                 <?php echo $this->Form->input('CustomerAddress.firstname', ['class' => "form-control", 'placeholder'=>'名', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.firstname', null, ['wrap' => 'p']) ?>
+            </div>
+            <div class="form-group col-md-12">
+                <?php echo $this->Form->input('CustomerAddress.firstname_kana', ['class' => "form-control", 'placeholder'=>'名（カナ）', 'error' => false]); ?>
+                <?php echo $this->Form->error('CustomerAddress.firstname_kana', null, ['wrap' => 'p']) ?>
             </div>
           </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
