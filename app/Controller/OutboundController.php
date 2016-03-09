@@ -3,6 +3,8 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('OutboundList', 'Model');
 App::uses('Outbound', 'Model');
+App::uses('InfoBox', 'Model');
+App::uses('InfoItem', 'Model');
 
 class OutboundController extends MinikuraController
 {
@@ -129,6 +131,7 @@ class OutboundController extends MinikuraController
         foreach ($list as &$box) {
             $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
         }
+        HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);
     }
 
@@ -162,6 +165,7 @@ class OutboundController extends MinikuraController
         foreach ($list as &$item) {
             $item['outbound_list'] = in_array($item['item_id'], $keyList, true);
         }
+        HashSorter::sort($list, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $list);
     }
 
@@ -195,6 +199,7 @@ class OutboundController extends MinikuraController
         foreach ($list as &$box) {
             $box['outbound_list'] = in_array($box['box_id'], $keyList, true);
         }
+        HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);
     }
 
@@ -204,9 +209,13 @@ class OutboundController extends MinikuraController
     public function index()
     {
         $boxList = $this->outboundList->getBoxList();
+        HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
+
         $itemList = $this->outboundList->getItemList();
+        HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
+
         $dateItemList = [];
 
         $isBack = Hash::get($this->request->query, 'back');
@@ -219,7 +228,7 @@ class OutboundController extends MinikuraController
             $dateItemList = $this->getDatetime($postal);
         }
         $this->set('dateItemList', $dateItemList);
-        // CakeSession::delete(self::MODEL_NAME . 'FORM');
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
     /**
@@ -228,9 +237,13 @@ class OutboundController extends MinikuraController
     public function confirm()
     {
         $boxList = $this->outboundList->getBoxList();
+        HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
+
         $itemList = $this->outboundList->getItemList();
+        HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
+
         $dateItemList = [];
 
         if ($this->request->is('post')) {
@@ -290,9 +303,9 @@ class OutboundController extends MinikuraController
             }
             // 取り出しリストクリア
             OutboundList::delete();
-            InfoBox::deleteCache();
-            InfoItem::deleteCache();
-            Announcement::deleteCache();
+            (new InfoBox())->deleteCache();
+            (new InfoItem())->deleteCache();
+            (new Announcement())->deleteCache();
         } else {
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
