@@ -51,7 +51,7 @@
                         <?php endif; ?>
                       </div>
                       <div class="col-lg-12 col-md-12 col-xs-12 item-detail-text">
-                        <p class="box_note"><?php echo h(nl2br($item['item_note'])); ?></p>
+                        <p class="box_note"><?php echo nl2br(h($item['item_note'])); ?></p>
                       </div>
                     </div>
                   </div>

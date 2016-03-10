@@ -25,7 +25,7 @@
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
                   <p class="form-control-static">
-                    <?php echo nl2br($this->Form->data['Inquiry']['text']); ?>
+                    <?php echo nl2br(h($this->Form->data['Inquiry']['text'])); ?>
                   </p>
                 </div>
                 <div class="form-group col-lg-12">

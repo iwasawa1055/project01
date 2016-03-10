@@ -20,7 +20,7 @@
               </div>
               <div class="col-lg-12">
                 <div class="row body">
-                  <?php echo h(nl2br($announcement['text'])); ?>
+                  <?php echo nl2br(h($announcement['text'])); ?>
                 </div>
 
                 <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT) : ?></h3>
