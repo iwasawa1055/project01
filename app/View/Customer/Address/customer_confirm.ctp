@@ -53,7 +53,7 @@ if ($action === 'customer_edit') {
             <div class="form-group col-lg-12">
               <label>名前</label>
               <p>
-                  <?php echo h($this->Form->data['CustomerAddress']['lastname'] . ' ' . $this->Form->data['CustomerAddress']['firstname']); ?>
+                  <?php echo $this->CustomerInfo->setName($this->Form->data['CustomerAddress']); ?>
               </p>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
