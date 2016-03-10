@@ -22,7 +22,7 @@
                               <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
                             </div>
                             <h3>
-                              <?php echo $this->Form->input('Item.item_name', ['class' => "form-control", 'error' => false]); ?>
+                              <?php echo $this->Form->input('Item.item_name', ['class' => "form-control", 'placeholder'=> __('item_name'), 'error' => false]); ?>
                             </h3>
                               <?php echo $this->Form->error('Item.item_name', null, ['wrap' => 'p']) ?>
                             <span class="col-xs-12 col-lg-12"><a class="btn btn-warning btn-md btn-block btn-detail disabled">預け入れ中</a>

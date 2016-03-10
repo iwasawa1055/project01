@@ -19,7 +19,7 @@
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <h3>
-                        <?php echo $this->Form->input('Box.box_name', ['class' => "form-control", 'error' => false]); ?>
+                        <?php echo $this->Form->input('Box.box_name', ['class' => "form-control", 'placeholder'=> __('box_name'), 'error' => false]); ?>
                       </h3>
                       <?php echo $this->Form->error('Box.box_name', null, ['wrap' => 'p']) ?>
                       <p class="box-list-caption">
