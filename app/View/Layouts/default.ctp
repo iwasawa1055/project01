@@ -61,7 +61,7 @@
         </li>
         <li><a href="/use_agreement/">利用規約</a>
         </li>
-        <li><a href="/contact_us/">お問い合わせ</a>
+        <li><a href="/inquiry/add">お問い合わせ</a>
         </li>
       </ul>
     </div>
