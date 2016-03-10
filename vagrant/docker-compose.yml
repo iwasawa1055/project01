@@ -9,6 +9,7 @@ minikura:
     - ./config/php/:/usr/local/etc/php/
   links:
     - hub
+    - smtp
 
 hub:
   image: selenium/hub:latest
@@ -22,3 +23,8 @@ node:
   links:
     - hub
     - minikura
+
+smtp:
+  build: ./builds/smtp
+  ports:
+    - "8080:1080"
