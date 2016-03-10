@@ -11,8 +11,8 @@ class AppExceptionRenderer extends ExceptionRenderer
         parent::__construct($exception);
         // 400, 500に統一します
         $code = $exception->getCode();
+        $method = 'error500';
         if (500 <= $code) {
-            $method = 'error500';
         } elseif (400 <= $code) {
             $method = 'error400';
         }

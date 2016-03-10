@@ -12,8 +12,7 @@
               <div class="col-lg-12">
                 <p class="form-control-static col-lg-12">ご登録されているメールアドレスを入力してください。</p>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerPasswordReset.email', ['class' => "form-control", 'placeholder'=>'ご登録されているメールアドレス', 'error' => false]); ?>
-                  <?php echo $this->Form->error('CustomerPasswordReset.email', null, ['wrap' => 'p']) ?>
+                  <p class="form-control-static"><?php echo $this->Form->data['CustomerPasswordReset']['email'] ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerPasswordReset.new_password', ['class' => "form-control", 'placeholder'=>'新しいパスワード', 'type' => 'password', 'error' => false]); ?>

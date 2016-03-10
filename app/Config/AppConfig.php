@@ -43,15 +43,8 @@ switch (true) {
     default:
     // case $_SERVER['SERVER_NAME'] === 'dev.minikura.com':
         // development
-        Configure::load('EnvConfig/Development');
-        // TODO: move to EnvConfig
-        $config['api.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
-        $config['api.minikura.schema'] = 'https://';
-        $config['api.minikura.host'] = 'a-api.minikura.com';
-        $config['api.minikura.access_point.minikura_v3'] = $config['api.minikura.schema'].$config['api.minikura.host'].'/v3/warehouse/minikura';
-        $config['api.minikura.access_point.minikura_v4'] = $config['api.minikura.schema'].$config['api.minikura.host'].'/v4/minikura';
-        $config['api.minikura.access_point.minikura_v5'] = $config['api.minikura.schema'].$config['api.minikura.host'].'/v5/minikura';
-        $config['api.minikura.access_point.gmopayment_v4'] = $config['api.minikura.schema'].$config['api.minikura.host'].'/v4/gmo_payment';
+        Configure::load('EnvConfig/Development/AppConfig');
+        include_once('EnvConfig/Development/email.php');
 }
 
 

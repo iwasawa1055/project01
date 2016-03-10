@@ -202,3 +202,6 @@ msgstr "情報が取得できませんでした。"
 
 msgid "400 Parameter Invalid - used receipt"
 msgstr "発行済です。"
+
+msgid "503 Service Unavailable - maintenance"
+msgstr "大変申し訳ございません。ただいまメンテナンス中です。"

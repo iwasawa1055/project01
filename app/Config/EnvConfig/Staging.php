@@ -42,5 +42,8 @@ $config['app']['e']['mail'] = false;
 $config['app']['e']['mail']['flag'] = false;
 
 //*** Log
+// 不要なログはDropします。
+// CakeLog::drop('error');
+// CakeLog::drop('mail');
 CakeLog::drop('bench');
 CakeLog::drop('debug');

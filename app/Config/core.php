@@ -231,6 +231,7 @@
         'ini' => [
             "session.cookie_lifetime" => 0,  // ブラウザを閉じたらセッション破棄
             "session.gc_maxlifetime" => 3600,  // 1day = 86400秒
+            "session.use_strict_mode" => true,
         ]
     ]);
 
