@@ -17,7 +17,7 @@ class AppMail
         $from = null;
         $subject = 'パスワードリセット';
         $templete = 'password_reset';
-        $data = [ 'url' => Configure::read('site.url') . '/password_reset/add?hash=' . $hash ];
+        $data = [ 'url' => Configure::read('site.url') . '/customer/password_reset/add?hash=' . $hash ];
         $this->sendTemplate($from, $to, $subject, $templete, $data);
     }
     /**
