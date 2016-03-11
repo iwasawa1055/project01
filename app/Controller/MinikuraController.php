@@ -50,7 +50,7 @@ class MinikuraController extends AppController
         // header
         if ($this->checkLogined) {
             if (!$this->Customer->isLogined()) {
-                return $this->redirect(['controller' => 'login', 'action' => 'index']);
+                return $this->redirect(['controller' => 'login', 'action' => 'index', 'customer' => false]);
             }
 
             if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
