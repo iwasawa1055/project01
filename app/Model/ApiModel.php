@@ -122,20 +122,30 @@ class ApiModel extends AppModel
         CakeLog::write(DEBUG_LOG, $d, ['bench']);
         CakeLog::write(DEBUG_LOG, print_r($apiRes, true));
 
+        $code = $apiRes->http_code;
+        $message = $apiRes->message;
+
         // メッセージ
-        if (400 <= $apiRes->http_code) {
-            $msgKey = $apiRes->http_code . ' ' . $apiRes->message;
+        if (400 <= $code) {
+            $msgKey = $code . ' ' . $message;
             $msg = __d('api', $msgKey);
             if ($msgKey === $msg) {
-                $msg = __d('api', $apiRes->http_code . ' default');
+                $msg = __d('api', $code . ' default');
             }
             $apiRes->error_message = $msg;
             Cakelog::write(DEBUG_LOG, "error_message: ${msgKey} -> ${msg}");
         }
 
+        if ($code === '400' && $message === 'Parameter Invalid - token') {
+            $code = '401';
+        }
+        if (in_array($code , ['401', '402'], true)) {
+            new AppTerminalCritical($apiRes->error_message, $code);
+        }
+
         // 基準となる例外処理
-        if (500 <= $apiRes->http_code) {
-            new AppMedialCritical($apiRes->error_message, $apiRes->http_code);
+        if (500 <= $code) {
+            new AppMedialCritical($apiRes->error_message, $code);
         }
     }
 

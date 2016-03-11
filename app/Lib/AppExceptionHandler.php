@@ -1,6 +1,7 @@
 <?php
 App::uses('AppInternalCritical', 'Lib');
 App::uses('AppExceptionRenderer', 'Lib');
+App::uses('ApiCachedModel', 'Model');
 
 /**
  * Final Exception Handler
@@ -28,6 +29,14 @@ class AppExceptionHandler
         }
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
+
+        if (in_array($_e->getCode(), [401, 402], true)) {
+            // 未承認、未払いはセッション破棄しログアウトする
+            CakeSession::destroy();
+            header('Location: /');
+            exit;
+        }
+
         // 例外表示
         $error = new AppExceptionRenderer($_e);
         $error->render();

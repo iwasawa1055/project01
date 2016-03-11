@@ -80,8 +80,7 @@ class AppSecurity
 
 	public static function blockClickJacking()
 	{
-		//header('X-FRAME-OPTIONS: SAMEORIGIN', true);
+		header('X-FRAME-OPTIONS: SAMEORIGIN', true);
 	}
 
 }
-
