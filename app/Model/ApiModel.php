@@ -126,6 +126,9 @@ class ApiModel extends AppModel
         if (400 <= $apiRes->http_code) {
             $msgKey = $apiRes->http_code . ' ' . $apiRes->message;
             $msg = __d('api', $msgKey);
+            if ($msgKey === $msg) {
+                $msg = __d('api', $apiRes->http_code . ' default');
+            }
             $apiRes->error_message = $msg;
             Cakelog::write(DEBUG_LOG, "error_message: ${msgKey} -> ${msg}");
         }

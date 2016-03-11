@@ -1,4 +1,10 @@
 
+msgid "400 default"
+msgstr "入力に誤りがあります。内容をご確認いただき再度お試しください。"
+
+msgid "500 default"
+msgstr "サーバーエラー"
+
 msgid "401 Unauthorized - login"
 msgstr "ログインデータなし"
 
