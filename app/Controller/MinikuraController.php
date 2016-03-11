@@ -23,12 +23,10 @@ class MinikuraController extends AppController
         parent::beforeFilter();
 
         //* Attack Request Block
-        AppSecurity::blockAttackRequest();
+        // AppSecurity::blockAttackRequest();
 
         //* Agent Check
-        Configure::write('Session.checkAgent', false);
         CakeSession::start();
-        CakeSession::write('session_start', true);
 
         // アクセス拒否
         if ($this->isAccessDeny()) {

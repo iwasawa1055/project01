@@ -220,10 +220,35 @@ spl_autoload_register(function ($_class_name) {
     }
 });
 
-// 2015/08 added by osada@terrada
-Configure::load('AppConfig');
 // 定数ファイルを読み込む
 require_once(ROOT . DS . APP_DIR . DS . 'Config' . DS . 'constants.php');
 
-
+// 言語設定
 Configure::write('Config.language', 'ja');
+
+/**
+ * 設定ファイル読み込み
+ */
+// 共通
+Configure::load('AppConfig');
+
+// 環境別設定
+// ドメイン名による切り替え
+const HOSTS_STAGING = 'stag.minikura.com';
+const HOSTS_PRODUCTION = 'minikura.com';
+switch (true) {
+    case $_SERVER['SERVER_NAME'] === HOSTS_PRODUCTION:
+        // production
+        Configure::load('EnvConfig/Production/AppConfig', 'default', false);
+        include_once('EnvConfig/Production/email.php');
+        break;
+    case $_SERVER['SERVER_NAME'] === HOSTS_STAGING:
+        // staging
+        Configure::load('EnvConfig/Staging/AppConfig', 'default', false);
+        include_once('EnvConfig/Staging/email.php');
+        break;
+    default:
+        // development
+        Configure::load('EnvConfig/Development/AppConfig', 'default', false);
+        include_once('email.php');
+}

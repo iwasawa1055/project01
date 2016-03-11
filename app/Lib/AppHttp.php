@@ -16,7 +16,7 @@ class AppHttp
     protected static function _curl($_url, $_requests, $_method = null, $_headers = array())
     {
         //* Args No Check
-        $yahoo_stream = curl_init();
+        $ch = curl_init();
         $query = http_build_query($_requests);
         //debug($_url);
         //debug($query);
@@ -24,11 +24,14 @@ class AppHttp
         //* Option
         //** Common
         $options = array();
-        $options[CURLOPT_USERAGENT] = Configure::check('app.user_agent') ? Configure::read('app.user_agent') : '';
+        $options[CURLOPT_USERAGENT] = Configure::check('api.user_agent') ? Configure::read('api.user_agent') : '';
         $options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
         $options[CURLOPT_RETURNTRANSFER] = true;
         $options[CURLINFO_HEADER_OUT] = true;
         $options[CURLOPT_HEADER] = true;
+        $options[CURLOPT_TIMEOUT] = Configure::check('api.timeout') ? Configure::read('api.timeout') : 30;
+        $options[CURLOPT_CONNECTTIMEOUT] = Configure::check('api.connect_timeout') ? Configure::read('api.connect_timeout') : 30;
+
 
         //** Headers
         if (! empty($_headers)) {
@@ -43,32 +46,28 @@ class AppHttp
             $options[CURLOPT_URL] = $_url;
             $options[CURLOPT_POSTFIELDS] = $query;
             $options[CURLOPT_POST] = true;
-        } elseif ($_method === 'POST_BIN') {
-            $options[CURLOPT_URL] = $_url;
-            $options[CURLOPT_POST] = true;
-            $options[CURLOPT_POSTFIELDS] = $query;
-            $options[CURLOPT_BINARYTRANSFER] = true;
         } else {
             new AppInternalCritical(AppE::FUNC . 'Http method ['.$_method.'] not supported', 500);
         }
 
         //** Option Set
-        curl_setopt_array($yahoo_stream, $options);
+        curl_setopt_array($ch, $options);
 
         //* Transfer
-        if (! $responses = curl_exec($yahoo_stream)) {
-            $error = curl_error($yahoo_stream);
-            new AppMedialCritical(AppE::CONNECTION . 'Could not connect external server [' . $error . ']', 500);
+        if (! $responses = curl_exec($ch)) {
+            $errno = curl_errno($ch);
+            $error = curl_error($ch);
+            new AppMedialCritical(AppE::CONNECTION . 'Could not connect external server [' . $errno . ': ' . $error . ']', 500);
         }
         //debug($responses);
 
         //* Results
-        $results['headers'] = curl_getinfo($yahoo_stream);
-        $results['request_header'] = curl_getinfo($yahoo_stream, CURLINFO_HEADER_OUT);
-        $header_size = curl_getinfo($yahoo_stream, CURLINFO_HEADER_SIZE);
+        $results['headers'] = curl_getinfo($ch);
+        $results['request_header'] = curl_getinfo($ch, CURLINFO_HEADER_OUT);
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $results['response_header'] = substr($responses, 0, $header_size);
         $results['body'] = substr($responses, $header_size);
-        curl_close($yahoo_stream);
+        curl_close($ch);
 
         return $results;
     }

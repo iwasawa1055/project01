@@ -4,7 +4,7 @@ class EmailConfig
 {
     public $default = array(
         'transport' => 'Smtp',
-        'from' => 'you@localhost',
+        // 'from' => 'staging@example.com',
         'host' => 'smtp',
         'port' => 1025,
         'timeout' => 30,

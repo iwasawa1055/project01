@@ -1,67 +1,77 @@
 <?php
 // Manual Configure & Startup Configure
 
-// local devel
-$config['devel'] = false;
+/**
+ * 共通設定
+ */
+$config['site.name'] = 'Minikura.com';
+$config['site.url'] = 'http://' . $_SERVER['HTTP_HOST'];
+$config['site.top_page'] = 'https://minikura.com';
+$config['site.env_name'] = 'production';
 
-//* Name
-$config['app']['name'][] = 'Minikura';
+/**
+ * API設定
+ */
+$config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+$url = 'https://a-api.minikura.com';
+$config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
+$config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
+$config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
+$config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
 
-//* Host
-$config['app']['hosts']['prod'] = 'minikura.com';
-$config['app']['hosts']['stag'] = 'stag.minikura.com';
-$config['app']['hosts']['dev'] = 'dev.minikura.com';
-
-//* User Agent
-$config['app.user_agent'] = 'Minikura';
-
-
-//* Request Method
-// if (! empty($_GET['request_method'])) {
-//     if (preg_match('/^(?:get|post|put|patch|delete)$/i', $_GET['request_method'])) {
-//         $config['app.request.method'] = strtoupper($_GET['request_method']);
-//     } else {
-//         new AppTerminalWarning(AppE::NOT_FOUND . 'request_method invalid', 404);
-//     }
-// } else {
-//     $config['app.request.method'] = 'GET';
-// }
-
-//* Env
-switch (true) {
-    //** console
-    case (! isset($_SERVER['SERVER_NAME'])):
-        break;
-    case $_SERVER['SERVER_NAME'] === 'minikura.com':
-        // production
-        Configure::load('EnvConfig/Production');
-        break;
-    case $_SERVER['SERVER_NAME'] === 'stag.minikura.com':
-        // staging
-        Configure::load('EnvConfig/Staging');
-        break;
-    default:
-    // case $_SERVER['SERVER_NAME'] === 'dev.minikura.com':
-        // development
-        Configure::load('EnvConfig/Development/AppConfig');
-        include_once('EnvConfig/Development/email.php');
-}
+// タイムアウト（秒）
+$config['api.timeout'] = 30;
+$config['api.connect_timeout'] = 30;
+$config['api.user_agent'] = 'minikura';
 
 
-//* Security
-$config['app']['security']['XSS'] = true;
-$config['app']['security']['Script_Injection'] = true;
-$config['app']['security']['Null_Byte'] = true;
-$config['app']['security']['Controlled'] = true;
-$config['app']['security']['Path_Traversal'] = true;
-$config['app']['security']['Tainted_Key'] = true;
-$config['app']['security']['Click_Jacking'] = true;
-$config['app']['security']['Session_Hyjack'] = true;
-$config['app']['security']['Session_Fixasion'] = false;
-$config['app']['security']['UTF7'] = true;
-$config['app']['security']['CSRF'] = true;
-$config['app']['security']['SQL_Injection'] = true;
-$config['app']['security']['HTTP_Response'] = true;
-$config['app']['security']['Inclusion'] = true;
-$config['app']['security']['eval'] = true;
-$config['app']['security']['Call_Back'] = true;
+/**
+ * エラー表示(デフォルトは表示)
+ */
+// CakePHP Debug Level
+Configure::write('debug', 2);
+// php display
+ini_set('display_errors', '1');
+error_reporting(E_ALL ^ E_NOTICE);
+
+// Log
+// 不要なログはDrop
+// CakeLog::drop('error');
+// CakeLog::drop('mail');
+// CakeLog::drop('bench');
+// CakeLog::drop('debug');
+
+
+/**
+ * エラーメール設定
+ */
+$config['app']['e']['mail'] = [
+    'flag' => true,
+    'receiver' => [
+        'warning' => [
+            'To' => [
+                'exception_mail_warning_to@example.com',
+            ],
+            'Cc' => [
+                'exception_mail_warning_cc@example.com',
+            ],
+            'Bcc' => [
+                'exception_mail_warning_bcc@example.com',
+            ]
+        ],
+        'critical' => [
+            'To' => [
+                'exception_mail_critical_to1@example.com',
+                'exception_mail_critical_to2@example.com',
+            ],
+            'Cc' => [
+                'exception_mail_critical_cc1@example.com',
+                'exception_mail_critical_cc2@example.com',
+            ],
+            'Bcc' => [
+                'exception_mail_critical_bcc1@example.com',
+                'exception_mail_critical_bcc@example.com',
+            ]
+        ]
+    ]
+];

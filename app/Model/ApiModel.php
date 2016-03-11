@@ -27,7 +27,7 @@ class ApiModel extends AppModel
     public $useTable = false;
 
     // 設定値のキー
-    const CONFIG_API_OEMKEY = 'api.oem_key';
+    const CONFIG_API_OEMKEY = 'api.minikura.oem_key';
     const CONFIG_API_ACCESSPOINT_BASE = 'api.minikura.access_point.';
 
     // セッション値のキー
