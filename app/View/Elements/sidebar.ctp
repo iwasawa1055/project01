@@ -43,7 +43,7 @@
         </li>
         <?php else: ?>
         <li>
-          <a href="https://minikura.com/"><i class="fa fa-home fa-fw"></i> トップページ</a>
+          <a href="<?php echo Configure::read('site.top_page'); ?>"><i class="fa fa-home fa-fw"></i> トップページ</a>
         </li>
         <?php endif; ?>
       </ul>

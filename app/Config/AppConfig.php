@@ -6,7 +6,7 @@
  */
 $config['site.name'] = 'Minikura.com';
 $config['site.url'] = 'http://' . $_SERVER['HTTP_HOST'];
-$config['site.top_page'] = 'https://minikura.com';
+$config['site.top_page'] = 'http://' . $_SERVER['HTTP_HOST'];
 $config['site.env_name'] = 'production';
 
 /**
