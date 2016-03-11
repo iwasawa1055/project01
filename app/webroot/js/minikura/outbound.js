@@ -7,6 +7,11 @@ function getDatetime() {
   var elem_address = $('#OutboundAddressId');
   var elem_datetime = $('#OutboundDatetimeCd');
 
+  if (!elem_address.val()) {
+    elem_datetime.empty();
+    return;
+  }
+
   $('option:first', elem_datetime).prop('selected', true);
   elem_datetime.attr("disabled", "disabled");
   elem_datetime.empty();

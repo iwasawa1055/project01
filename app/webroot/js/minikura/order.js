@@ -8,6 +8,11 @@ $(function() {
     var elem_address = $('#OrderKitAddressId');
     var elem_datetime = $('#OrderKitDatetimeCd');
 
+    if (!elem_address.val()) {
+      elem_datetime.empty();
+      return;
+    }
+
     $('option:first', elem_datetime).prop('selected', true);
     elem_datetime.attr("disabled", "disabled");
 
