@@ -23,7 +23,7 @@ class OrderController extends MinikuraController
         }
 
         $this->Order = $this->Components->load('Order');
-        $this->Order->init($this->Customer->getToken()['division']);
+        $this->Order->init($this->Customer->getToken()['division'], $this->Customer->hasCreditCard());
         $this->loadModel(self::MODEL_NAME_CARD);
         $this->loadModel(self::MODEL_NAME_DATETIME);
         $this->set('validErrors', []);

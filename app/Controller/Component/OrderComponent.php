@@ -8,9 +8,9 @@ class OrderComponent extends Component
 {
     private $set = null;
 
-    public function init($division)
+    public function init($division, $hasCreditCard)
     {
-        $this->set = OrderSet::create($division);
+        $this->set = OrderSet::create($division, $hasCreditCard);
     }
     public function model($data)
     {
@@ -26,11 +26,15 @@ abstract class OrderSet
 {
     abstract public function getModel($data = []);
     abstract public function setAddress($data, $address);
-    public static function create($division)
+    public static function create($division, $hasCreditCard)
     {
         $set = null;
         if ($division === CUSTOMER_DIVISION_CORPORATE) {
-            $set = new SetAccountTransfer();
+            if ($hasCreditCard) {
+                $set = new SetCreditCard();
+            } else {
+                $set = new SetAccountTransfer();
+            }
         } elseif ($division === CUSTOMER_DIVISION_PRIVATE) {
             $set = new SetCreditCard();
         }
