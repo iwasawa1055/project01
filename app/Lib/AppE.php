@@ -288,33 +288,33 @@ class AppE extends Exception
     	//* 以下$senders以降は、最新版のmail処理に置き換わる予定です。大幅変更を想定し未編集となります。
     	//*---------------------------------------------------------------------------
 
-    	$senders = $confs['sender'];
-
-    	$envs = array();
-    	$envs['HOST'] = $senders['HOST'];
-    	$envs['PORT'] = $senders['PORT'];
-    	$envs['MAIL FROM'] = $senders['MAIL FROM'];
-    	$envs['USER'] = $senders['USER'];
-    	$envs['PASS'] = $senders['PASS'];
+    	// $senders = $confs['sender'];
+        //
+    	// $envs = array();
+    	// $envs['HOST'] = $senders['HOST'];
+    	// $envs['PORT'] = $senders['PORT'];
+    	// $envs['MAIL FROM'] = $senders['MAIL FROM'];
+    	// $envs['USER'] = $senders['USER'];
+    	// $envs['PASS'] = $senders['PASS'];
 
     	$headers = array();
     	$headers['Subject'] = '【' . $_that->service_name . '】 ' . $_that->error_node . ' ' . $_that->error_level . ' Alert';
-    	$headers['From'] = $envs['MAIL FROM'];
-
+    	// $headers['From'] = //$envs['MAIL FROM'];
+        //
     	$receivers = $confs['receiver'];
     	$headers['To'] = '';
     	$headers['Cc'] = '';
     	$headers['Bcc'] = '';
     	$error_level = strtolower($_that->error_level);
-    	foreach ($receivers[$error_level] as $k => $receiver) {
-    		if ($k === 'To') {
-    			$headers['To'] = implode(',', $receiver);
-    		} else if ($k === 'Cc') {
-    			$headers['Cc'] = implode(',', $receiver);
-    		} else if ($k === 'Bcc') {
-    			$headers['Bcc'] = implode(',', $receiver);
-    		}
-    	}
+    	// foreach ($receivers[$error_level] as $k => $receiver) {
+    	// 	if ($k === 'To') {
+    	// 		$headers['To'] = implode(',', $receiver);
+    	// 	} else if ($k === 'Cc') {
+    	// 		$headers['Cc'] = implode(',', $receiver);
+    	// 	} else if ($k === 'Bcc') {
+    	// 		$headers['Bcc'] = implode(',', $receiver);
+    	// 	}
+    	// }
 
     	foreach ($receivers[$error_level] as $k => $a) {
     		foreach ($a as $receiver) {
