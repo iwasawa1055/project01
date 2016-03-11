@@ -55,16 +55,26 @@ class PasswordResetController extends MinikuraController
         $hash = Hash::get($this->request->query, 'hash');
         if ($hash) {
             // セッション復元
+            $newid = CakeSession::id();
             CakeSession::id($hash);
             session_reset();
-            CakeSession::start();
+
+            $this->request->data = CakeSession::read(self::MODEL_NAME);
+            // $this->request->data[self::MODEL_NAME]['new_password'] = '';
+            // $this->request->data[self::MODEL_NAME]['new_password_confirm'] = '';
+            CakeSession::destroy();
+
+            // 既存セッションに戻す
+            CakeSession::id($newid);
+            session_reset();
+            CakeSession::write(self::MODEL_NAME, $this->request->data);
         }
 
         $this->request->data = CakeSession::read(self::MODEL_NAME);
+        // $this->request->data[self::MODEL_NAME]['new_password'] = '';
+        // $this->request->data[self::MODEL_NAME]['new_password_confirm'] = '';
+
         $this->CustomerPasswordReset->set($this->request->data);
-
-        CakeSession::renew();
-
         if (empty($this->CustomerPasswordReset->data) ||
             !$this->CustomerPasswordReset->validates(['fieldList' => ['email']])) {
 
@@ -73,9 +83,6 @@ class PasswordResetController extends MinikuraController
         }
 
         CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
-
-        $this->request->data[self::MODEL_NAME]['new_password'] = '';
-        $this->request->data[self::MODEL_NAME]['new_password_confirm'] = '';
     }
 
     /**
