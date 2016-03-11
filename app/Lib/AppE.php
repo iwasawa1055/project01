@@ -237,7 +237,7 @@ class AppE extends Exception
      * @param	bool $write_ ログフラグ
      * @return	string ログフォーマット
      */
-    public static function log($_write = true)
+    public function log($_write = true)
     {
         //* Request Body
         $request_body = '';
@@ -251,7 +251,8 @@ class AppE extends Exception
         $response_headers = headers_list();
 
         // Format
-        $log = "\n";
+        $log  = "\n";
+        $log .= $this->__toString();
         $log .= '[Access ID]' . "\n" . (! empty($_SERVER['UNIQUE_ID']) ? $_SERVER['UNIQUE_ID'] : uniqid('@', true)) . "\n";
         $log .= '[Env Variable]' . "\n" . (isset($_SERVER) ? var_export($_SERVER, true) : '-') . "\n";
         $log .= '[Request Body]' . "\n" . ($request_body ? $request_body : '-') . "\n";
@@ -272,13 +273,13 @@ class AppE extends Exception
      * @param	object $_that($this,AppExceptionHandlerへthrowした$thisが循環する)
      * @return	string メールフォーマット
      */
-    public static function mail($_that)
+    public function mail($_that)
     {
     	if (! Configure::read($_that->config_prefix . 'mail.flag')) {
     		return false;
     	}
 
-    	$body = str_replace("\n", "\r\n", self::log(false));
+    	$body = str_replace("\n", "\r\n", $this->log(false));
 
     	$confs = Configure::read($_that->config_prefix . 'mail');
 

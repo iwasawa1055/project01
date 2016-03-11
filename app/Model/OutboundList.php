@@ -63,7 +63,7 @@ class OutboundList
         return Hash::extract($this->getMonoList(), '{s}.box_id');
     }
 
-    public function  setMono($idList = [], $needClear = true, $needSave = true)
+    public function setMono($idList = [], $needClear = true, $needSave = true)
     {
         $box = new InfoBox();
         $list = $box->apiGetResultsWhere([], ['box_id' => $idList]);

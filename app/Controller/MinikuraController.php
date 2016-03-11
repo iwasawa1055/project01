@@ -22,10 +22,9 @@ class MinikuraController extends AppController
     {
         parent::beforeFilter();
 
-        //* Attack Request Block
-        // AppSecurity::blockAttackRequest();
+        // * Attack Request Block
+        AppSecurity::blockAttackRequest();
 
-        //* Agent Check
         CakeSession::start();
 
         // アクセス拒否
