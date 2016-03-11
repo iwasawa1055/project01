@@ -19,7 +19,7 @@
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">ログイン</button>
             <?php echo $this->Form->end(); ?>
-              <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset/add">パスワードを忘れた方はこちら</a>
+              <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset">パスワードを忘れた方はこちら</a>
               <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add">ユーザー登録はこちら</a>
             </div>
           </div>
