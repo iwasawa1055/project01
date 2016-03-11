@@ -21,10 +21,13 @@ class AppExceptionHandler
         if ('AppE' !== get_parent_class($_e)) {
             // AppE継承クラスではない場合はAppInternalCriticalの例外処理を行う
             try {
+                // 例外処理を実行
                 new AppInternalCritical($_e->getMessage(), $_e->getCode());
             } catch (Exception $e) {
             }
         }
+        // セッション値をクリア
+        ApiCachedModel::deleteAllCache();
         // 例外表示
         $error = new AppExceptionRenderer($_e);
         $error->render();

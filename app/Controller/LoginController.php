@@ -31,6 +31,8 @@ class LoginController extends MinikuraController
 
                 // セッション値をクリア
                 ApiCachedModel::deleteAllCache();
+                OutboundList::delete();
+                CustomerData::delete();
 
                 // カスタマー情報を取得しセッションに保存
                 $this->Customer->setTokenAndSave($res->results[0]);
@@ -56,6 +58,8 @@ class LoginController extends MinikuraController
         $this->CustomerLogin->logout();
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
+        OutboundList::delete();
+        CustomerData::delete();
         $this->Session->destroy();
 
         return $this->redirect(['controller' => 'login', 'action' => 'index']);
