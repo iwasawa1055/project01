@@ -6,14 +6,14 @@ App::uses('CorporateInfo', 'Model');
 
 class AddressComponent extends Component
 {
-
     const CUSTOMER_INFO_ADDRESS_ID = '-10';
 
     private $list = null;
 
-    public function initialize(Controller $controller) {
+    public function initialize(Controller $controller)
+    {
         $this->Controller = $controller;
-	}
+    }
 
     public function get()
     {
@@ -30,6 +30,7 @@ class AddressComponent extends Component
             $new['address_id'] = self::CUSTOMER_INFO_ADDRESS_ID;
             array_unshift($this->list, $new);
         }
+
         return $this->list;
     }
     public function find($id)
@@ -39,14 +40,25 @@ class AddressComponent extends Component
                 return $a;
             }
         }
-        return null;
+
+        return;
     }
     public function merge($id, $data)
     {
         $a = $this->find($id);
         if (!empty($a)) {
-            $this->copy($a, $data);
+            $data['lastname'] = $a['lastname'];
+            $data['lastname_kana'] = $a['lastname_kana'];
+            $data['firstname'] = $a['firstname'];
+            $data['firstname_kana'] = $a['firstname_kana'];
+            $data['tel1'] = $a['tel1'];
+            $data['postal'] = $a['postal'];
+            $data['pref'] = $a['pref'];
+            $data['address1'] = $a['address1'];
+            $data['address2'] = $a['address2'];
+            $data['address3'] = $a['address3'];
         }
+
         return $data;
     }
     private function copy($from, &$to)
@@ -68,6 +80,7 @@ class AddressComponent extends Component
         $to['address1'] = $from['address1'];
         $to['address2'] = $from['address2'];
         $to['address3'] = $from['address3'];
+
         return $to;
     }
 }
