@@ -62,8 +62,6 @@ class LoginController extends MinikuraController
         ApiCachedModel::deleteAllCache();
         OutboundList::delete();
         CustomerData::delete();
-        // セッション破棄
-        CakeSession::destroy();
 
         return $this->redirect(['controller' => 'login', 'action' => 'index']);
     }
