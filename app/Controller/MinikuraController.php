@@ -81,7 +81,8 @@ class MinikuraController extends AppController
     {
         parent::afterFilter();
 
+        // 転送処理の妨げになる一時除外
         //* Click Jacking Block
-       AppSecurity::blockClickJacking();
+        // AppSecurity::blockClickJacking();
     }
 }
