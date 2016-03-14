@@ -3,7 +3,9 @@
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
 
-
+/**
+ * 取り出しリスト管理クラス
+ */
 class OutboundList
 {
 

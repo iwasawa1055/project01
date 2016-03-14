@@ -2,29 +2,44 @@
 
 App::uses('Model', 'Model');
 App::uses('AppValid', 'Lib');
-App::uses('ArraySorter', 'Model');
 
+/**
+ * モデル基底クラス
+ */
 class AppModel extends Model
 {
-    protected $model_name = null;
-    public $validationDomain = 'validation';
     /**
-    * [__construct description].
-    *
-    * @param [type] $name             [description]
-    * @param [type] $end              [description]
-    * @param string $access_point_key API遞ｮ蛻･繧ｭ繝ｼ
-    */
+     * モデル名
+     */
+    protected $model_name = null;
+
+    /**
+     * 言語リソースのドメイン名
+     */
+    public $validationDomain = 'validation';
+
+    /**
+     * コンストラクタ
+     * @param string $name モデル名
+     */
     public function __construct($name)
     {
         parent::__construct();
         $this->model_name = $name;
     }
 
+    /**
+     * モデル名を取得
+     * @return [type] [description]
+     */
     public function getModelName() {
         return $this->model_name;
     }
 
+    /**
+     * データ配列を取得
+     * @return array データ1次元配列
+     */
     public function toArray()
     {
         return $this->data[$this->model_name];
@@ -34,7 +49,7 @@ class AppModel extends Model
 
     public function paginateCount($conditions, $recursive)
     {
-        //繝ｬ繧ｳ繝ｼ繝我ｻｶ謨ｰ繧貞叙蠕励☆繧九さ繝ｼ繝峨ｒ險倩ｿｰ
+        //レコード件数を取得するコードを記述
         $count = count($conditions);
         return $count;
     }
@@ -48,7 +63,7 @@ class AppModel extends Model
             $end = $count;
         }
 
-        //繝ｬ繧ｳ繝ｼ繝峨ｒ蜿門ｾ励☆繧九さ繝ｼ繝峨ｒ險倩ｿｰ
+        //レコードを取得するコードを記述
         $list = [];
         for ($i = 0; ($start + $i) < $end; $i++) {
             $list[$i] = $conditions[$start + $i];

@@ -3,7 +3,9 @@
 App::uses('ApiModel', 'Model');
 
 /**
- *
+ * API問い合わせモデルクラス
+ * 結果をキャッシュする
+ * 内容検索や並び替えを行います。
  */
 class ApiCachedModel extends ApiModel
 {
@@ -18,11 +20,24 @@ class ApiCachedModel extends ApiModel
         parent::__construct($name, $end, $access_point_key);
     }
 
+    /**
+     * 条件に合う問い合わせ結果を1件取得
+     * @param  array $data  パラメータ値
+     * @param  array $where 条件
+     * @return array       結果配列
+     */
     public function apiGetResultsFind($data = [], $where = [])
     {
         return $this->apiGetResultsWhere($data, $where, true);
     }
 
+    /**
+     * 条件に合う問い合わせ結果
+     * @param  array $data  パラメータ値
+     * @param  array $where 条件
+     * @param  boolean $firstOnly 1件のみか
+     * @return array       結果配列
+     */
     public function apiGetResultsWhere($data = [], $where = [], $firstOnly = false)
     {
         $keyList = array_keys($where);
@@ -55,6 +70,11 @@ class ApiCachedModel extends ApiModel
         return $findList;
     }
 
+    /**
+     * GETメソッドでAPI問い合わせ
+     * @param  array $arg パラメータ値
+     * @return array 結果配列
+     */
     public function apiGetResults($arg = [])
     {
 
@@ -81,20 +101,45 @@ class ApiCachedModel extends ApiModel
         return array_slice($list, $offset, $limit);
     }
 
+    /**
+     * 通常の問い合わせを利用しない
+     */
     public function apiGet($data = []) {
         new AppInternalCritical('donot call apiGet() in ApiCachedModel', 500);
     }
 
+    /**
+     * データ変更がある場合はキャッシュクリア
+     */
     protected function triggerDataChanged() {
         $this->deleteCache();
     }
+    /**
+     * イベント：キャッシュ利用した
+     */
     protected function triggerUsingCache() {
         CakeLog::write(DEBUG_LOG, 'UsingCache: ' . get_class($this));
     }
+    /**
+     * イベント：キャッシュ利用しない
+     */
     protected function triggerNotUsingCache() {
         CakeLog::write(DEBUG_LOG, 'NotUsingCache: ' . get_class($this));
     }
-
+    /**
+     * キャッシュ復元
+     * キー：
+     * $this->sessionKey . $key
+     * データ：
+     * [
+     * 	"arg" => パラメータ値
+     * 	"expires" => 有効期限
+     * 	"data" => 問い合わせ結果
+     * ]
+     * @param  string $key 任意のキー
+     * @param  array $arg パラメータ値
+     * @return array      問い合わせ結果
+     */
     protected function readCache($key, $arg)
     {
         $sessionKey = $this->sessionKey . '.' . $key;
@@ -107,6 +152,13 @@ class ApiCachedModel extends ApiModel
         }
         return null;
     }
+    /**
+     * キャッシュ保存
+     * @param  string $key 任意のキー
+     * @param  array $arg パラメータ値
+     * @param  array $data 問い合わせ結果
+     * @return null
+     */
     protected function writeCache($key, $arg, $data)
     {
         $sessionKey = $this->sessionKey . '.' . $key;
@@ -120,16 +172,29 @@ class ApiCachedModel extends ApiModel
             'data' => $data
         ]);
     }
+    /**
+     * 自モデルキャッシュ削除
+     */
     public function deleteCache()
     {
         CakeSession::delete($this->sessionKey);
     }
 
+    /* static */
+    /**
+     * 全キャッシュモデルキャッシュ削除
+     */
     public static function deleteAllCache()
     {
         CakeSession::delete(ApiCachedModel::SESSION_BASE_KEY);
     }
 
+    /* private */
+    /**
+     * API問い合わせを行いキャッシュデータを作成
+     * @param  array $arg パラメータ値
+     * @return array     問い合わせ結果
+     */
     private function apiGetListWithCache($arg = [])
     {
         $key = 'apiGet';

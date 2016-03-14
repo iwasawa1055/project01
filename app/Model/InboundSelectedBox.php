@@ -2,6 +2,9 @@
 
 App::uses('AppModel', 'Model');
 
+/**
+ * ボックス入庫のボックス情報モデル
+ */
 class InboundSelectedBox extends AppModel
 {
 

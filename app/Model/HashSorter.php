@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * 配列ソートクラス
+ */
 class HashSorter
 {
     public $sortKeyList = [];

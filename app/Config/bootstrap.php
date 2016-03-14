@@ -51,7 +51,6 @@ Cache::config('default', array('engine' => 'File'));
  *
  */
 
-// 2015/08 added by osada@terrada
     App::build(array(
         'Controller' => array(
             ROOT . DS . APP_DIR . DS . 'Controller' . DS,
@@ -88,8 +87,7 @@ Cache::config('default', array('engine' => 'File'));
  *
  */
 
-// 2015/08 added by osada@terrada
-CakePlugin::loadAll();
+// CakePlugin::loadAll();
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
@@ -109,19 +107,35 @@ CakePlugin::loadAll();
  * ));
  */
 Configure::write('Dispatcher.filters', array(
-    'AssetDispatcher',
-    'CacheDispatcher'
+    // 'AssetDispatcher',
+    // 'CacheDispatcher'
 ));
 
 /**
- * Configures default file logging options
+ * ログ処理
+ *
+ * ログ種別（types, level）：
+ * ・error   例外発生時出力
+ * ・debug   デバック用
+ * ・mail    例外のメール通知用
+ *
+ * ログ出力種類：
+ * ・error（対応する例外種別：error）
+ * 		例外発生時、ファイルに例外内容とHTTP情報を出力
+ * ・debug（対応する例外種別：debug）
+ * 		デバックファイルを出力
+ * ・bench（対応する例外種別：debug）
+ * 		デバックログで第3引数に'bench'を指定したものだけを取得
+ * 		ex. CakeLog::write(DEBUG_LOG, $d, ['bench']);
+ * ・mail（対応する例外種別：mail）
+ * 		例外のメール通知用
  */
 App::uses('CakeLog', 'Log');
 
+// ログ種別（types, levels）
 define('ERROR_LOG', 'error');
 define('DEBUG_LOG', 'debug');
 define('MAIL_LOG', 'mail');
-
 
 // add mail level
 CakeLog::levels([MAIL_LOG]);
@@ -165,7 +179,6 @@ CakeLog::config('bench', array(
     'rotate' => 2,
 ));
 
-App::uses('AppErrorHandler', 'Lib');
 App::uses('AppExceptionHandler', 'Lib');
 App::uses('AppE', 'Lib');
 App::uses('AppInternalPass', 'Lib');
@@ -200,25 +213,24 @@ App::uses('AppTerminalDefect', 'Lib');
 App::uses('AppTerminalError', 'Lib');
 App::uses('AppTerminalCritical', 'Lib');
 App::uses('AppTerminalFatal', 'Lib');
-App::uses('AppExceptionRenderer', 'Lib');
 
 
-spl_autoload_register(function ($_class_name) {
-    if (0 === strpos($_class_name, 'App')) {
-        $class_name = preg_replace('/^App/', APP_DIR, $_class_name);
-        $class_path = ROOT . DS . $class_name;
-    } else {
-        $class_path = APP . 'Vendor' . DS . $_class_name;
-    }
-    $class_path = str_replace('\\', DS, $class_path) . '.php';
-    if (is_file($class_path)) {
-        @include_once $class_path;
-    } else {
-        $paths = explode('/', $class_path);
-        $last = end($paths);
-        //spl_autoload_call($last);
-    }
-});
+// spl_autoload_register(function ($_class_name) {
+//     if (0 === strpos($_class_name, 'App')) {
+//         $class_name = preg_replace('/^App/', APP_DIR, $_class_name);
+//         $class_path = ROOT . DS . $class_name;
+//     } else {
+//         $class_path = APP . 'Vendor' . DS . $_class_name;
+//     }
+//     $class_path = str_replace('\\', DS, $class_path) . '.php';
+//     if (is_file($class_path)) {
+//         @include_once $class_path;
+//     } else {
+//         $paths = explode('/', $class_path);
+//         $last = end($paths);
+//         //spl_autoload_call($last);
+//     }
+// });
 
 // 定数ファイルを読み込む
 require_once(ROOT . DS . APP_DIR . DS . 'Config' . DS . 'constants.php');

@@ -5,6 +5,9 @@ App::uses('CustomerEntry', 'Model');
 App::uses('CustomerInfo', 'Model');
 App::uses('CorporateInfo', 'Model');
 
+/**
+ * カスタマーログイン情報
+ */
 class CustomerData
 {
     const SESSION_KEY = 'CUSTOMER_DATA_CACHE';

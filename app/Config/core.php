@@ -48,8 +48,9 @@
  *
  * @see ErrorHandler for more information on error handling and configuration.
  */
+
+    // エラーハンドラはデフォルト
     Configure::write('Error', array(
-        // 'handler' => 'AppErrorHandler::handle',
         'handler' => 'ErrorHandler::handleError',
         'level' => E_ALL & ~E_DEPRECATED,
         'trace' => true
@@ -75,9 +76,12 @@
  *
  * @see ErrorHandler for more information on exception handling and configuration.
  */
+    // 例外ハンドラと描画クラスを独自実装
+    // 例外ハンドラでは、必ず共通例外処理（AppEクラス）を行う様にする
+    // 描画クラスでは、例外表示を制御する
     Configure::write('Exception', array(
         'handler' => 'AppExceptionHandler::handle',
-        // 'handler' => 'ErrorHandler::handleException',
+        // 例外ハンドラ内で描画クラスを生成するためここの設定はデフォルトのまま
         'renderer' => 'ExceptionRenderer',
         'log' => true
     ));

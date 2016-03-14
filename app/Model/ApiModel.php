@@ -4,21 +4,27 @@ App::uses('AppHttp', 'Lib');
 App::uses('AppModel', 'Model');
 
 /**
- * API問い合わせや後処理をロジックを含むモデルクラス。
- * モデルクラスを継承するがDB処理や値保持を利用しない。
- * validateを継承先で利用する想定
- * API問い合わせ関連関数をここで実装る
+ * API問い合わせモデルクラス。DB処理は行わない。
+ * 継承先でモデル名、対応するAPIエンドポイント名と、
+ * APIパラメータのバリデーションを定義する。
  *
- * 継承する場合は、コンストラクタでモデル名とAPIエンドポイントを定義する
- * 継承例:
+ * 継承先のコンストラクタ利用例：
  * parent::__construct('InfoBox', '/info_box');
  *
- * コントローラでの利用例:
+ * コントローラでの利用例：
  * $this->loadModel(MODEL_NAME);
- * $data = ['limit' => 10];
- * $this->MODEL_NAME->apiGet($data);
- * $data = ['id' => 'hoge', 'name' => 'hoge'];
- * $this->MODEL_NAME->apiPut($data);
+ * $params = ['limit' => 10];
+ * $this->MODEL_NAME->apiGet($params);
+ * $params = ['id' => 'hoge', 'name' => 'hoge'];
+ * $this->MODEL_NAME->apiPut($params);
+ *
+ * 例外処理
+ * 例外発生（AppE生成）時に例外処理を行うため例外制御はハンドラに任せる。
+ * ・ネットワーク関連はAppHttpライブラリ内で例外発生する
+ * ・APIレスポンスはApiModel::afterApiRequest()で処理
+ * 		・が500系の場合、AppTerminalCriticalを生成する
+ *   	・APIレスポンスが401、402の場合、ApiModel::afterApiRequest例外発生する
+ *    	・APIレスポンスが401、402以外の場合、言語リソースからエラーメッセージを設定する
  *
  */
 class ApiModel extends AppModel
@@ -44,11 +50,11 @@ class ApiModel extends AppModel
     protected $checkZeroResultsKey = null;
 
     /**
-     * [__construct description].
+     * コンストラクタ
      *
-     * @param [type] $name             [description]
-     * @param [type] $end              [description]
-     * @param string $access_point_key API種別キー
+     * @param [type] $name    モデル名
+     * @param [type] $end     エンドポイント
+     * @param string $access_point_key APIバージョン種別キー
      */
     public function __construct($name, $end, $access_point_key = 'minikura_v3')
     {
@@ -58,6 +64,11 @@ class ApiModel extends AppModel
         $this->end_point = $end;
     }
 
+    /**
+     * GETメソッドでAPI問い合わせ
+     * @param  array $data パラメータ値
+     * @return ApiResponse API問い合わせレスポンス
+     */
     public function apiGet($data = [])
     {
         $r = $this->requestWithDataAndToken($data, 'GET');
@@ -104,9 +115,22 @@ class ApiModel extends AppModel
         return $r;
     }
 
+    /* protected */
+
+    /**
+     * データ更新（GET以外）の問い合わせが成功した場合
+     * @return null
+     */
     protected function triggerDataChanged() {
     }
 
+    /**
+     * API問い合わせ前処理
+     * @param  string $url    問い合わせ先URL
+     * @param  array $params パラメータ値（変更可能）
+     * @param  string $method HTTPメソッド
+     * @return null
+     */
     protected function beforeApiRequest($url, &$params, $method)
     {
         $d = date('H:i:s', time());
@@ -115,6 +139,14 @@ class ApiModel extends AppModel
         CakeLog::write(DEBUG_LOG, print_r($params, true));
     }
 
+    /**
+     * API問い合わせ後処理
+     * 継承先で必ず親メソッドを実行
+     * @param  array $params パラメータ値
+     * @param  string $method HTTPメソッド
+     * @param  ApiResponse $apiRes API問い合わせレスポンス（変更可能）
+     * @return null
+     */
     protected function afterApiRequest($params, $method, &$apiRes)
     {
         $d = date('H:i:s', time());
@@ -125,76 +157,74 @@ class ApiModel extends AppModel
         $code = $apiRes->http_code;
         $message = $apiRes->message;
 
-        // メッセージ
+        // 例外発生
         if (400 <= $code) {
+            // エラーコードとメッセージから言語リソースを取得
             $msgKey = $code . ' ' . $message;
             $msg = __d('api', $msgKey);
             if ($msgKey === $msg) {
+                // 見つからない場合はエラーコードのみで探す
                 $msg = __d('api', $code . ' default');
             }
             $apiRes->error_message = $msg;
             Cakelog::write(DEBUG_LOG, "error_message: ${msgKey} -> ${msg}");
         }
 
+        // token不正は未承認のエラーコードに変える
         if ($code === '400' && $message === 'Parameter Invalid - token') {
             $code = '401';
         }
+        // 未認証と未支払は強制ログイン画面へ転送する
         if (in_array($code , ['401', '402'], true)) {
             new AppTerminalCritical($apiRes->error_message, $code);
         }
-
         // 基準となる例外処理
         if (500 <= $code) {
             new AppMedialCritical($apiRes->error_message, $code);
         }
     }
 
+    /* request */
 
+    /**
+     * tokenを使うAPI問い合わせ
+     *
+     * @param  array $params パラメータ値
+     * @param  string $method HTTPメソッド
+     * @return ApiResponse    API問い合わせレスポンス
+     */
     protected function requestWithDataAndToken($params = [], $method = 'GET')
     {
-        // トークンを指定する
-        $token = CakeSession::read('api.token');
+        // tokenをパラメータに追加
+        $token = CakeSession::read(self::SESSION_API_TOKEN);
         $params['token'] = $token;
-        // // TODO: 設定を外出し
-        // $params['debug'] = 1;
-
-        // API問い合わせを行う　レスポンス型クラスを生成
-        $apiRes = $this->request($this->end_point, $params, $method);
-
-        // TODO: 例外処理
-        // ネットワーク例外は、AppHttp::requestで実装。
-        // 問い合わせ失敗、JSON形式でない場合は例外
-
-
-        return $apiRes;
+        // API問い合わせを行う
+        return $this->request($this->end_point, $params, $method);
     }
 
     /**
-     * API呼び出しJSON型のレスポンスを返す
+     * API問い合わせ
      *
-     * @param [type] $end_point [description]
-     * @param [type] $params    [description]
-     * @param [type] $method    [description]
-     * @param [type] $headers   [description]
+     * @param string $end_point エンドポイント
+     * @param  array $params パラメータ値
+     * @param  string $method HTTPメソッド
      *
-     * @return [type] [description]
+     * @return ApiResponse    API問い合わせレスポンス
      */
-    protected function request($end_point, $params, $method, $headers = [])
+    protected function request($end_point, $params, $method)
     {
-        // TODO: APIの仕様を確認
-        // GET, POST以外はすべてPOSTで送る
+        // GET, POST以外はrequest_methodパラメータで指定
         if ('GET' !== $method && 'POST' !== $method) {
             $params['request_method'] = strtolower($method);
             $method = 'POST';
         }
         $url = $this->access_point.$end_point;
 
-
         // 前処理
         $this->beforeApiRequest($url, $params, $method);
 
-
-        $responses = AppHttp::request($url, $params, $method, $headers);
+        // API問い合わせとレスポンス型生成
+        $responses = AppHttp::request($url, $params, $method);
         $apiRes = new ApiResponse($responses);
 
         // 後処理
@@ -204,6 +234,9 @@ class ApiModel extends AppModel
     }
 }
 
+/**
+ * API問い合わせレスポンスのクラス
+ */
 class ApiResponse
 {
     public $status = null;
@@ -212,6 +245,10 @@ class ApiResponse
     public $http_code = null;
     public $error_message = null;
 
+    /**
+     * APIレスポンスのJSONを解析しメンバー変数を設定
+     * @param array $resp APIレスポンスのJSON
+     */
     public function __construct($resp)
     {
         $json = $resp['body_parsed'];

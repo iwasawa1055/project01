@@ -2,6 +2,9 @@
 
 App::uses('AppModel', 'Model');
 
+/**
+ * グローバル検索入力モデル
+ */
 class GlobalSreach extends AppModel
 {
 
