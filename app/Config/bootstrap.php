@@ -246,7 +246,7 @@ Configure::load('AppConfig');
 
 // 環境別設定
 // ドメイン名による切り替え
-const HOSTS_STAGING = 'stag.minikura.com';
+const HOSTS_STAGING = 'b-www.minikura.com';
 const HOSTS_PRODUCTION = 'minikura.com';
 switch (true) {
     case $_SERVER['SERVER_NAME'] === HOSTS_PRODUCTION:
