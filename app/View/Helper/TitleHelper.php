@@ -53,7 +53,7 @@ class TitleHelper extends AppHelper {
         'login' => [
             'index' => 'ログイン',
         ],
-        'mypage' => [
+        'my_page' => [
             'index' => 'マイページ',
         ],
         'order' => [

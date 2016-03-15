@@ -1,7 +1,7 @@
 <?php
 
     // top
-    Router::connect('/', ['controller' => 'mypage', 'action' => 'index']);
+    Router::connect('/', ['controller' => 'MyPage', 'action' => 'index']);
 
     // customer
     Router::connect('/customer/:controller', ['action' => 'index', 'customer' => true]);

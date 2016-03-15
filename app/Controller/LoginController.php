@@ -42,7 +42,7 @@ class LoginController extends MinikuraController
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
 
-                return $this->redirect(['controller' => 'mypage', 'action' => 'index']);
+                return $this->redirect(['controller' => 'MyPage', 'action' => 'index']);
 
             } else {
                 $this->request->data['CustomerLogin']['password'] = '';
@@ -50,7 +50,7 @@ class LoginController extends MinikuraController
             }
         } else if ($this->Customer->isLogined()) {
             // ログイン済
-            return $this->redirect(['controller' => 'mypage', 'action' => 'index']);
+            return $this->redirect(['controller' => 'MyPage', 'action' => 'index']);
         }
     }
 
