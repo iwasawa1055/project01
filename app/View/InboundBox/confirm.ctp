@@ -56,19 +56,19 @@
         <div class="form-group col-lg-12">
           <label>集荷の住所</label>
           <p class="form-control-static">
-              <?php echo $this->order->setAddress($addressList)[$this->data['Inbound']['address_id']] ?>
+              <?php echo $this->Order->setAddress($addressList)[$this->data['Inbound']['address_id']] ?>
           </p>
         </div>
         <div class="form-group col-lg-12">
           <label>集荷の日程</label>
           <p class="form-control-static">
-              <?php echo $this->order->echoOption($dateList, 'date_cd', 'text', $this->data['Inbound']['day_cd']) ?>
+              <?php echo $this->Order->echoOption($dateList, 'date_cd', 'text', $this->data['Inbound']['day_cd']) ?>
           </p>
         </div>
         <div class="form-group col-lg-12">
           <label>集荷の時間</label>
           <p class="form-control-static">
-              <?php echo $this->order->echoOption($timeList, 'time_cd', 'text', $this->data['Inbound']['time_cd']) ?>
+              <?php echo $this->Order->echoOption($timeList, 'time_cd', 'text', $this->data['Inbound']['time_cd']) ?>
           </p>
         </div>
         <?php endif; ?>

@@ -19,7 +19,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('OrderKit.mono_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                      <?php echo $this->Form->select('OrderKit.mono_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -36,7 +36,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('OrderKit.hako_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                      <?php echo $this->Form->select('OrderKit.hako_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -53,7 +53,7 @@
                   <div class="panel-body">
                     <div class="form-group">
                       <label>オーダー数</label>
-                      <?php echo $this->Form->select('OrderKit.cleaning_num', $this->order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                      <?php echo $this->Form->select('OrderKit.cleaning_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -72,7 +72,7 @@
             <?php if ($isPrivateCustomer || empty($corporatePayment))  : ?>
             <div class="form-group col-lg-12">
               <label>カード情報</label>
-              <?php echo $this->Form->select('OrderKit.card_seq', $this->order->setDefalutPayment($default_payment), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->select('OrderKit.card_seq', $this->Order->setDefalutPayment($default_payment), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.card_seq', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
@@ -135,12 +135,12 @@
             <?php endif; ?>
             <div class="form-group col-lg-12">
               <label>お届け先</label>
-              <?php echo $this->Form->select('OrderKit.address_id', $this->order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+              <?php echo $this->Form->select('OrderKit.address_id', $this->Order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.address_id', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>
-              <?php echo $this->Form->select('OrderKit.datetime_cd', $this->order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->select('OrderKit.datetime_cd', $this->Order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.datetime_cd', null, ['wrap' => 'p']) ?>
             </div>
           <?php endif; ?>

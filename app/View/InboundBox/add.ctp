@@ -79,17 +79,17 @@ if (!empty($validErrors)) {
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の住所</label>
-              <?php echo $this->Form->select("Inbound.address_id", $this->order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php echo $this->Form->select("Inbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の日程</label>
-              <?php echo $this->Form->select("Inbound.day_cd", $this->order->setOption($dateList, 'date_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
+              <?php echo $this->Form->select("Inbound.day_cd", $this->Order->setOption($dateList, 'date_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の時間</label>
-              <?php echo $this->Form->select("Inbound.time_cd", $this->order->setOption($timeList, 'time_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
+              <?php echo $this->Form->select("Inbound.time_cd", $this->Order->setOption($timeList, 'time_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
