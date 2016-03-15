@@ -16,7 +16,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.hostname = NAME
     config.vm.network :private_network, ip: "192.168.33.20"
-    config.vm.synced_folder "..", APPDIR, owner: 'root', mount_options: ['dmode=777', 'fmode=777']
+    config.vm.synced_folder "..", APPDIR, type: "rsync", owner: 'root',
+      mount_options: ['dmode=777', 'fmode=777'],
+      rsync__args: ["exclude=app/tmp/*"],
+      rsync__exclude: ["app/tmp/*"]
 
     [80, 8080, 443, 3000, 3306, 4444].each do |port|
         config.vm.network :forwarded_port, guest: port, host: (50000 + port)
@@ -30,7 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.provider :virtualbox do |vb|
         vb.name = NAME + "_vm"
-        vb.memory = 1524
+        vb.memory = 1024
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
@@ -55,6 +58,8 @@ SCRIPT
 cd #{WORKDIR}
 docker-compose up -d
 docker-compose ps
+docker exec -it vagrant_minikura_1 bash -c "mkdir -p app/tmp/{sessions,logs,cache}"
+docker exec -it vagrant_minikura_1 bash -c "chmod -R 777 app/tmp/*"
 SCRIPT
     config.vm.provision "shell", run: "always", inline: $script
 

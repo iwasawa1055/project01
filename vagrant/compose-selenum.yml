@@ -1,0 +1,30 @@
+minikura:
+  hostname: php
+  build: ./builds/php
+  user: root
+  ports:
+    - "80:80"
+  volumes:
+    - /app:/var/www/html/
+    - ./config/php/:/usr/local/etc/php/
+  links:
+    - smtp
+    - hub
+
+smtp:
+  extends:
+    file: docker-compose.yml
+    service: smtp
+
+hub:
+  image: selenium/hub:latest
+  ports:
+    - "4444:4444"
+
+node:
+  build: ./builds/selenium_node-chrome
+  ports:
+    - "3000:5900"
+  links:
+    - hub
+    - minikura
