@@ -118,7 +118,6 @@ class ApiCachedModel extends ApiModel
      * イベント：キャッシュ利用した
      */
     protected function triggerUsingCache() {
-        CakeLog::write(DEBUG_LOG, 'UsingCache: ' . get_class($this));
     }
     /**
      * イベント：キャッシュ利用しない
@@ -142,9 +141,14 @@ class ApiCachedModel extends ApiModel
      */
     protected function readCache($key, $arg)
     {
+        $aryKey = $arg;
+        unset($aryKey['offset']);
+        unset($aryKey['limit']);
+        ksort($aryKey);
+
         $sessionKey = $this->sessionKey . '.' . $key;
         $session = CakeSession::read($sessionKey);
-        if (!empty($session) && (Hash::get($session, 'arg') === $arg)) {
+        if (!empty($session) && (Hash::get($session, 'arg') === $aryKey)) {
             $expires = Hash::get($session, 'expires');
             if (empty($expires) || time() <= $expires) {
                 return Hash::get($session, 'data');
@@ -161,13 +165,18 @@ class ApiCachedModel extends ApiModel
      */
     protected function writeCache($key, $arg, $data)
     {
+        $aryKey = $arg;
+        unset($aryKey['offset']);
+        unset($aryKey['limit']);
+        ksort($aryKey);
+
         $sessionKey = $this->sessionKey . '.' . $key;
         $expires = 0;
         if (!empty($this->lifetime) && 0 < $this->lifetime) {
             $expires = time() + $this->lifetime;
         }
         CakeSession::write($sessionKey, [
-            'arg' => $arg,
+            'arg' => $aryKey,
             'expires' => $expires,
             'data' => $data
         ]);
