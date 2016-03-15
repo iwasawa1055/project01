@@ -4,23 +4,23 @@ App::uses('Model', 'Model');
 App::uses('AppValid', 'Lib');
 
 /**
- * ƒ‚ƒfƒ‹Šî’êƒNƒ‰ƒX
+ * ãƒ¢ãƒ‡ãƒ«åŸºåº•ã‚¯ãƒ©ã‚¹
  */
 class AppModel extends Model
 {
     /**
-     * ƒ‚ƒfƒ‹–¼
+     * ãƒ¢ãƒ‡ãƒ«å
      */
     protected $model_name = null;
 
     /**
-     * Œ¾ŒêƒŠƒ\[ƒX‚ÌƒhƒƒCƒ“–¼
+     * è¨€èªãƒªã‚½ãƒ¼ã‚¹ã®ãƒ‰ãƒ¡ã‚¤ãƒ³å
      */
     public $validationDomain = 'validation';
 
     /**
-     * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-     * @param string $name ƒ‚ƒfƒ‹–¼
+     * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     * @param string $name ãƒ¢ãƒ‡ãƒ«å
      */
     public function __construct($name)
     {
@@ -29,7 +29,7 @@ class AppModel extends Model
     }
 
     /**
-     * ƒ‚ƒfƒ‹–¼‚ğæ“¾
+     * ãƒ¢ãƒ‡ãƒ«åã‚’å–å¾—
      * @return [type] [description]
      */
     public function getModelName() {
@@ -37,8 +37,8 @@ class AppModel extends Model
     }
 
     /**
-     * ƒf[ƒ^”z—ñ‚ğæ“¾
-     * @return array ƒf[ƒ^1ŸŒ³”z—ñ
+     * ãƒ‡ãƒ¼ã‚¿é…åˆ—ã‚’å–å¾—
+     * @return array ãƒ‡ãƒ¼ã‚¿1æ¬¡å…ƒé…åˆ—
      */
     public function toArray()
     {
@@ -49,7 +49,7 @@ class AppModel extends Model
 
     public function paginateCount($conditions, $recursive)
     {
-        //ƒŒƒR[ƒhŒ”‚ğæ“¾‚·‚éƒR[ƒh‚ğ‹Lq
+        //ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã‚’å–å¾—ã™ã‚‹ã‚³ãƒ¼ãƒ‰ã‚’è¨˜è¿°
         $count = count($conditions);
         return $count;
     }
@@ -63,7 +63,7 @@ class AppModel extends Model
             $end = $count;
         }
 
-        //ƒŒƒR[ƒh‚ğæ“¾‚·‚éƒR[ƒh‚ğ‹Lq
+        //ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹ã‚³ãƒ¼ãƒ‰ã‚’è¨˜è¿°
         $list = [];
         for ($i = 0; ($start + $i) < $end; $i++) {
             $list[$i] = $conditions[$start + $i];
