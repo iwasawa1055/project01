@@ -29,10 +29,10 @@
                   </p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <a class="btn btn-info btn-xs btn-block" href="#" target="_blank">魂ガレージ利用規約</a>
+                  <a class="btn btn-info btn-xs btn-block" href="/use_agreement/" target="_blank">minikura 利用規約</a>
                   <label>
                     <input class="agree-before-submit" type="checkbox">
-                    魂ガレージ利用規約に同意する
+                    minikura 利用規約に同意する
                   </label>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
