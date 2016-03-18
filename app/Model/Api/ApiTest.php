@@ -8,6 +8,6 @@ class ApiTest extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('/test');
+        parent::__construct('Test', '/test');
     }
 }

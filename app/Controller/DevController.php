@@ -1,6 +1,8 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('ApiModel', 'Model');
+App::uses('ApiTest', 'Model');
 App::uses('InfoItem', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('DevOrderId', 'Model');
@@ -13,10 +15,62 @@ App::uses('DevBilling', 'Model');
 App::uses('DevUserApplying', 'Model');
 App::uses('DevUserDebt', 'Model');
 App::uses('OutboundList', 'Model');
+App::uses('AppMail', 'Lib');
 
 class DevController extends MinikuraController
 {
+    // ログイン不要なページ
+    protected $checkLogined = false;
+
+    /**
+     * アクセス拒否
+     */
+    protected function isAccessDeny()
+    {
+        if (Configure::read('debug') > 0) {
+            if (!$this->Customer->isLogined() && $this->action === 'customer') {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
     public function index()
+    {
+        $this->layout = "";
+    }
+
+    public function server()
+    {
+        $this->layout = "";
+
+        pr('-display-------------');
+        pr('configure.debug: ' . Configure::read('debug'));
+        pr('display_errors: ' . ini_get('display_errors'));
+        pr('error_reporting: ' . ini_get('error_reporting'));
+        pr('-Configure[site]-------------');
+        pr(Configure::read('site'));
+        pr('-Configure[api]-------------');
+        pr(Configure::read('api'));
+        pr('-ApiTest-------------');
+        $test = new ApiTest();
+        $res = $test->apiGet();
+        pr('get: ' . ($res->isSuccess() ? 'success!' : $res->message));
+        $res = $test->apiPost([]);
+        pr('post: ' . ($res->isSuccess() ? 'success!' : $res->message));
+        pr('-CakeLog-------------');
+        pr(CakeLog::configured());
+        pr('-Configure[app.e.mail.receiver]-------------');
+        // pr(Configure::read('app'));
+        pr(Configure::read('app.e.mail.receiver'));
+        // pr(CakeLog::levels());
+        pr('-AppMail-------------');
+        $mail = new AppMail();
+        pr($mail->config());
+    }
+
+    public function customer()
     {
         $this->layout = "";
         $data = [
@@ -26,35 +80,45 @@ class DevController extends MinikuraController
         ];
         $this->set('data', $data);
 
-        // order, work
-        $order = (new DevOrderId())->apiGet();
-        $this->set('order_ids', $order->results);
-        $work = (new DevWorkId())->apiGet(['work_type' => '001']);
-        $this->set('work_ids_001', $work->results);
-        $work = (new DevWorkId())->apiGet(['work_type' => '003']);
-        $this->set('work_ids_003', $work->results);
-        $work = (new DevWorkId())->apiGet(['work_type' => '006']);
-        $this->set('work_ids_006', $work->results);
 
-        $ib = new InfoBox();
-        $ib->deleteCache();
-        $boxList = $ib->apiGetResults();
-        $data = [];
-        foreach ($boxList as $b) {
-            $data[$b['box_status']][] = $b;
-        }
-        ksort($data);
-        $this->set('boxData', $data);
-        unset($data);
+        $this->set('order_ids', []);
+        $this->set('work_ids_001', []);
+        $this->set('work_ids_003', []);
+        $this->set('work_ids_006', []);
+        $this->set('boxData', []);
+        $this->set('timeData', []);
 
-        $ii = new InfoItem();
-        $ii->deleteCache();
-        $itemList = $ii->apiGetResults();
-        $data = [];
-        foreach ($itemList as $b) {
-            $data[$b['box_id']][] = $b;
+        if (!$this->Customer->isEntry()) {
+            // order, work
+            $order = (new DevOrderId())->apiGet();
+            $this->set('order_ids', $order->results);
+            $work = (new DevWorkId())->apiGet(['work_type' => '001']);
+            $this->set('work_ids_001', $work->results);
+            $work = (new DevWorkId())->apiGet(['work_type' => '003']);
+            $this->set('work_ids_003', $work->results);
+            $work = (new DevWorkId())->apiGet(['work_type' => '006']);
+            $this->set('work_ids_006', $work->results);
+
+            $ib = new InfoBox();
+            $ib->deleteCache();
+            $boxList = $ib->apiGetResults();
+            $data = [];
+            foreach ($boxList as $b) {
+                $data[$b['box_status']][] = $b;
+            }
+            ksort($data);
+            $this->set('boxData', $data);
+            unset($data);
+
+            $ii = new InfoItem();
+            $ii->deleteCache();
+            $itemList = $ii->apiGetResults();
+            $data = [];
+            foreach ($itemList as $b) {
+                $data[$b['box_id']][] = $b;
+            }
+            $this->set('timeData', $data);
         }
-        $this->set('timeData', $data);
     }
 
     private function after($res)
