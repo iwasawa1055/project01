@@ -124,7 +124,7 @@ class DevController extends MinikuraController
     private function after($res)
     {
         if ($res->isSuccess()) {
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'customer']);
         } else {
             pr($res);
             $this->layout = false;

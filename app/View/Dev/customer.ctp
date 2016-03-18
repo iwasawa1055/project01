@@ -75,9 +75,6 @@ dd {
 <dt>債務ランク</dt>
     <dd><a href="/dev/user_debt?payment=1">債務解除</a></dd>
     <dd><a href="/dev/user_debt?payment=2">債務状態</a></dd>
-<dt>紹介コードリンク</dt>
-    <dd><a href="/customer/register/add?code=yahoo" target="_blank">yahoo</a></dd>
-    <dd><a href="/customer/register/add?code=daito" target="_blank">daito</a></dd>
 </dl>
 </div>
 
