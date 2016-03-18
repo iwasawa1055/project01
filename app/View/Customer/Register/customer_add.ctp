@@ -21,11 +21,11 @@
                 <?php echo $this->Form->error('CustomerEntry.email', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'type' => 'password', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerEntry.password', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.password', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">

@@ -11,19 +11,19 @@
             <?php echo $this->Form->create('Inquiry', ['url' => ['controller' => 'inquiry', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('Inquiry.lastname', ['class' => "form-control", 'placeholder'=>'姓', 'error' => false]); ?>
+                  <?php echo $this->Form->input('Inquiry.lastname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓', 'error' => false]); ?>
                   <?php echo $this->Form->error('Inquiry.lastname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('Inquiry.lastname_kana', ['class' => "form-control", 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->input('Inquiry.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
                   <?php echo $this->Form->error('Inquiry.lastname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('Inquiry.firstname', ['class' => "form-control", 'placeholder'=>'名', 'error' => false]); ?>
+                  <?php echo $this->Form->input('Inquiry.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
                   <?php echo $this->Form->error('Inquiry.firstname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('Inquiry.firstname_kana', ['class' => "form-control", 'placeholder'=>'名（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->input('Inquiry.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
                   <?php echo $this->Form->error('Inquiry.firstname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">

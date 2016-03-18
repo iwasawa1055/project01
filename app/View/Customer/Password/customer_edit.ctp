@@ -18,11 +18,11 @@
                 </div>
                 <p class="form-control-static col-lg-12">新しいパスワードと確認用にパスワードを再入力してください。</p>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerPassword.new_password', ['class' => "form-control", 'placeholder'=>'新しいパスワード', 'type' => 'password', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerPassword.new_password', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'新しいパスワード', 'type' => 'password', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerPassword.new_password', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerPassword.new_password_confirm', ['class' => "form-control", 'placeholder'=>'新しいパスワード（再入力）', 'type' => 'password', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerPassword.new_password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'新しいパスワード（再入力）', 'type' => 'password', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerPassword.new_password_confirm', null, ['wrap' => 'p']) ?>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
