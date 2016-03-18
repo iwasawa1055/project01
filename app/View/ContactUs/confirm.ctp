@@ -10,7 +10,7 @@
             <div class="row">
             <?php echo $this->Form->create(false, ['url' => ['controller' => 'contact_us', 'action' => 'complete']]); ?>
               <div class="col-lg-12 none-title">
-                <?php if ($isEntry) : ?>
+                <?php if ($customer->isEntry()) : ?>
                 <div class="form-group col-lg-12">
                   <label>お名前</label>
                   <p class="form-control-static"><?php echo $this->CustomerInfo->setName($this->Form->data['ContactUs']); ?></p>

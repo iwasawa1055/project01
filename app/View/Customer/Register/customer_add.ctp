@@ -1,4 +1,4 @@
-  <?php if (!empty($code))  : ?>
+  <?php if (!empty($code)) : ?>
     <div class="row">
       <div class="col-lg-12" align="center">
         <img class="alliance" src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />

@@ -41,8 +41,13 @@
       </button>
       <a class="navbar-brand" href="/"><img class="logo" src="/images/logo.png" alt="minikura"></a>
     </div>
-    <?php echo $this->element('navbar_right'); ?>
-    <?php echo $this->element('sidebar'); ?>
+    <?php if (!empty($customer) && $customer->isLogined()) : ?>
+      <?php echo $this->element('navbar_right'); ?>
+      <?php echo $this->element('sidebar'); ?>
+    <?php else : ?>
+      <?php echo $this->element('navbar_right_nonlogin'); ?>
+      <?php echo $this->element('sidebar_nonlogin'); ?>
+    <?php endif; ?>
   </nav>
   <div id="page-wrapper">
     <?php echo $this->Flash->render(); ?>

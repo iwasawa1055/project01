@@ -10,8 +10,8 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>ご契約者情報</h2>
-              <?php if (!empty($data))  : ?>
-              <?php if ($isPrivateCustomer)  : ?>
+              <?php if (!empty($data)) : ?>
+              <?php if ($customer->isPrivateCustomer()) : ?>
               <?php // 個人 ?>
                 <?php if ($data['applying']): ?>
                   <p class="form-control-static col-lg-12">変更申請中です。<br />
