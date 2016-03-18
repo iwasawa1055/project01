@@ -69,7 +69,7 @@
               <?php echo $this->Form->error('OrderKit.cleaning_num', null, ['wrap' => 'p']) ?>
             </div>
             <?php if (!$customer->isEntry()) : ?>
-            <?php if ($customer->isPrivateCustomer() || !$customer->corporatePayment()) : ?>
+            <?php if ($customer->isPrivateCustomer() || !$customer->getCorporatePayment()) : ?>
             <div class="form-group col-lg-12">
               <label>カード情報</label>
               <?php echo $this->Form->select('OrderKit.card_seq', $this->Order->setDefalutPayment($default_payment), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>

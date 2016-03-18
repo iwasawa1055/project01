@@ -36,7 +36,7 @@
                 </div>
               </div>
             <?php if (!$customer->isEntry()) : ?>
-              <?php if ($customer->isPrivateCustomer() || !$customer->corporatePayment()) : ?>
+              <?php if ($customer->isPrivateCustomer() || !$customer->getCorporatePayment()) : ?>
               <div class="col-lg-12">
                 <label>カード情報</label>
                 <p class="form-control-static"><?php echo h($default_payment_text); ?></p>
