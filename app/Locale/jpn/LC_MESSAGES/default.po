@@ -69,4 +69,7 @@ msgid "item_group_cd"
 msgstr "カテゴリ"
 
 msgid "access_deny"
-msgstr "このページにアクセスする権限ありません"
+msgstr "このページにアクセスする権限ありません。"
+
+msgid "customer_password_reset_mailsend"
+msgstr "パスワード再設定リンクをメールアドレスに送信しました。ご確認ください。"

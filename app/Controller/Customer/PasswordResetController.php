@@ -38,7 +38,7 @@ class PasswordResetController extends MinikuraController
 
                 CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
 
-                $this->Flash->set('送信しました。');
+                $this->Flash->set(__('customer_password_reset_mailsend'));
                 return $this->redirect(['action' => 'customer_index']);
             } else {
                 return $this->render('customer_index');
