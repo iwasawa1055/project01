@@ -13,15 +13,10 @@ if (empty($class)) {
         <a href="<?php echo $url; ?>"><?php echo h($box['box_name']); ?></a>
       </h3>
     </div>
-    <?php if (Hash::get($box, 'outbound_list_deny_box', $default)) : ?>
-    <div class="col-lg-4 col-md-4 col-xs-12">
-        <?php echo $this->Form->checkbox("box_id.${box['box_id']}", ['checked' => false, 'hiddenField' => true, 'style' => 'display:none;']); ?>
-      <p class="error-message">このボックスは追加できません。<br>アイテムとして既に取り出しリストに追加されています。</p>
-    </div>
-    <?php elseif (Hash::get($box, 'outbound_list_deny_item', $default)) : ?>
+    <?php if (Hash::get($box, 'outbound_list_deny', $default)) : ?>
     <div class="col-lg-4 col-md-4 col-xs-12">
       <?php echo $this->Form->checkbox("box_id.${box['box_id']}", ['checked' => false, 'hiddenField' => true, 'style' => 'display:none;']); ?>
-      <p class="error-message">このボックス内のアイテムは追加できません。<br>ボックスとして既に取り出しリストに追加されています。</p>
+      <p class="error-message"><?php echo $box['outbound_list_deny']; ?></p>
     </div>
     <?php else : ?>
     <div class="col-lg-4 col-md-4 col-xs-12 <?php echo $class; ?>">

@@ -36,6 +36,11 @@
                           <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
                       </span>
                       <?php echo $this->Form->end(); ?>
+                      <?php else : ?>
+                        <span class="col-xs-12 col-lg-12">
+                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" disabled="disabled">取り出しリスト登録</button>
+                          <p class="error-message"><?php echo $denyOutboundList; ?></p>
+                        </span>
                       <?php endif; ?>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12">

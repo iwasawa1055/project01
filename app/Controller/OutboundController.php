@@ -19,11 +19,6 @@ class OutboundController extends MinikuraController
     {
         parent::beforeFilter();
 
-        $actionCannot = 'cannot';
-        if ($this->action !== $actionCannot && !$this->Customer->canOutbound()) {
-            return $this->redirect(['action' => $actionCannot]);
-        }
-
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
@@ -129,7 +124,7 @@ class OutboundController extends MinikuraController
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromMonoList(), true);
-            $box['outbound_list_deny_item'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
+            $box['outbound_list_deny'] = $this->outboundList->canAddMono($box);
         }
         HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);
@@ -165,8 +160,8 @@ class OutboundController extends MinikuraController
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$item) {
-            $item['outbound_list_cehcked'] = in_array($item['item_id'], $this->outboundList->getBoxIdFromItemList(), true);
-            $item['outbound_list_deny_item'] = in_array($item['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
+            $item['outbound_list_cehcked'] = in_array($item['item_id'], $this->outboundList->getItemIdFromItemList(), true);
+            $item['outbound_list_deny'] = $this->outboundList->canAddItem($item);
         }
         HashSorter::sort($list, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $list);
@@ -200,7 +195,7 @@ class OutboundController extends MinikuraController
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
-            $box['outbound_list_deny_box'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromItemList(), true);
+            $box['outbound_list_deny'] = $this->outboundList->canAddBox($box);
         }
         HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);

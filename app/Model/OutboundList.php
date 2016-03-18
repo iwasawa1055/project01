@@ -51,6 +51,10 @@ class OutboundList
     {
         return $this->itemList;
     }
+    public function getItemIdFromItemList()
+    {
+        return Hash::extract($this->getItemList(), '{s}.item_id');
+    }
     public function getBoxIdFromItemList()
     {
         return Hash::extract($this->getItemList(), '{s}.box_id');
@@ -74,6 +78,10 @@ class OutboundList
         $errorList = [];
         foreach ($list as $a) {
             $boxId = $a['box_id'];
+            $msg = $this->canAddMono($a);
+            if (!empty($msg)) {
+                $errorList[$boxId][] = $msg;
+            }
             $this->monoList[$boxId] = $a;
         }
 
@@ -93,12 +101,6 @@ class OutboundList
 
     public function setBox($idList = [], $needClear = true, $needSave = true)
     {
-        $okStatus = [
-            BOXITEM_STATUS_INBOUND_DONE,
-        ];
-
-        $itemListBoxId = Hash::extract($this->getItemList(), '{s}.box_id');
-
         // list
         $box = new InfoBox();
         $list = $box->apiGetResultsWhere([], ['box_id' => $idList]);
@@ -107,13 +109,9 @@ class OutboundList
         $errorList = [];
         foreach ($list as $a) {
             $boxId = $a['box_id'];
-            // check status
-            if (!in_array($a['box_status'], $okStatus, true)) {
-                $errorList[$boxId][] = '追加出来るステータスではありません';
-            }
-            // chcek item
-            if (in_array($boxId, $itemListBoxId, true)) {
-                $errorList[$boxId][] = 'アイテムが既に追加されています。';
+            $msg = $this->canAddBox($a);
+            if (!empty($msg)) {
+                $errorList[$boxId][] = $msg;
             }
             $this->boxList[$boxId] = $a;
         }
@@ -123,12 +121,6 @@ class OutboundList
 
     public function setItem($idList = [])
     {
-        $okStatus = [
-            BOXITEM_STATUS_INBOUND_DONE * 1,
-        ];
-
-        $boxKeyList = array_keys($this->getBoxList());
-
         // list
         $item = new InfoItem();
         $list = $item->apiGetResultsWhere([], ['item_id' => $idList]);
@@ -137,13 +129,9 @@ class OutboundList
         $errorList = [];
         foreach ($list as $a) {
             $itemId = $a['item_id'];
-            // check status
-            if (!in_array($a['item_status'], $okStatus, true)) {
-                $errorList[$itemId][] = '追加出来るステータスではありません';
-            }
-            // chcek item
-            if (in_array($a['box_id'], $boxKeyList, true)) {
-                $errorList[$itemId][] = 'ボックスが既に追加されています。';
+            $msg = $this->canAddItem($a);
+            if (!empty($msg)) {
+                $errorList[$itemId][] = $msg;
             }
             $this->itemList[$itemId] = $a;
         }
@@ -151,11 +139,56 @@ class OutboundList
         return $errorList;
     }
 
-    public function canAddBox()
+    /**
+     * ボックス追加可否
+     * @param  array $box
+     * @return string      不可の原因メッセージ。可能の場合null
+     */
+    public function canAddBox($box)
     {
+        if ($box['box_status'] !== BOXITEM_STATUS_INBOUND_DONE) {
+            return '追加可能なステータスではありません。';
+        }
+        if (in_array($box['box_id'], $this->getBoxIdFromItemList(), true)) {
+            pr($box['box_id']);
+            return 'ボックスに含まれるアイテムが既に取り出しリストに追加されています。';
+        }
+        $item = new InfoItem();
+        $itemList = $item->apiGetResultsWhere([], ['box_id' => $box['box_id']]);
+        foreach ($itemList as $i) {
+            if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
+                return 'ボックスに含まれるアイテムが出庫またはオプション作業中のためです。';
+            }
+        }
+        return null;
     }
-    public function canAddItem()
+
+    /**
+     * アイテム追加向けボックス選択可否
+     * @param  array $box
+     * @return string      不可の原因メッセージ。可能の場合null
+     */
+    public function canAddMono($box)
     {
-        $result = [''];
+        if (in_array($box['box_id'], $this->getBoxIdFromBoxList(), true)) {
+            return 'ボックスとして既に取り出しリストに追加されています。';
+        }
+        return null;
+    }
+
+    /**
+     * アイテム追加可否
+     * @param  array $item
+     * @return string      不可の原因メッセージ。可能の場合null
+     */
+    public function canAddItem($item)
+    {
+        if ($item['item_status'] !== BOXITEM_STATUS_INBOUND_DONE * 1) {
+            return '追加可能なステータスではありません。';
+        }
+        if (in_array($item['box_id'], $this->getBoxIdFromBoxList(), true)) {
+            return 'ボックスとして既に取り出しリストに追加されています。';
+        }
+        return null;
     }
 }

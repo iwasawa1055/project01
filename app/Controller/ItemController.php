@@ -95,7 +95,7 @@ class ItemController extends MinikuraController
         $item = $this->InfoItem->apiGetResultsFind([], ['item_id' => $id]);
         $this->set('item', $item);
 
-        $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $item['box_id']]);
+        $box = $item['box'];
         $this->set('box', $box);
 
         $linkToAuction = null;
@@ -106,7 +106,7 @@ class ItemController extends MinikuraController
 
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
-        $this->set('denyOutboundList', in_array($item['box_id'], $outboundList->getBoxIdFromBoxList(), true));
+        $this->set('denyOutboundList', $outboundList->canAddItem($item));
     }
 
     /**
