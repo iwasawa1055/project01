@@ -1,6 +1,7 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('CustomerEmail', 'Model');
 App::uses('AppMail', 'Lib');
 
 
@@ -29,16 +30,27 @@ class PasswordResetController extends MinikuraController
             $this->CustomerPasswordReset->set($this->request->data);
             if ($this->CustomerPasswordReset->validates(['fieldList' => ['email']])) {
 
+                $to = $this->CustomerPasswordReset->toArray()['email'];
+
+                // 存在チェック
+                $email = new CustomerEmail();
+                $res = $email->apiGet(['email' => $to]);
+                if ($res->isSuccess()) {
+                    // 未登録メールアドレス
+                    $this->Flash->set(__('customer_password_reset_mail_notfound'));
+                    return $this->redirect(['action' => 'customer_index']);
+                }
+
+                // リセット処理
                 CakeSession::renew();
 
                 $mail = new AppMail();
                 $id = CakeSession::id();
-                $to = $this->CustomerPasswordReset->toArray()['email'];
                 $mail->sendPasswordReset($to, $id);
 
                 CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
 
-                $this->Flash->set(__('customer_password_reset_mailsend'));
+                $this->Flash->set(__('customer_password_reset_mail_send'));
                 return $this->redirect(['action' => 'customer_index']);
             } else {
                 return $this->render('customer_index');

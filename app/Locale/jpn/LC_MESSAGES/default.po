@@ -71,5 +71,8 @@ msgstr "カテゴリ"
 msgid "access_deny"
 msgstr "このページにアクセスする権限ありません。"
 
-msgid "customer_password_reset_mailsend"
-msgstr "パスワード再設定リンクをメールアドレスに送信しました。ご確認ください。"
+msgid "customer_password_reset_mail_notfound"
+msgstr "該当する登録情報が見つかりませんでした。"
+
+msgid "customer_password_reset_mail_send"
+msgstr "パスワード再設定リンクをメールアドレスに送信しました。"
