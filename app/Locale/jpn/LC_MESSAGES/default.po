@@ -67,3 +67,6 @@ msgstr "ステータス"
 
 msgid "item_group_cd"
 msgstr "カテゴリ"
+
+msgid "access_deny"
+msgstr "このページにアクセスする権限ありません"

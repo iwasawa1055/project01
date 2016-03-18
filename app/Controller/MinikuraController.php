@@ -29,7 +29,7 @@ class MinikuraController extends AppController
 
         // アクセス拒否
         if ($this->isAccessDeny()) {
-            new AppTerminalCritical('denyEntry', 403);
+            new AppTerminalCritical(__('access_deny'), 404);
             return;
         }
 
