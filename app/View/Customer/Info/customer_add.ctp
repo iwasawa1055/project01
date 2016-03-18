@@ -82,7 +82,7 @@
                   <?php echo $this->Form->error('CustomerInfo.newsletter', null, ['wrap' => 'p']) ?>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block" href="/customer/info/edit">クリア</a>
+                  <a class="btn btn-primary btn-lg btn-block" href="/customer/info/add">クリア</a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
