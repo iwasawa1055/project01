@@ -208,7 +208,7 @@ class ApiCachedModel extends ApiModel
     {
         $key = 'apiGet';
         $list = $this->readCache($key, $arg);
-        if (!empty($list)) {
+        if ($list !== null) {
             $this->triggerUsingCache();
             return $list;
         }
