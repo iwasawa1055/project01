@@ -18,7 +18,23 @@ class CreditCardController extends MinikuraController
         $this->set('action', $this->action);
     }
 
-    private function setRequestDataFromSession() {
+    protected function isAccessDeny()
+    {
+        if (!$this->Customer->hasCreditCard() && $this->action === 'customer_edit') {
+            // カード登録なし：変更不可
+            return true;
+        } elseif ($this->Customer->hasCreditCard() && $this->action === 'customer_add') {
+            // カード登録あり：登録不可
+            return true;
+        } elseif (!$this->Customer->isPaymentNG() && $this->action === 'paymentng_edit') {
+            // 債務ランク以外
+            return true;
+        }
+        return false;
+    }
+
+    private function setRequestDataFromSession()
+    {
         $step = Hash::get($this->request->params, 'step');
         $back = Hash::get($this->request->query, 'back');
 

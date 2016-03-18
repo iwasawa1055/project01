@@ -16,6 +16,15 @@ class AddressController extends MinikuraController
         $this->set('action', $this->action);
     }
 
+    protected function isAccessDeny()
+    {
+        if ($this->Customer->isEntry()) {
+            // 個人(仮登録)：アクセス不可
+            return true;
+        }
+        return false;
+    }
+
     public function customer_index()
     {
         $res = $this->CustomerAddress->apiGetResults();
