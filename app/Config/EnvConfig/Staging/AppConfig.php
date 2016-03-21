@@ -1,7 +1,7 @@
 <?php
 // Manual Configure & Startup Configure
 $config['site.url'] = 'http://production .' . $_SERVER['HTTP_HOST'];
-$config['site.top_page'] = 'https://minikura.com';
+$config['site.top_page'] = 'https://b-www.minikura.com';
 $config['site.env_name'] = 'staging';
 
 /**
