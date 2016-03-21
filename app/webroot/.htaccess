@@ -1,4 +1,208 @@
 <IfModule mod_rewrite.c>
+
+    RewriteEngine On
+    
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+    
+    RewriteRule ^auctions(.*)$ /mini_auction/ [L]
+    
+    # top
+    RewriteRule ^$ /contents/static/ [L]
+    RewriteRule ^index/(.*)$ /contents/static/ [L]
+    
+    # redirect faq and flow to help
+    RewriteRule ^lp/wine_brand(.*)$ /lineup/wine.html [R=301,L]
+    
+    # faq
+    RewriteRule ^faq/(.*)$ /help/ [R=301,L]
+    #RewriteRule ^faq/(.*)$ /contents/static/faq/ [L]
+    
+    # flow
+    RewriteRule ^flow/(.*)$ /help/ [R=301,L]
+    
+    # howto
+    RewriteRule ^howto/(.*)$ / [R=301,L]
+	
+    # settings
+    RewriteRule ^settings/(.*)$ /contents/settings/$1 [L]
+
+    # password reset
+    RewriteRule ^password_reset/(.*)$ /contents/password_reset/$1 [L]
+
+    # iso
+    RewriteRule ^iso/index.html(.*)$ /contents/cp_finish.html [R=301,L]
+    
+    # landing_page
+    RewriteRule ^landing_page/wine_expansion/index.html(.*)$ /lineup/wine.html [R=301,L]
+    RewriteRule ^landing_page/wine_brand/index.html(.*)$ /lineup/wine.html [R=301,L]
+    
+    # option
+    RewriteRule ^option/wine/index.html(.*)$ /lineup/wine.html [R=301,L]
+    RewriteRule ^option/wine/index.html(.*)$ /lineup/wine.html [R=301,L]
+    
+    # use_agreement
+    RewriteRule ^use_agreement/popup/(.*)$ /use_agreement/ [R=301,L]
+    
+    # order
+    RewriteRule !^order/add/(.*)$ - [C]
+    RewriteRule ^order/$ /cart/ [R=301,L]
+    
+    # cart
+    RewriteRule ^cart/(.*)$ /contents/static/order/ [L]
+
+    # inquiry
+    RewriteRule ^inquiry/(.*)$ /contents/static/contact_us/ [L]
+
+    # 360
+    RewriteRule ^(.*)bunner_360(.*) /t/auction_bunner [L]
+    
+    
+    ## help
+    #RewriteRule ^help/deposit-account-transfer.pdf(.*)$ /contents/static/help/deposit-account-transfer.pdf [R=301,L]
+    #RewriteRule ^help/flow.html(.*)$ /contents/static/help/flow.html [L]
+    #RewriteRule ^help/registration.html(.*)$ /contents/static/help/registration.html [L]
+    #RewriteRule ^help/price.html(.*)$ /contents/static/help/price.html [L]
+    #RewriteRule ^help/service.html(.*)$ /contents/static/help/service.html [L]
+    #RewriteRule ^help/size.html(.*)$ /contents/static/help/size.html [L]
+    #RewriteRule ^help/keep.html(.*)$ /contents/static/help/keep.html [L]
+    #RewriteRule ^help/unavailable.html(.*)$ /contents/static/help/unavailable.html [L]
+    #RewriteRule ^help/application.html(.*)$ /contents/static/help/application.html [L]
+    #RewriteRule ^help/cvv_help.html(.*)$ /contents/static/help/cvv_help.html [L]
+    #RewriteRule ^help/faq_cleaning_excluded.html(.*)$ /contents/static/help/faq_cleaning_excluded.html [L]
+    #RewriteRule ^help/fees.html(.*)$ /contents/static/help/fees.html [L]
+    RewriteRule ^help/(.*)$ /contents/static/help/$1 [L]
+    
+    
+    # ラインナップ
+
+    RewriteRule ^lineup/mono_wine/(.*)$ /lineup/wine.html [R=301,L]
+    RewriteRule ^lineup/hako_wine/(.*)$ /lineup/wine.html [R=301,L]
+    RewriteRule ^lineup/cleaning/(.*)$ /lineup/cleaning.html [R=301,L]
+    
+    #RewriteRule ^lineup/api.html(.*)$ /contents/static/lineup/api.html [L]
+    #RewriteRule ^lineup/auction_tool.html(.*)$ /contents/static/lineup/auction_tool.html [L]
+    #RewriteRule ^lineup/6func.html(.*)$ /contents/static/lineup/6func.html [L]
+    #RewriteRule ^lineup/option.html(.*)$ /contents/static/lineup/option.html [L]
+    #RewriteRule ^lineup/wine.html(.*)$ /contents/static/lineup/wine.html [L]
+    #RewriteRule ^lineup/cleaning.html(.*)$ /contents/static/lineup/cleaning.html [L]
+    #RewriteRule !^lineup/mono/(.*)$ - [C]
+    #RewriteRule !^lineup/hako/(.*)$ - [C]
+    #RewriteRule !^lineup/mono_wine/(.*)$ - [C]
+    #RewriteRule !^lineup/hako_wine/(.*)$ - [C]
+    #RewriteRule !^lineup/cleaning/(.*)$ - [C]
+    #RewriteRule !^lineup/6func.html(.*)$ - [C]
+    #RewriteRule !^lineup/option.html(.*)$ - [C]
+    #RewriteRule !^lineup/api.html(.*)$ - [C]
+    #RewriteRule !^lineup/wine.html(.*)$ - [C]
+    #RewriteRule !^lineup/auction_tool.html(.*)$ - [C]
+    #RewriteRule ^lineup/(.*)$ /contents/static/lineup/ [L]
+    
+    RewriteRule ^lineup/mono/(.*)$ /lineup/mono.html$1 [R=301,L]
+    
+    RewriteRule ^lineup/cargo/(.*)$ /contents/static/lineup/cargo/$1 [L]
+    
+    RewriteRule ^lineup/(.*)/$ /contents/static/lineup/$1.html [L]
+    RewriteRule ^lineup/(.*)$ /contents/static/lineup/$1 [L]
+    
+    
+    # about
+    RewriteRule ^about/(.*)$ /contents/static/about/$1 [L]
+    
+    
+    # login
+    RewriteRule ^login/(.*)$ /contents/static/login/$1 [L]
+    
+    # popup
+    RewriteRule ^popup/cleaning_fees/$ /contents/popup/cleaning_fees/ [R=301,L]
+    RewriteRule ^popup/data_fees/$ /contents/popup/data_fees/ [R=301,L]
+    RewriteRule ^popup/gift_fees/$ /contents/popup/gift_fees/ [R=301,L]
+    RewriteRule ^popup/cvv_help/$ /help/cvv_help.html [R=301,L]
+    RewriteRule ^popup/faq_cleaning_excluded/$ /help/faq_cleaning_excluded.html [R=301,L]
+    RewriteRule ^popup/fees/$ /help/fees.html [R=301,L]
+    
+    
+    # commercial_transaction
+    RewriteRule ^commercial_transaction/(.*)$ /contents/static/commercial_transaction/$1 [L]
+    
+    # privacy
+    RewriteRule ^privacy/(.*)$ /contents/static/privacy/$1 [L]
+    
+    # privacy_case
+    RewriteRule ^privacy_case/(.*)$ /contents/static/privacy_case/$1 [L]
+    
+    # security_policy
+    RewriteRule ^security_policy/(.*)$ /contents/static/security_policy/$1 [L]
+    
+    # use_agreement
+    RewriteRule ^use_agreement/(.*)$ /contents/static/use_agreement/$1 [L]
+    
+    # campaign
+    RewriteRule ^campaign/(.*)$ /contents/static/campaign/$1 [L]
+    
+    # regist_order
+    RewriteRule ^regist_order/delivery/$ /contents/static/regist_order/index.html [L]
+    RewriteRule ^regist_order/basic/$ /contents/static/regist_order/basic.html [L]
+    RewriteRule ^regist_order/account/$ /contents/static/regist_order/account.html [L]
+    RewriteRule ^regist_order/confirm/$ /contents/static/regist_order/confirm.html [L]
+    RewriteRule ^regist_order/finish/$ /contents/static/regist_order/finish/index.html [L]
+    
+    # site_map
+    RewriteRule ^site_map/$ /contents/404.html [R=301,L]
+    
+    # story
+    RewriteRule ^story/(.*)$ /contents/404.html [R=301,L]
+    
+    
+    # RewriteCond %{REQUEST_URI} ^/landing_page/music-kit.*$
+    #RewriteCond %{SERVER_PORT} 80
+    #RewriteRule ^(.*)$ http://%{HTTP_HOST}/ [R=301,L]
+
+    # RewriteCond %{REQUEST_URI} ^/landing_page/music-kit.*$
+    #RewriteCond %{SERVER_PORT} 443
+    #RewriteRule ^(.*)$ https://%{HTTP_HOST}/ [R=301,L]
+
+RewriteCond %{REQUEST_URI} /admin/
+# Loopback
+RewriteCond %{Remote_Addr} !^127\.
+# Local Area
+RewriteCond %{Remote_Addr} !^192\.168\.50\.
+RewriteCond %{Remote_Addr} !^192\.168\.59\.
+RewriteCond %{Remote_Addr} !^192\.168\.92\.
+RewriteCond %{Remote_Addr} !^192\.168\.94\.
+RewriteCond %{Remote_Addr} !^192\.168\.40\.
+RewriteCond %{Remote_Addr} !^192\.168\.96\.
+RewriteCond %{Remote_Addr} !^192\.168\.60\.
+RewriteCond %{Remote_Addr} !^192\.168\.217\.
+RewriteCond %{Remote_Addr} !^192\.168\.130\.
+RewriteCond %{Remote_Addr} !^192\.168\.14\.
+RewriteCond %{Remote_Addr} !^192\.168\.33\.1$
+# T Bld, Tohoku Div
+RewriteCond %{Remote_Addr} !^202\.143\.85\.
+# Tohoku Div Backup
+RewriteCond %{Remote_Addr} !^210\.159\.195\.70$
+# N Bld
+RewriteCond %{Remote_Addr} !^220\.157\.214\.
+# Harbor One
+RewriteCond %{Remote_Addr} !^122\.249\.90\.153$
+# Hukuura Warehouse
+RewriteCond %{Remote_Addr} !^59\.157\.246\.7$
+# Osada
+RewriteCond %{Remote_Addr} !^219\.117\.250\.1(4[4-9]|5\d)$
+
+RewriteRule ^.* - [R=404]
+
+#RewriteCond %{Remote_Addr} !192.168.10
+#RewriteCond %{Remote_Addr} !192.168.55
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /app.php [QSA,L]
+    #RewriteRule ^(.*)$ /app.php/$1 [L]
+    
+    
+</IfModule>
+
+<IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
