@@ -150,7 +150,6 @@ class OutboundList
             return '追加可能なステータスではありません。';
         }
         if (in_array($box['box_id'], $this->getBoxIdFromItemList(), true)) {
-            pr($box['box_id']);
             return 'ボックスに含まれるアイテムが既に取り出しリストに追加されています。';
         }
         $item = new InfoItem();

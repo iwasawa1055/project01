@@ -71,6 +71,7 @@ class MinikuraController extends AppController
     public function beforeRender()
     {
         parent::beforeRender();
+        $this->response->disableCache();
     }
 
     public function afterFilter()

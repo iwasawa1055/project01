@@ -15,6 +15,7 @@ class AppExceptionRenderer extends ExceptionRenderer
         $url = $this->controller->request->here();
         $code = $_error->getCode();
         $this->controller->response->statusCode($code);
+        $this->controller->response->disableCache();
         $this->controller->set(array(
             'name' => h($message),
             'message' => h($message),
