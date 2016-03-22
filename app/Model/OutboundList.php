@@ -156,7 +156,7 @@ class OutboundList
         $itemList = $item->apiGetResultsWhere([], ['box_id' => $box['box_id']]);
         foreach ($itemList as $i) {
             if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
-                return 'ボックスに含まれるアイテムが出庫またはオプション作業中のためです。';
+                return 'ボックスに含まれるアイテムが出庫またはオプション作業中です。';
             }
         }
         return null;
