@@ -1,4 +1,4 @@
-  <?php if (!empty($code))  : ?>
+  <?php if (!empty($code)) : ?>
     <div class="row">
       <div class="col-lg-12" align="center">
         <img class="alliance" src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
@@ -21,22 +21,22 @@
                 <?php echo $this->Form->error('CustomerEntry.email', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'type' => 'password', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerEntry.password', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.password', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
                 <label>お知らせメール</label>
                 <?php echo $this->Form->select('CustomerEntry.newsletter', CUSTOMER_NEWSLETTER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               </div>
-              <a class="btn btn-info btn-xs btn-block" href="#" target="_blank">魂ガレージ利用規約</a>
+              <a class="btn btn-info btn-xs btn-block" href="/use_agreement/" target="_blank">minikura 利用規約</a>
               <div class="checkbox">
                 <label>
                   <input name="remember" type="checkbox" value="Remember Me" class="agree-before-submit">
-                  魂ガレージ利用規約に同意する </label>
+                  minikura 利用規約に同意する </label>
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録</button>
               <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>

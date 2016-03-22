@@ -11,21 +11,21 @@
             <div class="row">
             <?php echo $this->Form->create('ContactUs', ['url' => ['controller' => 'contact_us', 'action' => 'confirm', 'id' => $id], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12 none-title">
-                <?php if ($isEntry) : ?>
+                <?php if ($customer->isEntry()) : ?>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.lastname', ['class' => "form-control", 'placeholder'=>'姓', 'error' => false]); ?>
+                  <?php echo $this->Form->input('ContactUs.lastname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓', 'error' => false]); ?>
                   <?php echo $this->Form->error('ContactUs.lastname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.lastname_kana', ['class' => "form-control", 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->input('ContactUs.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
                   <?php echo $this->Form->error('ContactUs.lastname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.firstname', ['class' => "form-control", 'placeholder'=>'名', 'error' => false]); ?>
+                  <?php echo $this->Form->input('ContactUs.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
                   <?php echo $this->Form->error('ContactUs.firstname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.firstname_kana', ['class' => "form-control", 'placeholder'=>'名（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->input('ContactUs.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
                   <?php echo $this->Form->error('ContactUs.firstname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">

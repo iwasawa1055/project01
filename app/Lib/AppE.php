@@ -208,20 +208,20 @@ class AppE extends Exception
 
         switch (true) {
             case ! empty($this->handlers):
-                if (in_array(self::DISPLAY, $this->handlers)) {
+                if (in_array(self::DISPLAY, $this->handlers, true)) {
                     // 転送処理の妨げになる一時除外
                     // $this->display();
                 }
-                if (in_array(self::LOG, $this->handlers)) {
+                if (in_array(self::LOG, $this->handlers, true)) {
                     $this->log();
                 }
-                if (in_array(self::MAIL, $this->handlers)) {
+                if (in_array(self::MAIL, $this->handlers, true)) {
                     $this->mail($this);
                 }
-                if (in_array(self::PATCH, $this->handlers)) {
+                if (in_array(self::PATCH, $this->handlers, true)) {
                     $this->patch();
                 }
-                if (in_array(self::ALERT, $this->handlers) || in_array(self::ABORT, $this->handlers)) {
+                if (in_array(self::ALERT, $this->handlers, true) || in_array(self::ABORT, $this->handlers, true)) {
                     $this->abort();
                 }
                 break;

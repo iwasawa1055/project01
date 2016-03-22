@@ -8,21 +8,7 @@ minikura:
     - /app:/var/www/html/
     - ./config/php/:/usr/local/etc/php/
   links:
-    - hub
     - smtp
-
-hub:
-  image: selenium/hub:latest
-  ports:
-    - "4444:4444"
-
-node:
-  build: ./builds/selenium_node-chrome
-  ports:
-    - "3000:5900"
-  links:
-    - hub
-    - minikura
 
 smtp:
   build: ./builds/smtp

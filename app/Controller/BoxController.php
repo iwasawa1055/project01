@@ -97,7 +97,7 @@ class BoxController extends MinikuraController
 
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
-        $this->set('denyOutboundList', in_array($box['box_id'], $outboundList->getBoxIdFromItemList(), true));
+        $this->set('denyOutboundList', $outboundList->canAddBox($box));
     }
 
     /**

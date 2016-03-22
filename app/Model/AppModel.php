@@ -42,7 +42,10 @@ class AppModel extends Model
      */
     public function toArray()
     {
-        return $this->data[$this->model_name];
+        if (array_key_exists($this->model_name, $this->data)) {
+            return $this->data[$this->model_name];
+        }
+        return [];
     }
 
     /* paginate */

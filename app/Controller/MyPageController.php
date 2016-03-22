@@ -11,14 +11,18 @@ class MyPageController extends MinikuraController
      */
     public function index()
     {
-        // 最近預けたボックス
-        $box = new InfoBox();
-        $list = $box->getListLastInbound();
-        $this->set('boxList', array_slice($list, 0, 5));
-
-        // 最近預けたアイテム
-        $item = new InfoItem();
-        $list = $item->getListLastInbound();
-        $this->set('itemList', array_slice($list, 0, 10));
+        $boxList = [];
+        $itemList = [];
+        if (!$this->Customer->isEntry()) {
+            // 最近預けたボックスとアイテム
+            $box = new InfoBox();
+            $list = $box->getListLastInbound();
+            $boxList = array_slice($list, 0, 5);
+            $item = new InfoItem();
+            $list = $item->getListLastInbound();
+            $itemList =  array_slice($list, 0, 10);
+        }
+        $this->set('boxList', $boxList);
+        $this->set('itemList', $itemList);
     }
 }

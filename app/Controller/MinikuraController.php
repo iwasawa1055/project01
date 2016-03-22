@@ -29,20 +29,12 @@ class MinikuraController extends AppController
 
         // アクセス拒否
         if ($this->isAccessDeny()) {
-            new AppTerminalCritical('denyEntry', 403);
+            new AppTerminalCritical(__('access_deny'), 404);
             return;
         }
 
-        $this->set('isLogined', $this->Customer->isLogined());
-        $this->set('customerName', $this->Customer->getName());
-        $this->set('isPrivateCustomer', $this->Customer->isPrivateCustomer());
-        $this->set('corporatePayment', $this->Customer->getCorporatePayment());
-        $this->set('hasCreditCard', $this->Customer->hasCreditCard());
-        $this->set('isEntry', $this->Customer->isEntry());
-
-        $this->set('canOrderKit', $this->Customer->canOrderKit());
-        $this->set('canInbound', $this->Customer->canInbound());
-        $this->set('canOutbound', $this->Customer->canOutbound());
+        // use customer for view
+        $this->set('customer', $this->Customer);
 
         // header
         if ($this->checkLogined) {
@@ -59,11 +51,15 @@ class MinikuraController extends AppController
                 }
             }
 
+            // ヘッダー表示、お知らせ
             $res = $this->Announcement->apiGetResults(['limit' => 5]);
             $this->set('notice_announcements', $res);
-            $summary = $this->InfoBox->getProductSummary();
-            $this->set('product_summary', $summary);
-
+            // ご利用中サービスの集計
+            $this->set('product_summary', []);
+            if (!$this->Customer->isEntry()) {
+                $summary = $this->InfoBox->getProductSummary();
+                $this->set('product_summary', $summary);
+            }
         }
     }
 
@@ -75,6 +71,7 @@ class MinikuraController extends AppController
     public function beforeRender()
     {
         parent::beforeRender();
+        $this->response->disableCache();
     }
 
     public function afterFilter()

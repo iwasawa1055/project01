@@ -134,6 +134,9 @@ class ApiModel extends AppModel
     protected function beforeApiRequest($url, &$params, $method)
     {
         $d = date('H:i:s', time());
+        if (array_key_exists('request_method', $params)) {
+            $method = $params['request_method'];
+        }
         $d .= ' bigen -> ' . $method . ': ' . $url;
         CakeLog::write(DEBUG_LOG, $d, ['bench']);
         CakeLog::write(DEBUG_LOG, print_r($params, true));

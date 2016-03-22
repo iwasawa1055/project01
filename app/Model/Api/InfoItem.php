@@ -59,9 +59,18 @@ class InfoItem extends ApiCachedModel
         $imageModel = new ImageItem();
         $boxModel = new InfoBox();
         $list = parent::apiGetResults($data);
-        foreach ($list as $index => $item) {
-            $list[$index]['image_first'] = $imageModel->apiGetResultsFind([], ['item_id' => $item['item_id']]);
-            $list[$index]['box'] = $boxModel->apiGetResultsFind([], ['box_id' => $item['box_id']]);
+        if (is_array($list)) {
+            // 画像情報とボックス情報を設定
+            foreach ($list as $index => $item) {
+                $imageList = $imageModel->apiGetResultsFind([], ['item_id' => $item['item_id']]);
+                if (is_array($imageList)) {
+                    $list[$index]['image_first'] = $imageList;
+                }
+                $box = $boxModel->apiGetResultsFind([], ['box_id' => $item['box_id']]);
+                if (is_array($box)) {
+                    $list[$index]['box'] = $box;
+                }
+            }
         }
         return $list;
     }

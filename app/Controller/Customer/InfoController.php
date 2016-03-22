@@ -14,26 +14,25 @@ class InfoController extends MinikuraController
     {
         parent::beforeFilter();
         $this->set('action', $this->action);
-
-        // アクセス制御
-        if ($this->Customer->isEntry() && $this->action === 'customer_edit') {
-            return $this->deny();
-        } else if (!$this->Customer->isEntry() && $this->action === 'customer_add') {
-            return $this->deny();
-        }
     }
 
     protected function isAccessDeny()
     {
         if ($this->Customer->isEntry() && $this->action === 'customer_edit') {
+            // 個人(仮登録)：変更不可
             return true;
-        } else if (!$this->Customer->isEntry() && $this->action === 'customer_add') {
+        } elseif (!$this->Customer->isEntry() && $this->action === 'customer_add') {
+            // 個人(本登録)：登録不可
+            return true;
+        } elseif (!$this->Customer->isPrivateCustomer()) {
+            // v2.0 法人：アクセス不可
             return true;
         }
         return false;
     }
 
-    private function setRequestDataFromSession() {
+    private function setRequestDataFromSession()
+    {
         $step = Hash::get($this->request->params, 'step');
         $back = Hash::get($this->request->query, 'back');
 

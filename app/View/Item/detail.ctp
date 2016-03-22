@@ -20,8 +20,10 @@
                     <div class="row">
                       <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="item-detail ">
-                          <a href="<?php echo $item['image_first']['image_url']; ?>" data-lightbox="item-photo" data-title="<?php echo h($item['item_name']); ?>">
-                              <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['item_id']; ?>" width="100px" height="100px" class="item"></a>
+                          <?php if (!empty(Hash::get($item, 'image_first.image_url'))) : ?>
+                          <a href="<?php echo Hash::get($item, 'image_first.image_url'); ?>" data-lightbox="item-photo" data-title="<?php echo h($item['item_name']); ?>">
+                              <img src="<?php echo Hash::get($item, 'image_first.image_url'); ?>" alt="<?php echo $item['item_id']; ?>" width="100px" height="100px" class="item"></a>
+                          <?php endif; ?>
                         </div>
                         <h3><?php echo h($item['item_name']); ?></h3>
                         <div class="box-list-caption">
@@ -43,6 +45,11 @@
                             <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
                         </span>
                         <?php echo $this->Form->end(); ?>
+                        <?php else : ?>
+                        <span class="col-xs-12 col-lg-12">
+                            <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" disabled="disabled">取り出しリスト登録</button>
+                            <p class="error-message"><?php echo $denyOutboundList; ?></p>
+                        </span>
                         <?php endif; ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">

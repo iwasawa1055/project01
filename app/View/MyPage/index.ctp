@@ -36,6 +36,7 @@
         </div>
       </div>
     </div>
+    <?php if (!$customer->isEntry()) : ?>
     <div class="col-lg-12 col-xs-12">
       <div class="panel panel-default">
         <div class="panel-body">
@@ -92,4 +93,5 @@
         </div>
       </div>
     </div>
+    <?php endif; ?>
   </div>

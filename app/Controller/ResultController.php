@@ -13,7 +13,7 @@ class ResultController extends MinikuraController
      */
     public function index()
     {
-        $maxCount = 8;
+        $maxCount = 10;
 
         $this->set('announcementList', []);
         $this->set('itemList', []);
@@ -28,8 +28,8 @@ class ResultController extends MinikuraController
         $keyword = $o->toArray()['keyword'];
 
         // お知らせ
-        $list = $this->Announcement->apiGetResults();
         $hits = [];
+        $list = $this->Announcement->apiGetResults();
         foreach ($list as $d) {
             $haystack = implode([
                 $d['announcement_id'],
@@ -39,7 +39,7 @@ class ResultController extends MinikuraController
             ]);
             if (!empty($keyword) && strpos(implode($d), $keyword) != false) {
                 $hits[] = $d;
-                if ($maxCount < count($hits)) {
+                if ($maxCount <= count($hits)) {
                     break;
                 }
             }
@@ -48,20 +48,22 @@ class ResultController extends MinikuraController
 
         // アイテム
         $o = new InfoItem();
-        $list = $o->apiGetResults();
         $hits = [];
-        foreach ($list as $d) {
-            $haystack = implode([
-                $d['item_id'],
-                $d['box_id'],
-                $d['box_name'],
-                $d['item_note'],
-                $d['item_name'],
-            ]);
-            if (!empty($keyword) && strpos($haystack, $keyword) !== false) {
-                $hits[] = $d;
-                if ($maxCount < count($hits)) {
-                    break;
+        if (!$this->Customer->isEntry()) {
+            $list = $o->apiGetResults();
+            foreach ($list as $d) {
+                $haystack = implode([
+                    $d['item_id'],
+                    $d['box_id'],
+                    $d['box_name'],
+                    $d['item_note'],
+                    $d['item_name'],
+                ]);
+                if (!empty($keyword) && strpos($haystack, $keyword) !== false) {
+                    $hits[] = $d;
+                    if ($maxCount <= count($hits)) {
+                        break;
+                    }
                 }
             }
         }
@@ -70,20 +72,22 @@ class ResultController extends MinikuraController
 
         // ボックス
         $o = new InfoBox();
-        $list = $o->apiGetResults();
         $hits = [];
-        foreach ($list as $d) {
-            $haystack = implode([
-                $d['kit_name'],
-                $d['product_name'],
-                $d['box_id'],
-                $d['box_name'],
-                $d['box_note'],
-            ]);
-            if (!empty($keyword) && strpos($haystack, $keyword) !== false) {
-                $hits[] = $d;
-                if ($maxCount < count($hits)) {
-                    break;
+        if (!$this->Customer->isEntry()) {
+            $list = $o->apiGetResults();
+            foreach ($list as $d) {
+                $haystack = implode([
+                    $d['kit_name'],
+                    $d['product_name'],
+                    $d['box_id'],
+                    $d['box_name'],
+                    $d['box_note'],
+                ]);
+                if (!empty($keyword) && strpos($haystack, $keyword) !== false) {
+                    $hits[] = $d;
+                    if ($maxCount <= count($hits)) {
+                        break;
+                    }
                 }
             }
         }

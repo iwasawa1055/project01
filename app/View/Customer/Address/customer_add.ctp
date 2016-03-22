@@ -23,43 +23,43 @@ if ($action === 'customer_edit') {
             <h2>お届け先<?php echo $actionName; ?></h2>
             <?php echo $this->Form->hidden('CustomerAddress.address_id'); ?>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.postal', ['class' => "form-control search_address_postal", 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.postal', ['class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.postal', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.pref', ['class' => "form-control address_pref", 'placeholder'=>'都道府県', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.pref', ['class' => "form-control address_pref", 'maxlength' => 4, 'placeholder'=>'都道府県', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.pref', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.address1', ['class' => "form-control address_address1", 'placeholder'=>'住所', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.address1', ['class' => "form-control address_address1", 'maxlength' => 8, 'placeholder'=>'住所', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.address1', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.address2', ['class' => "form-control address_address2", 'placeholder'=>'番地', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.address2', ['class' => "form-control address_address2", 'maxlength' => 18, 'placeholder'=>'番地', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.address2', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.address3', ['class' => "form-control", 'placeholder'=>'建物名', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.address3', ['class' => "form-control", 'maxlength' => 30, 'placeholder'=>'建物名', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.address3', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.tel1', ['class' => "form-control", 'placeholder'=>'電話番号', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.tel1', ['class' => "form-control", 'maxlength' => 20, 'placeholder'=>'電話番号', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.tel1', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.lastname', ['class' => "form-control", 'placeholder'=>'姓', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.lastname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.lastname', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.lastname_kana', ['class' => "form-control", 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.lastname_kana', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.firstname', ['class' => "form-control", 'placeholder'=>'名', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.firstname', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.firstname_kana', ['class' => "form-control", 'placeholder'=>'名（カナ）', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerAddress.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.firstname_kana', null, ['wrap' => 'p']) ?>
             </div>
           </div>

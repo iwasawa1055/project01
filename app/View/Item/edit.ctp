@@ -19,10 +19,12 @@
                         <div class="row">
                           <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="item-detail">
-                              <img src="<?php echo $item['image_first']['image_url'] ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
+                              <?php if (!empty(Hash::get($item, 'image_first.image_url'))) : ?>
+                              <img src="<?php echo Hash::get($item, 'image_first.image_url'); ?>" alt="<?php echo $item['item_id'] ?>" width="100px" height="100px" class="item">
+                              <?php endif; ?>
                             </div>
                             <h3>
-                              <?php echo $this->Form->input('Item.item_name', ['class' => "form-control", 'placeholder'=> __('item_name'), 'error' => false]); ?>
+                              <?php echo $this->Form->input('Item.item_name', ['class' => "form-control", 'maxlength' => 400, 'placeholder'=> __('item_name'), 'error' => false]); ?>
                             </h3>
                               <?php echo $this->Form->error('Item.item_name', null, ['wrap' => 'p']) ?>
                             <span class="col-xs-12 col-lg-12"><a class="btn btn-warning btn-md btn-block btn-detail disabled">預け入れ中</a>

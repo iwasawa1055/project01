@@ -12,7 +12,7 @@ msgid "empty_session_data"
 msgstr "もう一度実施してください。"
 
 msgid "boxitem_status_10"
-msgstr "ボックス購入依頼済"
+msgstr "ボックス購入依頼中"
 
 msgid "boxitem_status_20"
 msgstr "ボックス発送準備中"
@@ -21,7 +21,7 @@ msgid "boxitem_status_30"
 msgstr "ボックス発送完了"
 
 msgid "boxitem_status_40"
-msgstr "預け入れ依頼済"
+msgstr "預け入れ依頼中"
 
 msgid "boxitem_status_60"
 msgstr "預け入れ作業中"
@@ -30,7 +30,7 @@ msgid "boxitem_status_70"
 msgstr "預け入れ中"
 
 msgid "boxitem_status_180"
-msgstr "取り出し依頼済"
+msgstr "取り出し依頼中"
 
 msgid "boxitem_status_200"
 msgstr "取り出し作業中"
@@ -67,3 +67,12 @@ msgstr "ステータス"
 
 msgid "item_group_cd"
 msgstr "カテゴリ"
+
+msgid "access_deny"
+msgstr "このページにアクセスする権限ありません。"
+
+msgid "customer_password_reset_mail_notfound"
+msgstr "該当する登録情報が見つかりませんでした。"
+
+msgid "customer_password_reset_mail_send"
+msgstr "パスワード再設定リンクをメールアドレスに送信しました。"

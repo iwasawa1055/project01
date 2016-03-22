@@ -208,7 +208,7 @@ class ApiCachedModel extends ApiModel
     {
         $key = 'apiGet';
         $list = $this->readCache($key, $arg);
-        if (!empty($list)) {
+        if ($list !== null) {
             $this->triggerUsingCache();
             return $list;
         }
@@ -223,11 +223,15 @@ class ApiCachedModel extends ApiModel
             $newArg = $arg;
             $newArg['offset'] = $offset;
             $newArg['limit'] = $limit;
-            $r = parent::apiGet($newArg);
-            if (!$r->isSuccess()) {
-                return $r;
+            $apiRes = parent::apiGet($newArg);
+            if (!$apiRes->isSuccess()) {
+                // キャッシュ削除し例外発生
+                $message = get_class($this) . ', call parent::apiGet(), result: ' . $apiRes->message;
+                self::deleteCache();
+                new AppInternalCritical($message, 500);
+                return $apiRes;
             }
-            $addList = $r->results;
+            $addList = $apiRes->results;
             $count = count($addList);
             $list = array_merge($list, $addList);
             $offset++;
