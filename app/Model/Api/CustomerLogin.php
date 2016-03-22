@@ -32,6 +32,7 @@ class CustomerLogin extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'email'],
             ],
             'isMailAddress' => [
@@ -42,6 +43,7 @@ class CustomerLogin extends ApiModel
         'password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'password'],
              ],
         ],

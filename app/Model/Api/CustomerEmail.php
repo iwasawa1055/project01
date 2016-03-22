@@ -27,6 +27,7 @@ class CustomerEmail extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'email'],
              ],
             'isMailAddress' => [
@@ -37,6 +38,7 @@ class CustomerEmail extends ApiModel
         'email_confirm' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'email_confirm'],
              ],
             'isMailAddress' => [

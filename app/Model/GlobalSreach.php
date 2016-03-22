@@ -20,6 +20,7 @@ class GlobalSreach extends AppModel
         'keyword' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'keyword'],
             ],
             'maxLength' => [

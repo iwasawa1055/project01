@@ -83,11 +83,26 @@ msgstr "集荷の時間"
 msgid "box"
 msgstr "ボックス"
 
+msgid "box_id"
+msgstr "ボックスID"
+
 msgid "box_name"
 msgstr "ボックスタイトル"
 
+msgid "box_note"
+msgstr "ボックスノート"
+
 msgid "box_option"
 msgstr "オプション"
+
+msgid "item_id"
+msgstr "アイテムID"
+
+msgid "item_name"
+msgstr "アイテムタイトル"
+
+msgid "item_note"
+msgstr "アイテムノート"
 
 msgid "carrier"
 msgstr "配送業者"
@@ -103,6 +118,75 @@ msgstr "商品"
 
 msgid "keyword"
 msgstr "キーワード"
+
+msgid "kit"
+msgstr "キット"
+
+msgid "announcement_id"
+msgstr "お知らせID"
+
+msgid "kit_lastname"
+msgstr "配送先姓"
+
+msgid "kit_lastname_kana"
+msgstr "配送先姓（カナ）"
+
+msgid "kit_firstname"
+msgstr "配送先名"
+
+msgid "kit_firstname_kana"
+msgstr "配送先名（カナ）"
+
+msgid "kit_address_name"
+msgstr "配送先名"
+
+msgid "kit_tel1"
+msgstr "配送先電話番号"
+
+msgid "kit_postal"
+msgstr "配送先郵便番号"
+
+msgid "kit_pref"
+msgstr "配送先都道府県"
+
+msgid "kit_address1"
+msgstr "配送先住所"
+
+msgid "kit_address2"
+msgstr "配送先番地"
+
+msgid "kit_address3"
+msgstr "配送先建物名"
+
+msgid "kit_address"
+msgstr "配送先住所"
+
+msgid "kit_datetime"
+msgstr "配送日時"
+
+msgid "card_seq"
+msgstr "カード登録連番"
+
+msgid "card_no"
+msgstr "クレジットカード番号"
+
+msgid "holder_name"
+msgstr "クレジットカード名義"
+
+msgid "expire"
+msgstr "有効期限"
+
+msgid "security_cd"
+msgstr "セキュリティコード"
+
+msgid "kit_mono_num"
+msgstr "オーダー数（minikuraMONO）"
+
+msgid "kit_hako_num"
+msgstr "オーダー数（minikurHAKO）"
+
+msgid "kit_cleaning_num"
+msgstr "オーダー数（クリーニングパック）"
 
 
 # Validation
@@ -129,3 +213,6 @@ msgstr "%sは全角カタカナで入力してください"
 
 msgid "select"
 msgstr "%sを選択してください"
+
+msgid "checkNotEmpty"
+msgstr "いずれかの%sを選択してください"

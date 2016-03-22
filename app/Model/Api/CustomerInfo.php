@@ -20,6 +20,7 @@ class CustomerInfo extends ApiModel
         'lastname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname']
             ],
             'maxLength' => [
@@ -30,6 +31,7 @@ class CustomerInfo extends ApiModel
         'lastname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname_kana']
             ],
             'maxLength' => [
@@ -44,6 +46,7 @@ class CustomerInfo extends ApiModel
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'firstname']
             ],
             'maxLength' => [
@@ -54,6 +57,7 @@ class CustomerInfo extends ApiModel
         'firstname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'firstname_kana']
             ],
             'maxLength' => [
@@ -68,6 +72,7 @@ class CustomerInfo extends ApiModel
         'gender' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'gender'],
             ],
             'allowedChoice' => [
@@ -78,6 +83,7 @@ class CustomerInfo extends ApiModel
         'birth' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'birth'],
             ],
             'isDate' => [
@@ -88,6 +94,7 @@ class CustomerInfo extends ApiModel
         'tel1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'tel1']
             ],
             'isPhoneNumberJp' => [
@@ -98,6 +105,7 @@ class CustomerInfo extends ApiModel
         'postal' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'postal']
             ],
             'isPostalCodeJp' => [
@@ -108,6 +116,7 @@ class CustomerInfo extends ApiModel
         'pref' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'pref']
             ],
             'isPrefNameJp' => [
@@ -118,6 +127,7 @@ class CustomerInfo extends ApiModel
         'address1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'address1']
             ],
             'maxLength' => [
@@ -128,6 +138,7 @@ class CustomerInfo extends ApiModel
         'address2' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'address2']
             ],
             'maxLength' => [

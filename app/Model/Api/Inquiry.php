@@ -13,6 +13,7 @@ class Inquiry extends ApiModel
         'lastname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname']
             ],
             'maxLength' => [
@@ -23,6 +24,7 @@ class Inquiry extends ApiModel
         'lastname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname_kana']
             ],
             'maxLength' => [
@@ -37,6 +39,7 @@ class Inquiry extends ApiModel
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'firstname']
             ],
             'maxLength' => [
@@ -47,6 +50,7 @@ class Inquiry extends ApiModel
         'firstname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'firstname_kana']
             ],
             'maxLength' => [
@@ -61,6 +65,7 @@ class Inquiry extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'email']
              ],
             'isMailAddress' => [
@@ -71,12 +76,14 @@ class Inquiry extends ApiModel
         'division' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'contact_division'],
              ],
         ],
         'text' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'contact_text'],
              ],
         ],

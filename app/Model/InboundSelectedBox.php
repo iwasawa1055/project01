@@ -20,6 +20,7 @@ class InboundSelectedBox extends AppModel
         'title' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'box_name'],
             ],
             'maxLength' => [

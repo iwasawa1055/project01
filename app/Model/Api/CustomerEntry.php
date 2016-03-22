@@ -33,6 +33,7 @@ class CustomerEntry extends ApiModel
         'email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'email'],
              ],
             'isMailAddress' => [
@@ -43,6 +44,7 @@ class CustomerEntry extends ApiModel
         'password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'password'],
              ],
             'isLoginPassword' => [
@@ -53,6 +55,7 @@ class CustomerEntry extends ApiModel
         'password_confirm' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'password_confirm'],
              ],
             'isLoginPassword' => [

@@ -25,6 +25,7 @@ class CustomerAddress extends ApiCachedModel
         'lastname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname']
             ],
             'maxLength' => [
@@ -35,6 +36,7 @@ class CustomerAddress extends ApiCachedModel
         'lastname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname_kana']
             ],
             'maxLength' => [
@@ -49,6 +51,7 @@ class CustomerAddress extends ApiCachedModel
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'firstname']
             ],
             'maxLength' => [
@@ -59,6 +62,7 @@ class CustomerAddress extends ApiCachedModel
         'firstname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'firstname_kana']
             ],
             'maxLength' => [
@@ -73,6 +77,7 @@ class CustomerAddress extends ApiCachedModel
         'tel1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'tel1']
             ],
             'isPhoneNumberJp' => [
@@ -83,6 +88,7 @@ class CustomerAddress extends ApiCachedModel
         'postal' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'postal']
             ],
             'isPostalCodeJp' => [
@@ -93,6 +99,7 @@ class CustomerAddress extends ApiCachedModel
         'pref' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'pref']
             ],
             'isPrefNameJp' => [
@@ -103,6 +110,7 @@ class CustomerAddress extends ApiCachedModel
         'address1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'address1']
             ],
             'maxLength' => [
@@ -113,6 +121,7 @@ class CustomerAddress extends ApiCachedModel
         'address2' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'address2']
             ],
             'maxLength' => [

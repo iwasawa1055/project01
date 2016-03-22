@@ -22,63 +22,70 @@ class PaymentGMOSecurityCard extends ApiModel
         'card_no' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
-                'message'  => 'クレジットカード番号は必須です'
+                'required' => true,
+                'message'  => ['notBlank', 'card_no'],
              ],
             'isCreditCardNumber' => [
                 'rule'     => 'isCreditCardNumber',
-                'message'  => 'クレジットカード番号の形式が正しくありません'
+                'message'  => ['format', 'card_no'],
             ],
         ],
         'holder_name' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
-                 'message'  => 'クレジットカード名義は必須です'
+                'required' => true,
+                'message'  => ['notBlank', 'holder_name'],
              ],
             'isCreditCardHolderName' => [
                 'rule'     => 'isCreditCardHolderName',
-                'message'  => 'クレジットカード名義の形式が正しくありません'
+                'message'  => ['format', 'holder_name'],
             ],
         ],
         'expire' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
-                 'message'  => '有効期限は必須です'
+                'required' => true,
+                'message'  => ['notBlank', 'expire'],
              ],
             'isCreditCardExpireReverse' => [
                 'rule'     => 'isCreditCardExpireReverse',
-                'message'  => '有効期限の形式が正しくありません'
+                'message'  => ['format', 'expire'],
             ],
         ],
         'card_seq' => [
             'notBlank' => [
-                'rule'     => 'notBlank',
-                 'message'  => 'カード登録シーケンス値は必須です'
-             ],
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'card_seq'],
+            ],
             'isStringInteger' => [
                 'rule'     => 'isStringInteger',
-                'message'  => 'カード登録シーケンス値の形式が正しくありません'
+                'message'  => ['format', 'card_seq'],
             ],
         ],
         'security_cd' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
-                 'message'  => 'セキュリティコードは必須です'
+                'required' => true,
+                'message'  => ['notBlank', 'security_cd'],
              ],
             'isCreditCardSecurityCode' => [
                 'rule'     => ['isCreditCardSecurityCode'],
-                'message'  => 'セキュリティコードの形式が正しくありません'
+                'message'  => ['format', 'security_cd'],
             ],
         ],
         'expire_month' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
-                 'message'  => '有効期限は必須です'
+                'required' => true,
+                'message'  => ['notBlank', 'expire'],
              ],
         ],
         'expire_year' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
-                 'message'  => '有効期限は必須です'
+                'required' => true,
+                'message'  => ['notBlank', 'expire'],
              ],
         ],
     ];

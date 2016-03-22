@@ -13,7 +13,8 @@ class Receipt extends ApiModel
         'announcement_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '必須です',
+                'required' => true,
+                'message' => ['notBlank', 'announcement_id'],
             ],
 
         ],

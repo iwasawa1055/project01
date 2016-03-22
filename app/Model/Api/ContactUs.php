@@ -20,12 +20,14 @@ class ContactUs extends ApiModel
         'division' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'contact_division'],
              ],
         ],
         'text' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'contact_text'],
              ],
         ],

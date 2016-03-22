@@ -19,23 +19,25 @@ class Box extends ApiModel
         'box_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'ボックスIDは必須です',
+                'required' => true,
+                'message' => ['notBlank', 'box_id'],
             ],
         ],
         'box_name' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'ボックス名は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'box_name'],
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 400],
-                'message' => 'ボックス名は400文字以内で入力してください',
+                'message' => ['maxLength', 'box_name', 400],
             ],
         ],
         'box_note' => [
             'maxLength' => [
                 'rule' => ['maxLength', 1000],
-                'message' => 'ボックスノートは1000文字以内で入力してください',
+                'message' => ['maxLength', 'box_note', 1000],
             ],
         ],
     ];

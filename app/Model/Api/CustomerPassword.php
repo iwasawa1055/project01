@@ -20,12 +20,14 @@ class CustomerPassword extends ApiModel
         'password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'current_password'],
              ],
         ],
         'new_password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'new_password'],
              ],
             'isLoginPassword' => [
@@ -36,6 +38,7 @@ class CustomerPassword extends ApiModel
         'new_password_confirm' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'new_password_confirm'],
              ],
             'isLoginPassword' => [

@@ -15,11 +15,12 @@ class DatetimeDeliveryKit extends ApiModel
         'postal' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '郵便番号は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'postal']
             ],
             'isPostalCodeJp' => [
                 'rule' => 'isPostalCodeJp',
-                'message' => '郵便番号の形式が正しくありません',
+                'message' => ['format', 'postal']
             ],
         ],
 	];

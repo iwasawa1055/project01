@@ -20,6 +20,7 @@ class CustomerInfoV3 extends ApiModel
         'lastname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
+                'required' => true,
                 'message' => ['notBlank', 'lastname']
             ],
             'maxLength' => [
@@ -30,122 +31,132 @@ class CustomerInfoV3 extends ApiModel
         'lastname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '姓（カナ）は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'lastname_kana']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '姓（カナ）は29文字以内で入力してください',
+                'message' => ['maxLength', 'lastname_kana', 29]
             ],
             'isFwKana' => [
                 'rule' => 'isFwKana',
-                'message' => '姓（カナ）は全角カタカナで入力してください',
+                'message' => ['isFwKana', 'lastname_kana']
             ],
         ],
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '名は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'firstname']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '名は29文字以内で入力してください',
+                'message' => ['maxLength', 'firstname', 29]
             ],
         ],
         'firstname_kana' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '名（カナ）は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'firstname_kana']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 29],
-                'message' => '名（カナ）は29文字以内で入力してください',
+                'message' => ['maxLength', 'firstname_kana', 29]
             ],
             'isFwKana' => [
                 'rule' => 'isFwKana',
-                'message' => '名（カナ）は全角カタカナで入力してください',
+                'message' => ['isFwKana', 'firstname_kana']
             ],
         ],
         'gender' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '性別は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'gender'],
             ],
             'allowedChoice' => [
                 'rule' => ['inList', ['m', 'f']],
-                'message' => '性別の形式が正しくありません',
+                'message' => ['format', 'gender'],
             ],
         ],
         'birth' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '生年月日は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'birth'],
             ],
             'isDate' => [
                 'rule' => 'isDate',
-                'message' => '生年月日の形式が正しくありません',
+                'message' => ['format', 'birth'],
             ],
         ],
         'tel1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '電話番号は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'tel1']
             ],
             'isPhoneNumberJp' => [
                 'rule' => 'isPhoneNumberJp',
-                'message' => '電話番号の形式が正しくありません',
+                'message' => ['format', 'tel1']
             ],
         ],
         'postal' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '郵便番号は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'postal']
             ],
             'isPostalCodeJp' => [
                 'rule' => 'isPostalCodeJp',
-                'message' => '郵便番号の形式が正しくありません',
+                'message' => ['format', 'postal']
             ],
         ],
         'pref' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '都道府県は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'pref']
             ],
             'isPrefNameJp' => [
                 'rule' => 'isPrefNameJp',
-                'message' => '都道府県の形式が正しくありません',
+                'message' => ['format', 'pref']
             ],
         ],
         'address1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '住所は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'address1']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 8],
-                'message' => '住所は8文字以内で入力してください',
+                'message' => ['maxLength', 'address1', 8]
             ],
         ],
         'address2' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '番地は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'address2']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 18],
-                'message' => '番地は18文字以内で入力してください',
+                'message' => ['maxLength', 'address2', 18]
             ],
         ],
         'address3' => [
             'maxLength' => [
                 'rule' => ['maxLength', 30],
                 'allowEmpty' => true,
-                'message' => '番地は30文字以内で入力してください',
+                'message' => ['maxLength', 'address3', 30]
             ],
         ],
         'newsletter' => [
             'allowedChoice' => [
                 'rule' => ['inList', ['0', '1']],
-                'message' => '配信希望の形式が正しくありません',
+                'message' => ['format', 'newsletter']
             ],
         ],
     ];

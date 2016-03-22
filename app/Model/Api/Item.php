@@ -19,23 +19,25 @@ class Item extends ApiModel
         'item_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'アイテムIDは必須です',
+                'required' => true,
+                'message' => ['notBlank', 'item_id']
             ],
         ],
         'item_name' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'アイテム名は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'item_name'],
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 400],
-                'message' => 'アイテム名は400文字以内で入力してください',
+                'message' => ['maxLength', 'item_name', 400],
             ],
         ],
         'item_note' => [
             'maxLength' => [
                 'rule' => ['maxLength', 1000],
-                'message' => 'アイテムノートは1000文字以内で入力してください',
+                'message' => ['maxLength', 'item_note', 1000],
             ],
         ],
     ];

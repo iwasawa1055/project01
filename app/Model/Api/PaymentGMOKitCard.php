@@ -20,107 +20,118 @@ class PaymentGMOKitCard extends ApiModel
         'mono_num' => [
             'checkNotEmpty' => [
                 'rule' => 'checkNotEmpty',
-                'message' => 'いずれかのボックスを選択してください',
+                'message' => ['checkNotEmpty', 'box'],
             ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => 'オーダー数の形式が正しくありません（minikuraMONO）',
+                'message' => ['format', 'kit_mono_num'],
             ],
         ],
         'hako_num' => [
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => 'オーダー数の形式が正しくありません（minikurHAKO）',
+                'message' => ['format', 'kit_hako_num'],
             ],
         ],
         'cleaning_num' => [
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => 'オーダー数の形式が正しくありません（クリーニングパック）',
+                'message' => ['format', 'kit_cleaning_num'],
             ],
         ],
 
         'card_seq' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'カード登録連番は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'card_seq'],
+            ],
+            'isStringInteger' => [
+                'rule'     => 'isStringInteger',
+                'message'  => ['format', 'card_seq'],
             ],
         ],
         'security_cd' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                 'message' => 'セキュリティコードは必須です',
+                'required' => true,
+                'message' => ['notBlank', 'security_cd'],
             ],
             'isCreditCardSecurityCode' => [
                 'rule' => 'isCreditCardSecurityCode',
-                'message' => 'セキュリティコードの形式が正しくありません',
+                'message' => ['format', 'security_cd'],
             ],
         ],
         'kit' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'キットは必須です',
+                'required' => true,
+                'message' => ['notBlank', 'kit'],
             ],
         ],
         'name' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '配送先名は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address_name']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 50],
-                'message' => '配送先名は50文字以下で入力してください',
+                'message' => ['maxLength', 'kit_address_name', 50]
             ],
         ],
         'tel1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '配送先電話番号は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'kit_tel1']
             ],
             'isPhoneNumberJp' => [
                 'rule' => 'isPhoneNumberJp',
-                'message' => '配送先電話番号の形式が正しくありません',
+                'message' => ['format', 'kit_tel1']
             ],
         ],
         'postal' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '配送先郵便番号は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'kit_postal']
             ],
             'isPostalCodeJp' => [
                 'rule' => 'isPostalCodeJp',
-                'message' => '配送先郵便番号の形式が正しくありません',
+                'message' => ['format', 'kit_postal']
             ],
         ],
         'address' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '配送先住所は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address']
             ],
             'maxLength' => [
                 'rule' => ['maxLength', 60],
-                'message' => '配送先住所は60文字以下で入力してください',
+                'message' => ['maxLength', 'kit_address', 60]
             ],
         ],
         'datetime_cd' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
-                'message' => '配送日時は必須です',
+                'message' => ['notBlank', 'kit_datetime']
             ],
             'isDatetimeDelivery' => [
                 'rule' => 'isDatetimeDelivery',
-                'message' => '配送日時の形式が正しくありません',
+                'message' => ['format', 'kit_datetime']
             ],
         ],
         'address_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
-                'message' => 'お届け先は必須です',
+                'message' => ['notBlank', 'kit_address_name']
             ],
         ],
     ];

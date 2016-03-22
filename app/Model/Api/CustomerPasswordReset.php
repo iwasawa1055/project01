@@ -12,36 +12,39 @@ class CustomerPasswordReset extends ApiModel
     public $validate = [
         'email' => [
             'notBlank' => [
-                    'rule' => 'notBlank',
-                    'message' => 'メールアドレスは必須です',
-             ],
-             'isMail' => [
-                    'rule' => ['isMailAddress'],
-                    'message' => 'メールアドレスの形式が正しくありません',
-             ],
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'email'],
+            ],
+            'isMailAddress' => [
+                'rule' => 'isMailAddress',
+                'message' => ['format', 'email'],
+            ],
          ],
         'new_password' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '新しいパスワードは必須です',
+                'required' => true,
+                'message' => ['notBlank', 'new_password'],
              ],
             'isLoginPassword' => [
                 'rule' => 'isLoginPassword',
-                'message' => '新しいパスワードの形式が正しくありません',
+                'message' => ['format', 'new_password'],
             ],
         ],
         'new_password_confirm' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => '新しいパスワード（再入力）は必須です',
+                'required' => true,
+                'message' => ['notBlank', 'new_password_confirm'],
              ],
             'isLoginPassword' => [
                 'rule' => 'isLoginPassword',
-                'message' => '新しいパスワード（再入力）の形式が正しくありません',
+                'message' => ['format', 'new_password_confirm'],
             ],
             'confirmPassword' => [
                 'rule' => 'confirmPassword',
-                'message' => '新しいパスワード（再入力）が一致していません',
+                'message' => ['confirm', 'new_password_confirm'],
             ],
         ],
     ];

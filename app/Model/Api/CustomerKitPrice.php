@@ -10,5 +10,12 @@ class CustomerKitPrice extends ApiModel
     }
 
     public $validate = [
+        'kit' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit']
+            ],
+        ],
     ];
 }
