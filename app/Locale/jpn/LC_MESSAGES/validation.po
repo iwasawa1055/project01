@@ -126,43 +126,43 @@ msgid "announcement_id"
 msgstr "お知らせID"
 
 msgid "kit_lastname"
-msgstr "配送先姓"
+msgstr "お届け先の姓"
 
 msgid "kit_lastname_kana"
-msgstr "配送先姓（カナ）"
+msgstr "お届け先の姓（カナ）"
 
 msgid "kit_firstname"
-msgstr "配送先名"
+msgstr "お届け先の名"
 
 msgid "kit_firstname_kana"
-msgstr "配送先名（カナ）"
+msgstr "お届け先の名（カナ）"
 
 msgid "kit_address_name"
-msgstr "配送先名"
+msgstr "お届け先"
 
 msgid "kit_tel1"
-msgstr "配送先電話番号"
+msgstr "お届け先電話番号"
 
 msgid "kit_postal"
-msgstr "配送先郵便番号"
+msgstr "お届け先郵便番号"
 
 msgid "kit_pref"
-msgstr "配送先都道府県"
+msgstr "お届け先都道府県"
 
 msgid "kit_address1"
-msgstr "配送先住所"
+msgstr "お届け先住所"
 
 msgid "kit_address2"
-msgstr "配送先番地"
+msgstr "お届け先番地"
 
 msgid "kit_address3"
-msgstr "配送先建物名"
+msgstr "お届け先建物名"
 
 msgid "kit_address"
-msgstr "配送先住所"
+msgstr "お届け先住所"
 
 msgid "kit_datetime"
-msgstr "配送日時"
+msgstr "お届け先希望日時"
 
 msgid "card_seq"
 msgstr "カード登録連番"
