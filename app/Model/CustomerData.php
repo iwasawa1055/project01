@@ -13,7 +13,7 @@ class CustomerData
     const SESSION_KEY = 'CUSTOMER_DATA_CACHE';
 
     public $token = [];
-    private $info = null;
+    public $info = null;
 
     public function __construct()
     {
@@ -42,6 +42,11 @@ class CustomerData
     {
         $this->token = $data;
         CustomerData::save($this);
+    }
+
+    public function setPassword($password)
+    {
+        CakeSession::write(self::SESSION_KEY . '_PASSWORD', $password);
     }
 
     public function setInfoAndSave($data = [])
@@ -82,6 +87,11 @@ class CustomerData
         }
         return null;
     }
+    public function getPassword()
+    {
+        return CakeSession::read(self::SESSION_KEY . '_PASSWORD');
+    }
+
 
     public function switchEntryToCustomer()
     {
