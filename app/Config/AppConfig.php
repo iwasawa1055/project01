@@ -5,9 +5,14 @@
  * 共通設定
  */
 $config['site.name'] = 'Minikura.com';
+// 本サイトのURL（パスワードリセットメールの本文で使用）
 $config['site.url'] = 'http://' . $_SERVER['HTTP_HOST'];
+// 未ログイン時TOPメニューのリンク先
 $config['site.top_page'] = 'http://' . $_SERVER['HTTP_HOST'];
-$config['site.env_name'] = 'production';
+// 静的コンテンツ用ドメイン
+$config['site.static_content_url'] = 'http://' . $_SERVER['HTTP_HOST'];
+// 環境文字列（development, staging, production）
+$config['site.env_name'] = '';
 
 /**
  * API設定

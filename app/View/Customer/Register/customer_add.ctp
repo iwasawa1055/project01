@@ -32,7 +32,7 @@
                 <label>お知らせメール</label>
                 <?php echo $this->Form->select('CustomerEntry.newsletter', CUSTOMER_NEWSLETTER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               </div>
-              <a class="btn btn-info btn-xs btn-block" href="/use_agreement/" target="_blank">minikura 利用規約</a>
+              <a class="btn btn-info btn-xs btn-block" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura 利用規約</a>
               <div class="checkbox">
                 <label>
                   <input name="remember" type="checkbox" value="Remember Me" class="agree-before-submit">

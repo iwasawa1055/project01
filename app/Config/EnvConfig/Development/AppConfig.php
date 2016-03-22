@@ -1,5 +1,6 @@
 <?php
 // Manual Configure & Startup Configure
+$config['site.static_content_url'] = 'https://minikura.com';
 $config['site.env_name'] = 'development';
 
 /**

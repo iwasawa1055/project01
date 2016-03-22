@@ -29,7 +29,7 @@
                   </p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <a class="btn btn-info btn-xs btn-block" href="/use_agreement/" target="_blank">minikura 利用規約</a>
+                  <a class="btn btn-info btn-xs btn-block" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura 利用規約</a>
                   <label>
                     <input class="agree-before-submit" type="checkbox">
                     minikura 利用規約に同意する

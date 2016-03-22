@@ -58,15 +58,15 @@
       <ul class="list-inline">
         <li><a href="http://www.terrada.co.jp/company/" target="_blank">会社情報</a>
         </li>
-        <li><a href="/privacy/" target="_blank">個人情報について</a>
+        <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/privacy/" target="_blank">個人情報について</a>
         </li>
-        <li><a href="/security_policy/" target="_blank">セキュリティポリシー</a>
+        <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/security_policy/" target="_blank">セキュリティポリシー</a>
         </li>
-        <li><a href="/commercial_transaction/" target="_blank">特定商取引に関する表記について</a>
+        <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/commercial_transaction/" target="_blank">特定商取引に関する表記について</a>
         </li>
-        <li><a href="/use_agreement/" target="_blank">利用規約</a>
+        <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a>
         </li>
-        <li><a href="/inquiry/add">お問い合わせ</a>
+        <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/inquiry/add">お問い合わせ</a>
         </li>
       </ul>
     </div>
