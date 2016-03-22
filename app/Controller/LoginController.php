@@ -38,6 +38,8 @@ class LoginController extends MinikuraController
 
                 // カスタマー情報を取得しセッションに保存
                 $this->Customer->setTokenAndSave($res->results[0]);
+                $this->Customer->setPassword($this->request->data['CustomerLogin']['password']);
+                $this->Customer->getInfo();
 
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();

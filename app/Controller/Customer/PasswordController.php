@@ -26,6 +26,7 @@ class PasswordController extends MinikuraController
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'edit']);
             }
+            $this->Customer->setPassword($model->toArray()['new_password']);
         } else {
             $this->set('validErrors', $model->validationErrors);
             return $this->render('customer_edit');

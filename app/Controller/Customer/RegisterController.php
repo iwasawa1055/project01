@@ -31,14 +31,13 @@ class RegisterController extends MinikuraController
                 // 仮登録
                 $res = $this->CustomerEntry->entry();
                 if (!empty($res->error_message)) {
-                    // TODO: 例外処理
                     $this->request->data[self::MODEL_NAME]['password'] = '';
                     $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
                     $this->Flash->set($res->error_message);
                     return $this->render('customer_add');
                 }
 
-                // TODO: ログイン
+                // ログイン
                 $this->loadModel('CustomerLogin');
                 $this->CustomerLogin->data['CustomerLogin']['email'] = $this->request->data[self::MODEL_NAME]['email'];
                 $this->CustomerLogin->data['CustomerLogin']['password'] = $this->request->data[self::MODEL_NAME]['password'];
@@ -50,11 +49,9 @@ class RegisterController extends MinikuraController
                 }
 
                 // カスタマー情報を取得しセッションに保存
-                // token
                 $this->Customer->setTokenAndSave($res->results[0]);
-                // entry
-                $res = $this->CustomerEntry->apiGet();
-                $this->Customer->setInfoAndSave($res->results[0]);
+                $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+                $this->Customer->getInfo();
 
                 if (empty($code)) {
                     return $this->redirect('/');

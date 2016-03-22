@@ -15,6 +15,7 @@ App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');
 App::uses('EntryContactUs', 'Model');
 App::uses('EntryCustomerEmail', 'Model');
+App::uses('CustomerData', 'Model');
 
 class CustomerComponent extends Component
 {
@@ -26,7 +27,7 @@ class CustomerComponent extends Component
     }
 
     /**
-     * カスタム状態を見てメールアドレス操作モデルを取得
+     * カスタマー状態を見てメールアドレス操作モデルを取得
      * @param  array $data モデルデータ（モデル名不要）
      * @return object
      */
@@ -47,7 +48,7 @@ class CustomerComponent extends Component
     }
 
     /**
-     * カスタム状態を見てパスワード操作モデルを取得
+     * カスタマー状態を見てパスワード操作モデルを取得
      * @param  array $data モデルデータ（モデル名不要）
      * @return object
      */
@@ -69,7 +70,7 @@ class CustomerComponent extends Component
 
 
     /**
-     * カスタム状態を見て契約情報取得モデルを取得
+     * カスタマー状態を見て契約情報取得モデルを取得
      * @return object
      */
     public function getInfoGetModel()
@@ -86,7 +87,7 @@ class CustomerComponent extends Component
     }
 
     /**
-     * カスタム状態を見て契約情報登録モデルを取得
+     * カスタマー状態を見て契約情報登録モデルを取得
      * @param  array $data モデルデータ（モデル名不要）
      * @return object
      */
@@ -105,7 +106,7 @@ class CustomerComponent extends Component
     }
 
     /**
-     * カスタム状態を見て契約情報更新モデルを取得
+     * カスタマー状態を見て契約情報更新モデルを取得
      * @param  array $data モデルデータ（モデル名不要）
      * @return object
      */
@@ -124,7 +125,7 @@ class CustomerComponent extends Component
     }
 
     /**
-     * カスタム状態を見て契約情報操作モデルを取得
+     * カスタマー状態を見て契約情報操作モデルを取得
      * @param  array $data モデルデータ（モデル名不要）
      * @return object
      */
@@ -229,6 +230,14 @@ class CustomerComponent extends Component
     public function getToken()
     {
         return $this->data->token;
+    }
+    public function setPassword($data)
+    {
+        return $this->data->setPassword($data);
+    }
+    public function getPassword()
+    {
+        return $this->data->getPassword();
     }
     public function switchEntryToCustomer()
     {

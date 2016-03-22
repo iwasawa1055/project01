@@ -2,7 +2,6 @@
 
 App::uses('AppController', 'Controller');
 App::uses('AppSecurity', 'Lib');
-App::uses('CustomerData', 'Model');
 
 class MinikuraController extends AppController
 {
