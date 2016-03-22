@@ -57,6 +57,8 @@ class InfoBox extends ApiCachedModel
     public function getListForInbound()
     {
         $okStatus = [
+            BOXITEM_STATUS_BUYKIT_START,
+            BOXITEM_STATUS_BUYKIT_IN_PROGRESS,
             BOXITEM_STATUS_BUYKIT_DONE,
         ];
         $all = $this->apiGetResults();
