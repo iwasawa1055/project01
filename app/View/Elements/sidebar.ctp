@@ -41,7 +41,7 @@
         <?php endif; ?>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li>
-          <a href="<?php echo Configure::read('site.static_content_url'); ?>/mini_auction/"><i class="fa fa-gavel fa-fw"></i> ヤフオク出品</a>
+          <a href="/mini_auction/"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
         </li>
         <?php endif; ?>
       </ul>
