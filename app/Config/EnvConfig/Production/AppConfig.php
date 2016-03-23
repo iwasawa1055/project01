@@ -12,8 +12,7 @@ $config['site.env_name'] = 'production';
 Configure::write('debug', 0);
 // php display
 ini_set('display_errors', '0');
-error_reporting(0);
-
+error_reporting(E_ALL ^ E_NOTICE);
 
 /**
  * API設定
@@ -38,6 +37,11 @@ $config['app']['e']['mail'] = [
     'flag' => true,
     'receiver' => [
         'warning' => [
+            'To' => [],
+            'Cc' => [],
+            'Bcc' => [],
+        ],
+        'error' => [
             'To' => [],
             'Cc' => [],
             'Bcc' => [],
