@@ -9,11 +9,10 @@ $config['site.env_name'] = 'staging';
  * エラー表示
  */
 // CakePHP Debug Level
-Configure::write('debug', 0);
+Configure::write('debug', 2);
 // php display
-ini_set('display_errors', '0');
-error_reporting(0);
-
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
 /**
  * API設定
@@ -39,6 +38,11 @@ $config['app']['e']['mail'] = [
     'flag' => true,
     'receiver' => [
         'warning' => [
+            'To' => [],
+            'Cc' => [],
+            'Bcc' => [],
+        ],
+        'error' => [
             'To' => [],
             'Cc' => [],
             'Bcc' => [],
