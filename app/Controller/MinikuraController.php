@@ -26,21 +26,16 @@ class MinikuraController extends AppController
 
         CakeSession::start();
 
-        // アクセス拒否
-        if ($this->isAccessDeny()) {
-            new AppTerminalCritical(__('access_deny'), 404);
-            return;
-        }
-
         // use customer for view
         $this->set('customer', $this->Customer);
 
-        // header
+        // ログインチェック
         if ($this->checkLogined) {
             if (!$this->Customer->isLogined()) {
                 return $this->redirect(['controller' => 'login', 'action' => 'index', 'customer' => false]);
             }
 
+            // 負債ユーザ遷移制限
             if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
                 if ($this->Customer->hasCreditCard()) {
                     return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
@@ -59,6 +54,12 @@ class MinikuraController extends AppController
                 $summary = $this->InfoBox->getProductSummary();
                 $this->set('product_summary', $summary);
             }
+        }
+
+        // アクセス拒否
+        if ($this->isAccessDeny()) {
+            new AppTerminalCritical(__('access_deny'), 404);
+            return;
         }
     }
 
