@@ -2,7 +2,7 @@
 // Manual Configure & Startup Configure
 $config['site.url'] = 'http://production .' . $_SERVER['HTTP_HOST'];
 $config['site.top_page'] = 'https://b-www.minikura.com';
-$config['site.static_content_url'] = 'https://minikura.com';
+$config['site.static_content_url'] = 'https://b-www.minikura.com';
 $config['site.env_name'] = 'staging';
 
 /**
@@ -19,7 +19,7 @@ error_reporting(0);
  * API設定
  */
 $config['api.minikura.oem_key'] = '_QfNQL67x7RiIUbzn_1hkAEGKmlLO04we5rizUemfoWVLOjcEpIDDQ--';
-$url = 'https://b-api.minikura.com';
+$url = 'https://stag-api.minikura.com';
 $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
