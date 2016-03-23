@@ -2,6 +2,9 @@
 
 class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
 {
+    protected $loginEmail = '';
+    protected $loginPassword = '';
+
     public $parameters = [
         'seleniumServerRequestsTimeout' => 30000,
         'timeout' => 30000,
@@ -17,8 +20,17 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
 
     public function waitPageLoad()
     {
-        // wait
-        usleep(1.5 * 1000000);
+        // アニメーションを待つ
+        do {
+            usleep(1 * 1000 * 1000);
+            $el = $this->firstEl('#wrapper');
+            if (empty($el)) {
+                usleep(1 * 1000 * 1000);
+                return;
+            }
+            $animClass = $el->attribute('data-animsition-in-class');
+            $class = $el->attribute('class');
+        } while (strpos($class, $animClass) != FALSE);
     }
 
     public function urlAndWait($url)
@@ -43,15 +55,32 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
         file_put_contents($fileName, $filedata);
     }
 
+    // assert
+    protected function assertFlashMessage($expected, $message = '')
+    {
+        $actual = $this->byId("flashMessage")->text();
+        $this->assertEquals($expected, $actual, $message);
+    }
+    protected function assertPageHeader($expected, $message = '')
+    {
+        $actual = $this->byCssSelector('h1.page-header')->text();
+        $this->assertEquals($expected, $actual, $message);
+    }
+    protected function assertForm($expected, $message = '')
+    {
+        $actual = $this->byCssSelector('h1.page-header')->text();
+        $this->assertEquals($expected, $actual, $message);
+    }
+
     // テスト実施前ログイン
-    public function setLogin()
+    public function login()
     {
         $this->urlAndWait('/login');
-        $this->byName('data[CustomerLogin][email]')->value('150@terrada.co.jp');
-        $this->byName('data[CustomerLogin][password]')->value('happyhappy');
+        $this->byName('data[CustomerLogin][email]')->value($this->loginEmail);
+        $this->byName('data[CustomerLogin][password]')->value($this->loginPassword);
         $this->byXPath("//button[@type='submit']")->click();
     }
-    public function setLogout()
+    public function logout()
     {
         $this->urlAndWait('/login/logout');
     }
@@ -61,25 +90,29 @@ class MinikuraTestCase extends PHPUnit_Extensions_Selenium2TestCase
         return '/'.str_replace($this->getBrowserUrl(), '', $this->url());
     }
 
-    protected function allEl($css)
+    public function allEl($css)
     {
         return $this->elements($this->using('css selector')->value($css));
     }
-    protected function firstEl($css)
+    public function firstEl($css)
     {
-        return $this->byCssSelector($css);
+        try {
+            return $this->byCssSelector($css);
+        } catch (PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            return null;
+        }
     }
-    protected function lastEl($css)
+    public function lastEl($css)
     {
         $els = $this->allEl($css);
         return end($els);
     }
-    protected function selectEl($css)
+    public function selectEl($css)
     {
         $el = $this->firstEl($css);
         return $this->select($el);
     }
-    protected function selectOption($css, $index = null, $tryCount = 1)
+    public function selectOption($css, $index = null, $tryCount = 1)
     {
         $values = [];
         $sl = $this->selectEl($css);
