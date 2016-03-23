@@ -11,6 +11,15 @@ class InquiryController extends MinikuraController
     // ログイン不要なページ
     protected $checkLogined = false;
 
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        // ログイン中は専用フォームへ
+        if ($this->Customer->isLogined()) {
+            return $this->redirect(['controller' => 'ContactUs', 'action' => 'add', 'customer' => false]);
+        }
+    }
+
     /**
      * ルートインデックス.
      */

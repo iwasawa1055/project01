@@ -66,7 +66,7 @@
         </li>
         <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a>
         </li>
-        <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/inquiry/add">お問い合わせ</a>
+        <li><a href="/inquiry/add">お問い合わせ</a>
         </li>
       </ul>
     </div>
