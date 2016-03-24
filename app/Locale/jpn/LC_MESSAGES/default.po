@@ -12,31 +12,73 @@ msgid "empty_session_data"
 msgstr "もう一度実施してください。"
 
 msgid "boxitem_status_10"
-msgstr "ボックス購入依頼中"
+msgstr "キット購入済"
 
 msgid "boxitem_status_20"
-msgstr "ボックス発送準備中"
+msgstr "キット購入済"
 
 msgid "boxitem_status_30"
-msgstr "ボックス発送完了"
+msgstr "キット購入済"
 
 msgid "boxitem_status_40"
-msgstr "預け入れ依頼中"
+msgstr "預け入れ申込済"
 
 msgid "boxitem_status_60"
-msgstr "預け入れ作業中"
+msgstr "預け入れ申込済"
 
 msgid "boxitem_status_70"
 msgstr "預け入れ中"
+
+msgid "boxitem_status_80"
+msgstr "閲覧依頼中"
+
+msgid "boxitem_status_90"
+msgstr "閲覧依頼中"
+
+msgid "boxitem_status_100"
+msgstr "閲覧依頼中"
+
+msgid "boxitem_status_110"
+msgstr "閲覧依頼中"
+
+msgid "boxitem_status_120"
+msgstr "-"
+
+msgid "boxitem_status_130"
+msgstr "オプション作業中"
+
+msgid "boxitem_status_140"
+msgstr "オプション作業中"
+
+msgid "boxitem_status_150"
+msgstr "オプション作業中"
+
+msgid "boxitem_status_155"
+msgstr "オプション作業中"
+
+msgid "boxitem_status_160"
+msgstr "オプション作業中"
+
+msgid "boxitem_status_160"
+msgstr "オプション作業中"
+
+msgid "boxitem_status_170"
+msgstr "-"
 
 msgid "boxitem_status_180"
 msgstr "取り出し依頼中"
 
 msgid "boxitem_status_200"
-msgstr "取り出し作業中"
+msgstr "取り出し依頼中"
 
 msgid "boxitem_status_210"
-msgstr "取り出し済"
+msgstr "取り出し済み"
+
+msgid "boxitem_status_220"
+msgstr "預け入れ依頼中"
+
+msgid "boxitem_status_230"
+msgstr "預け入れ依頼中"
 
 msgid "select_sort_desc"
 msgstr "（降順）"
