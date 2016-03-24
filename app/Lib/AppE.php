@@ -318,32 +318,34 @@ class AppE extends Exception
     	// 	}
     	// }
 
-    	foreach ($receivers[$error_level] as $k => $a) {
-    		foreach ($a as $receiver) {
-    			if ($k === 'To') {
-    				$envs['RCPT TO'] = $receiver;
-    			} else if ($k === 'Cc') {
-    				$envs['RCPT TO'] = $receiver;
-    			} else if ($k === 'Bcc') {
-    				$envs['RCPT TO'] = $receiver;
-    			}
-    			// if (! AppMail::send($envs, $headers, $body)) {
-    			// 	return false;
-    			// }
-    		}
-            $str = '';
-            foreach ($envs as $kk => $vv) {
-                $str .= "${kk}: ${vv}\n";
+        if (array_key_exists($error_level, $receivers)) {
+            foreach ($receivers[$error_level] as $k => $a) {
+                foreach ($a as $receiver) {
+                    if ($k === 'To') {
+                        $envs['RCPT TO'] = $receiver;
+                    } else if ($k === 'Cc') {
+                        $envs['RCPT TO'] = $receiver;
+                    } else if ($k === 'Bcc') {
+                        $envs['RCPT TO'] = $receiver;
+                    }
+                    // if (! AppMail::send($envs, $headers, $body)) {
+                    // 	return false;
+                    // }
+                }
+                $str = '';
+                foreach ($envs as $kk => $vv) {
+                    $str .= "${kk}: ${vv}\n";
+                }
+                foreach ($headers as $kk => $vv) {
+                    $str .= "${kk}: ${vv}\n";
+                }
+                foreach ($headers as $kk => $vv) {
+                    $str .= "${kk}: ${vv}\n";
+                }
+                $str .= $body;
+                CakeLog::write(MAIL_LOG, $str);
             }
-            foreach ($headers as $kk => $vv) {
-                $str .= "${kk}: ${vv}\n";
-            }
-            foreach ($headers as $kk => $vv) {
-                $str .= "${kk}: ${vv}\n";
-            }
-            $str .= $body;
-            CakeLog::write(MAIL_LOG, $str);
-    	}
+        }
     	return;
     }
 

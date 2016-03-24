@@ -2,6 +2,7 @@
 App::uses('AppInternalCritical', 'Lib');
 App::uses('AppExceptionRenderer', 'Lib');
 App::uses('ApiCachedModel', 'Model');
+App::uses('CakeSession', 'Model/Datasource');
 
 /**
  * 例外ハンドラでは、必ず共通例外処理（AppEクラス）を行う様にする
