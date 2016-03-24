@@ -64,6 +64,17 @@ $config['app']['e']['mail'] = [
                 'exception_mail_warning_bcc@example.com',
             ]
         ],
+        'error' => [
+            'To' => [
+                'exception_mail_warning_to@example.com',
+            ],
+            'Cc' => [
+                'exception_mail_warning_cc@example.com',
+            ],
+            'Bcc' => [
+                'exception_mail_warning_bcc@example.com',
+            ]
+        ],
         'critical' => [
             'To' => [
                 'exception_mail_critical_to1@example.com',
