@@ -143,8 +143,8 @@ class OrderController extends MinikuraController
         $this->set('kitList', $kitList);
         $this->set('total', $total);
 
-        // 仮登録ユーザーの場合
-        if ($this->Customer->isEntry()) {
+        // 仮登録ユーザーの場合 or カード登録なし本登録(個人)
+        if ($this->Customer->isEntry() || $this->Customer->isCustomerCreditCardUnregist()) {
             if ($model->validates(['fieldList' => ['mono_num', 'hako_num', 'cleaning_num']])) {
                 CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
                 return $this->render('confirm');

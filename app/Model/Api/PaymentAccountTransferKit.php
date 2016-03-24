@@ -9,6 +9,13 @@ class PaymentAccountTransferKit extends ApiModel
         parent::__construct('PaymentAccountTransferKit', '/kit');
     }
 
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
+        (new InfoBox())->deleteCache();
+    }
+
     public $validate = [
         'mono_num' => [
             'checkNotEmpty' => [

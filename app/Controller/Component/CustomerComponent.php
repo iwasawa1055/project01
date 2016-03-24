@@ -197,9 +197,21 @@ class CustomerComponent extends Component
         }
         return null;
     }
+    public function isCustomerCreditCardUnregist()
+    {
+        # 個人ユーザー、本登録ユーザー、カード登録なし
+        if (!$this->isEntry() && $this->isPrivateCustomer() && !$this->hasCreditCard()) {
+            return true;
+        }
+        return false;
+    }
 
     public function canOrderKit()
     {
+        if ($this->isCustomerCreditCardUnregist()) {
+            # 個人ユーザー、本登録ユーザー、カード登録なし
+            return true;
+        }
         if (!$this->isEntry() &&
             ($this->hasCreditCard() || $this->getCorporatePayment() === ACCOUNT_SITUATION_REGISTRATION)) {
             return true;

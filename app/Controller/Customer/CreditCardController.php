@@ -102,7 +102,7 @@ class CreditCardController extends MinikuraController
                     // 契約情報登録
                     return $this->redirect(['controller' => 'info', 'action' => 'add']);
                 } else {
-                    return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
+                    return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
                 }
             }
         }

@@ -25,7 +25,7 @@ class InfoItem extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct(self::SESSION_CACHE_KEY, 0, 'InfoItem', '/info_item');
+        parent::__construct(self::SESSION_CACHE_KEY, 300, 'InfoItem', '/info_item');
     }
 
     protected function triggerNotUsingCache() {

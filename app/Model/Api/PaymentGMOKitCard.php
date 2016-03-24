@@ -14,6 +14,7 @@ class PaymentGMOKitCard extends ApiModel
     {
         parent::triggerDataChanged();
         (new Announcement())->deleteCache();
+        (new InfoBox())->deleteCache();
     }
 
     public $validate = [
