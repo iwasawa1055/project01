@@ -43,7 +43,7 @@ class CustomerEmail extends ApiModel
              ],
             'isMailAddress' => [
                 'rule' => 'isMailAddress',
-                'message' => ['notBlank', 'email_confirm'],
+                'message' => ['format', 'email_confirm'],
             ],
             'confirmEmail' => [
                 'rule' => 'confirmEmail',
