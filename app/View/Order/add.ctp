@@ -57,7 +57,7 @@
                     </div>
                   </div>
                   <div class="panel-footer">
-                    <p class="help-block">半年間保管料：9,000円</p>
+                    <p class="help-block">半年間保管料：12,000円</p>
                     <p class="help-block">ボックス代金：0円</p>
                   </div>
                 </div>
