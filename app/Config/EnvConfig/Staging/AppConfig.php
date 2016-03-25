@@ -1,8 +1,15 @@
 <?php
-// Manual Configure & Startup Configure
-$config['site.url'] = 'http://production .' . $_SERVER['HTTP_HOST'];
-$config['site.top_page'] = 'https://b-www.minikura.com';
+/**
+ * 共通設定
+ */
+$config['site.name'] = 'Minikura.com';
+// 本サイトのURL（パスワードリセットメールの本文で使用）
+$config['site.url'] = 'https://' . $_SERVER['HTTP_HOST'];
+// 未ログイン時TOPメニューのリンク先
+$config['site.top_page'] = 'https://' . $_SERVER['HTTP_HOST'];
+// 静的コンテンツ用ドメイン
 $config['site.static_content_url'] = 'https://b-www.minikura.com';
+// 環境文字列（development, staging, production）
 $config['site.env_name'] = 'staging';
 
 /**
