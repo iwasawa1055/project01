@@ -76,7 +76,7 @@
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-primary btn-lg btn-block" href="/order/add?back=true">戻る</a>
             </span>
-        <?php if ($customer->isEntry() || $customer->isCustomerCreditCardUnregist()) : ?>
+        <?php if ($customer->isEntry()) : ?>
           <?php if (empty($default_payment)) : ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-danger btn-lg btn-block" href="/customer/credit_card/add">会員登録して注文する</a>
@@ -86,6 +86,10 @@
               <a class="btn btn-danger btn-lg btn-block" href="/customer/info/add">会員登録して注文する</a>
             </span>
           <?php endif; ?>
+        <?php elseif ($customer->isCustomerCreditCardUnregist()) : ?>
+            <span class="col-lg-6 col-md-6 col-xs-12">
+              <a class="btn btn-danger btn-lg btn-block" href="/customer/credit_card/add">クレジットカード登録して注文する</a>
+            </span>
         <?php else: ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <button type="submit" class="btn btn-danger btn-lg btn-block">注文を確定する</button>
