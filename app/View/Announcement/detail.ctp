@@ -50,7 +50,7 @@
               <a class="btn btn-danger btn-lg btn-block" href="/contact_us/<?php echo $announcement['announcement_id']; ?>/add">この内容について問い合わせる</a>
             </span>
             <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT): ?></h3>
-            <?php echo $this->Form->create('Box', ['url' => '/announcement/'.$announcement['announcement_id'].'/receit', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php echo $this->Form->create('Box', ['url' => '/announcement/'.$announcement['announcement_id'].'/receipt', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <span class="col-lg-12 col-md-12 col-xs-12">
                 <button type="submit" class="btn btn-danger btn-lg btn-block">領収証発行</button>
             </span>

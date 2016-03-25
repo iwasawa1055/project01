@@ -43,14 +43,14 @@ class AnnouncementController extends MinikuraController
      * 領収証ダウンロード
      * @return [type] [description]
      */
-    public function receit()
+    public function receipt()
     {
         $id = $this->params['id'];
         if ($this->request->is('post')) {
-            $receit = new Receipt();
+            $receipt = new Receipt();
             $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
             if (!empty($data)) {
-                $res = $receit->apiGet([
+                $res = $receipt->apiGet([
                     'announcement_id' => $id,
                     'category_id' => $data['category_id']
                 ]);
