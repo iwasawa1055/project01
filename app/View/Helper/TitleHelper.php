@@ -15,7 +15,7 @@ class TitleHelper extends AppHelper {
             'index' => 'メールアドレス変更',
         ],
         'info' => [
-            'index' => '契約情報',
+            'index' => 'お客さま情報変更',
             'customer_add' => 'お客さま情報登録',
         ],
         'password' => [
@@ -39,7 +39,7 @@ class TitleHelper extends AppHelper {
             'index' => 'お問い合わせ',
         ],
         'contract' => [
-            'index' => '契約情報',
+            'index' => '会員情報',
         ],
         'InboundBox' => [
             'index' => 'ボックス預け入れ',

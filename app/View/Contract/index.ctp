@@ -1,6 +1,6 @@
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-list-alt"></i> 契約情報</h1>
+        <h1 class="page-header"><i class="fa fa-list-alt"></i> 会員情報</h1>
       </div>
     </div>
     <div class="row">
@@ -9,7 +9,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <h2>ご契約者情報</h2>
+                <h2>お客さま情報</h2>
               <?php if (!empty($data)) : ?>
               <?php if ($customer->isPrivateCustomer()) : ?>
               <?php // 個人 ?>
