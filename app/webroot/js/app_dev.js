@@ -10,6 +10,12 @@ $(function() {
   $('form').submit(function() {
     $('button[type=submit]', this).attr('disabled', 'true');
   });
+
+  $('select.select-add-address').change(function() {
+    if ($(this).val() == '-99') {
+      $('form.select-add-address-form').submit();
+    }
+  });
 });
 
 function checkAgreeBeforeSubmit() {

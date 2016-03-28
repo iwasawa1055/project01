@@ -12,7 +12,7 @@ if (!empty($validErrors)) {
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
@@ -79,7 +79,7 @@ if (!empty($validErrors)) {
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の住所</label>
-              <?php echo $this->Form->select("Inbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php echo $this->Form->select("Inbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">

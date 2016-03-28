@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('OrderKit', ['url' => ['controller' => 'order', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('OrderKit', ['url' => ['controller' => 'order', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
           <div class="panel-body">
             <div class="row col-lg-12 none-title">
               <div class="col-lg-4 col-md-12">
@@ -135,7 +135,7 @@
             <?php endif; ?>
             <div class="form-group col-lg-12">
               <label>お届け先</label>
-              <?php echo $this->Form->select('OrderKit.address_id', $this->Order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+              <?php echo $this->Form->select('OrderKit.address_id', $this->Order->setAddress($address), ['class' => 'form-control select-add-address', 'empty' => '選択してください', 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.address_id', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">

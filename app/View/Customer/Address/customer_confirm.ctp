@@ -15,7 +15,7 @@ if ($action === 'customer_edit') {
   <div class="col-lg-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => $action, 'step' => 'complete']]); ?>
+        <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => $action, 'step' => 'complete', '?' => ['return' => Hash::get($this->request->query, 'return')]]]); ?>
         <div class="row">
           <div class="col-lg-12">
             <h2>お届け先<?php echo $actionName; ?></h2>

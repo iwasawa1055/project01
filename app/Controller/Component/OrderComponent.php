@@ -51,16 +51,18 @@ class SetAccountTransfer extends OrderSet
     }
     public function setAddress($data, $address)
     {
-        $data['lastname'] = $address['lastname'];
-        $data['lastname_kana'] = $address['lastname_kana'];
-        $data['firstname'] = $address['firstname'];
-        $data['firstname_kana'] = $address['firstname_kana'];
-        $data['tel1'] = $address['tel1'];
-        $data['postal'] = $address['postal'];
-        $data['pref'] = $address['pref'];
-        $data['address1'] = $address['address1'];
-        $data['address2'] = $address['address2'];
-        $data['address3'] = $address['address3'];
+        if (!empty($address)) {
+            $data['lastname'] = $address['lastname'];
+            $data['lastname_kana'] = $address['lastname_kana'];
+            $data['firstname'] = $address['firstname'];
+            $data['firstname_kana'] = $address['firstname_kana'];
+            $data['tel1'] = $address['tel1'];
+            $data['postal'] = $address['postal'];
+            $data['pref'] = $address['pref'];
+            $data['address1'] = $address['address1'];
+            $data['address2'] = $address['address2'];
+            $data['address3'] = $address['address3'];
+        }
 
         $model = new PaymentAccountTransferKit();
         $model->set([$model->getModelName() => $data]);
@@ -77,10 +79,12 @@ class SetCreditCard extends OrderSet
     }
     public function setAddress($data, $address)
     {
-        $data['name'] = "{$address['lastname']}　{$address['firstname']}";
-        $data['tel1'] = $address['tel1'];
-        $data['postal'] = $address['postal'];
-        $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
+        if (!empty($address)) {
+            $data['name'] = "{$address['lastname']}　{$address['firstname']}";
+            $data['tel1'] = $address['tel1'];
+            $data['postal'] = $address['postal'];
+            $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
+        }
 
         $model = new PaymentGMOKitCard();
         $model->set([$model->getModelName() => $data]);
