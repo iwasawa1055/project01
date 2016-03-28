@@ -103,10 +103,10 @@ const KIT_OPTION = [
 ];
 
 const KIT_NAME = [
-    KIT_CD_HAKO => 'minikuraHAKO',
+    KIT_CD_HAKO => 'minikuraHAKO（レギュラーボックス）',
     KIT_CD_HAKO_APPAREL => 'minikuraHAKO（アパレルボックス）',
     KIT_CD_HAKO_BOOK => 'minikuraHAKO（ブックボックス）',
-    KIT_CD_MONO => 'minikuraMONO',
+    KIT_CD_MONO => 'minikuraMONO（レギュラーボックス）',
     KIT_CD_MONO_APPAREL => 'minikuraMONO（アパレルボックス）',
     KIT_CD_MONO_BOOK => 'minikuraMONO（ブックボックス）',
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
