@@ -41,11 +41,11 @@ if (!empty($validErrors)) {
                         <div class="row">
                           <?php $kitCd = $box['kit_cd'];
                           if (array_key_exists($kitCd, KIT_OPTION)) : ?>
-                              <div class="col-lg-6 col-md-6 col-sm-12">
+                              <div class="col-lg-5 col-md-5 col-sm-12">
                                 <?php echo $this->Form->text("Inbound.box_list.${i}.title", ['class' => 'form-control', 'error' => false, 'placeholder' => 'ボックスタイトルを入力してください']); ?>
                                 <?php echo $this->Form->error("Inbound.box_list.${i}.title", null, ['wrap' => 'p']) ?>
                               </div>
-                              <div class="col-lg-3 col-md-3 col-sm-12">
+                              <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php echo $this->Form->select("Inbound.box_list.${i}.option", KIT_OPTION[$kitCd], ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                               </div>
                           <?php else: ?>
@@ -54,7 +54,7 @@ if (!empty($validErrors)) {
                                 <?php echo $this->Form->error("Inbound.box_list.${i}.title", null, ['wrap' => 'p']) ?>
                               </div>
                           <?php endif; ?>
-                          <div class="col-lg-3 col-md-3 col-xs-12 box_select_checkbox">
+                          <div class="col-lg-3 col-md-3 col-xs-12 inbound_box_select_checkbox">
                               <?php echo $this->Form->checkbox("Inbound.box_list.${i}.checkbox"); ?>
                               <button class="btn btn-danger btn-md btn-block btn-detail inbound-btn"></button>
                           </div>
