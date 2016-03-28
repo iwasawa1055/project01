@@ -10,7 +10,7 @@ if ($action === 'customer_edit') {
 ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-truck"></i>住所・お届け先<?php echo $actionName; ?></h1>
+    <h1 class="page-header"><i class="fa fa-truck"></i>お届け先<?php echo $actionName; ?></h1>
   </div>
 </div>
 <div class="row">

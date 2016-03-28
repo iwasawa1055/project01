@@ -36,7 +36,7 @@
       <li><a href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
     <?php endif; ?>
     <?php if (!empty($customer) && !$customer->isEntry()) : ?>
-      <li><a href="/customer/address/"><i class="fa fa-truck fa-fw"></i> 住所・お届け先変更</a> </li>
+      <li><a href="/customer/address/"><i class="fa fa-truck fa-fw"></i> お届け先変更</a> </li>
     <?php endif; ?>
       <li><a href="/customer/password/edit"><i class="fa fa-lock fa-fw"></i> パスワード変更</a> </li>
     <?php if (!empty($customer) && !$customer->isEntry()) : ?>

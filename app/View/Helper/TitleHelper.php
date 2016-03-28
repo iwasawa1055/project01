@@ -5,7 +5,7 @@ class TitleHelper extends AppHelper {
     private $titles = [
         // customer
         'address' => [
-            'index' => '住所・お届け先・変更',
+            'index' => 'お届け先変更',
         ],
         'credit_card' => [
             'index' => 'クレジットカード変更',
