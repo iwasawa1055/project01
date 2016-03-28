@@ -218,7 +218,13 @@ class OutboundController extends MinikuraController
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read(self::MODEL_NAME . 'FORM');
+            $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+            // 前回追加選択は最後のお届け先を選択
+            if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+                $data[self::MODEL_NAME]['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
+                $data[self::MODEL_NAME]['datetime_cd'] = '';
+            }
+            $this->request->data = $data;
             $addressId = $this->request->data['Outbound']['address_id'];
             $address = $this->Address->find($addressId);
             $postal = $address['postal'];
@@ -247,12 +253,21 @@ class OutboundController extends MinikuraController
         if ($this->request->is('post')) {
             $data = $this->request->data;
 
+            // 届け先追加を選択の場合は追加画面へ遷移
+            if ($data['Outbound']['address_id'] == AddressComponent::CREATE_NEW_ADDRESS_ID) {
+                CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
+                return $this->redirect([
+                    'controller' => 'address', 'action' => 'add', 'customer' => true,
+                    '?' => ['return' => 'outbound']
+                ]);
+            }
+
             // product
             $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
             // お届け先
             $addressId = $data['Outbound']['address_id'];
             $address = $this->Address->find($addressId);
-            $postal = $address['postal'];
+            $postal = Hash::get($address, 'postal');
 
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 

@@ -103,6 +103,7 @@ class OrderController extends MinikuraController
             // 前回追加選択は最後のお届け先を選択
             if ($data['address_id'] === AddressComponent::CREATE_NEW_ADDRESS_ID) {
                 $data['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
+                $data['datetime_cd'] = '';
             }
             $this->request->data[self::MODEL_NAME] = $data;
             if (!empty($data['address_id'])) {

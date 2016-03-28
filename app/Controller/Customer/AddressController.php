@@ -89,7 +89,13 @@ class AddressController extends MinikuraController
                         'controller' => 'InboundBox', 'action' => 'add', 'customer' => false,
                         '?' => ['back' => 'true']
                     ]);
+                } else if ($returnTo === 'outbound') {
+                    return $this->redirect([
+                        'controller' => 'outbound', 'action' => 'index', 'customer' => false,
+                        '?' => ['back' => 'true']
+                    ]);
                 }
+
 
                 return $this->render('customer_complete');
             }
