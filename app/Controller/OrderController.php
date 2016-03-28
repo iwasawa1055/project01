@@ -138,7 +138,11 @@ class OrderController extends MinikuraController
         // キット
         $dataKeyNum = [
             KIT_CD_MONO => 'mono_num',
+            KIT_CD_MONO_APPAREL => 'mono_appa_num',
+            KIT_CD_MONO_BOOK => 'mono_book_num',
             KIT_CD_HAKO => 'hako_num',
+            KIT_CD_HAKO_APPAREL => 'hako_appa_num',
+            KIT_CD_HAKO_BOOK => 'hako_book_num',
             KIT_CD_CLEANING_PACK => 'cleaning_num',
         ];
 

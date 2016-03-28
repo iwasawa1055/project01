@@ -6,9 +6,21 @@
 class HashSorter
 {
     public $sortKeyList = [];
+    private $cmpKitCd = [];
     public function __construct($sortKeyList)
     {
         $this->sortKeyList = $sortKeyList;
+        $this->cmpKitCd = [
+          KIT_CD_MONO,
+          KIT_CD_MONO_APPAREL,
+          KIT_CD_MONO_BOOK,
+          KIT_CD_HAKO,
+          KIT_CD_HAKO_APPAREL,
+          KIT_CD_HAKO_BOOK,
+          KIT_CD_WINE_HAKO,
+          KIT_CD_WINE_MONO,
+          KIT_CD_CLEANING_PACK,
+        ];
     }
     public function cmp($a, $b)
     {
@@ -19,6 +31,10 @@ class HashSorter
             $bValue = Hash::get($b, $key);
             if ($aValue !== $bValue) {
                 if (!empty($aValue) && !empty($bValue)) {
+                    if ($key === 'kit_cd') {
+                        $aValue = array_search($aValue, $this->cmpKitCd);
+                        $bValue = array_search($bValue, $this->cmpKitCd);
+                    }
                     $result = strcmp($aValue, $bValue);
                 } else {
                     $result = empty($aValue) ? 1 : -1;
