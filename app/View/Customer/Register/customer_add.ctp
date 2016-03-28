@@ -28,6 +28,12 @@
                 <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
+              <?php if (empty($code)) : ?>
+              <div class="form-group">
+                <?php echo $this->Form->input('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'紹介コード', 'error' => false]); ?>
+                <?php echo $this->Form->error('CustomerEntry.alliance_cd', null, ['wrap' => 'p']) ?>
+              </div>
+              <?php endif; ?>
               <div class="form-group">
                 <label>お知らせメール</label>
                 <?php echo $this->Form->select('CustomerEntry.newsletter', CUSTOMER_NEWSLETTER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
