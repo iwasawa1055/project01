@@ -7,6 +7,7 @@ if ($action === 'customer_edit') {
 } else if ($action === 'customer_delete') {
     $actionName = '削除';
 }
+$return = Hash::get($this->request->query, 'return');
 ?>
 <div class="row">
   <div class="col-lg-12">
@@ -17,7 +18,7 @@ if ($action === 'customer_edit') {
   <div class="col-lg-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => $action, 'step' => 'confirm', '?' => ['return' => Hash::get($this->request->query, 'return')]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+        <?php echo $this->Form->create('CustomerAddress', ['url' => ['controller' => 'address', 'action' => $action, 'step' => 'confirm', '?' => ['return' => $return]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div class="row">
           <div class="col-lg-12">
             <h2>お届け先<?php echo $actionName; ?></h2>
@@ -65,7 +66,7 @@ if ($action === 'customer_edit') {
           </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
                 <?php if ($action === 'customer_add'): ?>
-                <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add"> クリア </a>
+                <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add<?php echo (empty($return)) ? '' : '?return=' . $return; ?>"> クリア </a>
                 <?php else: ?>
                 <?php $url = '/customer/address/edit?address_id=' . $address_id;  ?>
                 <a class="btn btn-primary btn-lg btn-block" href="<?php echo $url ?>"> クリア </a>

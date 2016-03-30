@@ -82,7 +82,7 @@ class InboundBoxController extends MinikuraController
         }
 
         // 届け先追加を選択の場合は追加画面へ遷移
-        if ($data['address_id'] == AddressComponent::CREATE_NEW_ADDRESS_ID) {
+        if (Hash::get($data, 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
             CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
             return $this->redirect([
                 'controller' => 'address', 'action' => 'add', 'customer' => true,

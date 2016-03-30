@@ -127,7 +127,7 @@ class OrderController extends MinikuraController
         $paymentModelName = $model->getModelName();
 
         // 届け先追加を選択の場合は追加画面へ遷移
-        if ($model->toArray()['address_id'] == AddressComponent::CREATE_NEW_ADDRESS_ID) {
+        if (Hash::get($model->toArray(), 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
             CakeSession::write(self::MODEL_NAME, $model->toArray());
             return $this->redirect([
                 'controller' => 'address', 'action' => 'add', 'customer' => true,

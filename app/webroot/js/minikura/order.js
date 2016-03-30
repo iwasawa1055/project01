@@ -8,7 +8,8 @@ $(function() {
     var elem_address = $('#OrderKitAddressId');
     var elem_datetime = $('#OrderKitDatetimeCd');
 
-    if (!elem_address.val()) {
+    // 未選択また「追加」を選択
+    if (!elem_address.val() || elem_address.val() == -99) {
       elem_datetime.empty();
       return;
     }

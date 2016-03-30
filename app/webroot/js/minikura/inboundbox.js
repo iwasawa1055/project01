@@ -1,3 +1,5 @@
+var DELIVERY_ID_PICKUP = '6';
+var DELIVERY_ID_MANUAL = '7';
 $(function() {
 
     $('#InboundDeliveryCarrier').change(function() {
@@ -9,9 +11,10 @@ $(function() {
 
 function review() {
     var elem_deca = $('#InboundDeliveryCarrier');
-    if (elem_deca.val().indexOf('6') === -1) {
+    if (elem_deca.val().indexOf(DELIVERY_ID_PICKUP) === -1) {
         $('.inbound_pickup_only').hide();
     } else {
+        // 集荷の場合
         $('.inbound_pickup_only').show();
     }
 }
@@ -27,6 +30,11 @@ function getDatetime() {
     $('option:first', elem_time).prop('selected', true);
     elem_time.attr("disabled", "disabled");
     elem_time.empty();
+
+    // 未選択また集荷でない場合
+    if (!elem_deca.val() || elem_deca.val().indexOf(DELIVERY_ID_PICKUP) === -1) {
+      return;
+    }
 
     $.post('/inbound/box/getInboundDatetime', {
             Inbound: {delivery_carrier: elem_deca.val()}
