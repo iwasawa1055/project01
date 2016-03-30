@@ -40,6 +40,7 @@ class OrderHelper extends Helper
             }
         }
 
+        $data[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を追加する';
         return $data;
     }
 

@@ -65,10 +65,10 @@
           <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを取り出す</a>
         </span>
       <?php else : ?>
-        <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+        <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
         <div class="form-group col-lg-12">
           <label>お届け先住所</label>
-          <?php echo $this->Form->select("Outbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+          <?php echo $this->Form->select("Outbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false]); ?>
           <?php echo $this->Form->error("Outbound.address_id", null, ['wrap' => 'p']) ?>
         </div>
         <div class="form-group col-lg-12">

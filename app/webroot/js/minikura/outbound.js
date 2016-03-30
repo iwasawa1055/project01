@@ -7,7 +7,8 @@ function getDatetime() {
   var elem_address = $('#OutboundAddressId');
   var elem_datetime = $('#OutboundDatetimeCd');
 
-  if (!elem_address.val()) {
+  // 未選択また「追加」を選択
+  if (!elem_address.val() || elem_address.val() == -99) {
     elem_datetime.empty();
     return;
   }

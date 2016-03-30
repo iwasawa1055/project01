@@ -96,17 +96,17 @@ const BOXITEM_STATUS_OUTBOUND_DONE = '210';
 
 // 入庫時選択オプション
 const KIT_OPTION = [
-    KIT_CD_MONO => ['MH' => 'あんしんオプション'],
-    KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション'],
-    KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション'],
-    KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション'],
+    KIT_CD_MONO => ['MH' => 'あんしんオプション（162円/月）'],
+    KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
+    KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
+    KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
 ];
 
 const KIT_NAME = [
-    KIT_CD_HAKO => 'minikuraHAKO',
+    KIT_CD_HAKO => 'minikuraHAKO（レギュラーボックス）',
     KIT_CD_HAKO_APPAREL => 'minikuraHAKO（アパレルボックス）',
     KIT_CD_HAKO_BOOK => 'minikuraHAKO（ブックボックス）',
-    KIT_CD_MONO => 'minikuraMONO',
+    KIT_CD_MONO => 'minikuraMONO（レギュラーボックス）',
     KIT_CD_MONO_APPAREL => 'minikuraMONO（アパレルボックス）',
     KIT_CD_MONO_BOOK => 'minikuraMONO（ブックボックス）',
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',

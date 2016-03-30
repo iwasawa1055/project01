@@ -8,57 +8,109 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('OrderKit', ['url' => ['controller' => 'order', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('OrderKit', ['url' => ['controller' => 'order', 'action' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
           <div class="panel-body">
             <div class="row col-lg-12 none-title">
-              <div class="col-lg-4 col-md-12">
+              <div class="col-lg-12 col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-heading mono-box">
                     <h3>minikuraMONO</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <label>オーダー数</label>
-                      <?php echo $this->Form->select('OrderKit.mono_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
                     <p class="help-block">月額保管料：250円/月</p>
                     <p class="help-block">ボックス代金：250円</p>
                   </div>
+                  <div class="panel-body">
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>レギュラーボックス</label>
+                            <?php echo $this->Form->select('OrderKit.mono_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>アパレルボックス</label>
+                            <?php echo $this->Form->select('OrderKit.mono_appa_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>ブックボックス</label>
+                            <?php echo $this->Form->select('OrderKit.mono_book_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-4 col-md-12">
+              <div class="col-lg-12 col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-heading hako-box">
                     <h3>minikuraHAKO</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <label>オーダー数</label>
-                      <?php echo $this->Form->select('OrderKit.hako_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
                     <p class="help-block">月額保管料：200円/月</p>
                     <p class="help-block">ボックス代金：200円</p>
                   </div>
+                  <div class="panel-body">
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>レギュラーボックス</label>
+                            <?php echo $this->Form->select('OrderKit.hako_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>アパレルボックス</label>
+                            <?php echo $this->Form->select('OrderKit.hako_appa_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>ブックボックス</label>
+                            <?php echo $this->Form->select('OrderKit.hako_book_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-4 col-md-12">
+              <div class="col-lg-12 col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-heading cleaning-box">
                     <h3>クリーニングパック</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <label>オーダー数</label>
-                      <?php echo $this->Form->select('OrderKit.cleaning_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
                     <p class="help-block">半年間保管料：12,000円</p>
                     <p class="help-block">ボックス代金：0円</p>
+                  </div>
+                  <div class="panel-body">
+                    <div class="col-lg-4 col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label>オーダー数</label>
+                            <?php echo $this->Form->select('OrderKit.cleaning_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -135,7 +187,7 @@
             <?php endif; ?>
             <div class="form-group col-lg-12">
               <label>お届け先</label>
-              <?php echo $this->Form->select('OrderKit.address_id', $this->Order->setAddress($address), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+              <?php echo $this->Form->select('OrderKit.address_id', $this->Order->setAddress($address), ['class' => 'form-control select-add-address', 'empty' => '選択してください', 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.address_id', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">

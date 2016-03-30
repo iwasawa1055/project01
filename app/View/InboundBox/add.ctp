@@ -12,7 +12,7 @@ if (!empty($validErrors)) {
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
@@ -41,11 +41,11 @@ if (!empty($validErrors)) {
                         <div class="row">
                           <?php $kitCd = $box['kit_cd'];
                           if (array_key_exists($kitCd, KIT_OPTION)) : ?>
-                              <div class="col-lg-6 col-md-6 col-sm-12">
+                              <div class="col-lg-5 col-md-5 col-sm-12">
                                 <?php echo $this->Form->text("Inbound.box_list.${i}.title", ['class' => 'form-control', 'error' => false, 'placeholder' => 'ボックスタイトルを入力してください']); ?>
                                 <?php echo $this->Form->error("Inbound.box_list.${i}.title", null, ['wrap' => 'p']) ?>
                               </div>
-                              <div class="col-lg-3 col-md-3 col-sm-12">
+                              <div class="col-lg-4 col-md-4 col-sm-12">
                                 <?php echo $this->Form->select("Inbound.box_list.${i}.option", KIT_OPTION[$kitCd], ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                               </div>
                           <?php else: ?>
@@ -54,7 +54,7 @@ if (!empty($validErrors)) {
                                 <?php echo $this->Form->error("Inbound.box_list.${i}.title", null, ['wrap' => 'p']) ?>
                               </div>
                           <?php endif; ?>
-                          <div class="col-lg-3 col-md-3 col-xs-12 box_select_checkbox">
+                          <div class="col-lg-3 col-md-3 col-xs-12 inbound_box_select_checkbox">
                               <?php echo $this->Form->checkbox("Inbound.box_list.${i}.checkbox"); ?>
                               <button class="btn btn-danger btn-md btn-block btn-detail inbound-btn"></button>
                           </div>
@@ -79,7 +79,7 @@ if (!empty($validErrors)) {
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の住所</label>
-              <?php echo $this->Form->select("Inbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php echo $this->Form->select("Inbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">

@@ -28,7 +28,35 @@ class PaymentAccountTransferKit extends ApiModel
                 'message' => ['format', 'kit_mono_num'],
             ],
         ],
+        'mono_appa_num' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => ['format', 'kit_mono_num'],
+            ],
+        ],
+        'mono_book_num' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => ['format', 'kit_mono_num'],
+            ],
+        ],
         'hako_num' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => ['format', 'kit_hako_num'],
+            ],
+        ],
+        'hako_appa_num' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => ['format', 'kit_hako_num'],
+            ],
+        ],
+        'hako_book_num' => [
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
@@ -178,7 +206,11 @@ class PaymentAccountTransferKit extends ApiModel
     public function checkNotEmpty()
     {
         if (!empty($this->data[$this->model_name]['mono_num']) ||
+            !empty($this->data[$this->model_name]['mono_appa_num']) ||
+            !empty($this->data[$this->model_name]['mono_book_num']) ||
             !empty($this->data[$this->model_name]['hako_num']) ||
+            !empty($this->data[$this->model_name]['hako_appa_num']) ||
+            !empty($this->data[$this->model_name]['hako_book_num']) ||
             !empty($this->data[$this->model_name]['cleaning_num'])) {
             return true;
         } else {

@@ -7,6 +7,7 @@ App::uses('CorporateInfo', 'Model');
 class AddressComponent extends Component
 {
     const CUSTOMER_INFO_ADDRESS_ID = '-10';
+    const CREATE_NEW_ADDRESS_ID = '-99';
 
     private $list = null;
 
@@ -33,6 +34,16 @@ class AddressComponent extends Component
 
         return $this->list;
     }
+    /**
+     * 最終要素を返却
+     * @return [type] [description]
+     */
+    public function last() {
+        if (is_array($this->list) && 1 < count($this->list)) {
+            return end($this->list);
+        }
+        return [];
+    }
     public function find($id)
     {
         foreach ($this->list as $a) {
@@ -41,7 +52,7 @@ class AddressComponent extends Component
             }
         }
 
-        return;
+        return [];
     }
     public function merge($id, $data)
     {

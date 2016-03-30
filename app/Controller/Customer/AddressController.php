@@ -32,7 +32,8 @@ class AddressController extends MinikuraController
     }
 
 
-    private function setRequestDataFromSession() {
+    private function setRequestDataFromSession()
+    {
         $step = Hash::get($this->request->params, 'step');
         $back = Hash::get($this->request->query, 'back');
 
@@ -40,12 +41,12 @@ class AddressController extends MinikuraController
             $data = CakeSession::read(self::MODEL_NAME);
             $this->request->data[self::MODEL_NAME] = $data;
             CakeSession::delete(self::MODEL_NAME);
-        } else if ($this->action === 'customer_edit' && empty($step)) {
+        } elseif ($this->action === 'customer_edit' && empty($step)) {
             // address_idパラメータから復元
             $addressId = Hash::get($this->request->query, 'address_id');
             $data = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
             $this->request->data[self::MODEL_NAME] = $data;
-        } else if ($this->action === 'customer_delete' && $step === 'confirm') {
+        } elseif ($this->action === 'customer_delete' && $step === 'confirm') {
             // address_idパラメータから復元
             $addressId = Hash::get($this->request->data, 'address_id');
             $data = $this->CustomerAddress->apiGetResultsFind([], ['address_id' => $addressId]);
@@ -60,6 +61,7 @@ class AddressController extends MinikuraController
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
+        $returnTo = Hash::get($this->request->query, 'return');
 
         if ($this->request->is('get')) {
             return $this->render('customer_add');
@@ -76,6 +78,25 @@ class AddressController extends MinikuraController
             } elseif ($step === 'complete') {
                 // create
                 $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
+
+                if ($returnTo === 'order') {
+                    return $this->redirect([
+                        'controller' => 'order', 'action' => 'add', 'customer' => false,
+                        '?' => ['back' => 'true']
+                    ]);
+                } else if ($returnTo === 'inboundbox') {
+                    return $this->redirect([
+                        'controller' => 'InboundBox', 'action' => 'add', 'customer' => false,
+                        '?' => ['back' => 'true']
+                    ]);
+                } else if ($returnTo === 'outbound') {
+                    return $this->redirect([
+                        'controller' => 'outbound', 'action' => 'index', 'customer' => false,
+                        '?' => ['back' => 'true']
+                    ]);
+                }
+
+
                 return $this->render('customer_complete');
             }
         }

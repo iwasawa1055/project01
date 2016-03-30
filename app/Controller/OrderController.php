@@ -62,21 +62,30 @@ class OrderController extends MinikuraController
         return json_encode(compact('status', 'result'));
     }
 
-    private function getDatetimeDeliveryKit($address_id) {
+    private function getDatetimeDeliveryKit($address_id)
+    {
         $address = $this->Address->find($address_id);
-        $data = $this->DatetimeDeliveryKit->apiGet([
-          'postal' => $address['postal'],
-        ]);
-        return $data->results;
+        if (!empty($address) && !empty($address['postal'])) {
+            $res = $this->DatetimeDeliveryKit->apiGet([
+                'postal' => $address['postal'],
+            ]);
+            if ($res->isSuccess()) {
+                return $res->results;
+            }
+        }
+        return [];
     }
 
-    private function getDatetime($address_id, $datetime_cd) {
+    private function getDatetime($address_id, $datetime_cd)
+    {
+        $data = [];
         $result = $this->getDatetimeDeliveryKit($address_id);
         foreach ($result as $datetime) {
             if ($datetime['datetime_cd'] === $datetime_cd) {
-                return $datetime;
+                $data = $datetime;
             }
         }
+        return $data;
     }
 
     /**
@@ -88,8 +97,13 @@ class OrderController extends MinikuraController
         $res_datetime = [];
         if ($isBack) {
             $data = CakeSession::read(self::MODEL_NAME);
-            if (!array_key_exists('address_id', $data)){
+            if (!array_key_exists('address_id', $data)) {
                 $data['address_id'] = '';
+            }
+            // 前回追加選択は最後のお届け先を選択
+            if ($data['address_id'] === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+                $data['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
+                $data['datetime_cd'] = '';
             }
             $this->request->data[self::MODEL_NAME] = $data;
             if (!empty($data['address_id'])) {
@@ -105,13 +119,30 @@ class OrderController extends MinikuraController
      */
     public function confirm()
     {
-        $model = $this->Order->model($this->request->data[self::MODEL_NAME]);
+        $data = Hash::get($this->request->data, self::MODEL_NAME);
+        if (empty($data)) {
+            return $this->render('add');
+        }
+        $model = $this->Order->model($data);
         $paymentModelName = $model->getModelName();
+
+        // 届け先追加を選択の場合は追加画面へ遷移
+        if (Hash::get($model->toArray(), 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+            CakeSession::write(self::MODEL_NAME, $model->toArray());
+            return $this->redirect([
+                'controller' => 'address', 'action' => 'add', 'customer' => true,
+                '?' => ['return' => 'order']
+            ]);
+        }
 
         // キット
         $dataKeyNum = [
             KIT_CD_MONO => 'mono_num',
+            KIT_CD_MONO_APPAREL => 'mono_appa_num',
+            KIT_CD_MONO_BOOK => 'mono_book_num',
             KIT_CD_HAKO => 'hako_num',
+            KIT_CD_HAKO_APPAREL => 'hako_appa_num',
+            KIT_CD_HAKO_BOOK => 'hako_book_num',
             KIT_CD_CLEANING_PACK => 'cleaning_num',
         ];
 
@@ -230,7 +261,6 @@ class OrderController extends MinikuraController
             // 料金
             $this->set('kitList', unserialize($data['view_data_kitList']));
             $this->set('total', unserialize($data['view_data_total']));
-
         } else {
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
