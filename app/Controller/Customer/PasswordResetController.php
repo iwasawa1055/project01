@@ -100,26 +100,9 @@ class PasswordResetController extends MinikuraController
     /**
      *
      */
-    public function customer_confirm()
-    {
-        // メールアドレスを上書き
-        $data = CakeSession::read(self::MODEL_NAME);
-        $email = $data['CustomerPasswordReset']['email'];
-        $this->request->data['CustomerPasswordReset']['email'] = $email;
-        $this->CustomerPasswordReset->set($this->request->data);
-
-        if ($this->CustomerPasswordReset->validates()) {
-            CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
-        } else {
-            return $this->render('customer_add');
-        }
-    }
-
-    /**
-     *
-     */
     public function customer_complete()
     {
+        // メールアドレスを上書き
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
@@ -127,7 +110,10 @@ class PasswordResetController extends MinikuraController
             return $this->redirect(['action' => 'add']);
         }
 
-        $this->CustomerPasswordReset->set($data);
+        $email = $data['CustomerPasswordReset']['email'];
+        $this->request->data['CustomerPasswordReset']['email'] = $email;
+        $this->CustomerPasswordReset->set($this->request->data);
+
         if ($this->CustomerPasswordReset->validates()) {
             // api
             $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->toArray());

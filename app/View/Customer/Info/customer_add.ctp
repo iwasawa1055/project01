@@ -1,4 +1,4 @@
-<?php $this->Html->script('http://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/customer_info', ['block' => 'scriptMinikura']); ?>
 <?php if (!empty($validErrors)) { $this->validationErrors['CustomerInfo'] = $validErrors; } ?>
