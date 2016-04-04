@@ -16,7 +16,7 @@ class Announcement extends ApiCachedModel
 
     public $validate = [
         'announcement_id' => [
-            'required' => false,
+            'required' => true,
         ],
     ];
 }

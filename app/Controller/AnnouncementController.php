@@ -2,6 +2,7 @@
 
 App::uses('MinikuraController', 'Controller');
 App::uses('Receipt', 'Model');
+App::uses('Billing', 'Model');
 
 class AnnouncementController extends MinikuraController
 {
@@ -36,6 +37,17 @@ class AnnouncementController extends MinikuraController
         if (!empty($data)) {
             $this->set('announcement', $data);
             $this->Announcement->apiPatch(['announcement_id' => $id]);
+
+            if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_BILLING) {
+                $billing = new Billing();
+                $res = $billing->apiGet([
+                    'announcement_id' => $id,
+                    'category_id' => $data['category_id']
+                ]);
+                if ($res->isSuccess()) {
+                    $this->set('billing', $res->results);
+                }
+            }
         }
     }
 

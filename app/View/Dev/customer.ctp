@@ -75,6 +75,8 @@ dd {
 <dt>債務ランク</dt>
     <dd><a href="/dev/user_debt?payment=1">債務解除</a></dd>
     <dd><a href="/dev/user_debt?payment=2">債務状態</a></dd>
+<dt>請求情報</dt>
+    <dd><a href="/dev/billing">強制作成</a></dd>
 </dl>
 </div>
 

@@ -41,6 +41,43 @@
                         </a>
                     </div>
                 <?php endif; ?>
+                <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_BILLING && 0 < count($billing)) : ?></h3>
+                    <div class="row body">
+                      <h3 class="notice">ご利用金額（<?php echo $billing[0]['period']; ?>) <?php echo $billing[0]['amount']; ?></h3>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>請求明細</th>
+                              <th>金額</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($billing as $data) :?>
+                              <tr>
+                                <td><?php echo $data['detail']; ?></td>
+                                <td><?php echo $data['detail_amount']; ?></td>
+                              </tr>
+                            <?php endforeach; ?>
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <td>小計</td>
+                              <td><?php echo $billing[0]['amount']; ?></td>
+                            </tr>
+                            <tr>
+                              <td>消費税</td>
+                              <td>-</td>
+                            </tr>
+                            <tr>
+                              <td>合計</td>
+                              <td><?php echo $billing[0]['amount']; ?></td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                <?php endif; ?>
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
