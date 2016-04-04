@@ -16,7 +16,6 @@ class CustomerEntry extends ApiModel
         $responses = $this->request('/entry', $this->data[$this->model_name], 'POST');
         // api error
         if (empty($responses->error_message)) {
-        } else {
             $responses->error_message = 'ユーザー登録できませんでした。';
         }
 
@@ -61,6 +60,10 @@ class CustomerEntry extends ApiModel
             'isLoginPassword' => [
                 'rule' => 'isLoginPassword',
                 'message' => ['format', 'password_confirm'],
+            ],
+            'confirmPassword' => [
+                'rule' => 'confirmPassword',
+                'message' => ['confirm', 'password_confirm'],
             ],
         ],
         'newsletter' => [
