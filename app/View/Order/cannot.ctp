@@ -7,7 +7,7 @@
   <div class="col-lg-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        <?php echo __('cannot_order_kit') ?>
+        <p class="flash-message">大変申し訳ございません。お客様の預金口座の登録が確認できておりません。お手数をお掛けしますが、<a href="/contact_us/add">各種情報変更</a>からお問い合わせください。</p>
       </div>
     </div>
   </div>
