@@ -135,7 +135,7 @@ class OrderController extends MinikuraController
             ]);
         }
 
-        // キット
+        // キットPOSTデータキー
         $dataKeyNum = [
             KIT_CD_MONO => 'mono_num',
             KIT_CD_MONO_APPAREL => 'mono_appa_num',
@@ -146,32 +146,48 @@ class OrderController extends MinikuraController
             KIT_CD_CLEANING_PACK => 'cleaning_num',
         ];
 
-        $kitList = [];
-        foreach ($dataKeyNum as $kitCd => $dataKey) {
-            $kitList[$kitCd] = ['num' => 0];
-            $num = Hash::get($this->request->data, self::MODEL_NAME . '.' . $dataKey);
-            if (!empty($num)) {
-                $kitList[$kitCd]['num'] = $num;
-                $kitList[$kitCd]['kit'] = $kitCd . ':' . $num;
-            }
-        }
-        // 料金
+        // 料金（サービス（商品）ごと）集計
         $kitPrice = new CustomerKitPrice();
         $total = ['num' => 0, 'price' => 0];
-        foreach ($dataKeyNum as $kitCd => $dataKey) {
-            $kitList[$kitCd]['price'] = 0;
-            if (!empty($kitList[$kitCd]['kit'])) {
+        $productKitList = [
+            PRODUCT_CD_MONO => [
+                'kitList' => [KIT_CD_MONO => 0, KIT_CD_MONO_APPAREL => 0, KIT_CD_MONO_BOOK => 0],
+                'subtotal' => ['num' => 0, 'price' => 0]
+            ],
+            PRODUCT_CD_HAKO => [
+                'kitList' => [KIT_CD_HAKO => 0, KIT_CD_HAKO_APPAREL => 0, KIT_CD_HAKO_BOOK => 0],
+                'subtotal' => ['num' => 0, 'price' => 0]
+            ],
+            PRODUCT_CD_CLEANING_PACK => [
+                'kitList' => [KIT_CD_CLEANING_PACK => 0],
+                'subtotal' => ['num' => 0, 'price' => 0]
+            ],
+        ];
+        foreach ($productKitList as $productCd => &$product) {
+            $params = [];
+            // 個数集計
+            foreach ($product['kitList'] as $kitCd => $d) {
+                $num = Hash::get($this->request->data, self::MODEL_NAME . '.' . $dataKeyNum[$kitCd]);
+                if (!empty($num)) {
+                    $product['kitList'][$kitCd] = $num;
+                    $product['subtotal']['num'] += $num;
+                    $total['num'] += $num;
+                    $params[] = $kitCd . ':' . $num;
+                }
+            }
+            // 金額取得
+            if (!empty($params)) {
                 $r = $kitPrice->apiGet([
-                    'kit' => $kitList[$kitCd]['kit']
+                    'kit' => implode(',', $params)
                 ]);
                 if ($r->isSuccess()) {
-                    $kitList[$kitCd]['price'] = $r->results[0]['total_price'] * 1;
-                    $total['num'] += $kitList[$kitCd]['num'] ;
-                    $total['price'] += $kitList[$kitCd]['price'];
+                    $price = $r->results[0]['total_price'] * 1;
+                    $product['subtotal']['price'] = $price;
+                    $total['price'] += $price;
                 }
             }
         }
-        $this->set('kitList', $kitList);
+        $this->set('productKitList', $productKitList);
         $this->set('total', $total);
 
         // 仮登録ユーザーの場合 or カード登録なし本登録(個人)
