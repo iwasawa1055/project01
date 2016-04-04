@@ -14,10 +14,6 @@ class CustomerEntry extends ApiModel
     {
         $this->data[$this->model_name]['oem_key'] = $this->oem_key;
         $responses = $this->request('/entry', $this->data[$this->model_name], 'POST');
-        // api error
-        if (empty($responses->error_message)) {
-            $responses->error_message = 'ユーザー登録できませんでした。';
-        }
 
         return $responses;
     }

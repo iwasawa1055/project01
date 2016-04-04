@@ -20,11 +20,6 @@ class CustomerRegistInfo extends ApiModel
     {
         $this->data[$this->model_name]['oem_key'] = $this->oem_key;
         $responses = $this->request('/customer', $this->data[$this->model_name], 'POST');
-        // api error
-        if (empty($responses->error_message)) {
-        } else {
-            $responses->error_message = 'ユーザー登録できませんでした。';
-        }
 
         return $responses;
     }

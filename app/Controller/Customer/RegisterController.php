@@ -54,7 +54,7 @@ class RegisterController extends MinikuraController
                 $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
                 $this->Customer->getInfo();
 
-                if (empty($code)) {
+                if (empty($this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd'])) {
                     return $this->redirect('/');
                 } else {
                     // 紹介コードがある場合はキット購入へ遷移
@@ -96,6 +96,10 @@ class RegisterController extends MinikuraController
                 $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'] = $code;
             }
 
+            if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
+                unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
+            }
+
             if ($this->CustomerRegistInfo->validates()) {
                 // 部屋番号
                 $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['address3'] = $data['address3'] . $data['room'];
@@ -125,11 +129,11 @@ class RegisterController extends MinikuraController
                 $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
                 $this->Customer->getInfo();
                 
-                if (empty($code)) {
-                    return $this->redirect('/');
-                } else {
+                if (isset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
                     // 紹介コードがある場合はキット購入へ遷移
                     return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
+                } else {
+                    return $this->redirect('/');
                 }
             } else {
                 $this->request->data[self::MODEL_NAME_REGIST]['password'] = '';
