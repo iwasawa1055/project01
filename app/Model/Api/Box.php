@@ -30,8 +30,8 @@ class Box extends ApiModel
                 'message' => ['notBlank', 'box_name'],
             ],
             'maxLength' => [
-                'rule' => ['maxLength', 400],
-                'message' => ['maxLength', 'box_name', 400],
+                'rule' => ['maxLength', 15],
+                'message' => ['maxLength', 'box_name', 15],
             ],
         ],
         'box_note' => [
