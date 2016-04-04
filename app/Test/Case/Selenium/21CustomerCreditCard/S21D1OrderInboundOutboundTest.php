@@ -41,12 +41,16 @@ class S21D1OrderInboundOutboundTest extends MinikuraTestCase
     public function createOrder()
     {
         $expected = [
-            'hako_num' => '2',
             'mono_num' => '3',
+            'mono_appa_num' => '3',
+            'mono_book_num' => '3',
+            'hako_num' => '2',
+            'hako_appa_num' => '3',
+            'hako_book_num' => '3',
             'cleaning_num' => '4',
             'security_cd' => '123',
-            'address_id' => null,
-            'datetime_cd' => null,
+            'address_id' => 1,
+            'datetime_cd' => 1,
         ];
         $this->order->accessAdd();
         $this->order->inputAddFrom($expected);
@@ -78,8 +82,8 @@ class S21D1OrderInboundOutboundTest extends MinikuraTestCase
         $this->outboundBox->clickBoxSubmit();
 
         $expected = [
-            'address_id' => null,
-            'datetime_cd' => null,
+            'address_id' => 1,
+            'datetime_cd' => 1,
         ];
         $this->outboundBox->inputAddFrom($expected);
         $this->outboundBox->clickAddSubmit();
