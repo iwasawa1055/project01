@@ -101,7 +101,7 @@
               <?php if (empty($code)) : ?>
               <div class="form-group col-lg-12">
                 <label>紹介コード</label>
-                <?php echo $this->Form->input('CustomerRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コード', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerRegistInfo.alliance_cd', null, ['wrap' => 'p']) ?>
               </div>
               <?php endif; ?>
