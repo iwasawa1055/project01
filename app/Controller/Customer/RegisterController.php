@@ -11,6 +11,18 @@ class RegisterController extends MinikuraController
     protected $checkLogined = false;
 
     /**
+     * アクセス拒否.
+     */
+    protected function isAccessDeny()
+    {
+        if ($this->Customer->isLogined()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      *
      */
     public function customer_add()
