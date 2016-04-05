@@ -30,8 +30,8 @@ class Item extends ApiModel
                 'message' => ['notBlank', 'item_name'],
             ],
             'maxLength' => [
-                'rule' => ['maxLength', 15],
-                'message' => ['maxLength', 'item_name', 15],
+                'rule' => ['maxLength', 400],
+                'message' => ['maxLength', 'item_name', 400],
             ],
         ],
         'item_note' => [
