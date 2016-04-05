@@ -56,8 +56,8 @@ class InboundBoxController extends MinikuraController
     public function add()
     {
         $isBack = Hash::get($this->request->query, 'back');
-        if ($isBack) {
-            $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+        $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+        if ($isBack && !empty($data)) {
             // 前回追加選択は最後のお届け先を選択
             if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
                 $data[self::MODEL_NAME]['address_id'] = Hash::get($this->Address->last(), 'address_id', '');

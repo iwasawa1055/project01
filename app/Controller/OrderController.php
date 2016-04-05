@@ -95,8 +95,8 @@ class OrderController extends MinikuraController
     {
         $isBack = Hash::get($this->request->query, 'back');
         $res_datetime = [];
-        if ($isBack) {
-            $data = CakeSession::read(self::MODEL_NAME);
+        $data = CakeSession::read(self::MODEL_NAME);
+        if ($isBack && !empty($data)) {
             if (!array_key_exists('address_id', $data)) {
                 $data['address_id'] = '';
             }
@@ -164,7 +164,7 @@ class OrderController extends MinikuraController
             ],
         ];
         foreach ($productKitList as $productCd => &$product) {
-            $params = [];
+            $product['pramaKit'] = [];
             // 個数集計
             foreach ($product['kitList'] as $kitCd => $d) {
                 $num = Hash::get($this->request->data, self::MODEL_NAME . '.' . $dataKeyNum[$kitCd]);
@@ -172,13 +172,13 @@ class OrderController extends MinikuraController
                     $product['kitList'][$kitCd] = $num;
                     $product['subtotal']['num'] += $num;
                     $total['num'] += $num;
-                    $params[] = $kitCd . ':' . $num;
+                    $product['pramaKit'][] = $kitCd . ':' . $num;
                 }
             }
             // 金額取得
-            if (!empty($params)) {
+            if (!empty($product['pramaKit'])) {
                 $r = $kitPrice->apiGet([
-                    'kit' => implode(',', $params)
+                    'kit' => implode(',', $product['pramaKit'])
                 ]);
                 if ($r->isSuccess()) {
                     $price = $r->results[0]['total_price'] * 1;
@@ -200,15 +200,13 @@ class OrderController extends MinikuraController
                 return $this->render('add');
             }
         }
-
         // 本登録ユーザーの場合
         $address_id = $this->request->data[self::MODEL_NAME]['address_id'];
         $address = $this->Address->find($address_id);
 
         // お届け先情報
         $model = $this->Order->setAddress($model->data[$paymentModelName], $address);
-
-        $model->data[$paymentModelName]['kit'] = implode(Hash::extract($kitList, '{n}.kit'), ',');
+        $model->data[$paymentModelName]['kit'] = implode(Hash::extract($productKitList, '{n}.pramaKit.{n}'), ',');
 
         if ($model->validates()) {
             if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
@@ -222,7 +220,7 @@ class OrderController extends MinikuraController
             $datetime = $this->getDatetime($address_id, $this->request->data[self::MODEL_NAME]['datetime_cd']);
             $this->set('datetime', $datetime['text']);
 
-            $model->data[$paymentModelName]['view_data_kitList'] = serialize($kitList);
+            $model->data[$paymentModelName]['view_data_productKitList'] = serialize($productKitList);
             $model->data[$paymentModelName]['view_data_total'] = serialize($total);
             CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
         } else {
@@ -275,7 +273,7 @@ class OrderController extends MinikuraController
             $this->set('datetime', $datetime['text']);
 
             // 料金
-            $this->set('kitList', unserialize($data['view_data_kitList']));
+            $this->set('productKitList', unserialize($data['view_data_productKitList']));
             $this->set('total', unserialize($data['view_data_total']));
         } else {
             $this->Flash->set(__('empty_session_data'));

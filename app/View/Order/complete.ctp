@@ -10,19 +10,31 @@
             <div class="col-lg-12 col-xs-12 order">
               <p class="notice">下記の内容で注文を承りました。</p>
               <div class="form-group col-lg-12">
-                <?php foreach ($kitList as $kitCd => $kit): ?>
-                <div class="row list">
-                  <div class="col-xs-12 col-md-8 col-lg-8">
-                    <?php echo KIT_NAME[$kitCd]; ?>
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo number_format($kit['num']); ?> 箱
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo number_format($kit['price']); ?> 円
-                  </div>
-                </div>
-                <?php endforeach; ?>
+                  <?php foreach ($productKitList as $productCd => $product): ?>
+                    <?php foreach ($product['kitList'] as $kitCd => $num): ?>
+                      <div class="row list">
+                        <div class="col-xs-12 col-md-8 col-lg-8">
+                          <?php echo KIT_NAME[$kitCd]; ?>
+                        </div>
+                        <div class="col-xs-12 col-md-2 col-lg-2">
+                          <?php echo number_format($num); ?> 箱
+                        </div>
+                        <div class="col-xs-12 col-md-2 col-lg-2">
+                        </div>
+                      </div>
+                    <?php endforeach; ?>
+                    <div class="row list">
+                      <div class="col-xs-12 col-md-8 col-lg-8">
+                        <?php echo PRODUCT_NAME[$productCd]; ?> 小計
+                      </div>
+                      <div class="col-xs-12 col-md-2 col-lg-2">
+                        <?php echo number_format($product['subtotal']['num']); ?> 箱
+                      </div>
+                      <div class="col-xs-12 col-md-2 col-lg-2">
+                        <?php echo number_format($product['subtotal']['price']); ?> 円
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
                 <div class="row list">
                   <div class="col-xs-12 col-md-8 col-lg-8">
                     合計
