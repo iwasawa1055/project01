@@ -30,7 +30,7 @@
               </div>
               <?php if (empty($code)) : ?>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'紹介コード', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.alliance_cd', null, ['wrap' => 'p']) ?>
               </div>
               <?php endif; ?>

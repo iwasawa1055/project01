@@ -30,10 +30,10 @@
                 <div class="panel panel-default">
                   <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
                     <div class="row">
-                      <div class="col-lg-10 col-md-10 col-sm-12">
-                        <h3><?php echo h($formBox['title']); ?></h3>
+                      <div class="col-lg-9 col-md-9 col-sm-12">
+                        <h3 class="boxitem-name"><?php echo h($formBox['title']); ?></h3>
                       </div>
-                      <div class="col-lg-2 col-md-2 col-sm-12">
+                      <div class="col-lg-3 col-md-3 col-sm-12">
                         <p class="photo-control"><?php echo $kitName; ?></p>
                       </div>
                     </div>
@@ -87,7 +87,7 @@
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
-                  発火性・引火性のある危険物、液体・生物・その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/terms" target="_blank">利用規約</a>
+                  発火性・引火性のある危険物、液体・生物・その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement" target="_blank">利用規約</a>
                   で定められたものはお預かりできません。 </label>
               </p>
             </div>

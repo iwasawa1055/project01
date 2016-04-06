@@ -25,7 +25,7 @@
                               <img src="<?php echo Hash::get($item, 'image_first.image_url'); ?>" alt="<?php echo $item['item_id']; ?>" width="100px" height="100px" class="item"></a>
                           <?php endif; ?>
                         </div>
-                        <h3><?php echo h($item['item_name']); ?></h3>
+                        <h3 class="boxitem-name"><?php echo h($item['item_name']); ?></h3>
                         <div class="box-list-caption">
                           <!-- <span>カテゴリ</span>スポーツ用品 -->
                         </div>

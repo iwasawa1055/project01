@@ -71,7 +71,7 @@
       </ul>
     </div>
     <div class="col-lg-12 col-md-12 col-xs-12">
-      <p>Copyright © TERRADA WAREHOUSE COMPANY. All Rights Reserved.</p>
+      <p>© 2012 Warehouse TERRADA</p>
     </div>
   </div>
 </div>

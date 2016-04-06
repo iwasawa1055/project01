@@ -37,7 +37,7 @@ $config['api.user_agent'] = 'minikura';
 Configure::write('debug', 2);
 // php display
 ini_set('display_errors', '1');
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL);
 
 // Log
 // 不要なログはDrop

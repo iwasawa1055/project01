@@ -47,6 +47,16 @@ p.error-message::before {
   font-size: 1.2em;
   content: '\f06a\0020\0020';
 }
+p.error-message a,
+.panel-body p.flash-message a {
+  color: #333;
+  text-decoration: underline;
+}
+p.error-message a:hover,
+.panel-body p.flash-message a {
+  color: #666;
+  text-decoration: underline;
+}
 
 .alliance {
   width: 100%;
@@ -57,4 +67,14 @@ p.error-message::before {
 
 .placeholder {
   color: #aaa;
+}
+
+.boxitem-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.boxitem-name-space {
+  padding: 0;
+  margin: 0;
 }

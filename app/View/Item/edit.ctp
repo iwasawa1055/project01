@@ -27,7 +27,10 @@
                               <?php echo $this->Form->input('Item.item_name', ['class' => "form-control", 'maxlength' => 400, 'placeholder'=> __('item_name'), 'error' => false]); ?>
                             </h3>
                               <?php echo $this->Form->error('Item.item_name', null, ['wrap' => 'p']) ?>
-                            <span class="col-xs-12 col-lg-12"><a class="btn btn-warning btn-md btn-block btn-detail disabled">預け入れ中</a>
+                            <span class="col-xs-12 col-lg-12">
+                              <a class="btn btn-warning btn-md btn-block btn-detail disabled">
+                                <?php echo __('boxitem_status_' . $item['item_status']); ?>
+                              </a>
                             </span>
                           </div>
                           <div class="col-lg-12 col-md-12 col-sm-12 item-detail-text">
@@ -39,7 +42,7 @@
                       <?php echo $this->element('List/item_footer', ['item' => $item, 'box' => $box]); ?>
                     </div>
                     <!--loop end-->
-                    
+
                   </div>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">

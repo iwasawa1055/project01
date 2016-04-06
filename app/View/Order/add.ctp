@@ -189,6 +189,20 @@
               <label>お届け先</label>
               <?php echo $this->Form->select('OrderKit.address_id', $this->Order->setAddress($address), ['class' => 'form-control select-add-address', 'empty' => '選択してください', 'error' => false]); ?>
               <?php echo $this->Form->error('OrderKit.address_id', null, ['wrap' => 'p']) ?>
+              <?php if (!$this->Form->isFieldError('OrderKit.address_id')) : ?>
+              <?php echo $this->Form->error('OrderKit.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.name', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.address', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php endif; ?>
             </div>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>

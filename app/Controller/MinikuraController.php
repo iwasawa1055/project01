@@ -40,7 +40,7 @@ class MinikuraController extends AppController
                 if ($this->Customer->hasCreditCard()) {
                     return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
                 } else {
-                    $this->Flash->set(__('paymentng_no_credit_card'));
+                    $this->Flash->paymentng_no_credit_card('');
                     return $this->redirect(['controller' => 'login', 'action' => 'logout']);
                 }
             }

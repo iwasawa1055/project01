@@ -1,10 +1,4 @@
 
-msgid "paymentng_no_credit_card"
-msgstr "お客様のご事情により、ログインすることができません。お手数をお掛けしますが、詳細はお問い合わせください。"
-
-msgid "cannot_order_kit"
-msgstr "大変申し訳ございません。お客様の預金口座の登録が確認できておりません。お手数をお掛けしますが、詳細はお問い合わせください。"
-
 msgid "address"
 msgstr "お届け先"
 

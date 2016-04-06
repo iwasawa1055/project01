@@ -10,9 +10,14 @@
 
 <div class="container">
 <dl>
-<dt>紹介コードリンク</dt>
+<dt>仮登録</dt>
+    <dd><a href="/customer/register/add" target="_blank">none</a></dd>
     <dd><a href="/customer/register/add?code=yahoo" target="_blank">yahoo</a></dd>
     <dd><a href="/customer/register/add?code=daito" target="_blank">daito</a></dd>
+</dl>
+<dt>本登録</dt>
+    <dd><a href="/customer/register/add_info" target="_blank">none</a></dd>
+    <dd><a href="/customer/register/add_info?code=daito" target="_blank">daito</a></dd>
 </dl>
 </div>
 </body>

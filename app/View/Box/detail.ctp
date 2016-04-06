@@ -18,7 +18,7 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12">
-                      <h3><?php echo h($box['box_name']); ?></h3>
+                      <h3 class="boxitem-name"><?php echo h($box['box_name']); ?></h3>
                       <div class="box-list-caption">
                         <!-- <span>写真撮影</span>あり -->
                       </div>

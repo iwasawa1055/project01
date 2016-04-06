@@ -81,6 +81,18 @@ if (!empty($validErrors)) {
               <label>集荷の住所</label>
               <?php echo $this->Form->select("Inbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
+              <?php if (!$this->Form->isFieldError('Inbound.address_id')) : ?>
+              <?php echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php endif; ?>
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の日程</label>

@@ -13,8 +13,20 @@ class OrderHelper extends SeleniumHelper
         if (array_key_exists('mono_num', $data)) {
             $this->test->selectOption('#OrderKitMonoNum', $data['mono_num']);
         }
+        if (array_key_exists('mono_appa_num', $data)) {
+            $this->test->selectOption('#OrderKitMonoAppaNum', $data['mono_appa_num']);
+        }
+        if (array_key_exists('mono_book_num', $data)) {
+            $this->test->selectOption('#OrderKitMonoBookNum', $data['mono_book_num']);
+        }
         if (array_key_exists('hako_num', $data)) {
             $this->test->selectOption('#OrderKitHakoNum', $data['hako_num']);
+        }
+        if (array_key_exists('hako_appa_num', $data)) {
+            $this->test->selectOption('#OrderKitHakoAppaNum', $data['hako_appa_num']);
+        }
+        if (array_key_exists('hako_book_num', $data)) {
+            $this->test->selectOption('#OrderKitHakoBookNum', $data['hako_book_num']);
         }
         if (array_key_exists('cleaning_num', $data)) {
             $this->test->selectOption('#OrderKitCleaningNum', $data['cleaning_num']);
@@ -33,13 +45,16 @@ class OrderHelper extends SeleniumHelper
     public function getAddFrom()
     {
         $data = [
-            'lastname' => $this->test->firstEl('#InquiryLastname')->value(),
-            'lastname_kana' => $this->test->firstEl('#InquiryLastnameKana')->value(),
-            'firstname' => $this->test->firstEl('#InquiryFirstname')->value(),
-            'firstname_kana' => $this->test->firstEl('#InquiryFirstnameKana')->value(),
-            'email' => $this->test->firstEl('#InquiryEmail')->value(),
-            'division' => $this->test->selectEl('#InquiryDivision')->selectedLabel(),
-            'text' => $this->test->firstEl('#InquiryText')->value(),
+            'mono_num' => $this->test->firstEl('#OrderKitMonoNum')->value(),
+            'mono_appa_num' => $this->test->firstEl('#OrderKitMonoAppaNum')->value(),
+            'mono_book_num' => $this->test->firstEl('#OrderKitMonoBookNum')->value(),
+            'hako_num' => $this->test->firstEl('#OrderKitHakoNum')->value(),
+            'hako_appa_num' => $this->test->firstEl('#OrderKitHakoAppaNum')->value(),
+            'hako_book_num' => $this->test->firstEl('#OrderKitHakoBookNum')->value(),
+            'cleaning_num' => $this->test->firstEl('#OrderKitCleaningNum')->value(),
+            'security_cd' => $this->test->firstEl('#OrderKitSecurityCd')->value(),
+            'address_id' => $this->test->selectEl('#OrderKitAddressId')->value(),
+            'datetime_cd' => $this->test->firstEl('#OrderKitDatetimeCd')->value(),
         ];
         return $data;
     }

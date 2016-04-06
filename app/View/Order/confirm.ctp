@@ -10,18 +10,30 @@
           <div class="panel-body">
             <div class="col-lg-12 col-xs-12 order none-title none-float">
               <div class="form-group col-lg-12">
-                <?php foreach ($kitList as $kitCd => $kit): ?>
-                <div class="row list">
-                  <div class="col-xs-12 col-md-8 col-lg-8">
-                    <?php echo KIT_NAME[$kitCd]; ?>
+                <?php foreach ($productKitList as $productCd => $product): ?>
+                  <?php foreach ($product['kitList'] as $kitCd => $num): ?>
+                    <div class="row list">
+                      <div class="col-xs-12 col-md-8 col-lg-8">
+                        <?php echo KIT_NAME[$kitCd]; ?>
+                      </div>
+                      <div class="col-xs-12 col-md-2 col-lg-2">
+                        <?php echo number_format($num); ?> 箱
+                      </div>
+                      <div class="col-xs-12 col-md-2 col-lg-2">
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
+                  <div class="row list">
+                    <div class="col-xs-12 col-md-8 col-lg-8">
+                      <?php echo PRODUCT_NAME[$productCd]; ?> 小計
+                    </div>
+                    <div class="col-xs-12 col-md-2 col-lg-2">
+                      <?php echo number_format($product['subtotal']['num']); ?> 箱
+                    </div>
+                    <div class="col-xs-12 col-md-2 col-lg-2">
+                      <?php echo number_format($product['subtotal']['price']); ?> 円
+                    </div>
                   </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo number_format($kit['num']); ?> 箱
-                  </div>
-                  <div class="col-xs-12 col-md-2 col-lg-2">
-                    <?php echo number_format($kit['price']); ?> 円
-                  </div>
-                </div>
                 <?php endforeach; ?>
                 <div class="row list">
                   <div class="col-xs-12 col-md-8 col-lg-8">
@@ -62,7 +74,7 @@
                   <p>ご購入いただいたキットは、弊社の保管サービス専用の梱包資材になります。専用の梱包キット以外でのサービスのご利用はできません。</p>
                   <p>お預け入れの際は、画面上部の「預ける」より別途お申し込みください。</p>
                   <p>月額保管料はお荷物が弊社に到着した翌月より発生いたします。</p>
-                  <p><a href="<?php echo Configure::read('site.static_content_url'); ?>/terms" target="_blank">利用規約</a>
+                  <p><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement" target="_blank">利用規約</a>
                     をご確認ください。</p>
                 </div>
                 <div class="panel-footer">

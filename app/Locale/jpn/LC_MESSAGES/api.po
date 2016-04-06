@@ -200,6 +200,9 @@ msgstr "IPアドレスが不正"
 msgid "400 Parameter Unknown"
 msgstr "不明パラメーター"
 
+msgid "400 Parameter Invalid - alliance_cd"
+msgstr "紹介コードが正しくありません。"
+
 msgid "402 Payment Required - user"
 msgstr "ユーザー未入金により現在使用不可"
 
