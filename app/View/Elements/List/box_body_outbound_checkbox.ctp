@@ -9,7 +9,7 @@ if (empty($class)) {
 <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
   <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12">
-      <h3>
+      <h3 class="boxitem-name">
         <a href="<?php echo $url; ?>"><?php echo h($box['box_name']); ?></a>
       </h3>
     </div>

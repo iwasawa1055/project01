@@ -68,3 +68,13 @@ p.error-message a:hover,
 .placeholder {
   color: #aaa;
 }
+
+.boxitem-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.boxitem-name-space {
+  padding: 0;
+  margin: 0;
+}

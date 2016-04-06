@@ -16,7 +16,7 @@ if (empty($class)) {
       </a>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
-      <h3><a href="<?php echo $url; ?>"><?php echo h($item['item_name']); ?></a>
+      <h3 class="boxitem-name"><a href="<?php echo $url; ?>"><?php echo h($item['item_name']); ?></a>
       </h3>
     </div>
     <?php if (Hash::get($item, 'outbound_list_deny', $default)) : ?>

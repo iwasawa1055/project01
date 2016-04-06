@@ -10,13 +10,12 @@
         <?php endif; ?>
       </a>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <h3>
+    <div class="col-lg-10 col-md-10 col-sm-12">
+      <h3 class="boxitem-name">
         <a href="<?php echo $url; ?>"><?php echo h($item['item_name']); ?></a>
       </h3>
     </div>
-    <div class="col-lg-4 col-md-4 col-xs-12">
-    </div>
+    <!-- <div class="col-lg-4 col-md-4 col-xs-12"></div> -->
   </div>
   <?php echo $this->Form->error("item_id.${item['item_id']}", null, ['wrap' => 'div']) ?>
 </div>
