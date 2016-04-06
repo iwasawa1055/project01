@@ -74,7 +74,7 @@
                   <p>ご購入いただいたキットは、弊社の保管サービス専用の梱包資材になります。専用の梱包キット以外でのサービスのご利用はできません。</p>
                   <p>お預け入れの際は、画面上部の「預ける」より別途お申し込みください。</p>
                   <p>月額保管料はお荷物が弊社に到着した翌月より発生いたします。</p>
-                  <p><a href="<?php echo Configure::read('site.static_content_url'); ?>/terms" target="_blank">利用規約</a>
+                  <p><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement" target="_blank">利用規約</a>
                     をご確認ください。</p>
                 </div>
                 <div class="panel-footer">
