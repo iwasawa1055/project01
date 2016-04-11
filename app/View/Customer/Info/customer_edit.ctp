@@ -17,7 +17,7 @@
                 <h2>お客さま情報変更</h2>
                 <p class="form-control-static col-lg-12">変更されるお客さまの情報をご入力してください。</p>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.postal', ['class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.postal', ['class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力すると以下の住所が自動で入力されます）', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.postal', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">

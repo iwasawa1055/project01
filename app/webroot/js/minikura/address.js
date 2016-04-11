@@ -1,6 +1,10 @@
 $(function() {
     $('.search_address_postal').blur(function() {
         var postal = $(this).val();
+        // format
+        postal = postal.replace(/^(\d{3})(\d{4})$/, "$1-$2");
+        $(this).val(postal);
+        // clear
         $('.address_pref').val('');
         $('.address_address1').val('');
         $('.address_address2').val('');

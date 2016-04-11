@@ -21,7 +21,7 @@
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group col-lg-12">
                 <label>ご住所</label>
-                <?php echo $this->Form->input('CustomerRegistInfo.postal', ['class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力していただくと以下の入力がスムーズに行なえます）', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerRegistInfo.postal', ['class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力すると以下の住所が自動で入力されます）', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerRegistInfo.postal', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group col-lg-12">

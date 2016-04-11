@@ -197,7 +197,7 @@ msgid "format"
 msgstr "%sの形式が正しくありません"
 
 msgid "format_format"
-msgstr "%sは%s形式が正しくありません"
+msgstr "%sの形式が正しくありません（%s）"
 
 msgid "format_address"
 msgstr "お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。"
