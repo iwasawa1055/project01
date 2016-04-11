@@ -52,7 +52,7 @@
               </div>
             </div>
 
-            <?php if ($box['product_cd'] === PRODUCT_CD_MONO || $box['product_cd'] === PRODUCT_CD_CLEANING_PACK): ?>
+            <?php if ($box['product_cd'] === PRODUCT_CD_MONO || $box['product_cd'] === PRODUCT_CD_CLEANING_PACK || $box['product_cd'] === PRODUCT_CD_SHOES_PACK): ?>
             <div class="col-lg-12">
               <h3>ボックスの内容</h3>
               <ul class="tile">

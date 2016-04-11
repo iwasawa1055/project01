@@ -11,7 +11,7 @@ class InfoBox extends ApiCachedModel
 
     const DEFAULTS_SORT_KEY = [
         'kit_cd' => true,
-        'product_name' => true,
+        'product_cd' => true,
         'box_id' => true,
         'box_name' => true,
         'box_status' => true,
@@ -78,6 +78,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_MONO];
         } elseif ($product === 'cleaning') {
             $productCd = [PRODUCT_CD_CLEANING_PACK];
+        } elseif ($product === 'shoes') {
+            $productCd = [PRODUCT_CD_SHOES_PACK];
         }
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
