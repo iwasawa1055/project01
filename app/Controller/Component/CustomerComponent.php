@@ -116,6 +116,8 @@ class CustomerComponent extends Component
         if ($this->isLogined()) {
             if ($this->isPrivateCustomer()) {
                 $model = new CustomerInfoV3();
+            } else {
+                $model = new CorporateInfo();
             }
         }
         if (!empty($model)) {

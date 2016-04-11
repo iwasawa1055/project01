@@ -22,10 +22,7 @@ class InfoController extends MinikuraController
             // 個人(仮登録)：変更不可
             return true;
         } elseif (!$this->Customer->isEntry() && $this->action === 'customer_add') {
-            // 個人(本登録)：登録不可
-            return true;
-        } elseif (!$this->Customer->isPrivateCustomer()) {
-            // v2.0 法人：アクセス不可
+            // 本登録：登録不可
             return true;
         }
         return false;
@@ -49,10 +46,12 @@ class InfoController extends MinikuraController
             } else {
                 $data = $res->results[0];
                 $this->request->data[self::MODEL_NAME] = $data;
-                $ymd = explode('-', $data['birth']);
-                $this->request->data[self::MODEL_NAME]['birth_year'] = $ymd[0];
-                $this->request->data[self::MODEL_NAME]['birth_month'] = $ymd[1];
-                $this->request->data[self::MODEL_NAME]['birth_day'] = $ymd[2];
+                if ($this->Customer->isPrivateCustomer()) {
+                    $ymd = explode('-', $data['birth']);
+                    $this->request->data[self::MODEL_NAME]['birth_year'] = $ymd[0];
+                    $this->request->data[self::MODEL_NAME]['birth_month'] = $ymd[1];
+                    $this->request->data[self::MODEL_NAME]['birth_day'] = $ymd[2];
+                }
             }
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create 仮登録情報をセット
@@ -118,11 +117,13 @@ class InfoController extends MinikuraController
         } elseif ($this->request->is('post')) {
             // validates
             $data = $this->request->data[self::MODEL_NAME];
-            $birth = [];
-            $birth[0] = $data['birth_year'];
-            $birth[1] = $data['birth_month'];
-            $birth[2] = $data['birth_day'];
-            $data['birth'] = implode('-', $birth);
+            if ($this->Customer->isPrivateCustomer()) {
+                $birth = [];
+                $birth[0] = $data['birth_year'];
+                $birth[1] = $data['birth_month'];
+                $birth[2] = $data['birth_day'];
+                $data['birth'] = implode('-', $birth);
+            }
             $model = $this->Customer->getInfoPatchModel($data);
 
             if (!$model->validates()) {
