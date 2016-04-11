@@ -29,6 +29,11 @@ const CUSTOMER_NEWSLETTER = [
 const PAYMENT_METHOD_CREDITCARD = 0; // クレジットカード
 const PAYMENT_METHOD_ACCOUNTTRANSFER = 1; // 口座振替
 
+const PAYMENT_METHOD = [
+    PAYMENT_METHOD_CREDITCARD => 'コーポレートカード',
+    PAYMENT_METHOD_ACCOUNTTRANSFER => '口座振替',
+];
+
 // 支払い口座登録状況
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';

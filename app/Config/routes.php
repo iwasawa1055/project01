@@ -12,6 +12,9 @@
     Router::connect('/paymentng/:controller/:action', ['paymentng' => true]);
     Router::connect('/paymentng/:controller/:action/:step', ['paymentng' => true]);
 
+    // corporate
+    Router::connect('/corporate/:controller/:action', ['corporate' => true]);
+
     // inbound
     Router::connect('/inbound/box', ['controller' => 'InboundBox', 'action' => 'index']);
     Router::connect('/inbound/box/:action', ['controller' => 'InboundBox']);

@@ -298,6 +298,10 @@ a:focus,
 a:hover {
 	color: #ffffff;
 }
+.panel-title a:focus,
+.panel-title a:hover {
+	color: #ff0000;
+}
 .logo {
 	width: 150px;
 	height: 32px;
