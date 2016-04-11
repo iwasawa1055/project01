@@ -188,6 +188,20 @@ msgstr "オーダー数（minikurHAKO）"
 msgid "kit_cleaning_num"
 msgstr "オーダー数（クリーニングパック）"
 
+msgid "company_name"
+msgstr "会社名（漢字）"
+
+msgid "company_name_kana"
+msgstr "会社名（カタカナ）"
+
+msgid "staff_name"
+msgstr "担当者名（漢字）"
+
+msgid "staff_name_kana"
+msgstr "担当者名（カタカナ）"
+
+msgid "payment_method"
+msgstr "支払方法"
 
 # Validation
 msgid "notBlank"

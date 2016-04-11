@@ -119,7 +119,7 @@
                         </div>
                       </div>
                     </div>
-                <?php echo $this->Form->error('CorporateRegistInfo.payment_method', null, ['wrap' => 'p']) ?>
+                    <?php echo $this->Form->error('CorporateRegistInfo.payment_method', null, ['wrap' => 'p']) ?>
                   </div>
               </div>
               <div class="form-group">

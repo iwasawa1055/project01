@@ -193,7 +193,6 @@ class RegisterController extends MinikuraController
         if ($this->CorporateRegistInfo->validates()) {
             CakeSession::write(self::MODEL_NAME_CORP_REGIST, $this->CorporateRegistInfo->toArray());
         } else {
-            // $this->set('validErrors', $this->CorporateRegistInfo->validationErrors);
             return $this->render('corporate_add_info');
         }
     }

@@ -187,6 +187,11 @@ class CorporateRegistInfo extends ApiModel
             ],
         ],
         'newsletter' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'newsletter']
+            ],
             'allowedChoice' => [
                 'rule' => ['inList', ['0', '1']],
                 'message' => ['format', 'newsletter']
