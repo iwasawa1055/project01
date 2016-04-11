@@ -205,11 +205,21 @@ class CustomerComponent extends Component
         }
         return false;
     }
+    public function isCorprateCreditCardUnregist()
+    {
+        # 法人ユーザー、本登録ユーザー、コーポレートカード、カード登録なし
+        if (!$this->isEntry() && !$this->isPrivateCustomer()
+            && empty($this->getCorporatePayment()) && !$this->hasCreditCard()) {
+            return true;
+        }
+        return false;
+    }
 
     public function canOrderKit()
     {
-        if ($this->isCustomerCreditCardUnregist()) {
+        if ($this->isCustomerCreditCardUnregist() || $this->isCorprateCreditCardUnregist()) {
             # 個人ユーザー、本登録ユーザー、カード登録なし
+            # 法人ユーザー、本登録ユーザー、コーポレートカード、カード登録なし
             return true;
         }
         if (!$this->isEntry() &&

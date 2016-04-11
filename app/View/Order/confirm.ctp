@@ -47,7 +47,7 @@
                   </div>
                 </div>
               </div>
-            <?php if (!$customer->isEntry() && !$customer->isCustomerCreditCardUnregist()) : ?>
+            <?php if (!$customer->isEntry() && !$customer->isCustomerCreditCardUnregist() && !$customer->isCorprateCreditCardUnregist()) : ?>
               <?php if ($customer->isPrivateCustomer() || !$customer->getCorporatePayment()) : ?>
               <div class="col-lg-12">
                 <label>カード情報</label>
@@ -64,7 +64,7 @@
               </div>
             <?php endif; ?>
             </div>
-          <?php if (!$customer->isEntry() && !$customer->isCustomerCreditCardUnregist()) : ?>
+          <?php if (!$customer->isEntry() && !$customer->isCustomerCreditCardUnregist() && !$customer->isCorprateCreditCardUnregist()) : ?>
             <div class="form-group col-lg-12">
               <div class="panel panel-red">
                 <div class="panel-heading">
@@ -98,7 +98,7 @@
               <a class="btn btn-danger btn-lg btn-block" href="/customer/info/add">会員登録して注文する</a>
             </span>
           <?php endif; ?>
-        <?php elseif ($customer->isCustomerCreditCardUnregist()) : ?>
+        <?php elseif ($customer->isCustomerCreditCardUnregist() || $customer->isCorprateCreditCardUnregist()) : ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-danger btn-lg btn-block" href="/customer/credit_card/add">クレジットカード登録して注文する</a>
             </span>
