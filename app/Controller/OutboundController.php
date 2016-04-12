@@ -155,7 +155,13 @@ class OutboundController extends MinikuraController
         // 対象アイテム一覧
         $where = [
             'item_status' => [BOXITEM_STATUS_INBOUND_DONE * 1],
-            'box_id' => $outMonoKeyList
+            'box_id' => $outMonoKeyList,
+            'box.product_cd' => [
+                PRODUCT_CD_MONO,
+                PRODUCT_CD_HAKO,
+                PRODUCT_CD_CLEANING_PACK,
+                PRODUCT_CD_SHOES_PACK,
+            ]
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
@@ -190,7 +196,15 @@ class OutboundController extends MinikuraController
         }
 
         // 対象ボックス一覧
-        $where = ['box_status' => [BOXITEM_STATUS_INBOUND_DONE]];
+        $where = [
+            'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'product_cd' => [
+                PRODUCT_CD_MONO,
+                PRODUCT_CD_HAKO,
+                PRODUCT_CD_CLEANING_PACK,
+                PRODUCT_CD_SHOES_PACK,
+            ]
+        ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {

@@ -80,6 +80,10 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_CLEANING_PACK];
         } elseif ($product === 'shoes') {
             $productCd = [PRODUCT_CD_SHOES_PACK];
+        } elseif ($product === 'cargo01') {
+            $productCd = [PRODUCT_CD_CARGO_JIBUN];
+        } elseif ($product === 'cargo02') {
+            $productCd = [PRODUCT_CD_CARGO_HITOMAKASE];
         }
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
@@ -100,33 +104,13 @@ class InfoBox extends ApiCachedModel
     }
 
 
-    // 出庫画面で表示
-    public function getListForOutbound($product = null)
-    {
-        $productCd = null;
-        if ($product === 'hako') {
-            $productCd = [PRODUCT_CD_HAKO];
-        } elseif ($product === 'mono') {
-            $productCd = [PRODUCT_CD_MONO];
-        }
-        $okStatus = [
-            BOXITEM_STATUS_INBOUND_DONE,
-        ];
-        $where = ['box_status' => $okStatus, 'product_cd' => $productCd];
-        if (empty($where['product_cd'])) {
-            unset($where['product_cd']);
-        }
-        $list = $this->apiGetResultsWhere([], $where);
-        HashSorter::sort($list, self::DEFAULTS_SORT_KEY);
-        return $list;
-    }
-
     /**
      * kit_cdからproduct_cdに変換
      * @param  [type] $kitCd [description]
      * @return [type]        [description]
      */
-    public static function kitCd2ProductCd($kitCd) {
+    public static function kitCd2ProductCd($kitCd)
+    {
         $productCd = '';
         switch ($kitCd) {
             case KIT_CD_MONO:
@@ -148,7 +132,8 @@ class InfoBox extends ApiCachedModel
         return $productCd;
     }
 
-    public function getListLastInbound() {
+    public function getListLastInbound()
+    {
         $where = [
             'box_status' => [
                 BOXITEM_STATUS_INBOUND_DONE,
