@@ -209,7 +209,7 @@ class OutboundController extends MinikuraController
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
-            $box['outbound_list_deny'] = $this->outboundList->canAddBox($box);
+            $box['outbound_list_deny'] = $this->outboundList->canAddBox($box, false);
         }
         HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $list);
