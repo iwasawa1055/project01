@@ -10,8 +10,8 @@ class InfoBox extends ApiCachedModel
 
 
     const DEFAULTS_SORT_KEY = [
-        'kit_cd' => true,
         'product_cd' => true,
+        'kit_cd' => true,
         'box_id' => true,
         'box_name' => true,
         'box_status' => true,
