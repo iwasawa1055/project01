@@ -25,10 +25,10 @@ class HashSorter
         $this->cmpProductCd = [
           PRODUCT_CD_MONO,
           PRODUCT_CD_HAKO,
-          PRODUCT_CD_CLEANING_PACK,
-          PRODUCT_CD_SHOES_PACK,
           PRODUCT_CD_CARGO_JIBUN,
           PRODUCT_CD_CARGO_HITOMAKASE,
+          PRODUCT_CD_CLEANING_PACK,
+          PRODUCT_CD_SHOES_PACK,
         ];
     }
     public function cmp($a, $b)

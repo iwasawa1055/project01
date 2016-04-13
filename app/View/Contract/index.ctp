@@ -86,7 +86,7 @@
                 <h2>契約情報一覧</h2>
                 <div class="col-lg-12 col-xs-12 agreement">
                   <div class="form-group col-lg-12">
-                    <?php $productCdList = [PRODUCT_CD_MONO, PRODUCT_CD_HAKO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE]; ?>
+                    <?php $productCdList = [PRODUCT_CD_MONO, PRODUCT_CD_HAKO, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK]; ?>
                     <?php foreach($productCdList as $productCd) : ?>
                     <div class="row list">
                       <div class="col-xs-12 col-md-10 col-lg-10">

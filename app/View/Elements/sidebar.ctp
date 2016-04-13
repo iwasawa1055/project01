@@ -19,10 +19,10 @@
           <ul class="nav nav-second-level">
             <li> <a href="/box?product=mono"><i class="fa fa-tag fa-fw"></i> MONO（<?php echo hash::get($product_summary, PRODUCT_CD_MONO, '0'); ?>箱）</a> </li>
             <li> <a href="/box?product=hako"><i class="fa fa-tag fa-fw"></i> HAKO（<?php echo hash::get($product_summary, PRODUCT_CD_HAKO, '0'); ?>箱）</a> </li>
-            <li> <a href="/box?product=cleaning"><i class="fa fa-tag fa-fw"></i> クリーニングパック（<?php echo hash::get($product_summary, PRODUCT_CD_CLEANING_PACK, '0'); ?>箱）</a> </li>
-            <li> <a href="/box?product=shoes"><i class="fa fa-tag fa-fw"></i> シューズパック（<?php echo hash::get($product_summary, PRODUCT_CD_SHOES_PACK, '0'); ?>箱）</a> </li>
             <li> <a href="/box?product=cargo01"><i class="fa fa-tag fa-fw"></i> CARGO じぶんで（<?php echo hash::get($product_summary, PRODUCT_CD_CARGO_JIBUN, '0'); ?>箱）</a> </li>
             <li> <a href="/box?product=cargo02"><i class="fa fa-tag fa-fw"></i> CARGO ひとまかせ（<?php echo hash::get($product_summary, PRODUCT_CD_CARGO_HITOMAKASE, '0'); ?>箱）</a> </li>
+            <li> <a href="/box?product=cleaning"><i class="fa fa-tag fa-fw"></i> クリーニングパック（<?php echo hash::get($product_summary, PRODUCT_CD_CLEANING_PACK, '0'); ?>箱）</a> </li>
+            <li> <a href="/box?product=shoes"><i class="fa fa-tag fa-fw"></i> シューズパック（<?php echo hash::get($product_summary, PRODUCT_CD_SHOES_PACK, '0'); ?>箱）</a> </li>
           </ul>
         </li>
         <?php endif; ?>

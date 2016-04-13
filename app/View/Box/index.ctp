@@ -16,14 +16,24 @@
                         $productName = 'minikuraMONO';
                     } else if ($product === 'hako') {
                         $productName = 'minikuraHAKO';
+                    } else if ($product === 'cargo01') {
+                        $productName = 'minikura CARGO じぶんでコース';
+                    } else if ($product === 'cargo02') {
+                        $productName = 'minikura CARGO ひとまかせコース';
                     } else if ($product === 'cleaning') {
                         $productName = 'クリーニングパック';
+                    } else if ($product === 'shoes') {
+                        $productName = 'シューズパック';
                     } else
                   ?>
                 <h2><?php echo $productName; ?></h2>
                 <div class="row box-list">
                   <?php if (empty($boxList)) : ?>
+                    <?php if (in_array($product, ['mono', 'hako', 'cleaning'], true)) : ?>
                     <?php echo $this->element('List/empty'); ?>
+                    <?php else: ?>
+                    <?php echo $this->element('List/empty_notorder'); ?>
+                    <?php endif; ?>
                   <?php else: ?>
                   <div class="col-lg-3 col-lg-offset-6">
                     <?php if ($hideOutboud): ?>
