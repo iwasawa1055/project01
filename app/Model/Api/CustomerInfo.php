@@ -110,7 +110,7 @@ class CustomerInfo extends ApiModel
             ],
             'isPostalCodeJp' => [
                 'rule' => 'isPostalCodeJp',
-                'message' => ['format', 'postal']
+                'message' => ['format_format', 'postal', '例、110-0001']
             ],
         ],
         'pref' => [

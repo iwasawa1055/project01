@@ -53,8 +53,8 @@ p.error-message a,
   text-decoration: underline;
 }
 p.error-message a:hover,
-.panel-body p.flash-message a {
-  color: #666;
+.panel-body p.flash-message a:hover {
+  color: #ff0000;
   text-decoration: underline;
 }
 
@@ -69,12 +69,10 @@ p.error-message a:hover,
   color: #aaa;
 }
 
+/* app.cssのbox-item-nameと同じ効果、
+実装タイミングの要因でこちらを利用する */
 .boxitem-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-.boxitem-name-space {
-  padding: 0;
-  margin: 0;
 }

@@ -67,6 +67,8 @@ const KIT_CD_CLEANING_PACK = '75';
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
 const PRODUCT_CD_HAKO = '004024';
+const PRODUCT_CD_CARGO_JIBUN = '005090';
+const PRODUCT_CD_CARGO_HITOMAKASE = '005100';
 const PRODUCT_CD_CLEANING_PACK = '004029';
 const PRODUCT_CD_SHOES_PACK = '005000';
 
@@ -119,6 +121,8 @@ const PRODUCT_NAME = [
     PRODUCT_CD_HAKO => 'minikuraHAKO',
     PRODUCT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
     PRODUCT_CD_SHOES_PACK => 'minikuraシューズパック',
+    PRODUCT_CD_CARGO_JIBUN => 'minikura CARGO じぶんで',
+    PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
