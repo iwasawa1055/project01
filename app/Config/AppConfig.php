@@ -23,6 +23,7 @@ $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikur
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+$config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 
 // タイムアウト（秒）
 $config['api.timeout'] = 30;
