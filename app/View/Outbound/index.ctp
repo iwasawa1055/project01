@@ -7,14 +7,10 @@
 </div>
 <div class="row">
   <div class="col-lg-12">
+  <?php if (!$noSelect) : ?>
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
-        <?php if ($noSelect) : ?>
-          <div class="col-lg-12">
-            <?php echo $this->element('List/empty_outbound'); ?>
-          </div>
-        <?php endif; ?>
           <div class="col-lg-12">
             <?php if (!empty($itemList)) : ?>
             <h2>取り出すアイテム</h2>
@@ -56,8 +52,37 @@
             <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p']) ?>
           </div>
         </div>
-
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <h2>ポイントのご利用</h2>
+            <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
+              <br />
+              ※1ポイント＝1円換算<br />
+              ※100ポイントから利用可能です。</p>
+            <div class="form-group col-lg-12">
+              <span class="point">0000</span> ポイント利用可能です。
+              <p class="help-block">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。
+                取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。</p>
+              <h3>利用ポイント</h3>
+              <div class="form-group col-lg-2">
+                <input class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+    <div class="panel panel-default">
+      <div class="panel-body">
       <?php if ($noSelect) : ?>
+          <div class="col-lg-12">
+            <?php echo $this->element('List/empty_outbound'); ?>
+          </div>
         <span class="col-lg-6 col-md-6 col-xs-12">
           <a class="btn btn-primary btn-lg btn-block" href="/outbound/mono">アイテムを取り出す</a>
         </span>

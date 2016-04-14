@@ -116,5 +116,35 @@
             </div>
           </div>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h2>ポイント</h2>
+                <p class="form-control-point col-lg-12">使えば使うほどたまる minikura ポイント。<br />
+                  たまったポイントはオプションや取り出し送料に使うことができます<br />
+                  <a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶minikuraポイントについて</a>
+                </p>
+                <div class="form-group col-lg-12">
+                  ただいま <span class="point">0000</span> ポイント
+                  <p class="help-block">※ポイントのご利用は獲得日から2年間有効です。</p>
+                </div>
+                <h2>ポイント履歴</h2>
+                <div class="form-group col-lg-12">
+                  <form>
+                    <select class="form-control" onChange="navi(this)">
+                      <option>ポイント履歴を確認したい月を以下からお選びください</option>
+                      <option value="../point/detail.html">2016年00月</option>
+                      <option value="../point/detail.html">2016年00月</option>
+                      <option value="../point/detail.html">2016年00月</option>
+                      <option value="../point/detail.html">2016年00月</option>
+                      <option value="../point/detail.html">2016年00月</option>
+                    </select>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
