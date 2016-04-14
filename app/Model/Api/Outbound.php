@@ -23,7 +23,7 @@ class Outbound extends ApiModel
     public function buildParamProduct($boxList = [], $itemList = []) {
         $list = [];
         foreach ($boxList as $box) {
-            if ($box['product_cd'] === PRODUCT_CD_MONO || $box['product_cd'] === PRODUCT_CD_CLEANING_PACK) {
+            if (in_array(Hash::get($box, 'product_cd'), [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK], true)) {
                 $this->buildParamProductMono($list, $box);
             } else {
                 $list[] = "${box['product_cd']}:${box['box_id']}";

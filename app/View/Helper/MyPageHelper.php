@@ -17,8 +17,10 @@ class MyPageHelper extends AppHelper {
     private $productCdToClassName = [
         PRODUCT_CD_MONO => 'mono-box',
         PRODUCT_CD_HAKO => 'hako-box',
+        PRODUCT_CD_CARGO_JIBUN => '',
+        PRODUCT_CD_CARGO_HITOMAKASE => '',
         PRODUCT_CD_CLEANING_PACK => 'cleaning-box',
-        PRODUCT_CD_SHOES_PACK => 'cleaning-box',
+        PRODUCT_CD_SHOES_PACK => '',
     ];
 
     public function boxClassName($box) {

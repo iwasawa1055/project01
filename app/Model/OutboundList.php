@@ -142,21 +142,27 @@ class OutboundList
     /**
      * ボックス追加可否
      * @param  array $box
+     * @param  bool $strict     アイテムステータスチェックを行う
      * @return string      不可の原因メッセージ。可能の場合null
      */
-    public function canAddBox($box)
+    public function canAddBox($box, $strict = true)
     {
+        if (in_array($box['product_cd'], [PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE], true)) {
+            return 'お手数をお掛けしますが、この商品の取り出しは<a href="/contact_us/add">各種情報変更</a>からお問い合わせください。';
+        }
         if ($box['box_status'] !== BOXITEM_STATUS_INBOUND_DONE) {
             return '追加可能なステータスではありません。';
         }
         if (in_array($box['box_id'], $this->getBoxIdFromItemList(), true)) {
             return 'ボックスに含まれるアイテムが既に取り出しリストに追加されています。';
         }
-        $item = new InfoItem();
-        $itemList = $item->apiGetResultsWhere([], ['box_id' => $box['box_id']]);
-        foreach ($itemList as $i) {
-            if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
-                return 'ボックスに含まれるアイテムが出庫またはオプション作業中です。';
+        if ($strict) {
+            $item = new InfoItem();
+            $itemList = $item->apiGetResultsWhere([], ['box_id' => $box['box_id']]);
+            foreach ($itemList as $i) {
+                if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
+                    return 'ボックスに含まれるアイテムが出庫またはオプション作業中です。';
+                }
             }
         }
         return null;
@@ -169,6 +175,9 @@ class OutboundList
      */
     public function canAddMono($box)
     {
+        if (in_array($box['product_cd'], [PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE], true)) {
+            return 'お手数をお掛けしますが、この商品の取り出しは<a href="/contact_us/add">各種情報変更</a>からお問い合わせください。';
+        }
         if (in_array($box['box_id'], $this->getBoxIdFromBoxList(), true)) {
             return 'ボックスとして既に取り出しリストに追加されています。';
         }
@@ -182,6 +191,9 @@ class OutboundList
      */
     public function canAddItem($item)
     {
+        if (in_array(Hash::get($item, 'box.product_cd'), [PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE], true)) {
+            return 'お手数をお掛けしますが、この商品の取り出しは<a href="/contact_us/add">各種情報変更</a>からお問い合わせください。';
+        }
         if ($item['item_status'] !== BOXITEM_STATUS_INBOUND_DONE * 1) {
             return '追加可能なステータスではありません。';
         }

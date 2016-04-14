@@ -55,7 +55,7 @@ class ApiCachedModel extends ApiModel
                 if (!is_array($value)) {
                     $value = [$value];
                 }
-                if (!array_key_exists($key, $a) || !in_array($a[$key], $value, true)) {
+                if (!in_array(Hash::get($a, $key), $value, true)) {
                     $notMatch = true;
                     break;
                 }
