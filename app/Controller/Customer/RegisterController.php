@@ -164,6 +164,7 @@ class RegisterController extends MinikuraController
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
+        $this->request->data[self::MODEL_NAME_CORP_REGIST]['alliance_cd'] = $code;
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
@@ -184,12 +185,6 @@ class RegisterController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_CORP_REGIST);
         $this->CorporateRegistInfo->set($this->request->data);
-
-        // 紹介コード
-        if (!empty($code)) {
-            $this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST]['alliance_cd'] = $code;
-        }
-
         if ($this->CorporateRegistInfo->validates()) {
             CakeSession::write(self::MODEL_NAME_CORP_REGIST, $this->CorporateRegistInfo->toArray());
         } else {

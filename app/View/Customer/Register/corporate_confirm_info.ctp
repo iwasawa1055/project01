@@ -49,12 +49,10 @@
                 <label>メールアドレス</label>
                 <p><?php echo h($this->Form->data['CorporateRegistInfo']['email']); ?></p>
               </div>
-              <?php if (empty($code)) : ?>
               <div class="form-group">
                 <label>紹介コード</label>
                 <p><?php echo h($this->Form->data['CorporateRegistInfo']['alliance_cd']); ?></p>
               </div>
-              <?php endif; ?>
               <div class="form-group">
                 <label>支払方法</label>
                 <p><?php echo PAYMENT_METHOD[$this->Form->data['CorporateRegistInfo']['payment_method']] ?></p>

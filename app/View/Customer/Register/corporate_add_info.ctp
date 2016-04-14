@@ -72,13 +72,11 @@
                 <?php echo $this->Form->input('CorporateRegistInfo.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CorporateRegistInfo.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
-              <?php if (empty($code)) : ?>
               <div class="form-group">
               <label>紹介コード</label>
-                <?php echo $this->Form->input('CorporateRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'error' => false]); ?>
+                <?php echo $this->Form->input('CorporateRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'readonly' => !empty($code), 'error' => false]); ?>
                 <?php echo $this->Form->error('CorporateRegistInfo.alliance_cd', null, ['wrap' => 'p']) ?>
               </div>
-              <?php endif; ?>
               <div class="form-group">
                 <label>支払方法</label>
                   <div class="panel-body payment">
