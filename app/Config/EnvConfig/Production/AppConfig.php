@@ -22,7 +22,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 /**
  * API設定
  */
-$config['api.minikura.oem_key'] = '_QfNQL67x7RiIUbzn_1hkAEGKmlLO04we5rizUemfoWVLOjcEpIDDQ--';
+$config['api.minikura.oem_key'] = 'jaLt9UbT2rib9GJOclnTgsgDMqwT8BoXhYo.bLsGtnmHzVXQdX0ESw--';
 $url = 'https://api.minikura.com';
 $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
