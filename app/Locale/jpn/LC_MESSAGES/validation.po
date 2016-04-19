@@ -59,6 +59,9 @@ msgstr "番地"
 msgid "address3"
 msgstr "建物名"
 
+msgid "room"
+msgstr "部屋番号"
+
 msgid "gender"
 msgstr "性別"
 
@@ -219,3 +222,6 @@ msgstr "%sを選択してください"
 
 msgid "checkNotEmpty"
 msgstr "いずれかの%sを選択してください"
+
+msgid "maxLengthWith"
+msgstr "%sと%sはあわせて%d文字以内で入力してください"

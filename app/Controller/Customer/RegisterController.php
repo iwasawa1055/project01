@@ -30,55 +30,86 @@ class RegisterController extends MinikuraController
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
+        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
 
-        if ($this->request->is('post')) {
-            $this->loadModel(self::MODEL_NAME);
-            $this->CustomerEntry->set($this->request->data);
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
+            $this->request->data[self::MODEL_NAME]['password'] = '';
+            $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
+        }
+        CakeSession::delete(self::MODEL_NAME);
+    }
 
-            // 紹介コード
-            if (!empty($code)) {
-                $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd'] = $code;
+    /**
+     * 
+     */
+    public function customer_confirm()
+    {
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
+
+        $this->loadModel(self::MODEL_NAME);
+        $this->CustomerEntry->set($this->request->data);
+
+        if ($this->CustomerEntry->validates()) {
+            CakeSession::write(self::MODEL_NAME, $this->CustomerEntry->toArray());
+        } else {
+            return $this->render('customer_add');
+        }
+    }
+
+    /**
+     *
+     */
+    public function customer_complete()
+    {
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
+
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'customer_add', '?' => ['code' => $code]]);
+        }
+
+        $this->loadModel(self::MODEL_NAME);
+        $this->CustomerEntry->set($data);
+
+        if ($this->CustomerEntry->validates()) {
+            // 仮登録
+            $res = $this->CustomerEntry->entry();
+            if (!empty($res->error_message)) {
+                $this->CustomerEntry->data[self::MODEL_NAME]['password'] = '';
+                $this->CustomerEntry->data[self::MODEL_NAME]['password_confirm'] = '';
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'customer_add', '?' => ['code' => $code]]);
             }
 
-            if ($this->CustomerEntry->validates()) {
-                // 仮登録
-                $res = $this->CustomerEntry->entry();
-                if (!empty($res->error_message)) {
-                    $this->request->data[self::MODEL_NAME]['password'] = '';
-                    $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
-                    $this->Flash->set($res->error_message);
-                    return $this->render('customer_add');
-                }
+            // ログイン
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerEntry->data[self::MODEL_NAME]['email'];
+            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerEntry->data[self::MODEL_NAME]['password'];
 
-                // ログイン
-                $this->loadModel('CustomerLogin');
-                $this->CustomerLogin->data['CustomerLogin']['email'] = $this->request->data[self::MODEL_NAME]['email'];
-                $this->CustomerLogin->data['CustomerLogin']['password'] = $this->request->data[self::MODEL_NAME]['password'];
-
-                $res = $this->CustomerLogin->login();
-                if (!empty($res->error_message)) {
-                    $this->Flash->set($res->error_message);
-                    return $this->render('customer_add');
-                }
-
-                // カスタマー情報を取得しセッションに保存
-                $this->Customer->setTokenAndSave($res->results[0]);
-                $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
-                $this->Customer->getInfo();
-
-                if (empty($this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd'])) {
-                    return $this->redirect('/');
-                } else {
-                    // 紹介コードがある場合はキット購入へ遷移
-                    return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
-                }
-
-            } else {
-                $this->request->data[self::MODEL_NAME]['password'] = '';
-                $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
+            $res = $this->CustomerLogin->login();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
                 return $this->render('customer_add');
             }
 
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($res->results[0]);
+            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+            $this->Customer->getInfo();
+
+            // 完了画面
+            $this->set('alliance_cd', $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd']);
+            return $this->render('customer_complete');
+
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'customer_add', '?' => ['code' => $code]]);
         }
     }
 
@@ -90,68 +121,100 @@ class RegisterController extends MinikuraController
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
+        $this->request->data[self::MODEL_NAME_REGIST]['alliance_cd'] = $code;
 
-        if ($this->request->is('post')) {
-            $this->loadModel(self::MODEL_NAME_REGIST);
-            $data = $this->request->data[self::MODEL_NAME_REGIST];
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = [self::MODEL_NAME_REGIST => CakeSession::read(self::MODEL_NAME_REGIST)];
+            $this->request->data[self::MODEL_NAME_REGIST]['password'] = '';
+            $this->request->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
+        }
+        CakeSession::delete(self::MODEL_NAME_REGIST);
+    }
 
-            $birth = [];
-            $birth[0] = $data['birth_year'];
-            $birth[1] = $data['birth_month'];
-            $birth[2] = $data['birth_day'];
-            $data['birth'] = implode('-', $birth);
+    /**
+     * 
+     */
+    public function customer_confirm_info()
+    {
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
 
-            $this->CustomerRegistInfo->set($data);
+        $this->loadModel(self::MODEL_NAME_REGIST);
 
-            // 紹介コード
-            if (!empty($code)) {
-                $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'] = $code;
-            }
+        $data = $this->request->data[self::MODEL_NAME_REGIST];
+        $birth = [];
+        $birth[0] = $data['birth_year'];
+        $birth[1] = $data['birth_month'];
+        $birth[2] = $data['birth_day'];
+        $data['birth'] = implode('-', $birth);
+        $this->CustomerRegistInfo->set($data);
+
+        if ($this->CustomerRegistInfo->validates()) {
+            CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
+        } else {
+            return $this->render('customer_add_info');
+        }
+    }
+
+    /**
+     *
+     */
+    public function customer_complete_info()
+    {
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
+
+        $data = CakeSession::read(self::MODEL_NAME_REGIST);
+        CakeSession::delete(self::MODEL_NAME_REGIST);
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
+        }
+
+        $this->loadModel(self::MODEL_NAME_REGIST);
+        $this->CustomerRegistInfo->set($data);
+
+        if ($this->CustomerRegistInfo->validates()) {
+            // 部屋番号
+            $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['address3'] = $data['address3'] . $data['room'];
 
             if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
                 unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
             }
 
-            if ($this->CustomerRegistInfo->validates()) {
-                // 部屋番号
-                $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['address3'] = $data['address3'] . $data['room'];
+            // 本登録
+            $res = $this->CustomerRegistInfo->regist();
+            if (!empty($res->error_message)) {
+                $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'] = '';
+                $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
+            }
 
-                // 本登録
-                $res = $this->CustomerRegistInfo->regist();
-                if (!empty($res->error_message)) {
-                    $this->request->data[self::MODEL_NAME_REGIST]['password'] = '';
-                    $this->request->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
-                    $this->Flash->set($res->error_message);
-                    return $this->render('customer_add_info');
-                }
-                
-                // ログイン
-                $this->loadModel('CustomerLogin');
-                $this->CustomerLogin->data['CustomerLogin']['email'] = $this->request->data[self::MODEL_NAME_REGIST]['email'];
-                $this->CustomerLogin->data['CustomerLogin']['password'] = $this->request->data[self::MODEL_NAME_REGIST]['password'];
-                
-                $res = $this->CustomerLogin->login();
-                if (!empty($res->error_message)) {
-                    $this->Flash->set($res->error_message);
-                    return $this->render('customer_add_info');
-                }
-                
-                // カスタマー情報を取得しセッションに保存
-                $this->Customer->setTokenAndSave($res->results[0]);
-                $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
-                $this->Customer->getInfo();
-                
-                if (isset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
-                    // 紹介コードがある場合はキット購入へ遷移
-                    return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
-                } else {
-                    return $this->redirect('/');
-                }
-            } else {
-                $this->request->data[self::MODEL_NAME_REGIST]['password'] = '';
-                $this->request->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
+            // ログイン
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
+            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
+
+            $res = $this->CustomerLogin->login();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
                 return $this->render('customer_add_info');
             }
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($res->results[0]);
+            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+            $this->Customer->getInfo();
+
+            // 完了画面
+            $this->set('alliance_cd', Hash::get($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST], 'alliance_cd'));
+            return $this->render('customer_complete');
+
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
         }
     }
 	/**

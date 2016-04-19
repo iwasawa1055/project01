@@ -61,7 +61,7 @@ class InfoController extends MinikuraController
     }
 
     /**
-     * ユーザー情報登録
+     * 仮登録後のユーザー情報登録
      */
     public function customer_add()
     {
@@ -97,10 +97,7 @@ class InfoController extends MinikuraController
                 }
 
                 $this->Customer->switchEntryToCustomer();
-
-                // TODO: 紹介コードありはキット購入へ
-
-                return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
+                return $this->render('customer_add_complete');
             }
         }
     }

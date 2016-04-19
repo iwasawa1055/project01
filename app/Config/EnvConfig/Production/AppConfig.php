@@ -1,8 +1,13 @@
 <?php
 // Manual Configure & Startup Configure
-$config['site.url'] = 'http://production .' . $_SERVER['HTTP_HOST'];
-$config['site.top_page'] = 'https://minikura.com';
-$config['site.static_content_url'] = 'https://minikura.com';
+$config['site.name'] = 'minikura.com';
+// 本サイトのURL（パスワードリセットメールの本文で使用）
+$config['site.url'] = 'https://' . $_SERVER['HTTP_HOST'];
+// 未ログイン時TOPメニューのリンク先
+$config['site.top_page'] = 'https://' . $_SERVER['HTTP_HOST'];
+// 静的コンテンツ用ドメイン
+$config['site.static_content_url'] = 'https://c.minikura.com';
+// 環境文字列（development, staging, production）
 $config['site.env_name'] = 'production';
 
 /**
@@ -17,11 +22,12 @@ error_reporting(E_ALL ^ E_NOTICE);
 /**
  * API設定
  */
-// $config['api.minikura.oem_key'] = '';
-// $config['api.minikura.access_point.minikura_v3'] = '';
-// $config['api.minikura.access_point.minikura_v4'] = '';
-// $config['api.minikura.access_point.minikura_v5'] = '';
-// $config['api.minikura.access_point.gmopayment_v4'] = '';
+$config['api.minikura.oem_key'] = 'jaLt9UbT2rib9GJOclnTgsgDMqwT8BoXhYo.bLsGtnmHzVXQdX0ESw--';
+$url = 'https://apiv3.minikura.com';
+$config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
+$config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
+$config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
+$config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
 
 //*** Log
 // 不要なログはDropします。
