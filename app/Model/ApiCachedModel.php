@@ -234,7 +234,8 @@ class ApiCachedModel extends ApiModel
             $addList = $apiRes->results;
             $count = count($addList);
             $list = array_merge($list, $addList);
-            $offset++;
+            // 次ページへ
+            $offset += $limit;
         } while ($limit === $count);
         $this->writeCache($key, $arg, $list);
         // 期限を設定
