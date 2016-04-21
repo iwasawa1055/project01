@@ -4,7 +4,7 @@ class EmailConfig
 {
     public $default = array(
         'transport' => 'Smtp',
-        'from' => 'test@minikura.com',
+        'from' => 'minikura@terrada.co.jp',
         'host' => '192.168.16.119',
         'port' => 25,
         'timeout' => 30,
