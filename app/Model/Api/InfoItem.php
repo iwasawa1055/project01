@@ -64,8 +64,12 @@ class InfoItem extends ApiCachedModel
             $listImage = Hash::combine($imageModel->apiGetResults(), '{n}.item_id', '{n}');
             $listBox = Hash::combine($boxModel->apiGetResults(), '{n}.box_id', '{n}');
             foreach ($list as $index => $item) {
-                $list[$index]['image_first'] = $listImage[$item['item_id']];
-                $list[$index]['box'] = $listBox[$item['box_id']];
+                if (array_key_exists($item['item_id'], $listImage)) {
+                    $list[$index]['image_first'] = $listImage[$item['item_id']];
+                }
+                if (array_key_exists($item['box_id'], $listBox)) {
+                    $list[$index]['box'] = $listBox[$item['box_id']];
+                }
             }
         }
         return $list;
