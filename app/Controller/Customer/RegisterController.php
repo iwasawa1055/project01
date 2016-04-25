@@ -6,6 +6,8 @@ class RegisterController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerEntry';
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
+	//* nike_snkrs alliance_cd
+	const SNEAKERS_ALLIANCE_CD = 'api.sneakers.alliance_cd';
 
     // ログイン不要なページ
     protected $checkLogined = false;
@@ -215,6 +217,102 @@ class RegisterController extends MinikuraController
         } else {
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
+        }
+    }
+	/**
+	* N (minikura sneaker)
+	*/
+    public function customer_add_sneakers()
+    {
+        // 紹介コード
+        $code = Hash::get($this->request->query, 'code');
+		//* 暫定 nike_snkrs用のcode
+		/* alliance_cdが確定するまでコメント、asteria側でエラー出るので。
+		if (empty($code)) {
+			$code = Configure::read(self::SNEAKERS_ALLIANCE_CD);
+		}
+		*/
+        $this->set('code', $code);
+        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+
+        $isBack = Hash::get($this->request->query, 'back');
+        if ($isBack) {
+            $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
+            $this->request->data[self::MODEL_NAME]['password'] = '';
+            $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
+        }
+        CakeSession::delete(self::MODEL_NAME);
+    }
+
+    /**
+	 * N (minikura sneaker)
+     */
+    public function customer_confirm_sneakers()
+    {
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
+
+        $this->loadModel(self::MODEL_NAME);
+        $this->CustomerEntry->set($this->request->data);
+
+        if ($this->CustomerEntry->validates()) {
+            CakeSession::write(self::MODEL_NAME, $this->CustomerEntry->toArray());
+        } else {
+            return $this->render('customer_add_sneakers');
+        }
+    }
+
+    /**
+     *
+     */
+    public function customer_complete_sneakers()
+    {
+        $code = Hash::get($this->request->query, 'code');
+        $this->set('code', $code);
+
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
+        }
+
+        $this->loadModel(self::MODEL_NAME);
+        $this->CustomerEntry->set($data);
+
+        if ($this->CustomerEntry->validates()) {
+            // 仮登録 *暫定 nike_snkrs用 entry_sneakers()
+            $res = $this->CustomerEntry->entry_sneakers();
+            if (!empty($res->error_message)) {
+                $this->CustomerEntry->data[self::MODEL_NAME]['password'] = '';
+                $this->CustomerEntry->data[self::MODEL_NAME]['password_confirm'] = '';
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
+            }
+
+            // ログイン
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerEntry->data[self::MODEL_NAME]['email'];
+            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerEntry->data[self::MODEL_NAME]['password'];
+
+            $res = $this->CustomerLogin->login();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->render('customer_add_sneakers');
+            }
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($res->results[0]);
+            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+            $this->Customer->getInfo();
+
+            // 完了画面
+            $this->set('alliance_cd', $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd']);
+            return $this->render('customer_complete_sneakers');
+
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
         }
     }
 }
