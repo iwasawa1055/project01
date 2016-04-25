@@ -113,8 +113,9 @@
                   <a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶minikuraポイントについて</a>
                 </p>
                 <div class="form-group col-lg-12">
-                  ただいま <span class="point">0000</span> ポイント
+                  ただいま <span class="point"><?php echo $point['point_balance']; ?></span> ポイント
                   <p class="help-block">※ポイントのご利用は獲得日から2年間有効です。</p>
+                  <p class="help-block">※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
                 </div>
                 <h2>ポイント履歴</h2>
                 <div class="form-group col-lg-12">

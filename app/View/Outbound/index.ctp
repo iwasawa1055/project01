@@ -54,6 +54,7 @@
         </div>
       </div>
     </div>
+    <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
@@ -62,35 +63,30 @@
             <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
               <br />
               ※1ポイント＝1円換算<br />
-              ※100ポイントから利用可能です。</p>
+              ※100ポイントから利用可能です。<br />
+              ※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
             <div class="form-group col-lg-12">
-              <span class="point">0000</span> ポイント利用可能です。
+              <span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です。
               <p class="help-block">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。
                 取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。</p>
               <h3>利用ポイント</h3>
               <div class="form-group col-lg-2">
-                <input class="form-control">
+                <?php if (!empty($pointBalance['point_balance'])) : ?>
+                  <?php echo $this->Form->input('PointUse.use_point', ['class' => 'form-control', 'error' => false]); ?>
+                <?php else : ?>
+                  <?php echo $this->Form->input('PointUse.use_point', ['class' => 'form-control', 'value' => '0', 'readonly' => 'readonly', 'error' => false]); ?>
+                <?php endif; ?>
+              </div>
+              <div class="form-group col-lg-12">
+                <?php echo $this->Form->error("PointUse.use_point", null, ['wrap' => 'p']) ?>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  <?php endif; ?>
     <div class="panel panel-default">
       <div class="panel-body">
-      <?php if ($noSelect) : ?>
-          <div class="col-lg-12">
-            <?php echo $this->element('List/empty_outbound'); ?>
-          </div>
-        <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/outbound/mono">アイテムを取り出す</a>
-        </span>
-        <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを取り出す</a>
-        </span>
-      <?php else : ?>
-        <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
         <div class="form-group col-lg-12">
           <label>お届け先住所</label>
           <?php echo $this->Form->select("Outbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false]); ?>
@@ -122,9 +118,24 @@
         <span class="col-lg-12 col-md-12 col-xs-12">
           <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で確認する</button>
         </span>
-        <?php echo $this->Form->end(); ?>
-      <?php endif; ?>
       </div>
     </div>
+    <?php echo $this->Form->end(); ?>
+  <?php endif; ?>
+  <?php if ($noSelect) : ?>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="col-lg-12">
+          <?php echo $this->element('List/empty_outbound'); ?>
+        </div>
+        <span class="col-lg-6 col-md-6 col-xs-12">
+          <a class="btn btn-primary btn-lg btn-block" href="/outbound/mono">アイテムを取り出す</a>
+        </span>
+        <span class="col-lg-6 col-md-6 col-xs-12">
+          <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを取り出す</a>
+        </span>
+      </div>
+    </div>
+  <?php endif; ?>
   </div>
 </div>
