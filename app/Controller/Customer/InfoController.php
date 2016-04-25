@@ -97,7 +97,12 @@ class InfoController extends MinikuraController
                 }
 
                 $this->Customer->switchEntryToCustomer();
-                return $this->render('customer_add_complete');
+				//* sneakersユーザーは、タグ判別用に完了ページを用意してみる。
+				if ($this->Customer->getInfo()['oem_cd'] === Configure::read('api.sneakers.alliance_cd')) {
+					return $this->render('customer_add_complete_sneakers');
+				} else {
+					return $this->render('customer_add_complete');
+				}
             }
         }
     }
