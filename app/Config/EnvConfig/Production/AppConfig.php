@@ -6,7 +6,7 @@ $config['site.url'] = 'https://' . $_SERVER['HTTP_HOST'];
 // 未ログイン時TOPメニューのリンク先
 $config['site.top_page'] = 'https://' . $_SERVER['HTTP_HOST'];
 // 静的コンテンツ用ドメイン
-$config['site.static_content_url'] = 'https://c.minikura.com';
+$config['site.static_content_url'] = 'https://minikura.com';
 // 環境文字列（development, staging, production）
 $config['site.env_name'] = 'production';
 
