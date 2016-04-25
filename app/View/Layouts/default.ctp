@@ -51,8 +51,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <a class="navbar-brand" href="/"><img class="logo" src="/images/logo.png" alt="minikura"></a>
     </div>
     <?php if (!empty($customer) && $customer->isLogined()) : ?>
-      <?php echo $this->element('navbar_right'); ?>
-      <?php echo $this->element('sidebar'); ?>
+      <?php if($customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) : ?>
+        <?php echo $this->element('navbar_right'); ?>
+        <?php echo $this->element('sidebar_sneakers'); ?>
+      <?php else:?>
+        <?php echo $this->element('navbar_right'); ?>
+        <?php echo $this->element('sidebar'); ?>
+      <?php endif;?>
     <?php else : ?>
       <?php echo $this->element('navbar_right_nonlogin'); ?>
       <?php echo $this->element('sidebar_nonlogin'); ?>

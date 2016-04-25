@@ -71,6 +71,7 @@ const PRODUCT_CD_CARGO_JIBUN = '005090';
 const PRODUCT_CD_CARGO_HITOMAKASE = '005100';
 const PRODUCT_CD_CLEANING_PACK = '004029';
 const PRODUCT_CD_SHOES_PACK = '005000';
+const PRODUCT_CD_SNEAKERS = '004025'; // todo: 暫定値のため後で正規の値を入れる必要がある
 
 // box_status, item_status
 // キット購入・依頼
@@ -149,4 +150,51 @@ const INQUIRY_DIVISION = [
     '16' => 'minikuraへのご意見・ご相談',
     '18' => 'アニメイト・コレクションについて',
     '12' => 'その他',
+];
+
+const OEM_CD_LIST = [
+    'minikura' => '',
+    'sneakers' => 'sneakers', // todo: 暫定設置
+];
+
+const IN_USE_SERVICE = [
+    'minikura' => [
+        [
+            'product' => 'mono',
+            'name' => 'MONO',
+            'product_cd' => PRODUCT_CD_MONO,
+        ],
+        [
+            'product' => 'hako',
+            'name' => 'HAKO',
+            'product_cd' => PRODUCT_CD_HAKO,
+        ],
+        [
+            'product' => 'cargo01',
+            'name' => 'CARGO じぶんで',
+            'product_cd' => PRODUCT_CD_CARGO_JIBUN,
+        ],
+        [
+            'product' => 'cargo02',
+            'name' => 'CARGO ひとまかせ',
+            'product_cd' => PRODUCT_CD_CARGO_HITOMAKASE,
+        ],
+        [
+            'product' => 'cleaning',
+            'name' => 'クリーニングパック',
+            'product_cd' => PRODUCT_CD_CLEANING_PACK,
+        ],
+        [
+            'product' => 'shoes',
+            'name' => 'シューズパック',
+            'product_cd' => PRODUCT_CD_SHOES_PACK,
+        ],
+    ],
+    'nike' => [
+        [
+            'product' => 'sneakers',
+            'name' => 'SNEAKERS',
+            'product_cd' => PRODUCT_CD_SNEAKERS,
+        ],
+    ],
 ];

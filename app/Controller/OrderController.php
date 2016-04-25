@@ -110,7 +110,12 @@ class OrderController extends MinikuraController
                 $res_datetime = $this->getDatetimeDeliveryKit($data['address_id']);
             }
         }
+
         $this->set('datetime', $res_datetime);
+
+        //* nikeの場合
+        if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) $this->render('add_sneakers');
+
         CakeSession::delete(self::MODEL_NAME);
     }
 

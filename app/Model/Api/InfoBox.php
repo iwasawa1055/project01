@@ -84,6 +84,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_CARGO_JIBUN];
         } elseif ($product === 'cargo02') {
             $productCd = [PRODUCT_CD_CARGO_HITOMAKASE];
+        } elseif ($product === 'sneakers') {
+            $productCd = [PRODUCT_CD_SNEAKERS];            
         }
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
