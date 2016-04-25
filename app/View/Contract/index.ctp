@@ -118,19 +118,11 @@
                   <p class="help-block">※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
                 </div>
                 <h2>ポイント履歴</h2>
-                <div class="form-group col-lg-12">
-                  <form>
-                    <select class="form-control" onChange="navi(this)">
-                      <option>ポイント履歴を確認したい月を以下からお選びください</option>
-                      <option value="../point/detail.html">2016年00月</option>
-                      <option value="../point/detail.html">2016年00月</option>
-                      <option value="../point/detail.html">2016年00月</option>
-                      <option value="../point/detail.html">2016年00月</option>
-                      <option value="../point/detail.html">2016年00月</option>
-                    </select>
-                  </form>
-                </div>
+                <p class="form-control-point col-lg-12">
+                  <a href="/point" class="animsition-link">▶ポイント履歴</a>
+                </p>
               </div>
+            </div>
             </div>
           </div>
         </div>

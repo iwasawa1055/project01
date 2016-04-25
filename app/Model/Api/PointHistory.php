@@ -10,19 +10,5 @@ class PointHistory extends ApiModel
     }
 
     public $validate = [
-        'start_datetime' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'start_datetime'],
-            ],
-        ],
-        'end_datetime' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'end_datetime'],
-            ],
-        ],
     ];
 }
