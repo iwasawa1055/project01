@@ -73,7 +73,7 @@ class ContactUsController extends MinikuraController
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);
             }
-
+            
             // ユーザー環境値登録
             $this->Customer->postEnvAuthed();
 
@@ -99,11 +99,18 @@ class ContactUsController extends MinikuraController
 
 
 お知らせ内容：
-タイトル：{$announcement['title']}
-日付：{$announcement['date']}
+お知らせID：{$announcement['announcement_id']}
 
-本文：
-{$announcement['text']}
 EOF;
+//         return $test = <<< EOF
+// 
+// 
+// お知らせ内容：
+// タイトル：{$announcement['title']}
+// 日付：{$announcement['date']}
+// 
+// 本文：
+// {$announcement['text']}
+// EOF;
     }
 }

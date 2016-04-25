@@ -96,6 +96,7 @@ class OrderController extends MinikuraController
         $isBack = Hash::get($this->request->query, 'back');
         $res_datetime = [];
         $data = CakeSession::read(self::MODEL_NAME);
+		CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.print_r($data, true));
         if ($isBack && !empty($data)) {
             if (!array_key_exists('address_id', $data)) {
                 $data['address_id'] = '';
