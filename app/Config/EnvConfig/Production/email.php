@@ -4,15 +4,16 @@ class EmailConfig
 {
     public $default = array(
         'transport' => 'Smtp',
-        // 'from' => 'production@example.com',
-        'host' => 'smtp',
-        'port' => 1025,
+        'from' => 'minikura@terrada.co.jp',
+        'host' => '192.168.16.119',
+        'port' => 25,
         'timeout' => 30,
         // 'username' => 'user',
         // 'password' => 'secret',
         // 'client' => null,
         // 'log' => false,
-        // 'charset' => 'utf-8',
-        // 'headerCharset' => 'utf-8',
+         'charset' => 'utf-8',
+         'headerCharset' => 'utf-8',
     );
 }
+

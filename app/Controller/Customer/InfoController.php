@@ -60,7 +60,7 @@ class InfoController extends MinikuraController
     }
 
     /**
-     * ユーザー情報登録
+     * 仮登録後のユーザー情報登録
      */
     public function customer_add()
     {
@@ -96,10 +96,12 @@ class InfoController extends MinikuraController
                 }
 
                 $this->Customer->switchEntryToCustomer();
-
-                // TODO: 紹介コードありはキット購入へ
-
-                return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
+				//* sneakersユーザーは、タグ判別用に完了ページを用意してみる。
+				if ($this->Customer->getInfo()['oem_cd'] === Configure::read('api.sneakers.alliance_cd')) {
+					return $this->render('customer_add_complete_sneakers');
+				} else {
+					return $this->render('customer_add_complete');
+				}
             }
         }
     }

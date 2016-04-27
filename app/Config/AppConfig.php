@@ -24,6 +24,13 @@ $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+/**
+ * 暫定 nike_snkrs用 oem_key
+ *  @todo oem_keyが決まり次第  EnvConfig/Staging, EnvConfig/Productionにも同様に設定する 
+ *  @todo alliance_cdが決まり次第 
+ */
+$config['api.sneakers.oem_key'] = 'qxjvrvsljn9t5L5X_8jgNjze.99Qq89POiJjQCXOy5ndirHHWgbwXN9DjNCRJuLWOfdDtYhVUTA-';
+$config['api.sneakers.alliance_cd'] = 'sneakers';
 
 // タイムアウト（秒）
 $config['api.timeout'] = 30;

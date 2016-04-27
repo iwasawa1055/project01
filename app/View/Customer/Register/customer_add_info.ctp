@@ -17,7 +17,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
-            <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'add_info', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_confirm_info', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group col-lg-12">
                 <label>ご住所</label>
@@ -98,13 +98,11 @@
                 <?php echo $this->Form->input('CustomerRegistInfo.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerRegistInfo.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
-              <?php if (empty($code)) : ?>
               <div class="form-group col-lg-12">
                 <label>紹介コード</label>
-                <?php echo $this->Form->input('CustomerRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'readonly' => !empty($code), 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerRegistInfo.alliance_cd', null, ['wrap' => 'p']) ?>
               </div>
-              <?php endif; ?>
               <div class="form-group col-lg-12">
                 <label>ニュースレターの配信</label>
                 <?php echo $this->Form->select('CustomerRegistInfo.newsletter', CUSTOMER_NEWSLETTER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>

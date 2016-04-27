@@ -1,20 +1,22 @@
   <?php if (!empty($code)) : ?>
+	<!--
     <div class="row">
       <div class="col-lg-12" align="center">
         <img class="alliance" src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
       </div>
     </div>
+	-->
   <?php endif; ?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-keyboard-o"></i> ユーザー登録</h1>
+        <h1 class="page-header"><i class="fa fa-keyboard-o"></i> ユーザー登録[sneakers]</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
-          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_confirm', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_confirm_sneakers', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group">
                 <?php echo $this->Form->input('CustomerEntry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
@@ -29,7 +31,8 @@
                 <?php echo $this->Form->error('CustomerEntry.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'readonly' => !empty($code), 'error' => false]); ?>
+				<!-- input => hidden-->
+                <?php echo $this->Form->hidden('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'readonly' => !empty($code), 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.alliance_cd', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
@@ -44,7 +47,6 @@
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録</button>
               <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>
-              <a class="btn btn-danger btn-xs btn-block animsition-link" href="/corporate/register/add_info" target="_blank">法人の方はこちら</a>
             </div>
           <?php echo $this->Form->end(); ?>
           </div>

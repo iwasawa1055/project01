@@ -201,7 +201,7 @@ class CustomerRegistInfo extends ApiModel
         'room' => [
             'maxLengthRoom' => [
                 'rule' => 'maxLengthRoom',
-                'message' => ['maxLength', 'newsletter', 30]
+                'message' => ['maxLengthWith', 'address3', 'room', 30]
             ],
         ],
         'newsletter' => [
