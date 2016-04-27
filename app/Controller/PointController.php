@@ -19,6 +19,7 @@ class PointController extends MinikuraController
         } else {
             $histories = $res->results;
         }
-        $this->set('histories', $histories);
+        $list = $this->paginate($histories);
+        $this->set('histories', $list);
     }
 }

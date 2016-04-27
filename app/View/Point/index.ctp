@@ -26,23 +26,24 @@
                       <?php foreach ($histories as $history): ?>
                         <?php if (!empty($history['added_datetime'])) : ?>
                         <tr>
-                          <td><?php echo $history['added_datetime']; ?></td>
-                          <td><?php echo POINT_TYPE[$history['point_type']]; ?></td>
+                          <td><?php echo empty($history['added_datetime']) ? '' : date('Y/m/d', strtotime($history['added_datetime'])); ?></td>
+                          <td><?php echo Hash::get(POINT_TYPE, $history['point_type']); ?></td>
                           <td><?php echo $history['added_point']; ?></td>
-                          <td><?php echo $history['expire_datetime']; ?></td>
+                          <td><?php echo empty($history['expire_datetime']) ? '' : date('Y/m/d', strtotime($history['expire_datetime'])); ?></td>
                         </tr>
                         <?php else : ?>
                         <tr>
-                          <td><?php echo $history['used_datetime']; ?></td>
-                          <td><?php echo POINT_TYPE[$history['point_type']]; ?></td>
+                          <td><?php echo empty($history['used_datetime']) ? '' : date('Y/m/d', strtotime($history['used_datetime'])); ?></td>
+                          <td><?php echo Hash::get(POINT_TYPE, $history['point_type']); ?></td>
                           <td><?php echo $history['used_point']; ?></td>
-                          <td><?php echo $history['expire_datetime']; ?></td>
+                          <td><?php echo empty($history['expire_datetime']) ? '' : date('Y/m/d', strtotime($history['expire_datetime'])); ?></td>
                         </tr>
                         <?php endif; ?>
                       <?php endforeach; ?>
                       </tbody>
                     </table>
                   </div>
+                  <?php echo $this->element('paginator'); ?>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-primary btn-lg btn-block animsition-link" href="/contract">戻る</a>
