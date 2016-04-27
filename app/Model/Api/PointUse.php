@@ -13,6 +13,19 @@ class PointUse extends ApiModel
         parent::__construct('PointUse', '/point_use', 'cpss_v5');
     }
 
+    public function verifyCallPointUse()
+    {
+        if ($this->data[$this->model_name]['point_balance'] < self::POINT_USE_AVAILABLE_OR_MORE) {
+            return false;
+        }
+
+        if (empty($this->data[$this->model_name]['use_point'])) {
+            return false;
+        }
+
+        return true;
+    }
+
     public $validate = [
         'use_point' => [
             'isStringInteger' => [

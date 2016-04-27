@@ -378,11 +378,13 @@ class OutboundController extends MinikuraController
                 return $this->redirect(['action' => 'index']);
             }
 
-            // ポイント消費
-            $res = $this->PointUse->apiPost($this->PointUse->toArray());
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'index']);
+            if ($this->PointUse->verifyCallPointUse()) {
+                // ポイント消費
+                $res = $this->PointUse->apiPost($this->PointUse->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'index']);
+                }
             }
 
             // 取り出しリストクリア

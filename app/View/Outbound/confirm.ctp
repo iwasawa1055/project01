@@ -56,7 +56,7 @@
             </div>
             <div class="form-group col-lg-12">
               <label>ご利用ポイント</label>
-              <p class="form-control-static"><?php echo $pointUse['use_point']; ?> ポイント</p>
+              <p class="form-control-static"><?php echo empty($pointUse['use_point']) ? '0' : $pointUse['use_point']; ?> ポイント</p>
             </div>
             <div class="form-group col-lg-12">
               <label>お届け先住所</label>
