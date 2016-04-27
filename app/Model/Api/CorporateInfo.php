@@ -15,6 +15,11 @@ class CorporateInfo extends ApiModel
         (new Announcement())->deleteCache();
     }
 
+    public function apiPatch($data)
+    {
+        return parent::apiPut($data);
+    }
+
     public $validate = [
         'company_name' => [
             'notBlank' => [
