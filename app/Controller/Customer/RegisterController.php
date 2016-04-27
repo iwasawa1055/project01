@@ -396,12 +396,9 @@ class RegisterController extends MinikuraController
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
             $this->Customer->getInfo();
 
-            if (empty($this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST]['alliance_cd'])) {
-                return $this->redirect('/');
-            } else {
-                // 紹介コードがある場合はキット購入へ遷移
-                return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
-            }
+            // 完了画面
+            $this->set('alliance_cd', Hash::get($this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST], 'alliance_cd'));
+            return $this->render('corporate_complete');
 
         } else {
             $this->Flash->set(__('empty_session_data'));
