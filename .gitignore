@@ -4,6 +4,7 @@
 /app/tmp/logs
 /app/tmp/sessions
 /app/tmp/cache
+/app/tmp/sneakers
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors
