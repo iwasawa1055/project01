@@ -3,6 +3,7 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('Receipt', 'Model');
 App::uses('Billing', 'Model');
+App::uses('ReceiptDetail', 'Model');
 
 class AnnouncementController extends MinikuraController
 {
@@ -62,21 +63,40 @@ class AnnouncementController extends MinikuraController
             $receipt = new Receipt();
             $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
             if (!empty($data)) {
-                $res = $receipt->apiGet([
-                    'announcement_id' => $id,
-                    'category_id' => $data['category_id']
-                ]);
-                if ($res->isSuccess() || count($res->results) === 1) {
-                    $name = $res->results[0]['file_name'];
-                    $binary = base64_decode($res->results[0]['receipt']);
-                    // $binary = file_get_contents('2631634_2003858_2R.pdf');
-                    $this->autoRender = false;
-                    $this->response->type('pdf');
-                    $this->response->download($name);
-                    $this->response->body($binary);
-                    return;
-                } else {
-                    $this->Flash->set($res->error_message);
+                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT) {
+                    $res = $receipt->apiGet([
+                        'announcement_id' => $id,
+                        'category_id' => $data['category_id']
+                    ]);
+                    if ($res->isSuccess() || count($res->results) === 1) {
+                        $name = $res->results[0]['file_name'];
+                        $binary = base64_decode($res->results[0]['receipt']);
+                        $this->autoRender = false;
+                        $this->response->type('pdf');
+                        $this->response->download($name);
+                        $this->response->body($binary);
+                        return;
+                    } else {
+                        $this->Flash->set($res->error_message);
+                    }
+                }
+                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT) {
+                    $receiptDetail = new ReceiptDetail();
+                    $res = $receiptDetail->apiGet([
+                        'announcement_id' => $id
+                    ]);
+                    if ($res->isSuccess() || count($res->results) === 1) {
+                        $date = str_replace('-', '', $res->results[0]['receipted']);
+                        $name = "minikura.comキット購入領収書_{$date}.pdf";
+                        $binary = base64_decode($res->results[0]['receipt_data']);
+                        $this->autoRender = false;
+                        $this->response->type('pdf');
+                        $this->response->download($name);
+                        $this->response->body($binary);
+                        return;
+                    } else {
+                        $this->Flash->set($res->error_message);
+                    }
                 }
             }
         }
