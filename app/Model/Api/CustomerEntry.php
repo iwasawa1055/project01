@@ -23,9 +23,7 @@ class CustomerEntry extends ApiModel
     public function entry_sneakers()
     {
 		//* nike_snkrs oem_key
-		/* oem_key,alliance_cdが確定しないとasteriaエラー出るので、コメントアウトしておく
 		$this->oem_key = Configure::read('api.sneakers.oem_key');
-		*/
         $this->data[$this->model_name]['oem_key'] = $this->oem_key;
         $responses = $this->request('/entry', $this->data[$this->model_name], 'POST');
 
