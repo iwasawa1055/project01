@@ -16,7 +16,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-body">
-          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_confirm_sneakers', '?' => ['code' => $code, 'key' => $key]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_confirm_sneakers'],  'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group">
                 <?php echo $this->Form->input('CustomerEntry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
@@ -34,10 +34,7 @@
                 <?php echo $this->Form->input('CustomerEntry.key', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'キーコードをお持ちの方はこちらにご入力ください', 'value' => $key, 'error' => false]); ?>
               </div>
 			  <!-- input => hidden-->
-			  <!--
               <?php echo $this->Form->hidden('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64,  'error' => false]); ?>
-              <?php echo $this->Form->hidden('CustomerEntry.key', ['class' => "form-control", 'maxlength' => 64,  'error' => false]); ?>
-			  -->
 			  <!-- input => hidden-->
               <div class="form-group">
                 <label>お知らせメール</label>

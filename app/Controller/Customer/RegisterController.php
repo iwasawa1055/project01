@@ -227,18 +227,18 @@ class RegisterController extends MinikuraController
 	*/
     public function customer_add_sneakers()
     {
-        // 紹介コード
+        // 紹介コード sneakersのLPから遷移するorエラー時にredirectで
         $code = Hash::get($this->request->query, 'code');
 		//* 暫定 nike_snkrs用のcode
 		if (empty($code)) {
 			$code = Configure::read(self::SNEAKERS_ALLIANCE_CD);
 		}
-        $this->set('code', $code);
-		//* urlにsneakersの露出もNGであればPOSTに変更する
-        //$this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+		//* Formにhiddenでset
+        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
 
-		//* sneakers_access_key check  
+        //* sneakers key  sneakersのLPから遷移するorエラー時にredirectで
         $key = Hash::get($this->request->query, 'key');
+		//* LPからの値を入力欄にset
         $this->set('key', $key);
 
 		//* sneakers key list 有効性check
@@ -270,14 +270,28 @@ class RegisterController extends MinikuraController
      */
     public function customer_confirm_sneakers()
     {
-		//* riquest parameter GET 
-        $code = Hash::get($this->request->query, 'code');
-        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+		//* alliance_cd (hidden) 
+		$code = $this->request->data[self::MODEL_NAME]['alliance_cd'];
         $this->set('code', $code);
 
-		$key = Hash::get($this->request->query,'key');
-        $this->request->data[self::MODEL_NAME]['key'] = $key;
+		//* key (form) 
+		$key = $this->request->data[self::MODEL_NAME]['key'];
         $this->set('key', $key);
+
+		//* keyの有効性check
+		$exist_flg = $this->_checkSneakersKey($key);
+		//* リストに無い=無効なkey error
+        if ($exist_flg === false) {
+            $this->Flash->set(__('empty_sneakers_key_data'));
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+        }
+		//* keyが登録済みでないか確認 
+		$registered_flg = $this->_checkRegisteredSneakersKey($key);
+		//* key登録済みerror
+        if ($registered_flg === true) {
+            $this->Flash->set(__('registered_sneakers_key_data'));
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+        }
 
         $this->loadModel(self::MODEL_NAME);
         $this->CustomerEntry->set($this->request->data);
@@ -294,13 +308,16 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_sneakers()
     {
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
+		//* Session read
+        $data = CakeSession::read(self::MODEL_NAME);
 
-		$key = Hash::get($this->request->query,'key');
+		//* alliance_cd 
+		$code = $data['alliance_cd'];
+        $this->set('code', $code);
+		//* key
+		$key = $data['key'];
         $this->set('key', $key);
 
-        $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
@@ -313,7 +330,7 @@ class RegisterController extends MinikuraController
             $this->Flash->set(__('empty_sneakers_key_data'));
             return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
         }
-		//* keyが登録済みでないか確認 @todo
+		//* keyが登録済みでないか確認 
 		$registered_flg = $this->_checkRegisteredSneakersKey($key);
 		//* key登録済みerror
         if ($registered_flg === true) {
@@ -331,7 +348,7 @@ class RegisterController extends MinikuraController
                 $this->CustomerEntry->data[self::MODEL_NAME]['password'] = '';
                 $this->CustomerEntry->data[self::MODEL_NAME]['password_confirm'] = '';
                 $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
+                return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
             }
 
             // ログイン
@@ -367,7 +384,7 @@ class RegisterController extends MinikuraController
 
         } else {
             $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
         }
     }
 

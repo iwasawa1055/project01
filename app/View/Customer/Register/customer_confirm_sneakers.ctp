@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-        <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_complete_sneakers', '?' => ['code' => $code, 'key' => $key]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+        <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_complete_sneakers'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group">
@@ -21,6 +21,9 @@
                 <label>キーコード</label>
                 <p><?php echo h($this->Form->data['CustomerEntry']['key']); ?></p>
               </div>
+			  <!-- input => hidden-->
+              <?php echo $this->Form->hidden('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64,  'error' => false]); ?>
+			  <!-- input => hidden-->
               <div class="form-group">
                 <label>お知らせメール</label>
                 <p><?php echo CUSTOMER_NEWSLETTER[$this->Form->data['CustomerEntry']['newsletter']] ?></p>
