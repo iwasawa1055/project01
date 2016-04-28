@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-        <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_complete_sneakers', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+        <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_complete_sneakers', '?' => ['code' => $code, 'key' => $key]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="col-lg-12 col-md-12 none-title">
               <div class="form-group">
@@ -18,8 +18,8 @@
                 <p>入力されたパスワード</p>
               </div>
               <div class="form-group">
-                <label>紹介コード</label>
-                <p><?php echo h($this->Form->data['CustomerEntry']['alliance_cd']); ?></p>
+                <label>キーコード</label>
+                <p><?php echo h($this->Form->data['CustomerEntry']['key']); ?></p>
               </div>
               <div class="form-group">
                 <label>お知らせメール</label>
@@ -27,7 +27,7 @@
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <?php echo $this->Html->link('戻る', ['controller' => 'register', 'action' => 'customer_add_sneakers', '?' => ['code' => $code, 'back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
+              <?php echo $this->Html->link('戻る', ['controller' => 'register', 'action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key, 'back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で登録する</button>

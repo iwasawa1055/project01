@@ -8,6 +8,9 @@ class RegisterController extends MinikuraController
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
 	//* nike_snkrs alliance_cd
 	const SNEAKERS_ALLIANCE_CD = 'api.sneakers.alliance_cd';
+	const SNEAKERS_FILE_KEY_LIST = 'api.sneakers.file.key_list';
+	const SNEAKERS_FILE_REGISTERED_LIST = 'api.sneakers.file.registered_list';
+	const SNEAKERS_DIR = 'api.sneakers.dir';
 
     // ログイン不要なページ
     protected $checkLogined = false;
@@ -227,13 +230,31 @@ class RegisterController extends MinikuraController
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
 		//* 暫定 nike_snkrs用のcode
-		/* alliance_cdが確定するまでコメント、asteria側でエラー出るので。
 		if (empty($code)) {
 			$code = Configure::read(self::SNEAKERS_ALLIANCE_CD);
 		}
-		*/
         $this->set('code', $code);
-        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+		//* urlにsneakersの露出もNGであればPOSTに変更する
+        //$this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+
+		//* sneakers_access_key check  
+        $key = Hash::get($this->request->query, 'key');
+        $this->set('key', $key);
+
+		//* sneakers key list 有効性check
+		$exist_flg = $this->_checkSneakersKey($key);
+		//* リストに無い=無効なkey error
+        if ($exist_flg === false) {
+            $this->Flash->set(__('empty_sneakers_key_data'));
+			return $this->render('customer_add_sneakers');
+        }
+		//* keyが登録済みでないか確認
+		$registered_flg = $this->_checkRegisteredSneakersKey($key);
+		//* key登録済みerror
+        if ($registered_flg === true) {
+            $this->Flash->set(__('registered_sneakers_key_data'));
+			return $this->render('customer_add_sneakers');
+        }
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
@@ -249,8 +270,14 @@ class RegisterController extends MinikuraController
      */
     public function customer_confirm_sneakers()
     {
+		//* riquest parameter GET 
         $code = Hash::get($this->request->query, 'code');
+        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
         $this->set('code', $code);
+
+		$key = Hash::get($this->request->query,'key');
+        $this->request->data[self::MODEL_NAME]['key'] = $key;
+        $this->set('key', $key);
 
         $this->loadModel(self::MODEL_NAME);
         $this->CustomerEntry->set($this->request->data);
@@ -270,11 +297,28 @@ class RegisterController extends MinikuraController
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
 
+		$key = Hash::get($this->request->query,'key');
+        $this->set('key', $key);
+
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+        }
+		//* keyの有効性check
+		$exist_flg = $this->_checkSneakersKey($key);
+		//* リストに無い=無効なkey error
+        if ($exist_flg === false) {
+            $this->Flash->set(__('empty_sneakers_key_data'));
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+        }
+		//* keyが登録済みでないか確認 @todo
+		$registered_flg = $this->_checkRegisteredSneakersKey($key);
+		//* key登録済みerror
+        if ($registered_flg === true) {
+            $this->Flash->set(__('registered_sneakers_key_data'));
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
         }
 
         $this->loadModel(self::MODEL_NAME);
@@ -294,7 +338,15 @@ class RegisterController extends MinikuraController
             $this->loadModel('CustomerLogin');
             $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerEntry->data[self::MODEL_NAME]['email'];
             $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerEntry->data[self::MODEL_NAME]['password'];
-
+			/**
+			*  sneakers用のlogin確認
+			*  login()で統一したい。oem_keyのdefaultはminikura用, 例外でentry[POST]のsneakers用の時がある。
+			*  sneakersユーザーで通常のminikuraトップページにログインする場合にoem_keyがdefaultのminikuraになってしまう
+			*  UserAPI側で、token取得時のoem_keyを拾うため=>sneakersの時はsneakersを返す事が必要になる
+			*  UserAPIの変更が可能になれば、ここはloginで済む事になる。
+			*　=>UserAPIを変更したので、minikuraのoem_keyでログインしてもsneakersを認識できるようになっている
+			*/
+            //$res = $this->CustomerLogin->login_sneakers();
             $res = $this->CustomerLogin->login();
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
@@ -304,7 +356,10 @@ class RegisterController extends MinikuraController
             // カスタマー情報を取得しセッションに保存
             $this->Customer->setTokenAndSave($res->results[0]);
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
-            $this->Customer->getInfo();
+
+			//* keyを登録済みとして管理する
+			$input_data = $key . "," .$data['email'] . "\n";
+			$this->_postRegisteredSneakersKey($input_data);
 
             // 完了画面
             $this->set('alliance_cd', $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd']);
@@ -315,4 +370,70 @@ class RegisterController extends MinikuraController
             return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
         }
     }
+
+	/**
+	* sneakers ユーザーのaccess_key check
+	*/
+	private function _checkSneakersKey($_key)
+	{
+		//* flg	
+		$exist_flg = false;
+		//* sneakers key list
+		$file = TMP . Configure::read(self::SNEAKERS_DIR) . DS . Configure::read(self::SNEAKERS_FILE_KEY_LIST);
+		if (file_exists($file)) {
+			$handle = fopen($file, 'r');
+			if ($handle) { 
+				while ($line = fgets($handle)) {
+					$line_array[] = $line;
+					//* @todo strpos()だけで良いか、桁数checkもやるか 
+					if (strpos($line, $_key) !== false) {
+						//* exist	
+						$exist_flg = true;
+						break;
+					}
+				}
+			}    
+		}
+		return $exist_flg;
+	}
+	/**
+	* sneakers ユーザーのaccess_key 登録済み処理
+	*/
+	private function _postRegisteredSneakersKey($_input_data)
+	{
+		$post_info = false;
+		//* sneakers registered key list
+		$file = TMP . Configure::read(self::SNEAKERS_DIR) . DS . Configure::read(self::SNEAKERS_FILE_REGISTERED_LIST);
+		if (file_exists($file)) {
+			$post_info = file_put_contents($file, $_input_data, FILE_APPEND | LOCK_EX);
+		}
+		return $post_info;
+	}
+
+	/**
+	* sneakers ユーザーのaccess_keyが登録済みかcheck
+	*/
+	private function _checkRegisteredSneakersKey($_key)
+	{
+		//* flg	
+		$registered_flg = false;
+		//* sneakers key list
+		$file = TMP . Configure::read(self::SNEAKERS_DIR) . DS . Configure::read(self::SNEAKERS_FILE_REGISTERED_LIST);
+		if (file_exists($file)) {
+			$handle = fopen($file, 'r');
+			if ($handle) { 
+				while ($line = fgets($handle)) {
+					$line_array[] = $line;
+					//* @todo strpos()だけで良いか、桁数checkもやるか 
+					if (strpos($line, $_key) !== false) {
+						//* exist	
+						$registered_flg = true;
+						break;
+					}
+				}
+			}    
+		}
+		return $registered_flg;
+	}
+	
 }
