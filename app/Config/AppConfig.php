@@ -29,8 +29,11 @@ $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
  *  @todo oem_keyが決まり次第  EnvConfig/Staging, EnvConfig/Productionにも同様に設定する 
  *  @todo alliance_cdが決まり次第 
  */
-$config['api.sneakers.oem_key'] = 'qxjvrvsljn9t5L5X_8jgNjze.99Qq89POiJjQCXOy5ndirHHWgbwXN9DjNCRJuLWOfdDtYhVUTA-';
+$config['api.sneakers.oem_key'] = '1gI.NKWGSgpMzJevM3PNJLvKrbzcVkIvE_WQMIJ_ij.AH.8z_Vd.J29tPSClUn1HUDfLhYrPnuE-';
 $config['api.sneakers.alliance_cd'] = 'sneakers';
+$config['api.sneakers.dir'] = 'sneakers';
+$config['api.sneakers.file.key_list'] = 'sneakers_key_list.txt';
+$config['api.sneakers.file.registered_list'] = 'registered_list.txt';
 
 // タイムアウト（秒）
 $config['api.timeout'] = 30;
