@@ -288,4 +288,14 @@ class CustomerComponent extends Component
             }
         }
     }
+	public function isSneaker()
+	{
+        if ($this->isLogined()) {
+			$oem_cd = $this->getInfo()['oem_cd'];
+			if ($oem_cd === Configure::read('api.sneakers.alliance_cd')) {
+				return true;	
+			}
+        }
+        return false;
+	}
 }

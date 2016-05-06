@@ -236,6 +236,8 @@ class RegisterController extends MinikuraController
 		}
 		//* Formにhiddenでset
         $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+		//* loginはこちらリンク logo切り替え用
+        $this->set('code', $code);
 
         //* sneakers key  sneakersのLPから遷移するorエラー時にredirectで
         $key = Hash::get($this->request->query, 'key');
@@ -398,7 +400,7 @@ class RegisterController extends MinikuraController
 		$exist_flg = false;
 		//* sneakers key list
 		$file = TMP . Configure::read(self::SNEAKERS_DIR) . DS . Configure::read(self::SNEAKERS_FILE_KEY_LIST);
-		if (file_exists($file)) {
+		if (file_exists($file) && ! empty($_key)) {
 			$handle = fopen($file, 'r');
 			if ($handle) { 
 				while ($line = fgets($handle)) {

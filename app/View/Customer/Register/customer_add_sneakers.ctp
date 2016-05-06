@@ -9,7 +9,7 @@
   <?php endif; ?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-keyboard-o"></i> ユーザー登録[sneakers]</h1>
+        <h2 class="page-header"><i class="fa fa-keyboard-o"></i> minikuraSNEAKERSユーザー登録</h2>
       </div>
     </div>
     <div class="row">
@@ -47,7 +47,7 @@
                   minikura 利用規約に同意する </label>
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録</button>
-              <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>
+              <a class="btn btn-primary btn-xs btn-block" href="/login?code=<?php echo $code;?>&key=<?php echo $key;?>">ログインはこちら</a>
             </div>
           <?php echo $this->Form->end(); ?>
           </div>

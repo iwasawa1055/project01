@@ -48,8 +48,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><img class="logo" src="/images/logo.png" alt="minikura"></a>
+      <?php if (in_array($this->action, Configure::read('api.sneakers.action_name'))) : ?>
+        <?php echo $this->element('sneakers_header_logo'); ?>
+      <?php elseif (!empty($customer) && $customer->isSneaker()) : ?>
+        <?php echo $this->element('sneakers_header_logo'); ?>
+      <?php elseif (!empty($code) && $code ===  Configure::read('api.sneakers.alliance_cd')) : ?>
+        <?php echo $this->element('sneakers_header_logo'); ?>
+      <?php else : ?>
+        <?php echo $this->element('default_header_logo'); ?>
+      <?php endif; ?>
     </div>
+
     <?php if (!empty($customer) && $customer->isLogined()) : ?>
       <?php echo $this->element('navbar_right'); ?>
       <?php echo $this->element('sidebar'); ?>
