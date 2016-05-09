@@ -118,7 +118,7 @@ class OutboundController extends MinikuraController
         // 対象ボックス一覧
         $where = [
             'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
-            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK],
+            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_SNEAKERS],
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
@@ -161,6 +161,7 @@ class OutboundController extends MinikuraController
                 PRODUCT_CD_HAKO,
                 PRODUCT_CD_CLEANING_PACK,
                 PRODUCT_CD_SHOES_PACK,
+                PRODUCT_CD_SNEAKERS,
             ]
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
@@ -203,9 +204,11 @@ class OutboundController extends MinikuraController
                 PRODUCT_CD_HAKO,
                 PRODUCT_CD_CLEANING_PACK,
                 PRODUCT_CD_SHOES_PACK,
+                PRODUCT_CD_SNEAKERS,
             ]
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
+
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
@@ -266,7 +269,6 @@ class OutboundController extends MinikuraController
 
         if ($this->request->is('post')) {
             $data = $this->request->data;
-
             // 届け先追加を選択の場合は追加画面へ遷移
             if (Hash::get($data, 'Outbound.address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
@@ -278,6 +280,7 @@ class OutboundController extends MinikuraController
 
             // product
             $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
+
             // お届け先
             $addressId = $data['Outbound']['address_id'];
             $address = $this->Address->find($addressId);
@@ -286,6 +289,7 @@ class OutboundController extends MinikuraController
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 
             $this->Outbound->set($data);
+
             if ($this->Outbound->validates()) {
                 // 表示ラベル
                 $address = $this->Address->find($addressId);
@@ -295,6 +299,7 @@ class OutboundController extends MinikuraController
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
             } else {
+
                 // お届け希望日と時間
                 $dateItemList = [];
                 if (!empty($postal)) {
@@ -304,6 +309,7 @@ class OutboundController extends MinikuraController
                 return $this->render('index');
             }
         }
+
     }
 
     /**

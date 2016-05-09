@@ -63,6 +63,7 @@ const KIT_CD_MONO_BOOK = '82';
 const KIT_CD_WINE_HAKO = '77';
 const KIT_CD_WINE_MONO = '83';
 const KIT_CD_CLEANING_PACK = '75';
+const KIT_CD_SNEAKERS = '120';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -71,7 +72,7 @@ const PRODUCT_CD_CARGO_JIBUN = '005090';
 const PRODUCT_CD_CARGO_HITOMAKASE = '005100';
 const PRODUCT_CD_CLEANING_PACK = '004029';
 const PRODUCT_CD_SHOES_PACK = '005000';
-const PRODUCT_CD_SNEAKERS = '004025'; // todo: 暫定値のため後で正規の値を入れる必要がある
+const PRODUCT_CD_SNEAKERS = '005310';
 
 // box_status, item_status
 // キット購入・依頼
@@ -103,6 +104,7 @@ const KIT_OPTION = [
     KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
     KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
     KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
+//    KIT_CD_SNEAKERS => ['XX' => 'スニーカーシュリンク処置'], // todo: 検討中
 ];
 
 const KIT_NAME = [
@@ -115,6 +117,7 @@ const KIT_NAME = [
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
     KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
+    KIT_CD_SNEAKERS => 'minikura SNEAKERS KIT',
 ];
 
 const PRODUCT_NAME = [
@@ -124,6 +127,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_SHOES_PACK => 'minikuraシューズパック',
     PRODUCT_CD_CARGO_JIBUN => 'minikura CARGO じぶんで',
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
+    PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -154,7 +158,7 @@ const INQUIRY_DIVISION = [
 
 const OEM_CD_LIST = [
     'minikura' => '',
-    'sneakers' => 'sneakers', // todo: 暫定設置
+    'sneakers' => 'sneakers',
 ];
 
 const IN_USE_SERVICE = [
@@ -190,7 +194,7 @@ const IN_USE_SERVICE = [
             'product_cd' => PRODUCT_CD_SHOES_PACK,
         ],
     ],
-    'nike' => [
+    'sneakers' => [
         [
             'product' => 'sneakers',
             'name' => 'SNEAKERS',

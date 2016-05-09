@@ -15,8 +15,8 @@
                 <div class="panel panel-default">
                   <div class="panel-heading mono-box">
                     <h3>SNEAKERS</h3>
-                    <p class="help-block">月額保管料：250円/月</p>
-                    <p class="help-block">ボックス代金：250円</p>
+                    <p class="help-block">月額保管料：800円/月</p>
+                    <p class="help-block">ボックス代金：800円</p>
                   </div>
                   <div class="panel-body">
                     <div class="col-lg-4 col-md-12">
@@ -24,27 +24,7 @@
                         <div class="panel-body">
                           <div class="form-group">
                             <label>レギュラーボックス</label>
-                            <?php echo $this->Form->select('OrderKit.mono_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                      <div class="panel panel-default">
-                        <div class="panel-body">
-                          <div class="form-group">
-                            <label>アパレルボックス</label>
-                            <?php echo $this->Form->select('OrderKit.mono_appa_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                      <div class="panel panel-default">
-                        <div class="panel-body">
-                          <div class="form-group">
-                            <label>ブックボックス</label>
-                            <?php echo $this->Form->select('OrderKit.mono_book_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                            <?php echo $this->Form->select('OrderKit.sneakers_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                           </div>
                         </div>
                       </div>
@@ -54,7 +34,7 @@
               </div>
             </div>
             <div class="col-lg-12 col-md-12">
-              <?php echo $this->Form->error('OrderKit.mono_num', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('OrderKit.sneakers_num', null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('OrderKit.hako_num', null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('OrderKit.cleaning_num', null, ['wrap' => 'p']) ?>
             </div>

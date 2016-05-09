@@ -17,7 +17,7 @@
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <?php foreach(IN_USE_SERVICE['nike'] as $v):?>
+            <?php foreach(IN_USE_SERVICE['sneakers'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
                 <li> <a href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-tag fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
               <?php endif;?>
