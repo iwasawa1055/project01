@@ -38,6 +38,8 @@ if ($action === 'customer_add') {
                   <label>電話番号</label>
                   <p><?php echo $this->Form->data['CustomerInfo']['tel1']; ?></p>
                 </div>
+              <?php if ($customer->isPrivateCustomer()) : ?>
+                <?php // 個人 ?>
                 <div class="form-group col-lg-12">
                   <label>名前</label>
                   <p><?php echo $this->CustomerInfo->setName($this->Form->data['CustomerInfo']); ?></p>
@@ -50,6 +52,25 @@ if ($action === 'customer_add') {
                     <label>性別</label>
                     <p><?php echo CUSTOMER_GENDER[$this->Form->data['CustomerInfo']['gender']] ?></p>
                 </div>
+              <?php else : ?>
+                <?php // 法人 ?>
+                <div class="form-group col-lg-12">
+                  <label>会社名（漢字）</label>
+                  <p><?php echo h($this->Form->data['CustomerInfo']['company_name']); ?></p>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label>会社名（カタカナ）</label>
+                  <p><?php echo h($this->Form->data['CustomerInfo']['company_name_kana']); ?></p>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label>担当者名（漢字）</label>
+                  <p><?php echo h($this->Form->data['CustomerInfo']['staff_name']); ?></p>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label>担当者名（カタカナ）</label>
+                  <p><?php echo h($this->Form->data['CustomerInfo']['staff_name_kana']); ?></p>
+                </div>
+              <?php endif; ?>
                 <div class="form-group col-lg-12">
                   <label>ニュースレターの配信</label>
                   <p><?php echo CUSTOMER_NEWSLETTER[$this->Form->data['CustomerInfo']['newsletter']] ?></p>

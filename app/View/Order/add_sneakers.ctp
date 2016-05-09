@@ -19,11 +19,10 @@
                     <p class="help-block">ボックス代金：800円</p>
                   </div>
                   <div class="panel-body">
-                    <div class="col-lg-4 col-md-12">
-                      <div class="panel panel-default">
+                    <div class="col-lg-12 col-md-12">
+                      <div class="panel-default">
                         <div class="panel-body">
                           <div class="form-group">
-                            <label>レギュラーボックス</label>
                             <?php echo $this->Form->select('OrderKit.sneakers_num', $this->Order->kitOrderNum(), ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
                           </div>
                         </div>

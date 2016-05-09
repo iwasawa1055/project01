@@ -29,6 +29,11 @@ const CUSTOMER_NEWSLETTER = [
 const PAYMENT_METHOD_CREDITCARD = 0; // クレジットカード
 const PAYMENT_METHOD_ACCOUNTTRANSFER = 1; // 口座振替
 
+const PAYMENT_METHOD = [
+    PAYMENT_METHOD_CREDITCARD => 'コーポレートカード',
+    PAYMENT_METHOD_ACCOUNTTRANSFER => '口座振替',
+];
+
 // 支払い口座登録状況
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';
@@ -52,6 +57,7 @@ const CONTACT_DIVISION_OPINION = '3'; // サービスへのご意見・ご相談
 // 通知カテゴリID
 const ANNOUNCEMENT_CATEGORY_ID_RECEIPT = 'INF283';
 const ANNOUNCEMENT_CATEGORY_ID_BILLING = 'INF284';
+const ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT = 'INF080';
 
 // キットコード
 const KIT_CD_HAKO = '64';
@@ -201,4 +207,14 @@ const IN_USE_SERVICE = [
             'product_cd' => PRODUCT_CD_SNEAKERS,
         ],
     ],
+];
+
+const POINT_TYPE = [
+    'VIEW' => 'MONO VIEW オプション',
+    'COP' => 'クリーニングオプション',
+    'DOP' => 'データ化オプション',
+    'WGF' => 'ギフト配送オプション',
+    'SHKO' => '取り出し',
+    'CPC1' => '初回ポイントプレゼント',
+    'GETU' => '月額保管',
 ];

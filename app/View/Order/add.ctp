@@ -120,7 +120,7 @@
               <?php echo $this->Form->error('OrderKit.hako_num', null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('OrderKit.cleaning_num', null, ['wrap' => 'p']) ?>
             </div>
-          <?php if (!$customer->isEntry() && !$customer->isCustomerCreditCardUnregist()) : ?>
+          <?php if (!$customer->isEntry() && !$customer->isCustomerCreditCardUnregist() && !$customer->isCorprateCreditCardUnregist()) : ?>
             <?php if ($customer->isPrivateCustomer() || !$customer->getCorporatePayment()) : ?>
             <div class="form-group col-lg-12">
               <label>カード情報</label>

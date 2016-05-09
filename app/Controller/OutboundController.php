@@ -9,6 +9,8 @@ App::uses('InfoItem', 'Model');
 class OutboundController extends MinikuraController
 {
     const MODEL_NAME = 'Outbound';
+    const MODEL_NAME_POINT_BALANCE = 'PointBalance';
+    const MODEL_NAME_POINT_USE = 'PointUse';
 
     private $outboundList = [];
 
@@ -23,6 +25,8 @@ class OutboundController extends MinikuraController
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
         $this->loadModel('Outbound');
+        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+        $this->loadModel(self::MODEL_NAME_POINT_USE);
 
         // 配送先
         $this->set('addressList', $this->Address->get());
@@ -231,10 +235,22 @@ class OutboundController extends MinikuraController
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
 
+        // ポイント取得
+        $pointBalance = [];
+        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+        $res = $this->PointBalance->apiGet();
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
+        } else {
+            $pointBalance = $res->results[0];
+        }
+        $this->set('pointBalance', $pointBalance);
+
         $dateItemList = [];
 
         $isBack = Hash::get($this->request->query, 'back');
         $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
         if ($isBack && !empty($data)) {
             // 前回追加選択は最後のお届け先を選択
             if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
@@ -247,9 +263,12 @@ class OutboundController extends MinikuraController
             $postal = $address['postal'];
             // お届け希望日と時間
             $dateItemList = $this->getDatetime($postal);
+            // 利用ポイント
+            $this->request->data[self::MODEL_NAME_POINT_USE] = $pointUse[self::MODEL_NAME_POINT_USE];
         }
         $this->set('dateItemList', $dateItemList);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
+        CakeSession::delete(self::MODEL_NAME_POINT_USE);
     }
 
     /**
@@ -288,9 +307,28 @@ class OutboundController extends MinikuraController
 
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 
+            // ポイント取得
+            $pointBalance = [];
+            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+            $res = $this->PointBalance->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+            } else {
+                $pointBalance = $res->results[0];
+            }
+            $this->set('pointBalance', $pointBalance);
+
+            // 利用ポイント
+            $this->PointUse->set($data);
+            // ポイント残高
+            $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $pointBalance['point_balance'];
+
             $this->Outbound->set($data);
 
-            if ($this->Outbound->validates()) {
+            $validOutbound = $this->Outbound->validates();
+            $validPointUse = $this->PointUse->validates();
+            // if ($this->Outbound->validates()) {
+            if ($validOutbound && $validPointUse) {
                 // 表示ラベル
                 $address = $this->Address->find($addressId);
                 $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
@@ -298,6 +336,8 @@ class OutboundController extends MinikuraController
                 $this->set('datetime_text', $datetime['text']);
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
+                CakeSession::write(self::MODEL_NAME_POINT_USE, $this->PointUse->data);
+                $this->set('pointUse', $this->PointUse->data[self::MODEL_NAME_POINT_USE]);
             } else {
 
                 // お届け希望日と時間
@@ -320,6 +360,8 @@ class OutboundController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+        CakeSession::delete(self::MODEL_NAME_POINT_USE);
 
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
@@ -327,13 +369,29 @@ class OutboundController extends MinikuraController
         }
 
         $this->Outbound->set($data);
-        if ($this->Outbound->validates()) {
+        // 利用ポイント
+        $this->PointUse->set($pointUse);
+
+        $validOutbound = $this->Outbound->validates();
+        $validPointUse = $this->PointUse->validates();
+        // if ($this->Outbound->validates()) {
+        if ($validOutbound && $validPointUse) {
             // api
             $res = $this->Outbound->apiPost($this->Outbound->toArray());
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'index']);
             }
+
+            if ($this->PointUse->verifyCallPointUse()) {
+                // ポイント消費
+                $res = $this->PointUse->apiPost($this->PointUse->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'index']);
+                }
+            }
+
             // 取り出しリストクリア
             OutboundList::delete();
             (new InfoBox())->deleteCache();

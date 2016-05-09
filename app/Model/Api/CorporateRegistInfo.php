@@ -2,11 +2,11 @@
 
 App::uses('ApiModel', 'Model');
 
-class CorporateInfo extends ApiModel
+class CorporateRegistInfo extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('CorporateInfo', '/corporate', 'minikura_v5');
+        parent::__construct('CorporateRegistInfo', '/corporate', 'minikura_v5');
     }
 
     protected function triggerDataChanged()
@@ -15,9 +15,12 @@ class CorporateInfo extends ApiModel
         (new Announcement())->deleteCache();
     }
 
-    public function apiPatch($data)
+    public function regist()
     {
-        return parent::apiPut($data);
+        $this->data[$this->model_name]['oem_key'] = $this->oem_key;
+        $responses = $this->request('/corporate', $this->data[$this->model_name], 'POST');
+
+        return $responses;
     }
 
     public $validate = [
@@ -84,6 +87,43 @@ class CorporateInfo extends ApiModel
                 'message' => ['format', 'tel1']
             ],
         ],
+        'email' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'email'],
+             ],
+            'isMailAddress' => [
+                'rule' => 'isMailAddress',
+                'message' => ['format', 'email'],
+            ],
+        ],
+        'password' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'password'],
+             ],
+            'isLoginPassword' => [
+                'rule' => 'isLoginPassword',
+                'message' => ['format', 'password'],
+            ],
+        ],
+        'password_confirm' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'password_confirm'],
+             ],
+            'isLoginPassword' => [
+                'rule' => 'isLoginPassword',
+                'message' => ['format', 'password_confirm'],
+            ],
+            'confirmPassword' => [
+                'rule' => 'confirmPassword',
+                'message' => ['confirm', 'password_confirm'],
+            ],
+        ],
         'postal' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -135,6 +175,17 @@ class CorporateInfo extends ApiModel
                 'message' => ['maxLength', 'address3', 30]
             ],
         ],
+        'payment_method' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'payment_method']
+            ],
+            'allowedChoice' => [
+                'rule' => ['inList', ['0', '1']],
+                'message' => ['format', 'payment_method']
+            ],
+        ],
         'newsletter' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -147,4 +198,13 @@ class CorporateInfo extends ApiModel
             ],
         ],
     ];
+
+    public function confirmPassword()
+    {
+        if ($this->data[$this->model_name]['password'] !== $this->data[$this->model_name]['password_confirm']) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

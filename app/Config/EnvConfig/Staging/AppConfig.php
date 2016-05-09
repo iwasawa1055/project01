@@ -11,6 +11,8 @@ $config['site.top_page'] = 'https://' . $_SERVER['HTTP_HOST'];
 $config['site.static_content_url'] = 'https://b-www.minikura.com';
 // 環境文字列（development, staging, production）
 $config['site.env_name'] = 'staging';
+// sneakers top page
+$config['site.sneakers.static_content_url'] = 'https://b-www.minikura.com/contents/sneakers/';
 
 /**
  * エラー表示

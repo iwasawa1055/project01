@@ -116,6 +116,8 @@ class CustomerComponent extends Component
         if ($this->isLogined()) {
             if ($this->isPrivateCustomer()) {
                 $model = new CustomerInfoV3();
+            } else {
+                $model = new CorporateInfo();
             }
         }
         if (!empty($model)) {
@@ -205,11 +207,21 @@ class CustomerComponent extends Component
         }
         return false;
     }
+    public function isCorprateCreditCardUnregist()
+    {
+        # 法人ユーザー、本登録ユーザー、コーポレートカード、カード登録なし
+        if (!$this->isEntry() && !$this->isPrivateCustomer()
+            && empty($this->getCorporatePayment()) && !$this->hasCreditCard()) {
+            return true;
+        }
+        return false;
+    }
 
     public function canOrderKit()
     {
-        if ($this->isCustomerCreditCardUnregist()) {
+        if ($this->isCustomerCreditCardUnregist() || $this->isCorprateCreditCardUnregist()) {
             # 個人ユーザー、本登録ユーザー、カード登録なし
+            # 法人ユーザー、本登録ユーザー、コーポレートカード、カード登録なし
             return true;
         }
         if (!$this->isEntry() &&
@@ -276,4 +288,14 @@ class CustomerComponent extends Component
             }
         }
     }
+	public function isSneaker()
+	{
+        if ($this->isLogined()) {
+			$oem_cd = $this->getInfo()['oem_cd'];
+			if ($oem_cd === Configure::read('api.sneakers.alliance_cd')) {
+				return true;	
+			}
+        }
+        return false;
+	}
 }

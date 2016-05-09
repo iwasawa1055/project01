@@ -9,6 +9,11 @@ $(function() {
 
   $('form').submit(function() {
     $('button[type=submit]', this).attr('disabled', 'true');
+    if ($('button[type=submit]', this).hasClass('submit_after_restore')) {
+      setTimeout(function() {
+        $('button.submit_after_restore').attr('disabled', false);
+      }, 1000);
+    }
   });
 
   $('select.select-add-address').change(function() {

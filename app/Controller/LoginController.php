@@ -53,7 +53,13 @@ class LoginController extends MinikuraController
         } else if ($this->Customer->isLogined()) {
             // ログイン済
             return $this->redirect(['controller' => 'MyPage', 'action' => 'index']);
-        }
+        } else {
+			// 未ログイン add_sneakersから遷移時 logo切り替え 
+			$code = Hash::get($this->request->query, 'code');
+			$key = Hash::get($this->request->query, 'key');
+			$this->set('code', $code);
+			$this->set('key', $key);
+		}
     }
 
     public function logout()

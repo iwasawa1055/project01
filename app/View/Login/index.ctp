@@ -20,7 +20,11 @@
               <button type="submit" class="btn btn-danger btn-lg btn-block">ログイン</button>
             <?php echo $this->Form->end(); ?>
               <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset">パスワードを忘れた方はこちら</a>
+            <?php if (!empty($code) && $code ===  Configure::read('api.sneakers.alliance_cd')) : ?>
+              <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add_sneakers?key=<?php echo $key;?>">ユーザー登録はこちら</a>
+            <?php else : ?>
               <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add">ユーザー登録はこちら</a>
+            <?php endif; ?>
             </div>
           </div>
         </div>
