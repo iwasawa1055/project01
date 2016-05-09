@@ -26,8 +26,15 @@ error_reporting(E_ALL);
 /**
  * API設定
  */
+
+ /* 基本 stagを見る
 $config['api.minikura.oem_key'] = '_QfNQL67x7RiIUbzn_1hkAEGKmlLO04we5rizUemfoWVLOjcEpIDDQ--';
 $url = 'https://stag-api.minikura.com';
+*/
+//* sneakers　テスト a環境を見る
+$config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+$url = 'https://a-api.minikura.com';
+
 $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
