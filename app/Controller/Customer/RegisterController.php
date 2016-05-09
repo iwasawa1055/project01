@@ -424,9 +424,7 @@ class RegisterController extends MinikuraController
 		$post_info = false;
 		//* sneakers registered key list
 		$file = TMP . Configure::read(self::SNEAKERS_DIR) . DS . Configure::read(self::SNEAKERS_FILE_REGISTERED_LIST);
-		if (file_exists($file)) {
-			$post_info = file_put_contents($file, $_input_data, FILE_APPEND | LOCK_EX);
-		}
+		$post_info = file_put_contents($file, $_input_data, FILE_APPEND | LOCK_EX);
 		return $post_info;
 	}
 

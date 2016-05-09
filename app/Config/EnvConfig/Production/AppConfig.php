@@ -31,6 +31,11 @@ $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
 
+/**
+ * nike_snkrs用
+ */
+$config['api.sneakers.oem_key'] = '';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');
