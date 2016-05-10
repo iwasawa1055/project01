@@ -228,7 +228,7 @@ class ApiCachedModel extends ApiModel
                 // キャッシュ削除し例外発生
                 $message = get_class($this) . ', call parent::apiGet(), result: ' . $apiRes->message;
                 self::deleteCache();
-                new AppInternalCritical($message, 500);
+                new AppInternalCritical($message, $apiRes->http_code);
                 return $apiRes;
             }
             $addList = $apiRes->results;
