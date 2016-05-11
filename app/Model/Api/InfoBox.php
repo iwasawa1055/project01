@@ -7,14 +7,22 @@ class InfoBox extends ApiCachedModel
 {
     const SESSION_CACHE_KEY = 'INFO_BOX_CACHE';
 
-
-
     const DEFAULTS_SORT_KEY = [
         'product_cd' => true,
         'kit_cd' => true,
         'box_id' => true,
         'box_name' => true,
         'box_status' => true,
+    ];
+
+    const BOXTITLE_CHAR_SEARCH = [
+        ':',
+        ',',
+    ];
+
+    const BOXTITLE_CHAR_REPLACE = [
+        '：',
+        '，'
     ];
 
     public function __construct()
@@ -149,5 +157,10 @@ class InfoBox extends ApiCachedModel
         $sortKey = ['inbound_date' => false];
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
+    }
+
+    public static function replaceBoxtitleChar($title)
+    {
+        return str_replace(self::BOXTITLE_CHAR_SEARCH, self::BOXTITLE_CHAR_REPLACE, $title);
     }
 }
