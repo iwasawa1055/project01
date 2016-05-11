@@ -26,16 +26,15 @@ error_reporting(E_ALL);
 /**
  * API設定
  */
-
- /* 基本 stagを見る
+//* 通常は b-api 参照
 $config['api.minikura.oem_key'] = '_QfNQL67x7RiIUbzn_1hkAEGKmlLO04we5rizUemfoWVLOjcEpIDDQ--';
-$config['api.sneakers.oem_key'] = ''; //b環境が決まり次第
-$url = 'https://stag-api.minikura.com';
-*/
-//* sneakers　テスト a環境を見る
-$config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
-$config['api.sneakers.oem_key'] = '1gI.NKWGSgpMzJevM3PNJLvKrbzcVkIvE_WQMIJ_ij.AH.8z_Vd.J29tPSClUn1HUDfLhYrPnuE-';
-$url = 'https://a-api.minikura.com';
+$config['api.sneakers.oem_key'] = ''; 
+$url = 'https://b-api.minikura.com';
+
+//* 開発結合テスト用 a-api 参照
+//$config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+//$config['api.sneakers.oem_key'] = '1gI.NKWGSgpMzJevM3PNJLvKrbzcVkIvE_WQMIJ_ij.AH.8z_Vd.J29tPSClUn1HUDfLhYrPnuE-';
+//$url = 'https://a-api.minikura.com';
 
 $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
