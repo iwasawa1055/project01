@@ -308,7 +308,9 @@ a:hover {
 }
 .sneakers_logo {
 	width: 210px;
-	height: 32px;
+}
+.msneakers {
+	padding-left: 20px;
 }
 .fa-fw {
 	line-height: 2.8;

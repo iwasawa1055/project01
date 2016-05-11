@@ -1,6 +1,6 @@
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="page-header"><i class="fa fa-keyboard-o"></i> minikuraSNEAKERSユーザー登録</h2>
+        <h3 class="page-header"><i class="fa fa-keyboard-o"></i> minikuraSNEAKERS<br>ユーザー登録</h3>
       </div>
     </div>
     <div class="row">
