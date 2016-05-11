@@ -4,7 +4,7 @@
 /app/tmp/logs
 /app/tmp/sessions
 /app/tmp/cache
-/app/tmp/sneakers
+/app/tmp/sneakers/registered_list.txt
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors
