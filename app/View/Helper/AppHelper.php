@@ -20,6 +20,7 @@
  */
 
 App::uses('Helper', 'View');
+App::uses('InfoBox', 'Model');
 
 /**
  * Application helper
@@ -65,5 +66,10 @@ class AppHelper extends Helper
             return $date;
         }
         return "{$ymd[0]}年{$ymd[1]}月{$ymd[2]}日";
+    }
+
+    public function replaceBoxtitleChar($title)
+    {
+        return InfoBox::replaceBoxtitleChar($title);
     }
 }
