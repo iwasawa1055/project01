@@ -121,6 +121,9 @@ class BoxController extends MinikuraController
                 return $this->render('edit');
             }
 
+            // 「半角コロンまたはカンマ」をそれぞれ全角に自動変換
+            $this->Box->data['Box']['box_name'] = $this->InfoBox->replaceBoxtitleChar($this->Box->data['Box']['box_name']);
+
             $res = $this->Box->apiPatch($this->Box->toArray());
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
