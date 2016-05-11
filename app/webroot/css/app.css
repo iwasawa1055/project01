@@ -355,6 +355,10 @@ a:hover {
 	padding-left: 20px;
 }
 
+.page-header p{
+	margin-left: 1.2em;
+}
+
 .nav>li>a:focus,
 .nav>li>a:hover {
 	text-decoration: none;
