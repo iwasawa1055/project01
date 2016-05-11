@@ -44,7 +44,8 @@ class InboundComponent extends Component
         $kitCd = self::getDefualt($item, 'kit_cd');
         $productCd = InfoBox::kitCd2ProductCd($kitCd);
         $boxId = self::getDefualt($item, 'box_id');
-        $title = self::getDefualt($item, 'title');
+        // 「半角コロンまたはカンマ」をそれぞれ全角に自動変換
+        $title = InfoBox::replaceBoxtitleChar(self::getDefualt($item, 'title'));
         $option = self::getDefualt($item, 'option');
         return "${productCd}:${boxId}:${title}:${option}";
     }
