@@ -309,9 +309,6 @@ a:hover {
 .sneakers_logo {
 	width: 210px;
 }
-.msneakers {
-	padding-left: 20px;
-}
 .fa-fw {
 	line-height: 2.8;
 }
@@ -353,6 +350,11 @@ a:hover {
 	padding: 25px 5px 5px 50px;
 	height: 76px;
 }
+
+.msneakers {
+	padding-left: 20px;
+}
+
 .nav>li>a:focus,
 .nav>li>a:hover {
 	text-decoration: none;
