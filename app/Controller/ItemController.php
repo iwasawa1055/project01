@@ -39,7 +39,8 @@ class ItemController extends MinikuraController
             // 'item_group_cd' => __('item_group_cd'),
         ];
 
-        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud'));
+        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
+        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud', 1));
         $page = $this->request->query('page');
         $data = [];
         foreach ($selectSortKeys as $key => $value) {
@@ -59,8 +60,9 @@ class ItemController extends MinikuraController
     {
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
+        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
         $withOutboudDone = true;
-        if (!empty(Hash::get($this->request->query, 'hide_outboud'))) {
+        if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
             $withOutboudDone = false;
         }
         $results = $this->InfoItem->getListForServiced($sortKey, [], $withOutboudDone);

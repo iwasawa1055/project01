@@ -32,7 +32,8 @@ class BoxController extends MinikuraController
             'box_status' => __('box_status')
         ];
 
-        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud'));
+        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
+        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud', 1));
         $product = $this->request->query('product');
         $page = $this->request->query('page');
         $data = [];
@@ -51,8 +52,9 @@ class BoxController extends MinikuraController
      */
     public function index()
     {
+        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
         $withOutboudDone = true;
-        if (!empty(Hash::get($this->request->query, 'hide_outboud'))) {
+        if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
             $withOutboudDone = false;
         }
         // 商品指定
