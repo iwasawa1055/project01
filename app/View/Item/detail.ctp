@@ -53,7 +53,7 @@
                         <?php endif; ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">
-                            <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToAuction; ?>">ヤフオク!に出品</a>
+                            <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToAuction; ?>" target="_blank">ヤフオク!に出品</a>
                         </span>
                         <?php endif; ?>
                       </div>
