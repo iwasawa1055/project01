@@ -39,7 +39,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
 <!-- End Google Tag Manager -->
-<div id="wrapper" class="animsition" data-animsition-in-class="fade-in-up-lg" data-animsition-out-class="fade-out-up-lg">
+<div id="wrapper" class="animsition" data-animsition-in-class="fade-in" data-animsition-out-class="fade-out">
   <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
