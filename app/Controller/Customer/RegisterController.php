@@ -245,19 +245,22 @@ class RegisterController extends MinikuraController
         $this->set('key', $key);
 
 		//* sneakers key list 有効性check
-		$exist_flg = $this->_checkSneakersKey($key);
-		//* リストに無い=無効なkey error
-        if ($exist_flg === false) {
-            $this->Flash->set(__('empty_sneakers_key_data'));
-			return $this->render('customer_add_sneakers');
-        }
-		//* keyが登録済みでないか確認
-		$registered_flg = $this->_checkRegisteredSneakersKey($key);
-		//* key登録済みerror
-        if ($registered_flg === true) {
-            $this->Flash->set(__('registered_sneakers_key_data'));
-			return $this->render('customer_add_sneakers');
-        }
+		if (! empty($key)) {
+			$exist_flg = $this->_checkSneakersKey($key);
+			//* リストに無い=無効なkey error
+			if ($exist_flg === false) {
+				$this->Flash->set(__('empty_sneakers_key_data'));
+				return $this->render('customer_add_sneakers');
+			}
+			//* keyが登録済みでないか確認
+			$registered_flg = $this->_checkRegisteredSneakersKey($key);
+			//* key登録済みerror
+			if ($registered_flg === true) {
+				$this->Flash->set(__('registered_sneakers_key_data'));
+				return $this->render('customer_add_sneakers');
+			}
+		
+		}
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
