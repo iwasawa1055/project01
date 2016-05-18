@@ -52,7 +52,8 @@ class OutboundController extends MinikuraController
         $address = $this->Address->find($addressId);
         $result = $this->getDatetime($address['postal']);
         $status = !empty($result);
-        return json_encode(compact('status', 'result'));
+        $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
+        return json_encode(compact('status', 'result', 'isIsolateIsland'));
     }
 
     private function getDatetime($postal)
@@ -229,6 +230,7 @@ class OutboundController extends MinikuraController
         $this->set('itemList', $itemList);
 
         $dateItemList = [];
+        $isIsolateIsland = '';
 
         $isBack = Hash::get($this->request->query, 'back');
         $data = CakeSession::read(self::MODEL_NAME . 'FORM');
@@ -244,8 +246,10 @@ class OutboundController extends MinikuraController
             $postal = $address['postal'];
             // お届け希望日と時間
             $dateItemList = $this->getDatetime($postal);
+            $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
         }
         $this->set('dateItemList', $dateItemList);
+        $this->set('isolateIsland', $isIsolateIsland);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
@@ -286,12 +290,26 @@ class OutboundController extends MinikuraController
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 
             $this->Outbound->set($data);
+pr($this->Outbound->data);
+
+            $isIsolateIsland = false;
+            if (!empty($this->Outbound->data['Outbound']['pref'])) {
+                $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+            }
+
+            // 離島 and 航空搭載不可あり
+            if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
+                $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+                $this->Outbound->validator()->remove('datetime_cd');
+            }
+
             if ($this->Outbound->validates()) {
                 // 表示ラベル
                 $address = $this->Address->find($addressId);
                 $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
                 $datetime = $this->getDatetimeOne($address['postal'], $data['Outbound']['datetime_cd']);
                 $this->set('datetime_text', $datetime['text']);
+                $this->set('isolateIsland', $isIsolateIsland);
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
             } else {
@@ -301,6 +319,7 @@ class OutboundController extends MinikuraController
                     $dateItemList = $this->getDatetime($postal);
                 }
                 $this->set('dateItemList', $dateItemList);
+                $this->set('isolateIsland', $isIsolateIsland);
                 return $this->render('index');
             }
         }
@@ -321,9 +340,33 @@ class OutboundController extends MinikuraController
         }
 
         $this->Outbound->set($data);
+
+        $isIsolateIsland = false;
+        if (!empty($this->Outbound->data['Outbound']['pref'])) {
+            $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+        }
+
+        $existHazmat = false;
+        // 離島 and 航空搭載不可あり
+        if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
+            $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+            $this->Outbound->validator()->remove('datetime_cd');
+            $existHazmat = true;
+        }
+
         if ($this->Outbound->validates()) {
             // api
-            $res = $this->Outbound->apiPost($this->Outbound->toArray());
+            if ($existHazmat) {
+                $this->loadModel('ContactAny');
+                $res = $this->ContactAny->apiPost([
+                    'title' => '（沖縄及び離島）出庫のお申込みを承りました',
+                    'text' => $this->Outbound->data['Outbound']['aircontent'],
+                    'contact_cd' => CONTACTUS_CD_ISOLATEISLANDS,
+                ]);
+            } else {
+                $res = $this->Outbound->apiPost($this->Outbound->toArray());
+            }
+
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'index']);
