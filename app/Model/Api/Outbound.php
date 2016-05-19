@@ -197,5 +197,40 @@ class Outbound extends ApiModel
                 'message' => ['notBlank', 'outboud_datetime'],
             ],
         ],
+        'aircontent_select' => [
+            'checkAirContentSelect' => [
+                'rule' => 'checkAirContentSelect',
+            ],
+        ],
+        'aircontent' => [
+            'checkAirContent' => [
+                'rule' => 'checkAirContent',
+            ],
+        ],
     ];
+
+    public function checkAirContentSelect()
+    {
+        if (empty($this->data[$this->model_name]['pref'])) {
+            return true;
+        }
+        if (in_array($this->data[$this->model_name]['pref'], ISOLATE_ISLANDS) &&
+            !in_array($this->data[$this->model_name]['aircontent_select'], [OUTBOUND_HAZMAT_NOT_EXIST, OUTBOUND_HAZMAT_EXIST])) {
+                return "お届け品の確認は必須です。";
+        }
+        return true;
+    }
+
+    public function checkAirContent()
+    {
+        if (empty($this->data[$this->model_name]['pref'])) {
+            return true;
+        }
+        if (in_array($this->data[$this->model_name]['pref'], ISOLATE_ISLANDS) &&
+            $this->data[$this->model_name]['aircontent_select'] === '1' &&
+            empty($this->data[$this->model_name]['aircontent'])) {
+                return "品目の入力は必須です。";
+        }
+        return true;
+    }
 }

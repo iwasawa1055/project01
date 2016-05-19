@@ -218,3 +218,17 @@ const POINT_TYPE = [
     'CPC1' => '初回ポイントプレゼント',
     'GETU' => '月額保管',
 ];
+
+const ISOLATE_ISLANDS = [
+    '沖縄県',
+];
+
+const OUTBOUND_HAZMAT_NOT_EXIST = '0';
+const OUTBOUND_HAZMAT_EXIST = '1';
+
+const OUTBOUND_HAZMAT = [
+    OUTBOUND_HAZMAT_EXIST => '含まれる',
+    OUTBOUND_HAZMAT_NOT_EXIST => '含まれない',
+];
+
+const CONTACTUS_CD_ISOLATEISLANDS = '090';
