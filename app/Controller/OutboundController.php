@@ -290,7 +290,6 @@ class OutboundController extends MinikuraController
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 
             $this->Outbound->set($data);
-pr($this->Outbound->data);
 
             $isIsolateIsland = false;
             if (!empty($this->Outbound->data['Outbound']['pref'])) {
@@ -358,11 +357,7 @@ pr($this->Outbound->data);
             // api
             if ($existHazmat) {
                 $this->loadModel('ContactAny');
-                $res = $this->ContactAny->apiPost([
-                    'title' => '（沖縄及び離島）出庫のお申込みを承りました',
-                    'text' => $this->Outbound->data['Outbound']['aircontent'],
-                    'contact_cd' => CONTACTUS_CD_ISOLATEISLANDS,
-                ]);
+                $res = $this->ContactAny->apiPostIsolateIsland($this->Outbound->data['Outbound']);
             } else {
                 $res = $this->Outbound->apiPost($this->Outbound->toArray());
             }
