@@ -147,6 +147,11 @@ const INBOUND_CARRIER_DELIVERY = [
     INBOUND_DELIVERY_MANUAL => '自分で発送する',
 ];
 
+const INBOUND_CARRIER_DELIVERY_SNEAKERS = [
+    INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_YAMAYO => 'ヤマト運輸に集荷依頼する',
+    INBOUND_DELIVERY_MANUAL => '自分で発送する',
+];
+
 const CONTACTUS_DIVISION = [
     '8' => 'お知らせについて',
     '11' => '退会について',
