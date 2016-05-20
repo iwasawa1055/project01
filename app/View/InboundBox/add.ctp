@@ -74,7 +74,11 @@ if (!empty($validErrors)) {
           <?php if (!empty($boxList)) : ?>
             <div class="form-group col-lg-12">
               <label>預け入れ方法</label>
-              <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php if($customer->isSneaker()):?>
+                <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY_SNEAKERS, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php else:?>
+                <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php endif;?>
               <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
