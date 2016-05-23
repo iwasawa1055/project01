@@ -85,7 +85,7 @@ class AnnouncementController extends MinikuraController
                     $res = $receiptDetail->apiGet([
                         'announcement_id' => $id
                     ]);
-                    if ($res->isSuccess() || count($res->results) === 1) {
+                    if ($res->isSuccess() && count($res->results) === 1) {
                         $date = str_replace('-', '', $res->results[0]['receipted']);
                         $name = "minikura.comキット購入領収書_{$date}.pdf";
                         $binary = base64_decode($res->results[0]['receipt_data']);
@@ -95,7 +95,8 @@ class AnnouncementController extends MinikuraController
                         $this->response->body($binary);
                         return;
                     } else {
-                        $this->Flash->set($res->error_message);
+                        // $this->Flash->set($res->error_message);
+                        $this->Flash->set('領収証を発行できません。お問い合わせフォームにて領収証発行を依頼ください。');
                     }
                 }
             }
