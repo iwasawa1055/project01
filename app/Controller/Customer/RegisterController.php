@@ -261,7 +261,6 @@ class RegisterController extends MinikuraController
 			}
 		
 		}
-
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
             $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
@@ -289,14 +288,18 @@ class RegisterController extends MinikuraController
 		//* リストに無い=無効なkey error
         if ($exist_flg === false) {
             $this->Flash->set(__('empty_sneakers_key_data'));
-            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+            $this->request->data[self::MODEL_NAME]['password'] = '';
+            $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
+			return $this->render('customer_add_sneakers');
         }
 		//* keyが登録済みでないか確認 
 		$registered_flg = $this->_checkRegisteredSneakersKey($key);
 		//* key登録済みerror
         if ($registered_flg === true) {
             $this->Flash->set(__('registered_sneakers_key_data'));
-            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+            $this->request->data[self::MODEL_NAME]['password'] = '';
+            $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
+			return $this->render('customer_add_sneakers');
         }
 
         $this->loadModel(self::MODEL_NAME);
@@ -369,7 +372,6 @@ class RegisterController extends MinikuraController
 			*  UserAPIの変更が可能になれば、ここはloginで済む事になる。
 			*　=>UserAPIを変更したので、minikuraのoem_keyでログインしてもsneakersを認識できるようになっている
 			*/
-            //$res = $this->CustomerLogin->login_sneakers();
             $res = $this->CustomerLogin->login();
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
@@ -408,8 +410,8 @@ class RegisterController extends MinikuraController
 			if ($handle) { 
 				while ($line = fgets($handle)) {
 					$line_array[] = $line;
-					//* @todo strpos()だけで良いか、桁数checkもやるか 
-					if (strpos($line, $_key) !== false) {
+					//* strpos() && 桁数check 
+					if (strpos($line, $_key) !== false && mb_strlen($_key) === 8) {
 						//* exist	
 						$exist_flg = true;
 						break;
@@ -445,8 +447,8 @@ class RegisterController extends MinikuraController
 			if ($handle) { 
 				while ($line = fgets($handle)) {
 					$line_array[] = $line;
-					//* @todo strpos()だけで良いか、桁数checkもやるか 
-					if (strpos($line, $_key) !== false) {
+					//* strpos() & 桁数check 
+					if (strpos($line, $_key) !== false && mb_strlen($_key) === 8) {
 						//* exist	
 						$registered_flg = true;
 						break;

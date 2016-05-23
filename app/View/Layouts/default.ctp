@@ -60,7 +60,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
 
     <?php if (!empty($customer) && $customer->isLogined()) : ?>
-      <?php if($customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) : ?>
+      <?php if($customer->isSneaker()) : ?>
         <?php echo $this->element('navbar_right'); ?>
         <?php echo $this->element('sidebar_sneakers'); ?>
       <?php else:?>
