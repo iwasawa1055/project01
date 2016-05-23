@@ -54,10 +54,12 @@
                 </div>
               </div>
             </div>
+            <?php if(!$customer->isSneaker()) : ?>
             <div class="form-group col-lg-12">
               <label>ご利用ポイント</label>
               <p class="form-control-static"><?php echo empty($pointUse['use_point']) ? '0' : $pointUse['use_point']; ?> ポイント</p>
             </div>
+            <?php endif; ?>
             <div class="form-group col-lg-12">
               <label>お届け先住所</label>
               <p class="form-control-static"><?php echo h($address_text); ?></p>

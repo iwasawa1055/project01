@@ -55,6 +55,7 @@
       </div>
     </div>
     <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
+    <?php if(!$customer->isSneaker()) : ?>
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
@@ -85,6 +86,9 @@
         </div>
       </div>
     </div>
+    <?php else : ?>
+      <?php echo $this->Form->hidden("PointUse.use_point", ['value' => '0']); ?>
+    <?php endif; ?>
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="form-group col-lg-12">
