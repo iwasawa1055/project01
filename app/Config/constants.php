@@ -214,6 +214,8 @@ const IN_USE_SERVICE = [
     ],
 ];
 
+const POINT_TYPE_GETU = 'GETU';
+
 const POINT_TYPE = [
     'VIEW' => 'MONO VIEW オプション',
     'COP' => 'クリーニングオプション',
@@ -221,7 +223,7 @@ const POINT_TYPE = [
     'WGF' => 'ギフト配送オプション',
     'SHKO' => '取り出し',
     'CPC1' => '初回ポイントプレゼント',
-    'GETU' => '月額保管',
+    POINT_TYPE_GETU => '月額保管',
 ];
 
 const ISOLATE_ISLANDS = [
