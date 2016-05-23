@@ -256,7 +256,7 @@ class RegisterController extends MinikuraController
 			$registered_flg = $this->_checkRegisteredSneakersKey($key);
 			//* key登録済みerror
 			if ($registered_flg === true) {
-				$this->Flash->set(__('registered_sneakers_key_data'));
+				$this->Flash->set(__('empty_sneakers_key_data'));
 				return $this->render('customer_add_sneakers');
 			}
 		
@@ -296,7 +296,7 @@ class RegisterController extends MinikuraController
 		$registered_flg = $this->_checkRegisteredSneakersKey($key);
 		//* key登録済みerror
         if ($registered_flg === true) {
-            $this->Flash->set(__('registered_sneakers_key_data'));
+            $this->Flash->set(__('empty_sneakers_key_data'));
             $this->request->data[self::MODEL_NAME]['password'] = '';
             $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
 			return $this->render('customer_add_sneakers');
@@ -343,7 +343,7 @@ class RegisterController extends MinikuraController
 		$registered_flg = $this->_checkRegisteredSneakersKey($key);
 		//* key登録済みerror
         if ($registered_flg === true) {
-            $this->Flash->set(__('registered_sneakers_key_data'));
+            $this->Flash->set(__('empty_sneakers_key_data'));
             return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
         }
 
