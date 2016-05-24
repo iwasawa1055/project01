@@ -86,8 +86,8 @@ class AnnouncementController extends MinikuraController
                         'announcement_id' => $id
                     ]);
                     if ($res->isSuccess() && count($res->results) === 1) {
-                        $date = str_replace('-', '', $res->results[0]['receipted']);
-                        $name = "minikura.comキット購入領収書_{$date}.pdf";
+                        $timelyReceiptId = $res->results[0]['timely_receipt_id'];
+                        $name = "receipt{$timelyReceiptId}.pdf";
                         $binary = base64_decode($res->results[0]['receipt_data']);
                         $this->autoRender = false;
                         $this->response->type('pdf');
