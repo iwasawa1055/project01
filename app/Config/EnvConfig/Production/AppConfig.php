@@ -35,7 +35,7 @@ $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 /**
  * nike_snkrs用
  */
-$config['api.sneakers.oem_key'] = '';
+$config['api.sneakers.oem_key'] = 'ABSJCmGg6Uwm4m9031AbHtaeELCC3q10je0ZvTdfVDYp_x8Hzb8sCmgAQdtnmJ.QIX7HfB.hNKo-';
 
 //*** Log
 // 不要なログはDropします。
