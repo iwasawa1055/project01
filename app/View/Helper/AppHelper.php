@@ -72,4 +72,17 @@ class AppHelper extends Helper
     {
         return InfoBox::replaceBoxtitleChar($title);
     }
+
+    public function formatPointType($history)
+    {
+        $pointType = Hash::get(POINT_TYPE, $history['point_type']);
+        if (empty($pointType)) {
+            return '';
+        }
+        if ($history['point_type'] === POINT_TYPE_GETU) {
+            $ym = explode('-', $history['note']);
+            return 2 <= count($ym) ? "{$ym[0]}年{$ym[1]}月　{$pointType}" : $history['note'];
+        }
+        return $pointType;
+    }
 }

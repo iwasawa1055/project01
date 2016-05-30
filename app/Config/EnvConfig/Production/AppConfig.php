@@ -9,6 +9,8 @@ $config['site.top_page'] = 'https://' . $_SERVER['HTTP_HOST'];
 $config['site.static_content_url'] = 'https://minikura.com';
 // 環境文字列（development, staging, production）
 $config['site.env_name'] = 'production';
+// sneakers top page
+$config['site.sneakers.static_content_url'] = 'https://minikura.com/contents/sneakers/';
 
 /**
  * エラー表示
@@ -28,6 +30,12 @@ $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikur
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+$config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+
+/**
+ * nike_snkrs用
+ */
+$config['api.sneakers.oem_key'] = '';
 
 //*** Log
 // 不要なログはDropします。

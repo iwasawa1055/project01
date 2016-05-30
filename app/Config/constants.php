@@ -29,6 +29,11 @@ const CUSTOMER_NEWSLETTER = [
 const PAYMENT_METHOD_CREDITCARD = 0; // クレジットカード
 const PAYMENT_METHOD_ACCOUNTTRANSFER = 1; // 口座振替
 
+const PAYMENT_METHOD = [
+    PAYMENT_METHOD_CREDITCARD => 'コーポレートカード',
+    PAYMENT_METHOD_ACCOUNTTRANSFER => '口座振替',
+];
+
 // 支払い口座登録状況
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';
@@ -52,6 +57,7 @@ const CONTACT_DIVISION_OPINION = '3'; // サービスへのご意見・ご相談
 // 通知カテゴリID
 const ANNOUNCEMENT_CATEGORY_ID_RECEIPT = 'INF283';
 const ANNOUNCEMENT_CATEGORY_ID_BILLING = 'INF284';
+const ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT = 'INF080';
 
 // キットコード
 const KIT_CD_HAKO = '64';
@@ -63,6 +69,7 @@ const KIT_CD_MONO_BOOK = '82';
 const KIT_CD_WINE_HAKO = '77';
 const KIT_CD_WINE_MONO = '83';
 const KIT_CD_CLEANING_PACK = '75';
+const KIT_CD_SNEAKERS = '120';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -71,6 +78,7 @@ const PRODUCT_CD_CARGO_JIBUN = '005090';
 const PRODUCT_CD_CARGO_HITOMAKASE = '005100';
 const PRODUCT_CD_CLEANING_PACK = '004029';
 const PRODUCT_CD_SHOES_PACK = '005000';
+const PRODUCT_CD_SNEAKERS = '005310';
 
 // box_status, item_status
 // キット購入・依頼
@@ -102,6 +110,7 @@ const KIT_OPTION = [
     KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
     KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
     KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
+//    KIT_CD_SNEAKERS => ['XX' => 'スニーカーシュリンク処置'], // todo: 検討中
 ];
 
 const KIT_NAME = [
@@ -114,6 +123,7 @@ const KIT_NAME = [
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
     KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
+    KIT_CD_SNEAKERS => 'minikura SNEAKERS KIT',
 ];
 
 const PRODUCT_NAME = [
@@ -123,6 +133,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_SHOES_PACK => 'minikuraシューズパック',
     PRODUCT_CD_CARGO_JIBUN => 'minikura CARGO じぶんで',
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
+    PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -133,6 +144,11 @@ const INBOUND_CARRIER_JPPOST = '0';
 const INBOUND_CARRIER_DELIVERY = [
     INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_YAMAYO => 'ヤマト運輸に集荷依頼する',
     INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_JPPOST => '日本郵便に集荷依頼する',
+    INBOUND_DELIVERY_MANUAL => '自分で発送する',
+];
+
+const INBOUND_CARRIER_DELIVERY_SNEAKERS = [
+    INBOUND_DELIVERY_PICKUP . '_' . INBOUND_CARRIER_YAMAYO => 'ヤマト運輸に集荷依頼する',
     INBOUND_DELIVERY_MANUAL => '自分で発送する',
 ];
 
@@ -150,3 +166,76 @@ const INQUIRY_DIVISION = [
     '18' => 'アニメイト・コレクションについて',
     '12' => 'その他',
 ];
+
+const OEM_CD_LIST = [
+    'minikura' => '',
+    'sneakers' => 'sneakers',
+];
+
+const IN_USE_SERVICE = [
+    'minikura' => [
+        [
+            'product' => 'mono',
+            'name' => 'MONO',
+            'product_cd' => PRODUCT_CD_MONO,
+        ],
+        [
+            'product' => 'hako',
+            'name' => 'HAKO',
+            'product_cd' => PRODUCT_CD_HAKO,
+        ],
+        [
+            'product' => 'cargo01',
+            'name' => 'CARGO じぶんで',
+            'product_cd' => PRODUCT_CD_CARGO_JIBUN,
+        ],
+        [
+            'product' => 'cargo02',
+            'name' => 'CARGO ひとまかせ',
+            'product_cd' => PRODUCT_CD_CARGO_HITOMAKASE,
+        ],
+        [
+            'product' => 'cleaning',
+            'name' => 'クリーニングパック',
+            'product_cd' => PRODUCT_CD_CLEANING_PACK,
+        ],
+        [
+            'product' => 'shoes',
+            'name' => 'シューズパック',
+            'product_cd' => PRODUCT_CD_SHOES_PACK,
+        ],
+    ],
+    'sneakers' => [
+        [
+            'product' => 'sneakers',
+            'name' => 'SNEAKERS',
+            'product_cd' => PRODUCT_CD_SNEAKERS,
+        ],
+    ],
+];
+
+const POINT_TYPE_GETU = 'GETU';
+
+const POINT_TYPE = [
+    'VIEW' => 'MONO VIEW オプション',
+    'COP' => 'クリーニングオプション',
+    'DOP' => 'データ化オプション',
+    'WGF' => 'ギフト配送オプション',
+    'SHKO' => '取り出し',
+    'CPC1' => '初回ポイントプレゼント',
+    POINT_TYPE_GETU => '月額保管',
+];
+
+const ISOLATE_ISLANDS = [
+    '沖縄県',
+];
+
+const OUTBOUND_HAZMAT_NOT_EXIST = '0';
+const OUTBOUND_HAZMAT_EXIST = '1';
+
+const OUTBOUND_HAZMAT = [
+    OUTBOUND_HAZMAT_EXIST => '含まれる',
+    OUTBOUND_HAZMAT_NOT_EXIST => '含まれない',
+];
+
+const CONTACTUS_CD_ISOLATEISLANDS = '090';

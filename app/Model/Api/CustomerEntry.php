@@ -17,6 +17,18 @@ class CustomerEntry extends ApiModel
 
         return $responses;
     }
+	/*
+	* 暫定 nike_snkrs
+	*/
+    public function entry_sneakers()
+    {
+		//* nike_snkrs oem_key
+		$this->oem_key = Configure::read('api.sneakers.oem_key');
+        $this->data[$this->model_name]['oem_key'] = $this->oem_key;
+        $responses = $this->request('/entry', $this->data[$this->model_name], 'POST');
+
+        return $responses;
+    }
 
     protected function triggerDataChanged()
     {

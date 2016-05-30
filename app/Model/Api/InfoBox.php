@@ -92,6 +92,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_CARGO_JIBUN];
         } elseif ($product === 'cargo02') {
             $productCd = [PRODUCT_CD_CARGO_HITOMAKASE];
+        } elseif ($product === 'sneakers') {
+            $productCd = [PRODUCT_CD_SNEAKERS];            
         }
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
@@ -119,7 +121,6 @@ class InfoBox extends ApiCachedModel
      */
     public static function kitCd2ProductCd($kitCd)
     {
-        $productCd = '';
         switch ($kitCd) {
             case KIT_CD_MONO:
             case KIT_CD_MONO_BOOK:
@@ -133,6 +134,9 @@ class InfoBox extends ApiCachedModel
                 break;
             case KIT_CD_CLEANING_PACK:
                 $productCd = PRODUCT_CD_CLEANING_PACK;
+                break;
+            case KIT_CD_SNEAKERS:
+                $productCd = PRODUCT_CD_SNEAKERS;
                 break;
             default:
                 break;

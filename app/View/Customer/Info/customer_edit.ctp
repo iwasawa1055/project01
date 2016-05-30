@@ -40,6 +40,8 @@
                   <?php echo $this->Form->input('CustomerInfo.tel1', ['class' => "form-control", 'maxlength' => 20, 'placeholder'=>'電話番号', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.tel1', null, ['wrap' => 'p']) ?>
                 </div>
+              <?php if ($customer->isPrivateCustomer()) : ?>
+                <?php // 個人 ?>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerInfo.lastname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.lastname', null, ['wrap' => 'p']) ?>
@@ -76,6 +78,25 @@
                   <?php echo $this->Form->select('CustomerInfo.gender', CUSTOMER_GENDER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.gender', null, ['wrap' => 'p']) ?>
                 </div>
+              <?php else : ?>
+                <?php // 法人 ?>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerInfo.company_name', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'会社名（漢字）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.company_name', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerInfo.company_name_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'会社名（カタカナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.company_name_kana', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerInfo.staff_name', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'担当者名（漢字）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.staff_name', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerInfo.staff_name_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'担当者名（カタカナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.staff_name_kana', null, ['wrap' => 'p']) ?>
+                </div>
+              <?php endif; ?>
                 <div class="form-group col-lg-12">
                   <label>ニュースレターの配信</label>
                   <?php echo $this->Form->select('CustomerInfo.newsletter', CUSTOMER_NEWSLETTER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>

@@ -58,8 +58,7 @@ class MinikuraController extends AppController
 
         // アクセス拒否
         if ($this->isAccessDeny()) {
-            new AppTerminalCritical(__('access_deny'), 404);
-            return;
+            return $this->redirect(['controller' => 'MyPage', 'action' => 'index', 'customer' => false]);
         }
     }
 

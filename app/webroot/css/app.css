@@ -298,9 +298,16 @@ a:focus,
 a:hover {
 	color: #ffffff;
 }
+.panel-title a:focus,
+.panel-title a:hover {
+	color: #ff0000;
+}
 .logo {
 	width: 150px;
 	height: 32px;
+}
+.sneakers_logo {
+	width: 210px;
 }
 .fa-fw {
 	line-height: 2.8;
@@ -343,6 +350,15 @@ a:hover {
 	padding: 25px 5px 5px 50px;
 	height: 76px;
 }
+
+.msneakers {
+	padding-left: 20px;
+}
+
+.page-header p{
+	margin-left: 1.2em;
+}
+
 .nav>li>a:focus,
 .nav>li>a:hover {
 	text-decoration: none;
@@ -408,6 +424,10 @@ a:hover {
 	border-color: #d7000f;
 	color: #fff;
 	background-color: #d7000f;
+}
+.panel-red .panel-heading a {
+	color: #ffffff;
+	text-decoration: underline;
 }
 .panel-body h2 {
 	padding-left: 15px;
@@ -598,6 +618,17 @@ tfoot td {
 .error-number {
 	font-size: 80%;
 	font-weight: bold;
+}
+.dispatch-okinawa label {
+	margin-right: 15px;
+}
+.dispatch-okinawa input[type=radio] {
+	margin-right: 4px;
+}
+.dispatch-okinawa textarea {
+	width: 100%;
+	height: 50px;
+	resize: vertical;
 }
 
 @media screen and (max-width: 991px) {

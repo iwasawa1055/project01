@@ -65,6 +65,9 @@ class TitleHelper extends AppHelper {
         'result' => [
             'index' => '検索結果',
         ],
+        'point' => [
+            'index' => 'ポイント',
+        ],
     ];
 
     public function p() {

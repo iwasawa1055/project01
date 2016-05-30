@@ -9,6 +9,8 @@ App::uses('InfoItem', 'Model');
 class OutboundController extends MinikuraController
 {
     const MODEL_NAME = 'Outbound';
+    const MODEL_NAME_POINT_BALANCE = 'PointBalance';
+    const MODEL_NAME_POINT_USE = 'PointUse';
 
     private $outboundList = [];
 
@@ -23,6 +25,8 @@ class OutboundController extends MinikuraController
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
         $this->loadModel('Outbound');
+        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+        $this->loadModel(self::MODEL_NAME_POINT_USE);
 
         // 配送先
         $this->set('addressList', $this->Address->get());
@@ -52,7 +56,8 @@ class OutboundController extends MinikuraController
         $address = $this->Address->find($addressId);
         $result = $this->getDatetime($address['postal']);
         $status = !empty($result);
-        return json_encode(compact('status', 'result'));
+        $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
+        return json_encode(compact('status', 'result', 'isIsolateIsland'));
     }
 
     private function getDatetime($postal)
@@ -118,7 +123,7 @@ class OutboundController extends MinikuraController
         // 対象ボックス一覧
         $where = [
             'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
-            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK],
+            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_SNEAKERS],
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
@@ -161,6 +166,7 @@ class OutboundController extends MinikuraController
                 PRODUCT_CD_HAKO,
                 PRODUCT_CD_CLEANING_PACK,
                 PRODUCT_CD_SHOES_PACK,
+                PRODUCT_CD_SNEAKERS,
             ]
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
@@ -203,9 +209,11 @@ class OutboundController extends MinikuraController
                 PRODUCT_CD_HAKO,
                 PRODUCT_CD_CLEANING_PACK,
                 PRODUCT_CD_SHOES_PACK,
+                PRODUCT_CD_SNEAKERS,
             ]
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
+
         // 取り出しリスト追加済みフラグ、追加不可フラグ
         foreach ($list as &$box) {
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
@@ -228,10 +236,23 @@ class OutboundController extends MinikuraController
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
 
+        // ポイント取得
+        $pointBalance = [];
+        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+        $res = $this->PointBalance->apiGet();
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
+        } else {
+            $pointBalance = $res->results[0];
+        }
+        $this->set('pointBalance', $pointBalance);
+
         $dateItemList = [];
+        $isIsolateIsland = '';
 
         $isBack = Hash::get($this->request->query, 'back');
         $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
         if ($isBack && !empty($data)) {
             // 前回追加選択は最後のお届け先を選択
             if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
@@ -244,9 +265,14 @@ class OutboundController extends MinikuraController
             $postal = $address['postal'];
             // お届け希望日と時間
             $dateItemList = $this->getDatetime($postal);
+            // 利用ポイント
+            $this->request->data[self::MODEL_NAME_POINT_USE] = $pointUse[self::MODEL_NAME_POINT_USE];
+            $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
         }
         $this->set('dateItemList', $dateItemList);
+        $this->set('isolateIsland', $isIsolateIsland);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
+        CakeSession::delete(self::MODEL_NAME_POINT_USE);
     }
 
     /**
@@ -266,7 +292,6 @@ class OutboundController extends MinikuraController
 
         if ($this->request->is('post')) {
             $data = $this->request->data;
-
             // 届け先追加を選択の場合は追加画面へ遷移
             if (Hash::get($data, 'Outbound.address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
@@ -278,6 +303,7 @@ class OutboundController extends MinikuraController
 
             // product
             $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
+
             // お届け先
             $addressId = $data['Outbound']['address_id'];
             $address = $this->Address->find($addressId);
@@ -285,25 +311,62 @@ class OutboundController extends MinikuraController
 
             $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
 
+            // ポイント取得
+            $pointBalance = [];
+            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+            $res = $this->PointBalance->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+            } else {
+                $pointBalance = $res->results[0];
+            }
+            $this->set('pointBalance', $pointBalance);
+
+            // 利用ポイント
+            $this->PointUse->set($data);
+            // ポイント残高
+            $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $pointBalance['point_balance'];
+
             $this->Outbound->set($data);
-            if ($this->Outbound->validates()) {
+
+            $isIsolateIsland = false;
+            if (!empty($this->Outbound->data['Outbound']['pref'])) {
+                $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+            }
+
+            // 離島 and 航空搭載不可あり
+            if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
+                $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+                $this->Outbound->validator()->remove('datetime_cd');
+            }
+
+            $validOutbound = $this->Outbound->validates();
+            $validPointUse = $this->PointUse->validates();
+            // if ($this->Outbound->validates()) {
+            if ($validOutbound && $validPointUse) {
                 // 表示ラベル
                 $address = $this->Address->find($addressId);
                 $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
                 $datetime = $this->getDatetimeOne($address['postal'], $data['Outbound']['datetime_cd']);
                 $this->set('datetime_text', $datetime['text']);
+                $this->set('isolateIsland', $isIsolateIsland);
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
+                CakeSession::write(self::MODEL_NAME_POINT_USE, $this->PointUse->data);
+                $this->set('pointUse', $this->PointUse->data[self::MODEL_NAME_POINT_USE]);
             } else {
+
                 // お届け希望日と時間
                 $dateItemList = [];
                 if (!empty($postal)) {
                     $dateItemList = $this->getDatetime($postal);
                 }
                 $this->set('dateItemList', $dateItemList);
+                $this->set('isolateIsland', $isIsolateIsland);
                 return $this->render('index');
             }
         }
+
     }
 
     /**
@@ -314,6 +377,8 @@ class OutboundController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+        CakeSession::delete(self::MODEL_NAME_POINT_USE);
 
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
@@ -321,13 +386,48 @@ class OutboundController extends MinikuraController
         }
 
         $this->Outbound->set($data);
-        if ($this->Outbound->validates()) {
+        // 利用ポイント
+        $this->PointUse->set($pointUse);
+
+        $isIsolateIsland = false;
+        if (!empty($this->Outbound->data['Outbound']['pref'])) {
+            $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+        }
+
+        $existHazmat = false;
+        // 離島 and 航空搭載不可あり
+        if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
+            $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+            $this->Outbound->validator()->remove('datetime_cd');
+            $existHazmat = true;
+        }
+
+        $validOutbound = $this->Outbound->validates();
+        $validPointUse = $this->PointUse->validates();
+        // if ($this->Outbound->validates()) {
+        if ($validOutbound && $validPointUse) {
             // api
-            $res = $this->Outbound->apiPost($this->Outbound->toArray());
+            if ($existHazmat) {
+                $this->loadModel('ContactAny');
+                $res = $this->ContactAny->apiPostIsolateIsland($this->Outbound->data['Outbound']);
+            } else {
+                $res = $this->Outbound->apiPost($this->Outbound->toArray());
+            }
+
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'index']);
             }
+
+            if ($this->PointUse->verifyCallPointUse()) {
+                // ポイント消費
+                $res = $this->PointUse->apiPost($this->PointUse->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'index']);
+                }
+            }
+
             // 取り出しリストクリア
             OutboundList::delete();
             (new InfoBox())->deleteCache();

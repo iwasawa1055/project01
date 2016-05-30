@@ -44,6 +44,11 @@
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録</button>
               <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>
+              <?php if (!empty($code)) : ?>
+              <a class="btn btn-danger btn-xs btn-block animsition-link" href="/corporate/register/add_info?code=<?php echo $code ?>">法人の方はこちら</a>
+              <?php else : ?>
+              <a class="btn btn-danger btn-xs btn-block animsition-link" href="/corporate/register/add_info">法人の方はこちら</a>
+              <?php endif; ?>
             </div>
           <?php echo $this->Form->end(); ?>
           </div>
