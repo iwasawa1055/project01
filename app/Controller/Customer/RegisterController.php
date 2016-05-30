@@ -214,6 +214,16 @@ class RegisterController extends MinikuraController
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
             $this->Customer->getInfo();
 
+            // ヘッダー表示、お知らせ
+            $res = $this->Announcement->apiGetResults(['limit' => 5]);
+            $this->set('notice_announcements', $res);
+            // ご利用中サービスの集計
+            $this->set('product_summary', []);
+            if (!$this->Customer->isEntry()) {
+                $summary = $this->InfoBox->getProductSummary();
+                $this->set('product_summary', $summary);
+            }
+
             // 完了画面
             $this->set('alliance_cd', Hash::get($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST], 'alliance_cd'));
             return $this->render('customer_complete');
@@ -382,6 +392,16 @@ class RegisterController extends MinikuraController
             $this->Customer->setTokenAndSave($res->results[0]);
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
 
+            // ヘッダー表示、お知らせ
+            $res = $this->Announcement->apiGetResults(['limit' => 5]);
+            $this->set('notice_announcements', $res);
+            // ご利用中サービスの集計
+            $this->set('product_summary', []);
+            if (!$this->Customer->isEntry()) {
+                $summary = $this->InfoBox->getProductSummary();
+                $this->set('product_summary', $summary);
+            }
+
 			//* keyを登録済みとして管理する
 			$input_data = $key . "," .$data['email'] . "\n";
 			$this->_postRegisteredSneakersKey($input_data);
@@ -537,6 +557,16 @@ class RegisterController extends MinikuraController
             $this->Customer->setTokenAndSave($res->results[0]);
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
             $this->Customer->getInfo();
+
+            // ヘッダー表示、お知らせ
+            $res = $this->Announcement->apiGetResults(['limit' => 5]);
+            $this->set('notice_announcements', $res);
+            // ご利用中サービスの集計
+            $this->set('product_summary', []);
+            if (!$this->Customer->isEntry()) {
+                $summary = $this->InfoBox->getProductSummary();
+                $this->set('product_summary', $summary);
+            }
 
             // 完了画面
             $this->set('alliance_cd', Hash::get($this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST], 'alliance_cd'));
