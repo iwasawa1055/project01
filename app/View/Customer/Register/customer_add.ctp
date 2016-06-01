@@ -1,9 +1,12 @@
   <?php if (!empty($code)) : ?>
+    <?php $header_params = @get_headers('https://minikura.com/contents/image/with/' . $code . '.gif'); ?>
+    <?php if (strpos($header_params[0], '200') !== false) : ?>
     <div class="row">
       <div class="col-lg-12" align="center">
         <img class="alliance" src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
       </div>
     </div>
+    <?php endif; ?>
   <?php endif; ?>
     <div class="row">
       <div class="col-lg-12">
