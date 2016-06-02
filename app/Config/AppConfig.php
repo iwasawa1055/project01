@@ -35,6 +35,7 @@ $config['api.sneakers.alliance_cd'] = 'sneakers';
 $config['api.sneakers.dir'] = 'sneakers';
 $config['api.sneakers.file.key_list'] = 'my_sneakers_minikura_key.txt';
 $config['api.sneakers.file.registered_list'] = 'registered_list.txt';
+$config['api.sneakers.file.error_list'] = 'error_list_';
 $config['api.sneakers.action_name.add'] = 'customer_add_sneakers';
 $config['api.sneakers.action_name.confirm'] = 'customer_confirm_sneakers';
 $config['api.sneakers.action_name.complete'] = 'customer_complete_sneakers';
