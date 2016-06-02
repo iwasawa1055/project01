@@ -41,6 +41,7 @@
           </ul>
         </li>
         <?php endif; ?>
+        <li class="mysnkrs"> <a href="<?php echo Configure::read('site.sneakers.MY_SNKRS_url'); ?>" target="_blank"><i class="fa fa-external-link fa-fw"></i>MY SNKRSへ</a> </li>
       </ul>
     </div>
   </div>

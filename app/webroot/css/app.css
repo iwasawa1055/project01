@@ -333,6 +333,12 @@ a:hover {
 	background-color: #ff0000;
 	color: #fff;
 }
+.sidebar ul .mysnkrs{
+	background-color: #191919;
+}
+.sidebar ul .mysnkrs a{
+	color: #ffffff;
+}
 .navbar-default {
 	background-color: #F4F4F4;/**border-color: #999999;**/
 }

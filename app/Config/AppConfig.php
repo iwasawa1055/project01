@@ -39,6 +39,7 @@ $config['api.sneakers.file.error_list'] = 'error_list_';
 $config['api.sneakers.action_name.add'] = 'customer_add_sneakers';
 $config['api.sneakers.action_name.confirm'] = 'customer_confirm_sneakers';
 $config['api.sneakers.action_name.complete'] = 'customer_complete_sneakers';
+$config['site.sneakers.MY_SNKRS_url'] = 'https://nike.jp/sportswear/my-snkrs/';
 
 // タイムアウト（秒）
 $config['api.timeout'] = 30;
