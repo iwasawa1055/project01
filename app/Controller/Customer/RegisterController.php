@@ -254,7 +254,7 @@ class RegisterController extends MinikuraController
 
         //* sneakers key  sneakersのLPから遷移するorエラー時にredirectで
         $key = Hash::get($this->request->query, 'key');
-		//* LPからの値を入力欄にset
+		//* 値を入力欄にset
         $this->set('key', $key);
 
         $isBack = Hash::get($this->request->query, 'back');
@@ -273,6 +273,10 @@ class RegisterController extends MinikuraController
     {
 		//* alliance_cd (hidden) 
 		$code = $this->request->data[self::MODEL_NAME]['alliance_cd'];
+		if (empty($code)) {
+			$code = Configure::read(self::SNEAKERS_ALLIANCE_CD);
+			$this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+		}
         $this->set('code', $code);
 
 		//* key (form) 
