@@ -11,7 +11,10 @@ class RegisterController extends MinikuraController
 	const SNEAKERS_ALLIANCE_CD = 'api.sneakers.alliance_cd';
 	const SNEAKERS_FILE_KEY_LIST = 'api.sneakers.file.key_list';
 	const SNEAKERS_FILE_REGISTERED_LIST = 'api.sneakers.file.registered_list';
+	const SNEAKERS_FILE_ERROR_LIST = 'api.sneakers.file.error_list';
 	const SNEAKERS_DIR = 'api.sneakers.dir';
+	const SNEAKERS_REASON_NOT_EXIST = 'sneakers key is not exist';
+	const SNEAKERS_REASON_REGISTERED = 'sneakers key has already registered';
 
     // ログイン不要なページ
     protected $checkLogined = false;
@@ -251,26 +254,9 @@ class RegisterController extends MinikuraController
 
         //* sneakers key  sneakersのLPから遷移するorエラー時にredirectで
         $key = Hash::get($this->request->query, 'key');
-		//* LPからの値を入力欄にset
+		//* 値を入力欄にset
         $this->set('key', $key);
 
-		//* sneakers key list 有効性check
-		if (! empty($key)) {
-			$exist_flg = $this->_checkSneakersKey($key);
-			//* リストに無い=無効なkey error
-			if ($exist_flg === false) {
-				$this->Flash->set(__('empty_sneakers_key_data'));
-				return $this->render('customer_add_sneakers');
-			}
-			//* keyが登録済みでないか確認
-			$registered_flg = $this->_checkRegisteredSneakersKey($key);
-			//* key登録済みerror
-			if ($registered_flg === true) {
-				$this->Flash->set(__('empty_sneakers_key_data'));
-				return $this->render('customer_add_sneakers');
-			}
-		
-		}
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
             $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
@@ -287,6 +273,10 @@ class RegisterController extends MinikuraController
     {
 		//* alliance_cd (hidden) 
 		$code = $this->request->data[self::MODEL_NAME]['alliance_cd'];
+		if (empty($code)) {
+			$code = Configure::read(self::SNEAKERS_ALLIANCE_CD);
+			$this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+		}
         $this->set('code', $code);
 
 		//* key (form) 
@@ -439,8 +429,34 @@ class RegisterController extends MinikuraController
 				}
 			}    
 		}
+		//* key error  
+		if ($exist_flg === false) {
+			$this->_postErrorSneakersKey($_key, self::SNEAKERS_REASON_NOT_EXIST);
+		}
+
 		return $exist_flg;
 	}
+
+	/**
+	* sneakers ユーザーのaccess_key 登録済み処理
+	*/
+	private function _postErrorSneakersKey($_input_data, $_reason)
+	{
+		$post_info = false;
+		$data = [];
+		$data['datetime']   = date('Y-m-d H:i:s');
+		$data['email']      = ! empty($this->request->data[self::MODEL_NAME]['email']) ?  $this->request->data[self::MODEL_NAME]['email'] : null;
+		$data['key']        = ! empty($_input_data) ?  $_input_data : null;
+		$data['ip_address'] = ! empty($_SERVER['REMOTE_ADDR']) ?  $_SERVER['REMOTE_ADDR'] : null;
+		$data['reason']     = ! empty($_reason) ? $_reason : null;
+
+		//* sneakers error key list
+		$file = TMP . Configure::read(self::SNEAKERS_DIR) . DS . Configure::read(self::SNEAKERS_FILE_ERROR_LIST) . date('Ym') . '.txt';
+		$post_info = file_put_contents($file, json_encode($data) . "\n", FILE_APPEND | LOCK_EX);
+		return $post_info;
+	}
+
+
 	/**
 	* sneakers ユーザーのaccess_key 登録済み処理
 	*/
@@ -471,6 +487,11 @@ class RegisterController extends MinikuraController
 					if (strpos($line, $_key) !== false && mb_strlen($_key) === 8) {
 						//* exist	
 						$registered_flg = true;
+
+						//* key error
+						if ($registered_flg === true) {
+							$this->_postErrorSneakersKey($_key, self::SNEAKERS_REASON_REGISTERED);
+						}
 						break;
 					}
 				}
