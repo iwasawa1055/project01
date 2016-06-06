@@ -73,7 +73,7 @@ $return = Hash::get($this->request->query, 'return');
                 <?php endif; ?>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block">確認</button>
+                <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
             </span>
         </div>
         <?php echo $this->Form->end(); ?>

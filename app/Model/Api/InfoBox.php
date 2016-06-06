@@ -36,15 +36,15 @@ class InfoBox extends ApiCachedModel
     // 購入済みキット一覧
     // 利用中のBOX一覧　と　並び替え
     // 商品別集計
-    public function getProductSummary()
+    public function getProductSummary($outboundOnly = true, $key = 'summary')
     {
-        $key = 'summary';
         $summary = $this->readCache($key, []);
         if (!empty($summary)) {
             return $summary;
         }
 
-        $all = $this->getListForServiced();
+        // サイドバーに出庫済みの数字を含めない
+        $all = $this->getListForServiced(null, [], $outboundOnly);
         $summary = [];
         foreach ($all as $a) {
             $productCd = $a['product_cd'];
@@ -58,6 +58,7 @@ class InfoBox extends ApiCachedModel
             }
         }
         $this->writeCache($key, [], $summary);
+
         return $summary;
     }
 
@@ -76,7 +77,7 @@ class InfoBox extends ApiCachedModel
     }
 
     // 入庫済み一覧
-    public function getListForServiced($product = null, $sortKey = [], $withOutboudDone = true)
+    public function getListForServiced($product = null, $sortKey = [], $withOutboudDone = true, $outboundOnly = false)
     {
         // productCd
         $productCd = null;
@@ -93,8 +94,9 @@ class InfoBox extends ApiCachedModel
         } elseif ($product === 'cargo02') {
             $productCd = [PRODUCT_CD_CARGO_HITOMAKASE];
         } elseif ($product === 'sneakers') {
-            $productCd = [PRODUCT_CD_SNEAKERS];            
+            $productCd = [PRODUCT_CD_SNEAKERS];
         }
+
         $okStatus = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS,
             BOXITEM_STATUS_INBOUND_DONE,
@@ -102,8 +104,12 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS,
         ];
         if ($withOutboudDone) {
+            if (!empty($outboundOnly)) {
+                unset($okStatus);
+            }
             $okStatus[] = BOXITEM_STATUS_OUTBOUND_DONE;
         }
+
         $where = ['box_status' => $okStatus, 'product_cd' => $productCd];
         if (empty($where['product_cd'])) {
             unset($where['product_cd']);

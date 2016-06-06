@@ -18,17 +18,17 @@
 }
 
 .box_select_checkbox input[type="checkbox"] + button:after {
-    content: "ボックス選択"
+    content: "ボックスを選択する"
 }
 .inbound_box_select_checkbox input[type="checkbox"] + button:after {
     content: "このボックスを預ける"
 }
 .outbound_select_checkbox input[type="checkbox"] + button:after {
-    content: "取り出しリストに登録"
+    content: "取り出しリストに登録する"
 }
 .box_select_checkbox input[type="checkbox"]:checked + button:after,
 .outbound_select_checkbox input[type="checkbox"]:checked + button:after {
-    content: "選択解除"
+    content: "選択を解除する"
 }
 .inbound_box_select_checkbox input[type="checkbox"]:checked + button:after {
     content: "預けるのをやめる"

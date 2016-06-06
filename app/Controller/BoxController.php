@@ -95,7 +95,7 @@ class BoxController extends MinikuraController
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
-        $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone);
+        $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone, true);
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('boxList', $list);
@@ -116,7 +116,8 @@ class BoxController extends MinikuraController
         if (!empty($order)) {
             return [$order => ($direction === 'asc')];
         }
-        return [];
+        //default
+        return ['inbound_date' => false, 'box_id' => true];
     }
 
     /**
@@ -124,16 +125,39 @@ class BoxController extends MinikuraController
      */
     public function detail()
     {
+        // 出庫済み　hide_outbound=0:表示, hide_outbound=1:非表示, 初期表示：非表示
+        // 出庫済み withOutboundDone=true:表示, withOutboundDone=false:非表示
+        $withOutboundDone = true;
+
+        if (!empty(Hash::get($this->request->query, 'hide_outbound', 1))) {
+            // hide_outbound が 1 の場合、出庫済みは非表示
+            $withOutboundDone = false;
+        }
+
         $id = $this->params['id'];
         $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $id]);
         $this->set('box', $box);
 
-        $itemList = $this->InfoItem->apiGetResultsWhere([], ['box_id' => $id]);
+        // withOutboundDone が true の場合、出庫済みも表示する
+        $itemList = $this->InfoItem->getListForServiced(['inbound_date' => false, 'item_id' => true], ['box_id' => $id], $withOutboundDone, true);
         $this->set('itemList', $itemList);
 
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
         $this->set('denyOutboundList', $outboundList->canAddBox($box));
+
+        // 出庫済みアイテム制御
+        $this->set('hideOutbound', $withOutboundDone);
+
+        $query = $this->request->query;
+        $query['hide_outbound'] = !empty($withOutboundDone);
+        $url = Router::url([
+            'action'=>'detail',
+            $id,
+            '?' => http_build_query($query),
+        ]);
+
+        $this->set('hideOutboundSwitchUrl', $url);
     }
 
     /**

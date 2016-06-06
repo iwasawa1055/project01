@@ -109,7 +109,7 @@ if (!empty($validErrors)) {
               <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block">預け入れボックスの確認</button>
+                <button type="submit" class="btn btn-danger btn-lg btn-block">預け入れボックスを確認する</button>
             </span>
           <?php endif; ?>
           </div>

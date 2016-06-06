@@ -46,7 +46,7 @@
                   <input name="remember" type="checkbox" value="Remember Me" class="agree-before-submit">
                   minikura 利用規約に同意する </label>
               </div>
-              <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録</button>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録する</button>
               <a class="btn btn-primary btn-xs btn-block" href="/login?code=<?php echo $code;?>&key=<?php echo $key;?>">ログインはこちら</a>
             </div>
           <?php echo $this->Form->end(); ?>
