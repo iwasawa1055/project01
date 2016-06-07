@@ -17,7 +17,7 @@
                 <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
               </div>
-              <button type="submit" class="btn btn-danger btn-lg btn-block">ログイン</button>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">ログインする</button>
             <?php echo $this->Form->end(); ?>
               <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset">パスワードを忘れた方はこちら</a>
             <?php if (!empty($code) && $code ===  Configure::read('api.sneakers.alliance_cd')) : ?>

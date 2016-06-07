@@ -33,12 +33,12 @@
                       <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                       <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
                       <span class="col-xs-12 col-lg-12">
-                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリスト登録</button>
+                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリストに登録する</button>
                       </span>
                       <?php echo $this->Form->end(); ?>
                       <?php else : ?>
                         <span class="col-xs-12 col-lg-12">
-                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" disabled="disabled">取り出しリスト登録</button>
+                          <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" disabled="disabled">取り出しリストに登録する</button>
                           <p class="error-message"><?php echo $denyOutboundList; ?></p>
                         </span>
                       <?php endif; ?>
@@ -54,7 +54,16 @@
 
             <?php if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_SNEAKERS], true)): ?>
             <div class="col-lg-12">
-              <h3>ボックスの内容</h3>
+              <div class="col-lg-9">
+                <h3>ボックスの内容</h3>
+              </div>
+              <div class="col-lg-3">
+                <?php if ($hideOutbound): ?>
+                <?php echo $this->Html->link('出庫済み以外を表示する', $hideOutboundSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                <?php else: ?>
+                <?php echo $this->Html->link('出庫済みのみを表示する', $hideOutboundSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                <?php endif; ?>
+              </div>
               <ul class="tile">
                 <!--loop-->
                 <?php foreach($itemList as $item): ?>

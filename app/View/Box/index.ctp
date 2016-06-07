@@ -24,10 +24,13 @@
                         $productName = 'クリーニングパック';
                     } else if ($product === 'shoes') {
                         $productName = 'シューズパック';
-                    } else
+                    } else if ($product === 'sneakers') {
+                        $productName = 'minikura SNEAKERS';
+                    }
                   ?>
                 <h2><?php echo $productName; ?></h2>
                 <div class="row box-list">
+                <?php /*
                   <?php if (empty($boxList)) : ?>
                     <?php if (in_array($product, ['mono', 'hako', 'cleaning'], true)) : ?>
                     <?php echo $this->element('List/empty'); ?>
@@ -35,17 +38,18 @@
                     <?php echo $this->element('List/empty_notorder'); ?>
                     <?php endif; ?>
                   <?php else: ?>
+                */?>
                   <div class="col-lg-3 col-lg-offset-6">
                     <?php if ($hideOutboud): ?>
-                    <?php echo $this->Html->link('出庫済みを隠す', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                    <?php echo $this->Html->link('出庫済み以外を表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
                     <?php else: ?>
-                    <?php echo $this->Html->link('出庫済みを表示', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                    <?php echo $this->Html->link('出庫済みのみを表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
                     <?php endif; ?>
                   </div>
                   <div class="col-lg-3">
                     <?php echo $this->Form->input(false, ['type' => 'select', 'options' => $sortSelectList, 'selected' => $select_sort_value, 'id' => 'select_sort', 'class' => 'form-control sort-form', 'empty' => '並べ替え', 'label'=>false, 'div'=>false]); ?>
                   </div>
-                <?php endif; ?>
+                <?php /*<?php endif; ?>*/?>
                   <?php foreach ($boxList as $box): ?>
                   <?php $url = '/box/detail/' . $box['box_id']; ?>
                   <!--loop-->

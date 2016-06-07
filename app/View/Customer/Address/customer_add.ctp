@@ -66,14 +66,14 @@ $return = Hash::get($this->request->query, 'return');
           </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
                 <?php if ($action === 'customer_add'): ?>
-                <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add<?php echo (empty($return)) ? '' : '?return=' . $return; ?>"> クリア </a>
+                <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add<?php echo (empty($return)) ? '' : '?return=' . $return; ?>"> クリアする </a>
                 <?php else: ?>
                 <?php $url = '/customer/address/edit?address_id=' . $address_id;  ?>
-                <a class="btn btn-primary btn-lg btn-block" href="<?php echo $url ?>"> クリア </a>
+                <a class="btn btn-primary btn-lg btn-block" href="<?php echo $url ?>"> クリアする </a>
                 <?php endif; ?>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block">確認</button>
+                <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
             </span>
         </div>
         <?php echo $this->Form->end(); ?>

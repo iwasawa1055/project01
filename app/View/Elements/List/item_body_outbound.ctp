@@ -21,7 +21,7 @@ $box = $item['box'];
     <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
     <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '0']); ?>
     <span class="col-xs-12 col-lg-12">
-        <button type="submit" class="btn btn-warning btn-md btn-block btn-detail">取り出しリストから削除</button>
+        <button type="submit" class="btn btn-warning btn-md btn-block btn-detail">取り出しリストから削除する</button>
     </span>
     <?php echo $this->Form->end(); ?>
     </div>

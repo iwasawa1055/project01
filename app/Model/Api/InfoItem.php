@@ -35,7 +35,8 @@ class InfoItem extends ApiCachedModel
     }
 
     // 入庫済み一覧
-    public function getListForServiced($sortKey = [], $where = [], $withOutboudDone = true)
+    // @param bool $outboundOnly true:出庫済みのみ表示する, false:出庫済みも含めて表示する
+    public function getListForServiced($sortKey = [], $where = [], $withOutboudDone = true, $outboundOnly = false)
     {
         $where['item_status'] = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
@@ -44,9 +45,12 @@ class InfoItem extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
         if ($withOutboudDone) {
+            // 出庫済みのみフラグが立っている場合、出庫済み以外をunsetする
+            if (!empty($outboundOnly)) {
+                unset($where['item_status']);
+            }
             $where['item_status'][] = BOXITEM_STATUS_OUTBOUND_DONE * 1;
         }
-
         $list = $this->apiGetResultsWhere([], $where);
 
         // sort

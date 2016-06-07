@@ -58,17 +58,25 @@ class ItemController extends MinikuraController
      */
     public function index()
     {
-        // 並び替えキー指定
-        $sortKey = $this->getRequestSortKey();
         // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
+        // 出庫済み withOutboundDone=true:表示, withOutboundDone=false:非表示
         $withOutboudDone = true;
         if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
             $withOutboudDone = false;
         }
-        $results = $this->InfoItem->getListForServiced($sortKey, [], $withOutboudDone);
+
+        // 並び替えキー指定
+        $sortKey = $this->getRequestSortKey();
+        $results = $this->InfoItem->getListForServiced($sortKey, [], $withOutboudDone, true);
+
+        $inbounds = $this->InfoItem->getListForServiced($sortKey, [], false, true);
+        $outbounds = $this->InfoItem->getListForServiced($sortKey, [], true, true);
+        $item_all_count = count($outbounds) + count($inbounds);
+
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('itemList', $list);
+        $this->set('item_all_count', $item_all_count);
         $this->set('hideOutboud', $withOutboudDone);
 
         $query = $this->request->query;

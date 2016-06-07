@@ -162,6 +162,7 @@ const CONTACTUS_DIVISION = [
 
 const INQUIRY_DIVISION = [
     '8' => 'minikuraについて',
+    //'11' => '退会について',
     '16' => 'minikuraへのご意見・ご相談',
     '18' => 'アニメイト・コレクションについて',
     '12' => 'その他',

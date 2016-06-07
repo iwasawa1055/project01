@@ -16,7 +16,7 @@
               <?php echo $this->Form->error('CustomerPasswordReset.email', null, ['wrap' => 'p']) ?>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
-              <button type="submit" class="btn btn-danger btn-lg btn-block">確認</button>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
               <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>
             </span>
           </div>
