@@ -45,28 +45,20 @@
           <h2>ニュース</h2>
           <div class="col-lg-12">
             <div class="col-lg-12 announcement">
-            <?php foreach ($notice_announcements as $data): ?>
-              <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
+            <?php foreach ($newsList as $data): ?>
               <div class="row list">
                 <div class="col-xs-12 col-md-3 col-lg-3">
                   <?php echo $this->Html->formatYmdKanji($data['date']); ?>
                 </div>
                 <div class="col-xs-12 col-md-8 col-lg-8">
-                  <span class="detail"><a href="<?php echo $url; ?>"><?php echo h($data['title']); ?></a></span>
-                </div>
-                <div class="col-xs-12 col-md-1 col-lg-1">
-                <?php if ($data['read']): ?>
-                  <a class="btn btn-success btn-xs" href="<?php echo $url; ?>">既読</a>
-                <?php else: ?>
-                  <a class="btn btn-danger btn-xs" href="<?php echo $url; ?>">未読</a>
-                <?php endif; ?>
+                  <span class="detail"><a href="<?php echo $data['url']; ?>"><?php echo h($data['title']); ?></a></span>
                 </div>
               </div>
             <?php endforeach; ?>
             </div>
           </div>
           <div class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-info btn-md pull-right" href="/announcement/">お知らせ一覧を見る</a>
+            <a class="btn btn-info btn-md pull-right" href="/news/">ニュース一覧を見る</a>
           </div>
         </div>
       </div>

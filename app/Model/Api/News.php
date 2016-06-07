@@ -19,4 +19,25 @@ class News extends ApiCachedModel
             'required' => true,
         ],
     ];
+
+
+    public function getNews()
+    {
+        $url = "http://news.minikura.com/info/news?cat=2&feed=rss2";
+        $xml = simplexml_load_file($url, 'SimpleXMLElement', LIBXML_NOCDATA);
+//        $xml = simplexml_load_file($url);
+
+        $results = null;
+        foreach ($xml->channel->item as $v) {
+
+            $row['url'] = $v->link;
+            $row['title'] = $v->title;
+            $row['date'] = date('Y年n月j日', strtotime($v->pubDate));
+
+            $results[] = $row;
+            $row = null;
+        }
+
+        return $results;
+    }
 }
