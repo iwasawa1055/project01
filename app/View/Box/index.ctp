@@ -43,7 +43,7 @@
                     <?php if ($hideOutboud): ?>
                     <?php echo $this->Html->link('出庫済み以外を表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
                     <?php else: ?>
-                    <?php echo $this->Html->link('出庫済みのみ表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                    <?php echo $this->Html->link('出庫済みのみを表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
                     <?php endif; ?>
                   </div>
                   <div class="col-lg-3">
