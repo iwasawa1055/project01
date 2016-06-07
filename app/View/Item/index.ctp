@@ -11,14 +11,14 @@
           <div class="row">
             <div class="col-lg-12">
               <h2>アイテムの一覧</h2>
-              <?php if (empty($itemList)) : ?>
+              <?php if ($item_all_count === 0) : ?>
                 <?php echo $this->element('List/empty'); ?>
               <?php else: ?>
               <div class="col-lg-3 col-lg-offset-6">
                 <?php if ($hideOutboud): ?>
-                <?php echo $this->Html->link('出庫済みを隠す', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                <?php echo $this->Html->link('出庫済み以外を表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
                 <?php else: ?>
-                <?php echo $this->Html->link('出庫済みを表示', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
+                <?php echo $this->Html->link('出庫済みのみを表示する', $hideOutboudSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
                 <?php endif; ?>
               </div>
               <div class="col-lg-3">
