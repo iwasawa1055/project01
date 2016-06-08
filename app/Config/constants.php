@@ -240,3 +240,8 @@ const OUTBOUND_HAZMAT = [
 ];
 
 const CONTACTUS_CD_ISOLATEISLANDS = '090';
+
+// ニュースRSS取得URL
+const NEWS_FEED_URL = 'http://news.minikura.com/info/news/feed';
+// ニュース新着記事件数
+const NEWS_LASTEST_ARTICLE_LIMIT = 5;

@@ -33,7 +33,9 @@ class NewsController extends MinikuraController
      */
     public function detail()
     {
-        
+        $id = $this->params['id'];       
+        $news = $this->News->getNews(null, $id);
+        $this->set('news', $news);
     }
 
 }

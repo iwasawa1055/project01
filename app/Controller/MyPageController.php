@@ -25,7 +25,7 @@ class MyPageController extends MinikuraController
         }
 
         $News = new News();
-        $newsList = $News->getNews();
+        $newsList = $News->getNews(2);
 
         $this->set('newsList', $newsList);        
         $this->set('boxList', $boxList);
