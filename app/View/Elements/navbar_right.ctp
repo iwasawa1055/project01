@@ -1,7 +1,7 @@
 <ul class="nav navbar-top-links navbar-right">
   <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-      <i class="fa fa-bell fa-fw"></i> お知らせ <i class="fa fa-caret-down"></i>
+      <i class="fa fa-bell fa-fw"></i> メッセージ <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-alerts">
       <?php if (!empty($notice_announcements) && is_array($notice_announcements)) : ?>
@@ -20,7 +20,7 @@
       <?php endif; ?>
       <li>
         <a class="text-center" href="/announcement/">
-          <strong>すべてのお知らせを見る</strong> <i class="fa fa-angle-right"></i>
+          <strong>すべてのメッセージを見る</strong> <i class="fa fa-angle-right"></i>
         </a>
       </li>
     </ul>
