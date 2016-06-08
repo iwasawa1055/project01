@@ -1,6 +1,6 @@
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header"><i class="fa fa-bell"></i> お知らせ</h1>
+      <h1 class="page-header"><i class="fa fa-bell"></i> メッセージ</h1>
     </div>
   </div>
   <div class="row">
@@ -9,7 +9,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-lg-12">
-              <h2>お知らせ一覧</h2>
+              <h2>メッセージ一覧</h2>
               <div class="col-lg-12">
                 <div class="col-lg-12 announcement">
               <?php foreach ($announcements as $data): ?>

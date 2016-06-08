@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-info btn-md pull-right" href="/announcement/">お知らせ一覧を見る</a>
+            <a class="btn btn-info btn-md pull-right" href="/announcement/">メッセージ一覧を見る</a>
           </div>
         </div>
       </div>
