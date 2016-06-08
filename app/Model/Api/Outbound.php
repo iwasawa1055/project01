@@ -70,6 +70,9 @@ class Outbound extends ApiModel
                 'required' => true,
                 'message' => ['select', 'product'],
             ],
+            'checkProductLimit' => [
+                'rule' => 'checkProductLimit',
+            ],
         ],
         'lastname' => [
             'notBlank' => [
@@ -230,6 +233,19 @@ class Outbound extends ApiModel
             $this->data[$this->model_name]['aircontent_select'] === '1' &&
             empty($this->data[$this->model_name]['aircontent'])) {
                 return "品目の入力は必須です。";
+        }
+        return true;
+    }
+
+    public function checkProductLimit()
+    {
+        $product = $this->data[$this->model_name]['product'];
+        $product_data = explode(',', $product);
+        //* Count Check
+        $limitNum = 100;
+        $productCount = count($product_data);
+        if ($limitNum < $productCount) {
+            return "一度に取り出せるアイテム数の上限は {$limitNum} 個です。（選択アイテム数： {$productCount} 個）";
         }
         return true;
     }

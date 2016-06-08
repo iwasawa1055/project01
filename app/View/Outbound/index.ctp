@@ -31,7 +31,6 @@
               <!--loop end-->
               <?php endforeach; ?>
             </div>
-            <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p']) ?>
           </div>
           <div class="col-lg-12">
             <?php if (!empty($boxList)) : ?>
