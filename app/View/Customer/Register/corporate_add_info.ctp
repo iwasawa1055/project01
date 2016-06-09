@@ -77,7 +77,7 @@
               </div>
               <div class="form-group">
               <label>紹介コード</label>
-                <?php echo $this->Form->input('CorporateRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'readonly' => !empty($code), 'error' => false]); ?>
+                <?php echo $this->Form->input('CorporateRegistInfo.alliance_cd', ['class' => "form-control", 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'error' => false]); ?>
                 <?php echo $this->Form->error('CorporateRegistInfo.alliance_cd', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
