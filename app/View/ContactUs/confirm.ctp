@@ -30,7 +30,6 @@
                     <?php echo nl2br(h($this->Form->data['ContactUs']['text'])); ?>
                   </p>
                 </div>
-
                 <?php if ($this->Form->data['ContactUs']['division'] === CONTACT_DIVISION_BUG) :?>
                   <div class="form-group col-lg-12">
                     <label>不具合発生日時</label>
@@ -39,7 +38,7 @@
                     </p>
                   </div>
                   <div class="form-group col-lg-12">
-                    <label>不具合発生URL（またはページ名）</label>
+                    <label>不具合発生URL（またはページ）</label>
                     <p class="form-control-static">
                       <?php echo h($this->Form->data['ContactUs']['bug_url']); ?>
                     </p>
@@ -57,7 +56,6 @@
                     </p>
                   </div>
                 <?php endif;?>
-                
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <?php echo $this->Html->link('戻る', ['controller' => 'contact_us', 'action' => 'add', 'id' => $id, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 </span>

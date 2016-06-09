@@ -28,7 +28,6 @@
                     <?php echo nl2br(h($this->Form->data['Inquiry']['text'])); ?>
                   </p>
                 </div>
-
                 <?php if ($this->Form->data['Inquiry']['division'] === CONTACT_DIVISION_BUG) :?>
                   <div class="form-group col-lg-12">
                     <label>不具合発生日時</label>
@@ -37,7 +36,7 @@
                     </p>
                   </div>
                   <div class="form-group col-lg-12">
-                    <label>不具合発生URL（またはページ名）</label>
+                    <label>不具合発生URL（またはページ）</label>
                     <p class="form-control-static">
                       <?php echo h($this->Form->data['Inquiry']['bug_url']); ?>
                     </p>
@@ -55,7 +54,6 @@
                     </p>
                   </div>
                 <?php endif;?>
-
                 <div class="form-group col-lg-12">
                   <a class="btn btn-info btn-xs btn-block" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura 利用規約</a>
                   <label>

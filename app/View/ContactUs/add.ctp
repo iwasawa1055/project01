@@ -51,7 +51,7 @@
                     <?php echo $this->Form->error('ContactUs.bug_datetime', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
-                    <label>不具合発生URL（またはページ名）</label>
+                    <label>不具合発生URL（またはページ）</label>
                     <?php echo $this->Form->input('ContactUs.bug_url', ['class' => "form-control", 'error' => false]); ?>
                     <?php echo $this->Form->error('ContactUs.bug_url', null, ['wrap' => 'p']) ?>
                   </div>
