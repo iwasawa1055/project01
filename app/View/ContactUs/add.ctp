@@ -43,6 +43,30 @@
                   <?php echo $this->Form->textarea('ContactUs.text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
                   <?php echo $this->Form->error('ContactUs.text', null, ['wrap' => 'p']) ?>
                 </div>
+
+                <div id="bug_area">
+                  <div class="form-group col-lg-12">
+                    <label>不具合発生日時</label>
+                    <?php echo $this->Form->input('ContactUs.bug_datetime', ['class' => "form-control", 'error' => false]); ?>
+                    <?php echo $this->Form->error('ContactUs.bug_datetime', null, ['wrap' => 'p']) ?>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label>不具合発生URL（またはページ名）</label>
+                    <?php echo $this->Form->input('ContactUs.bug_url', ['class' => "form-control", 'error' => false]); ?>
+                    <?php echo $this->Form->error('ContactUs.bug_url', null, ['wrap' => 'p']) ?>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label>ご利用環境（OS・ブラウザ）</label>
+                    <?php echo $this->Form->input('ContactUs.bug_environment', ['class' => "form-control", 'error' => false]); ?>
+                    <?php echo $this->Form->error('ContactUs.bug_environment', null, ['wrap' => 'p']) ?>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label>具体的な操作と症状</label>
+                    <?php echo $this->Form->textarea('ContactUs.bug_text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
+                    <?php echo $this->Form->error('ContactUs.bug_text', null, ['wrap' => 'p']) ?>
+                  </div>
+                </div>
+
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <a class="btn btn-primary btn-lg btn-block" href="/contact_us/<?php echo empty($id) ? '' : $id.'/' ?>add">クリアする</a>
                 </span>
