@@ -87,6 +87,14 @@ class Inquiry extends ApiModel
                 'message' => ['notBlank', 'contact_text'],
              ],
         ],
+        'bug_datetime' => [
+        ],
+        'bug_url' => [
+        ],
+        'bug_environment' => [
+        ],
+        'bug_text' => [
+        ],
     ];
 
     public function apiPost($data)

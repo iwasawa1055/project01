@@ -49,11 +49,6 @@ const DELIVERY_ID_PICKUP_COOL = '2';
 const DELIVERY_ID_PICKUP = '6';
 const DELIVERY_ID_MANUAL = '7';
 
-// 問い合わせ区分
-const CONTACT_DIVISION_SERVICE = '1'; // サービスについて
-const CONTACT_DIVISION_OUTBOUND = '2'; // 取り出しについて
-const CONTACT_DIVISION_OPINION = '3'; // サービスへのご意見・ご相談
-
 // 通知カテゴリID
 const ANNOUNCEMENT_CATEGORY_ID_RECEIPT = 'INF283';
 const ANNOUNCEMENT_CATEGORY_ID_BILLING = 'INF284';
@@ -152,20 +147,31 @@ const INBOUND_CARRIER_DELIVERY_SNEAKERS = [
     INBOUND_DELIVERY_MANUAL => '自分で発送する',
 ];
 
+// 問い合わせ区分
+const CONTACT_DIVISION_INFORMATION = '8'; // お知らせについて
+const CONTACT_DIVISION_RESIGN = '11'; // 退会ついて
+const CONTACT_DIVISION_OTHER = '12'; // その他
+const CONTACT_DIVISION_BUG = '15'; // 不具合報告
+const CONTACT_DIVISION_OPINION = '16'; // minikuraへのご意見・ご感想
+const CONTACT_DIVISION_DISSOLUTION = '17'; //溶解の申し込みについて
+const CONTACT_DIVISION_ANIMATECOLLECTION = '18'; //アニメイト・コレクションについて
+
+
 const CONTACTUS_DIVISION = [
-    '8' => 'お知らせについて',
-    '11' => '退会について',
-    '16' => 'minikuraへのご意見・ご相談',
-    '17' => '溶解の申し込みについて',
-    '12' => 'その他',
+    CONTACT_DIVISION_INFORMATION => 'お知らせについて',
+    CONTACT_DIVISION_RESIGN => '退会について',
+    CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
+    CONTACT_DIVISION_DISSOLUTION => '溶解の申し込みについて',
+    CONTACT_DIVISION_BUG => '不具合報告',
+    CONTACT_DIVISION_OTHER => 'その他',
 ];
 
 const INQUIRY_DIVISION = [
-    '8' => 'minikuraについて',
-    //'11' => '退会について',
-    '16' => 'minikuraへのご意見・ご相談',
-    '18' => 'アニメイト・コレクションについて',
-    '12' => 'その他',
+    CONTACT_DIVISION_INFORMATION => 'minikuraについて',
+    CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
+    CONTACT_DIVISION_ANIMATECOLLECTION => 'アニメイト・コレクションについて',
+    CONTACT_DIVISION_BUG => '不具合報告',
+    CONTACT_DIVISION_OTHER => 'その他',
 ];
 
 const OEM_CD_LIST = [
