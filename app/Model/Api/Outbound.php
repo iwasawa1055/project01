@@ -243,9 +243,10 @@ class Outbound extends ApiModel
         $product_data = explode(',', $product);
         //* Count Check
         $limitNum = 100;
+        $limitNumNext = $limitNum + 1;
         $productCount = count($product_data);
         if ($limitNum < $productCount) {
-            return "一度に取り出せるアイテム数の上限は {$limitNum} 個です。（選択アイテム数： {$productCount} 個）";
+            return "一度にお申し込みいただけるアイテム数の上限は {$limitNum} 個です。{$limitNumNext} 個目からのお申し込みは分けてご依頼ください。（選択アイテム数：{$productCount} 個）";
         }
         return true;
     }
