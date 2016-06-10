@@ -53,7 +53,7 @@
                   </div>
                   <div class="form-group col-lg-12">
                     <label>ご利用環境（OS・ブラウザ）</label>
-                    <?php echo $this->Form->input('Inquiry.bug_environment', ['class' => "form-control", 'error' => false, 'placeholder' => '例）iOS・Safari など']); ?>
+                    <?php echo $this->Form->input('Inquiry.bug_environment', ['class' => "form-control", 'error' => false, 'placeholder' => '例）iOS9・Safari など']); ?>
                     <?php echo $this->Form->error('Inquiry.bug_environment', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
