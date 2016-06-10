@@ -58,28 +58,8 @@ class InquiryController extends MinikuraController
             return $this->redirect(['action' => 'add']);
         }
 
-        if ($data['Inquiry']['division'] === CONTACT_DIVISION_BUG) {
-            $data['Inquiry']['text'] .= "\n\n\n";
-            $data['Inquiry']['text'] .= "==== 不具合発生日時 ====\n";
-            $data['Inquiry']['text'] .= $data['Inquiry']['bug_datetime'] . "\n\n";
-            $data['Inquiry']['text'] .= "==== 不具合発生 URL ====\n";
-            $data['Inquiry']['text'] .= $data['Inquiry']['bug_url'] . "\n\n";
-            $data['Inquiry']['text'] .= "==== ご利用環境（OS・ブラウザ）====\n";
-            $data['Inquiry']['text'] .= $data['Inquiry']['bug_environment'] . "\n\n";
-            $data['Inquiry']['text'] .= "==== 具体的な操作と症状 ====\n";
-            $data['Inquiry']['text'] .= $data['Inquiry']['bug_text'] . "\n\n";
-            $data['Inquiry']['text'] .= "==== UA ====\n";
-            $data['Inquiry']['text'] .= $_SERVER['HTTP_USER_AGENT'] . "\n\n";
-            $data['Inquiry']['text'] .= "==== IP アドレス ====\n";
-            $data['Inquiry']['text'] .= $_SERVER['REMOTE_ADDR'] . "\n\n";
-        }
-
-        unset($data['Inquiry']['bug_datetime']);
-        unset($data['Inquiry']['bug_url']);
-        unset($data['Inquiry']['bug_environment']);
-        unset($data['Inquiry']['bug_text']);
-
         $model = new Inquiry();
+        $data = $model->editText($data);
         $model->set($data);
         if ($model->validates()) {
             $res = $model->apiPost($model->toArray());

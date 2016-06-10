@@ -107,4 +107,25 @@ class Inquiry extends ApiModel
 
         return $d;
     }
+
+    public function editText($data)
+    {
+        if ($data['Inquiry']['division'] === CONTACT_DIVISION_BUG) {
+            $data['Inquiry']['text'] .= "\n\n\n";
+            $data['Inquiry']['text'] .= "==== 不具合発生日時 ====\n";
+            $data['Inquiry']['text'] .= $data['Inquiry']['bug_datetime'] . "\n\n";
+            $data['Inquiry']['text'] .= "==== 不具合発生 URL ====\n";
+            $data['Inquiry']['text'] .= $data['Inquiry']['bug_url'] . "\n\n";
+            $data['Inquiry']['text'] .= "==== ご利用環境（OS・ブラウザ）====\n";
+            $data['Inquiry']['text'] .= $data['Inquiry']['bug_environment'] . "\n\n";
+            $data['Inquiry']['text'] .= "==== 具体的な操作と症状 ====\n";
+            $data['Inquiry']['text'] .= $data['Inquiry']['bug_text'] . "\n\n";
+        }
+
+        unset($data['Inquiry']['bug_datetime']);
+        unset($data['Inquiry']['bug_url']);
+        unset($data['Inquiry']['bug_environment']);
+        unset($data['Inquiry']['bug_text']);
+        return $data;
+    }
 }

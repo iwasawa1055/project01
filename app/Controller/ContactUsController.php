@@ -8,6 +8,15 @@ class ContactUsController extends MinikuraController
     const MODEL_NAME_ANNOUNCEMENT = 'ContactUs_Announcement';
 
     /**
+     * 制御前段処理.
+     */
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        $this->loadModel(self::MODEL_NAME);
+    }
+
+    /**
      *
      */
     public function add()
@@ -60,29 +69,9 @@ class ContactUsController extends MinikuraController
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
-
-        if ($data['division'] === CONTACT_DIVISION_BUG) {
-            $data['text'] .= "\n\n\n";
-            $data['text'] .= "==== 不具合発生日時 ====\n";
-            $data['text'] .= $data['bug_datetime'] . "\n\n";
-            $data['text'] .= "==== 不具合発生 URL ====\n";
-            $data['text'] .= $data['bug_url'] . "\n\n";
-            $data['text'] .= "==== ご利用環境（OS・ブラウザ）====\n";
-            $data['text'] .= $data['bug_environment'] . "\n\n";
-            $data['text'] .= "==== 具体的な操作と症状 ====\n";
-            $data['text'] .= $data['bug_text'] . "\n\n";
-            $data['text'] .= "==== UA ====\n";
-            $data['text'] .= $_SERVER['HTTP_USER_AGENT'] . "\n\n";
-            $data['text'] .= "==== IP アドレス ====\n";
-            $data['text'] .= $_SERVER['REMOTE_ADDR'] . "\n\n";
-        }
-
-        unset($data['bug_datetime']);
-        unset($data['bug_url']);
-        unset($data['bug_environment']);
-        unset($data['bug_text']);
-
+        $data = $this->ContactUs->editText($data);
         $model = $this->Customer->getContactModel($data);
+
         if ($model->validates()) {
             if (!empty($announcement)) {
                 // お知らせの内容を追加
