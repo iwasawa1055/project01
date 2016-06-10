@@ -114,7 +114,7 @@ class Inquiry extends ApiModel
             $data['Inquiry']['text'] .= "\n\n\n";
             $data['Inquiry']['text'] .= "==== 不具合発生日時 ====\n";
             $data['Inquiry']['text'] .= $data['Inquiry']['bug_datetime'] . "\n\n";
-            $data['Inquiry']['text'] .= "==== 不具合発生 URL ====\n";
+            $data['Inquiry']['text'] .= "==== 不具合発生 URL（ページ） ====\n";
             $data['Inquiry']['text'] .= $data['Inquiry']['bug_url'] . "\n\n";
             $data['Inquiry']['text'] .= "==== ご利用環境（OS・ブラウザ）====\n";
             $data['Inquiry']['text'] .= $data['Inquiry']['bug_environment'] . "\n\n";

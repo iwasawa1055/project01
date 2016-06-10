@@ -23,7 +23,7 @@ class ContactUs extends ApiModel
             $data['text'] .= "\n\n\n";
             $data['text'] .= "==== 不具合発生日時 ====\n";
             $data['text'] .= $data['bug_datetime'] . "\n\n";
-            $data['text'] .= "==== 不具合発生 URL ====\n";
+            $data['text'] .= "==== 不具合発生 URL（ページ） ====\n";
             $data['text'] .= $data['bug_url'] . "\n\n";
             $data['text'] .= "==== ご利用環境（OS・ブラウザ）====\n";
             $data['text'] .= $data['bug_environment'] . "\n\n";

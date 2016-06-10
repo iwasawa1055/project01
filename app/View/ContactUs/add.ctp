@@ -47,17 +47,17 @@
                 <div id="bug_area">
                   <div class="form-group col-lg-12">
                     <label>不具合発生日時</label>
-                    <?php echo $this->Form->input('ContactUs.bug_datetime', ['class' => "form-control", 'error' => false]); ?>
+                    <?php echo $this->Form->input('ContactUs.bug_datetime', ['class' => "form-control", 'error' => false, 'placeholder' => '例）2016/6/10 13:00 または 2016年6月10日 13時頃 など']); ?>
                     <?php echo $this->Form->error('ContactUs.bug_datetime', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
                     <label>不具合発生URL（またはページ）</label>
-                    <?php echo $this->Form->input('ContactUs.bug_url', ['class' => "form-control", 'error' => false]); ?>
+                    <?php echo $this->Form->input('ContactUs.bug_url', ['class' => "form-control", 'error' => false, 'placeholder' => '例）https://mypage.minikura.com/login または ログインページ など']); ?>
                     <?php echo $this->Form->error('ContactUs.bug_url', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
                     <label>ご利用環境（OS・ブラウザ）</label>
-                    <?php echo $this->Form->input('ContactUs.bug_environment', ['class' => "form-control", 'error' => false]); ?>
+                    <?php echo $this->Form->input('ContactUs.bug_environment', ['class' => "form-control", 'error' => false, 'placeholder' => '例）iOS9・Safari など']); ?>
                     <?php echo $this->Form->error('ContactUs.bug_environment', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
