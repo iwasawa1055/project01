@@ -37,6 +37,7 @@ class ContactUs extends ApiModel
         return $data;
     }
 
+
     public $validate = [
         'division' => [
             'notBlank' => [
