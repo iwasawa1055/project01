@@ -8,6 +8,15 @@ class ContactUsController extends MinikuraController
     const MODEL_NAME_ANNOUNCEMENT = 'ContactUs_Announcement';
 
     /**
+     * 制御前段処理.
+     */
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        $this->loadModel(self::MODEL_NAME);
+    }
+
+    /**
      *
      */
     public function add()
@@ -60,8 +69,9 @@ class ContactUsController extends MinikuraController
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
-
+        $data = $this->ContactUs->editText($data);
         $model = $this->Customer->getContactModel($data);
+
         if ($model->validates()) {
             if (!empty($announcement)) {
                 // お知らせの内容を追加

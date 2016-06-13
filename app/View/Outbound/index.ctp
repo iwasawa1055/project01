@@ -12,6 +12,7 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
+            <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
             <?php if (!empty($itemList)) : ?>
             <h2>取り出すアイテム</h2>
             <?php endif; ?>
@@ -31,7 +32,6 @@
               <!--loop end-->
               <?php endforeach; ?>
             </div>
-            <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p']) ?>
           </div>
           <div class="col-lg-12">
             <?php if (!empty($boxList)) : ?>
@@ -49,7 +49,6 @@
               <!--loop end-->
               <?php endforeach; ?>
             </div>
-            <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p']) ?>
           </div>
         </div>
       </div>
@@ -145,6 +144,9 @@
           <label>お届け希望日と時間帯</label>
           <?php echo $this->Form->select("Outbound.datetime_cd", $this->Order->setDatetime($dateItemList), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
           <?php echo $this->Form->error("Outbound.datetime_cd", null, ['wrap' => 'p']) ?>
+        </div>
+        <div class="form-group col-lg-12">
+          <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
         </div>
 
         <span class="col-lg-6 col-md-6 col-xs-12">

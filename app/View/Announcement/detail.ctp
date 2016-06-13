@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-bell"></i> お知らせ</h1>
+    <h1 class="page-header"><i class="fa fa-bell"></i> メッセージ</h1>
   </div>
 </div>
 <div class="row">
@@ -15,7 +15,7 @@
                 <div class="col-lg-12">
                   <h3><?php echo h($announcement['title']); ?></h3>
                   <h4 class="date"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>
-                  <h5 class="date">お知らせID：<?php echo $announcement['announcement_id']; ?></h5>
+                  <h5 class="date">メッセージID：<?php echo $announcement['announcement_id']; ?></h5>
                 </div>
               </div>
               <div class="col-lg-12">
@@ -81,7 +81,7 @@
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-primary btn-lg btn-block" href="/announcement/">お知らせ一覧に戻る</a>
+              <a class="btn btn-primary btn-lg btn-block" href="/announcement/">メッセージ一覧に戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-danger btn-lg btn-block" href="/contact_us/<?php echo $announcement['announcement_id']; ?>/add">この内容について問い合わせる</a>

@@ -59,6 +59,7 @@ class InquiryController extends MinikuraController
         }
 
         $model = new Inquiry();
+        $data = $model->editText($data);
         $model->set($data);
         if ($model->validates()) {
             $res = $model->apiPost($model->toArray());

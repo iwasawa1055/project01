@@ -3,6 +3,7 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
+App::uses('News', 'Model');
 
 class MyPageController extends MinikuraController
 {
@@ -22,6 +23,11 @@ class MyPageController extends MinikuraController
             $list = $item->getListLastInbound();
             $itemList =  array_slice($list, 0, 10);
         }
+
+        $News = new News();
+        $newsList = $News->getNews(2);
+
+        $this->set('newsList', $newsList);        
         $this->set('boxList', $boxList);
         $this->set('itemList', $itemList);
     }

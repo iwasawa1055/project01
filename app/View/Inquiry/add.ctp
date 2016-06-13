@@ -40,6 +40,28 @@
                   <?php echo $this->Form->textarea('Inquiry.text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
                   <?php echo $this->Form->error('Inquiry.text', null, ['wrap' => 'p']) ?>
                 </div>
+                <div id="bug_area">
+                  <div class="form-group col-lg-12">
+                    <label>不具合発生日時</label>
+                    <?php echo $this->Form->input('Inquiry.bug_datetime', ['class' => "form-control", 'error' => false, 'placeholder' => '例）2016/6/10 13:00 または 2016年6月10日 13時頃 など']); ?>
+                    <?php echo $this->Form->error('Inquiry.bug_datetime', null, ['wrap' => 'p']) ?>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label>不具合発生URL（またはページ）</label>
+                    <?php echo $this->Form->input('Inquiry.bug_url', ['class' => "form-control", 'error' => false, 'placeholder' => '例）https://mypage.minikura.com/login または ログインページ など']); ?>
+                    <?php echo $this->Form->error('Inquiry.bug_url', null, ['wrap' => 'p']) ?>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label>ご利用環境（OS・ブラウザ）</label>
+                    <?php echo $this->Form->input('Inquiry.bug_environment', ['class' => "form-control", 'error' => false, 'placeholder' => '例）iOS9・Safari など']); ?>
+                    <?php echo $this->Form->error('Inquiry.bug_environment', null, ['wrap' => 'p']) ?>
+                  </div>
+                  <div class="form-group col-lg-12">
+                    <label>具体的な操作と症状</label>
+                    <?php echo $this->Form->textarea('Inquiry.bug_text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
+                    <?php echo $this->Form->error('Inquiry.bug_text', null, ['wrap' => 'p']) ?>
+                  </div>
+                </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <a class="btn btn-primary btn-lg btn-block" href="/inquiry/add">クリアする</a>
                 </span>

@@ -41,9 +41,21 @@ p.error-message {
   padding: 5px 10px;
   background-color: #fcf8e3;
 }
+p.error-message-red {
+  border: 1px solid #f59e9e;
+  margin: 3px 0 10px 0;
+  padding: 5px 10px;
+  background-color: #fce3e3;
+}
 p.error-message::before {
   font-family: 'FontAwesome';
   color: #f4c007;
+  font-size: 1.2em;
+  content: '\f06a\0020\0020';
+}
+p.error-message-red::before {
+  font-family: 'FontAwesome';
+  color: #f40707;
   font-size: 1.2em;
   content: '\f06a\0020\0020';
 }

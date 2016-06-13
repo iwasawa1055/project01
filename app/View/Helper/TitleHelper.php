@@ -29,8 +29,12 @@ class TitleHelper extends AppHelper {
         ],
 
         'announcement' => [
-            'index' => 'お知らせ一覧',
-            'detail' => 'お知らせ',
+            'index' => 'メッセージ一覧',
+            'detail' => 'メッセージ',
+        ],
+        'news' => [
+            'index' => 'ニュース一覧',
+            'detail' => 'ニュース',
         ],
         'box' => [
             'index' => 'ボックス一覧',
