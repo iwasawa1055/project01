@@ -98,6 +98,7 @@ if ($action === 'customer_add') {
                   <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
                 </span>
                 <?php echo $this->Form->hidden('PaymentGMOSecurityCard.card_seq'); ?>
+                <?php echo $this->Form->hidden('PaymentGMOSecurityCard.add_referer'); ?>
               <?php echo $this->Form->end(); ?>
               </div>
             </div>

@@ -52,6 +52,8 @@ class CreditCardController extends MinikuraController
             if (!empty($default_payment)) {
                 return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
             }
+            // カード登録時の遷移元取得（ボックス購入時は購入画面へ戻る）
+            $this->request->data[self::MODEL_NAME_SECURITY]['add_referer'] = $this->referer(null, true);
         }
     }
 
@@ -64,7 +66,6 @@ class CreditCardController extends MinikuraController
         $step = Hash::get($this->request->params, 'step');
 
         if ($this->request->is('get')) {
-            // TODO: カード件数確認
 
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
@@ -101,9 +102,11 @@ class CreditCardController extends MinikuraController
                 if ($this->Customer->isEntry()) {
                     // 契約情報登録
                     return $this->redirect(['controller' => 'info', 'action' => 'add']);
-                } else {
+                } elseif ($this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]['add_referer'] === '/order/confirm') {
+                    // ボックス購入
                     return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
                 }
+                return $this->render('customer_complete');
             }
         }
     }
