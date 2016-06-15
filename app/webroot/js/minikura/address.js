@@ -27,12 +27,29 @@ function searchAddress(postalCode) {
             results[0].address_components) {
             var ad = results[0].address_components;
 
-            if (ad[4] && ad[4].short_name === 'JP') {
+            var postcode = ad[0].short_name;
+            ad.reverse();
+
+            if (ad[0] && ad[0].short_name === 'JP') {
                 // 該当あり
-                $('.address_pref').val(ad[3].long_name);
-                $('.address_address1').val(ad[2].long_name);
-                $('.address_address2').val(ad[1].long_name);
-                var postcode = ad[0].short_name;
+                var pref = '';
+                var address1 = '';
+                var address2 = '';
+                for (var index = 1; index < ad.length - 1; index++) {
+                    if (index === 1) {
+                      pref = ad[index].long_name;
+                    }
+                    if (index === 2) {
+                      address1 = ad[index].long_name;
+                    }
+                    if (index >= 3) {
+                      address2 += ad[index].long_name;
+                    }
+                }
+
+                $('.address_pref').val(pref);
+                $('.address_address1').val(address1);
+                $('.address_address2').val(address2);
                 $('.search_address_postal').val(postcode);
                 return;
             }
