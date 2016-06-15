@@ -69,7 +69,13 @@ class ContactUsController extends MinikuraController
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
         }
+
         $data = $this->ContactUs->editText($data);
+        // 仮登録ユーザの場合、後ろにカスタマーIDをつける
+        if ($this->Customer->isEntry()) {
+            $data['text'] .= "\n\nカスタマーID: {$this->Customer->getInfo()['customer_id']}\n\n";
+        }
+
         $model = $this->Customer->getContactModel($data);
 
         if ($model->validates()) {

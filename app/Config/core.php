@@ -229,11 +229,11 @@
         'defaults' => 'cake',
         'cookie' => 'MINIKURACOM',  // セッションID名
         'start' => false,  // 自動開始
-        'autoRegenerate' => true,  // クッキー再生成
+        'autoRegenerate' => false,  // クッキー再生成, true => falseへ変更
         'timeout' => 4*60,  // ４時間 = 4*60分
         'ini' => [
             "session.cookie_lifetime" => 0,  // ブラウザを閉じたらセッション破棄
-            "session.gc_maxlifetime" => 4*60*60,  // ４時間 = 4*60*60秒
+            "session.gc_maxlifetime" => 8*60*60,  // 8時間 = 8*60*60秒
             "session.use_strict_mode" => true,
         ]
     ]);
