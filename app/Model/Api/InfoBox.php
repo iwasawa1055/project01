@@ -169,4 +169,71 @@ class InfoBox extends ApiCachedModel
     {
         return str_replace(self::BOXTITLE_CHAR_SEARCH, self::BOXTITLE_CHAR_REPLACE, $title);
     }
+
+
+    /**
+     * 検索ロジック
+     */
+    public function editBySearchTerm($results, $params)
+    {
+        if (empty($params['keyword'])) {
+            return $results;
+        }
+
+        $columns = ['box_name', 'box_id', 'product_name', 'box_note', 'kit_name'];
+
+        if (empty($params['type'])) {
+            $type = '1';
+        } else {
+            $type = $params['type'];
+        }
+
+        $keyword = str_replace(' ', '|', str_replace('　', ' ', $params['keyword']));
+        $keywords = explode('|', $keyword);
+        $keyword_count = count($keywords);
+
+        $tmp = [];
+
+        foreach ($columns as $column) {
+            foreach ($results as $k => $v) {
+                $haystack = implode([
+                    $v['kit_name'],
+                    $v['product_name'],
+                    $v['box_id'],
+                    $v['box_name'],
+                    $v['box_note'],
+                ]);
+
+                // todo: カラムで繰り返し処理し、重要項目から順に入れていく形にするべきでは
+                // そうすることによってどこの値に引っかかったかがわがる（特に備考などを出力するのには必要）
+                if (preg_match_all("/{$keyword}/", $haystack, $matches)) {
+
+                    $unique = array_unique($matches[0]);
+                    $unique_count = count($unique);
+
+                    // type=2の場合、and検索。キーワードカウントより少ない場合は抜ける
+                    if ($type === '2' && $unique_count < $keyword_count) {
+                        continue;
+                    }
+
+                    $tmp[$unique_count][count($matches[0])][] = $v;
+                    unset($results[$k]);
+                }
+            }
+        }
+
+        krsort($tmp);
+
+        $hits = [];
+        foreach ($tmp as $unique_count_key => $matches_count_list) {
+            krsort($matches_count_list);
+            foreach ($matches_count_list as $matches_count_data) {
+                foreach($matches_count_data as $row) {
+                    $hits[] = $row;
+                }
+            }
+        }
+
+        return $hits;
+    }
 }

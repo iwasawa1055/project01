@@ -29,6 +29,53 @@
                     }
                   ?>
                 <h2><?php echo $productName; ?></h2>
+
+<!-- 開発用暫定 -->
+<?php echo $this->Form->create('BoxSearch', ['type' => 'get','id' => 'box-search', 'url' => ['controller' => 'box', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+  <input type="hidden" name="product" value="<?php echo $product;?>" />
+  <div class="row box-sort">
+    <div class="col-xs-12">
+      <div class="input-group custom-search-form">
+      <?php 
+      $keyword_value = null;
+      if (!empty($this->request->query['keyword'])) {
+        $keyword_value = $this->request->query['keyword'];
+      }
+      echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => '検索する', 'value' => $keyword_value]); ?>
+        <span class="input-group-btn">
+          <button class="btn btn-default btn-search" type="submit" value="search">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="row box-sort">
+  <div class="col-sm-6 col-xs-12">
+    <select name="orderby" class="form-control list_sort">
+      <option value="1">お預かり日順 で</option>
+      <option value="2">ボックスID順 で</option>
+      <option value="3">ボックス名順 で</option>
+    </select>
+  </div>
+  <div class="col-sm-3 col-xs-4">
+    <select name="ordertype" class="form-control list_sort">
+      <option value="asc">A〜Z</option>
+      <option value="desc">Z〜A</option>
+    </select>
+  </div>
+    <div class="col-sm-3 col-xs-8">
+      <a class="btn btn-danger btn-block btn-sm btn-sort animsition-link" href="#">表示する</a>
+    </div>
+  </div>
+  <div class="row box-sort">
+    <div class="col-sm-5 col-sm-offset-7 col-sm-12">
+      <a class="btn btn-primary btn-block btn-xs btn-sort animsition-link" href="#">取り出し済みを表示する</a>
+    </div>
+  </div>
+<?php echo $this->Form->end(); ?>
+<!-- /開発用暫定設定 -->
+
                 <div class="row box-list">
                 <?php /*
                   <?php if (empty($boxList)) : ?>

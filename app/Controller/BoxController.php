@@ -80,6 +80,7 @@ class BoxController extends MinikuraController
      */
     public function index()
     {
+
         // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
         $withOutboudDone = true;
         if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
@@ -96,6 +97,12 @@ class BoxController extends MinikuraController
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
         $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone, true);
+
+        // 検索の場合、加工
+        $results = $this->InfoBox->editBySearchTerm($results, $this->request->query);
+        // sort
+        
+
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('boxList', $list);
