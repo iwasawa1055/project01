@@ -6,12 +6,13 @@
 class HashSorter
 {
     public $sortKeyList = [];
-    private $cmpKitCd = [];
-    private $cmpProductCd = [];
     public function __construct($sortKeyList)
     {
         $this->sortKeyList = $sortKeyList;
-        $this->cmpKitCd = [
+    }
+    public static function sort(&$list, $sortKey = [])
+    {
+        $cmpKitCd = [
           KIT_CD_MONO,
           KIT_CD_MONO_APPAREL,
           KIT_CD_MONO_BOOK,
@@ -22,7 +23,7 @@ class HashSorter
           KIT_CD_WINE_MONO,
           KIT_CD_CLEANING_PACK,
         ];
-        $this->cmpProductCd = [
+        $cmpProductCd = [
           PRODUCT_CD_MONO,
           PRODUCT_CD_HAKO,
           PRODUCT_CD_CARGO_JIBUN,
@@ -30,34 +31,27 @@ class HashSorter
           PRODUCT_CD_CLEANING_PACK,
           PRODUCT_CD_SHOES_PACK,
         ];
-    }
-    public function cmp($a, $b)
-    {
-        $result = 0;
-        foreach ($this->sortKeyList as $key => $isAsc) {
-            $aValue = Hash::get($a, $key);
-            $bValue = Hash::get($b, $key);
-            if ($aValue !== $bValue) {
-                if (!empty($aValue) && !empty($bValue)) {
-                    if ($key === 'kit_cd' || $key === 'box.kit_cd') {
-                        $aValue = array_search($aValue, $this->cmpKitCd);
-                        $bValue = array_search($bValue, $this->cmpKitCd);
-                    } elseif ($key === 'product_cd' || $key === 'box.product_cd') {
-                        $aValue = array_search($aValue, $this->cmpProductCd);
-                        $bValue = array_search($bValue, $this->cmpProductCd);
-                    }
-                    $result = strcmp($aValue, $bValue);
-                } else {
-                    $result = empty($aValue) ? 1 : -1;
-                }
-                break;
+
+        $keys = array_keys($sortKey);
+        $values = array_values($sortKey);
+
+        $args = [];
+        
+        foreach ($list as $key => $value) {
+          foreach ($keys as $i => $keyName) {
+
+            $value2 = Hash::get($value, $keyName);
+            if ($keyName === 'kit_cd' || $keyName === 'box.kit_cd') {
+                $value2 = array_search($value2, $cmpKitCd);
+            } elseif ($keyName === 'product_cd' || $keyName === 'box.product_cd') {
+                $value2 = array_search($value2, $cmpProductCd);
             }
+
+            $args[$i * 2][] = $value2;
+            $args[$i * 2 + 1] =  $values[$i] ? SORT_ASC : SORT_DESC;
+          }
         }
-        return $result * ($isAsc? 1 : -1);
-    }
-    public static function sort(&$list, $sortKey = [])
-    {
-        $sorter = new HashSorter($sortKey);
-        usort($list, [$sorter, 'cmp']);
+        $args[] = &$list;
+        call_user_func_array('array_multisort', $args);
     }
 }
