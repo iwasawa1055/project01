@@ -27,6 +27,9 @@ class MyPageController extends MinikuraController
         $News = new News();
         $newsList = $News->getNews(2);
 
+        $res = $this->Announcement->apiGetResults(['limit' => 5]);
+        $this->set('notice_announcements', $res);
+
         $this->set('newsList', $newsList);        
         $this->set('boxList', $boxList);
         $this->set('itemList', $itemList);
