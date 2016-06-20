@@ -96,12 +96,11 @@ class BoxController extends MinikuraController
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
+
         $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone, true);
 
-        // 検索の場合、加工
+        // 検索
         $results = $this->InfoBox->editBySearchTerm($results, $this->request->query);
-        // sort
-        
 
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);

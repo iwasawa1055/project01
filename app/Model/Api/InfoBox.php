@@ -103,6 +103,7 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_START,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS,
         ];
+        
         if ($withOutboudDone) {
             if (!empty($outboundOnly)) {
                 unset($okStatus);
@@ -114,6 +115,7 @@ class InfoBox extends ApiCachedModel
         if (empty($where['product_cd'])) {
             unset($where['product_cd']);
         }
+
         $list = $this->apiGetResultsWhere([], $where);
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
@@ -173,6 +175,23 @@ class InfoBox extends ApiCachedModel
 
     /**
      * 検索ロジック
+     * and 検索
+     *  - [a b c]
+     *    - abc が一番上にくる。次にab
+     *    - a もしくは b もしくは c
+     *    - a のみもOK
+     *    - ab もしくは bc もしくは ac もOK
+     * or 検索
+     *  - [a OR b OR c]
+     *    - a もしくは b もしくは c
+     *    - a のみもOK
+     *    - 連続文字列は出てこない
+     * 例)A OR B C OR D
+     *  - A OR (B AND C) OR D となる
+     *  - A, D は単体での検索, BDは連続文字列として検索もある 
+     * マイナス検索
+     *  - 「a -b」 とすると aを含み、かつbを含まない含まないリストを作る
+     *  - 「a b -c」
      */
     public function editBySearchTerm($results, $params)
     {
@@ -180,7 +199,14 @@ class InfoBox extends ApiCachedModel
             return $results;
         }
 
-        $columns = ['box_name', 'box_id', 'product_name', 'box_note', 'kit_name'];
+        // ランク付け用にポイントをそれぞれ設定
+        $columns = [
+            'box_name' => '10', 
+            'box_id' => '8', 
+            'product_name' => '6', 
+            'box_note' => '4', 
+            'kit_name' => '2'
+        ];
 
         if (empty($params['type'])) {
             $type = '1';
@@ -194,44 +220,66 @@ class InfoBox extends ApiCachedModel
 
         $tmp = [];
 
-        foreach ($columns as $column) {
-            foreach ($results as $k => $v) {
-                $haystack = implode([
-                    $v['kit_name'],
-                    $v['product_name'],
-                    $v['box_id'],
-                    $v['box_name'],
-                    $v['box_note'],
-                ]);
+        # マッチ数, 出現数, マッチカラム で表示順整形
+        foreach ($results as $k => $v) {
 
-                // todo: カラムで繰り返し処理し、重要項目から順に入れていく形にするべきでは
-                // そうすることによってどこの値に引っかかったかがわがる（特に備考などを出力するのには必要）
-                if (preg_match_all("/{$keyword}/", $haystack, $matches)) {
+            $match_all_lists = [];
+            $match_columns = [];
 
-                    $unique = array_unique($matches[0]);
-                    $unique_count = count($unique);
-
-                    // type=2の場合、and検索。キーワードカウントより少ない場合は抜ける
-                    if ($type === '2' && $unique_count < $keyword_count) {
-                        continue;
-                    }
-
-                    $tmp[$unique_count][count($matches[0])][] = $v;
-                    unset($results[$k]);
+            foreach ($columns as $column => $column_rank) {
+                if (preg_match_all("/{$keyword}/", $v[$column], $matches)) {
+                    $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                    $match_columns[] = $column;
                 }
             }
+
+
+            // マッチしたキーワード数の数
+            $unique = array_unique($match_all_lists);
+            $unique_count = count($unique);
+
+            // 0件だったらcontinue;
+            if ($unique_count === 0) {
+                continue;
+            }
+
+            // type = 2 の場合、and検索なのですべて入ってるデータのみ
+            if ($type === '2' && $unique_count !== $keyword_count) {
+                continue;
+            }
+
+            // 出現数
+            $all_count = count($match_all_lists);
+
+            // マッチしたカラム
+            $rank = 0;
+            foreach ($match_columns as $column) {
+                $rank += $columns[$column];
+            }
+            $tmp[$unique_count][$all_count][$rank][] = $v;
         }
 
         krsort($tmp);
 
         $hits = [];
+
+        // リスト生成
         foreach ($tmp as $unique_count_key => $matches_count_list) {
             krsort($matches_count_list);
             foreach ($matches_count_list as $matches_count_data) {
-                foreach($matches_count_data as $row) {
-                    $hits[] = $row;
+                krsort($matches_count_data);
+                foreach($matches_count_data as $rank =>  $rank_data) {
+                    foreach ($rank_data as $row) {
+                        $hits[] = $row;
+                    }
                 }
             }
+        }
+        
+        // sort
+        if (!empty($params['order']) && !empty($params['direction'])) {
+            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];            
+            HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
         }
 
         return $hits;
