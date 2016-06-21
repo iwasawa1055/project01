@@ -183,12 +183,12 @@ const IN_USE_SERVICE = [
     'minikura' => [
         [
             'product' => 'mono',
-            'name' => 'MONO',
+            'name' => 'minikuraMONO',
             'product_cd' => PRODUCT_CD_MONO,
         ],
         [
             'product' => 'hako',
-            'name' => 'HAKO',
+            'name' => 'minikuraHAKO',
             'product_cd' => PRODUCT_CD_HAKO,
         ],
         [

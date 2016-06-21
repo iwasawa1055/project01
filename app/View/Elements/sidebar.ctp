@@ -1,6 +1,9 @@
   <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
       <ul class="nav in" id="side-menu">
+
+		<!--feature_mypage_menu test_Start-->
+		<!--
         <li class="sidebar-search">
           <?php echo $this->Form->create('GlobalSreach', ['id' => 'sidebar-search', 'url' => ['controller' => 'result', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="input-group custom-search-form">
@@ -13,13 +16,42 @@
           <?php echo $this->Form->end(); ?>
         </form>
         </li>
+		-->
+		<!--feature_mypage_menu test_End-->
+
         <li> <a href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
+
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
-        <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
+
+		<!--feature_mypage_menu test_Start-->
+        <li> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
+		    <?php if (! empty($product_summary)):?>
+                <li> <a href="/item?"><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
+			<?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
-                <li> <a href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-tag fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
+			    <!--HOKO除外-->
+				<?php if ($v['product'] !== 'hako' ):?>
+			      <!--todo 箱の項目ごとのアイテムに-->
+                  <li> <a href="/item?product=<?php echo $v['product'];?>"><i class="fa fa-diamond fa-fw"></i> <?php echo $v['name'];?></a> </li>
+				<?php endif;?>
+              <?php endif;?>
+            <?php endforeach;?>
+          </ul>
+        </li>
+		<!--feature_mypage_menu test_End-->
+
+        <li> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+		    <!--feature_mypage_menu test_Start-->
+		    <?php if (! empty($product_summary)):?>
+                <li> <a href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
+			<?php endif;?>
+		    <!--feature_mypage_menu test_End-->
+            <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
+              <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
+                <li> <a href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
               <?php endif;?>
             <?php endforeach;?>
           </ul>

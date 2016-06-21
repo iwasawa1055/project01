@@ -64,16 +64,30 @@ class ItemController extends MinikuraController
         if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
             $withOutboudDone = false;
         }
+		
+		//* #feature_menu_myapge mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
+        // 商品指定
+        $product = $this->request->query('product');
+
+        // oemに紐づく商品じゃない場合、productを空にする
+        if (!$this->checkProduct($product)) {
+            $product = null;
+        }
+		$where = [];
+		$where['product_cd'] = $product;
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
-        $results = $this->InfoItem->getListForServiced($sortKey, [], $withOutboudDone, true);
+        $results = $this->InfoItem->getListForServiced($sortKey, $where, $withOutboudDone, true);
 
-        $inbounds = $this->InfoItem->getListForServiced($sortKey, [], false, true);
-        $outbounds = $this->InfoItem->getListForServiced($sortKey, [], true, true);
+        $inbounds = $this->InfoItem->getListForServiced($sortKey, $where, false, true);
+        $outbounds = $this->InfoItem->getListForServiced($sortKey, $where, true, true);
         $item_all_count = count($outbounds) + count($inbounds);
 
         // paginate
+		//debug($results);
+		debug(count($inbounds));
+		debug(count($outbounds));
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('itemList', $list);
         $this->set('item_all_count', $item_all_count);
