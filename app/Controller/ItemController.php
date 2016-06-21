@@ -85,9 +85,6 @@ class ItemController extends MinikuraController
         $item_all_count = count($outbounds) + count($inbounds);
 
         // paginate
-		//debug($results);
-		debug(count($inbounds));
-		debug(count($outbounds));
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('itemList', $list);
         $this->set('item_all_count', $item_all_count);

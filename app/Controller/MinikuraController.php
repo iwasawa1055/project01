@@ -82,6 +82,13 @@ class MinikuraController extends AppController
         // AppSecurity::blockClickJacking();
     }
 
+    /**
+     * 商品コード チェック
+     *
+     * @access      private
+     * @param       array $product 商品情報
+     * @return      boolean
+     */
     protected function checkProduct($product = null)
     {
         if(empty($product)) return true;
