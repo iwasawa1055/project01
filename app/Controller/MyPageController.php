@@ -4,6 +4,7 @@ App::uses('MinikuraController', 'Controller');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
 App::uses('News', 'Model');
+App::uses('AnnouncementNoCache', 'Model');
 
 class MyPageController extends MinikuraController
 {
@@ -29,6 +30,10 @@ class MyPageController extends MinikuraController
 
         $News = new News();
         $newsList = $News->getNews(2);
+
+        $announcement = new AnnouncementNoCache();
+        $res = $announcement->apiGet(['limit' => 5]);
+        $this->set('notice_announcements', $res->results);
 
         $this->set('newsList', $newsList);        
         /* feature_mypage_menu 最近預けたボックスとアイテムをカット、代わりに契約情報を差し込む [start]
