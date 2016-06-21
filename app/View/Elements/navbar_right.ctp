@@ -1,32 +1,6 @@
 <ul class="nav navbar-top-links navbar-right">
   <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-      <i class="fa fa-bell fa-fw"></i> メッセージ <i class="fa fa-caret-down"></i>
-    </a>
-    <ul class="dropdown-menu dropdown-alerts">
-      <?php if (!empty($notice_announcements) && is_array($notice_announcements)) : ?>
-      <?php foreach ($notice_announcements as $data): ?>
-        <?php $url = '/announcement/detail/' . $data['announcement_id']; ?>
-        <li> <a href="<?php echo $url; ?>">
-          <div>
-            <i class="fa fa-bell fa-fw"></i>
-            <?php echo h($data['title']); ?>
-            <span class="pull-right text-muted small"><?php echo $data['date']; ?></span>
-          </div>
-          </a>
-        </li>
-        <li class="divider"></li>
-      <?php endforeach; ?>
-      <?php endif; ?>
-      <li>
-        <a class="text-center" href="/announcement/">
-          <strong>すべてのメッセージを見る</strong> <i class="fa fa-angle-right"></i>
-        </a>
-      </li>
-    </ul>
-  </li>
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
       <i class="fa fa-user fa-fw"></i> <?php echo h($customer->getName()); ?> <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">

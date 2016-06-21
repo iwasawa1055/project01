@@ -45,9 +45,6 @@ class MinikuraController extends AppController
                 }
             }
 
-            // ヘッダー表示、お知らせ
-            $res = $this->Announcement->apiGetResults(['limit' => 5]);
-            $this->set('notice_announcements', $res);
             // ご利用中サービスの集計
             $this->set('product_summary', []);
             if (!$this->Customer->isEntry()) {

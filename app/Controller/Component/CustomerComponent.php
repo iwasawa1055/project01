@@ -9,6 +9,7 @@ App::uses('CustomerLogin', 'Model');
 App::uses('CustomerEnvAuthed', 'Model');
 App::uses('CustomerPassword', 'Model');
 App::uses('ContactUs', 'Model');
+App::uses('ContactUsCorporate', 'Model');
 App::uses('CustomerEmail', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
