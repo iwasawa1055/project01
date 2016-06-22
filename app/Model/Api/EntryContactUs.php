@@ -8,4 +8,85 @@ class EntryContactUs extends Inquiry
     {
         parent::__construct('EntryContactUs', '/entry_contact', 'minikura_v5');
     }
+
+    public $validate = [
+        'lastname' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'lastname']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'lastname', 29]
+            ],
+        ],
+        'lastname_kana' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'lastname_kana']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'lastname_kana', 29]
+            ],
+            'isFwKana' => [
+                'rule' => 'isFwKana',
+                'message' => ['isFwKana', 'lastname_kana']
+            ],
+        ],
+        'firstname' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'firstname']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'firstname', 29]
+            ],
+        ],
+        'firstname_kana' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'firstname_kana']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' =>  ['maxLength', 'firstname_kana', 29]
+            ],
+            'isFwKana' => [
+                'rule' => 'isFwKana',
+                'message' => ['isFwKana', 'firstname_kana']
+            ],
+        ],
+        'division' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'contact_division'],
+             ],
+        ],
+        'text' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'contact_text'],
+             ],
+            'maxLength' => [
+                'rule' => ['maxLength', 1000],
+                'message' => ['maxLength', 'contact_text', 1000]
+            ],
+        ],
+        'bug_datetime' => [
+        ],
+        'bug_url' => [
+        ],
+        'bug_environment' => [
+        ],
+        'bug_text' => [
+        ],
+    ];
 }
