@@ -65,60 +65,35 @@
     </div>
     <?php if (!$customer->isEntry()) : ?>
     <div class="col-lg-12 col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <h2>最近預けたアイテム</h2>
-          <div class="col-lg-12">
-            <div class="col-lg-12">
-              <ul class="tile">
-              <?php if (count($itemList) === 0) : ?>
-                <?php echo $this->element('List/empty'); ?>
-              <?php endif; ?>
-              <?php foreach ($itemList as $item): ?>
-                <?php $url = '/item/detail/' . $item['item_id']; ?>
-                <!--loop-->
-                <li class="panel panel-default">
-                  <?php echo $this->element('List/item_icon_body', ['item' => $item]); ?>
-                  <?php echo $this->element('List/item_icon_footer', ['item' => $item]); ?>
-                </li>
-                <!--loop end-->
-              <?php endforeach; ?>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-info btn-md pull-right" href="/item">アイテム一覧を見る</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-12 col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <h2>最近預けたボックス</h2>
-          <div class="col-lg-12">
-            <div class="row box-list">
-              <?php if (count($boxList) === 0) : ?>
-                  <?php echo $this->element('List/empty'); ?>
-              <?php endif; ?>
-              <?php foreach ($boxList as $box): ?>
-                <?php $url = '/box/detail/' . $box['box_id']; ?>
-                <!--loop-->
-                <div class="col-lg-12">
-                  <div class="panel panel-default">
-                      <?php echo $this->element('List/box_body', ['box' => $box]); ?>
-                      <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
-                  </div>
-                </div>
-                <!--loop end-->
-              <?php endforeach; ?>
-            </div>
-          </div>
-          <div class="col-lg-12 col-md-12 col-xs-12">
-              <a class="btn btn-info btn-md pull-right" href="/box">ボックス一覧を見る</a>
-          </div>
-        </div>
-      </div>
-    </div>
+		<div class="panel panel-default">
+		  <div class="panel-body">
+			<div class="row">
+			  <div class="col-lg-12">
+				<h2>契約情報一覧</h2>
+				<div class="col-lg-12 col-xs-12 agreement">
+				  <div class="form-group col-lg-12">
+					<?php 
+					if($customer->isSneaker()):
+					  $productCdList = [PRODUCT_CD_SNEAKERS];
+					else:
+					  $productCdList = [PRODUCT_CD_MONO, PRODUCT_CD_HAKO, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK];
+					endif;?>
+					<?php foreach($productCdList as $productCd) : ?>
+					<div class="row list">
+					  <div class="col-xs-12 col-md-10 col-lg-10">
+						<?php echo PRODUCT_NAME[$productCd]; ?>
+					  </div>
+					  <div class="col-xs-12 col-md-2 col-lg-2">
+						<?php echo Hash::get($product_summary, $productCd, 0); ?>箱
+					  </div>
+					</div>
+					<?php endforeach; ?>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>	
     <?php endif; ?>
   </div>

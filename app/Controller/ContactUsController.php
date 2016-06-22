@@ -44,8 +44,8 @@ class ContactUsController extends MinikuraController
         $this->set('id', $id);
         $data = $this->getAnnouncement($id);
         $this->set('announcement', $data);
-
         $model = $this->Customer->getContactModel($this->request->data[self::MODEL_NAME]);
+
         if ($model->validates()) {
             CakeSession::write(self::MODEL_NAME, $model->toArray());
             CakeSession::write(self::MODEL_NAME_ANNOUNCEMENT, $data);

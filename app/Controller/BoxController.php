@@ -47,6 +47,7 @@ class BoxController extends MinikuraController
         return $data;
     }
 
+    /*
     private function checkProduct($product = null)
     {
         if(empty($product)) return true;
@@ -74,6 +75,7 @@ class BoxController extends MinikuraController
         }
         return true;
     }
+	*/
 
     /**
      * 一覧.
@@ -97,6 +99,12 @@ class BoxController extends MinikuraController
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
 
+		/*
+		debug('master_key');
+		debug($product);
+		debug($sortKey);
+		*/
+        
         $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone, true);
 
         // 検索

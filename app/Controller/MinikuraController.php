@@ -45,9 +45,6 @@ class MinikuraController extends AppController
                 }
             }
 
-            // ヘッダー表示、お知らせ
-            $res = $this->Announcement->apiGetResults(['limit' => 5]);
-            $this->set('notice_announcements', $res);
             // ご利用中サービスの集計
             $this->set('product_summary', []);
             if (!$this->Customer->isEntry()) {
@@ -83,5 +80,40 @@ class MinikuraController extends AppController
         // 転送処理の妨げになる一時除外
         //* Click Jacking Block
         // AppSecurity::blockClickJacking();
+    }
+
+    /**
+     * 商品コード チェック
+     *
+     * @access      private
+     * @param       array $product 商品情報
+     * @return      boolean
+     */
+    protected function checkProduct($product = null)
+    {
+        if(empty($product)) return true;
+
+        // sneakers のユーザに minikura の商品を見せない（逆も然り）
+        $oem_cd = $this->Customer->getInfo()['oem_cd'];
+
+        // 各OEMのproductリスト生成
+        foreach (IN_USE_SERVICE['minikura'] as $service_data) {
+            $minikura_services[] = $service_data['product'];
+        }
+        foreach (IN_USE_SERVICE['sneakers'] as $service_data) {
+            $sneakers_services[] = $service_data['product'];
+        }
+
+        // oem_cdに属するかどうかをチェック
+        if ($oem_cd === OEM_CD_LIST['sneakers']) {
+            if (!in_array($product, $sneakers_services)) {
+                return false;
+            }
+        } else {
+            if (!in_array($product, $minikura_services)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
