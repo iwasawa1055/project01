@@ -46,7 +46,14 @@ class ContactUsController extends MinikuraController
         $this->set('announcement', $data);
         $model = $this->Customer->getContactModel($this->request->data[self::MODEL_NAME]);
 
+        $originalData = $model->toArray();
+        // 不具合報告を問い合わせ内容とマージしてチェックする
+        $checkData = $this->ContactUs->editText($model->toArray());
+        $model->set($checkData);
+
         if ($model->validates()) {
+            // 戻るなどに対応するため、セッションに保存する前に不具合報告のマージを解除する
+            $model->set($originalData);
             CakeSession::write(self::MODEL_NAME, $model->toArray());
             CakeSession::write(self::MODEL_NAME_ANNOUNCEMENT, $data);
         } else {
@@ -88,11 +95,11 @@ class ContactUsController extends MinikuraController
             }
 
             // リクエスト本体には例外処理を入れる from 2016.6.22
-            try{
+            try {
                 $res = $model->apiPost($model->toArray());
             } catch (Exception $e) {
                 $this->Flash->set(__('リクエストに失敗しました。'));
-                return $this->redirect(['action' => 'add']);                
+                return $this->redirect(['action' => 'add']);
             }
 
             if (!empty($res->error_message)) {
