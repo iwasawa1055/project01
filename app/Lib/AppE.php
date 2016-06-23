@@ -298,6 +298,8 @@ class AppE extends Exception
     	// $envs['MAIL FROM'] = $senders['MAIL FROM'];
     	// $envs['USER'] = $senders['USER'];
     	// $envs['PASS'] = $senders['PASS'];
+        // todo: try exceptionを使おうとするとエラーがでるので暫定で定義したが、どうすればよいか。
+        $envs = null;
 
     	$headers = array();
     	$headers['Subject'] = '【' . $_that->service_name . '】 ' . $_that->error_node . ' ' . $_that->error_level . ' Alert';
@@ -333,7 +335,7 @@ class AppE extends Exception
                     // }
                 }
                 $str = '';
-                foreach ($envs as $kk => $vv) {
+                foreach ((array)$envs as $kk => $vv) {
                     $str .= "${kk}: ${vv}\n";
                 }
                 foreach ($headers as $kk => $vv) {
