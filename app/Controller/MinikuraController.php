@@ -83,7 +83,7 @@ class MinikuraController extends AppController
     }
 
     /**
-     * 商品コード チェック test
+     * 商品コード チェック test3
      *
      * @access      private
      * @param       array $product 商品情報
