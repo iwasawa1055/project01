@@ -2,7 +2,10 @@
 $(function() {
   $('a[href^="/"]a[target!="_blank"]').addClass('animsition-link');
   $('button[type=submit]').addClass('page-transition-link');
-  $('.animsition').animsition();
+  $('.animsition').animsition({
+    inDuration: 500,
+    outDuration: 100,
+  });
 
   $('.agree-before-submit[type="checkbox"]').click(checkAgreeBeforeSubmit);
   checkAgreeBeforeSubmit();
