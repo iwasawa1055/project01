@@ -46,7 +46,14 @@ class ContactUsController extends MinikuraController
         $this->set('announcement', $data);
         $model = $this->Customer->getContactModel($this->request->data[self::MODEL_NAME]);
 
+        $originalData = $model->toArray();
+        // 不具合報告を問い合わせ内容とマージしてチェックする
+        $checkData = $this->ContactUs->editText($model->toArray());
+        $model->set($checkData);
+
         if ($model->validates()) {
+            // 戻るなどに対応するため、セッションに保存する前に不具合報告のマージを解除する
+            $model->set($originalData);
             CakeSession::write(self::MODEL_NAME, $model->toArray());
             CakeSession::write(self::MODEL_NAME_ANNOUNCEMENT, $data);
         } else {
@@ -61,6 +68,7 @@ class ContactUsController extends MinikuraController
     public function complete()
     {
         $data = CakeSession::read(self::MODEL_NAME);
+
         CakeSession::delete(self::MODEL_NAME);
         $announcement = CakeSession::read(self::MODEL_NAME_ANNOUNCEMENT);
         CakeSession::delete(self::MODEL_NAME_ANNOUNCEMENT);
@@ -71,9 +79,11 @@ class ContactUsController extends MinikuraController
         }
 
         $data = $this->ContactUs->editText($data);
+
         // 仮登録ユーザの場合、後ろにカスタマーIDをつける
         if ($this->Customer->isEntry()) {
-            $data['text'] .= "\n\nカスタマーID: {$this->Customer->getInfo()['customer_id']}\n\n";
+            $data['text'] .= "\n\nお客様番号: {$this->Customer->getInfo()['customer_id']}\n\n";
+            $data['email'] = $this->Customer->getInfo()['email'];
         }
 
         $model = $this->Customer->getContactModel($data);
@@ -84,7 +94,14 @@ class ContactUsController extends MinikuraController
                 $model->data[$model->getModelName()]['text'] .= $this->setPostText($announcement);
             }
 
-            $res = $model->apiPost($model->toArray());
+            // リクエスト本体には例外処理を入れる from 2016.6.22
+            try {
+                $res = $model->apiPost($model->toArray());
+            } catch (Exception $e) {
+                $this->Flash->set(__('お問い合わせの送信に失敗しました。'));
+                return $this->redirect(['action' => 'add']);
+            }
+
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);
