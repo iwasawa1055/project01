@@ -40,7 +40,7 @@
                   <?php echo $this->Form->textarea('Inquiry.text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
                   <?php echo $this->Form->error('Inquiry.text', null, ['wrap' => 'p']) ?>
                 </div>
-                <div id="bug_area">
+                <div id="inquiry_bug_area">
                   <div class="form-group col-lg-12">
                     <label>不具合発生日時</label>
                     <?php echo $this->Form->input('Inquiry.bug_datetime', ['class' => "form-control", 'error' => false, 'placeholder' => '例）2016/6/10 13:00 または 2016年6月10日 13時頃 など']); ?>
