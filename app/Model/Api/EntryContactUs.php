@@ -9,6 +9,7 @@ class EntryContactUs extends Inquiry
         parent::__construct('EntryContactUs', '/entry_contact', 'minikura_v5');
     }
 
+
     public $validate = [
         'lastname' => [
             'notBlank' => [
@@ -77,8 +78,7 @@ class EntryContactUs extends Inquiry
              ],
             'maxLength' => [
                 'rule' => ['maxLength', 1000],
-                //'message' => ['maxLength', 'contact_text', 1000]
-                'message' => 'お問い合わせ内容は1000文字以内で入力してください。「不具合報告」の場合、不具合報告の内容も含めて1000文字以内で入力してください。',
+                'message' => 'お問い合わせ内容は1000文字以内で入力してください。お問い合わせ種別が「不具合報告」の場合、不具合報告の全ての内容を含めて1000文字以内で入力してください。',
             ],
         ],
         'bug_datetime' => [
@@ -90,4 +90,5 @@ class EntryContactUs extends Inquiry
         'bug_text' => [
         ],
     ];
+
 }

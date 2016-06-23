@@ -98,7 +98,7 @@ class ContactUsController extends MinikuraController
             try {
                 $res = $model->apiPost($model->toArray());
             } catch (Exception $e) {
-                $this->Flash->set(__('リクエストに失敗しました。'));
+                $this->Flash->set(__('お問い合わせの送信に失敗しました。'));
                 return $this->redirect(['action' => 'add']);
             }
 
