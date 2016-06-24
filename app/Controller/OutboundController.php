@@ -131,7 +131,8 @@ class OutboundController extends MinikuraController
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromMonoList(), true);
             $box['outbound_list_deny'] = $this->outboundList->canAddMono($box);
         }
-        HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
+        //* 入庫・出庫ページ用sort #8679
+        HashSorter::sort($list, InfoBox::INBOUND_OUTBOUND_SORT_KEY);
         $this->set('boxList', $list);
     }
 
@@ -219,7 +220,8 @@ class OutboundController extends MinikuraController
             $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
             $box['outbound_list_deny'] = $this->outboundList->canAddBox($box, false);
         }
-        HashSorter::sort($list, InfoBox::DEFAULTS_SORT_KEY);
+        //* 入庫/出庫ページ用sort #8679
+        HashSorter::sort($list, InfoBox::INBOUND_OUTBOUND_SORT_KEY);
         $this->set('boxList', $list);
     }
 
