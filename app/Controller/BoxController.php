@@ -32,15 +32,15 @@ class BoxController extends MinikuraController
             'box_status' => __('box_status')
         ];
 
-        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
-        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud', 1));
+        // 出庫済み　hide_outbound=0：表示、hide_outbound=1：非表示、初期表示：非表示
+        $withOutboundDone = !empty(Hash::get($this->request->query, 'hide_outbound', 1));
         $product = $this->request->query('product');
         $page = $this->request->query('page');
         $data = [];
         foreach ($selectSortKeys as $key => $value) {
-            $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
+            $desc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'desc', 'hide_outbound' => $withOutboundDone, 'page' => $page]]);
             $data[$desc] = $value . __('select_sort_desc');
-            $asc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'asc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
+            $asc = Router::url(['action'=>'index', '?' => ['product' => $product, 'order' => $key, 'direction' => 'asc', 'hide_outbound' => $withOutboundDone, 'page' => $page]]);
             $data[$asc] = $value . __('select_sort_asc');
         }
 
@@ -83,11 +83,12 @@ class BoxController extends MinikuraController
     public function index()
     {
 
-        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
-        $withOutboudDone = true;
-        if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
-            $withOutboudDone = false;
+        // 出庫済み　hide_outbound=0：表示、hide_outbound=1：非表示、初期表示：非表示
+        $withOutboundDone = true;
+        if (!empty(Hash::get($this->request->query, 'hide_outbound', 1))) {
+            $withOutboundDone = false;
         }
+
         // 商品指定
         $product = $this->request->query('product');
 
@@ -99,28 +100,55 @@ class BoxController extends MinikuraController
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
 
-		/*
-		debug('master_key');
-		debug($product);
-		debug($sortKey);
-		*/
-        
-        $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboudDone, true);
-
-        // 検索
+        $results = $this->InfoBox->getListForServiced($product, $sortKey, $withOutboundDone, true);
         $results = $this->InfoBox->editBySearchTerm($results, $this->request->query);
 
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('boxList', $list);
         $this->set('product', $product);
-        $this->set('hideOutboud', $withOutboudDone);
+        $this->set('hideOutbound', $withOutboundDone);
 
         $query = $this->request->query;
-        $query['hide_outboud'] = !empty($withOutboudDone);
+        $query['hide_outbound'] = !empty($withOutboundDone);
         $query['page'] = 1;
         $url = Router::url(['action'=>'index', '?' => http_build_query($query)]);
-        $this->set('hideOutboudSwitchUrl', $url);
+        $this->set('hideOutboundSwitchUrl', $url);
+
+        // フォームhidden値設定
+        if(!empty($this->request->query('hide_outbound') || is_null($this->request->query('hide_outbound')))) {
+            $hide_outbound = '1';
+        } else {
+            $hide_outbound = '0';
+        }
+        $this->set('hide_outbound', $hide_outbound);
+
+        // キーワード
+        $keyword_value = null;
+        if (!empty($this->request->query('keyword'))) {
+            $keyword_value = $this->request->query('keyword');
+        }
+        $this->set('keyword_value', $keyword_value);
+
+        // product_name  
+        $productName = '';
+        if ($product === 'mono') {
+            $productName = 'minikuraMONO';
+        } else if ($product === 'hako') {
+            $productName = 'minikuraHAKO';
+        } else if ($product === 'cargo01') {
+            $productName = 'minikura CARGO じぶんでコース';
+        } else if ($product === 'cargo02') {
+            $productName = 'minikura CARGO ひとまかせコース';
+        } else if ($product === 'cleaning') {
+            $productName = 'クリーニングパック';
+        } else if ($product === 'shoes') {
+            $productName = 'シューズパック';
+        } else if ($product === 'sneakers') {
+            $productName = 'minikura SNEAKERS';
+        }
+        $this->set('productName', $productName);
+
     }
 
     private function getRequestSortKey()

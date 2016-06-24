@@ -251,3 +251,14 @@ const CONTACTUS_CD_ISOLATEISLANDS = '090';
 const NEWS_FEED_URL = 'http://news.minikura.com/info/news/feed';
 // ニュース新着記事件数
 const NEWS_LASTEST_ARTICLE_LIMIT = 5;
+
+const SORT_ORDER = [
+    'inbound_date' => 'お預かり日順 で', 
+    'box_id' => 'ボックスID順 で', 
+    'box_name' => 'ボックス名順 で'
+];
+
+const SORT_DIRECTION = [
+    'asc' => 'A〜Z',
+    'desc' => 'Z〜A',
+];

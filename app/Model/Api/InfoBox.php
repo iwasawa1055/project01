@@ -77,7 +77,7 @@ class InfoBox extends ApiCachedModel
     }
 
     // 入庫済み一覧
-    public function getListForServiced($product = null, $sortKey = [], $withOutboudDone = true, $outboundOnly = false)
+    public function getListForServiced($product = null, $sortKey = [], $withOutboundDone = true, $outboundOnly = false)
     {
         // productCd
         $productCd = null;
@@ -103,8 +103,8 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_START,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS,
         ];
-        
-        if ($withOutboudDone) {
+
+        if ($withOutboundDone) {
             if (!empty($outboundOnly)) {
                 unset($okStatus);
             }
@@ -199,83 +199,150 @@ class InfoBox extends ApiCachedModel
             return $results;
         }
 
-        // ランク付け用にポイントをそれぞれ設定
-        $columns = [
-            'box_name' => '10', 
-            'box_id' => '8', 
-            'product_name' => '6', 
-            'box_note' => '4', 
-            'kit_name' => '2'
-        ];
+        $keywords_tmp = explode('OR', $params['keyword']);
 
-        if (empty($params['type'])) {
-            $type = '1';
-        } else {
-            $type = $params['type'];
+        $keywords = null;
+        foreach ($keywords_tmp as $k => $v) {
+            $and_words = explode(' ', str_replace('　', ' ',$v));
+            $and_words = array_filter($and_words);
+            $and_words = array_values($and_words);
+
+            $keywords[] = $and_words;
         }
 
-        $keyword = str_replace(' ', '|', str_replace('　', ' ', $params['keyword']));
-        $keywords = explode('|', $keyword);
-        $keyword_count = count($keywords);
-
-        $tmp = [];
-
-        # マッチ数, 出現数, マッチカラム で表示順整形
-        foreach ($results as $k => $v) {
-
-            $match_all_lists = [];
-            $match_columns = [];
-
-            foreach ($columns as $column => $column_rank) {
-                if (preg_match_all("/{$keyword}/", $v[$column], $matches)) {
-                    $match_all_lists = array_merge($match_all_lists, $matches[0]);
-                    $match_columns[] = $column;
+        $all_minus_flag = true;
+        foreach ($keywords as $and_lists) {
+            foreach ($and_lists as $and_word) {
+                if (strpos($and_word, '-') !== 0) {
+                    $all_minus_flag = false;
                 }
             }
+        }
 
+        // ランク付け用にポイントをそれぞれ設定
+        $columns = [
+            'box_name' => 100, 
+            'box_id' => 80, 
+            'product_name' => 60, 
+            'box_note' => 40, 
+            'kit_name' => 20,
+        ];
 
-            // マッチしたキーワード数の数
-            $unique = array_unique($match_all_lists);
-            $unique_count = count($unique);
+        // rankレート（順番で除算する）
+        // 1番目:100, 2番目:50, 3番目:33, 4番目:25
+        $match = 100;
 
-            // 0件だったらcontinue;
-            if ($unique_count === 0) {
-                continue;
-            }
+        // マッチしたワードのユニーク数を乗算する
+        // 4ワード:80, 3ワード:60, 2ワード:40, 1ワード:20
+        $match_num = 20;
 
-            // type = 2 の場合、and検索なのですべて入ってるデータのみ
-            if ($type === '2' && $unique_count !== $keyword_count) {
-                continue;
-            }
+        // マッチしたワードの総件数。数を乗算する
+        $all_num = 10;
 
-            // 出現数
-            $all_count = count($match_all_lists);
+        // ニアリーマッチの件数
+        $neary_num = 5;
 
-            // マッチしたカラム
+        $hits = [];
+        $tmp = [];
+
+        foreach ($results as  $k => $v) {
             $rank = 0;
-            foreach ($match_columns as $column) {
-                $rank += $columns[$column];
+            $minus_flag = false;
+
+            foreach ($keywords as $word_num => $words) {
+                // まずマイナス検索を確認
+                foreach ($columns as $column => $column_rank) {
+                    foreach ($words as $word) {
+                        if (strpos($word, '-') === 0) {
+                            $word = mb_substr($word, 1);
+                            if (preg_match("/{$word}/", $v[$column])) {
+                                $minus_flag = true;
+                                unset($results[$k]);
+                            }
+                        }
+                    }
+                }
+
+                // wordsが複数ある場合、まず連結文字列を調査
+                $combine_word = null;
+                $word = implode('|', $words);
+
+                if (count($words) > 1) {
+                    $combine_word = implode($words);
+                    $match_all_lists = [];
+                    $match_columns = [];
+                    foreach ($columns as $column => $column_rank) {
+                        if (preg_match_all("/{$combine_word}/", $v[$column], $matches)) {
+                            $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                            $match_columns[] = $column;
+                            // カラム別ランク
+                            $rank += $column_rank;
+                            // カラム別ランク
+                            $rank += $all_num;
+                        }
+                    }
+                }
+
+                $match_all_lists = [];
+                $match_columns = [];
+                // 文字にマッチするかどうか
+                foreach ($columns as $column => $column_rank) {
+                    if (preg_match_all("/{$word}/", $v[$column], $matches) ) {
+                        $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                        $match_columns[] = $column;
+
+                        // カラム別ランク
+                        $rank += $column_rank;
+                        // マッチランク
+                        $rank += $all_num;
+                    }
+                }
+
+                // ニアリーマッチ
+                // 文字にマッチするかどうか
+                foreach ($columns as $column => $column_rank) {
+                    if (preg_match_all("/[{$word}]/u", $v[$column], $matches)) {
+                        $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                        $match_columns[] = $column;
+
+                        // カラム別ランク
+                        $rank += $column_rank;
+                        // マッチランク
+                        $rank += $neary_num;
+                    }
+                }
+
+                // マッチしたキーワード数の数
+                $unique = array_unique($match_all_lists);
+                $unique_count = count($unique);
+
+                // 0件だったらcontinue;
+                if ($unique_count === 0) {
+                    continue;
+                }
+
+                for ($unique_count;0 < $unique_count;$unique_count--) {
+                    $rank += $match_num * $unique_count;               
+                }
+
+                if ($minus_flag === false) {
+                    $tmp[$rank][] = $v;
+                }
             }
-            $tmp[$unique_count][$all_count][$rank][] = $v;
         }
 
         krsort($tmp);
 
-        $hits = [];
-
-        // リスト生成
-        foreach ($tmp as $unique_count_key => $matches_count_list) {
-            krsort($matches_count_list);
-            foreach ($matches_count_list as $matches_count_data) {
-                krsort($matches_count_data);
-                foreach($matches_count_data as $rank =>  $rank_data) {
-                    foreach ($rank_data as $row) {
-                        $hits[] = $row;
-                    }
+        if ($all_minus_flag === true) {
+            $hits = $results;
+        } else {
+            foreach ($tmp as $rank => $list) {
+                foreach($list as $k => $v) {
+                    $hits[] = $v;                
                 }
             }
         }
-        
+
         // sort
         if (!empty($params['order']) && !empty($params['direction'])) {
             $sortKey = [$params['order'] => ($params['direction'] === 'asc')];            
@@ -284,4 +351,94 @@ class InfoBox extends ApiCachedModel
 
         return $hits;
     }
+
+    protected function _makeRank($_results)
+    {
+        foreach ($_results as  $k => $v) {
+            $rank = 0;
+            $minus_flag = false;
+
+            foreach ($keywords as $word_num => $words) {
+                // まずマイナス検索を確認
+                foreach ($columns as $column => $column_rank) {
+                    foreach ($words as $word) {
+                        if (strpos($word, '-') === 0) {
+                            $word = mb_substr($word, 1);
+                            if (preg_match("/{$word}/", $v[$column])) {
+                                $minus_flag = true;
+                                unset($_results[$k]);
+                            }
+                        }
+                    }
+                }
+
+                // wordsが複数ある場合、まず連結文字列を調査
+                $combine_word = null;
+                $word = implode('|', $words);
+
+                if (count($words) > 1) {
+                    $combine_word = implode($words);
+                    $match_all_lists = [];
+                    $match_columns = [];
+                    foreach ($columns as $column => $column_rank) {
+                        if (preg_match_all("/{$combine_word}/", $v[$column], $matches)) {
+                            $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                            $match_columns[] = $column;
+                            // カラム別ランク
+                            $rank += $column_rank;
+                            // カラム別ランク
+                            $rank += $all_num;
+                        }
+                    }
+                }
+
+                $match_all_lists = [];
+                $match_columns = [];
+                // 文字にマッチするかどうか
+                foreach ($columns as $column => $column_rank) {
+                    if (preg_match_all("/{$word}/", $v[$column], $matches) ) {
+                        $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                        $match_columns[] = $column;
+
+                        // カラム別ランク
+                        $rank += $column_rank;
+                        // マッチランク
+                        $rank += $all_num;
+                    }
+                }
+
+                // ニアリーマッチ
+                // 文字にマッチするかどうか
+                foreach ($columns as $column => $column_rank) {
+                    if (preg_match_all("/[{$word}]/u", $v[$column], $matches)) {
+                        $match_all_lists = array_merge($match_all_lists, $matches[0]);
+                        $match_columns[] = $column;
+
+                        // カラム別ランク
+                        $rank += $column_rank;
+                        // マッチランク
+                        $rank += $neary_num;
+                    }
+                }
+
+                // マッチしたキーワード数の数
+                $unique = array_unique($match_all_lists);
+                $unique_count = count($unique);
+
+                // 0件だったらcontinue;
+                if ($unique_count === 0) {
+                    continue;
+                }
+
+                for ($unique_count;0 < $unique_count;$unique_count--) {
+                    $rank += $match_num * $unique_count;               
+                }
+
+                if ($minus_flag === false) {
+                    $tmp[$rank][] = $v;
+                }
+            }
+        }
+    }
+
 }
