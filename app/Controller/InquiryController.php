@@ -38,8 +38,14 @@ class InquiryController extends MinikuraController
     public function confirm()
     {
         $model = new Inquiry();
-        $model->set($this->request->data);
+
+        $originalData = $this->request->data;
+        // 不具合報告を問い合わせ内容とマージしてチェックする
+        $checkData = $model->editText($this->request->data);
+        $model->set($checkData); 
         if ($model->validates()) {
+            // 戻るなどに対応するため、セッションに保存する前に不具合報告のマージを解除する
+            $model->set($originalData);
             CakeSession::write(self::MODEL_NAME, $model->data);
         } else {
             return $this->render('add');
@@ -62,7 +68,14 @@ class InquiryController extends MinikuraController
         $data = $model->editText($data);
         $model->set($data);
         if ($model->validates()) {
-            $res = $model->apiPost($model->toArray());
+            // リクエスト本体には例外処理を入れる from 2016.6.22
+            try {
+                $res = $model->apiPost($model->toArray());
+            } catch (Exception $e) {
+                $this->Flash->set(__('お問い合わせの送信に失敗しました。'));
+                return $this->redirect(['action' => 'add']);
+            }
+
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'add']);
