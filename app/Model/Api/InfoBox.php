@@ -14,6 +14,14 @@ class InfoBox extends ApiCachedModel
         'box_name' => true,
         'box_status' => true,
     ];
+	
+    //* 入庫・出庫ページ用sort #8679
+    const INBOUND_OUTBOUND_SORT_KEY = [
+        'product_cd' => true,
+        'box_id' => true,
+        'box_name' => true,
+        'box_status' => true,
+    ];
 
     const BOXTITLE_CHAR_SEARCH = [
         ':',
@@ -72,7 +80,14 @@ class InfoBox extends ApiCachedModel
         ];
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
-        HashSorter::sort($list, self::DEFAULTS_SORT_KEY);
+        //* 預け入れ[入庫]ページ, ソート条件 #8697
+        foreach ($list as $k => $v){
+            $list[$k]['product_cd'] = $this->kitCd2ProductCd($v['kit_cd']);	
+            $list[$k]['product_name'] = KIT_NAME[$v['kit_cd']];	
+        } 
+
+		//* 預け入れ[入庫]ページ, ソート条件 #8697
+        HashSorter::sort($list, self::INBOUND_OUTBOUND_SORT_KEY);
         return $list;
     }
 
