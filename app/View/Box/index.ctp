@@ -12,7 +12,39 @@
               <div class="col-lg-12">
                 <h2><?php echo $productName; ?></h2>
 
-                <!-- 開発用暫定 -->
+                <div class="col-lg-12">
+                  <ul class="sp-navi">
+                    <li>
+                      <a href="/box?product=" class="btn btn-success btn-block btn-xs btn-sort animsition-link">すべての<br />
+                      ボックス</a>
+                    </li>
+                    <li>
+                      <a href="/box?product=mono" class="btn btn-success btn-block btn-xs btn-sort<?php echo $button_status['mono'];?> animsition-link">minikura<br />
+                      MONO</a>
+                    </li>
+                    <li>
+                      <a href="/box?product=hako" class="btn btn-success btn-block btn-xs btn-sort<?php echo $button_status['hako'];?>  animsition-link">minikura<br />
+                      HAKO</a>
+                    </li>
+                    <li>
+                      <a href="/box?product=cargo01" class="btn btn-success btn-block btn-xs btn-sort<?php echo $button_status['cargo01'];?>  animsition-link">CARGO <br />
+                      じぶんで </a>
+                    </li>
+                    <li>
+                      <a href="/box?product=cargo02" class="btn btn-success btn-block btn-xs btn-sort<?php echo $button_status['cargo02'];?>  animsition-link">CARGO <br />
+                      ひとまかせ </a>
+                    </li>
+                    <li>
+                      <a href="/box?product=cleaning" class="btn btn-success btn-block btn-xs btn-sort<?php echo $button_status['cleaning'];?>  animsition-link">クリーニング <br />
+                      パック</a>
+                    </li>
+                    <li>
+                      <a href="/box?product=shoes" class="btn btn-success btn-block btn-xs btn-sort<?php echo $button_status['shoes'];?>  animsition-link">シューズ <br />
+                      パック</a>
+                    </li>
+                  </ul>
+                </div>
+
                 <?php echo $this->Form->create('BoxSearch', ['type' => 'get','id' => 'box-search', 'url' => ['controller' => 'box', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                   <?php echo $this->Form->text('product', ['type' => 'hidden', 'value' => $product]);?>
                   <?php echo $this->Form->text('hide_outbound', ['type' => 'hidden', 'value' => $hide_outbound]);?>
@@ -20,7 +52,7 @@
                     <div class="col-xs-12">
                       <div class="input-group custom-search-form">
                       <?php 
-                      echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => '検索する', 'value' => $keyword_value]); ?>
+                      echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => '検索する', 'value' => $keyword]); ?>
                         <span class="input-group-btn">
                           <?php echo $this->Form->button('<i class="fa fa-search"></i>',['class' => 'btn btn-default btn-search', 'value' => 'search', 'type' => 'submit']);?>
                         </span>
@@ -32,13 +64,13 @@
                 <?php echo $this->Form->create('BoxSort', ['type' => 'get','id' => 'box-sort', 'url' => ['controller' => 'box', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                   <?php echo $this->Form->text('product', ['type' => 'hidden', 'value' => $product]);?>
                   <?php echo $this->Form->text('hide_outbound', ['type' => 'hidden', 'value' => $hide_outbound]);?>
-                  <?php echo $this->Form->text('keyword', ['type' => 'hidden', 'value' => $keyword_value]);?>
+                  <?php echo $this->Form->text('keyword', ['type' => 'hidden', 'value' => $keyword]);?>
                   <div class="row box-sort">
                     <div class="col-sm-6 col-xs-12">
-                    <?php echo $this->Form->select('order', SORT_ORDER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
+                    <?php echo $this->Form->select('order', SORT_ORDER, ['class' => 'form-control', 'empty' => false, 'error' => false, 'value' => $order]); ?>
                     </div>
                     <div class="col-sm-3 col-xs-4">
-                    <?php echo $this->Form->select('direction', SORT_DIRECTION, ['class' => 'form-control', 'empty' => false, 'error' => false, 'value' => '']); ?>
+                    <?php echo $this->Form->select('direction', SORT_DIRECTION, ['class' => 'form-control', 'empty' => false, 'error' => false, 'value' => $direction]); ?>
                   </div>
                     <div class="col-sm-3 col-xs-8">
                       <?php echo $this->Form->button('表示する',['class' => 'btn btn-danger btn-block btn-sm btn-sort', 'value' => 'sort', 'type' => 'submit']);?>
@@ -55,7 +87,6 @@
                     <?php endif; ?>
                   </div>
                 </div>
-                <!-- /開発用暫定設定 -->
 
                 <?php /*<?php endif; ?>*/?>
                   <?php foreach ($boxList as $box): ?>

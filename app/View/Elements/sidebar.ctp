@@ -3,27 +3,28 @@
       <ul class="nav in" id="side-menu">
         <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
-        <li> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
+
+        <li<?php if(!empty($button_status['item'])):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-		    <?php if (! empty($product_summary)):?>
-                <li> <a class="animsition-link" href="/item?"><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
-			<?php endif;?>
+            <?php if (! empty($product_summary)):?>
+              <li> <a class="animsition-link" href="/item?"><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
+            <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
-			    <!--HOKO除外-->
-				<?php if ($v['product'] !== 'hako' ):?>
+              <!--HOKO除外-->
+                <?php if ($v['product'] !== 'hako' ):?>
                   <li> <a class="animsition-link" href="/item?product=<?php echo $v['product'];?>"><i class="fa fa-diamond fa-fw"></i><?php echo $v['name'];?></a> </li>
-				<?php endif;?>
+                <?php endif;?>
               <?php endif;?>
             <?php endforeach;?>
           </ul>
         </li>
 
-        <li> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
+        <li<?php if(!empty($button_status['product'])):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-		    <?php if (! empty($product_summary)):?>
-                <li> <a class="animsition-link" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
-			<?php endif;?>
+            <?php if (! empty($product_summary)):?>
+              <li> <a class="animsition-link" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
+            <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
                 <li> <a class="animsition-link" href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
@@ -31,6 +32,7 @@
             <?php endforeach;?>
           </ul>
         </li>
+
         <?php endif; ?>
         <li> <a class="animsition-link" href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>
         <?php if (!empty($customer) && $customer->canInbound()) : ?>
