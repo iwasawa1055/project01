@@ -9,9 +9,20 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <h2>ポイント履歴</h2>
+                <h2>ポイント</h2>
+                <p class="form-control-point col-lg-12">使えば使うほどたまる minikura ポイント。<br />
+                  たまったポイントはオプションや取り出し送料に使うことができます<br />
+                  <a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶minikuraポイントについて</a>
+                </p>
                 <div class="form-group col-lg-12">
-                  <p></p>
+                  ただいま <span class="point"><?php echo $point['point_balance']; ?></span> ポイント
+                  <p class="help-block">※ポイントのご利用は獲得日から2年間有効です。</p>
+                  <p class="help-block">※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
+                </div>
+				<?php if (! empty($histories)):?>
+                <h2>ポイント履歴</h2>
+                <p></p>
+                <div class="form-group col-lg-12">
                   <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                       <thead>
@@ -45,9 +56,7 @@
                   </div>
                   <?php echo $this->element('paginator'); ?>
                 </div>
-                <span class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-primary btn-lg btn-block animsition-link" href="/contract">戻る</a>
-                </span>
+				<?php endif;?>
               </div>
             </div>
           </div>
