@@ -86,6 +86,10 @@ class Inquiry extends ApiModel
                 'required' => true,
                 'message' => ['notBlank', 'contact_text'],
              ],
+            'maxLength' => [
+                'rule' => ['maxLength', 1000],
+                'message' => 'お問い合わせ内容は1000文字以内で入力してください。お問い合わせ種別が「不具合報告」の場合、不具合報告の全ての内容を含めて1000文字以内で入力してください。',
+            ],
         ],
         'bug_datetime' => [
         ],
@@ -102,6 +106,7 @@ class Inquiry extends ApiModel
         if (array_key_exists($this->model_name, $data)) {
             $data = $data[$this->model_name];
         }
+
         $data['oem_key'] = $this->oem_key;
         $d = $this->request($this->end_point, $data, 'POST');
 

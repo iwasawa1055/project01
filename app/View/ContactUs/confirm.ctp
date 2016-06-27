@@ -15,10 +15,6 @@
                   <label>お名前</label>
                   <p class="form-control-static"><?php echo $this->CustomerInfo->setName($this->Form->data['ContactUs']); ?></p>
                 </div>
-                <div class="form-group col-lg-12">
-                  <label>メールアドレス</label>
-                  <p class="form-control-static"><?php echo $this->Form->data['ContactUs']['email']; ?></p>
-                </div>
                 <?php endif; ?>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別</label>

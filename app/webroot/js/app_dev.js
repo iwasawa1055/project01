@@ -35,3 +35,46 @@ function checkAgreeBeforeSubmit() {
     }
   }
 }
+
+
+// change contact form 
+$("#InquiryDivision").change(function () {
+    inquiryDivision = $("#InquiryDivision").val();
+    if (inquiryDivision === '15') {
+        $("#inquiry_bug_area").show();
+    } else {
+        $("#inquiry_bug_area").hide();
+    }
+});
+
+// contact form default
+$(function () {
+    inquiryDivision = $("#InquiryDivision").val();
+    if (inquiryDivision === '15') {
+        $("#inquiry_bug_area").show();
+    } else {
+        $("#inquiry_bug_area").hide();
+    }
+});
+
+
+// change contact form 
+$("#ContactUsDivision").change(function () {
+    contactUsDivision = $("#ContactUsDivision").val();
+    if (contactUsDivision === '15') {
+        $("#bug_area").show();
+    } else {
+        $("#bug_area").hide();
+    }
+});
+
+// contact form default
+$(function () {
+    contactUsDivision = $("#ContactUsDivision").val();
+    if (contactUsDivision === '15') {
+        $("#bug_area").show();
+    } else {
+        $("#bug_area").hide();
+    }
+});
+

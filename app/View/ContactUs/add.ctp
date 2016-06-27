@@ -28,10 +28,6 @@
                   <?php echo $this->Form->input('ContactUs.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
                   <?php echo $this->Form->error('ContactUs.firstname_kana', null, ['wrap' => 'p']) ?>
                 </div>
-                <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.email', null, ['wrap' => 'p']) ?>
-                </div>
                 <?php endif; ?>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別</label>
