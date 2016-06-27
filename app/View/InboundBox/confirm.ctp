@@ -87,7 +87,7 @@
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
-                  発火性・引火性のある危険物、液体・生物・その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement" target="_blank">利用規約</a>
+                  発火性・引火性のある危険物、液体・生物・その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a>
                   で定められたものはお預かりできません。 </label>
               </p>
             </div>
