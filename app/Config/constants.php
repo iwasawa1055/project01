@@ -38,6 +38,13 @@ const PAYMENT_METHOD = [
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';
 
+// 法人用支払い状況
+const CORPORATE_PAYMENT_METHOD = [
+    'unregistered' => '振替口座未登録',
+    'registration' => '口座振替',
+    'credit_card' => 'クレジットカード', 
+];
+
 // 配送業者コード
 const CARRIER_CD_JPPOST = '0';
 const CARRIER_CD_YAMATO = '1';
