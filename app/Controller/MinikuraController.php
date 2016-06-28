@@ -60,6 +60,10 @@ class MinikuraController extends AppController
         if ($this->isAccessDeny()) {
             return $this->redirect(['controller' => 'MyPage', 'action' => 'index', 'customer' => false]);
         }
+
+        // item, boxのactiveステータス
+        $this->set('active_status', $this->getActiveStatus());
+
     }
 
     protected function isAccessDeny()
@@ -115,5 +119,71 @@ class MinikuraController extends AppController
             }
         }
         return true;
+    }
+
+    /**
+     * item, boxのリンクアクティブを取得
+     */
+    protected function getActiveStatus() 
+    {
+        $url = Router::url();
+
+        $active_status = [
+            'item' => [
+                'all' => false,
+                'mono' => false,
+                'cargo01' => false,
+                'cargo02' => false,
+                'cleaning' => false,
+                'shoes' => false,
+            ],
+            'box' => [
+                'all' => false,
+                'mono' => false,
+                'hako' => false,
+                'cargo01' => false,
+                'cargo02' => false,
+                'cleaning' => false,
+                'shoes' => false,
+            ],
+        ];
+
+        $active_status_tmp = [];
+
+        if (preg_match('/\/item/', $url)) {
+            $active_status_tmp = $active_status['item'];
+        } elseif (preg_match('/\/box/', $url)) {
+            $active_status_tmp = $active_status['box'];
+        }        
+
+        if (empty($this->request->query['product'])) {
+            $active_status_tmp['all'] = true;
+        } else {
+            switch (true) {
+                case $this->request->query['product'] === 'mono':
+                    $active_status_tmp['mono'] = true;
+                    break;
+                case $this->request->query['product'] === 'cargo01':
+                    $active_status_tmp['cargo01'] = true;
+                    break;
+                case $this->request->query['product'] === 'cargo02':
+                    $active_status_tmp['cargo02'] = true;
+                    break;
+                case $this->request->query['product'] === 'cleaning':
+                    $active_status_tmp['cleaning'] = true;
+                    break;
+                case $this->request->query['product'] === 'shoes':
+                    $active_status_tmp['shoes'] = true;
+                    break;
+            }
+        }
+
+        if (preg_match('/\/item/', $url)) {
+            $active_status['item'] = $active_status_tmp;
+        } elseif (preg_match('/\/box/', $url)) {
+            $active_status['box'] = $active_status_tmp;
+        }
+
+        return $active_status;
     }
 }

@@ -348,11 +348,6 @@ class InfoBox extends ApiCachedModel
                 $unique = array_unique($match_all_lists);
                 $unique_count = count($unique);
 
-                // 0件だったらcontinue;
-                if ($unique_count === 0) {
-                    continue;
-                }
-
                 for ($unique_count;0 < $unique_count;$unique_count--) {
                     $rank += RANK_RATE['match_num'] * $unique_count;               
                 }
@@ -371,12 +366,17 @@ class InfoBox extends ApiCachedModel
                     }
                 }
 
+                // 0ptだったらcontinue;
+                if ($rank === 0) {
+                    continue;
+                }
+
+
                 if ($minus_flag === false) {
                     $tmp[$rank][] = $v;
                 }
             }
         }
-
 
         krsort($tmp);
 

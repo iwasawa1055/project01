@@ -53,6 +53,66 @@ class ItemController extends MinikuraController
         return $data;
     }
 
+    private function getProductName($_product)
+    {
+        $productName = '';
+        if ($_product === 'mono') {
+            $productName = 'minikuraMONO';
+        } else if ($_product === 'hako') {
+            $productName = 'minikuraHAKO';
+        } else if ($_product === 'cargo01') {
+            $productName = 'minikura CARGO じぶんでコース';
+        } else if ($_product === 'cargo02') {
+            $productName = 'minikura CARGO ひとまかせコース';
+        } else if ($_product === 'cleaning') {
+            $productName = 'クリーニングパック';
+        } else if ($_product === 'shoes') {
+            $productName = 'シューズパック';
+        } else if ($_product === 'sneakers') {
+            $productName = 'minikura SNEAKERS';
+        }
+        return $productName;
+    }
+
+    protected function setQueryParameter()
+    {
+        $query = $this->request->query;
+        $results = [];
+        // keyword
+        if (empty($query['keyword'])) {
+            $results['keyword'] = null;
+        } else {
+            $results['keyword'] = $query['keyword'];
+        }
+
+        // order
+        if (empty($query['order'])) {
+            $results['order'] = null;
+        } else {
+            $results['order'] = $query['order'];
+        }
+
+        // direction
+        if (empty($query['direction'])) {
+            $results['direction'] = null;
+        } else {
+            $results['direction'] = $query['direction'];
+        }
+
+        // フォームhidden値設定
+        if (isset($query['hide_outbound'])) {
+            if ($query['hide_outbound'] === '0' ) {
+                $results['hide_outbound'] = '0';
+            } else {
+                $results['hide_outbound'] = '1';
+            }
+        } else {
+            $results['hide_outbound'] = '1';
+        }
+
+        return $results;
+    }    
+
     /**
      * 一覧.
      */
@@ -95,6 +155,38 @@ class ItemController extends MinikuraController
         $query['page'] = 1;
         $url = Router::url(['action'=>'index', '?' => http_build_query($query)]);
         $this->set('hideOutboudSwitchUrl', $url);
+
+
+        $query_params = $this->setQueryParameter();
+        $this->set('hide_outbound', $query_params['hide_outbound']);
+        $this->set('keyword', $query_params['keyword']);
+        $this->set('order', $query_params['order']);
+        $this->set('direction', $query_params['direction']);
+
+        // product_name  
+        $productName = $this->getProductName($product);
+        $this->set('product', $product);
+        $this->set('productName', $productName);
+
+        // button active
+        $button_status = ['item' => 'on', 'all' => null,'mono' => null, 'hako' => null, 'cargo01' => null, 'cargo02' => null, 'cleaning' => null, 'shoes' => null, ];
+        if (empty($this->request->query['product'])) {
+            $button_status['all'] = ' on';
+        } elseif ($this->request->query['product'] === 'mono') {
+            $button_status['mono'] = ' on';
+        } elseif ($this->request->query['product'] === 'hako') {
+            $button_status['hako'] = ' on';
+        } elseif ($this->request->query['product'] === 'cargo01') {
+            $button_status['cargo01'] = ' on';
+        } elseif ($this->request->query['product'] === 'cargo02') {
+            $button_status['cargo02'] = ' on';
+        } elseif ($this->request->query['product'] === 'cleaning') {
+            $button_status['cleaning'] = ' on';
+        } elseif ($this->request->query['product'] === 'shoes') {
+            $button_status['shoes'] = ' on';
+        }
+
+        $this->set('button_status', $button_status);        
     }
 
     private function getRequestSortKey()
