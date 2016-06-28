@@ -88,3 +88,8 @@ p.error-message a:hover,
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+/* v2.2 をマージしたら消す */
+.panel-red a:focus {
+	color: #d9534f;
+}
