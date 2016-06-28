@@ -164,3 +164,8 @@ p.error-message a:hover,
     transform: rotate(360deg);
   }
 }
+
+/* v2.2 をマージしたら消す */
+.panel-red a:focus {
+	color: #d9534f;
+}
