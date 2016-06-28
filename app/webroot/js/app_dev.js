@@ -94,6 +94,7 @@ var Act =
                 return false;
             }
 
+            $('.loader').airCenter();
             $('.airloader-overlay').show();
         });
     },
