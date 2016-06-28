@@ -110,6 +110,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   $this->Html->script('metisMenu.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
+  $this->Html->script('jquery.airCenter', ['inline' => false]);
 
   echo $this->fetch('script');
   echo $this->fetch('scriptMinikura');
