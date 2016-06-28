@@ -65,7 +65,7 @@ class ItemController extends MinikuraController
             $withOutboudDone = false;
         }
 		
-		//* #feature_menu_myapge mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
+		//*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
         // 商品指定
         $product = $this->request->query('product');
 
@@ -74,7 +74,7 @@ class ItemController extends MinikuraController
             $product = null;
         }
 		$where = [];
-		$where['product_cd'] = $product;
+		$where['product'] = $product;
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();

@@ -54,10 +54,10 @@ class InfoItem extends ApiCachedModel
 
 		//* mock22  追加仕様、箱（商品）に紐づくアイテムを選択する 
 		$product = null;
-		if (! empty($where['product_cd'])) {
-		    $product = $where['product_cd'];
-		    //* アイテム取得にproduct_cdの検索は不要のため、unsetする。
-		    unset($where['product_cd']);
+		if (! empty($where['product'])) {
+		    $product = $where['product'];
+		    //* アイテム取得にproductの検索は不要のため、unsetする。
+		    unset($where['product']);
 		}
 		if ($product) {
 			// productCd
