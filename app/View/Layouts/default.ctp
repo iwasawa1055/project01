@@ -18,7 +18,6 @@
   $this->Html->css('bootstrap.min', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
   $this->Html->css('metisMenu.min', ['inline' => false]);
-  $this->Html->css('animsition.min', ['inline' => false]);
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
 
@@ -42,7 +41,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
 <!-- End Google Tag Manager -->
-<div id="wrapper" class="animsition" data-animsition-in-class="fade-in" data-animsition-out-class="fade-out">
+<div class='airloader-overlay'>
+  <div class="loader">Loading...</div>
+</div>
+<div id="wrapper">
   <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -106,7 +108,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   $this->Html->script('jquery.min', ['inline' => false]);
   $this->Html->script('bootstrap.min', ['inline' => false]);
   $this->Html->script('metisMenu.min', ['inline' => false]);
-  $this->Html->script('animsition.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
 
