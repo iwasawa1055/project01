@@ -52,8 +52,13 @@ class InfoItem extends ApiCachedModel
             $where['item_status'][] = BOXITEM_STATUS_OUTBOUND_DONE * 1;
         }
 
-		//* #feature_mypage_menu --[start] 追加仕様、箱（商品）に紐づくアイテムを選択する 
-		$product = $where['product_cd'];
+		//* mock22  追加仕様、箱（商品）に紐づくアイテムを選択する 
+		$product = null;
+		if (! empty($where['product_cd'])) {
+		    $product = $where['product_cd'];
+		    //* アイテム取得にproduct_cdの検索は不要のため、unsetする。
+		    unset($where['product_cd']);
+		}
 		if ($product) {
 			// productCd
 			$productCd = null;
@@ -73,8 +78,6 @@ class InfoItem extends ApiCachedModel
 				$productCd = [PRODUCT_CD_SNEAKERS];
 			}
 		}
-		//* アイテム取得にproduct_cdの検索は不要のため、unsetする。
-		unset($where['product_cd']);
 
 		//* アイテム取得、 中でアイテム画像とボックス情報取得
         $list = $this->apiGetResultsWhere([], $where);
