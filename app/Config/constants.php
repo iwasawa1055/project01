@@ -148,7 +148,8 @@ const INBOUND_CARRIER_DELIVERY_SNEAKERS = [
 ];
 
 // 問い合わせ区分
-const CONTACT_DIVISION_INFORMATION = '8'; // お知らせについて
+const CONTACT_DIVISION_ABOUTMINIKURA = '8'; // minikuraについて
+const CONTACT_DIVISION_INFORMATION = '10'; // お知らせについて
 const CONTACT_DIVISION_RESIGN = '11'; // 退会ついて
 const CONTACT_DIVISION_OTHER = '12'; // その他
 const CONTACT_DIVISION_BUG = '15'; // 不具合報告
@@ -167,7 +168,7 @@ const CONTACTUS_DIVISION = [
 ];
 
 const INQUIRY_DIVISION = [
-    CONTACT_DIVISION_INFORMATION => 'minikuraについて',
+    CONTACT_DIVISION_ABOUTMINIKURA => 'minikuraについて',
     CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
     CONTACT_DIVISION_ANIMATECOLLECTION => 'アニメイト・コレクションについて',
     CONTACT_DIVISION_BUG => '不具合報告',
