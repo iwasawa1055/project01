@@ -27,7 +27,6 @@ $(function() {
     });
 
     var url = window.location;
-	console.log(url);
     var element = $('ul.nav a').filter(function() {
 		//* comment outi, this is  mock ver
         //return this.href == url || url.href.indexOf(this.href) == 0;
