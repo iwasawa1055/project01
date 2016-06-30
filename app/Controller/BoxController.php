@@ -154,27 +154,6 @@ class BoxController extends MinikuraController
         $productName = $this->getProductName($product);
         $this->set('productName', $productName);
 
-        // button active
-        $button_status = ['product' => 'on', 'all' => null,'mono' => null, 'hako' => null, 'cargo01' => null, 'cargo02' => null, 'cleaning' => null, 'shoes' => null, ];
-        if (empty($this->request->query['product'])) {
-            $button_status['all'] = ' on';
-        } elseif ($this->request->query['product'] === 'mono') {
-            $button_status['mono'] = ' on';
-        } elseif ($this->request->query['product'] === 'hako') {
-            $button_status['hako'] = ' on';
-        } elseif ($this->request->query['product'] === 'cargo01') {
-            $button_status['cargo01'] = ' on';
-        } elseif ($this->request->query['product'] === 'cargo02') {
-            $button_status['cargo02'] = ' on';
-        } elseif ($this->request->query['product'] === 'cleaning') {
-            $button_status['cleaning'] = ' on';
-        } elseif ($this->request->query['product'] === 'shoes') {
-            $button_status['shoes'] = ' on';
-        }
-
-        $this->set('button_status', $button_status);
-
-
     }
 
     private function getRequestSortKey()

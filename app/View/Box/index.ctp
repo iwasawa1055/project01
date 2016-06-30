@@ -1,7 +1,7 @@
 <?php $this->Html->script('minikura/box', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-tag"></i> ご利用中のサービス</h1>
+        <h1 class="page-header"><i class="fa fa-cube"></i> ボックスリスト</h1>
       </div>
     </div>
     <div class="row">
@@ -14,34 +14,26 @@
 
                 <div class="col-lg-12">
                   <ul class="sp-navi">
-                    <li>
-                      <a href="/box?product=" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['all']):?> on<?php endif;?> animsition-link">すべての<br />
-                      ボックス</a>
-                    </li>
-                    <li>
-                      <a href="/box?product=mono" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['mono']):?> on<?php endif;?> animsition-link">minikura<br />
-                      MONO</a>
-                    </li>
-                    <li>
-                      <a href="/box?product=hako" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['hako']):?> on<?php endif;?> animsition-link">minikura<br />
-                      HAKO</a>
-                    </li>
-                    <li>
-                      <a href="/box?product=cargo01" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['cargo01']):?> on<?php endif;?> animsition-link">CARGO <br />
-                      じぶんで </a>
-                    </li>
-                    <li>
-                      <a href="/box?product=cargo02" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['cargo02']):?> on<?php endif;?> animsition-link">CARGO <br />
-                      ひとまかせ </a>
-                    </li>
-                    <li>
-                      <a href="/box?product=cleaning" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['cleaning']):?> on<?php endif;?> animsition-link">クリーニング <br />
-                      パック</a>
-                    </li>
-                    <li>
-                      <a href="/box?product=shoes" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['shoes']):?> on<?php endif;?> animsition-link">シューズ <br />
-                      パック</a>
-                    </li>
+                    <?php if (! empty($summary_all)):?>
+                      <li>
+                        <a href="/box?product=" class="btn btn-success btn-block btn-xs btn-sort<?php if($active_status['box']['all']):?> on<?php endif;?> animsition-link">すべての<br />
+                        ボックス</a>
+                      </li>
+                    <?php endif;?>
+                    <?php
+                    if ($customer->isSneaker()) {
+                      $inUseService = IN_USE_SERVICE['sneakers'];
+                    } else {
+                      $inUseService = IN_USE_SERVICE['minikura'];
+                    }
+                    ?>
+                    <?php foreach($inUseService as $k => $v): ?>
+                      <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
+                        <li>
+                          <a href="/box?product=<?php echo $v['product'];?>" class="btn btn-success btn-block btn-xs btn-sort<?php if ($active_status['box'][$v['product']]):?> on<?php endif;?> animsition-link"><?php echo $v['name_mobile'];?></a>
+                        </li>
+                      <?php endif;?>
+                    <?php endforeach;?>
                   </ul>
                 </div>
 
@@ -66,7 +58,7 @@
                   <?php echo $this->Form->text('keyword', ['type' => 'hidden', 'value' => $keyword]);?>
                   <div class="row box-sort">
                     <div class="col-sm-6 col-xs-12">
-                    <?php echo $this->Form->select('order', SORT_ORDER, ['class' => 'form-control', 'empty' => false, 'error' => false, 'value' => $order]); ?>
+                    <?php echo $this->Form->select('order', SORT_ORDER['box'], ['class' => 'form-control', 'empty' => false, 'error' => false, 'value' => $order]); ?>
                     </div>
                     <div class="col-sm-3 col-xs-4">
                     <?php echo $this->Form->select('direction', SORT_DIRECTION, ['class' => 'form-control', 'empty' => false, 'error' => false, 'value' => $direction]); ?>

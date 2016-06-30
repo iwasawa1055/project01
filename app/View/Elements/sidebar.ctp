@@ -4,10 +4,10 @@
         <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
 
-        <li<?php if(!empty($button_status['item'])):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
+        <li<?php if($active_status['item']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <?php if (! empty($product_summary)):?>
-              <li> <a class="animsition-link<?php if($active_status['item']['all']):?> active<?php endif;?>" href="/item?"><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
+              <li> <a class="animsition-link<?php if($active_status['item']['all']):?> active<?php endif;?>" href="/item?product="><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
@@ -19,14 +19,13 @@
             <?php endforeach;?>
           </ul>
         </li>
-
-        <li<?php if(!empty($button_status['product'])):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
+        <li<?php if($active_status['box']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <?php if (! empty($product_summary)):?>
+            <?php if (! empty($summary_all)):?>
               <li> <a class="animsition-link<?php if($active_status['box']['all']):?> active<?php endif;?>" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
-              <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
+              <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
                 <li> <a class="animsition-link<?php if($active_status['box'][$v['product']]):?> active<?php endif;?>" href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
               <?php endif;?>
             <?php endforeach;?>

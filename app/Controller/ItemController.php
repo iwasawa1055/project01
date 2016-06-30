@@ -39,14 +39,14 @@ class ItemController extends MinikuraController
             // 'item_group_cd' => __('item_group_cd'),
         ];
 
-        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
-        $withOutboudDone = !empty(Hash::get($this->request->query, 'hide_outboud', 1));
+        // 出庫済み　hide_outbound=0：表示、hide_outbound=1：非表示、初期表示：非表示
+        $withOutboundDone = !empty(Hash::get($this->request->query, 'hide_outbound', 1));
         $page = $this->request->query('page');
         $data = [];
         foreach ($selectSortKeys as $key => $value) {
-            $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
+            $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc', 'hide_outbound' => $withOutboundDone, 'page' => $page]]);
             $data[$desc] = $value . __('select_sort_desc');
-            $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc', 'hide_outboud' => $withOutboudDone, 'page' => $page]]);
+            $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc', 'hide_outbound' => $withOutboundDone, 'page' => $page]]);
             $data[$asc] = $value . __('select_sort_asc');
         }
 
@@ -118,11 +118,11 @@ class ItemController extends MinikuraController
      */
     public function index()
     {
-        // 出庫済み　hide_outboud=0：表示、hide_outboud=1：非表示、初期表示：非表示
+        // 出庫済み　hide_outbound=0：表示、hide_outbound=1：非表示、初期表示：非表示
         // 出庫済み withOutboundDone=true:表示, withOutboundDone=false:非表示
-        $withOutboudDone = true;
-        if (!empty(Hash::get($this->request->query, 'hide_outboud', 1))) {
-            $withOutboudDone = false;
+        $withOutboundDone = true;
+        if (!empty(Hash::get($this->request->query, 'hide_outbound', 1))) {
+            $withOutboundDone = false;
         }
 		
 		//*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
@@ -138,7 +138,8 @@ class ItemController extends MinikuraController
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
-        $results = $this->InfoItem->getListForServiced($sortKey, $where, $withOutboudDone, true);
+        $results = $this->InfoItem->getListForServiced($sortKey, $where, $withOutboundDone, true);
+        $results = $this->InfoItem->editBySearchTerm($results, $this->request->query);
 
         $inbounds = $this->InfoItem->getListForServiced($sortKey, $where, false, true);
         $outbounds = $this->InfoItem->getListForServiced($sortKey, $where, true, true);
@@ -148,13 +149,13 @@ class ItemController extends MinikuraController
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('itemList', $list);
         $this->set('item_all_count', $item_all_count);
-        $this->set('hideOutboud', $withOutboudDone);
+        $this->set('hideOutbound', $withOutboundDone);
 
         $query = $this->request->query;
-        $query['hide_outboud'] = !empty($withOutboudDone);
+        $query['hide_outbound'] = !empty($withOutboundDone);
         $query['page'] = 1;
         $url = Router::url(['action'=>'index', '?' => http_build_query($query)]);
-        $this->set('hideOutboudSwitchUrl', $url);
+        $this->set('hideOutboundSwitchUrl', $url);
 
 
         $query_params = $this->setQueryParameter();

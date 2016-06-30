@@ -36,7 +36,7 @@ class InfoItem extends ApiCachedModel
 
     // 入庫済み一覧
     // @param bool $outboundOnly true:出庫済みのみ表示する, false:出庫済みも含めて表示する
-    public function getListForServiced($sortKey = [], $where = [], $withOutboudDone = true, $outboundOnly = false)
+    public function getListForServiced($sortKey = [], $where = [], $withOutboundDone = true, $outboundOnly = false)
     {
         $where['item_status'] = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
@@ -44,7 +44,7 @@ class InfoItem extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_START * 1,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
-        if ($withOutboudDone) {
+        if ($withOutboundDone) {
             // 出庫済みのみフラグが立っている場合、出庫済み以外をunsetする
             if (!empty($outboundOnly)) {
                 unset($where['item_status']);
@@ -128,6 +128,54 @@ class InfoItem extends ApiCachedModel
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
+
+
+    public function editBySearchTerm($results, $params)
+    {
+        if (empty($params['keyword'])) {
+            return $results;
+        }
+
+        $keywords_tmp = explode('OR', $params['keyword']);
+
+        $keywords = null;
+        foreach ($keywords_tmp as $k => $v) {
+            $and_words = explode(' ', str_replace('　', ' ',$v));
+            $and_words = array_filter($and_words);
+            $and_words = array_values($and_words);
+
+            $keywords[] = $and_words;
+        }
+
+        $all_minus_flag = true;
+        foreach ($keywords as $and_lists) {
+            foreach ($and_lists as $and_word) {
+                if (strpos($and_word, '-') !== 0) {
+                    $all_minus_flag = false;
+                }
+            }
+        }
+
+        // ランク付け用にポイントをそれぞれ設定
+        $columns = [
+            'item_name' => 100, 
+            'item_id' => 80, 
+            'item_note' => 60, 
+            'box_name' => 40, 
+            'box_id' => 20,
+        ];
+
+        // 検索
+        $hits = AppSearch::makeRank($results, $keywords, $columns, $all_minus_flag);
+
+        // sort
+        if (!empty($params['order']) && !empty($params['direction'])) {
+            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];            
+            HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
+        }
+
+        return $hits;
+    }    
 
     //* private
 

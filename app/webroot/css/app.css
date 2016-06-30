@@ -109,6 +109,16 @@ a:hover {
 .sidebar .nav-third-level li a {
 	padding-left: 52px;
 }
+#login .btn,
+#register .btn {
+	margin-top: 0;
+}
+#register .btn-xs {
+	margin-bottom: 0;
+}
+.btn-social {
+	text-align: center;
+}
 
 @media(min-width:768px) {
 .sidebar {
@@ -566,8 +576,24 @@ ul.tile li img {
 	font-size: 60%;
 	display: block;
 }
+.box-list-caption .box-type {
+	font-size: 60%;
+	display: inline;
+}
+.box-list-remarks {
+	font-size: 60%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	margin: 5px 0;
+}
 .box-item-name {
 	font-size: 18px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.box-item-remarks {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;

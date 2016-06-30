@@ -2,6 +2,7 @@
 
 App::uses('ApiCachedModel', 'Model');
 App::uses('HashSorter', 'Model');
+App::uses('AppSearch', 'Lib');
 
 class InfoBox extends ApiCachedModel
 {
@@ -223,8 +224,8 @@ class InfoBox extends ApiCachedModel
             'kit_name' => 20,
         ];
 
-        // 検索ランク付け
-        $hits = $this->_makeRank($results, $keywords, $columns, $all_minus_flag);
+        // 検索
+        $hits = AppSearch::makeRank($results, $keywords, $columns, $all_minus_flag);
 
         // sort
         if (!empty($params['order']) && !empty($params['direction'])) {

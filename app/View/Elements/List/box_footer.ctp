@@ -7,6 +7,7 @@
         <?php if (!empty($box['box_id'])) : ?>
         <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id']; ?></p>
         <?php endif;?>
+        <p class="box-list-caption"><span>ステータス</span><?php echo BOX_STATUS_LIST[$box['box_status']];?></p>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-12">
         <?php if (!empty($box['inbound_date'])) : ?>

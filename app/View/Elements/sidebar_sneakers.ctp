@@ -5,11 +5,11 @@
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
 		<li> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-		    <?php if (! empty($product_summary)):?>
+		    <?php if (! empty($summary_all)):?>
                 <li> <a class="animsition-link" href="/item?"><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['sneakers'] as $v):?>
-              <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
+              <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
                 <!--HOKO除外-->
                 <?php if ($v['product'] !== 'hako' ):?>
                   <li> <a class="animsition-link" href="/item?product=<?php echo $v['product'];?>"><i class="fa fa-diamond fa-fw"></i><?php echo $v['name'];?></a> </li>
@@ -20,11 +20,11 @@
         </li>
         <li> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <?php if (! empty($product_summary)):?>
+            <?php if (! empty($summary_all)):?>
                 <li> <a class="animsition-link" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['sneakers'] as $v):?>
-              <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
+              <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
                 <li> <a class="animsition-link" href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
               <?php endif;?>
             <?php endforeach;?>

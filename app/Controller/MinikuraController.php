@@ -130,14 +130,17 @@ class MinikuraController extends AppController
 
         $active_status = [
             'item' => [
+                'toggle' => false,
                 'all' => false,
                 'mono' => false,
                 'cargo01' => false,
                 'cargo02' => false,
                 'cleaning' => false,
                 'shoes' => false,
+                'sneakers' => false,
             ],
             'box' => [
+                'toggle' => false,
                 'all' => false,
                 'mono' => false,
                 'hako' => false,
@@ -145,23 +148,27 @@ class MinikuraController extends AppController
                 'cargo02' => false,
                 'cleaning' => false,
                 'shoes' => false,
+                'sneakers' => false,
             ],
         ];
 
         $active_status_tmp = [];
 
-        if (preg_match('/\/item/', $url)) {
-            $active_status_tmp = $active_status['item'];
-        } elseif (preg_match('/\/box/', $url)) {
-            $active_status_tmp = $active_status['box'];
-        }        
 
-        if (empty($this->request->query['product'])) {
-            $active_status_tmp['all'] = true;
-        } else {
+        if (isset($this->request->query['product'])) {
+            if (preg_match('/\/item/', $url)) {
+                $active_status['item']['toggle'] = true;
+                $active_status_tmp = $active_status['item'];
+            } elseif (preg_match('/\/box/', $url)) {
+                $active_status['box']['toggle'] = true;
+                $active_status_tmp = $active_status['box'];
+            }
             switch (true) {
                 case $this->request->query['product'] === 'mono':
                     $active_status_tmp['mono'] = true;
+                    break;
+                case $this->request->query['product'] === 'hako':
+                    $active_status_tmp['hako'] = true;
                     break;
                 case $this->request->query['product'] === 'cargo01':
                     $active_status_tmp['cargo01'] = true;
@@ -175,14 +182,20 @@ class MinikuraController extends AppController
                 case $this->request->query['product'] === 'shoes':
                     $active_status_tmp['shoes'] = true;
                     break;
+                case $this->request->query['product'] === 'sneakers':
+                    $active_status_tmp['sneakers'] = true;
+                    break;
+                default:
+                    $active_status_tmp['all'] = true;
+                    break;
+            }
+            if (preg_match('/\/item/', $url)) {
+                $active_status['item'] = $active_status_tmp;
+            } elseif (preg_match('/\/box/', $url)) {
+                $active_status['box'] = $active_status_tmp;
             }
         }
 
-        if (preg_match('/\/item/', $url)) {
-            $active_status['item'] = $active_status_tmp;
-        } elseif (preg_match('/\/box/', $url)) {
-            $active_status['box'] = $active_status_tmp;
-        }
 
         return $active_status;
     }

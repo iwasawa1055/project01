@@ -37,13 +37,15 @@ function checkAgreeBeforeSubmit() {
 
 
 // change contact form 
-$("#InquiryDivision").change(function () {
-    inquiryDivision = $("#InquiryDivision").val();
-    if (inquiryDivision === '15') {
-        $("#inquiry_bug_area").show();
-    } else {
-        $("#inquiry_bug_area").hide();
-    }
+$(function () {
+  $("#InquiryDivision").change(function () {
+      inquiryDivision = $("#InquiryDivision").val();
+      if (inquiryDivision === '15') {
+          $("#inquiry_bug_area").show();
+      } else {
+          $("#inquiry_bug_area").hide();
+      }
+  });
 });
 
 // contact form default
@@ -58,13 +60,15 @@ $(function () {
 
 
 // change contact form 
-$("#ContactUsDivision").change(function () {
-    contactUsDivision = $("#ContactUsDivision").val();
-    if (contactUsDivision === '15') {
-        $("#bug_area").show();
-    } else {
-        $("#bug_area").hide();
-    }
+$(function () {
+  $("#ContactUsDivision").change(function () {
+      contactUsDivision = $("#ContactUsDivision").val();
+      if (contactUsDivision === '15') {
+          $("#bug_area").show();
+      } else {
+          $("#bug_area").hide();
+      }
+  });
 });
 
 // contact form default

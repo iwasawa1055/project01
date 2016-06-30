@@ -59,7 +59,7 @@ class Outbound extends ApiModel
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
-                'message' => ['notBlank', 'outboud_address'],
+                'message' => ['notBlank', 'outbound_address'],
             ],
         ],
 
@@ -192,12 +192,12 @@ class Outbound extends ApiModel
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
-                'message' => ['notBlank', 'outboud_datetime'],
+                'message' => ['notBlank', 'outbound_datetime'],
             ],
             'isDatetimeDelivery' => [
                 'rule' => 'isDatetimeDelivery',
                 'required' => true,
-                'message' => ['notBlank', 'outboud_datetime'],
+                'message' => ['notBlank', 'outbound_datetime'],
             ],
         ],
         'aircontent_select' => [
