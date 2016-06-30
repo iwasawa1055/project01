@@ -51,11 +51,11 @@
         <?php endif; ?>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li>
-          <a class="animsition-link" href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
+          <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
         </li>
         <?php endif; ?>
         <li>
-          <a class="animsition-link" href="https://help.minikura.com/hc/ja" target="_blank"><i class="fa fa-question-circle fa-fw"></i>ヘルプ</a>
+          <a href="https://help.minikura.com/hc/ja" target="_blank"><i class="fa fa-question-circle fa-fw"></i>ヘルプ</a>
         </li>
       </ul>
     </div>
