@@ -1,0 +1,204 @@
+/* ==========================================================================
+   Remodal's default mobile first theme
+   ========================================================================== */
+
+/* Default theme styles for the background */
+
+.remodal-bg.remodal-is-opening,
+.remodal-bg.remodal-is-opened {
+	filter: blur(3px);
+}
+/* Default theme styles of the overlay */
+
+.remodal-overlay {
+	background: rgba(55, 55, 55, 0.5);
+}
+.remodal-overlay.remodal-is-opening,
+.remodal-overlay.remodal-is-closing {
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+.remodal-overlay.remodal-is-opening {
+	animation-name: remodal-overlay-opening-keyframes;
+}
+.remodal-overlay.remodal-is-closing {
+	animation-name: remodal-overlay-closing-keyframes;
+}
+/* Default theme styles of the wrapper */
+
+.remodal-wrapper {
+	padding: 10px 10px 0;
+}
+/* Default theme styles of the modal dialog */
+
+.remodal {
+	box-sizing: border-box;
+	width: 100%;
+	margin-bottom: 10px;
+	padding: 15px;
+	transform: translate3d(0, 0, 0);
+	color: #2b2e38;
+	background: #fff;
+}
+.remodal.remodal-is-opening,
+.remodal.remodal-is-closing {
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+.remodal.remodal-is-opening {
+	animation-name: remodal-opening-keyframes;
+}
+.remodal.remodal-is-closing {
+	animation-name: remodal-closing-keyframes;
+}
+/* Vertical align of the modal dialog */
+
+.remodal,
+.remodal-wrapper:after {
+	vertical-align: middle;
+}
+.remodal h3 {
+	margin-top: 10px;
+}
+.remodal img {
+	width: 100%;
+}
+.remodal span {
+	font-size: 60%;
+}
+.form-group.remodal-open,
+.remodal-open {
+	padding: 1px 5px;
+	font-size: 12px;
+	line-height: 1.5;
+	border: 1px solid #f00;
+	background-color: #fff;
+	color: #f00;
+	margin-left: 5px;
+	vertical-align: middle;
+	margin-bottom: 3px;
+	display: inline-block;
+	border-radius: 0px;
+}
+.panel-body h3 .remodal-open:hover,
+.form-group.remodal-open:hover,
+.remodal-open:hover{
+	background-color: #f00;
+	border: 1px solid #f00;
+	color: #fff;
+}
+.remodal-link {
+	border: 1px solid #f00;
+	background-color: #f00;
+	color: #fff;
+	display: inline-block;
+	padding: 5px 10px;
+	border-radius: 0px;
+}
+.remodal-link:hover {
+	background-color: #fff;
+	border: 1px solid #f00;
+	color: #f00;
+}
+/* Close button */
+
+.remodal-close {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	display: block;
+	overflow: visible;
+	width: 35px;
+	height: 35px;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	transition: color 0.2s;
+	text-decoration: none;
+	color: #000;
+	border: 0;
+	outline: 0;
+	background: transparent;
+}
+.remodal-close:hover,
+.remodal-close:focus {
+	color: #000;
+}
+.remodal-close:before {
+	font-family: Arial, "Helvetica CY", "Nimbus Sans L", sans-serif !important;
+	font-size: 25px;
+	line-height: 35px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	display: block;
+	width: 35px;
+	content: "\00d7";
+	text-align: center;
+}
+
+
+/* Remove inner padding and border in Firefox 4+ for the button tag. */
+
+.remodal-confirm::-moz-focus-inner, .remodal-cancel::-moz-focus-inner, .remodal-close::-moz-focus-inner {
+ padding: 0;
+ border: 0;
+}
+
+/* Keyframes
+   ========================================================================== */
+
+@keyframes remodal-opening-keyframes {
+ from {
+ transform: scale(2.00);
+ opacity: 0;
+}
+ to {
+ transform: none;
+ opacity: 1;
+}
+}
+ @keyframes remodal-closing-keyframes {
+ from {
+ transform: scale(1);
+ opacity: 1;
+}
+ to {
+ transform: scale(0.5);
+ opacity: 0;
+}
+}
+ @keyframes remodal-overlay-opening-keyframes {
+ from {
+ opacity: 0;
+}
+ to {
+ opacity: 1;
+}
+}
+ @keyframes remodal-overlay-closing-keyframes {
+ from {
+ opacity: 1;
+}
+ to {
+ opacity: 0;
+}
+}
+
+/* Media queries
+   ========================================================================== */
+
+@media only screen and (min-width: 641px) {
+.remodal {
+	max-width: 500px;
+}
+}
+/* IE8
+   ========================================================================== */
+
+.lt-ie9 .remodal-overlay {
+	background: #000;
+}
+.lt-ie9 .remodal {
+	width: 500px;
+}
