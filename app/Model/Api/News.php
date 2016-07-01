@@ -27,6 +27,9 @@ class News extends ApiCachedModel
      */
     public function getNews($type = '1', $id = null)
     {
+        if (NEWS_ACTIVE_FLAG === 0) {
+            return [];
+        }
         $xml = simplexml_load_file(NEWS_FEED_URL, 'SimpleXMLElement', LIBXML_NOCDATA);
 
         $results = null;

@@ -36,14 +36,15 @@
         </div>
       </div>
     </div>
-
-    <?php if(NEWS_ACTIVE_FLAG === 1) :?>
-      <div class="col-lg-12 col-xs-12">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h2>ニュース</h2>
-            <div class="col-lg-12">
-              <div class="col-lg-12 announcement">
+    <div class="col-lg-12 col-xs-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h2>ニュース</h2>
+          <div class="col-lg-12">
+            <div class="col-lg-12 announcement">
+            <?php if(empty($newsList)) :?>
+              <div class=row><p>ただいま表示できるニュースはありません</p></div>
+            <?php else:?>
               <?php foreach ($newsList as $data): ?>
                 <div class="row list">
                   <div class="col-xs-12 col-md-3 col-lg-3">
@@ -54,16 +55,17 @@
                   </div>
                 </div>
               <?php endforeach; ?>
-              </div>
+            <?php endif;?>
             </div>
+          </div>
+          <?php if(!empty($newsList)) :?>
             <div class="col-lg-12 col-md-12 col-xs-12">
               <a class="btn btn-info btn-md pull-right" href="/news/">ニュース一覧を見る</a>
             </div>
-          </div>
+          <?php endif;?>
         </div>
       </div>
-    <?php endif;?>
-
+    </div>
     <?php if (!$customer->isEntry()) : ?>
     <div class="col-lg-12 col-xs-12">
       <div class="panel panel-default">
