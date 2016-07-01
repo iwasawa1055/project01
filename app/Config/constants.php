@@ -309,3 +309,6 @@ const RANK_RATE = [
     // ニアリーマッチの件数
     'neary_num' => 5,
 ];
+// ニュース機能on off 切り替え
+// 1:稼働中 0:停止中 
+const NEWS_ACTIVE_FLAG = 1;

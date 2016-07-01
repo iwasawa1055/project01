@@ -78,3 +78,6 @@
 *.ntf binary
 *.bmf binary
 *.prs binary
+*.woff2 binary
+*.otf binary
+

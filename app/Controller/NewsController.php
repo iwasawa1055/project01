@@ -33,6 +33,10 @@ class NewsController extends MinikuraController
      */
     public function detail()
     {
+        // ニュース稼働フラグが0の場合、トップへリダイレクト
+        if (NEWS_ACTIVE_FLAG === 0) {
+            return $this->redirect('/');
+        }
         $id = $this->params['id'];       
         $news = $this->News->getNews(null, $id);
         $this->set('news', $news);
