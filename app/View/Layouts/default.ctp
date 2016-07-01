@@ -23,6 +23,7 @@
   $this->Html->css('remodal-theme', ['inline' => false]);
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
+  $this->Html->css('app_sneakers', ['inline' => false]);
 
   echo $this->fetch('css');
 ?>
