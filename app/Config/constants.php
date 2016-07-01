@@ -254,4 +254,4 @@ const NEWS_FEED_URL = 'http://news.minikura.com/info/news/feed';
 const NEWS_LASTEST_ARTICLE_LIMIT = 5;
 // ニュース機能on off 切り替え
 // 1:稼働中 0:停止中 
-const NEWS_ACTIVE_FLAG = 0;
+const NEWS_ACTIVE_FLAG = 1;
