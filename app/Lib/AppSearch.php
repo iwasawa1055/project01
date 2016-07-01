@@ -146,8 +146,10 @@ class AppSearch
                             $matches_unique = array_values($matches_unique);
                             $first_pos = mb_strpos($v[$column], $matches_unique[0]);
                             $all_count = mb_strlen($v[$column]);
-                            $limit_count = 180;
-                            $harf_count = 180 / 2;
+                            $limit_count = 70;
+                            $first_harf_count = 10;
+                            $first_harf_count = 60;
+                            $harf_count = 70 / 2;
 
                             //開始ポイント取得
                             if ($first_pos > $harf_count) {
