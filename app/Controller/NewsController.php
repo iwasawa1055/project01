@@ -16,6 +16,10 @@ class NewsController extends MinikuraController
     {
         parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
+        // ニュース稼働フラグが0の場合、トップへリダイレクト
+        if (NEWS_ACTIVE_FLAG === 0) {
+            return $this->redirect('/');
+        }
     }
 
     /**

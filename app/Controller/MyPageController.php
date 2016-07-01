@@ -26,13 +26,16 @@ class MyPageController extends MinikuraController
         }
 
         $News = new News();
-        $newsList = $News->getNews(2);
+
+        if (NEWS_ACTIVE_FLAG === 1) {
+            $newsList = $News->getNews(2);
+            $this->set('newsList', $newsList);
+        }
 
         $announcement = new AnnouncementNoCache();
         $res = $announcement->apiGet(['limit' => 5]);
         $this->set('notice_announcements', $res->results);
 
-        $this->set('newsList', $newsList);        
         $this->set('boxList', $boxList);
         $this->set('itemList', $itemList);
     }
