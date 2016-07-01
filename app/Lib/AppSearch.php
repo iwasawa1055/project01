@@ -139,6 +139,7 @@ class AppSearch
                         // マッチランク
                         $rank += RANK_RATE['neary_num'];
 
+                        // noteの場合、対象の文字列の前後を抜き取る。また、対象の文字列を<b>タグで囲う
                         if ($column === 'box_note' || $column === 'item_note') {
                             // 抜き取りと文字強調タグを挿入する
                             $matches_unique = array_unique($matches[0]);
@@ -172,7 +173,7 @@ class AppSearch
                             foreach($matches_unique as $match_str) {
                                 $v[$column] = str_replace($match_str, "<b>{$match_str}</b>", $v[$column]);
                             }
-                            $v['search_note_flg'] = true;
+                            $v['search_note_flag'] = true;
                         }
                     }
                 }
