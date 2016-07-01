@@ -148,22 +148,23 @@ class AppSearch
                             $all_count = mb_strlen($v[$column]);
                             $limit_count = 70;
                             $first_harf_count = 10;
-                            $first_harf_count = 60;
+                            $last_harf_count = 60;
                             $harf_count = 70 / 2;
 
                             //開始ポイント取得
-                            if ($first_pos > $harf_count) {
-                                $start_point = $first_pos - $harf_count;
+                            if ($first_pos > $first_harf_count) {
+                                $start_point = $first_pos - $first_harf_count;
                                 $before = '…';
+                                $limit_count = $limit_count - $first_harf_count;
                             } else {
                                 $start_point = 0;
                                 $before = '';
+                                $limit_count = $limit_count - $first_pos;
                             }
-                            $limit_count = $limit_count - $first_pos;
                             $remaining_count = $all_count - $first_pos;
 
                             // 終了ポイント取得
-                            if ($remaining_count > $harf_count) {
+                            if ($remaining_count > $last_harf_count) {
                                 $end_point = $first_pos + $limit_count;
                                 $after = '…';
                             } else {
