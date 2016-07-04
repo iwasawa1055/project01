@@ -1,5 +1,5 @@
   <div class="navbar-default sidebar" role="navigation">
-    <div class="sidebar-nav navbar-collapse">
+    <div class="sidebar-nav navbar-collapse collapse">
       <ul class="nav in" id="side-menu">
         <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>

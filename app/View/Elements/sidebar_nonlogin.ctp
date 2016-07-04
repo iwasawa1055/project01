@@ -1,5 +1,5 @@
   <div class="navbar-default sidebar" role="navigation">
-    <div class="sidebar-nav navbar-collapse">
+    <div class="sidebar-nav navbar-collapse collapse">
       <ul class="nav in" id="side-menu">
           <?php if (in_array($this->action, Configure::read('api.sneakers.action_name'))) : ?>
 		  <li>
