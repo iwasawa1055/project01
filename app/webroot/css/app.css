@@ -844,4 +844,7 @@ div.panel-body .sp-navi a:hover {
 	background-color: #666;
 	border-color: #666;
 }
+div.item_overflow {
+    overflow : auto;
+}
 }
