@@ -81,7 +81,7 @@
                 <?php echo $this->element('List/empty'); ?>
               <?php else: ?>
             <?php endif; ?>
-              <div class="col-lg-12 item_overflow">
+              <div class="col-lg-12 item-list">
                 <ul class="tile">
                   <!--loop-->
                   <?php foreach ($itemList as $item): ?>

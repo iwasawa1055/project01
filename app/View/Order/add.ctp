@@ -59,7 +59,7 @@
               <div class="col-lg-12 col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-heading hako-box">
-                    <h3>minikurHAKO<a class="remodal-open" href="#" data-remodal-target="modal-hako"><i class="fa fa-question"></i></a>
+                    <h3>minikuraHAKO<a class="remodal-open" href="#" data-remodal-target="modal-hako"><i class="fa fa-question"></i></a>
                     </h3>
                     <p class="help-block">月額保管料：200円/月</p>
                     <p class="help-block">ボックス代金：200円</p>

@@ -119,6 +119,9 @@ a:hover {
 .btn-social {
 	text-align: center;
 }
+.item-list {
+	overflow: auto;
+}
 
 @media(min-width:768px) {
 .sidebar {
@@ -843,8 +846,5 @@ div.panel-body .sp-navi a:hover {
 	color: #fff;
 	background-color: #666;
 	border-color: #666;
-}
-div.item_overflow {
-    overflow : auto;
 }
 }
