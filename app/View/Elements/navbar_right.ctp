@@ -18,7 +18,9 @@
     <?php endif; ?>
       <li><a href="/customer/password/edit"><i class="fa fa-lock fa-fw"></i> パスワード変更</a> </li>
     <?php if (!empty($customer) && !$customer->isEntry()) : ?>
+      <?php if ( !$customer->isSneaker()) : ?>
 	  <li><a class="animsition-link" href="/point/"><i class="fa fa-database fa-fw"></i> ポイント情報</a>
+	  <?php endif; ?>
       <li><a class="animsition-link" href="/contract"><i class="fa fa-list-alt fa-fw"></i> 会員情報</a> </li>
     <?php endif; ?>
       <li class="divider"></li>

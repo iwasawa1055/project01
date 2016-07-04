@@ -1,5 +1,5 @@
 <?php $url = '/box/detail/' . $box['box_id']; ?>
-<div class="panel-body <?php //echo $this->MyPage->boxClassName($box); ?>">
+<div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
   <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12">
       <h3 class="box-item-name">
