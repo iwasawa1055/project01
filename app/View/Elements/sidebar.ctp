@@ -11,7 +11,6 @@
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
-              <!--HOKO除外-->
                 <?php if ($v['product'] !== 'hako' ):?>
                   <li> <a class="animsition-link<?php if($active_status['item'][$v['product']]):?> active<?php endif;?>" href="/item?product=<?php echo $v['product'];?>"><i class="fa fa-diamond fa-fw"></i><?php echo $v['name'];?></a> </li>
                 <?php endif;?>
