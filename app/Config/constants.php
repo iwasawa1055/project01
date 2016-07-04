@@ -38,6 +38,13 @@ const PAYMENT_METHOD = [
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';
 
+// 法人用支払い状況
+const CORPORATE_PAYMENT_METHOD = [
+    'unregistered' => '振替口座未登録',
+    'registration' => '口座振替',
+    'credit_card' => 'クレジットカード', 
+];
+
 // 配送業者コード
 const CARRIER_CD_JPPOST = '0';
 const CARRIER_CD_YAMATO = '1';
@@ -88,6 +95,18 @@ const BOXITEM_STATUS_INBOUND_DONE = '70';
 const BOXITEM_STATUS_OUTBOUND_START = '180';
 const BOXITEM_STATUS_OUTBOUND_IN_PROGRESS = '200';
 const BOXITEM_STATUS_OUTBOUND_DONE = '210';
+
+const BOX_STATUS_LIST = [
+    '10' => '購入依頼中',
+    '20' => '購入依頼中',
+    '30' => '購入依頼中',
+    '40' => 'お預かり中',
+    '60' => 'お預かり中',
+    '70' => 'お預かり中',
+    '180' => 'お預かり中',
+    '200' => 'お預かり中',
+    '210' => '取り出し済み',
+];
 // 再入庫・依頼
 // 220	完了
 // 230	進行中
@@ -184,33 +203,39 @@ const IN_USE_SERVICE = [
     'minikura' => [
         [
             'product' => 'mono',
-            'name' => 'MONO',
+            'name' => 'minikuraMONO',
             'product_cd' => PRODUCT_CD_MONO,
+            'name_mobile' => 'minikura<br />MONO',
         ],
         [
             'product' => 'hako',
-            'name' => 'HAKO',
+            'name' => 'minikuraHAKO',
             'product_cd' => PRODUCT_CD_HAKO,
+            'name_mobile' => 'minikura<br />HAKO',
         ],
         [
             'product' => 'cargo01',
             'name' => 'CARGO じぶんで',
             'product_cd' => PRODUCT_CD_CARGO_JIBUN,
+            'name_mobile' => 'CARGO<br />じぶんで',
         ],
         [
             'product' => 'cargo02',
             'name' => 'CARGO ひとまかせ',
             'product_cd' => PRODUCT_CD_CARGO_HITOMAKASE,
+            'name_mobile' => 'CARGO<br />ひとまかせ',
         ],
         [
             'product' => 'cleaning',
             'name' => 'クリーニングパック',
             'product_cd' => PRODUCT_CD_CLEANING_PACK,
+            'name_mobile' => 'クリーニング<br />パック',
         ],
         [
             'product' => 'shoes',
             'name' => 'シューズパック',
             'product_cd' => PRODUCT_CD_SHOES_PACK,
+            'name_mobile' => 'シューズ<br />パック',
         ],
     ],
     'sneakers' => [
@@ -218,6 +243,7 @@ const IN_USE_SERVICE = [
             'product' => 'sneakers',
             'name' => 'SNEAKERS',
             'product_cd' => PRODUCT_CD_SNEAKERS,
+            'name_mobile' => 'SNEAKERS<br />　',
         ],
     ],
 ];
@@ -252,3 +278,37 @@ const CONTACTUS_CD_ISOLATEISLANDS = '090';
 const NEWS_FEED_URL = 'http://news.minikura.com/info/news/feed';
 // ニュース新着記事件数
 const NEWS_LASTEST_ARTICLE_LIMIT = 5;
+
+const SORT_ORDER = [
+    'box' => [
+        'inbound_date' => 'お預かり日順 で', 
+        'box_id' => 'ボックスID順 で', 
+        'box_name' => 'ボックス名順 で'
+    ],
+    'item' => [
+        'inbound_date' => 'お預かり日順 で', 
+        'item_id' => 'アイテムID順 で', 
+        'item_name' => 'アイテム名順 で'
+    ],
+];
+
+const SORT_DIRECTION = [
+    'asc' => 'A〜Z',
+    'desc' => 'Z〜A',
+];
+
+const RANK_RATE = [
+    // rankレート（順番で除算する）
+    // 1番目:100, 2番目:50, 3番目:33, 4番目:25
+    'match' => 300,
+    // マッチしたワードのユニーク数を乗算する
+    // 4ワード:80, 3ワード:60, 2ワード:40, 1ワード:20
+    'match_num' => 20,
+    // マッチしたワードの総件数。件数分を乗算する
+    'all_num' => 10,
+    // ニアリーマッチの件数
+    'neary_num' => 5,
+];
+// ニュース機能on off 切り替え
+// 1:稼働中 0:停止中 
+const NEWS_ACTIVE_FLAG = 1;

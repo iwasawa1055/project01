@@ -1,26 +1,31 @@
   <div class="navbar-default sidebar" role="navigation">
-    <div class="sidebar-nav navbar-collapse">
+    <div class="sidebar-nav navbar-collapse collapse">
       <ul class="nav in" id="side-menu">
-        <li class="sidebar-search">
-          <?php echo $this->Form->create('GlobalSreach', ['id' => 'sidebar-search', 'url' => ['controller' => 'result', 'action' => 'index'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-          <div class="input-group custom-search-form">
-            <?php echo $this->Form->text("keyword", ['class' => 'form-control', 'error' => false, 'placeholder' => 'Search...']); ?>
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
-            </span>
-          </div>
-          <?php echo $this->Form->error("keyword", null, ['wrap' => 'p']) ?>
-          <?php echo $this->Form->end(); ?>
-        </form>
-        </li>
         <li> <a href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
-        <li> <a href="#"><i class="fa fa-tags fa-fw"></i> ご利用中のサービス<span class="fa arrow"></span></a>
+		<li> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
+		    <?php if (! empty($summary_all)):?>
+                <li> <a class="animsition-link" href="/item?"><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
+            <?php endif;?>
             <?php foreach(IN_USE_SERVICE['sneakers'] as $v):?>
-              <?php //if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
               <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
-                <li> <a href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-tag fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
+                <!--HOKO除外-->
+                <?php if ($v['product'] !== 'hako' ):?>
+                  <li> <a class="animsition-link" href="/item?product=<?php echo $v['product'];?>"><i class="fa fa-diamond fa-fw"></i><?php echo $v['name'];?></a> </li>
+                <?php endif;?>
+              <?php endif;?>
+            <?php endforeach;?>
+          </ul>
+        </li>
+        <li> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <?php if (! empty($summary_all)):?>
+                <li> <a class="animsition-link" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
+            <?php endif;?>
+            <?php foreach(IN_USE_SERVICE['sneakers'] as $v):?>
+              <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
+                <li> <a class="animsition-link" href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
               <?php endif;?>
             <?php endforeach;?>
           </ul>

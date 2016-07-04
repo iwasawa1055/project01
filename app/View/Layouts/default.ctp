@@ -18,8 +18,12 @@
   $this->Html->css('bootstrap.min', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
   $this->Html->css('metisMenu.min', ['inline' => false]);
+  $this->Html->css('animsition', ['inline' => false]);
+  $this->Html->css('remodal', ['inline' => false]);
+  $this->Html->css('remodal-theme', ['inline' => false]);
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
+  $this->Html->css('app_sneakers', ['inline' => false]);
 
   echo $this->fetch('css');
 ?>
@@ -108,6 +112,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   $this->Html->script('jquery.min', ['inline' => false]);
   $this->Html->script('bootstrap.min', ['inline' => false]);
   $this->Html->script('metisMenu.min', ['inline' => false]);
+  $this->Html->script('animsition.min', ['inline' => false]);
+  $this->Html->script('remodal.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
   $this->Html->script('jquery.airCenter', ['inline' => false]);

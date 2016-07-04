@@ -27,8 +27,12 @@ $(function() {
     });
 
     var url = window.location;
-    var element = $('.sidebar-nav ul.nav a').filter(function() {
-        return (this.href == url.href) || (this.pathname != '/' && url.href.indexOf(this.href) == 0);
+    var element = $('ul.nav a').filter(function() {
+		//* comment outi, this is  mock ver
+        //return this.href == url || url.href.indexOf(this.href) == 0;
+
+		//* this is mypage.minikura 
+        return this.href == url;
     }).addClass('active').parent().parent().addClass('in').parent();
     if (element.is('li')) {
         element.addClass('active');

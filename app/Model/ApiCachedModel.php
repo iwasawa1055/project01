@@ -55,7 +55,13 @@ class ApiCachedModel extends ApiModel
                 if (!is_array($value)) {
                     $value = [$value];
                 }
-                if (!in_array(Hash::get($a, $key), $value, true)) {
+                /*
+                * #8738 取出しのできないユーザーがいる
+                * DBのデータに揺れがある（過去のサービスからの引き継ぎユーザーなど）
+                * box_idがstring、int混合しているため、型比較を外す
+                */
+                //if (!in_array(Hash::get($a, $key), $value, true)) {
+                if (!in_array(Hash::get($a, $key), $value)) {
                     $notMatch = true;
                     break;
                 }
