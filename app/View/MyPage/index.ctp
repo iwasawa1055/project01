@@ -48,7 +48,7 @@
               <?php foreach ($newsList as $data): ?>
                 <div class="row list">
                   <div class="col-xs-12 col-md-3 col-lg-3">
-                    <?php echo $this->Html->formatYmdKanji($data['date']); ?>
+                    <?php echo $this->Html->formatYmdKanji($data['disp_date']); ?>
                   </div>
                   <div class="col-xs-12 col-md-8 col-lg-8">
                     <span class="detail"><a href="/news/detail/<?php echo $data['id'];?>"><?php echo h($data['title']); ?></a></span>

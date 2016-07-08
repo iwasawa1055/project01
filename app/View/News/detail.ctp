@@ -14,7 +14,7 @@
               <div class="row">
                 <div class="col-lg-12">
                     <h3><?php echo $news[0]['title'];?></h3>
-                    <h4 class="date"><?php echo $news[0]['date'];?></h4>
+                    <h4 class="date"><?php echo $news[0]['disp_date'];?></h4>
                 </div>
               </div>
               <div class="col-lg-12">
