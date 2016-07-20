@@ -37,6 +37,7 @@ Thumbs.db
 # 2015/11 added by harasawa@movsquad
 vagrant/.vagrant/
 
+news_feed.xml
 
 
 vendor/
