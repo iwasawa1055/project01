@@ -88,7 +88,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <div class="footer">
     <div class="col-lg-12 col-md-12 col-xs-12">
       <ul class="list-inline">
-        <li><a href="http://www.terrada.co.jp/company/" target="_blank">会社情報</a>
+        <li><a href="https://minikura-logitech.com/" target="_blank">運営チーム</a>
         </li>
         <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/privacy/" target="_blank">個人情報について</a>
         </li>
@@ -102,8 +102,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </li>
       </ul>
     </div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-      <p>© 2012 Warehouse TERRADA</p>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-xs-12">
+        <p>© 2012 Warehouse TERRADA</p>
+      </div>
     </div>
   </div>
 </div>
