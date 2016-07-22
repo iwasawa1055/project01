@@ -12,7 +12,6 @@
 <meta name="author" content="">
 <title><?php $this->Title->p(); ?></title>
 <?php
-  echo $this->Html->meta('icon');
   echo $this->fetch('meta');
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
@@ -27,7 +26,13 @@
 
   echo $this->fetch('css');
 ?>
-
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="images/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="images/png" href="/images/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/images/manifest.json">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ff0000">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
