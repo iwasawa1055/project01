@@ -90,11 +90,7 @@ if ($action === 'customer_add') {
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.holder_name', null, ['wrap' => 'p']) ?>
                   <p class="help-block">（※半角大文字英数字、半角スペース）</p>
                 </div>
-                <span class="col-lg-6 col-md-6 col-xs-12">
-                  <!-- <a class="btn btn-primary btn-lg btn-block" href="/customer/credit_card/edit">クリア</a> </span> -->
-                  <?php echo $this->Html->link('クリアする', ['controller' => 'credit_card', 'action' => $action], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
-                </span>
-                <span class="col-lg-6 col-md-6 col-xs-12">
+                <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
                 </span>
                 <?php echo $this->Form->hidden('PaymentGMOSecurityCard.card_seq'); ?>
