@@ -25,10 +25,7 @@
                   <?php echo $this->Form->input('CustomerPassword.new_password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'新しいパスワード（再入力）', 'type' => 'password', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerPassword.new_password_confirm', null, ['wrap' => 'p']) ?>
                 </div>
-                <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-primary btn-lg btn-block" href="/customer/password/edit">戻る</a>
-                </span>
-                <span class="col-lg-6 col-md-6 col-xs-12">
+                <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">パスワードを設定する</button>
                 </span>
               </div>

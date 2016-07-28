@@ -96,12 +96,23 @@ class InfoController extends MinikuraController
                 }
 
                 $this->Customer->switchEntryToCustomer();
-				//* sneakersユーザーは、タグ判別用に完了ページを用意してみる。
-				if ($this->Customer->getInfo()['oem_cd'] === Configure::read('api.sneakers.alliance_cd')) {
-					return $this->render('customer_add_complete_sneakers');
-				} else {
-					return $this->render('customer_add_complete');
-				}
+
+                // ご利用中サービスの集計
+                $this->set('product_summary', []);
+                if (!$this->Customer->isEntry()) {
+                    $summary = $this->InfoBox->getProductSummary(false);
+                    $this->set('product_summary', $summary);
+                    // 出庫済み含めた利用
+                    $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
+                    $this->set('summary_all', $summary_all);
+                }
+
+                //* sneakersユーザーは、タグ判別用に完了ページを用意してみる。
+                if ($this->Customer->getInfo()['oem_cd'] === Configure::read('api.sneakers.alliance_cd')) {
+                    return $this->render('customer_add_complete_sneakers');
+                } else {
+                    return $this->render('customer_add_complete');
+                }
             }
         }
     }

@@ -220,8 +220,11 @@ class RegisterController extends MinikuraController
             // ご利用中サービスの集計
             $this->set('product_summary', []);
             if (!$this->Customer->isEntry()) {
-                $summary = $this->InfoBox->getProductSummary();
+                $summary = $this->InfoBox->getProductSummary(false);
                 $this->set('product_summary', $summary);
+                // 出庫済み含めた利用
+                $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
+                $this->set('summary_all', $summary_all);
             }
 
             // 完了画面
@@ -382,8 +385,11 @@ class RegisterController extends MinikuraController
             // ご利用中サービスの集計
             $this->set('product_summary', []);
             if (!$this->Customer->isEntry()) {
-                $summary = $this->InfoBox->getProductSummary();
+                $summary = $this->InfoBox->getProductSummary(false);
                 $this->set('product_summary', $summary);
+                // 出庫済み含めた利用
+                $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
+                $this->set('summary_all', $summary_all);
             }
 
 			//* keyを登録済みとして管理する
@@ -576,8 +582,11 @@ class RegisterController extends MinikuraController
             // ご利用中サービスの集計
             $this->set('product_summary', []);
             if (!$this->Customer->isEntry()) {
-                $summary = $this->InfoBox->getProductSummary();
+                $summary = $this->InfoBox->getProductSummary(false);
                 $this->set('product_summary', $summary);
+                // 出庫済み含めた利用
+                $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
+                $this->set('summary_all', $summary_all);
             }
 
             // 完了画面

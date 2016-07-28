@@ -12,7 +12,6 @@
 <meta name="author" content="">
 <title><?php $this->Title->p(); ?></title>
 <?php
-  echo $this->Html->meta('icon');
   echo $this->fetch('meta');
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
@@ -27,7 +26,13 @@
 
   echo $this->fetch('css');
 ?>
-
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="images/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="images/png" href="/images/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/images/manifest.json">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ff0000">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -88,7 +93,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <div class="footer">
     <div class="col-lg-12 col-md-12 col-xs-12">
       <ul class="list-inline">
-        <li><a href="http://www.terrada.co.jp/company/" target="_blank">会社情報</a>
+        <li><a href="https://minikura-logitech.com/" target="_blank">運営チーム</a>
         </li>
         <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/privacy/" target="_blank">個人情報について</a>
         </li>
@@ -102,8 +107,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </li>
       </ul>
     </div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-      <p>© 2012 Warehouse TERRADA</p>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-xs-12">
+        <p>© 2012 Warehouse TERRADA</p>
+      </div>
     </div>
   </div>
 </div>

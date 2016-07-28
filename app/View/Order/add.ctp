@@ -219,10 +219,7 @@
               <?php echo $this->Form->error('OrderKit.datetime_cd', null, ['wrap' => 'p']) ?>
             </div>
           <?php endif; ?>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-primary btn-lg btn-block" href="/order/add">クリアする</a>
-            </span>
-            <span class="col-lg-6 col-md-6 col-xs-12">
+            <span class="col-lg-12 col-md-12 col-xs-12">
               <button type="submit" class="btn btn-danger btn-lg btn-block">注文内容を確認する</button>
             </span>
           </div>
