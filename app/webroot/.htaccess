@@ -1,6 +1,14 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # c2c_sale
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    RewriteCond %{REQUEST_URI} ^/c2c_sale
+    RewriteRule ^(.*)$ /c2c_sale/index.php [L]
+
+    # Standard
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [L]
 </IfModule>

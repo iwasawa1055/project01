@@ -8,6 +8,7 @@ App::uses('AnnouncementNoCache', 'Model');
 
 class MyPageController extends MinikuraController
 {
+
     /**
      * ルートインデックス.
      */

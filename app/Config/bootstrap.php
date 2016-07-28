@@ -53,17 +53,19 @@ Cache::config('default', array('engine' => 'File'));
 
     App::build(array(
         'Controller' => array(
-            ROOT . DS . APP_DIR . DS . 'Controller' . DS,
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'C2cSale' . DS,
             ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'Customer' . DS,
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS,
         ),
         'View' => array(
-            ROOT . DS . APP_DIR . DS . 'View' . DS,
+            ROOT . DS . APP_DIR . DS . 'View' . DS . 'C2cSale' . DS,
             ROOT . DS . APP_DIR . DS . 'View' . DS . 'Customer' . DS,
+            ROOT . DS . APP_DIR . DS . 'View' . DS,
         ),
         'Model' => array(
-            ROOT . DS . APP_DIR . DS . 'Model' . DS,
             ROOT . DS . APP_DIR . DS . 'Model' . DS . 'Api' . DS,
             ROOT . DS . APP_DIR . DS . 'Model' . DS . 'ApiDev' . DS,
+            ROOT . DS . APP_DIR . DS . 'Model' . DS,
         ),
     ));
 
