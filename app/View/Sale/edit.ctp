@@ -15,21 +15,28 @@
             <div class="col-lg-12">
               <div class="row">
                 <span class="col-sm-6 col-xs-12">
-                <a class="btn btn-info btn-xs btn-block animsition-link" href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>
+                <a class="btn btn-info btn-xs btn-block" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura利用規約</a>
                 </span>
               </div>
               <div class="checkbox">
                 <label>
-                  <input name="remember" type="checkbox" value="Remember Me">
+                  <input class="agree-before-submit" type="checkbox">
                   minikura利用規約に同意する </label>
               </div>
             </div>
+            <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'complete']]); ?>
             <span class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/update.html">販売機能をONにする</a>
+              <?php echo $this->Form->hidden('setting', ['value' => 'on'])?>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">販売機能をONにする</a>
             </span>
+            <?php echo $this->Form->end(); ?>
+
+            <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'complete']]); ?>
              <span class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/update.html">販売機能をOFFにする</a>
+              <?php echo $this->Form->hidden('setting', ['value' => 'off'])?>
+              <button type="submit" class="btn btn-danger btn-lg btn-block">販売機能をOFFにする</a>
             </span>
+            <?php echo $this->Form->end(); ?>
           </div>
         </div>
       </div>
