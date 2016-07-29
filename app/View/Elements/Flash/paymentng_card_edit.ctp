@@ -4,7 +4,7 @@ if (!empty($params['class'])) {
     $class .= ' ' . $params['class'];
 }
 ?>
-<p id="<?php echo h($key) ?>Message" class="error-message <?php echo h($class) ?>"><?php echo h($message) ?>
+<p id="<?php echo h($key) ?>Message" class="error-message <?php echo h($class) ?>">
 お支払い状況をご確認ください</br>
 </br>
 いつもminikuraをご利用いただき、ありがとうございます。</br>
@@ -16,3 +16,6 @@ if (!empty($params['class'])) {
 ※必ず、ご契約者様名義のクレジットカード情報をご登録ください。</br>
 ※ご登録いただいたクレジットカード情報の反映には数日かかることがございます。</br>
 </p>
+<?php if (!empty($message)) : ?>
+<p class="error-message"><?php echo h($message) ?></p>
+<?php endif; ?>
