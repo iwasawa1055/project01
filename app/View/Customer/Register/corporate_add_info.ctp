@@ -111,7 +111,7 @@
                         <div id="collapseTwo" class="panel-collapse collapse">
                           <div class="panel-body">
                             <p>＊口座振替でのお支払いをご希望の場合は、以下ボタンより口座振替申請書類をダウンロードし、弊社までお送りください。</p>
-                            <a class="btn btn-danger btn-md" href="/files/deposit-account-transfer.pdf" target="_blank">口座振替書類ダウンロード</a>
+                            <a class="btn btn-danger btn-md" href="https://minikura.com/help/deposit-account-transfer_co.pdf" target="_blank">口座振替書類ダウンロード</a>
                             <p>尚、口座振替書類が弊社にて確認できるまでは、キットの購入ができません。<br />
                               口座振替書類の確認ができ次第、登録のメールアドレスへご連絡させていただきます。</p>
                             <p>※弊社に書類が到着してから審査が完了するまでお時間がかかる場合がございます。<br />
