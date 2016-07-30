@@ -1,3 +1,6 @@
+<?php $this->Html->css('quill.snow', ['inline' => false]); ?>
+<?php $this->Html->script('quill.min', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/news_management', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-cog"></i> ニュース編集</h1>
@@ -21,8 +24,10 @@
                   <?php echo $this->Form->error('News.date', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                <label>本文 （e.g. 段落：&lt;p&gt;&lt;/p&gt;, 改行：&lt;br&gt;）</label>
-                  <?php echo $this->Form->textarea('News.detail', ['class' => "form-control", 'rows' => 15, 'error' => false]); ?>
+                <label>本文</label>
+                  <?php echo $this->element('quill_toolbar'); ?>
+                  <div id="full-editor" class="form-control" style="height: 400px;"></div>
+                  <?php echo $this->Form->textarea('News.detail', ['class' => "form-control", 'style' => 'display: none;', 'rows' => 15, 'error' => false]); ?>
                   <?php echo $this->Form->error('News.detail', null, ['wrap' => 'p']) ?>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
