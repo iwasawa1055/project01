@@ -18,12 +18,20 @@ class C2cSaleController extends MinikuraController
     // アクセス許可
     protected $checkLogined = false;
 
+	// beforeRender
+	public function beforeRender()
+	{
+		//* mypageとは違うlayoutにする
+		$this->layout = 'c2c_sale';
+	}
+
 
     /**
      * index
      */
     public function index()
     {
+        CakeLog::write(DEBUG_LOG, __METHOD__."(line=". __LINE__ .")\n" . Configure::read('c2c_sale.url'));
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
 
     }

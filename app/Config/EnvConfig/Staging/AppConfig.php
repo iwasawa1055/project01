@@ -14,6 +14,13 @@ $config['site.env_name'] = 'staging';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://b-www.minikura.com/contents/sneakers/';
 
+//* C2c_sale 
+/*
+* コンテンツ側からApacheでAlias設定中 
+* 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
+*/
+$config['site.c2c_sale.url'] = 'https://b-mypage.minikura.com' 
+
 /**
  * エラー表示
  */

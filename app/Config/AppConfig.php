@@ -13,7 +13,6 @@ $config['site.top_page'] = 'http://' . $_SERVER['HTTP_HOST'];
 $config['site.static_content_url'] = 'http://' . $_SERVER['HTTP_HOST'];
 // 環境文字列（development, staging, production）
 $config['site.env_name'] = '';
-
 /**
  * API設定
  */

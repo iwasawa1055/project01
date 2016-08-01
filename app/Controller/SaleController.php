@@ -45,6 +45,10 @@ class SaleController extends MinikuraController
 		//debug($model->toArray());
 		if ($this->request->is('post')) {
             //* To APIiでき次第
+			//* on customer table update
+
+			//* off customer table update, 出品情報all cansel
+			
 
             //* APIできるまで、ひとまずsession
             CakeSession::write(self::MODEL_NAME, $model->toArray());
