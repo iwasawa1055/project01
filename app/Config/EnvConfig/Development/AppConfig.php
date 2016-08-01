@@ -16,7 +16,7 @@ switch (true) {
     case (! isset($_SERVER['SERVER_NAME'])):
         break;
 
-    //** Prod
+    //** 
     //case $_SERVER['SERVER_NAME'] === 'goto-contents.minikura.com':
     case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
 	    $config['site.c2c_sale.url'] = 'https://osada-mypage.minikura.com';
@@ -24,7 +24,7 @@ switch (true) {
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
 	    $config['site.c2c_sale.url'] = 'https://goto-mypage.minikura.com';
 	    break;
-    case $_SERVER['HTTP_HOST'] === 'harasawa-contents.minikura.com':
+    case $_SERVER['HTTP_HOST'] === 'harasawa.minikura.com':
 	    $config['site.c2c_sale.url'] = 'https://harasawa-mypage.minikura.com';
 	    break;
     case $_SERVER['HTTP_HOST'] === 'maekawa-contents.minikura.com':

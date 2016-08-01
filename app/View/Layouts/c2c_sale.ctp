@@ -13,6 +13,8 @@
 <title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->fetch('meta');
+  $this->Html->css('font-awesome.min', ['inline' => false]);
+  /*
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
@@ -24,16 +26,36 @@
   $this->Html->css('app_dev', ['inline' => false]);
   $this->Html->css('app_sneakers', ['inline' => false]);
 
+  //c2c_sale  see@mock23 /www/market/common/css/animsition.min.css
+  $this->Html->css('app_c2c_sale_animsition.min', ['inline' => false]);
+  //c2c_sale  see@mock23 /www/market/common/css/animate.min.css
+  $this->Html->css('app_c2c_sale_animate.min', ['inline' => false]);
   //c2c_sale common see@mock23 /www/market/common/css/app.min.css
   $this->Html->css('app_common_c2c_sale.min', ['inline' => false]);
   //c2c_sale  see@mock23 /www/market/css/app.min.css
   $this->Html->css('app_c2c_sale.min', ['inline' => false]);
-
+  */
 
   echo $this->fetch('css');
 ?>
 
+<?php /* harasawa san ご相談 上記・下記、どちらの書き方が今後良いか すり合わせしたい　 */ ?>
+<?php /* harasawa san ご相談 上記cakeのヘルパーで書く場合はファイルのリネームや再配置必要 */ ?>
+<?php /* harasawa san ご相談 下記絶対ドメインパスで書く場合は、mock23のmarket/をc2c_sale/に置き換えて参照 */ ?>
+
 <?php /* コンテンツ側から参照しているので、絶対ドメインパス */ ?>
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/animsition.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/animate.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/app.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/css/app.min.css">
+
+<!-- Custom Fonts -->
+<link href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/apple-touch-icon.png">
