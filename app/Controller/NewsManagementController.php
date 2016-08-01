@@ -16,6 +16,18 @@ class NewsManagementController extends MinikuraController
     {
         parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
+
+        if ($this->Customer->isLogined()) {
+            // ご利用中サービスの集計
+            $this->set('product_summary', []);
+            if (!$this->Customer->isEntry()) {
+                $summary = $this->InfoBox->getProductSummary(false);
+                $this->set('product_summary', $summary);
+                // 出庫済み含めた利用
+                $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
+                $this->set('summary_all', $summary_all);
+            }
+        }
     }
 
     /**
@@ -68,7 +80,8 @@ class NewsManagementController extends MinikuraController
             $item->addChild("disable", "");
             // $item->addChild("content:encoded", $this->News->data['News']['detail'], "content");
             $node_content = $item->addChild("content:encoded", "", "content");
-            $node_content->addCData($this->News->data['News']['detail']);
+            $newsData = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $this->News->data['News']['detail']);
+            $node_content->addCData($newsData);
 
             $xml->asXml("../webroot/news_feed.xml");
 
@@ -120,7 +133,8 @@ class NewsManagementController extends MinikuraController
         $target->pubDate = $date;
         $target->disable = "";
         $target->children('content', true)->encoded = '';
-        $target->children('content', true)->encoded->addCData($this->News->data['News']['detail']);
+        $newsData = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $this->News->data['News']['detail']);
+        $target->children('content', true)->encoded->addCData($newsData);
 
         $xml->asXml("../webroot/news_feed.xml");
 
