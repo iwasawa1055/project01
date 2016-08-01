@@ -1,6 +1,7 @@
 <?php
 
 App::uses('ApiModel', 'Model');
+App::uses('Announcement', 'Model');
 
 class CorporateInfo extends ApiModel
 {

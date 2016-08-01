@@ -176,6 +176,7 @@ class CreditCardController extends MinikuraController
 
             // validates
             if (!$this->PaymentGMOSecurityCard->validates()) {
+                $this->Flash->paymentng_card_edit('');
                 return $this->render('customer_edit');
             }
 
@@ -191,8 +192,8 @@ class CreditCardController extends MinikuraController
                 // update
                 $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
                 if (!empty($res->error_message)) {
-                    $this->Flash->set($res->error_message);
-                    return $this->redirect(['action' => 'customer_edit']);
+                    $this->Flash->paymentng_card_edit($res->error_message);
+                    return $this->render('customer_edit');
                 }
                 return $this->redirect(['controller' => 'login', 'action' => 'logout', 'paymentng' => false]);
             }
