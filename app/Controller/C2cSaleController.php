@@ -18,12 +18,12 @@ class C2cSaleController extends MinikuraController
     // アクセス許可
     protected $checkLogined = false;
 
-	// beforeRender
-	public function beforeRender()
-	{
-		//* mypageとは違うlayoutにする
-		$this->layout = 'c2c_sale';
-	}
+    // beforeRender
+    public function beforeRender()
+    {
+        //* mypageとは違うlayoutにする
+        $this->layout = 'c2c_sale';
+    }
 
 
     /**

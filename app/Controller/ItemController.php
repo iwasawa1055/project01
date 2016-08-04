@@ -7,6 +7,8 @@ class ItemController extends MinikuraController
 {
     const MODEL_NAME = 'InfoItem';
     const MODEL_NAME_ITEM_EDIT = 'Item';
+    //* 販売機能
+    const MODEL_NAME_SALE = 'Sale';
 
     protected $paginate = array(
         'limit' => 20,
@@ -22,6 +24,7 @@ class ItemController extends MinikuraController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoBox');
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);
+        $this->loadModel(self::MODEL_NAME_SALE);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -124,8 +127,8 @@ class ItemController extends MinikuraController
         if (!empty(Hash::get($this->request->query, 'hide_outbound', 1))) {
             $withOutboundDone = false;
         }
-		
-		//*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
+        
+        //*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
         // 商品指定
         $product = $this->request->query('product');
 
@@ -133,8 +136,8 @@ class ItemController extends MinikuraController
         if (!$this->checkProduct($product)) {
             $product = null;
         }
-		$where = [];
-		$where['product'] = $product;
+        $where = [];
+        $where['product'] = $product;
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
@@ -221,6 +224,14 @@ class ItemController extends MinikuraController
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
         $this->set('denyOutboundList', $outboundList->canAddItem($item));
+        
+        //* 販売機能
+        //* APIできるまでsession
+        $session_sale = CakeSession::read(self::MODEL_NAME_SALE);
+        //$this->Sale->gethogehoge();
+        //debug($session_sale);
+        $this->set('sale', $session_sale);
+    
     }
 
     /**

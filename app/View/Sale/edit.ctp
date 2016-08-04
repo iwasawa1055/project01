@@ -26,14 +26,14 @@
             </div>
             <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'complete']]); ?>
             <span class="col-lg-12 col-md-12 col-xs-12">
-              <?php echo $this->Form->hidden('setting', ['value' => 'on'])?>
+              <?php echo $this->Form->hidden('setting', ['value' => 'on']); ?>
               <button type="submit" class="btn btn-danger btn-lg btn-block">販売機能をONにする</a>
             </span>
             <?php echo $this->Form->end(); ?>
 
             <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'complete']]); ?>
              <span class="col-lg-12 col-md-12 col-xs-12">
-              <?php echo $this->Form->hidden('setting', ['value' => 'off'])?>
+              <?php echo $this->Form->hidden('setting', ['value' => 'off']); ?>
               <button type="submit" class="btn btn-danger btn-lg btn-block">販売機能をOFFにする</a>
             </span>
             <?php echo $this->Form->end(); ?>

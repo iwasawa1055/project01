@@ -4,15 +4,27 @@ App::uses('ApiModel', 'Model');
 
 class Sale extends ApiModel
 {
-	/**
-	* API名は未定、以下はひとまず暫定
-	*/
-    public function __construct($name = 'Sale', $end = '/sale', $access_point_key = 'minikura_v5')
+    /**
+    * API名は未定、以下はひとまず暫定
+    */
+    public function __construct()
     {
-        parent::__construct($name, $end, $access_point_key);
+        parent::__construct('Sale', '/sale', 'minikura_v5');
     }
 
-    public $validate = [];
+    public $validate = [
+        'price' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'price']
+            ],
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'message' => ['format', 'price']
+            ],
+        ],
+    ];
 
     public function apiPost($data)
     {
