@@ -118,3 +118,6 @@ msgstr "無効なアクセスキーです。"
 
 msgid "registered_sneakers_key_data"
 msgstr "登録済みのアクセスキーです。"
+
+msgid "price"
+msgstr "販売価格"
