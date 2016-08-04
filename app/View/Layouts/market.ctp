@@ -14,55 +14,41 @@
 <?php
   echo $this->fetch('meta');
   $this->Html->css('font-awesome.min', ['inline' => false]);
-  /*
+  /* 必要なものあれば適宜使用するため、のこしておく
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);
   $this->Html->css('metisMenu.min', ['inline' => false]);
   $this->Html->css('animsition', ['inline' => false]);
-  $this->Html->css('remodal', ['inline' => false]);
-  $this->Html->css('remodal-theme', ['inline' => false]);
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
-  $this->Html->css('app_sneakers', ['inline' => false]);
 
-  //c2c_sale  see@mock23 /www/market/common/css/animsition.min.css
-  $this->Html->css('app_c2c_sale_animsition.min', ['inline' => false]);
-  //c2c_sale  see@mock23 /www/market/common/css/animate.min.css
-  $this->Html->css('app_c2c_sale_animate.min', ['inline' => false]);
-  //c2c_sale common see@mock23 /www/market/common/css/app.min.css
-  $this->Html->css('app_common_c2c_sale.min', ['inline' => false]);
-  //c2c_sale  see@mock23 /www/market/css/app.min.css
-  $this->Html->css('app_c2c_sale.min', ['inline' => false]);
   */
 
   echo $this->fetch('css');
 ?>
 
-<?php /* harasawa san ご相談 上記・下記、どちらの書き方が今後良いか すり合わせしたい　 */ ?>
-<?php /* harasawa san ご相談 上記cakeのヘルパーで書く場合はファイルのリネームや再配置必要 */ ?>
-<?php /* harasawa san ご相談 下記絶対ドメインパスで書く場合は、mock23のmarket/をc2c_sale/に置き換えて参照 */ ?>
 
 <?php /* コンテンツ側から参照しているので、絶対ドメインパス */ ?>
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/animsition.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/animate.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/css/app.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/css/app.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/animsition.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/animate.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/app.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/css/app.min.css">
 
 <!-- Custom Fonts -->
-<link href="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="<?php echo Configure::read('site.mypage.url');?>/market/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-<link rel="shortcut icon" type="image/x-icon" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/favicon.ico">
-<link rel="apple-touch-icon" sizes="180x180" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/apple-touch-icon.png">
-<link rel="icon" type="images/png" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="images/png" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/favicon-16x16.png" sizes="16x16">
-<link rel="manifest" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/manifest.json">
-<link rel="mask-icon" href="<?php echo Configure::read('site.c2c_sale.url');?>/images/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo Configure::read('site.mypage.url');?>/images/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="<?php echo Configure::read('site.mypage.url');?>/images/apple-touch-icon.png">
+<link rel="icon" type="images/png" href="<?php echo Configure::read('site.mypage.url');?>/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="images/png" href="<?php echo Configure::read('site.mypage.url');?>/images/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="<?php echo Configure::read('site.mypage.url');?>/images/manifest.json">
+<link rel="mask-icon" href="<?php echo Configure::read('site.mypage.url');?>/images/safari-pinned-tab.svg" color="#5bbad5">
 <meta name="theme-color" content="#ff0000">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -94,7 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand animsition-link" href="<?php echo Configure::read('site.c2c_sale.url');?>"><img src="<?php echo Configure::read('site.c2c_sale.url');?>/c2c_sale/common/images/logo.png" alt=""/></a>
+      <a class="navbar-brand animsition-link" href="<?php echo Configure::read('site.mypage.url');?>"><img src="<?php echo Configure::read('site.mypage.url');?>/market/common/images/logo.png" alt=""/></a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
@@ -108,10 +94,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <a class="animsition-link" href="https://help.minikura.com/hc/ja"><i class="fa fa-question"></i> ヘルプセンター</a>
         </li>
         <li>
-          <a class="animsition-link login" href="<?php echo Configure::read('site.c2c_sale.url');?>/login"><i class="fa fa-unlock-alt"></i> ログイン</a>
+          <a class="animsition-link login" href="<?php echo Configure::read('site.mypage.url');?>/login"><i class="fa fa-unlock-alt"></i> ログイン</a>
         </li>
         <li>
-          <a class="animsition-link signin" href="<?php echo Configure::read('site.c2c_sale.url');?>/customer/register/add"><i class="fa fa-sign-in"></i> 会員登録</a>
+          <a class="animsition-link signin" href="<?php echo Configure::read('site.mypage.url');?>/customer/register/add"><i class="fa fa-sign-in"></i> 会員登録</a>
         </li>
       </ul>
     </div>

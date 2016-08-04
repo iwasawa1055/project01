@@ -11,19 +11,19 @@ App::uses('MinikuraController', 'Controller');
 * app/webroot/.htaccess mod_rewrite設定中
 * 
 */
-class C2cSaleController extends MinikuraController
+class MarketController extends MinikuraController
 {
-    const MODEL_NAME = 'C2c';
+    const MODEL_NAME = 'Market';
 
     // アクセス許可
     protected $checkLogined = false;
 
-	// beforeRender
-	public function beforeRender()
-	{
-		//* mypageとは違うlayoutにする
-		$this->layout = 'c2c_sale';
-	}
+    // beforeRender
+    public function beforeRender()
+    {
+        //* mypageとは違うlayoutにする
+        $this->layout = 'market';
+    }
 
 
     /**
@@ -31,7 +31,7 @@ class C2cSaleController extends MinikuraController
      */
     public function index()
     {
-        CakeLog::write(DEBUG_LOG, __METHOD__."(line=". __LINE__ .")\n" . Configure::read('c2c_sale.url'));
+        CakeLog::write(DEBUG_LOG, __METHOD__."(line=". __LINE__ .")\n" . Configure::read('market.url'));
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
 
     }
