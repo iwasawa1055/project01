@@ -12,7 +12,7 @@
               <h2>販売TOP</h2>
               <div class="col-lg-12">
                 <div class="col-lg-12 announcement">
-				  <p>暫定TOPページ</p>
+                  <p>暫定TOPページ</p>
                 </div>
               </div>
             </div>

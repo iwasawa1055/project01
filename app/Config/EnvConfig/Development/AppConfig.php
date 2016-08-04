@@ -5,7 +5,7 @@ $config['site.env_name'] = 'development';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://b-www.minikura.com/contents/sneakers/';
 
-//* C2c_sale 
+//* market 
 /*
 * コンテンツ側からApacheでAlias設定中 
 * 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
@@ -19,22 +19,22 @@ switch (true) {
     //** 
     //case $_SERVER['SERVER_NAME'] === 'goto-contents.minikura.com':
     case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
-        $config['site.c2c_sale.url'] = 'https://osada-mypage.minikura.com';
+        $config['site.mypage.url'] = 'https://osada-mypage.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
-        $config['site.c2c_sale.url'] = 'https://goto-mypage.minikura.com';
+        $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'harasawa.minikura.com':
-        $config['site.c2c_sale.url'] = 'https://harasawa-mypage.minikura.com';
+        $config['site.mypage.url'] = 'https://harasawa-mypage.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'maekawa-contents.minikura.com':
-        $config['site.2c_sale.url'] = 'https://maekawa-mypage.minikura.com';
+        $config['site.mypage.url'] = 'https://maekawa-mypage.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'rikiji-contents.minikura.com':
-        $config['site.c2c_sale.url'] = 'https://rikiji-mypage.minikura.com';
+        $config['site.mypage.url'] = 'https://rikiji-mypage.minikura.com';
         break;
     default:
-        $config['site.c2c_sale.url'] = 'http://' . $_SERVER['HTTP_HOST'];
+        $config['site.mypage.url'] = 'http://' . $_SERVER['HTTP_HOST'];
 }
 
 /**

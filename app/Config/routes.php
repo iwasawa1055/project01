@@ -2,14 +2,14 @@
 
 if (! empty($_SERVER['REQUEST_URI'])) {
     switch (true) {
-        case preg_match('{^/c2c_sale}i', $_SERVER['REQUEST_URI']):
-            Router::connect('/input/*', ['controller' => 'C2cSale', 'action' => 'input']);
-            Router::connect('/confirm/*', ['controller' => 'C2cSale', 'action' => 'confirm']);
-            Router::connect('/complete/*', ['controller' => 'C2cSale', 'action' => 'complete']);
+        case preg_match('{^/market}i', $_SERVER['REQUEST_URI']):
+            Router::connect('/input/*', ['controller' => 'Market', 'action' => 'input']);
+            Router::connect('/confirm/*', ['controller' => 'Market', 'action' => 'confirm']);
+            Router::connect('/complete/*', ['controller' => 'Market', 'action' => 'complete']);
             Router::connect('/:controller/:action/*', []);
             Router::connect('/:controller/', ['action' => 'index']);
-            Router::connect('/:action/*', ['controller' => 'C2cSale']);
-            Router::connect('/', ['controller' => 'C2cSale', 'action' => 'index']);
+            Router::connect('/:action/*', ['controller' => 'Market']);
+            Router::connect('/', ['controller' => 'Market', 'action' => 'index']);
             break;
         default:
             // customer
