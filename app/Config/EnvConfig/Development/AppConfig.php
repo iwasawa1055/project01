@@ -34,7 +34,7 @@ switch (true) {
         $config['site.mypage.url'] = 'https://rikiji-mypage.minikura.com';
         break;
     default:
-        $config['site.mypage.url'] = 'http://' . $_SERVER['HTTP_HOST'];
+        $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
 }
 
 /**

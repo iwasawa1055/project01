@@ -128,7 +128,7 @@ footer {
 .navbar-default {
 }
 .navbar-default .navbar-brand img {
-	    width: 220px;
+	    width: 50%;
 }
 .navbar-default .nav li a {
 	padding: 12px 5px 0;
@@ -146,10 +146,8 @@ footer {
 }
 header h2,
 section h2 {
-	font-size: 32px;
 	font-weight: normal;
-	margin-top: 0;
-	margin-bottom: 15px;
+	margin: 15px 5px;
 	line-height: 1.5
 }
 
@@ -164,8 +162,8 @@ section h2 {
 	margin: 0 -15px;
 }
 .navbar-default .navbar-brand img {
-	width: 230px;
-	margin-top: 2px;
+	width: 50%;
+
 }
 .navbar-default .navbar-nav>.active>a {
 	line-height: 4
@@ -207,6 +205,6 @@ section h2 {
 
 @media (min-width:1200px) {
 .navbar-default .navbar-brand img {
-	    width: 220px;
+	    width: 50%;
 }
 }
