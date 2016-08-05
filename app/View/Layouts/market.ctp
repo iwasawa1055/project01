@@ -23,17 +23,6 @@
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
 
-  $this->Html->css('bootstrap.min', ['inline' => false]);
-  $this->Html->css('font-awesome.min', ['inline' => false]);
-  $this->Html->css('metisMenu.min', ['inline' => false]);
-  $this->Html->css('animsition', ['inline' => false]);
-  $this->Html->css('remodal', ['inline' => false]);
-  $this->Html->css('remodal-theme', ['inline' => false]);
-  $this->Html->css('app', ['inline' => false]);
-  $this->Html->css('app_dev', ['inline' => false]);
-  $this->Html->css('app_sneakers', ['inline' => false]);
-  $this->Html->css('bootstrap-social', ['inline' => false]);
-
   */
 
   echo $this->fetch('css');
@@ -92,10 +81,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </nav>
 
 <!-- FLOW -->
-<section id="detail">
   <?php  echo $this->Flash->render();?>
   <?php  echo $this->fetch('content');?>
-</section>
 
 <!-- FOOTER -->
 <footer>

@@ -1,3 +1,4 @@
+<section id="detail">
   <div class="container">
     <div>
       <h2>極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007</h2>
@@ -26,3 +27,4 @@
       </div>
     </div>
   </div>
+</section>
