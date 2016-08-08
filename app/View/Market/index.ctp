@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <div class="text-center btn-commit">
-        <a href="form.html" class="animsition-link btn">この商品を購入する</a>
+        <a href="<?php echo Configure::read('site.mypage.url');?>/purchase/99999" class="animsition-link btn">この商品を購入する</a>
       </div>
     </div>
   </div>

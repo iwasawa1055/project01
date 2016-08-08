@@ -2,7 +2,7 @@
 
 App::uses('MinikuraController', 'Controller');
 
-class PurchaseController extends MinikuraController
+class PurchaseRegisterController extends MinikuraController
 {
     // const MODEL_NAME = 'Purchase';
 
@@ -14,29 +14,15 @@ class PurchaseController extends MinikuraController
         // $this->loadModel(self::MODEL_NAME);
     }
 
-    public function index()
+    public function address()
     {
-        $id = $this->params['id'];
-
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
         CakeLog::write(DEBUG_LOG, $id);
 
     }
 
-    public function login()
+    public function credit()
     {
-        $id = $this->params['id'];
-
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(DEBUG_LOG, $id);
-
-        return $this->redirect(['controller' => 'Purchase', 'action' => 'input', 'id' => $id]);
-    }
-
-    public function input()
-    {
-        $id = $this->params['id'];
-
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
         CakeLog::write(DEBUG_LOG, $id);
 
@@ -44,8 +30,6 @@ class PurchaseController extends MinikuraController
 
     public function confirm()
     {
-        $id = $this->params['id'];
-
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
         CakeLog::write(DEBUG_LOG, $id);
     }
