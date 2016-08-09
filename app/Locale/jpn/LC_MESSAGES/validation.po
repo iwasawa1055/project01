@@ -209,6 +209,9 @@ msgstr "支払方法"
 msgid "use_point"
 msgstr "利用ポイント"
 
+msgid "price"
+msgstr "販売価格"
+
 # Validation
 msgid "notBlank"
 msgstr "%sは必須です"
@@ -242,3 +245,6 @@ msgstr "いずれかの%sを選択してください"
 
 msgid "maxLengthWith"
 msgstr "%sと%sはあわせて%d文字以内で入力してください"
+
+msgid "isStringInteger"
+msgstr "%sは整数値を入力してください"

@@ -40,7 +40,8 @@ if (! empty($_SERVER['REQUEST_URI'])) {
             
             // sale
             Router::connect('/sale/:action', ['controller' => 'Sale']);
-            Router::connect('/sale/item/:action', ['controller' => 'Sale']);
+            Router::connect('/sale/item/:action', ['controller' => 'SaleItem']);
+            Router::connect('/sale/item/:action/:id', ['controller' => 'SaleItem'], ['id' => '[A-Z\-0-9]+']);
 
             // default
             Router::connect('/:controller', ['action' => 'index']);
