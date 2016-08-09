@@ -1,7 +1,7 @@
 <section id="form">
   <div class="container">
     <div>
-      <h2>購入完了（4/4）（5/5）</h2>
+      <h2>購入完了（5/5）</h2>
     </div>
     <div class="row">
       <div class="info">

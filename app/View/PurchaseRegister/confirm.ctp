@@ -1,7 +1,7 @@
 <section id="form">
   <div class="container">
     <div>
-      <h2>入力情報を確認（3/4）（4/5）</h2>
+      <h2>入力情報を確認（4/5）</h2>
     </div>
     <div class="row">
       <div class="info">
@@ -19,6 +19,9 @@
           <h3>メールアドレス</h3>
           <div class="form-group">
             <p>email@example.com</p>
+          </div>
+          <div class="btn-orrection">
+            <a href="form.html" class="animsition-link btn">メールアドレスを修正する</a>
           </div>
           <h3>お届け先情報</h3>
           <div class="form-group">
@@ -43,8 +46,10 @@
           </div>
           <div class="form-group">
             <label>お名前</label>
-            <p> イチカワ　トモノスケ</p>
             <p> 市川　倫之介</p>
+          </div>
+          <div class="btn-orrection">
+            <a href="address.html" class="animsition-link btn">お届け先情報を修正する</a>
           </div>
         </div>
         <div class="c-confirm">
@@ -61,18 +66,15 @@
             <label>クレジットカード名義</label>
             <p>TOMONOSUKE ICHIKAWA</p>
           </div>
+          <div class="btn-orrection">
+            <a href="/credit_card/edit.html" class="animsition-link btn">クレジットカード情報を修正する</a>
+          </div>
         </div>
       </div>
       <div class="row">
-      <?php echo $this->Form->create('Purchase', ['url' => '/purchase/'. '9999' . '/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div class="text-center btn-commit">
-          <a href="/purchase/9999/complete" class="animsition-link btn">この内容で購入する（5/5）</a>
-          <!-- <button type="submit" class="btn">この内容で購入する（5/5）</button> -->
+          <a href="/purchase/register/complete" class="animsition-link btn">この内容で購入する（5/5）</a>
         </div>
-        <!-- <div class="text-center btn-commit">
-          <a class="btn" href="/purchase/9999/input?back=true">戻る</a>
-        </div> -->
-      <?php echo $this->Form->end(); ?>
       </div>
     </div>
   </div>
