@@ -28,11 +28,16 @@
                         </tr>
                       </thead>
                       <tbody>
+                      <?php foreach($sale_results as $sales) :?>
                         <tr>
-                          <td>2016/09/25</td>
-                          <td>商品名11111111</td>
-                          <td>1,000円</td>
+                          <td><?php echo h($sales['created']);?></td>
+                          <td><?php echo h($sales['title']);?></td>
+                          <td><?php echo h($sales['price']);?></td>
                         </tr>
+                      <?php endforeach ;?>
+                      </tbody>
+                    </table>
+                    <!--
                         <tr>
                           <td>2016/09/25</td>
                           <td>商品名11111111</td>
@@ -70,6 +75,7 @@
                         </tr>
                       </tbody>
                     </table>
+                    -->
                   </div>
                 </div>
               </div>

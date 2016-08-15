@@ -312,3 +312,9 @@ const RANK_RATE = [
 // ニュース機能on off 切り替え
 // 1:稼働中 0:停止中 
 const NEWS_ACTIVE_FLAG = 1;
+
+//* 販売機能 振り込み用口座管理
+const BANK_TYPE = [
+    '0' => '普通',
+    '1' => '当座',
+];

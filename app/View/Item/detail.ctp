@@ -72,7 +72,7 @@
                                     <div class="col-lg-12">
                                       <div class="row">
                                         <div class="col-lg-12">
-                                        <?php /*test*/ $sale_item['sale_test_flg'] = 0;?>
+                                        <?php /*test*/ $sale_item['sale_test_flg'] = 1;?>
 
                                         <?php if (!$sale_item['sale_test_flg']):?>
                                         <?php echo $this->Form->create('SaleItem', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
@@ -95,7 +95,7 @@
                                           <?php echo $this->Form->end(); ?>
                                         <?php endif;?>
 
-                                        <?php /*販売中かstatus確認して、snsでシェアするボタンを表示*/ ?>
+                                        <?php /*販売中かstatus確認して、snsでシェアするボタンを表示  todo Form->inputではなく、DBの値をreadonly  */ ?>
                                         <?php if (! empty($sale_item['sale_test_flg'])):?>
                                         <?php echo $this->Form->create('SaleItem', ['url' => "/sale/item/cancel/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">

@@ -24,6 +24,14 @@ class SaleController extends MinikuraController
     public function index()
     {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
+        //* stub 販売情報
+        $sale_results = [];
+        $sale_results[] = ['created' => '2016/09/25', 'title' => '商品名1111', 'price' => '999'];
+        $sale_results[] = ['created' => '2016/09/25', 'title' => '商品名222', 'price' => '222'];
+        $sale_results[] = ['created' => '2016/09/25', 'title' => '商品名333', 'price' => '3000'];
+        $sale_results[] = ['created' => '2016/09/25', 'title' => '商品名444', 'price' => '4000'];
+        $sale_results[] = ['created' => '2016/09/25', 'title' => '商品名555', 'price' => '5000'];
+        $this->set('sale_results', $sale_results);
 
     }
 
@@ -67,14 +75,6 @@ class SaleController extends MinikuraController
 
     }
 
-    /**
-     * 暫定 info
-     */
-    public function info()
-    {
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-
-    }
 
 
 }
