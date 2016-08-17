@@ -1,4 +1,3 @@
-    <!--未編集　mock23からcopy-->
 	<div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
@@ -14,11 +13,11 @@
                 <div class="form-group col-lg-12">
                   <p class="form-control-static">xxxxxxxx銀行　xxxxxxxx支店　普通　0000000000</p>
                 </div>
+                <?php $update_flag = true;  /* todo 分岐*/    ?>
+                <?php if ( $update_flag ): ?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account/edit">変更する</a>
                 </span>
-                <?php $update_flag = true;?>
-                <?php if (! $update_flag): ?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account/add">新規作成する</a>
                 </span>

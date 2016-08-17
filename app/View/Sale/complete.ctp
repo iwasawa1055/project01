@@ -17,8 +17,9 @@
                 <span class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/item/">アイテム一覧に移動する</a>
                 </span>
+                <?php /* todo 口座情報 分岐 */ ?>
                 <span class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/info">金融機関情報を登録する（初回のみ）</a>
+                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account/add">金融機関情報を登録する（初回のみ）</a>
                 </span>
               </div>
             </div>

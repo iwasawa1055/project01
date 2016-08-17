@@ -49,15 +49,9 @@
         </li>
         <?php endif; ?>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
+        <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-shopping-basket fa-fw"></i>アイテム販売</a></li>
         <li>
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
-        </li>
-        <li> <a href="#"><i class="fa fa-shopping-basket fa-fw"></i>アイテム販売<span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level">
-            <li> <a class="animsition-link" href="/sale/change"><i class="fa fa-shopping-basket fa-fw"></i>販売機能設定</a> </li>
-            <li> <a class="animsition-link" href="/sale/index"><i class="fa fa-shopping-basket fa-fw"></i>販売実績</a> </li>
-            <li> <a class="animsition-link" href="/sale/account"><i class="fa fa-shopping-basket fa-fw"></i>金融機関情報</a> </li>
-          </ul>
         </li>
         <?php endif; ?>
         <li>
