@@ -2,11 +2,11 @@
 
 App::uses('ApiModel', 'Model');
 
-class Purchase extends ApiModel
+class PaymentGMOPurchase extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('Purchase', '/purchase', 'minikura_v5');
+        parent::__construct('PaymentGMOPurchase', '/purchase', 'gmopayment_v5');
     }
 
     public $validate = [
