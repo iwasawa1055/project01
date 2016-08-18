@@ -10,13 +10,13 @@ App::uses('MinikuraController', 'Controller');
 class SaleAccountController extends MinikuraController
 {
     const MODEL_NAME_SALE = 'Sale';
-    const MODEL_NAME_SALE_INFO = 'SaleAccount';
+    const MODEL_NAME_SALE_ACCOUNT = 'SaleAccount';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
     public function beforeFilter () {
         parent::beforeFilter(); 
         $this->loadModel(self::MODEL_NAME_SALE);
-        $this->loadModel(self::MODEL_NAME_SALE_INFO);
+        $this->loadModel(self::MODEL_NAME_SALE_ACCOUNT);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }
 
@@ -49,11 +49,11 @@ class SaleAccountController extends MinikuraController
 
         //* post
         if ($this->request->is('post')) {
-            $data = $this->request->data[self::MODEL_NAME_SALE_INFO];
+            $data = $this->request->data[self::MODEL_NAME_SALE_ACCOUNT];
             $this->SaleAccount->set($data);
             if ( $this->SaleAccount->validates()) {
                 
-                CakeSession::write(self::MODEL_NAME_SALE_INFO, $data);
+                CakeSession::write(self::MODEL_NAME_SALE_ACCOUNT, $data);
 
             } else {
                 $this->set('validErrors', $this->SaleAccount->validationErrors);
