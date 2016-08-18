@@ -56,7 +56,7 @@
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
                   xxxxxxxx銀行　xxxxxxxx支店　普通　0000000000
-                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/sale/account/">「金融機関情報」</a>
+                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>
                     から変更してください。 </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">

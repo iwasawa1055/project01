@@ -2,14 +2,14 @@
 
 App::uses('ApiModel', 'Model');
 
-class SaleAccount extends ApiModel
+class CustomerAccount extends ApiModel
 {
     /**
     * API名は未定、以下はひとまず暫定
     */
     public function __construct()
     {
-        parent::__construct('SaleAccount', '/sale_account', 'minikura_v5');
+        parent::__construct('CustomerAccount', '/customer_account', 'minikura_v5');
     }
 
     public $validate = [

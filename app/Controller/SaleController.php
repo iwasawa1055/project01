@@ -10,14 +10,14 @@ App::uses('MinikuraController', 'Controller');
 class SaleController extends MinikuraController
 {
     const MODEL_NAME_SALE = 'Sale';
-    const MODEL_NAME_SALE_ACCOUNT = 'SaleAccount';
+    const MODEL_NAME_CUSTOMER_ACCOUNT = 'CustomerAccount';
     const MODEL_NAME_SALE_ORDER = 'SaleOrder';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
     public function beforeFilter () {
         parent::beforeFilter(); 
         $this->loadModel(self::MODEL_NAME_SALE);
-        $this->loadModel(self::MODEL_NAME_SALE_ACCOUNT);
+        $this->loadModel(self::MODEL_NAME_CUSTOMER_ACCOUNT);
         $this->loadModel(self::MODEL_NAME_SALE_ORDER);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }

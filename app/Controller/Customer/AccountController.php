@@ -7,23 +7,19 @@ App::uses('MinikuraController', 'Controller');
 *
 * 
 */
-class SaleAccountController extends MinikuraController
+class AccountController extends MinikuraController
 {
-    const MODEL_NAME_SALE = 'Sale';
-    const MODEL_NAME_SALE_ACCOUNT = 'SaleAccount';
-    const MODEL_NAME_INFO_ITEM = 'InfoItem';
+    const MODEL_NAME_ACCOUNT = 'CustomerAccount';
 
     public function beforeFilter () {
         parent::beforeFilter(); 
-        $this->loadModel(self::MODEL_NAME_SALE);
-        $this->loadModel(self::MODEL_NAME_SALE_ACCOUNT);
-        $this->loadModel(self::MODEL_NAME_INFO_ITEM);
+        $this->loadModel(self::MODEL_NAME_ACCOUNT);
     }
 
     /**
      * index
      */
-    public function index()
+    public function customer_index()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
@@ -33,7 +29,7 @@ class SaleAccountController extends MinikuraController
     /**
      * 暫定 add 追加
      */
-    public function add()
+    public function customer_add()
     {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
 
@@ -42,22 +38,22 @@ class SaleAccountController extends MinikuraController
     /**
      * 暫定 confirm
      */
-    public function confirm()
+    public function customer_confirm()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
 
         //* post
         if ($this->request->is('post')) {
-            $data = $this->request->data[self::MODEL_NAME_SALE_ACCOUNT];
-            $this->SaleAccount->set($data);
-            if ( $this->SaleAccount->validates()) {
+            $data = $this->request->data[self::MODEL_NAME_ACCOUNT];
+            $this->CustomerAccount->set($data);
+            if ( $this->CustomerAccount->validates()) {
                 
-                CakeSession::write(self::MODEL_NAME_SALE_ACCOUNT, $data);
+                CakeSession::write(self::MODEL_NAME_ACCOUNT, $data);
 
             } else {
-                $this->set('validErrors', $this->SaleAccount->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->SaleAccount->validationErrors, true));
+                $this->set('validErrors', $this->CustomerAccount->validationErrors);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
                 //todo render
             }
         }
@@ -66,7 +62,7 @@ class SaleAccountController extends MinikuraController
     /**
      * 暫定 edit 編集
      */
-    public function edit()
+    public function customer_edit()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
@@ -79,21 +75,12 @@ class SaleAccountController extends MinikuraController
     /**
      * 暫定 complete 完了
      */
-    public function complete()
+    public function customer_complete()
     {
 
 
         CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(), true));
 
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-
-    }
-
-    /**
-     * 暫定 delete 
-     */
-    public function delete()
-    {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
 
     }
