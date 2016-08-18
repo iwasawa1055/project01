@@ -18,25 +18,25 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>支店名</label>
-                  <p><?php echo $this->Form->data['CustomerAccount']['branch_name']; ?>支店</p>
+                  <p><?php echo $this->Form->data['CustomerAccount']['bank_branch_name']; ?>支店</p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>口座種別</label>
-                  <p><?php echo $this->Form->data['CustomerAccount']['bank_type']; ?></p>
+                  <p><?php echo BANK_ACCOUNT_TYPE[$this->Form->data['CustomerAccount']['bank_account_type']]; ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>口座番号</label>
-                  <p><?php echo $this->Form->data['CustomerAccount']['bank_number']; ?></p>
+                  <p><?php echo $this->Form->data['CustomerAccount']['bank_account_number']; ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>口座名義</label>
-                  <p><?php echo $this->Form->data['CustomerAccount']['bank_holder']; ?></p>
+                  <p><?php echo $this->Form->data['CustomerAccount']['bank_account_holder']; ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <button class="btn btn-danger btn-lg btn-block animsition-link" >追加する</button>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/account/confirm">戻る</a>
+                <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/account/add">戻る</a>
                 </span>
               </div>
               <?php echo $this->Form->end(); ?>

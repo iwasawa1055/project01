@@ -13,10 +13,38 @@
                 <h2>現在の金融機関情報変更</h2>
                 <div class="col-lg-12">
                   <p class="form-control-static">xxxxxxxx銀行　xxxxxxxx支店　普通　0000000000</p>
+                  <p><?php  debug($customer_account['bank_name']); ?></p>
                 </div>
               </div>
               <div class="col-lg-12">
                 <h2>変更する金融機関情報変更</h2>
+
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerAccount.bank_name', ['class' => 'form-control', 'placeholder' => '金融機関名', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_name', null, ['wrap' => 'p']);?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerAccount.bank_branch_name', ['class' => 'form-control', 'placeholder' => '支店名', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_branch_name', null, ['wrap' => 'p']);?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->select('CustomerAccount.bank_account_type', BANK_ACCOUNT_TYPE,  ['class' => 'form-control',  'empty' => '選択してください', 'error' => false]);?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerAccount.bank_account_number', ['class' => 'form-control', 'placeholder' => '口座番号', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_account_number', null, ['wrap' => 'p']);?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <?php echo $this->Form->input('CustomerAccount.bank_account_holder', ['class' => 'form-control', 'placeholder' => '口座名義', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_account_holder', null, ['wrap' => 'p']);?>
+                </div>
+
+
+
+
+
+
+
                 <div class="form-group col-lg-12">
                   <input class="form-control" value="" placeholder="xxxxxxxxxxxxxxxxxxxx銀行">
                 </div>

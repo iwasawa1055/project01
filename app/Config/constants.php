@@ -314,7 +314,7 @@ const RANK_RATE = [
 const NEWS_ACTIVE_FLAG = 1;
 
 //* 販売機能 振り込み用口座管理
-const BANK_TYPE = [
-    '0' => '普通',
-    '1' => '当座',
+const BANK_ACCOUNT_TYPE = [
+    '1' => '普通',
+    '2' => '当座',
 ];

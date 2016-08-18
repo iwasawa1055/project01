@@ -17,19 +17,19 @@
                   <?php echo $this->Form->error('CustomerAccount.bank_name', null, ['wrap' => 'p']);?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerAccount.branch_name', ['class' => 'form-control', 'placeholder' => '支店名', 'error' => false]);?>
-                  <?php echo $this->Form->error('CustomerAccount.branch_name', null, ['wrap' => 'p']);?>
+                  <?php echo $this->Form->input('CustomerAccount.bank_branch_name', ['class' => 'form-control', 'placeholder' => '支店名', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_branch_name', null, ['wrap' => 'p']);?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->select('CustomerAccount.bank_type', BANK_TYPE,  ['class' => 'form-control',  'empty' => '選択してください', 'error' => false]);?>
+                  <?php echo $this->Form->select('CustomerAccount.bank_account_type', BANK_ACCOUNT_TYPE,  ['class' => 'form-control',  'empty' => '選択してください', 'error' => false]);?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerAccount.bank_number', ['class' => 'form-control', 'placeholder' => '口座番号', 'error' => false]);?>
-                  <?php echo $this->Form->error('CustomerAccount.bank_number', null, ['wrap' => 'p']);?>
+                  <?php echo $this->Form->input('CustomerAccount.bank_account_number', ['class' => 'form-control', 'placeholder' => '口座番号', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_account_number', null, ['wrap' => 'p']);?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerAccount.bank_holder', ['class' => 'form-control', 'placeholder' => '口座名義', 'error' => false]);?>
-                  <?php echo $this->Form->error('CustomerAccount.bank_holder', null, ['wrap' => 'p']);?>
+                  <?php echo $this->Form->input('CustomerAccount.bank_account_holder', ['class' => 'form-control', 'placeholder' => '口座名義', 'error' => false]);?>
+                  <?php echo $this->Form->error('CustomerAccount.bank_account_holder', null, ['wrap' => 'p']);?>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <button type="submit" class="btn btn-danger btn-lg btn-block animsition-link" >確認する</button>

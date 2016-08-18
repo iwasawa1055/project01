@@ -31,7 +31,7 @@ class AccountController extends MinikuraController
      */
     public function customer_add()
     {
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
 
     }
 
@@ -55,6 +55,7 @@ class AccountController extends MinikuraController
                 $this->set('validErrors', $this->CustomerAccount->validationErrors);
                 CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
                 //todo render
+                return $this->render('customer_add');
             }
         }
     }
@@ -65,8 +66,12 @@ class AccountController extends MinikuraController
     public function customer_edit()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+
         //* api get
+        //* apiできるまでsession
+        $data = CakeSession::read([self::MODEL_NAME_ACCOUNT]);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($data, true));
+        $this->set('customer_account', $data);
 
         //* api post
 
@@ -77,11 +82,25 @@ class AccountController extends MinikuraController
      */
     public function customer_complete()
     {
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_ACCOUNT), true));
+        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+        //todo reload
+        $data = CakeSession::read([self::MODEL_NAME_ACCOUNT]);
+        CakeSession::delete(self::MODEL_NAME_ACCOUNT);
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['controller' => 'Account', 'action' => 'index' ]);
+        }
+        $this->CustomerAccount->set($data);
 
+        //* post
+        if ($this->request->is('post')) {
+            if ( $this->CustomerAccount->validates()) {
 
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(), true));
-
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
+                $this->set('customer_account', $data);
+                //* to API
+            }
+        }
 
     }
 

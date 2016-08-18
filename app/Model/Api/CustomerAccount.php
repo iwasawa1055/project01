@@ -5,7 +5,7 @@ App::uses('ApiModel', 'Model');
 class CustomerAccount extends ApiModel
 {
     /**
-    * API名は未定、以下はひとまず暫定
+    * API 
     */
     public function __construct()
     {
@@ -13,19 +13,47 @@ class CustomerAccount extends ApiModel
     }
 
     public $validate = [
-    /*
-        'price' => [
+        'bank_name' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
-                'message' => ['notBlank', 'price']
+                'message' => ['notBlank', 'bank_name']
             ],
+            /*
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'message' => ['format', 'price']
             ],
+            */
         ],
-    */
+        'bank_branch_name' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'bank_branch_name']
+            ],
+        ],
+        'bank_account_type' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'bank_account_type']
+            ],
+        ],
+        'bank_account_number' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'bank_account_number']
+            ],
+        ],
+        'bank_account_holder' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'bank_account_holder']
+            ],
+        ],
     ];
 
     public function apiPost($data)
