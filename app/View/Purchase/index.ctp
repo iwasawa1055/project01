@@ -1,5 +1,6 @@
 <section id="form">
   <div class="container">
+  <?php  echo $this->Flash->render();?>  
     <div>
       <h2>ログイン/配送先情報入力</h2>
     </div>
@@ -16,23 +17,22 @@
     <div class="row">
       <div class="form">
         <div class="login">
-          <h4>ログインして購入（1/3）</h4>
+          <h4>ログインして購入（1/4）</h4>
+          <?php echo $this->Form->create('CustomerLogin', ['url' => '/purchase/'. $sales_id, 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="form-group">
-            <input class="form-control" placeholder="メールアドレス" name="email" type="email" autofocus>
+            <?php echo $this->Form->input('CustomerLogin.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
+            <?php echo $this->Form->error('CustomerLogin.email', null, ['wrap' => 'p']) ?>
           </div>
           <div class="form-group">
-            <input class="form-control" placeholder="パスワード" name="password" type="password" value="">
-          </div>
-          <div class="checkbox">
-            <label>
-              <input name="remember" type="checkbox" value="Remember Me">
-              次回ログイン時に入力を省く </label>
+            <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false]); ?>
+            <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
           </div>
           <div class="row">
             <div class="text-center btn-commit">
-              <a href="/purchase/99999/login" class="animsition-link btn">ログイン</a>
+              <button type="submit" class="btn">ログイン</button>
             </div>
           </div>
+          <?php echo $this->Form->end(); ?>
         </div>
         <div class="signin">
           <h4>配送先情報を入力して購入</h4>

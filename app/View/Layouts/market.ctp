@@ -36,6 +36,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/app.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/css/app.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/css/app_dev.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/css/app_dev.min.css">
 
 <!-- Custom Fonts -->
 <link href="<?php echo Configure::read('site.mypage.url');?>/market/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -171,6 +172,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- FOOTER -->
 
 
+<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/jquery.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/bootstrap.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/jquery.easing.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/classie.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/animsition.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/wow.min.js"></script>
+<script>
+    new WOW().init();
+</script>
+
 <?php
 
   /*
@@ -187,15 +198,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   echo $this->fetch('script');
   echo $this->fetch('scriptMinikura');
 ?>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/jquery.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/bootstrap.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/jquery.easing.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/classie.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/animsition.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/wow.min.js"></script>
-<script>
-    new WOW().init();
-</script>
 
 <script src="<?php echo Configure::read('site.mypage.url');?>/js/metisMenu.min.js"></script>
 <script src="<?php echo Configure::read('site.mypage.url');?>/js/remodal.min.js"></script>

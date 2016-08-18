@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/purchase', ['block' => 'scriptMinikura']); ?>
 <section id="form">
   <div class="container">
     <div>
@@ -14,11 +15,12 @@
       </div>
     </div>
     <div class="row">
+      <?php echo $this->Form->create('Purchase', ['url' => '/purchase/'. $sales_id . '/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
       <div class="form">
         <div class="a-confirm">
           <h3>メールアドレス</h3>
           <div class="form-group">
-            <p>email@example.com</p>
+            <p><?php echo $current_email ?></p>
           </div>
           <div class="btn-orrection">
             <a href="/email/edit.html" class="animsition-link btn">メールアドレスを変更する</a>
@@ -26,59 +28,53 @@
           <h3>お届け先情報</h3>
             <div class="form-group">
               <label>お届け先</label>
-              <select class="form-control">
-                <option>以下からお選びください</option>
-                <option>〒000-0000 東京都品川区東品川2-2-33 Nビル 5階　市川　倫之介</option>
-                <option>〒000-0000 東京都品川区東品川2-2-33 Nビル 5階　市川　倫之介</option>
-                <option>お届先を追加する</option>
-              </select>
+              <?php echo $this->Form->select('Purchase.address_id', $this->Order->setAddress($address), ['class' => 'form-control select-add-address', 'empty' => '選択してください', 'error' => false]); ?>
+              <?php echo $this->Form->error('Purchase.address_id', null, ['wrap' => 'p']) ?>
+              <?php if (!$this->Form->isFieldError('Purchase.address_id')) : ?>
+              <?php echo $this->Form->error('Purchase.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.name', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.address', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Purchase.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php endif; ?>
             </div>
             <div class="form-group">
-              <label>お届け希望日</label>
-              <select class="form-control">
-                <option>00月00日</option>
-                <option>00月00日</option>
-                <option>00月00日</option>
-                <option>00月00日</option>
-                <option>00月00日</option>
-              </select>
+              <label>お届け希望日時</label>
+              <?php echo $this->Form->select('Purchase.datetime_cd', $this->Order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->error('Purchase.datetime_cd', null, ['wrap' => 'p']) ?>
             </div>
+<!-- 
             <div class="form-group">
               <label>お届け希望時間</label>
               <select class="form-control">
-                <option>午前中</option>
-                <option>12時〜</option>
-                <option>14時〜</option>
-                <option>16時〜</option>
-                <option>18時〜</option>
               </select>
             </div>
-          <div class="form-group">
-            <label>電話番号</label>
-            <p> 000-0000-0000</p>
-          </div>
-          <div class="form-group">
-            <label>お名前</label>
-            <p> イチカワ　トモノスケ</p>
-            <p> 市川　倫之介</p>
-          </div>
+ -->
         </div>
         <div class="c-confirm">
           <h3>クレジットカード情報</h3>
           <div class="form-group">
             <label>クレジットカード番号</label>
-            <p>xxxx-xxxx-xxxx-0000</p>
+            <p><?php echo h($default_payment['card_no']); ?></p>
           </div>
           <div class="form-group">
             <label>有効期限</label>
-            <p>00月/0000年</p>
+            <p><?php echo h($default_payment['expire_month']); ?>月/<?php echo h(2000 + $default_payment['expire_year']); ?>年</p>
           </div>
           <div class="form-group">
             <label>クレジットカード名義</label>
-            <p>TOMONOSUKE ICHIKAWA</p>
+            <p><?php echo h($default_payment['holder_name']); ?></p>
           </div>
           <div class="form-group ">
-            <input class="form-control" placeholder="セキュリティコード">
+            <?php echo $this->Form->input('Purchase.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコード', 'maxlength' => 4, 'error' => false]); ?>
+            <?php echo $this->Form->error('Purchase.security_cd', null, ['wrap' => 'p']) ?>
             <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="link">※セキュリティコードとは？</a>
             <div id="collapseOne" class="panel-collapse collapse panel panel-default">
@@ -88,11 +84,11 @@
                 <h4>Visa、Mastercard等の場合</h4>
                 <p>カードの裏面の署名欄に記入されている3桁の番号です。</p>
                 <p>カード番号の下3桁か、その後に記載されています。</p>
-                <p><img src="images/cvv2visa.gif" alt="" /></p>
+                <p><img src="/market/images/cvv2visa.gif" alt="" /></p>
                 <h4>American Expressの場合</h4>
                 <p>カードの表面に記入されている4桁の番号です。</p>
                 <p>カード番号の下4桁か、その後に記載されています。</p>
-                <p><img src="images/cvv2amex.gif" alt="" /></p>
+                <p><img src="/market/images/cvv2amex.gif" alt="" /></p>
               </div>
             </div>
           </div>
@@ -102,10 +98,8 @@
         </div>
       </div>
       <div class="row">
-      <?php echo $this->Form->create('Purchase', ['url' => '/purchase/'. '9999' . '/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div class="text-center btn-commit">
-          <a href="/purchase/9999/confirm" class="animsition-link btn">この内容で確認する（3/4）</a>
-          <!-- <button type="submit" class="btn">この内容で購入する（5/5）</button> -->
+          <button type="submit" class="btn">この内容で購入する（3/4）</button>
         </div>
       <?php echo $this->Form->end(); ?>
       </div>

@@ -4,6 +4,9 @@ App::uses('MinikuraController', 'Controller');
 
 class PurchaseRegisterController extends MinikuraController
 {
+    // ログイン不要なページ
+    protected $checkLogined = false;
+
     // const MODEL_NAME = 'Purchase';
 
     public function beforeFilter ()
