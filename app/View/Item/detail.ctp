@@ -1,5 +1,6 @@
 <?php $this->Html->css('lightbox.min', ['block' => 'css']); ?>
 <?php $this->Html->script('lightbox.min', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/sns', ['block' => 'scriptMinikura']); ?>
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header"><i class="fa fa-heart-o"></i> アイテム</h1>
@@ -59,9 +60,7 @@
                       </div>
 
                       <?php /* test item sale*/?>
-                      <?php if (!empty($validErrors)) { $this->validationErrors['Sale'] = $validErrors; debug($validErrors); } ?>
                       <?php if(! empty($sale) && $sale['setting'] === 'on'):?>
-                      <?php echo $this->Form->create('Sale', ['url' => '/sale/item/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                           <div class="col-lg-6 col-md-6 col-xs-12 sale">
                             <div class="col-xs-12 col-lg-12">
                               <div class="panel panel-default">
@@ -73,15 +72,62 @@
                                     <div class="col-lg-12">
                                       <div class="row">
                                         <div class="col-lg-12">
-                                          <?php echo $this->Form->input('Sale.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
-                                          <?php echo $this->Form->error('Sale.price', null, ['wrap' => 'p']);?>
-                                          <textarea class="form-control" rows="5" placeholder="商品説明"></textarea>
-                                          <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >この内容で確認する（開始）</button>
-                                          <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >この内容で確認する（変更）</button>
-                                          <a class="btn btn-block btn-social btn-xs btn-facebook"><i class="fa fa-facebook"></i>Facebook でシェア</a>
-                                          <a class="btn btn-block btn-social btn-xs btn-twitter"><i class="fa fa-twitter"></i>twitter でシェア</a>
-                                          <input class="form-control" value="http://mock23.minikura.com/item/detail.html">
-                                          <a class="btn btn-danger btn-md">リンクをコピー</a>
+                                        <?php /*test*/ $sale_item['sale_test_flg'] = 1;?>
+
+                                        <?php if (!$sale_item['sale_test_flg']):?>
+                                        <?php echo $this->Form->create('SaleItem', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                                          <div class="form-group">
+                                            <?php echo $this->Form->input('SaleItem.title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
+                                            <?php echo $this->Form->error('SaleItem.title', null, ['wrap' => 'p']);?>
+                                          </div>
+                                          <div class="form-group">
+                                            <?php echo $this->Form->input('SaleItem.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
+                                            <?php echo $this->Form->error('SaleItem.price', null, ['wrap' => 'p']);?>
+                                          </div>
+                                          <div class="form-group">
+                                            <?php echo $this->Form->textarea('SaleItem.note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
+                                            <?php echo $this->Form->error('SaleItem.note', null, ['wrap' => 'p']);?>
+                                          </div>
+                                          <?php /*販売中かstatus確認して、新規かキャンセルか分岐、 編集不可*/ ?>
+                                          
+                                          <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >この内容で確認する</button>
+                                          <?php echo $this->Form->hidden('SaleItem.item_id', ['value' => $item['item_id']]); ?>
+                                          <?php echo $this->Form->end(); ?>
+                                        <?php endif;?>
+
+                                        <?php /*販売中かstatus確認して、snsでシェアするボタンを表示  todo Form->inputではなく、DBの値をreadonly  */ ?>
+                                        <?php if (! empty($sale_item['sale_test_flg'])):?>
+                                        <?php echo $this->Form->create('SaleItem', ['url' => "/sale/item/cancel/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                                          <div class="form-group">
+                                            <?php echo $this->Form->input('SaleItem.title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
+                                            <?php echo $this->Form->error('SaleItem.title', null, ['wrap' => 'p']);?>
+                                          </div>
+                                          <div class="form-group">
+                                            <?php echo $this->Form->input('SaleItem.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
+                                            <?php echo $this->Form->error('SaleItem.price', null, ['wrap' => 'p']);?>
+                                          </div>
+                                          <div class="form-group">
+                                            <?php echo $this->Form->textarea('SaleItem.note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
+                                            <?php echo $this->Form->error('SaleItem.note', null, ['wrap' => 'p']);?>
+                                          </div>
+                                          <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
+
+                                          <?php $url = "https://minikura.com"; ?>
+                                          <a class="btn btn-block btn-social btn-xs btn-facebook"
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($url); ?>&t=" >
+                                            <i class="fa fa-facebook"></i>Facebook でシェア
+                                          </a>
+                                          <?php $url = null; ?>
+                                          <a class="btn btn-block btn-social btn-xs btn-twitter"
+                                             href="https://twitter.com/share?url=<?php echo h($url); ?>&text=" >
+                                            <i class="fa fa-twitter"></i>twitter でシェア
+                                          </a>
+                                          <?php /* sns貼り付け用 url作成 */ ?>
+                                          <input class="form-control" id="copy-sns-url"  value="http://mock23.minikura.com/item/detail.html">
+                                          <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
+                                          <?php echo $this->Form->hidden('SaleItem.item_id', ['value' => $item['item_id']]); ?>
+                                          <?php echo $this->Form->end(); ?>
+                                        <?php endif;?>
                                         </div>
                                       </div>
                                     </div>
@@ -90,8 +136,6 @@
                               </div>
                             </div>
                           </div>
-                      <?php echo $this->Form->hidden('Sale.item_id', ['value' => $item['item_id']]); ?>
-                      <?php echo $this->Form->end(); ?>
                       <?php endif;?>
                       <?php /* test item sale*/?>
 

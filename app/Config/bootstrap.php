@@ -138,6 +138,7 @@ App::uses('CakeLog', 'Log');
 define('ERROR_LOG', 'error');
 define('DEBUG_LOG', 'debug');
 define('MAIL_LOG', 'mail');
+define('BENCH_LOG', 'bench');
 
 // add mail level
 CakeLog::levels([MAIL_LOG]);

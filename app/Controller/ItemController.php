@@ -231,6 +231,10 @@ class ItemController extends MinikuraController
         //$this->Sale->gethogehoge();
         //debug($session_sale);
         $this->set('sale', $session_sale);
+        //* 販売設定がon　&& アイテムの設定が販売中になっているか APIできるまでtest_flg
+        $sale_item = ['value' => '1', 'sale_test_flg' => '1'];
+        $this->set('sale_item', $sale_item);
+
     
     }
 

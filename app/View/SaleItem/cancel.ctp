@@ -37,37 +37,7 @@
                           </div>
                           <div class="col-lg-6 col-md-6 col-xs-12">
                             <div class="col-lg-12 sale-complete-text">
-                              この内容で販売を開始しますか？
-                            </div>
-                            <div class="col-lg-12 sale-complete-text">
-                              この内容で販売情報を変更しますか？
-                            </div>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-xs-12 sale">
-                            <div class="col-xs-12 col-lg-12">
-                              <div class="panel panel-default">
-                                <div class=" panel-heading">
-                                  <h4>アイテム販売</h4>
-                                </div>
-                                <div class="panel-body">
-                                  <div class="row">
-                                    <div class="col-lg-12">
-                                      <div class="row">
-                                        <div class="col-lg-12">
-                                          <label>販売価格</label>
-                                          <p class="form-control-static">***,***,***,***円</p>
-                                          <label>商品説明</label>
-                                          <p class="form-control-static">これから社員の個性光る記事がどしどし掲載されていく予定ですので、ぜひブックマークしておいてくださいね！ そして今号のメルマガは、立命館大学事例・行政のオープンデータを活用し市民が地域課題に挑む新しい試み「チャレンジ!! オープンガバナンス2016」や各種イベントのお知らせなどなど、盛りだくさんでお届けします。</p>
-                                          <a class="btn btn-info btn-xs btn-block animsition-link" href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>
-                                          <a class="btn btn-danger btn-md btn-block animsition-link" href="sale_complete.html">利用規約に同意して販売する</a>
-                                          <a class="btn btn-danger btn-md btn-block animsition-link" href="sale_complete.html">販売情報を変更する</a>
-                                          <a class="btn btn-danger btn-xs btn-block animsition-link" href="detail.html">販売をやめる</a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              販売を中止しました
                             </div>
                           </div>
                           <div class="col-lg-12 col-md-12 col-xs-12 item-detail-text">
