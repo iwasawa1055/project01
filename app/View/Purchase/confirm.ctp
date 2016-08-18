@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="row">
-      <?php echo $this->Form->create('Purchase', ['url' => '/purchase/'. $sales_id . '/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->create('PaymentGMOPurchase', ['url' => '/purchase/'. $sales_id . '/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div class="text-center btn-commit">
           <button type="submit" class="btn">この内容で購入する（5/5）</button>
         </div>

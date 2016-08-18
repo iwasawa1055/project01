@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="row">
-      <?php echo $this->Form->create('Purchase', ['url' => '/purchase/'. $sales_id . '/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
+      <?php echo $this->Form->create('PaymentGMOPurchase', ['url' => '/purchase/'. $sales_id . '/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
       <div class="form">
         <div class="a-confirm">
           <h3>メールアドレス</h3>
@@ -29,35 +29,28 @@
           <h3>お届け先情報</h3>
             <div class="form-group">
               <label>お届け先</label>
-              <?php echo $this->Form->select('Purchase.address_id', $this->Order->setAddress($address), ['class' => 'form-control select-add-address', 'empty' => '選択してください', 'error' => false]); ?>
-              <?php echo $this->Form->error('Purchase.address_id', null, ['wrap' => 'p']) ?>
-              <?php if (!$this->Form->isFieldError('Purchase.address_id')) : ?>
-              <?php echo $this->Form->error('Purchase.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.name', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.address', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Purchase.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->select('PaymentGMOPurchase.address_id', $this->Order->setAddress($address), ['class' => 'form-control select-add-address', 'empty' => '選択してください', 'error' => false]); ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.address_id', null, ['wrap' => 'p']) ?>
+              <?php if (!$this->Form->isFieldError('PaymentGMOPurchase.address_id')) : ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.name', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.address', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
               <?php endif; ?>
             </div>
             <div class="form-group">
               <label>お届け希望日時</label>
-              <?php echo $this->Form->select('Purchase.datetime_cd', $this->Order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
-              <?php echo $this->Form->error('Purchase.datetime_cd', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->select('PaymentGMOPurchase.datetime_cd', $this->Order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+              <?php echo $this->Form->error('PaymentGMOPurchase.datetime_cd', null, ['wrap' => 'p']) ?>
             </div>
-<!-- 
-            <div class="form-group">
-              <label>お届け希望時間</label>
-              <select class="form-control">
-              </select>
-            </div>
- -->
         </div>
         <div class="c-confirm">
           <h3>クレジットカード情報</h3>
@@ -74,8 +67,8 @@
             <p><?php echo h($default_payment['holder_name']); ?></p>
           </div>
           <div class="form-group ">
-            <?php echo $this->Form->input('Purchase.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコード', 'maxlength' => 4, 'error' => false]); ?>
-            <?php echo $this->Form->error('Purchase.security_cd', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->input('PaymentGMOPurchase.security_cd', ['class' => "form-control", 'placeholder'=>'セキュリティコード', 'maxlength' => 4, 'error' => false]); ?>
+            <?php echo $this->Form->error('PaymentGMOPurchase.security_cd', null, ['wrap' => 'p']) ?>
             <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="link">※セキュリティコードとは？</a>
             <div id="collapseOne" class="panel-collapse collapse panel panel-default">

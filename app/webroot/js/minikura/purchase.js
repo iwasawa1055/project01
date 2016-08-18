@@ -1,12 +1,12 @@
 $(function() {
 
-  $('#PurchaseAddressId').change(function() {
+  $('#PaymentGMOPurchaseAddressId').change(function() {
       getDatetime();
   });
 
   function getDatetime() {
-    var elem_address = $('#PurchaseAddressId');
-    var elem_datetime = $('#PurchaseDatetimeCd');
+    var elem_address = $('#PaymentGMOPurchaseAddressId');
+    var elem_datetime = $('#PaymentGMOPurchaseDatetimeCd');
 
     // 未選択また「追加」を選択
     if (!elem_address.val() || elem_address.val() == -99) {

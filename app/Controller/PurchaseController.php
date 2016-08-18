@@ -7,7 +7,7 @@ App::uses('CustomerEnvAuthed', 'Model');
 
 class PurchaseController extends MinikuraController
 {
-    const MODEL_NAME = 'Purchase';
+    const MODEL_NAME = 'PaymentGMOPurchase';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
 
     public function beforeFilter ()
@@ -158,15 +158,15 @@ class PurchaseController extends MinikuraController
         }
 
         $data['sales_id'] = $sales_id;
-        $this->Purchase->data[self::MODEL_NAME] = $data;
+        $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
 
         // 配送先
         $address_id = $data['address_id'];
         $address = $this->Address->find($address_id);
-        $data = $this->Purchase->setAddress($data, $address);
+        $data = $this->PaymentGMOPurchase->setAddress($data, $address);
 
         // model data
-        $this->Purchase->data[self::MODEL_NAME] = $data;
+        $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
 
         // 届け先追加を選択の場合は追加画面へ遷移
         if (Hash::get($data, 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
@@ -177,7 +177,7 @@ class PurchaseController extends MinikuraController
             ]);
         }
 
-        if ($this->Purchase->validates()) {
+        if ($this->PaymentGMOPurchase->validates()) {
 
             // お届け先表示
             $this->set('address', $address);
@@ -185,7 +185,7 @@ class PurchaseController extends MinikuraController
             $datetime = $this->getDatetime($address_id, $this->request->data[self::MODEL_NAME]['datetime_cd']);
             $this->set('datetime', $datetime['text']);
 
-            CakeSession::write(self::MODEL_NAME, $this->Purchase->data[self::MODEL_NAME]);
+            CakeSession::write(self::MODEL_NAME, $this->PaymentGMOPurchase->data[self::MODEL_NAME]);
 
         } else {
             // 配送日時
@@ -211,11 +211,11 @@ class PurchaseController extends MinikuraController
         }
 
         // model data
-        $this->Purchase->data[self::MODEL_NAME] = $data;
+        $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
 
-        if ($this->Purchase->validates()) {
+        if ($this->PaymentGMOPurchase->validates()) {
             // api
-            // $res = $this->Purchase->apiPost($this->Purchase->toArray());
+            // $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
             // if (!empty($res->error_message)) {
             //     $this->Flash->set($res->error_message);
             //     return $this->redirect(['action' => 'input', 'id' => $sales_id]);
