@@ -39,7 +39,7 @@ li {
 	background-color: #999
 }
 .navbar {
-min-height: 45px;
+	min-height: 45px;
 	margin-bottom: 0;
 	padding: 0;
 	border: 0;
@@ -128,7 +128,7 @@ footer {
 .navbar-default {
 }
 .navbar-default .navbar-brand img {
-	    width: 50%;
+	width: 50%;
 }
 .navbar-default .nav li a {
 	padding: 12px 5px 0;
@@ -163,7 +163,6 @@ section h2 {
 }
 .navbar-default .navbar-brand img {
 	width: 50%;
-
 }
 .navbar-default .navbar-nav>.active>a {
 	line-height: 4
@@ -201,10 +200,13 @@ section h2 {
 .navbar-default .nav li a {
 	padding: 12px 15px 0 0;
 }
+#form .narrow {
+	width: 640px;
+}
 }
 
 @media (min-width:1200px) {
 .navbar-default .navbar-brand img {
-	    width: 50%;
+	width: 50%;
 }
 }

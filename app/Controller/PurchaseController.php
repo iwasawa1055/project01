@@ -201,8 +201,39 @@ class PurchaseController extends MinikuraController
 
     public function complete()
     {
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(DEBUG_LOG, $id);
+        $sales_id = $this->params['id'];
+
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+        }
+
+        // model data
+        $this->Purchase->data[self::MODEL_NAME] = $data;
+
+        if ($this->Purchase->validates()) {
+            // api
+            // $res = $this->Purchase->apiPost($this->Purchase->toArray());
+            // if (!empty($res->error_message)) {
+            //     $this->Flash->set($res->error_message);
+            //     return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+            // }
+
+            // 配送先
+            $address_id = $data['address_id'];
+            $address = $this->Address->find($address_id);
+            $this->set('address', $address);
+
+            // お届け希望日時
+            $datetime = $this->getDatetime($address_id, $data['datetime_cd']);
+            $this->set('datetime', $datetime['text']);
+
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 <?php $this->Html->script('minikura/purchase', ['block' => 'scriptMinikura']); ?>
 <section id="form">
   <div class="container">
+  <?php  echo $this->Flash->render();?>
     <div>
       <h2>配送情報を選択（2/4）</h2>
     </div>
