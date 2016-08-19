@@ -60,7 +60,7 @@
                       </div>
 
                       <?php /* test item sale*/?>
-                      <?php if(! empty($sale) && $sale['setting'] === 'on'):?>
+                      <?php if(! empty($customer_sales) ) :?>
                           <div class="col-lg-6 col-md-6 col-xs-12 sale">
                             <div class="col-xs-12 col-lg-12">
                               <div class="panel panel-default">
@@ -72,43 +72,43 @@
                                     <div class="col-lg-12">
                                       <div class="row">
                                         <div class="col-lg-12">
-                                        <?php /*test*/ $sale_item['sale_test_flg'] = 1;?>
+                                        <?php /*test sale=onなら入力欄、既に販売中ならtext表示  */ $sale_item['sale_test_flg'] = 0;?>
 
-                                        <?php if (!$sale_item['sale_test_flg']):?>
-                                        <?php echo $this->Form->create('SaleItem', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                                        <?php if ( empty($sale_item['sale_test_flg'])):?>
+                                        <?php echo $this->Form->create('Sales', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('SaleItem.title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
-                                            <?php echo $this->Form->error('SaleItem.title', null, ['wrap' => 'p']);?>
+                                            <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
+                                            <?php echo $this->Form->error('Sales.sales_title', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('SaleItem.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
-                                            <?php echo $this->Form->error('SaleItem.price', null, ['wrap' => 'p']);?>
+                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
+                                            <?php echo $this->Form->error('Sales.price', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->textarea('SaleItem.note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
-                                            <?php echo $this->Form->error('SaleItem.note', null, ['wrap' => 'p']);?>
+                                            <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
+                                            <?php echo $this->Form->error('Sales.sales_note', null, ['wrap' => 'p']);?>
                                           </div>
                                           <?php /*販売中かstatus確認して、新規かキャンセルか分岐、 編集不可*/ ?>
                                           
                                           <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >この内容で確認する</button>
-                                          <?php echo $this->Form->hidden('SaleItem.item_id', ['value' => $item['item_id']]); ?>
+                                          <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>
                                           <?php echo $this->Form->end(); ?>
                                         <?php endif;?>
 
                                         <?php /*販売中かstatus確認して、snsでシェアするボタンを表示  todo Form->inputではなく、DBの値をreadonly  */ ?>
                                         <?php if (! empty($sale_item['sale_test_flg'])):?>
-                                        <?php echo $this->Form->create('SaleItem', ['url' => "/sale/item/cancel/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                                        <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('SaleItem.title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
-                                            <?php echo $this->Form->error('SaleItem.title', null, ['wrap' => 'p']);?>
+                                            <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
+                                            <?php echo $this->Form->error('Sales.sales_title', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('SaleItem.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
-                                            <?php echo $this->Form->error('SaleItem.price', null, ['wrap' => 'p']);?>
+                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
+                                            <?php echo $this->Form->error('Sales.price', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->textarea('SaleItem.note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
-                                            <?php echo $this->Form->error('SaleItem.note', null, ['wrap' => 'p']);?>
+                                            <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
+                                            <?php echo $this->Form->error('Sales.sales_note', null, ['wrap' => 'p']);?>
                                           </div>
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
 
@@ -125,7 +125,7 @@
                                           <?php /* sns貼り付け用 url作成 */ ?>
                                           <input class="form-control" id="copy-sns-url"  value="http://mock23.minikura.com/item/detail.html">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
-                                          <?php echo $this->Form->hidden('SaleItem.item_id', ['value' => $item['item_id']]); ?>
+                                          <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>
                                           <?php echo $this->Form->end(); ?>
                                         <?php endif;?>
                                         </div>

@@ -52,10 +52,12 @@
                                     <div class="col-lg-12">
                                       <div class="row">
                                         <div class="col-lg-12">
+                                          <label>販売名</label>
+                                          <p class="form-control-static"><?php echo $sale_item['sales_title'];?></p>
                                           <label>販売価格</label>
                                           <p class="form-control-static"><?php echo $sale_item['price'];?>円</p>
                                           <label>商品説明</label>
-                                          <p class="form-control-static"><?php echo $sale_item['note'];?></p>
+                                          <p class="form-control-static"><?php echo $sale_item['sales_note'];?></p>
                                           <?php /* sns test url */ ?>
                                           <?php $url = "https://minikura.com"; ?>
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"

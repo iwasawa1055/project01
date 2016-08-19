@@ -9,18 +9,16 @@ App::uses('MinikuraController', 'Controller');
 */
 class SaleController extends MinikuraController
 {
-    const MODEL_NAME_SALE = 'Sale';
+    const MODEL_NAME_SALES = 'Sales';
     const MODEL_NAME_CUSTOMER_ACCOUNT = 'CustomerAccount';
     const MODEL_NAME_CUSTOMER_SALES = 'CustomerSales';
-    const MODEL_NAME_SALE_ORDER = 'SaleOrder';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
     public function beforeFilter () {
         parent::beforeFilter(); 
-        $this->loadModel(self::MODEL_NAME_SALE);
+        $this->loadModel(self::MODEL_NAME_SALES);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_ACCOUNT);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_SALES);
-        $this->loadModel(self::MODEL_NAME_SALE_ORDER);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }
 
@@ -31,7 +29,7 @@ class SaleController extends MinikuraController
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-        //*  設定状況
+        //*  販売機能　設定状況 
         $customer_sales_result = $this->CustomerSales->apiGet();
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_sales_result, true));
         if (!empty($customer_sales_result->error_message)) {
@@ -40,6 +38,8 @@ class SaleController extends MinikuraController
             $customer_sales = $customer_sales_result->results[0];
         }
         $this->set('customers_sales', $customer_sales);
+        //test component ex: true=> 'sales_flag' === '1'
+        //$this->Customer->isCustomerSales();
 
         //* todo 口座情報
         //* todo 振り込み依頼履歴
@@ -97,12 +97,6 @@ class SaleController extends MinikuraController
                     $this->redirect(['action' => 'index']);
                 }
             }
-
-            
-
-            //* APIできるまで、ひとまずsession
-            //CakeSession::write(self::MODEL_NAME_SALE, $model->toArray());
-            CakeSession::write(self::MODEL_NAME_CUSTOMER_SALES, $this->CustomerSales->toArray());
         }
 
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_CUSTOMER_SALES), true));

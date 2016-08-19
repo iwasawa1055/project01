@@ -9,14 +9,12 @@ App::uses('MinikuraController', 'Controller');
 */
 class SaleItemController extends MinikuraController
 {
-    const MODEL_NAME_SALE = 'Sale';
-    const MODEL_NAME_SALE_ITEM = 'SaleItem';
+    const MODEL_NAME_SALES = 'Sales';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
     public function beforeFilter () {
         parent::beforeFilter(); 
-        $this->loadModel(self::MODEL_NAME_SALE);
-        $this->loadModel(self::MODEL_NAME_SALE_ITEM);
+        $this->loadModel(self::MODEL_NAME_SALES);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }
 
@@ -44,17 +42,16 @@ class SaleItemController extends MinikuraController
         }
         //* post
         if ($this->request->is('post')) {
-            $data = $this->request->data[self::MODEL_NAME_SALE_ITEM];
+            $data = $this->request->data[self::MODEL_NAME_SALES];
             $id = $data['item_id'];
-            $this->SaleItem->set($data);
-            if ( $this->SaleItem->validates()) {
-                //* to API
+            $this->Sales->set($data);
+            if ( $this->Sales->validates()) {
                 
-                CakeSession::write(self::MODEL_NAME_SALE_ITEM, $data);
+                CakeSession::write(self::MODEL_NAME_SALES, $data);
 
             } else {
-                $this->set('validErrors', $this->SaleItem->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->SaleItem->validationErrors, true));
+                $this->set('validErrors', $this->Sales->validationErrors);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
                 //todo render
             }
         }
@@ -77,20 +74,22 @@ class SaleItemController extends MinikuraController
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
         //todo reload
-        $data = CakeSession::read([self::MODEL_NAME_SALE_ITEM]);
-        CakeSession::delete(self::MODEL_NAME_SALE_ITEM);
+        $data = CakeSession::read([self::MODEL_NAME_SALES]);
+        CakeSession::delete(self::MODEL_NAME_SALES);
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['controller' => 'item', 'action' => 'index' ]);
         }
-        $this->SaleItem->set($data);
+        $this->Sales->set($data);
 
         //* post
         if ($this->request->is('post')) {
-            if ( $this->SaleItem->validates()) {
+            if ( $this->Sales->validates()) {
 
                 $this->set('sale_item', $data);
                 //* to API
+                $sales_result = $this->Sales->apiPost($data);
+                //* todo error
 
                 //* item, box
                 $id = $data['item_id'];
@@ -101,7 +100,7 @@ class SaleItemController extends MinikuraController
                 $this->set('box', $box);
 
             } else {
-                $this->set('validErrors', $this->SaleItem->validationErrors);
+                $this->set('validErrors', $this->Sales->validationErrors);
                 //todo render
             }
         }
@@ -119,16 +118,16 @@ class SaleItemController extends MinikuraController
         }
         //* post
         if ($this->request->is('post')) {
-            $data = $this->request->data[self::MODEL_NAME_SALE_ITEM];
+            $data = $this->request->data[self::MODEL_NAME_SALES];
             $id = $data['item_id'];
-            $this->SaleItem->set($data);
-            if ( $this->SaleItem->validates()) {
+            $this->Sales->set($data);
+            if ( $this->Sales->validates()) {
                 //* to API
                 
-                CakeSession::write(self::MODEL_NAME_SALE_ITEM, $data);
+                CakeSession::write(self::MODEL_NAME_SALES, $data);
 
             } else {
-                $this->set('validErrors', $this->SaleItem->validationErrors);
+                $this->set('validErrors', $this->Sales->validationErrors);
                 //todo render
             }
             //* 表示用
