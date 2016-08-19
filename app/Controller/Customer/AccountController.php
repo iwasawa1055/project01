@@ -42,6 +42,10 @@ class AccountController extends MinikuraController
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->query, true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->params, true));
+        $step = Hash::get($this->request->params, 'step');
+        $this->set('step', $step);
 
         //* post
         if ($this->request->is('post')) {
@@ -74,6 +78,17 @@ class AccountController extends MinikuraController
         $this->set('customer_account', $data);
 
         //* api post
+        //* post
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+        if ($this->request->is('post')) {
+            $this->CustomerAccount->set($this->request->data[self::MODEL_NAME_ACCOUNT]);
+            if ( $this->CustomerAccount->validates()) {
+
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+                //$this->set('customer_account', $data);
+                //* to API
+            }
+        }
 
     }
 
@@ -82,8 +97,10 @@ class AccountController extends MinikuraController
      */
     public function customer_complete()
     {
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_ACCOUNT), true));
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_ACCOUNT), true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->params, true));
         //todo reload
         $data = CakeSession::read([self::MODEL_NAME_ACCOUNT]);
         CakeSession::delete(self::MODEL_NAME_ACCOUNT);

@@ -16,6 +16,8 @@
                   <p><?php  debug($customer_account['bank_name']); ?></p>
                 </div>
               </div>
+
+              <?php echo $this->Form->create('CustomerAccount', ['url' => ['controller' => 'Account' , 'action' => 'confirm','step' => 'edit'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12">
                 <h2>変更する金融機関情報変更</h2>
 
@@ -38,38 +40,14 @@
                   <?php echo $this->Form->input('CustomerAccount.bank_account_holder', ['class' => 'form-control', 'placeholder' => '口座名義', 'error' => false]);?>
                   <?php echo $this->Form->error('CustomerAccount.bank_account_holder', null, ['wrap' => 'p']);?>
                 </div>
-
-
-
-
-
-
-
-                <div class="form-group col-lg-12">
-                  <input class="form-control" value="" placeholder="xxxxxxxxxxxxxxxxxxxx銀行">
-                </div>
-                <div class="form-group col-lg-12">
-                  <input class="form-control" value="" placeholder="xxxxxxxxxxxxxxxxxxxx支店">
-                </div>
-                <div class="form-group col-lg-12">
-                  <select class="form-control">
-                    <option>普通</option>
-                    <option>当座</option>
-                  </select>
-                </div>
-                <div class="form-group col-lg-12">
-                  <input class="form-control" value="" placeholder="000000000000">
-                </div>
-                <div class="form-group col-lg-12">
-                  <input class="form-control" value="" placeholder="市川　倫之介">
-                </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account_check.html">確認する</a>
+                <button type="submit" class="btn btn-danger btn-lg btn-block animsition-link" >確認する</button>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-primary btn-lg btn-block animsition-link" href="/sale/account_index.html">戻る</a>
+                <a class="btn btn-primary btn-lg btn-block animsition-link" href="/customer/account/index">戻る</a>
                 </span>
               </div>
+              <?php echo $this->Form->end(); ?>
             </div>
           </div>
         </div>
