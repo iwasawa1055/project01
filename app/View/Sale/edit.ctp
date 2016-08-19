@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
 		<?php /* on  */ ?>
-		<?php if (CakeSession::read('Sale.setting') === 'on'):?>
+		<?php if (CakeSession::read('CustomerSales.sales_flag') === '1'):?>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-		<?php elseif (CakeSession::read('Sale.setting') === 'off'):?>
+		<?php elseif (CakeSession::read('CustomerSales.sales_flag') === '0'):?>
 		<?php /* off  */ ?>
         <div class="panel panel-default">
           <div class="panel-body">

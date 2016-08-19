@@ -11,6 +11,7 @@ class SaleController extends MinikuraController
 {
     const MODEL_NAME_SALE = 'Sale';
     const MODEL_NAME_CUSTOMER_ACCOUNT = 'CustomerAccount';
+    const MODEL_NAME_CUSTOMER_SALES = 'CustomerSales';
     const MODEL_NAME_SALE_ORDER = 'SaleOrder';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
@@ -18,6 +19,7 @@ class SaleController extends MinikuraController
         parent::beforeFilter(); 
         $this->loadModel(self::MODEL_NAME_SALE);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_ACCOUNT);
+        $this->loadModel(self::MODEL_NAME_CUSTOMER_SALES);
         $this->loadModel(self::MODEL_NAME_SALE_ORDER);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }
@@ -29,11 +31,16 @@ class SaleController extends MinikuraController
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->query, true));
-        //* todo 設定状況
-        //* 暫定 session APIできるまで
-        $sale_session = CakeSession::read(self::MODEL_NAME_SALE);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sale_session, true));
+        //*  設定状況
+        $customer_sales_result = $this->CustomerSales->apiGet();
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_sales_result, true));
+        if (!empty($customer_sales_result->error_message)) {
+            $this->Flash->set($customer_sales_result->error_message);
+        } else {
+            $customer_sales = $customer_sales_result->results[0];
+        }
+        $this->set('customers_sales', $customer_sales);
+
         //* todo 口座情報
         //* todo 振り込み依頼履歴
         //* todo 販売履歴
@@ -70,29 +77,35 @@ class SaleController extends MinikuraController
 
 
     /**
-     * 暫定 edit 販売設定完了
+     * 暫定 edit 販売設定 on/off 実行
      */
     public function edit()
     {
-        //$model = new Sale();  
-        //$model->set($this->request->data);
 
-        //$this->Sale->set($this->request->data);
-        $this->Sale->set($this->request->data[self::MODEL_NAME_SALE]);
+        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+
         if ($this->request->is('post')) {
-            //* To APIでき次第
-            //* on customer table update
+            $this->CustomerSales->set($this->request->data[self::MODEL_NAME_CUSTOMER_SALES]);
+            if ($this->CustomerSales->validates()) {
+                //* To API
+                $result = $this->CustomerSales->apiPatch($this->CustomerSales->toArray());
+                //* todo error
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($result, true));
+                if (!empty($result->error_message)) {
+                    $this->Flash->set($result->error_message);
+                    $this->redirect(['action' => 'index']);
+                }
+            }
 
-            //* off customer table update, 出品情報all cancel
             
 
             //* APIできるまで、ひとまずsession
             //CakeSession::write(self::MODEL_NAME_SALE, $model->toArray());
-            CakeSession::write(self::MODEL_NAME_SALE, $this->Sale->toArray());
+            CakeSession::write(self::MODEL_NAME_CUSTOMER_SALES, $this->CustomerSales->toArray());
         }
 
-        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(), true));
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_CUSTOMER_SALES), true));
 
     }
 
