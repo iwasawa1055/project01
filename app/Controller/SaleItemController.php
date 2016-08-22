@@ -29,7 +29,7 @@ class SaleItemController extends MinikuraController
 
     /**
      * 暫定 edit
-     * アイテムページのdetail()から遷移してくる
+     * アイテムページのitem/detail/から遷移 
      */
     public function edit()
     {
@@ -121,13 +121,15 @@ class SaleItemController extends MinikuraController
             $data = $this->request->data[self::MODEL_NAME_SALES];
             $id = $data['item_id'];
             $this->Sales->set($data);
-            if ( $this->Sales->validates()) {
+            if ( $this->Sales->validates(['fieldList' => ['sales_id']])) {
                 //* to API
-                
-                CakeSession::write(self::MODEL_NAME_SALES, $data);
+                $sales_put_result = $this->Sales->apiPut($data);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_put_result, true));
+                //todo error
 
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
                 //todo render
             }
             //* 表示用

@@ -25,19 +25,23 @@
                   minikura利用規約に同意する </label>
               </div>
             </div>
+            <?php if ($customer_sales['sales_flag'] === '0' || empty($customer_sales)):?>
             <?php echo $this->Form->create('CustomerSales', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
             <span class="col-sm-6 col-xs-12">
               <?php echo $this->Form->hidden('sales_flag', ['value' => '1']); ?>
               <button type="submit" class="btn btn-danger btn-block">販売機能をONにする</button>
             </span>
             <?php echo $this->Form->end(); ?>
+            <?php endif;?>
 
+            <?php if ($customer_sales['sales_flag'] === '1'):?>
             <?php echo $this->Form->create('CustomerSales', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
             <span class="col-sm-6 col-xs-12">
               <?php echo $this->Form->hidden('sales_flag', ['value' => '0']); ?>
               <button type="submit" class="btn btn-danger  btn-block">販売機能をOFFにする</button>
             </span>
             <?php echo $this->Form->end(); ?>
+            <?php endif;?>
           </div>
         </div>
       </div>

@@ -116,6 +116,14 @@ class AccountController extends MinikuraController
 
                 $this->set('customer_account', $data);
                 //* to API
+                $customer_account_result = $this->CustomerAccount->apiPost($data);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account_result, true));
+                //* todo error
+            } else {
+                $this->set('validErrors', $this->CustomerAccount->validationErrors);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
+                //todo render redirectにする
+                //return $this->render('customer_add');
             }
         }
 

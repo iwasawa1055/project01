@@ -56,16 +56,5 @@ class CustomerAccount extends ApiModel
         ],
     ];
 
-    public function apiPost($data)
-    {
-        if (array_key_exists($this->model_name, $data)) {
-            $data = $data[$this->model_name];
-        }
-
-        //$data['oem_key'] = $this->oem_key;
-        $results = $this->request($this->end_point, $data, 'POST');
-
-        return $results;
-    }
 }
 

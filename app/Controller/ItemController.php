@@ -7,6 +7,7 @@ class ItemController extends MinikuraController
 {
     const MODEL_NAME = 'InfoItem';
     const MODEL_NAME_ITEM_EDIT = 'Item';
+    const MODEL_NAME_SALES = 'Sales';
 
     protected $paginate = array(
         'limit' => 20,
@@ -22,6 +23,7 @@ class ItemController extends MinikuraController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoBox');
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);
+        $this->loadModel(self::MODEL_NAME_SALES);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -225,6 +227,13 @@ class ItemController extends MinikuraController
         //* 販売機能
         $customer_sales = $this->Customer->isCustomerSales();
         $this->set('customer_sales', $customer_sales);
+        //* 販売情報 todo sales_status=1 販売中 定数化
+        $sales_result = $this->Sales->apiGet(['item_id' => $id, 'sales_status' => '1' ]);
+        if (!empty($sales_result->results[0])) {
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
+            $this->set('sales', $sales_result->results[0]);
+
+        }
         //* 販売設定がon　&& アイテムの設定が販売中になっているか APIできるまでtest_flg
         $sale_item = ['value' => '1', 'sale_test_flg' => '1'];
         $this->set('sale_item', $sale_item);

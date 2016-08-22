@@ -37,7 +37,8 @@ class SaleController extends MinikuraController
         } else {
             $customer_sales = $customer_sales_result->results[0];
         }
-        $this->set('customers_sales', $customer_sales);
+        $this->set('customer_sales', $customer_sales);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_sales, true));
         //test component ex: true=> 'sales_flag' === '1'
         //$this->Customer->isCustomerSales();
 
@@ -85,6 +86,10 @@ class SaleController extends MinikuraController
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
 
+        if (! $this->request->is('post')) {
+            //todo error
+        }
+
         if ($this->request->is('post')) {
             $this->CustomerSales->set($this->request->data[self::MODEL_NAME_CUSTOMER_SALES]);
             if ($this->CustomerSales->validates()) {
@@ -96,6 +101,7 @@ class SaleController extends MinikuraController
                     $this->Flash->set($result->error_message);
                     $this->redirect(['action' => 'index']);
                 }
+                $this->set('is_customer_sales', $this->Customer->isCustomerSales());
             }
         }
 
