@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
 		<?php /* on  */ ?>
-		<?php if (CakeSession::read('Sale.setting') === 'on'):?>
+		<?php if (CakeSession::read('CustomerSales.sales_flag') === '1'):?>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
@@ -19,13 +19,13 @@
                 </span>
                 <?php /* todo 口座情報 分岐 */ ?>
                 <span class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account/add">金融機関情報を登録する（初回のみ）</a>
+                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/add">金融機関情報を登録する（初回のみ）</a>
                 </span>
               </div>
             </div>
           </div>
         </div>
-		<?php elseif (CakeSession::read('Sale.setting') === 'off'):?>
+		<?php elseif (CakeSession::read('CustomerSales.sales_flag') === '0'):?>
 		<?php /* off  */ ?>
         <div class="panel panel-default">
           <div class="panel-body">

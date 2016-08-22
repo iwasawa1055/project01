@@ -11,6 +11,7 @@ App::uses('CustomerPassword', 'Model');
 App::uses('ContactUs', 'Model');
 App::uses('ContactUsCorporate', 'Model');
 App::uses('CustomerEmail', 'Model');
+App::uses('CustomerSales', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');
@@ -289,14 +290,31 @@ class CustomerComponent extends Component
             }
         }
     }
-	public function isSneaker()
-	{
+    public function isSneaker()
+    {
         if ($this->isLogined()) {
-			$oem_cd = $this->getInfo()['oem_cd'];
-			if ($oem_cd === Configure::read('api.sneakers.alliance_cd')) {
-				return true;	
-			}
+            $oem_cd = $this->getInfo()['oem_cd'];
+            if ($oem_cd === Configure::read('api.sneakers.alliance_cd')) {
+                return true;    
+            }
         }
         return false;
-	}
+    }
+
+    public function isCustomerSales()
+    {
+        if ($this->isLogined()) {
+            $o = new CustomerSales();
+            $result = $o->apiGet();
+            if (!empty($result->error_message)) {
+                return false;
+            } else {
+                $customer_sales = $result->results[0];
+                if ($customer_sales['sales_flag'] === '1') {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

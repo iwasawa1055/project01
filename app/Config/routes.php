@@ -42,10 +42,6 @@ if (! empty($_SERVER['REQUEST_URI'])) {
             Router::connect('/sale/item/:action', ['controller' => 'SaleItem']);
             Router::connect('/sale/item/:action/:id', ['controller' => 'SaleItem'], ['id' => '[A-Z\-0-9]+']);
             
-            Router::connect('/sale/account', ['controller' => 'SaleAccount']);
-            Router::connect('/sale/account/:action', ['controller' => 'SaleAccount']);
-            Router::connect('/sale/account/:action/:id', ['controller' => 'SaleAccount'], ['id' => '[A-Z\-0-9]+']);
-
             Router::connect('/sale/:action', ['controller' => 'Sale']);
 
             // purchase

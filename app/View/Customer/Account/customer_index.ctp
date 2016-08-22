@@ -16,10 +16,10 @@
                 <?php $update_flag = true;  /* todo 分岐*/    ?>
                 <?php if ( $update_flag ): ?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account/edit">変更する</a>
+                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/edit">変更する</a>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/account/add">新規作成する</a>
+                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/add">新規作成する</a>
                 </span>
                 <?php endif;?>
               </div>

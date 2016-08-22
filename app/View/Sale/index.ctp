@@ -25,16 +25,16 @@
                   minikura利用規約に同意する </label>
               </div>
             </div>
-            <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
+            <?php echo $this->Form->create('CustomerSales', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
             <span class="col-sm-6 col-xs-12">
-              <?php echo $this->Form->hidden('setting', ['value' => 'on']); ?>
+              <?php echo $this->Form->hidden('sales_flag', ['value' => '1']); ?>
               <button type="submit" class="btn btn-danger btn-block">販売機能をONにする</button>
             </span>
             <?php echo $this->Form->end(); ?>
 
-            <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
+            <?php echo $this->Form->create('CustomerSales', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
             <span class="col-sm-6 col-xs-12">
-              <?php echo $this->Form->hidden('setting', ['value' => 'off']); ?>
+              <?php echo $this->Form->hidden('sales_flag', ['value' => '0']); ?>
               <button type="submit" class="btn btn-danger  btn-block">販売機能をOFFにする</button>
             </span>
             <?php echo $this->Form->end(); ?>
@@ -56,7 +56,7 @@
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
                   xxxxxxxx銀行　xxxxxxxx支店　普通　0000000000
-                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/sale/account/">「金融機関情報」</a>
+                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>
                     から変更してください。 </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
