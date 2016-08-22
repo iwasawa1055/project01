@@ -9,17 +9,18 @@ class PurchaseController extends MinikuraController
 {
     const MODEL_NAME = 'PaymentGMOPurchase';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
+    const MODEL_NAME_ENTRY = 'CustomerEntry';
 
     public function beforeFilter ()
     {
         // index のみログイン不要なページ
-        if ($this->action === 'index') {
+        if ($this->action === 'index' || $this->action === 'register') {
             $this->checkLogined = false;
         }
 
         parent::beforeFilter();
 
-        if ($this->action !== 'index') {
+        if ($this->action !== 'index' && $this->action !== 'register') {
             $this->set('current_email', $this->Customer->getInfo()['email']);
             $this->set('address', $this->Address->get());
             $this->set('default_payment', $this->Customer->getDefaultCard());
@@ -40,6 +41,15 @@ class PurchaseController extends MinikuraController
         $sales_id = $this->params['id'];
         $this->set('sales_id', $sales_id);
 
+        // 登録系フローからの戻り時
+        if ($this->request->is('get')) {
+            $data = CakeSession::read('PurchaseRegister');
+            if (!empty($data) && !empty($data[self::MODEL_NAME_ENTRY])) {
+                $this->request->data[self::MODEL_NAME_ENTRY] = $data[self::MODEL_NAME_ENTRY];
+            }
+        }
+
+        // ログイン
         if ($this->request->is('post')) {
             // login
             $this->loadModel('CustomerLogin');
@@ -236,4 +246,22 @@ class PurchaseController extends MinikuraController
         }
     }
 
+    public function register()
+    {
+        $sales_id = $this->params['id'];
+
+        if (!$this->request->is('post')) {
+            return $this->redirect('/purchase/'. $sales_id);
+        }
+
+        $this->loadModel(self::MODEL_NAME_ENTRY);
+        $this->CustomerEntry->set($this->request->data[self::MODEL_NAME_ENTRY]);
+
+        if ($this->CustomerEntry->validates()) {
+            CakeSession::write('PurchaseRegister.CustomerEntry', $this->request->data['CustomerEntry']);
+            return $this->redirect(['controller' => 'PurchaseRegister', 'action' => 'address']);
+        } else {
+            return $this->render('index');
+        }
+    }
 }

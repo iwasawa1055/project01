@@ -1,5 +1,5 @@
 <section id="form">
-  <div class="container">
+  <div class="container narrow">
     <div>
       <h2>クレジットカード情報を入力（3/5）</h2>
     </div>
@@ -17,12 +17,15 @@
       <div class="form">
         <div class="address">
           <h4>クレジットカード情報を入力してください。</h4>
+          <?php echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'PurchaseRegister', 'action' => 'credit'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="form-group ">
-            <input class="form-control" placeholder="クレジットカード番号">
+            <?php echo $this->Form->input('PaymentGMOSecurityCard.card_no', ['class' => "form-control", 'maxlength' => 19, 'placeholder'=>'クレジットカード番号', 'error' => false]); ?>
+            <?php echo $this->Form->error('PaymentGMOSecurityCard.card_no', null, ['wrap' => 'p']) ?>
             <p class="help-block">ハイフン有り無しどちらでもご入力いただけます。</p>
           </div>
           <div class="form-group ">
-            <input class="form-control" placeholder="セキュリティコード">
+            <?php echo $this->Form->input('PaymentGMOSecurityCard.security_cd', ['class' => "form-control", 'maxlength' => 4, 'placeholder'=>'セキュリティコード', 'error' => false]); ?>
+            <?php echo $this->Form->error('PaymentGMOSecurityCard.security_cd', null, ['wrap' => 'p']) ?>
             <p class="help-block">カード裏面に記載された３〜4桁の番号をご入力ください。</p>
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="link">※セキュリティコードとは？</a>
             <div id="collapseOne" class="panel-collapse collapse panel panel-default">
@@ -42,46 +45,23 @@
           </div>
           <div class="form-group ">
             <label>有効期限</label>
-            <select name="select" class="form-control">
-              <option>以下からお選びください</option>
-              <option>1月</option>
-              <option>2月</option>
-              <option>3月</option>
-              <option>4月</option>
-              <option>5月</option>
-              <option>6月</option>
-              <option>7月</option>
-              <option>8月</option>
-              <option>9月</option>
-              <option>10月</option>
-              <option>11月</option>
-              <option>12月</option>
-            </select>
+            <?php echo $this->Form->select('PaymentGMOSecurityCard.expire_month', $this->Html->creditcardExpireMonth(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
           </div>
           <div class="form-group ">
-            <select name="select" class="form-control">
-              <option>以下からお選びください</option>
-              <option>2016年</option>
-              <option>2017年</option>
-              <option>2018年</option>
-              <option>2019年</option>
-              <option>2020年</option>
-              <option>2021年</option>
-              <option>2022年</option>
-              <option>2023年</option>
-              <option>2024年</option>
-              <option>2025年</option>
-            </select>
+            <?php echo $this->Form->select('PaymentGMOSecurityCard.expire_year', $this->Html->creditcardExpireYear(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+            <?php echo $this->Form->error('PaymentGMOSecurityCard.expire', null, ['wrap' => 'p']) ?>
           </div>
           <div class="form-group ">
-            <input class="form-control" placeholder="クレジットカード名義">
-            <p class="help-block">（※半角大文字英字 半角スペース . - ・）</p>
+            <?php echo $this->Form->input('PaymentGMOSecurityCard.holder_name', ['class' => "form-control", 'placeholder'=>'クレジットカード名義', 'error' => false]); ?>
+            <?php echo $this->Form->error('PaymentGMOSecurityCard.holder_name', null, ['wrap' => 'p']) ?>
+            <p class="help-block">（※半角大文字英数字、半角スペース）</p>
           </div>
           <div class="row">
             <div class="text-center btn-commit">
-              <a href="/purchase/register/confirm" class="animsition-link btn">入力情報を確認へ（4/5）</a>
+              <button type="submit" class="btn">入力情報を確認へ（4/5）</button>
             </div>
           </div>
+          <?php echo $this->Form->end(); ?>
         </div>
       </div>
     </div>

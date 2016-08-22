@@ -10,6 +10,28 @@ class PaymentGMOPurchase extends ApiModel
     }
 
     public $validate = [
+        'card_seq' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'card_seq'],
+            ],
+            'isStringInteger' => [
+                'rule'     => 'isStringInteger',
+                'message'  => ['format', 'card_seq'],
+            ],
+        ],
+        'security_cd' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'security_cd'],
+            ],
+            'isCreditCardSecurityCode' => [
+                'rule' => 'isCreditCardSecurityCode',
+                'message' => ['format', 'security_cd'],
+            ],
+        ],
         'sales_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -19,6 +41,61 @@ class PaymentGMOPurchase extends ApiModel
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'message' => ['format', 'sales_id']
+            ],
+        ],
+        'name' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address_name']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 59],
+                'message' => ['maxLength', 'kit_address_name', 59]
+            ],
+        ],
+        'tel1' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_tel1']
+            ],
+            'isPhoneNumberJp' => [
+                'rule' => 'isPhoneNumberJp',
+                'message' => ['format', 'kit_tel1']
+            ],
+        ],
+        'postal' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_postal']
+            ],
+            'isPostalCodeJp' => [
+                'rule' => 'isPostalCodeJp',
+                'message' => ['format', 'kit_postal']
+            ],
+        ],
+        'address' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 60],
+                'message' => ['maxLength', 'kit_address', 60]
+            ],
+        ],
+        'datetime_cd' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_datetime']
+            ],
+            'isDatetimeDelivery' => [
+                'rule' => 'isDatetimeDelivery',
+                'message' => ['format', 'kit_datetime']
             ],
         ],
     ];
