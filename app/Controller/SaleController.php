@@ -10,6 +10,7 @@ App::uses('MinikuraController', 'Controller');
 class SaleController extends MinikuraController
 {
     const MODEL_NAME_SALES = 'Sales';
+    const MODEL_NAME_SALES_STATUS = 'SalesStatus';
     const MODEL_NAME_CUSTOMER_ACCOUNT = 'CustomerAccount';
     const MODEL_NAME_CUSTOMER_SALES = 'CustomerSales';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
@@ -17,6 +18,7 @@ class SaleController extends MinikuraController
     public function beforeFilter () {
         parent::beforeFilter(); 
         $this->loadModel(self::MODEL_NAME_SALES);
+        $this->loadModel(self::MODEL_NAME_SALES_STATUS);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_ACCOUNT);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_SALES);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
@@ -28,7 +30,6 @@ class SaleController extends MinikuraController
     public function index()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
 
         //*  販売機能　設定状況 
         $customer_sales = null;
@@ -37,49 +38,45 @@ class SaleController extends MinikuraController
             $customer_sales = $customer_sales_result->results[0];
         }
         $this->set('customer_sales', $customer_sales);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_sales, true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Customer->isCustomerSales(), true));
-        //test component ex: true=> 'sales_flag' === '1'
-        //$this->Customer->isCustomerSales();
 
-        //* todo 口座情報
+        //* 口座情報
         $customer_bank_account = null;
         if (!empty($this->Customer->getCustomerBankAccount())){
             $customer_bank_account = $this->Customer->getCustomerBankAccount();
-            $this->set('customer_bank_account', $customer_bank_account);
         }
+        $this->set('customer_bank_account', $customer_bank_account);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Customer->getCustomerBankAccount(), true));
 
-        //* todo 振り込み依頼履歴
+        //* todo 振り込み依頼履歴 sales_status定数
+
+        //* set sales_status master  
+        $master_sales_status_list = null;
+        $sales_status_result = $this->SalesStatus->apiGet();
+        if (!empty($sales_status_result->results)) {
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_status_result, true));
+            $master_sales_status_list =  $sales_status_result->results;
+            $master_sales_status_array = [];
+            foreach($master_sales_status_list as $master_sales_status){
+                $master_sales_status_array[$master_sales_status['sales_status']] = $master_sales_status['sales_status_name'];
+            } 
+        }
+        $this->set('master_sales_status_list', $master_sales_status_list);
+        $this->set('master_sales_status_array', $master_sales_status_array);
+
+        //* UI select
+        $sales_status = $this->request->query('sales_status') ?  $this->request->query('sales_status') : SALES_STATUS_ON_SALE;
+        $this->set('sales_status', $sales_status);
+
         //* todo 販売履歴
-        //* 暫定 API　でき次第
-        $stub = [];
-        //* 暫定 type 1=販売中 2=購入手続き中 3=販売中 4=hoge
-        //* 暫定 販売履歴type
-        $status_type = $this->request->query('status_type');
-        $stub[] = ['id' =>1, 'type' =>1, 'hoge' => 'fuga'];
-        $stub[] = ['id' =>2, 'type' =>1, 'hoge' => 'fuga2'];
-        $stub[] = ['id' =>3, 'type' =>1, 'hoge' => 'fuga3'];
-        $stub[] = ['id' =>4, 'type' =>1, 'hoge' => 'fuga4'];
-        $stub[] = ['id' =>5, 'type' =>1, 'hoge' => 'fuga5'];
-        $stub[] = ['id' =>6, 'type' =>1, 'hoge' => 'fuga6'];
-        $stub[] = ['id' =>7, 'type' =>1, 'hoge' => 'fuga7'];
-        $stub[] = ['id' =>8, 'type' =>1, 'hoge' => 'fuga8'];
-        $stub[] = ['id' =>9, 'type' =>1, 'hoge' => 'fuga9'];
-        $stub[] = ['id' =>10,'type' =>1,  'hoge' => 'fuga10'];
-        $stub[] = ['id' =>11,'type' =>1,  'hoge' => 'fuga10'];
-        $stub[] = ['id' =>12,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>13,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>14,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>15,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>16,'type' =>3,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>17,'type' =>3,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>18,'type' =>4,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>19,'type' =>4,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>20,'type' =>4,  'hoge' => 'fuga11'];
-        $all = $stub;
-        $list = $this->paginate($all);
+        $sales = null;
+        $sales_result = $this->Sales->apiGet(['sales_status' => $sales_status]);
+        if (!empty($sales_result->results)) {
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
+            $sales =  $sales_result->results;
+        }
+        $this->set('sales', $sales);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_status, true));
+        $list = $this->paginate($sales);
         $this->set('history', $list);
 
     }

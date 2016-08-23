@@ -228,15 +228,12 @@ class ItemController extends MinikuraController
         $customer_sales = $this->Customer->isCustomerSales();
         $this->set('customer_sales', $customer_sales);
         //* 販売情報 todo sales_status=1 販売中 定数化
-        $sales_result = $this->Sales->apiGet(['item_id' => $id, 'sales_status' => '1' ]);
+        $sales = null;
+        $sales_result = $this->Sales->apiGet(['item_id' => $id, 'sales_status' => SALES_STATUS_ON_SALE ]);
         if (!empty($sales_result->results[0])) {
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
-            $this->set('sales', $sales_result->results[0]);
-
+            $sales = $sales_result->results[0];
         }
-        //* 販売設定がon　&& アイテムの設定が販売中になっているか APIできるまでtest_flg
-        $sale_item = ['value' => '1', 'sale_test_flg' => '1'];
-        $this->set('sale_item', $sale_item);
+        $this->set('sales', $sales);
 
     
     }

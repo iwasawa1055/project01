@@ -125,27 +125,42 @@
                 <h2>販売履歴</h2>
                 <div class="row box-sort">
                   <div class="col-sm-12 col-xs-12">
-                  <?php 
-                  /*
-                      $master_sales_status_array = [];
-                      foreach($master_sales_status_list as $master_sales_status){
-                          $master_sales_status_array[$master_sales_status['sales_status']] = $master_sales_status['sales_status_name'];
-                      } 
-                  */
-                  ?>
-                  <?php echo $this->Form->select('jquery_sales_status', $master_sales_status_array,  ['class' => 'form-control', 'value' => $sales_status ,  'empty' => false, 'error' => false]);?>
+                    <select class="form-control list_sort">
+                      <option value="1">販売中 を表示</option>
+                      <option value="2">購入手続き中 を表示</option>
+                      <option value="3">販売中 を表示</option>
+                      <option value="4">購入手続き中 を表示</option>
+                    </select>
                   </div>
                 </div>
                 <!--loop-->
                 <div class="col-lg-12">
-                  <?php if (!empty($sales)):?>
-                  <?php foreach($sales as $sales_history):?>
                   <div class="panel panel-default">
-                    <?php echo $this->element('List/sale_item_icon_body', ['sales_history' => $sales_history]); ?>
-                    <?php echo $this->element('List/sale_item_icon_footer', ['sales_history' => $sales_history]); ?>
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-2 col-xs-3 item-detail">
+                          <img src="/images/xxx_xxxx.jpg" alt="">
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-xs-9">
+                          <h3 class="box-item-name">販売した商品名販売した商品名販売した商品名販売した商品名販売した商品名販売した商品名販売した商品名</h3>
+                          <p class="box-item-remarks">検索結果検索結果<b>検索結果</b>検索結果検索結果検索結果検索結果検索結果<b>検索結果</b>検索結果検索結果<b>検索結果</b><b>検索結果</b>検索結果検索結果<b>検索結果</b>検索結果検索結果検索結果<b>検索結果</b>検索結果検索結果検索結果</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                          <a class="btn btn-danger btn-md btn-detail pull-right animsition-link" href="/item/detail">アイテムを確認する</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-footer">
+                      <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-12">
+                          <p class="box-list-caption"><span>商品ステータス</span>送金済み</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                          <p class="box-list-caption"><span>販売日</span>0000/00/00</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <?php endforeach;?>
-                  <?php endif;?>
                 </div>
                 <!--loop end-->
               </div>
