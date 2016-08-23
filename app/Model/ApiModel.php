@@ -200,7 +200,6 @@ class ApiModel extends AppModel
     {
         // tokenをパラメータに追加
         $token = CakeSession::read(self::SESSION_API_TOKEN);
-    CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($token,  true));
         $params['token'] = $token;
         // API問い合わせを行う
         return $this->request($this->end_point, $params, $method);

@@ -29,20 +29,28 @@ class SaleController extends MinikuraController
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+
         //*  販売機能　設定状況 
+        $customer_sales = null;
         $customer_sales_result = $this->CustomerSales->apiGet();
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_sales_result, true));
-        if (!empty($customer_sales_result->error_message)) {
-            $this->Flash->set($customer_sales_result->error_message);
-        } else {
+        if (!empty($customer_sales_result->results[0])) {
             $customer_sales = $customer_sales_result->results[0];
         }
         $this->set('customer_sales', $customer_sales);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_sales, true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Customer->isCustomerSales(), true));
         //test component ex: true=> 'sales_flag' === '1'
         //$this->Customer->isCustomerSales();
 
         //* todo 口座情報
+        $customer_bank_account = null;
+        if (!empty($this->Customer->getCustomerBankAccount())){
+            $customer_bank_account = $this->Customer->getCustomerBankAccount();
+            $this->set('customer_bank_account', $customer_bank_account);
+        }
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Customer->getCustomerBankAccount(), true));
+
         //* todo 振り込み依頼履歴
         //* todo 販売履歴
         //* 暫定 API　でき次第

@@ -4,6 +4,7 @@ App::uses('PaymentGMOCard', 'Model');
 App::uses('CustomerEntry', 'Model');
 App::uses('CustomerInfo', 'Model');
 App::uses('CorporateInfo', 'Model');
+App::uses('CustomerAccount', 'Model');
 
 /**
  * カスタマーログイン情報
@@ -174,6 +175,21 @@ class CustomerData
         if ($this->isPrivateCustomer() || empty($this->getCorporatePayment())) {
             $ca = new PaymentGMOCard();
             return $ca->apiGetDefaultCard();
+        }
+        return null;
+    }
+
+    /**
+     * 利用可能な銀行口座を1つ取得　販売機能の振り込み口座
+     * @return array|null 口座情報
+     */
+    public function getCustomerBankAccount()
+    {
+        $o = new CustomerAccount();
+        $customer_account_result = $o->apiGet();
+        if (!empty($customer_account_result->results[0])) {
+            $customer_account = $customer_account_result->results[0];
+            return $customer_account;
         }
         return null;
     }
