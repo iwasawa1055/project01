@@ -12,6 +12,20 @@ class Sales extends ApiModel
         parent::__construct('Sales', '/sales', 'minikura_v5');
     }
 
+    public function apiGetSale($data)
+    {
+        if (array_key_exists($this->model_name, $data)) {
+            $data = $data[$this->model_name];
+        }
+
+        // $data['oem_key'] = $this->oem_key;
+        $d = $this->request($this->end_point, $data, 'GET');
+        if (!$d->status) {
+        }
+
+        return $d->results;
+    }
+
     public $validate = [
         'sales_title' => [
             'notBlank' => [

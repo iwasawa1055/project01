@@ -73,7 +73,7 @@ $(function() {
 
   function getDatetime() {
     var elem_postal = $('#CustomerRegistInfoPostal');
-    var elem_datetime = $('#PaymentGMOPurchaseDatetimeCd');
+    var elem_datetime = $('#CustomerRegistInfoDatetimeCd');
 
     if (!elem_postal.val()) {
       elem_datetime.empty();
@@ -100,4 +100,12 @@ $(function() {
       elem_datetime.removeAttr("disabled");
     });
   };
+
+  $('.date_zero_padding').blur(function() {
+    var val = $(this).val();
+    if (val.match(/^\d+$/) === null) {
+        return;
+    }
+    $(this).val(('0' + val).slice(-2));
+  });
 });

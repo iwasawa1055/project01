@@ -98,6 +98,13 @@ class PaymentGMOPurchase extends ApiModel
                 'message' => ['format', 'kit_datetime']
             ],
         ],
+        'address_id' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address_name']
+            ],
+        ],
     ];
 
     public function setAddress($data, $address)
@@ -106,21 +113,10 @@ class PaymentGMOPurchase extends ApiModel
             return $data;
         }
 
-        // $data['name'] = "{$address['lastname']}　{$address['firstname']}";
-        // $data['tel1'] = $address['tel1'];
-        // $data['postal'] = $address['postal'];
-        // $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
-
-        $data['lastname'] = $address['lastname'];
-        $data['firstname'] = $address['firstname'];
-        $data['lastname_kana'] = $address['lastname_kana'];
-        $data['firstname_kana'] = $address['firstname_kana'];
+        $data['name'] = "{$address['lastname']}　{$address['firstname']}";
         $data['tel1'] = $address['tel1'];
         $data['postal'] = $address['postal'];
-        $data['pref'] = $address['pref'];
-        $data['address1'] = $address['address1'];
-        $data['address2'] = $address['address2'];
-        $data['address3'] = $address['address3'];
+        $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
 
         return $data;
     }

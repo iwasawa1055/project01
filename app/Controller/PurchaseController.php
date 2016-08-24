@@ -8,8 +8,9 @@ App::uses('CustomerEnvAuthed', 'Model');
 class PurchaseController extends MinikuraController
 {
     const MODEL_NAME = 'PaymentGMOPurchase';
-    const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
+    const MODEL_NAME_DATETIME = 'DatetimeDeliveryOutbound';
     const MODEL_NAME_ENTRY = 'CustomerEntry';
+    const MODEL_NAME_SALES = 'Sales';
 
     public function beforeFilter ()
     {
@@ -34,12 +35,17 @@ class PurchaseController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_DATETIME);
+        $this->loadModel(self::MODEL_NAME_SALES);
+
     }
 
     public function index()
     {
         $sales_id = $this->params['id'];
         $this->set('sales_id', $sales_id);
+
+        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+        $this->set('sales', $sale[0]);
 
         // 登録系フローからの戻り時
         if ($this->request->is('get')) {
@@ -101,17 +107,17 @@ class PurchaseController extends MinikuraController
         $this->autoRender = false;
 
         $address_id = $this->request->data['address_id'];
-        $result = $this->getDatetimeDeliveryKit($address_id);
+        $result = $this->getDatetimeDeliveryOutbound($address_id);
         $status = !empty($result);
 
         return json_encode(compact('status', 'result'));
     }
 
-    private function getDatetimeDeliveryKit($address_id)
+    private function getDatetimeDeliveryOutbound($address_id)
     {
         $address = $this->Address->find($address_id);
         if (!empty($address) && !empty($address['postal'])) {
-            $res = $this->DatetimeDeliveryKit->apiGet([
+            $res = $this->DatetimeDeliveryOutbound->apiGet([
                 'postal' => $address['postal'],
             ]);
             if ($res->isSuccess()) {
@@ -124,7 +130,7 @@ class PurchaseController extends MinikuraController
     private function getDatetime($address_id, $datetime_cd)
     {
         $data = [];
-        $result = $this->getDatetimeDeliveryKit($address_id);
+        $result = $this->getDatetimeDeliveryOutbound($address_id);
         foreach ($result as $datetime) {
             if ($datetime['datetime_cd'] === $datetime_cd) {
                 $data = $datetime;
@@ -135,6 +141,12 @@ class PurchaseController extends MinikuraController
 
     public function input()
     {
+        $sales_id = $this->params['id'];
+        $this->set('sales_id', $sales_id);
+
+        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+        $this->set('sales', $sale[0]);
+
         $isBack = Hash::get($this->request->query, 'back');
         $res_datetime = [];
         $data = CakeSession::read(self::MODEL_NAME);
@@ -149,7 +161,7 @@ class PurchaseController extends MinikuraController
             }
             $this->request->data[self::MODEL_NAME] = $data;
             if (!empty($data['address_id'])) {
-                $res_datetime = $this->getDatetimeDeliveryKit($data['address_id']);
+                $res_datetime = $this->getDatetimeDeliveryOutbound($data['address_id']);
             }
         }
 
@@ -161,19 +173,28 @@ class PurchaseController extends MinikuraController
     public function confirm()
     {
         $sales_id = $this->params['id'];
+        $this->set('sales_id', $sales_id);
+
+        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+        $this->set('sales', $sale[0]);
 
         $data = Hash::get($this->request->data, self::MODEL_NAME);
         if (empty($data)) {
+            $this->set('datetime', []);
             return $this->render('input');
         }
 
+        // 販売id
         $data['sales_id'] = $sales_id;
-        $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
 
         // 配送先
         $address_id = $data['address_id'];
         $address = $this->Address->find($address_id);
         $data = $this->PaymentGMOPurchase->setAddress($data, $address);
+
+        // credit
+        $credit = $this->Customer->getDefaultCard();
+        $data['card_seq'] = $credit['card_seq'];
 
         // model data
         $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
@@ -201,7 +222,7 @@ class PurchaseController extends MinikuraController
             // 配送日時
             $res_datetime = [];
             if (!empty($address_id)) {
-                $res_datetime = $this->getDatetimeDeliveryKit($address_id);
+                $res_datetime = $this->getDatetimeDeliveryOutbound($address_id);
             }
             $this->set('datetime', $res_datetime);
 
@@ -212,6 +233,10 @@ class PurchaseController extends MinikuraController
     public function complete()
     {
         $sales_id = $this->params['id'];
+        $this->set('sales_id', $sales_id);
+
+        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+        $this->set('sales', $sale[0]);
 
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
@@ -225,11 +250,11 @@ class PurchaseController extends MinikuraController
 
         if ($this->PaymentGMOPurchase->validates()) {
             // api
-            // $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
-            // if (!empty($res->error_message)) {
-            //     $this->Flash->set($res->error_message);
-            //     return $this->redirect(['action' => 'input', 'id' => $sales_id]);
-            // }
+            $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+            }
 
             // 配送先
             $address_id = $data['address_id'];
