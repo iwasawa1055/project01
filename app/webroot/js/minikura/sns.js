@@ -29,6 +29,16 @@ var Act_sns =
 
     },
 
+    c : function(){
+        $(document).on('click', '.btn-copy-tag', function(){
+            var copyDiv = document.getElementById('copy-tag');
+            copyDiv.focus();
+            document.execCommand("SelectAll");
+            document.execCommand("Copy", false, null);
+        });
+
+    },
+
 }
 
 /*
@@ -38,5 +48,6 @@ var Act_sns =
 $(function(){
     Act_sns.a();
     Act_sns.b();
+    Act_sns.c();
 });
 

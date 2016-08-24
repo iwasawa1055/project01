@@ -45,37 +45,37 @@ class SaleController extends MinikuraController
             $customer_bank_account = $this->Customer->getCustomerBankAccount();
         }
         $this->set('customer_bank_account', $customer_bank_account);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
 
         //* todo 振り込み依頼履歴 sales_status定数
 
         //* set sales_status master  
-        $master_sales_status_list = null;
-        $sales_status_result = $this->SalesStatus->apiGet();
-        if (!empty($sales_status_result->results)) {
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_status_result, true));
-            $master_sales_status_list =  $sales_status_result->results;
-            $master_sales_status_array = [];
-            foreach($master_sales_status_list as $master_sales_status){
-                $master_sales_status_array[$master_sales_status['sales_status']] = $master_sales_status['sales_status_name'];
-            } 
+        $master_sales_status_array = [];
+        $master_sales_status_array =  CakeSession::read([self::MODEL_NAME_SALES_STATUS]);
+        if (empty($master_sales_status_array)) {
+            $sales_status_result = $this->SalesStatus->apiGet();
+            if (!empty($sales_status_result->results)) {
+                foreach($sales_status_result->results as $master_sales_status){
+                    $master_sales_status_array[$master_sales_status['sales_status']] = $master_sales_status['sales_status_name'];
+                } 
+                CakeSession::write(self::MODEL_NAME_SALES_STATUS, $master_sales_status_array);
+            }
         }
-        $this->set('master_sales_status_list', $master_sales_status_list);
         $this->set('master_sales_status_array', $master_sales_status_array);
 
         //* UI select
         $sales_status = $this->request->query('sales_status') ?  $this->request->query('sales_status') : SALES_STATUS_ON_SALE;
         $this->set('sales_status', $sales_status);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_status, true));
 
         //* todo 販売履歴
         $sales = null;
         $sales_result = $this->Sales->apiGet(['sales_status' => $sales_status]);
         if (!empty($sales_result->results)) {
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
             $sales =  $sales_result->results;
         }
         $this->set('sales', $sales);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_status, true));
         $list = $this->paginate($sales);
         $this->set('history', $list);
 
