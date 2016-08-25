@@ -51,6 +51,8 @@ class PurchaseController extends MinikuraController
         if ($this->request->is('get')) {
             $data = CakeSession::read('PurchaseRegister');
             if (!empty($data) && !empty($data[self::MODEL_NAME_ENTRY])) {
+                $data[self::MODEL_NAME_ENTRY]['password'] = '';
+                $data[self::MODEL_NAME_ENTRY]['password_confirm'] = '';
                 $this->request->data[self::MODEL_NAME_ENTRY] = $data[self::MODEL_NAME_ENTRY];
             }
         }
@@ -274,6 +276,10 @@ class PurchaseController extends MinikuraController
     public function register()
     {
         $sales_id = $this->params['id'];
+        $this->set('sales_id', $sales_id);
+
+        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+        $this->set('sales', $sale[0]);
 
         if (!$this->request->is('post')) {
             return $this->redirect('/purchase/'. $sales_id);
@@ -283,6 +289,7 @@ class PurchaseController extends MinikuraController
         $this->CustomerEntry->set($this->request->data[self::MODEL_NAME_ENTRY]);
 
         if ($this->CustomerEntry->validates()) {
+            CakeSession::write('PurchaseRegister.PaymentGMOPurchase', $this->request->data[self::MODEL_NAME]);
             CakeSession::write('PurchaseRegister.CustomerEntry', $this->request->data['CustomerEntry']);
             return $this->redirect(['controller' => 'PurchaseRegister', 'action' => 'address']);
         } else {

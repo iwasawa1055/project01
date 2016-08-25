@@ -8,10 +8,10 @@
     <div class="row">
       <div class="info">
         <div class="photo">
-          <img src="/market/images/item.jpg" alt="" />
+          <img src="<?php echo $sale_image; ?>" alt="" />
         </div>
         <div class="caption">
-          <h3>極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007</h3>
+          <h3><?php echo h($sales_title); ?></h3>
         </div>
       </div>
     </div>

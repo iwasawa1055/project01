@@ -17,6 +17,8 @@
       <div class="form">
         <div class="address">
           <h3>購入が完了しました。</h3>
+          <p>購入情報はminikuraの<a href="<?php echo Configure::read('site.mypage.url');?>" class="link">マイページ</a>
+            で確認することができます</p>
         </div>
       </div>
       <div class="row">

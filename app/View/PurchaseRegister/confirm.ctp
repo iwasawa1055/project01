@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/purchase_register', ['block' => 'scriptMinikura']); ?>
 <section id="form">
   <div class="container">
     <div>
@@ -6,14 +7,15 @@
     <div class="row">
       <div class="info">
         <div class="photo">
-          <img src="/market/images/item.jpg" alt="" />
+          <img src="<?php echo $sale_image; ?>" alt="" />
         </div>
         <div class="caption">
-          <h3>極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007</h3>
+          <h3><?php echo h($sales_title); ?></h3>
         </div>
       </div>
     </div>
     <div class="row">
+    <?php echo $this->Form->create(false, ['url' => ['controller' => 'PurchaseRegister', 'action' => 'complete']]); ?>
       <div class="form">
         <div class="a-confirm">
           <h3>メールアドレス</h3>
@@ -62,7 +64,7 @@
           </div>
           <div class="form-group">
             <label>お届け希望日時</label>
-            <p></p>
+            <p><?php echo h($datetime); ?></p>
           </div>
           <div class="btn-orrection">
             <a href="/purchase/register/address" class="animsition-link btn">お届け先情報を修正する</a>
@@ -90,16 +92,17 @@
       <div class="row">
         <div class="text-center btn-commit">
           <div class="btn-orrection">
-            <a class="btn btn-info btn-xs animsition-link" href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>
+            <a class="btn btn-info btn-xs" href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>
           </div>
           <div class="checkbox">
             <label>
-              <input name="remember" type="checkbox" value="Remember Me">
+              <input name="remember" type="checkbox" class="agree-before-submit">
               minikura利用規約に同意する </label>
           </div>
-          <a href="/purchase/register/complete" class="animsition-link btn">この内容で購入する（5/5）</a>
+          <button type="submit" class="btn">この内容で購入する（5/5）</button>
         </div>
       </div>
+    <?php echo $this->Form->end(); ?>
     </div>
   </div>
 </section>

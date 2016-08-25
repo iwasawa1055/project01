@@ -12,6 +12,7 @@ class PurchaseRegisterController extends MinikuraController
     const MODEL_CUSTOMER_INFO = 'CustomerRegistInfo';
     const MODEL_DATETIME_DELIVERY = 'DatetimeDeliveryOutboundV4';
     const MODEL_PAYMENT_CARD = 'PaymentGMOSecurityCard';
+    const MODEL_NAME_SALES = 'Sales';
 
     public function beforeFilter ()
     {
@@ -21,6 +22,13 @@ class PurchaseRegisterController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_DATETIME_DELIVERY);
+        $this->loadModel(self::MODEL_NAME_SALES);
+
+        $data = CakeSession::read('PurchaseRegister');
+        $purchase = Hash::get($data, self::MODEL_NAME);
+        if (empty($data) || empty($purchase['sales_id'])) {
+            return $this->redirect('/');
+        }
     }
 
     public function address()
@@ -30,6 +38,11 @@ class PurchaseRegisterController extends MinikuraController
         if (empty($data)) {
             return $this->redirect('/');
         }
+
+        $purchase = Hash::get($data, self::MODEL_NAME);
+        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
+        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
+        $this->set('sales_title', $sale[0]['sales_title']);
 
         $res_datetime = [];
         if ($this->request->is('get')) {
@@ -121,6 +134,18 @@ class PurchaseRegisterController extends MinikuraController
         return [];
     }
 
+    private function getDatetime($postal, $datetime_cd)
+    {
+        $data = [];
+        $result = $this->getDatetimeDeliveryOutbound($postal);
+        foreach ($result as $datetime) {
+            if ($datetime['datetime_cd'] === $datetime_cd) {
+                $data = $datetime;
+            }
+        }
+        return $data;
+    }
+
     public function credit()
     {
         $data = CakeSession::read('PurchaseRegister');
@@ -129,10 +154,16 @@ class PurchaseRegisterController extends MinikuraController
             return $this->redirect('/');
         }
 
+        $purchase = Hash::get($data, self::MODEL_NAME);
+        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
+        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
+        $this->set('sales_title', $sale[0]['sales_title']);
+
         if ($this->request->is('get')) {
             // 登録系フローからの戻り時
             $data = CakeSession::read('PurchaseRegister');
             if (!empty($data) && !empty($data[self::MODEL_PAYMENT_CARD])) {
+                $data[self::MODEL_PAYMENT_CARD]['security_cd'] = '';
                 $this->request->data[self::MODEL_PAYMENT_CARD] = $data[self::MODEL_PAYMENT_CARD];
             }
         }
@@ -174,6 +205,11 @@ class PurchaseRegisterController extends MinikuraController
             return $this->redirect('/');
         }
 
+        $purchase = Hash::get($data, self::MODEL_NAME);
+        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
+        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
+        $this->set('sales_title', $sale[0]['sales_title']);
+
         $sales_id = Hash::get($data, 'PaymentGMOPurchase.sales_id');
         $this->set('sales_id', $sales_id);
 
@@ -181,39 +217,110 @@ class PurchaseRegisterController extends MinikuraController
         $this->set('customerInfo', $data[self::MODEL_CUSTOMER_INFO]);
         $this->set('paymentCard', $data[self::MODEL_PAYMENT_CARD]);
 
-        if ($this->request->is('post')) {
-            // // カード情報
-            // $cardInfo = $this->request->data[self::MODEL_PAYMENT_CARD];
-            // 
-            // $this->loadModel(self::MODEL_PAYMENT_CARD);
-            // $this->PaymentGMOSecurityCard->set($this->request->data);
-            // 
-            // // Expire
-            // $this->PaymentGMOSecurityCard->setExpire($this->request->data);
-            // // ハイフン削除
-            // $this->PaymentGMOSecurityCard->trimHyphenCardNo($this->request->data);
-            // 
-            // // validates
-            // // card_seq 除外
-            // $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-            // 
-            // if ($this->PaymentGMOSecurityCard->validates()) {
-            //     // add session
-            //     $data[self::MODEL_PAYMENT_CARD] = $cardInfo;
-            //     CakeSession::write('PurchaseRegister', $data);
-            // 
-            //     return $this->redirect(['controller' => 'PurchaseRegister', 'action' => 'confirm']);
-            // } else {
-            //     return $this->render('credit');
-            // }
-        }
+        // 配送日時
+        $datetime = $this->getDatetime($data[self::MODEL_CUSTOMER_INFO]['postal'], $data[self::MODEL_CUSTOMER_INFO]['datetime_cd']);
+        $this->set('datetime', $datetime['text']);
+
     }
 
     public function complete()
     {
-        // $sales_id = $this->params['id'];
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-        // CakeLog::write(DEBUG_LOG, $sales_id);
+        $data = CakeSession::read('PurchaseRegister');
+        CakeSession::delete('PurchaseRegister');
+        // $purchase = Hash::get($data, self::MODEL_NAME);
+        if (empty($data)) {
+            return $this->redirect('/');
+        }
+
+
+        $purchase = Hash::get($data, self::MODEL_NAME);
+        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
+        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
+        $this->set('sales_title', $sale[0]['sales_title']);
+
+        if ($this->request->is('post')) {
+
+            $sales_id = Hash::get($data, 'PaymentGMOPurchase.sales_id');
+            $this->set('sales_id', $sales_id);
+
+            // ユーザー情報
+            $this->loadModel(self::MODEL_CUSTOMER_INFO);
+            $this->CustomerRegistInfo->set($data[self::MODEL_CUSTOMER_INFO]);
+            if (!$this->CustomerRegistInfo->validates()) {
+                // $this->set('validErrors', $model->validationErrors);
+                return $this->render('complete');
+            }
+
+            // カード
+            $this->loadModel(self::MODEL_PAYMENT_CARD);
+            $this->PaymentGMOSecurityCard->set($data[self::MODEL_PAYMENT_CARD]);
+            // card_seq 除外
+            $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+            if (!$this->PaymentGMOSecurityCard->validates()) {
+                // $this->set('validErrors', $model->validationErrors);
+                return $this->render('complete');
+            }
+
+            // ユーザー本登録
+            $res = $this->CustomerRegistInfo->regist();
+            if (!empty($res->error_message)) {
+                // $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'] = '';
+                // $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
+                // $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
+            }
+
+            // ログイン
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_CUSTOMER_INFO]['email'];
+            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_CUSTOMER_INFO]['password'];
+
+            $res = $this->CustomerLogin->login();
+            if (!empty($res->error_message)) {
+                // $this->Flash->set($res->error_message);
+                return $this->render('customer_add_info');
+            }
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($res->results[0]);
+            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+            $this->Customer->getInfo();
+
+            // カード登録
+            $res = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+            if (!empty($res->error_message)) {
+                // $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'add']);
+            }
+
+            // カード取得
+            $this->loadModel('PaymentGMOCard');
+            $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
+
+            // アイテム購入
+            $purchase = $data[self::MODEL_NAME];
+            $purchase = $this->PaymentGMOPurchase->setAddress($purchase, $data[self::MODEL_CUSTOMER_INFO]);
+            $purchase['datetime_cd'] = $data[self::MODEL_CUSTOMER_INFO]['datetime_cd'];
+            $purchase['card_seq'] = $default_payment['card_seq'];
+            $purchase['security_cd'] = $data[self::MODEL_PAYMENT_CARD]['security_cd'];
+
+            $this->PaymentGMOPurchase->set($purchase);
+            // address_id 除外
+            $this->PaymentGMOPurchase->validator()->remove('address_id');
+            if (!$this->PaymentGMOPurchase->validates()) {
+                // $this->Flash->set(__('empty_session_data'));
+                // return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+            }
+
+            // api
+            $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
+            if (!empty($res->error_message)) {
+                // $this->Flash->set($res->error_message);
+                // return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+            }
+
+            $this->set('email', $data[self::MODEL_CUSTOMER_INFO]['email']);
+        }
     }
 
 }
