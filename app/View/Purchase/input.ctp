@@ -8,10 +8,10 @@
     <div class="row">
       <div class="info">
         <div class="photo">
-          <img src="/market/images/item.jpg" alt="" />
+          <img src="<?php echo $sales['item_image']['0']['image_url']; ?>" alt="" />
         </div>
         <div class="caption">
-          <h3>極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007</h3>
+          <h3><?php echo h($sales['sales_title']); ?></h3>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
       </div>
       <div class="row">
         <div class="text-center btn-commit">
-          <button type="submit" class="btn">この内容で購入する（3/4）</button>
+          <button type="submit" class="btn">この内容で確認する（3/4）</button>
         </div>
       <?php echo $this->Form->end(); ?>
       </div>

@@ -8,38 +8,69 @@ App::uses('CustomerEnvAuthed', 'Model');
 class PurchaseController extends MinikuraController
 {
     const MODEL_NAME = 'PaymentGMOPurchase';
-    const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
+    const MODEL_NAME_DATETIME = 'DatetimeDeliveryOutbound';
+    const MODEL_NAME_ENTRY = 'CustomerEntry';
+    const MODEL_NAME_SALES = 'Sales';
 
     public function beforeFilter ()
     {
         // index のみログイン不要なページ
-        if ($this->action === 'index') {
+        if ($this->action === 'index' || $this->action === 'register') {
             $this->checkLogined = false;
         }
 
         parent::beforeFilter();
 
-        if ($this->action !== 'index') {
+        if ($this->action !== 'index' && $this->action !== 'register') {
             $this->set('current_email', $this->Customer->getInfo()['email']);
             $this->set('address', $this->Address->get());
             $this->set('default_payment', $this->Customer->getDefaultCard());
         }
-
-        // id
-        $this->set('sales_id', $this->params['id']);
 
         // Layouts
         $this->layout = 'market';
 
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_DATETIME);
+        $this->loadModel(self::MODEL_NAME_SALES);
+
+        if ($this->action !== 'getAddressDatetime') {
+            // id
+            if (empty($this->params['id'])) {
+                return $this->redirect('/');
+            }
+
+            $sales_id = $this->params['id'];
+            $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+            if (empty($sale)) {
+                new AppTerminalCritical(__('access_deny'), 404);
+                return;
+            }
+
+            if ($sale[0]['sales_status'] !== SALES_STATUS_ON_SALE) {
+                return $this->redirect(Configure::read('site.market.url') . $sales_id);
+            }
+
+            $this->set('sales_id', $sales_id);
+            $this->set('sales', $sale[0]);
+        }
     }
 
     public function index()
     {
         $sales_id = $this->params['id'];
-        $this->set('sales_id', $sales_id);
 
+        // 登録系フローからの戻り時
+        if ($this->request->is('get')) {
+            $data = CakeSession::read('PurchaseRegister');
+            if (!empty($data) && !empty($data[self::MODEL_NAME_ENTRY])) {
+                $data[self::MODEL_NAME_ENTRY]['password'] = '';
+                $data[self::MODEL_NAME_ENTRY]['password_confirm'] = '';
+                $this->request->data[self::MODEL_NAME_ENTRY] = $data[self::MODEL_NAME_ENTRY];
+            }
+        }
+
+        // ログイン
         if ($this->request->is('post')) {
             // login
             $this->loadModel('CustomerLogin');
@@ -91,17 +122,17 @@ class PurchaseController extends MinikuraController
         $this->autoRender = false;
 
         $address_id = $this->request->data['address_id'];
-        $result = $this->getDatetimeDeliveryKit($address_id);
+        $result = $this->getDatetimeDeliveryOutbound($address_id);
         $status = !empty($result);
 
         return json_encode(compact('status', 'result'));
     }
 
-    private function getDatetimeDeliveryKit($address_id)
+    private function getDatetimeDeliveryOutbound($address_id)
     {
         $address = $this->Address->find($address_id);
         if (!empty($address) && !empty($address['postal'])) {
-            $res = $this->DatetimeDeliveryKit->apiGet([
+            $res = $this->DatetimeDeliveryOutbound->apiGet([
                 'postal' => $address['postal'],
             ]);
             if ($res->isSuccess()) {
@@ -114,7 +145,7 @@ class PurchaseController extends MinikuraController
     private function getDatetime($address_id, $datetime_cd)
     {
         $data = [];
-        $result = $this->getDatetimeDeliveryKit($address_id);
+        $result = $this->getDatetimeDeliveryOutbound($address_id);
         foreach ($result as $datetime) {
             if ($datetime['datetime_cd'] === $datetime_cd) {
                 $data = $datetime;
@@ -139,7 +170,7 @@ class PurchaseController extends MinikuraController
             }
             $this->request->data[self::MODEL_NAME] = $data;
             if (!empty($data['address_id'])) {
-                $res_datetime = $this->getDatetimeDeliveryKit($data['address_id']);
+                $res_datetime = $this->getDatetimeDeliveryOutbound($data['address_id']);
             }
         }
 
@@ -154,16 +185,21 @@ class PurchaseController extends MinikuraController
 
         $data = Hash::get($this->request->data, self::MODEL_NAME);
         if (empty($data)) {
+            $this->set('datetime', []);
             return $this->render('input');
         }
 
+        // 販売id
         $data['sales_id'] = $sales_id;
-        $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
 
         // 配送先
         $address_id = $data['address_id'];
         $address = $this->Address->find($address_id);
         $data = $this->PaymentGMOPurchase->setAddress($data, $address);
+
+        // credit
+        $credit = $this->Customer->getDefaultCard();
+        $data['card_seq'] = $credit['card_seq'];
 
         // model data
         $this->PaymentGMOPurchase->data[self::MODEL_NAME] = $data;
@@ -191,7 +227,7 @@ class PurchaseController extends MinikuraController
             // 配送日時
             $res_datetime = [];
             if (!empty($address_id)) {
-                $res_datetime = $this->getDatetimeDeliveryKit($address_id);
+                $res_datetime = $this->getDatetimeDeliveryOutbound($address_id);
             }
             $this->set('datetime', $res_datetime);
 
@@ -215,11 +251,11 @@ class PurchaseController extends MinikuraController
 
         if ($this->PaymentGMOPurchase->validates()) {
             // api
-            // $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
-            // if (!empty($res->error_message)) {
-            //     $this->Flash->set($res->error_message);
-            //     return $this->redirect(['action' => 'input', 'id' => $sales_id]);
-            // }
+            $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+            }
 
             // 配送先
             $address_id = $data['address_id'];
@@ -236,4 +272,23 @@ class PurchaseController extends MinikuraController
         }
     }
 
+    public function register()
+    {
+        $sales_id = $this->params['id'];
+
+        if (!$this->request->is('post')) {
+            return $this->redirect('/purchase/'. $sales_id);
+        }
+
+        $this->loadModel(self::MODEL_NAME_ENTRY);
+        $this->CustomerEntry->set($this->request->data[self::MODEL_NAME_ENTRY]);
+
+        if ($this->CustomerEntry->validates()) {
+            CakeSession::write('PurchaseRegister.PaymentGMOPurchase', $this->request->data[self::MODEL_NAME]);
+            CakeSession::write('PurchaseRegister.CustomerEntry', $this->request->data['CustomerEntry']);
+            return $this->redirect(['controller' => 'PurchaseRegister', 'action' => 'address']);
+        } else {
+            return $this->render('index');
+        }
+    }
 }

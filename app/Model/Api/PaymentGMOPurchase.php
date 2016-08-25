@@ -10,6 +10,28 @@ class PaymentGMOPurchase extends ApiModel
     }
 
     public $validate = [
+        'card_seq' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'card_seq'],
+            ],
+            'isStringInteger' => [
+                'rule'     => 'isStringInteger',
+                'message'  => ['format', 'card_seq'],
+            ],
+        ],
+        'security_cd' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'security_cd'],
+            ],
+            'isCreditCardSecurityCode' => [
+                'rule' => 'isCreditCardSecurityCode',
+                'message' => ['format', 'security_cd'],
+            ],
+        ],
         'sales_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -21,6 +43,68 @@ class PaymentGMOPurchase extends ApiModel
                 'message' => ['format', 'sales_id']
             ],
         ],
+        'name' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address_name']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 59],
+                'message' => ['maxLength', 'kit_address_name', 59]
+            ],
+        ],
+        'tel1' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_tel1']
+            ],
+            'isPhoneNumberJp' => [
+                'rule' => 'isPhoneNumberJp',
+                'message' => ['format', 'kit_tel1']
+            ],
+        ],
+        'postal' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_postal']
+            ],
+            'isPostalCodeJp' => [
+                'rule' => 'isPostalCodeJp',
+                'message' => ['format', 'kit_postal']
+            ],
+        ],
+        'address' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 60],
+                'message' => ['maxLength', 'kit_address', 60]
+            ],
+        ],
+        'datetime_cd' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_datetime']
+            ],
+            'isDatetimeDelivery' => [
+                'rule' => 'isDatetimeDelivery',
+                'message' => ['format', 'kit_datetime']
+            ],
+        ],
+        'address_id' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'kit_address_name']
+            ],
+        ],
     ];
 
     public function setAddress($data, $address)
@@ -29,21 +113,10 @@ class PaymentGMOPurchase extends ApiModel
             return $data;
         }
 
-        // $data['name'] = "{$address['lastname']}　{$address['firstname']}";
-        // $data['tel1'] = $address['tel1'];
-        // $data['postal'] = $address['postal'];
-        // $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
-
-        $data['lastname'] = $address['lastname'];
-        $data['firstname'] = $address['firstname'];
-        $data['lastname_kana'] = $address['lastname_kana'];
-        $data['firstname_kana'] = $address['firstname_kana'];
+        $data['name'] = "{$address['lastname']}　{$address['firstname']}";
         $data['tel1'] = $address['tel1'];
         $data['postal'] = $address['postal'];
-        $data['pref'] = $address['pref'];
-        $data['address1'] = $address['address1'];
-        $data['address2'] = $address['address2'];
-        $data['address3'] = $address['address3'];
+        $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
 
         return $data;
     }
