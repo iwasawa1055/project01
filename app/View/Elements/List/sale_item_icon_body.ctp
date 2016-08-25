@@ -6,7 +6,10 @@
                         </div>
                         <div class="col-lg-7 col-md-7 col-xs-9">
                           <h3 class="box-item-name"><?php echo h($sales_history['sales_title']);?></h3>
-                          <p class="box-item-remarks"><?php echo h($sales_history['sales_note']);?></p>
+                          <label>価格</label>
+                          <p class="box-item-remarks"><?php echo h(floor($sales_history['price']));?>円</p>
+                          <label>商品説明</label>
+                          <p class="box-item-remarks"><?php echo nl2br(h($sales_history['sales_note']));?></p>
                         </div>
                         <div class="col-lg-3 col-md-3 col-xs-12">
                           <a class="btn btn-danger btn-md btn-detail pull-right animsition-link" href="<?php echo $url;?>">アイテムを確認する</a>

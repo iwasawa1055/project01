@@ -15,6 +15,12 @@ class SaleController extends MinikuraController
     const MODEL_NAME_CUSTOMER_SALES = 'CustomerSales';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
+    //* for test 
+    protected $paginate = array(
+        'limit' => 5,
+        'paramType' => 'querystring'
+    );
+
     public function beforeFilter () {
         parent::beforeFilter(); 
         $this->loadModel(self::MODEL_NAME_SALES);
@@ -30,6 +36,7 @@ class SaleController extends MinikuraController
     public function index()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->params, true));
 
         //*  販売機能　設定状況 
         $customer_sales = null;
@@ -66,24 +73,21 @@ class SaleController extends MinikuraController
         //* UI select
         $sales_status = $this->request->query('sales_status') ?  $this->request->query('sales_status') : SALES_STATUS_ON_SALE;
         $this->set('sales_status', $sales_status);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_status, true));
 
         //* todo 販売履歴
         $sales = null;
         $sales_result = $this->Sales->apiGet(['sales_status' => $sales_status]);
         if (!empty($sales_result->results)) {
-            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
             $sales =  $sales_result->results;
         }
-        $this->set('sales', $sales);
         $list = $this->paginate($sales);
-        $this->set('history', $list);
+        $this->set('sales', $list);
 
     }
 
 
     /**
-     * 暫定 edit 販売設定 on/off 実行
+     *  edit 販売設定 on/off 実行
      */
     public function edit()
     {
@@ -109,9 +113,6 @@ class SaleController extends MinikuraController
                 $this->set('is_customer_sales', $this->Customer->isCustomerSales());
             }
         }
-
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_CUSTOMER_SALES), true));
-
     }
 
     /**

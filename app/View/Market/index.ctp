@@ -1,3 +1,8 @@
+<?php $this->Html->css('lightbox.min', ['block' => 'css']); ?>
+<?php $this->Html->script('lightbox.min', ['block' => 'scriptMinikura']);?>
+<!--
+<script src="<?php echo Configure::read('site.mypage.url');?>/js/lightbox.min..js"></script>
+-->
 <section id="detail">
   <div class="container">
   <?php if (! empty($sales)):?>
@@ -7,10 +12,11 @@
     <div class="row">
       <div class="info">
         <div class="photo">
-          <img src="<?php echo $sales['item_image'][0]['image_url'] ;?>" alt="" />
+          <a href="<?php echo $sales['item_image'][0]['image_url']; ?>" data-lightbox="item-photo" data-title="<?php echo h($sales['sales_title']); ?>">
+          <img src="<?php echo $sales['item_image'][0]['image_url']; ?>" alt="<?php echo $sales['sales_title']; ?>" ></a>
         </div>
         <div class="caption">
-          <p><?php echo h($sales['sales_note']);?></p>
+          <p><?php echo nl2br( h($sales['sales_note']) );?></p>
           <p class="price">価格：<?php echo h(floor($sales['price']));?>円</p>
         </div>
       </div>

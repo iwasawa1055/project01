@@ -99,6 +99,17 @@ class SaleItemController extends MinikuraController
                 $box = $item['box'];
                 $this->set('box', $box);
 
+                //* sales 
+                $sales_result = $this->Sales->apiGet(['item_id' => $id, 'sales_status' => SALES_STATUS_ON_SALE ]);
+                if (!empty($sales_result->results[0])) {
+                    $sales = $sales_result->results[0];
+                    $sales_id = $sales['sales_id'];
+                    //* market page url
+                    $market_url = Configure::read('site.market.url').$sales_id;
+                }
+                $this->set('sales', $sales);
+                $this->set('market_url', $market_url);
+
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
                 //todo render

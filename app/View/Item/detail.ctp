@@ -107,7 +107,7 @@
                                           </div>
                                           <div class="form-group">
                                             <label>商品説明</label>
-                                            <?php echo h( $sales['sales_note']);?>
+                                            <?php echo nl2br(h( $sales['sales_note']));?>
                                           </div>
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
 

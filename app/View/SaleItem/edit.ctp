@@ -77,11 +77,11 @@
 
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/complete/", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <label>販売名</label>
-                                          <p class="form-control-static"><?php echo $this->Form->data['Sales']['sales_title'];?></p>
+                                          <p class="form-control-static"><?php echo h($this->Form->data['Sales']['sales_title']);?></p>
                                           <label>販売価格</label>
                                           <p class="form-control-static"><?php echo $this->Form->data['Sales']['price'];?>円</p>
                                           <label>商品説明</label>
-                                          <p class="form-control-static"><?php echo $this->Form->data['Sales']['sales_note'];?></p>
+                                          <p class="form-control-static"><?php echo nl2br(h($this->Form->data['Sales']['sales_note']));?></p>
                                           <a class="btn btn-info btn-xs btn-block animsition-link" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura利用規約</a>
                                           <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >利用規約に同意して販売する</button>
                                         <?php /* 必要次第 hiddenでid APIでき次第 */ ?>

@@ -31,8 +31,6 @@ class MarketController extends MinikuraController
      */
     public function index()
     {
-        CakeLog::write(DEBUG_LOG, __METHOD__."(line=". __LINE__ .")\n" . Configure::read('market.url'));
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->params, true));
 
         $this->loadModel(self::MODEL_NAME_SALES);

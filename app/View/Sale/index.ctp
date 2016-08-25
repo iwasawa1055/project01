@@ -125,27 +125,21 @@
                 <h2>販売履歴</h2>
                 <div class="row box-sort">
                   <div class="col-sm-12 col-xs-12">
-                  <?php 
-                  /*
-                      $master_sales_status_array = [];
-                      foreach($master_sales_status_list as $master_sales_status){
-                          $master_sales_status_array[$master_sales_status['sales_status']] = $master_sales_status['sales_status_name'];
-                      } 
-                  */
-                  ?>
                   <?php echo $this->Form->select('jquery_sales_status', $master_sales_status_array,  ['class' => 'form-control', 'value' => $sales_status ,  'empty' => false, 'error' => false]);?>
                   </div>
                 </div>
                 <!--loop-->
                 <div class="col-lg-12">
-                  <?php if (!empty($sales)):?>
+                <?php if (!empty($sales)):?>
                   <?php foreach($sales as $sales_history):?>
                   <div class="panel panel-default">
                     <?php echo $this->element('List/sale_item_icon_body', ['sales_history' => $sales_history]); ?>
                     <?php echo $this->element('List/sale_item_icon_footer', ['sales_history' => $sales_history]); ?>
                   </div>
                   <?php endforeach;?>
-                  <?php endif;?>
+                <?php else:?>
+                  <p class="form-control-static col-lg-12">該当する販売履歴がありません</p>
+                <?php endif;?>
                 </div>
                 <!--loop end-->
               </div>
