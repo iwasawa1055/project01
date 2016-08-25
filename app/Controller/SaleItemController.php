@@ -29,7 +29,7 @@ class SaleItemController extends MinikuraController
 
     /**
      * 暫定 edit
-     * アイテムページのdetail()から遷移してくる
+     * アイテムページのitem/detail/から遷移 
      */
     public function edit()
     {
@@ -99,6 +99,17 @@ class SaleItemController extends MinikuraController
                 $box = $item['box'];
                 $this->set('box', $box);
 
+                //* sales 
+                $sales_result = $this->Sales->apiGet(['item_id' => $id, 'sales_status' => SALES_STATUS_ON_SALE ]);
+                if (!empty($sales_result->results[0])) {
+                    $sales = $sales_result->results[0];
+                    $sales_id = $sales['sales_id'];
+                    //* market page url
+                    $market_url = Configure::read('site.market.url').$sales_id;
+                }
+                $this->set('sales', $sales);
+                $this->set('market_url', $market_url);
+
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
                 //todo render
@@ -121,13 +132,15 @@ class SaleItemController extends MinikuraController
             $data = $this->request->data[self::MODEL_NAME_SALES];
             $id = $data['item_id'];
             $this->Sales->set($data);
-            if ( $this->Sales->validates()) {
+            if ( $this->Sales->validates(['fieldList' => ['sales_id']])) {
                 //* to API
-                
-                CakeSession::write(self::MODEL_NAME_SALES, $data);
+                $sales_put_result = $this->Sales->apiPut($data);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_put_result, true));
+                //todo error
 
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
+                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
                 //todo render
             }
             //* 表示用

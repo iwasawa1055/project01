@@ -1,30 +1,37 @@
+<?php $this->Html->css('lightbox.min', ['block' => 'css']); ?>
+<?php $this->Html->script('lightbox.min', ['block' => 'scriptMinikura']);?>
+<!--
+<script src="<?php echo Configure::read('site.mypage.url');?>/js/lightbox.min..js"></script>
+-->
 <section id="detail">
   <div class="container">
+  <?php if (! empty($sales)):?>
     <div>
-      <h2>極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007極美品 NIKE FLYKNIT RACER us9 jp27cm フライニット 007</h2>
+      <h2><?php echo h($sales['sales_title']);?></h2>
     </div>
     <div class="row">
       <div class="info">
         <div class="photo">
-          <img src="<?php echo Configure::read('site.mypage.url');?>/market/images/item.jpg" alt="" />
+          <a href="<?php echo $sales['item_image'][0]['image_url']; ?>" data-lightbox="item-photo" data-title="<?php echo h($sales['sales_title']); ?>">
+          <img src="<?php echo $sales['item_image'][0]['image_url']; ?>" alt="<?php echo $sales['sales_title']; ?>" ></a>
         </div>
         <div class="caption">
-          <p>1回着用のみの為、目立つダメージなどはなく美品です。あくまで個人的見解、素人保管ですので神経質な方の入札はお控え下さい。
-            落札後24時間以内のご連絡、72時間以内のお支払いが可能な方のみ、入札願います。
-            新規の方や、評価の悪い方の入札はご遠慮下さい。
-            こちらで削除させていただきます。
-            1回着用のみの為、目立つダメージなどはなく美品です。あくまで個人的見解、素人保管ですので神経質な方の入札はお控え下さい。
-            落札後24時間以内のご連絡、72時間以内のお支払いが可能な方のみ、入札願います。
-            新規の方や、評価の悪い方の入札はご遠慮下さい。
-            こちらで削除させていただきます。</p>
-          <p class="price">価格：000,000,000,000,000円</p>
+          <p><?php echo nl2br( h($sales['sales_note']) );?></p>
+          <p class="price">価格：<?php echo h(floor($sales['price']));?>円</p>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="text-center btn-commit">
-        <a href="<?php echo Configure::read('site.mypage.url');?>/purchase/99999" class="animsition-link btn">この商品を購入する</a>
+        <a href="<?php echo Configure::read('site.mypage.url');?>/purchase/<?php echo h($sales['sales_id']);?>" class="animsition-link btn">この商品を購入する</a>
       </div>
     </div>
+    
+  <?php else:?>
+    <div>
+      <h2 class="text-center">該当の商品が存在しません</h2>
+    </div>
+
+  <?php endif;?>
   </div>
 </section>

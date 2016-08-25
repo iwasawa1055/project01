@@ -27,6 +27,12 @@ class Sales extends ApiModel
     }
 
     public $validate = [
+        'sales_id' => [
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'message' => ['format', 'sales_id']
+            ],
+        ],
         'sales_title' => [
             'notBlank' => [
                 'rule' => 'notBlank',

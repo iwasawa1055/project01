@@ -306,9 +306,7 @@ class CustomerComponent extends Component
         if ($this->isLogined()) {
             $o = new CustomerSales();
             $result = $o->apiGet();
-            if (!empty($result->error_message)) {
-                return false;
-            } else {
+            if (!empty($result->results[0])) {
                 $customer_sales = $result->results[0];
                 if ($customer_sales['sales_flag'] === '1') {
                     return true;
@@ -316,5 +314,10 @@ class CustomerComponent extends Component
             }
         }
         return false;
+    }
+
+    public function getCustomerBankAccount()
+    {
+        return $this->data->getCustomerBankAccount();
     }
 }

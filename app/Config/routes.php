@@ -3,6 +3,7 @@
 if (! empty($_SERVER['REQUEST_URI'])) {
     switch (true) {
         case preg_match('{^/market}i', $_SERVER['REQUEST_URI']):
+            Router::connect('/:id', ['controller' => 'Market', 'action' => 'index'], ['id' => '[A-Z\-0-9]+']);
             Router::connect('/input/*', ['controller' => 'Market', 'action' => 'input']);
             Router::connect('/confirm/*', ['controller' => 'Market', 'action' => 'confirm']);
             Router::connect('/complete/*', ['controller' => 'Market', 'action' => 'complete']);

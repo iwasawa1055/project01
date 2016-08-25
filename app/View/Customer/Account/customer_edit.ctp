@@ -12,14 +12,13 @@
               <div class="col-lg-12">
                 <h2>現在の金融機関情報変更</h2>
                 <div class="col-lg-12">
-                  <p class="form-control-static">xxxxxxxx銀行　xxxxxxxx支店　普通　0000000000</p>
-                  <p><?php  debug($customer_account['bank_name']); ?></p>
+                  <p class="form-control-static"><?php echo h($customer_account['bank_name']);?>銀行　<?php echo h($customer_account['bank_branch_name']);?>支店　<?php echo BANK_ACCOUNT_TYPE[$customer_account['bank_account_type']];?>　<?php echo h($customer_account['bank_account_number']);?></p>
                 </div>
               </div>
 
-              <?php echo $this->Form->create('CustomerAccount', ['url' => ['controller' => 'Account' , 'action' => 'confirm','step' => 'edit'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+              <?php echo $this->Form->create('CustomerAccount', ['url' => ['controller' => 'account' , 'action' => 'confirm', 'step' => 'edit'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12">
-                <h2>変更する金融機関情報変更</h2>
+                <h2>変更する金融機関情報</h2>
 
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerAccount.bank_name', ['class' => 'form-control', 'placeholder' => '金融機関名', 'error' => false]);?>

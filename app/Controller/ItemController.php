@@ -7,6 +7,7 @@ class ItemController extends MinikuraController
 {
     const MODEL_NAME = 'InfoItem';
     const MODEL_NAME_ITEM_EDIT = 'Item';
+    const MODEL_NAME_SALES = 'Sales';
 
     protected $paginate = array(
         'limit' => 20,
@@ -22,6 +23,7 @@ class ItemController extends MinikuraController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoBox');
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);
+        $this->loadModel(self::MODEL_NAME_SALES);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -225,9 +227,30 @@ class ItemController extends MinikuraController
         //* 販売機能
         $customer_sales = $this->Customer->isCustomerSales();
         $this->set('customer_sales', $customer_sales);
-        //* 販売設定がon　&& アイテムの設定が販売中になっているか APIできるまでtest_flg
-        $sale_item = ['value' => '1', 'sale_test_flg' => '1'];
-        $this->set('sale_item', $sale_item);
+        //* 販売情報 
+        /*
+        *  todo statusで指定しgetするので良いか、statusなしでselectしてUI側で分岐するべきか 
+        *  sales_status=1 販売中は1レコード想定、のsales_idは必要=>sns貼り付け用URL作成,販売キャンセル用
+        *  sales_status=2 購入手続き中は1レコードの想定、購入&預け入れ&ヤフオク出来ない
+        *  sales_status=3 振り込み可能は1レコードの想定、購入&預け入れ&ヤフオク出来ない
+        *  sales_status=4 送金依頼中は1レコードの想定 購入&預け入れ&ヤフオク出来ない
+        *  sales_status=5 送金保留は1レコードの想定
+        *  sales_status=6 送金済みは1レコードの想定,売却済みなので購入&預け入れ&ヤフオク出来ない
+        *  sales_status=7 購入キャンセルは複数レコードの想定、breakできる
+        *  sales_status=8 販売キャンセルは複数レコードの想定、breakできる
+        */
+        $sales = null;
+        $market_url = null;
+        $sales_result = $this->Sales->apiGet(['item_id' => $id, 'sales_status' => SALES_STATUS_ON_SALE ]);
+        if (!empty($sales_result->results[0])) {
+            $sales = $sales_result->results[0];
+            $sales_id = $sales['sales_id'];
+            //* market page url
+            $market_url = Configure::read('site.market.url').$sales_id;
+        }
+        $this->set('sales', $sales);
+        $this->set('market_url', $market_url);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
 
     
     }

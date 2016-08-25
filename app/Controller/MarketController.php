@@ -13,7 +13,7 @@ App::uses('MinikuraController', 'Controller');
 */
 class MarketController extends MinikuraController
 {
-    const MODEL_NAME = 'Market';
+    const MODEL_NAME_SALES = 'Sales';
 
     // アクセス許可
     protected $checkLogined = false;
@@ -31,8 +31,18 @@ class MarketController extends MinikuraController
      */
     public function index()
     {
-        CakeLog::write(DEBUG_LOG, __METHOD__."(line=". __LINE__ .")\n" . Configure::read('market.url'));
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->params, true));
+
+        $this->loadModel(self::MODEL_NAME_SALES);
+        $sales = null;
+        $id = $this->params['id'];
+        $sales_result = $this->Sales->apiGet(['sales_id' => $id, 'sales_status' => SALES_STATUS_ON_SALE ]);
+        if (!empty($sales_result->results[0])) {
+            $sales = $sales_result->results[0];
+        }
+        $this->set('sales', $sales);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
+        //* todo sales_status=1 販売中　以外の見せ方
 
     }
 

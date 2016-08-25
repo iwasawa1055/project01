@@ -59,7 +59,7 @@
                         <?php endif; ?>
                       </div>
 
-                      <?php /* test item sale*/?>
+                      <?php /* sales */?>
                       <?php if(! empty($customer_sales) ) :?>
                           <div class="col-lg-6 col-md-6 col-xs-12 sale">
                             <div class="col-xs-12 col-lg-12">
@@ -72,9 +72,8 @@
                                     <div class="col-lg-12">
                                       <div class="row">
                                         <div class="col-lg-12">
-                                        <?php /*test sale=onなら入力欄、既に販売中ならtext表示  */ $sale_item['sale_test_flg'] = 0;?>
 
-                                        <?php if ( empty($sale_item['sale_test_flg'])):?>
+                                        <?php if ( empty($sales) ):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
                                             <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
@@ -95,36 +94,37 @@
                                           <?php echo $this->Form->end(); ?>
                                         <?php endif;?>
 
-                                        <?php /*販売中かstatus確認して、snsでシェアするボタンを表示  todo Form->inputではなく、DBの値をreadonly  */ ?>
-                                        <?php if (! empty($sale_item['sale_test_flg'])):?>
+                                        <?php /*販売中status 販売を止める , snsでシェアするボタンを表示  */ ?>
+                                        <?php if (! empty($sales['sales_status']) && $sales['sales_status'] === '1'):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
-                                            <?php echo $this->Form->error('Sales.sales_title', null, ['wrap' => 'p']);?>
+                                            <label>販売名</label>
+                                            <?php echo h( $sales['sales_title']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
-                                            <?php echo $this->Form->error('Sales.price', null, ['wrap' => 'p']);?>
+                                            <label>価格</label>
+                                            <?php echo h( floor($sales['price']));?>円
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
-                                            <?php echo $this->Form->error('Sales.sales_note', null, ['wrap' => 'p']);?>
+                                            <label>商品説明</label>
+                                            <?php echo nl2br(h( $sales['sales_note']));?>
                                           </div>
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
 
-                                          <?php $url = "https://minikura.com"; ?>
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
-                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($url); ?>&t=" >
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($market_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>
-                                          <?php $url = null; ?>
                                           <a class="btn btn-block btn-social btn-xs btn-twitter"
-                                             href="https://twitter.com/share?url=<?php echo h($url); ?>&text=" >
+                                             href="https://twitter.com/share?url=<?php echo h($market_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
                                           <?php /* sns貼り付け用 url作成 */ ?>
-                                          <input class="form-control" id="copy-sns-url"  value="http://mock23.minikura.com/item/detail.html">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($market_url);?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
+                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($market_url);?>"></iframe>'>
+                                          <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>
+                                          <?php echo $this->Form->hidden('Sales.sales_id', ['value' => $sales['sales_id']]); ?>
                                           <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>
                                           <?php echo $this->Form->end(); ?>
                                         <?php endif;?>
@@ -137,7 +137,7 @@
                             </div>
                           </div>
                       <?php endif;?>
-                      <?php /* test item sale*/?>
+                      <?php /* sales */?>
 
                       <div class="col-lg-12 col-md-12 col-xs-12 item-detail-text">
                         <p class="box_note"><?php echo nl2br(h($item['item_note'])); ?></p>

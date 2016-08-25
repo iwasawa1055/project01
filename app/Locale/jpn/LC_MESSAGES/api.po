@@ -200,6 +200,9 @@ msgstr "IPアドレスが不正"
 msgid "400 Parameter Invalid - sales_flag"
 msgstr "販売設定が不正"
 
+msgid "400 Record Already - sales_status"
+msgstr "販売中の商品があります。全てキャンセルをして、再度お試しください"
+
 msgid "400 Parameter Unknown"
 msgstr "不明パラメーター"
 

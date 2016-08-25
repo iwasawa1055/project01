@@ -1,4 +1,4 @@
-	<div class="row">
+    <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
       </div>
@@ -11,13 +11,17 @@
               <div class="col-lg-12">
                 <h2>ご登録済みの金融機関情報</h2>
                 <div class="form-group col-lg-12">
-                  <p class="form-control-static">xxxxxxxx銀行　xxxxxxxx支店　普通　0000000000</p>
+                  <?php if(! empty($customer_account)):?>
+                  <p class="form-control-static"><?php echo h($customer_account['bank_name']);?>銀行　<?php echo h($customer_account['bank_branch_name']);?>支店　<?php echo BANK_ACCOUNT_TYPE[$customer_account['bank_account_type']];?>　<?php echo h($customer_account['bank_account_number']);?></p>
+                  <?php else:?>
+                  <p class="form-control-static">未登録です</p>
+                  <?php endif;?>
                 </div>
-                <?php $update_flag = true;  /* todo 分岐*/    ?>
-                <?php if ( $update_flag ): ?>
+                <?php if(! empty($customer_account)):?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/edit">変更する</a>
                 </span>
+                <?php else:?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/add">新規作成する</a>
                 </span>

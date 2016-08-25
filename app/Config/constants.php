@@ -318,3 +318,13 @@ const BANK_ACCOUNT_TYPE = [
     '1' => '普通',
     '2' => '当座',
 ];
+
+//* 販売機能 ステータス
+const SALES_STATUS_ON_SALE = '1';
+const SALES_STATUS_IN_PURCHASE = '2';
+const SALES_STATUS_TRANSFER_ALLOWED = '3';
+const SALES_STATUS_IN_ORDER = '4';
+const SALES_STATUS_PENDING = '5';
+const SALES_STATUS_REMITTANCE_COMPLETED = '6';
+const SALES_STATUS_PURCHASE_CANCEL = '7';
+const SALES_STATUS_SALES_CANCEL = '8';
