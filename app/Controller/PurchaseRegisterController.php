@@ -29,16 +29,21 @@ class PurchaseRegisterController extends MinikuraController
         if (empty($data) || empty($purchase['sales_id'])) {
             return $this->redirect('/');
         }
+
+        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
+        if (empty($sale)) {
+            new AppTerminalCritical(__('access_deny'), 404);
+            return;
+        }
+
+        if ($sale[0]['sales_status'] !== '1') {
+            return $this->redirect(Configure::read('site.static_content_url') . '/market/' . $purchase['sales_id']);
+        }
     }
 
     public function address()
     {
         $data = CakeSession::read('PurchaseRegister');
-        // $purchase = Hash::get($data, self::MODEL_NAME);
-        if (empty($data)) {
-            return $this->redirect('/');
-        }
-
         $purchase = Hash::get($data, self::MODEL_NAME);
         $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
         $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
@@ -149,11 +154,6 @@ class PurchaseRegisterController extends MinikuraController
     public function credit()
     {
         $data = CakeSession::read('PurchaseRegister');
-        // $purchase = Hash::get($data, self::MODEL_NAME);
-        if (empty($data)) {
-            return $this->redirect('/');
-        }
-
         $purchase = Hash::get($data, self::MODEL_NAME);
         $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
         $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
@@ -200,11 +200,6 @@ class PurchaseRegisterController extends MinikuraController
     public function confirm()
     {
         $data = CakeSession::read('PurchaseRegister');
-        // $purchase = Hash::get($data, self::MODEL_NAME);
-        if (empty($data)) {
-            return $this->redirect('/');
-        }
-
         $purchase = Hash::get($data, self::MODEL_NAME);
         $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
         $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
@@ -226,13 +221,6 @@ class PurchaseRegisterController extends MinikuraController
     public function complete()
     {
         $data = CakeSession::read('PurchaseRegister');
-        CakeSession::delete('PurchaseRegister');
-        // $purchase = Hash::get($data, self::MODEL_NAME);
-        if (empty($data)) {
-            return $this->redirect('/');
-        }
-
-
         $purchase = Hash::get($data, self::MODEL_NAME);
         $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
         $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
@@ -320,6 +308,7 @@ class PurchaseRegisterController extends MinikuraController
             }
 
             $this->set('email', $data[self::MODEL_CUSTOMER_INFO]['email']);
+            CakeSession::delete('PurchaseRegister');
         }
     }
 

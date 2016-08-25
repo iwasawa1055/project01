@@ -27,9 +27,6 @@ class PurchaseController extends MinikuraController
             $this->set('default_payment', $this->Customer->getDefaultCard());
         }
 
-        // id
-        $this->set('sales_id', $this->params['id']);
-
         // Layouts
         $this->layout = 'market';
 
@@ -37,15 +34,31 @@ class PurchaseController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_DATETIME);
         $this->loadModel(self::MODEL_NAME_SALES);
 
+        if ($this->action !== 'getAddressDatetime') {
+            // id
+            if (empty($this->params['id'])) {
+                return $this->redirect('/');
+            }
+
+            $sales_id = $this->params['id'];
+            $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
+            if (empty($sale)) {
+                new AppTerminalCritical(__('access_deny'), 404);
+                return;
+            }
+
+            if ($sale[0]['sales_status'] !== '1') {
+                return $this->redirect(Configure::read('site.static_content_url') . '/market/' . $sales_id);
+            }
+
+            $this->set('sales_id', $sales_id);
+            $this->set('sales', $sale[0]);
+        }
     }
 
     public function index()
     {
         $sales_id = $this->params['id'];
-        $this->set('sales_id', $sales_id);
-
-        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
-        $this->set('sales', $sale[0]);
 
         // 登録系フローからの戻り時
         if ($this->request->is('get')) {
@@ -143,12 +156,6 @@ class PurchaseController extends MinikuraController
 
     public function input()
     {
-        $sales_id = $this->params['id'];
-        $this->set('sales_id', $sales_id);
-
-        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
-        $this->set('sales', $sale[0]);
-
         $isBack = Hash::get($this->request->query, 'back');
         $res_datetime = [];
         $data = CakeSession::read(self::MODEL_NAME);
@@ -175,10 +182,6 @@ class PurchaseController extends MinikuraController
     public function confirm()
     {
         $sales_id = $this->params['id'];
-        $this->set('sales_id', $sales_id);
-
-        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
-        $this->set('sales', $sale[0]);
 
         $data = Hash::get($this->request->data, self::MODEL_NAME);
         if (empty($data)) {
@@ -235,10 +238,6 @@ class PurchaseController extends MinikuraController
     public function complete()
     {
         $sales_id = $this->params['id'];
-        $this->set('sales_id', $sales_id);
-
-        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
-        $this->set('sales', $sale[0]);
 
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
@@ -276,10 +275,6 @@ class PurchaseController extends MinikuraController
     public function register()
     {
         $sales_id = $this->params['id'];
-        $this->set('sales_id', $sales_id);
-
-        $sale = $this->Sales->apiGetSale(['sales_id' => $sales_id]);
-        $this->set('sales', $sale[0]);
 
         if (!$this->request->is('post')) {
             return $this->redirect('/purchase/'. $sales_id);
