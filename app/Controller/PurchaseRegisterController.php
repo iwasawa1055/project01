@@ -37,7 +37,7 @@ class PurchaseRegisterController extends MinikuraController
         }
 
         if ($sale[0]['sales_status'] !== SALES_STATUS_ON_SALE) {
-            return $this->redirect(Configure::read('site.static_content_url') . '/market/' . $purchase['sales_id']);
+            return $this->redirect(Configure::read('site.market.url') . $purchase['sales_id']);
         }
     }
 

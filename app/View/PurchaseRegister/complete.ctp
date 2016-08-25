@@ -26,7 +26,7 @@
       </div>
       <div class="row">
         <div class="text-center btn-commit">
-          <a href="<?php echo Configure::read('site.static_content_url'); ?>/market/<?php echo $sales_id; ?>" class="animsition-link btn">この商品のページに戻る</a>
+          <a href="<?php echo Configure::read('site.market.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn">この商品のページに戻る</a>
         </div>
       </div>
     </div>

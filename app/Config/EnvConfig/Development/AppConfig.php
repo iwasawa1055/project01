@@ -19,30 +19,32 @@ switch (true) {
     //** 
     //case $_SERVER['SERVER_NAME'] === 'goto-contents.minikura.com':
     case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 'osada-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://osada-mypage.minikura.com';
+        $config['site.market.url'] = 'https://osada-contents.minikura.com/market/';
         break;
 
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
-        $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
     case $_SERVER['SERVER_NAME'] === 'goto-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
         $config['site.market.url'] = 'https://goto-contents.minikura.com/market/';
         break;
         
     case $_SERVER['HTTP_HOST'] === 'harasawa.minikura.com':
-        $config['site.mypage.url'] = 'https://harasawa-mypage.minikura.com';
     case $_SERVER['SERVER_NAME'] === 'harasawa-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://harasawa-mypage.minikura.com';
         $config['site.market.url'] = 'https://harasawa.minikura.com/market/';
         break;
 
     case $_SERVER['HTTP_HOST'] === 'maekawa-contents.minikura.com':
-        $config['site.mypage.url'] = 'https://maekawa-mypage.minikura.com';
     case $_SERVER['SERVER_NAME'] === 'maekawa-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://maekawa-mypage.minikura.com';
         $config['site.market.url'] = 'https://maekawa-contents.minikura.com/market/';
         break;
         
     case $_SERVER['HTTP_HOST'] === 'rikiji-contents.minikura.com':
-        $config['site.mypage.url'] = 'https://rikiji-mypage.minikura.com';
     case $_SERVER['SERVER_NAME'] === 'rikiji-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://rikiji-mypage.minikura.com';
         $config['site.market.url'] = 'https://rikiji-contents.minikura.com/market/';
         break;
 
