@@ -61,5 +61,17 @@ class Sales extends ApiModel
         ],
     ];
 
+    //* sumPrice
+    public function sumPrice($_data)
+    {
+        $total_price = 0;
+        if (empty($_data)) {
+            return $total_price;
+        }
+        foreach ($_data as $sales) {
+            $total_price += $sales['price'];
+        }
+        return $total_price;
+    }
 }
 

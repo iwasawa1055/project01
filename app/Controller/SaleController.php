@@ -13,6 +13,7 @@ class SaleController extends MinikuraController
     const MODEL_NAME_SALES_STATUS = 'SalesStatus';
     const MODEL_NAME_CUSTOMER_ACCOUNT = 'CustomerAccount';
     const MODEL_NAME_CUSTOMER_SALES = 'CustomerSales';
+    const MODEL_NAME_TRANSFER = 'Transfer';
     const MODEL_NAME_INFO_ITEM = 'InfoItem';
 
     //* for test 
@@ -27,6 +28,7 @@ class SaleController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_SALES_STATUS);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_ACCOUNT);
         $this->loadModel(self::MODEL_NAME_CUSTOMER_SALES);
+        $this->loadModel(self::MODEL_NAME_TRANSFER);
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }
 
@@ -36,7 +38,6 @@ class SaleController extends MinikuraController
     public function index()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->params, true));
 
         //*  販売機能　設定状況 
         $customer_sales = null;
@@ -116,24 +117,65 @@ class SaleController extends MinikuraController
     }
 
     /**
-     * 暫定 order 振り込み依頼 
+     *  transfer 振り込み依頼 
      */
-    public function order()
+    public function transfer()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+
+        if ($this->request->is('get')) {
+            //* 口座情報
+            $customer_bank_account = null;
+            if (!empty($this->Customer->getCustomerBankAccount())){
+                $customer_bank_account = $this->Customer->getCustomerBankAccount();
+            }
+            $this->set('customer_bank_account', $customer_bank_account);
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
+
+            //* todo 振り込み可能リスト 金額
+            $sales = null;
+            $transfer_price = 0;
+            $sales_result = $this->Sales->apiGet(['sales_status' => SALES_STATUS_TRANSFER_ALLOWED]);
+            if (!empty($sales_result->results)) {
+                $transfer_price = $this->Sales->sumPrice($sales_result->results);
+                $sales =  $sales_result->results;
+            }
+            $this->set('sales', $sales);
+            $this->set('transfer_price', $transfer_price);
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($transfer_price, true));
+
+        }
+
+
 
     }
 
     /**
-     * 暫定 order_complete 振り込みpost 
+     * 暫定 transfer_complete 振り込みpost 
      */
-    public function order_complete()
+    public function transfer_complete()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+
+        if ($this->request->is('get')) {
+            //* todo error
+        }
 
         if ($this->request->is('post')) {
-            //* To APIでき次第
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
+            //*  API parameterはtokenのみ　validate不要
+            $data = [];
+            $transfer_result = $this->Transfer->apiPost($data); 
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($transfer_result, true));
+            
+            if (!empty($transfer_result->results[0])) {
+                $this->set('transfer_result', $transfer_result->results[0]);
+            }
+            //* todo error
+            if (!empty($transfer_result->error_message)) {
+                $this->set('error_message', $transfer_result->error_message);
+            }
         }
 
     }

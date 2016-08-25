@@ -62,11 +62,10 @@
                 <?php if(! empty($customer_bank_account)):?>
                   <?php echo h($customer_bank_account['bank_name']);?>銀行　<?php echo h($customer_bank_account['bank_branch_name']);?>支店　<?php echo BANK_ACCOUNT_TYPE[$customer_bank_account['bank_account_type']];?>　<?php echo h($customer_bank_account['bank_account_number']);?>
                 <?php endif;?>
-                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>
-                    から変更してください。 </p>
+                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>から変更してください。 </p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-danger btn-md" href="/sale/order/">振込を依頼する</a>
+                <a class="btn btn-danger btn-md" href="/sale/transfer/">振込を依頼する</a>
                 </span>
                 <div class="form-group col-lg-12 col-sm-12">
                   <h3>振込依頼履歴</h3>
