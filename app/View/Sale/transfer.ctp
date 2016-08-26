@@ -16,10 +16,12 @@
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
                 <?php if(! empty($customer_bank_account)):?>
-                  <?php echo h($customer_bank_account['bank_name']);?>銀行　<?php echo h($customer_bank_account['bank_branch_name']);?>支店　<?php echo BANK_ACCOUNT_TYPE[$customer_bank_account['bank_account_type']];?>　<?php echo h($customer_bank_account['bank_account_number']);?>
+                  <?php echo h($customer_bank_account['bank_name']);?>　<?php echo h($customer_bank_account['bank_branch_name']);?>　<?php echo BANK_ACCOUNT_TYPE[$customer_bank_account['bank_account_type']];?>　<?php echo h($customer_bank_account['bank_account_number']);?>
                 <?php endif;?>
                   <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a> から変更してください。 </p>
                 </div>
+
+                <?php if (floor($transfer_price) > '0' && !empty($customer_bank_account) ):?>
                 <p class="form-control-static point col-lg-12">上記の内容で振込依頼をしますか？</p>
                 <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'transfer_complete']]); ?>
                 <span class="col-lg-12 col-md-12 col-xs-12">
@@ -29,6 +31,14 @@
                   <a class="btn btn-primary btn-lg btn-block" href="/sale/index/">戻る</a>
                 </span>
                 <?php echo $this->Form->end(); ?>
+                <?php else:?>
+                <span class="col-lg-12 col-md-12 col-xs-12">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block" disabled="disabled">振込依頼する</button>
+                </span>
+                <span class="col-lg-12 col-md-12 col-xs-12">
+                  <a class="btn btn-primary btn-lg btn-block" href="/sale/index/">戻る</a>
+                </span>
+                <?php endif;?>
 
                 <?php if (! empty($sales)):?>
                   <div class="table-responsive">

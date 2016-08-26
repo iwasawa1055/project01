@@ -84,16 +84,20 @@
                                           <p class="form-control-static"><?php echo nl2br(h($this->Form->data['Sales']['sales_note']));?></p>
                                           <a class="btn btn-info btn-xs btn-block animsition-link" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura利用規約</a>
                                           <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >利用規約に同意して販売する</button>
-                                        <?php /* 必要次第 hiddenでid APIでき次第 */ ?>
                                         <?php echo $this->Form->end(); ?>
                                         <?php endif; ?>
 
+                                        <?php echo($this->Form->data['Sales']['sales_id']);?>
+                                        <?php echo($this->Form->data['Sales']['sales_title']);?>
+                                        <?php echo($this->data['Sales']['sales_title']);?>
+
+                                        <?php if (! empty($this->Form->data['Sales']['sales_id'])):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
-                                          <?php /* item　表示用 */ ?>
-                                          <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>
-                                        <?php /* 必要次第 hiddenでid APIでき次第 販売cancel処理用 */ ?>
                                         <?php echo $this->Form->end(); ?>
+                                        <?php else:?>
+                                          <a  class="btn btn-danger btn-xs btn-block animsition-link" href="/item/detail/<?php echo $item['item_id']?>" >戻る</a>
+                                         <?php endif;?>
                                         </div>
                                       </div>
                                     </div>

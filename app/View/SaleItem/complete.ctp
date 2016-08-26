@@ -55,7 +55,7 @@
                                           <label>販売名</label>
                                           <p class="form-control-static"><?php echo h($sales['sales_title']);?></p>
                                           <label>販売価格</label>
-                                          <p class="form-control-static"><?php echo $sales['price'];?>円</p>
+                                          <p class="form-control-static"><?php echo h(floor($sales['price']));?>円</p>
                                           <label>商品説明</label>
                                           <p class="form-control-static"><?php echo nl2br(h($sales['sales_note']));?></p>
                                           <?php /* sns */ ?>

@@ -19,6 +19,10 @@ class CustomerSales extends ApiModel
                 'required' => true,
                 'message' => ['notBlank', 'sales_flag']
             ],
+            'inList' => [
+                'rule' => ['inList', ['0', '1']],
+                'message' => ['inList', 'sales_flag', 0, 1]
+            ],
         ],
     ];
 

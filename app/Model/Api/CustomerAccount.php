@@ -19,6 +19,10 @@ class CustomerAccount extends ApiModel
                 'required' => true,
                 'message' => ['notBlank', 'bank_name']
             ],
+            'maxLength' => [
+                'rule' => ['maxLength', 50],
+                'message' => ['maxLength', 'bank_name', 50]
+            ],
             /*
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
@@ -31,6 +35,10 @@ class CustomerAccount extends ApiModel
                 'rule' => 'notBlank',
                 'required' => true,
                 'message' => ['notBlank', 'bank_branch_name']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 50],
+                'message' => ['maxLength', 'bank_branch_name', 50]
             ],
         ],
         'bank_account_type' => [
@@ -46,12 +54,20 @@ class CustomerAccount extends ApiModel
                 'required' => true,
                 'message' => ['notBlank', 'bank_account_number']
             ],
+            'maxLength' => [
+                'rule' => ['maxLength', 7],
+                'message' => ['maxLength', 'bank_account_number', 7]
+            ],
         ],
         'bank_account_holder' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
                 'message' => ['notBlank', 'bank_account_holder']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 50],
+                'message' => ['maxLength', 'bank_account_holder', 50]
             ],
         ],
     ];

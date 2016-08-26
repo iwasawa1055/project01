@@ -96,7 +96,7 @@
 
                                         <?php /*販売中status 販売を止める , snsでシェアするボタンを表示  */ ?>
                                         <?php if (! empty($sales['sales_status']) && $sales['sales_status'] === '1'):?>
-                                        <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                                        <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
                                             <label>販売名</label>
                                             <?php echo h( $sales['sales_title']);?>
