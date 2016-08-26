@@ -121,3 +121,6 @@ msgstr "登録済みのアクセスキーです。"
 
 msgid "price"
 msgstr "販売価格"
+
+msgid "not_available_entry_corp"
+msgstr "エントリーユーザーまたは法人ユーザーはご利用いただけません"

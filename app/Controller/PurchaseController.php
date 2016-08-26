@@ -21,12 +21,6 @@ class PurchaseController extends MinikuraController
 
         parent::beforeFilter();
 
-        if ($this->action !== 'index' && $this->action !== 'register') {
-            $this->set('current_email', $this->Customer->getInfo()['email']);
-            $this->set('address', $this->Address->get());
-            $this->set('default_payment', $this->Customer->getDefaultCard());
-        }
-
         // Layouts
         $this->layout = 'market';
 
@@ -54,14 +48,32 @@ class PurchaseController extends MinikuraController
             $this->set('sales_id', $sales_id);
             $this->set('sales', $sale[0]);
         }
+
+        if ($this->action !== 'index' && $this->action !== 'register') {
+            $this->set('current_email', $this->Customer->getInfo()['email']);
+            $this->set('address', $this->Address->get());
+            $this->set('default_payment', $this->Customer->getDefaultCard());
+        }
+
     }
 
     public function index()
     {
         $sales_id = $this->params['id'];
 
-        // 登録系フローからの戻り時
         if ($this->request->is('get')) {
+            if ($this->Customer->isLogined()) {
+                // ログイン済みの個人本登録ユーザーは入力ページへリダイレクト
+                if ($this->Customer->isPrivateCustomer() && !$this->Customer->isEntry()) {
+                    return $this->redirect(['controller' => 'purchase', 'action' => 'input', 'id' => $sales_id]);
+                }
+
+                // エントリー、法人は利用不可
+                $this->Flash->set(__('not_available_entry_corp'));
+                return $this->render('index');
+            }
+
+            // 登録系フローからの戻り時
             $data = CakeSession::read('PurchaseRegister');
             if (!empty($data) && !empty($data[self::MODEL_NAME_ENTRY])) {
                 $data[self::MODEL_NAME_ENTRY]['password'] = '';
@@ -72,6 +84,16 @@ class PurchaseController extends MinikuraController
 
         // ログイン
         if ($this->request->is('post')) {
+
+            if ($this->Customer->isLogined()) {
+                // エントリー、法人は利用不可
+                if (! ($this->Customer->isPrivateCustomer() && !$this->Customer->isEntry())) {
+                    $this->Flash->set(__('not_available_entry_corp'));
+                    $this->request->data['CustomerLogin']['password'] = '';
+                    return $this->render('index');
+                }
+            }
+
             // login
             $this->loadModel('CustomerLogin');
             $this->CustomerLogin->set($this->request->data);
@@ -97,6 +119,19 @@ class PurchaseController extends MinikuraController
                 $this->Customer->setTokenAndSave($res->results[0]);
                 $this->Customer->setPassword($this->request->data['CustomerLogin']['password']);
                 $this->Customer->getInfo();
+
+                // エントリー、法人は利用不可
+                if (! ($this->Customer->isPrivateCustomer() && !$this->Customer->isEntry())) {
+                    $this->CustomerLogin->logout();
+                    // セッション値をクリア
+                    ApiCachedModel::deleteAllCache();
+                    OutboundList::delete();
+                    CustomerData::delete();
+
+                    $this->Flash->set(__('not_available_entry_corp'));
+                    $this->request->data['CustomerLogin']['password'] = '';
+                    return $this->render('index');
+                }
 
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
