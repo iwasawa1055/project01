@@ -40,8 +40,8 @@ class Sales extends ApiModel
                 'message' => ['notBlank', 'sales_title']
             ],
             'maxLength' => [
-                'rule' => ['maxLength', 400],
-                'message' => ['maxLength', 'sales_title', 400]
+                'rule' => ['maxLength', 50],
+                'message' => ['maxLength', 'sales_title', 50]
             ],
         ],
         'price' => [
@@ -53,6 +53,10 @@ class Sales extends ApiModel
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'message' => ['format', 'price']
+            ],
+            'range' => [
+                'rule' => ['range', 999, 50001],
+                'message' => ['range', 'price', '1000円', '50000円']
             ],
         ],
         'sales_note' => [
@@ -75,5 +79,17 @@ class Sales extends ApiModel
         ],
     ];
 
+    //* sumPrice
+    public function sumPrice($_data)
+    {
+        $total_price = 0;
+        if (empty($_data)) {
+            return $total_price;
+        }
+        foreach ($_data as $sales) {
+            $total_price += $sales['price'];
+        }
+        return $total_price;
+    }
 }
 

@@ -7,7 +7,7 @@
                         <div class="col-lg-7 col-md-7 col-xs-9">
                           <h3 class="box-item-name"><?php echo h($sales_history['sales_title']);?></h3>
                           <label>価格</label>
-                          <p class="box-item-remarks"><?php echo h(floor($sales_history['price']));?>円</p>
+                          <p class="box-item-remarks"><?php echo number_format(floor($sales_history['price']));?>円</p>
                           <label>商品説明</label>
                           <p class="box-item-remarks"><?php echo nl2br(h($sales_history['sales_note']));?></p>
                         </div>

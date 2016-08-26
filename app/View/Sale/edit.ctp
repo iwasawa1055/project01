@@ -17,10 +17,12 @@
                 <span class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/item/">アイテム一覧に移動する</a>
                 </span>
-                <?php /* todo 口座情報 分岐 */ ?>
+                <?php /*  口座情報 分岐 */ ?>
+                <?php if(empty($customer_bank_account)):?>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/add">金融機関情報を登録する（初回のみ）</a>
                 </span>
+                <?php endif;?>
               </div>
             </div>
           </div>

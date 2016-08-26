@@ -55,59 +55,68 @@
               <div class="col-lg-12">
                 <h2>振込可能合計金額</h2>
                 <div class="form-group col-lg-12">
-                  ただいま振込可能な金額は <span class="point">50,000</span> 円
+                  ただいま振込可能な金額は <span class="point"><?php echo number_format($transfer_price);?></span> 円
                 </div>
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
                 <?php if(! empty($customer_bank_account)):?>
-                  <?php echo h($customer_bank_account['bank_name']);?>銀行　<?php echo h($customer_bank_account['bank_branch_name']);?>支店　<?php echo BANK_ACCOUNT_TYPE[$customer_bank_account['bank_account_type']];?>　<?php echo h($customer_bank_account['bank_account_number']);?>
+                  <?php echo h($customer_bank_account['bank_name']);?>　<?php echo h($customer_bank_account['bank_branch_name']);?>　<?php echo BANK_ACCOUNT_TYPE[$customer_bank_account['bank_account_type']];?>　<?php echo h($customer_bank_account['bank_account_number']);?>
                 <?php endif;?>
-                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>
-                    から変更してください。 </p>
+                  <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>から変更してください。 </p>
                 </div>
+                
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                <a class="btn btn-danger btn-md" href="/sale/order/">振込を依頼する</a>
+                <?php if (floor($transfer_price) > 0 ): ?>
+                <a class="btn btn-danger btn-md" href="/sale/transfer/">振込を依頼する</a>
+                <?php else:?>
+                <a class="btn btn-danger btn-md" disabled="disabled" >振込を依頼する</a>
+                <?php endif;?>
                 </span>
+
                 <div class="form-group col-lg-12 col-sm-12">
                   <h3>振込依頼履歴</h3>
+                  <?php if (empty($sales_completed)):?>
+                  <p class="form-control-static">振込明細はありません。</p>
+                  <?php else:?>
                   <p class="form-control-static">対象月をクリックすると、振込明細をご確認いただけます。</p>
                   <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
                           <th>振込依頼月</th>
+                          <!--
                           <th>注文合計</th>
                           <th>手数料</th>
-                          <th>振込額</th>
+                          -->
+                          <th>販売額</th>
                           <th>振込手続日</th>
                         </tr>
                       </thead>
                       <tbody>
+                        <?php foreach($sales_completed as $completed): ?>
                         <tr>
-                          <td><a class="animsition-link" href="/sale/order_detail">2000/00</a></td>
+                          <?php if (!empty($completed['pay_requested'])):?>
+                          <td><a class="animsition-link" href="/sale/order_detail"><?php echo($this->Time->format($completed['pay_requested'], '%Y-%m'));?></a></td>
+                          <?php else:?><?php /* test中 pay_requestedなしの場合 */ ?>
+                          <td><a class="animsition-link" href="/sale/order_detail">2016/00</a></td>
+                          <?php endif;?>
+                          <!--
                           <td>50,000円</td>
                           <td>5,000円</td>
-                          <td>45,000円</td>
-                          <td>2000/00/00</td>
+                          -->
+                          <td><?php echo number_format(h(floor($completed['price'])));?>0円</td>
+                          <?php if (!empty($completed['paid'])):?>
+                          <td><?php echo($this->Time->format($completed['paid'], '%Y-%m-%d'));?></td>
+                          <?php else:?><?php /* test中 paidなしの場合 */?>
+                          <td></td>
+                          <?php endif;?>
                         </tr>
-                        <tr>
-                          <td><a class="animsition-link" href="/sale/order_detail">2000/00</a></td>
-                          <td>50,000円</td>
-                          <td>5,000円</td>
-                          <td>45,000円</td>
-                          <td>2000/00/00</td>
-                        </tr>
-                        <tr>
-                          <td><a class="animsition-link" href="/sale/order_detail">2000/00</a></td>
-                          <td>50,000円</td>
-                          <td>5,000円</td>
-                          <td>45,000円</td>
-                          <td>2000/00/00</td>
-                        </tr>
+                        <?php endforeach;?>
                       </tbody>
                     </table>
                     <a class="btn btn-info btn-md pull-right" href="/sale/order_list">振込依頼一覧を見る</a>
                   </div>
+                  <?php endif;?>
                 </div>
               </div>
             </div>

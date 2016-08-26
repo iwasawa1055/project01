@@ -198,10 +198,31 @@ msgid "400 Parameter Invalid - ip_address"
 msgstr "IPアドレスが不正"
 
 msgid "400 Parameter Invalid - sales_flag"
-msgstr "販売設定が不正"
+msgstr "販売設定が正しくありません"
+
+msgid "400 Parameter Invalid - price"
+msgstr "販売価格の設定が正しくありません"
+
+msgid "400 Parameter Invalid - sales_title"
+msgstr "販売タイトルの設定が正しくありません"
+
+msgid "400 Parameter Invalid - sales_note"
+msgstr "販売商品説明が正しくありません"
 
 msgid "400 Record Already - sales_status"
 msgstr "販売中の商品があります。全てキャンセルをして、再度お試しください"
+
+msgid "400 Request Invalid - can not buy"
+msgstr "販売者の事情により購入できません"
+
+msgid "400 Request Invalid - data_edited"
+msgstr "振り込み処理中に情報が変更になっています。再度実行してください"
+
+msgid "400 Parameter Invalid - purchaser_customer_id"
+msgstr "販売者と購入者が同一です"
+
+msgid "400 Parameter Invalid - bank_account"
+msgstr "振り込み口座情報が登録されていません"
 
 msgid "400 Parameter Unknown"
 msgstr "不明パラメーター"

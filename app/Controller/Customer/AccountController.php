@@ -59,6 +59,11 @@ class AccountController extends MinikuraController
         //* for UI ,  PUT or POST
         $step = Hash::get($this->request->params, 'step');
         $this->set('step', $step);
+        if ($step === 'edit') {
+            $customer_account = $this->Customer->getCustomerBankAccount();
+            $this->set('customer_account', $customer_account);
+            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account, true));
+        }
         //* post
         if ($this->request->is('post')) {
             $data = $this->request->data[self::MODEL_NAME_ACCOUNT];
@@ -69,8 +74,12 @@ class AccountController extends MinikuraController
 
             } else {
                 $this->set('validErrors', $this->CustomerAccount->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
-                return $this->render('customer_add');
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
+                if ($step === 'edit') {
+                    return $this->render('customer_edit');
+                } else {
+                    return $this->render('customer_add');
+                }
             }
         }
     }
@@ -90,11 +99,11 @@ class AccountController extends MinikuraController
         if (!empty($customer_account_result->results[0])) {
             $customer_account = $customer_account_result->results[0];
         } else {
-            //todo empty
+            //* empty
             $this->Flash->set(__('empty_session_data'));
-            //* test exception info
+            //* exception info
             new AppInternalInfo('Error : no customer_account data', $code = 500);
-            //todo render or redirect
+            //* render or redirect
             return $this->redirect(['action' => 'customer_index']);
         }
         $this->set('customer_account', $customer_account);
@@ -124,8 +133,6 @@ class AccountController extends MinikuraController
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_ACCOUNT), true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->params, true));
 
         //todo reload
         $data = CakeSession::read([self::MODEL_NAME_ACCOUNT]);
@@ -134,6 +141,7 @@ class AccountController extends MinikuraController
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'customer_index']);
         }
+
         $this->CustomerAccount->set($data);
 
         //* for API,  PUT or POST
@@ -164,7 +172,8 @@ class AccountController extends MinikuraController
                 $this->set('validErrors', $this->CustomerAccount->validationErrors);
                 CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
                 //todo render redirectにする
-                //return $this->render('customer_add');
+                $this->Flash->set(__('empty_session_data'));
+                return $this->redirect(['action' => 'customer_index']);
             }
         }
 
