@@ -12,6 +12,22 @@
 	color: #ff0000;
 	background-color: #ffffff;
 }
+.btn-orrection button,
+.btn-orrection input[type="submit"] {
+	font-size: 14px;
+	border:1px solid #666666;
+	border-radius: 3px;
+	color: #666666;
+	background-color: #ffffff;
+	padding: 5px 20px;
+}
+.btn-orrection button:hover,
+.btn-orrection input[type="submit"]:hover {
+	text-decoration: none;
+	border:1px solid #666666;
+	color: #ffffff;
+	background-color: #666666;
+}
 
 @media (max-width:768px) {
 .btn-commit button {

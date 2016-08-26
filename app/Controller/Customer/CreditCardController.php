@@ -118,6 +118,7 @@ class CreditCardController extends MinikuraController
     {
         $this->setRequestDataFromSession();
         $step = Hash::get($this->request->params, 'step');
+        $returnTo = Hash::get($this->request->query, 'return');
 
         if ($this->request->is('get')) {
             return $this->render('customer_edit');
@@ -148,6 +149,14 @@ class CreditCardController extends MinikuraController
                 if (!empty($res->error_message)) {
                     $this->Flash->set($res->error_message);
                     return $this->redirect(['action' => 'edit']);
+                }
+
+                if ($returnTo === 'purchase') {
+                    $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
+                    return $this->redirect([
+                        'controller' => 'purchase', 'action' => 'input', 'customer' => false
+                        , 'id' => $sales_id, '?' => ['back' => 'true']
+                    ]);
                 }
 
                 return $this->render('customer_complete');

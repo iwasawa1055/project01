@@ -23,9 +23,6 @@
           <div class="form-group">
             <p><?php echo $current_email ?></p>
           </div>
-          <div class="btn-orrection">
-            <a href="/email/edit.html" class="animsition-link btn">メールアドレスを変更する</a>
-          </div>
           <h3>お届け先情報</h3>
             <div class="form-group">
               <label>お届け先</label>
@@ -87,7 +84,7 @@
             </div>
           </div>
           <div class="btn-orrection">
-            <a href="/credit_card/edit.html" class="animsition-link btn">クレジットカード情報を修正する</a>
+            <input type="submit" name="editCard" value="クレジットカード情報を修正する" class="btn page-transition-link" />
           </div>
         </div>
       </div>

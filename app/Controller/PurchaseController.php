@@ -211,6 +211,13 @@ class PurchaseController extends MinikuraController
                 'controller' => 'address', 'action' => 'add', 'customer' => true,
                 '?' => ['return' => 'purchase']
             ]);
+        } elseif (isset($this->request->data['editCard'])) {
+            // クレジット修正
+            CakeSession::write(self::MODEL_NAME, $data);
+            return $this->redirect([
+                'controller' => 'credit_card', 'action' => 'edit', 'customer' => true,
+                '?' => ['return' => 'purchase']
+            ]);
         }
 
         if ($this->PaymentGMOPurchase->validates()) {

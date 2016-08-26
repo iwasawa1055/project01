@@ -60,7 +60,7 @@ if ($action === 'customer_edit') {
                 <?php if ($action === 'customer_edit') : ?>
                     <a class="btn btn-primary btn-lg btn-block" href="/customer/address/edit?back=true"> 戻る </a>
                 <?php elseif ($action === 'customer_add') : ?>
-                    <a class="btn btn-primary btn-lg btn-block" href="/customer/address/add?back=true"> 戻る </a>
+                    <?php echo $this->Html->link('戻る', ['controller' => 'address', 'action' => $action, '?' => ['back' => 'true', 'return' => Hash::get($this->request->query, 'return')]], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 <?php else : ?>
                     <a class="btn btn-primary btn-lg btn-block" href="/customer/address/"> 戻る </a>
                 <?php endif; ?>
