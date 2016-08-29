@@ -122,8 +122,13 @@ class InfoItem extends ApiCachedModel
                 //* sales 販売情報 複数の販売情報ができる(販売中や、販売キャンセル、 )
                 if (! empty($listSales)) {
                     if (array_key_exists($item['item_id'], $listSales)) {
-                        $sales_results_by_item_id = $salesModel->apiGet(['item_id' => $item['item_id']]);
-                        $list[$index]['sales'] = $sales_results_by_item_id->results; 
+                        $sales_results_by_item_id = [];
+                        foreach ($sales_results->results as $key => $val) {
+                            if ($item['item_id'] === $val['item_id']) {
+                                $sales_results_by_item_id[] = $val;
+                            }
+                        }
+                        $list[$index]['sales'] = $sales_results_by_item_id; 
                     }
                 }
             }
