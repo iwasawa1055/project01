@@ -87,10 +87,6 @@
                                         <?php echo $this->Form->end(); ?>
                                         <?php endif; ?>
 
-                                        <?php echo($this->Form->data['Sales']['sales_id']);?>
-                                        <?php echo($this->Form->data['Sales']['sales_title']);?>
-                                        <?php echo($this->data['Sales']['sales_title']);?>
-
                                         <?php if (! empty($this->Form->data['Sales']['sales_id'])):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
