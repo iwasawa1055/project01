@@ -109,7 +109,7 @@ class InfoItem extends ApiCachedModel
             $listBox = Hash::combine($boxModel->apiGetResults(), '{n}.box_id', '{n}');
             //* sales 販売情報
             $sales_results = $salesModel->apiGet();
-            if (! empty($$sales_results->results)) {
+            if (! empty($sales_results->results)) {
                 $listSales = Hash::combine($sales_results->results, '{n}.item_id', '{n}');
             }
             foreach ($list as $index => $item) {
