@@ -36,7 +36,7 @@ class MarketController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_SALES);
         $sales = null;
         $id = $this->params['id'];
-        $sales_result = $this->Sales->apiGet(['sales_id' => $id, 'sales_status' => SALES_STATUS_ON_SALE ]);
+        $sales_result = $this->Sales->apiGet(['sales_id' => $id]);
         if (!empty($sales_result->results[0])) {
             $sales = $sales_result->results[0];
         }

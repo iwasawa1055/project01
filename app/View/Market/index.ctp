@@ -23,7 +23,9 @@
     </div>
     <div class="row">
       <div class="text-center btn-commit">
+      <?php if ($sales['sales_status'] === SALES_STATUS_ON_SALE):?>
         <a href="<?php echo Configure::read('site.mypage.url');?>/purchase/<?php echo h($sales['sales_id']);?>" class="animsition-link btn">この商品を購入する</a>
+      <?php endif;?>
       </div>
     </div>
     
