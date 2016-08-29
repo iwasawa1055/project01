@@ -3,6 +3,7 @@
 App::uses('ApiCachedModel', 'Model');
 App::uses('ImageItem', 'Model');
 App::uses('HashSorter', 'Model');
+App::uses('Sales', 'Model');
 
 class InfoItem extends ApiCachedModel
 {
@@ -98,17 +99,32 @@ class InfoItem extends ApiCachedModel
     {
         $imageModel = new ImageItem();
         $boxModel = new InfoBox();
+        //* sales 販売情報 201608から
+        $sales_results = null;
+        $salesModel = new Sales();
         $list = parent::apiGetResults($data);
         if (is_array($list)) {
             // 画像情報とボックス情報を設定
             $listImage = Hash::combine($imageModel->apiGetResults(), '{n}.item_id', '{n}');
             $listBox = Hash::combine($boxModel->apiGetResults(), '{n}.box_id', '{n}');
+            //* sales 販売情報
+            $sales_results = $salesModel->apiGet();
+            if (! empty($$sales_results->results)) {
+                $listSales = Hash::combine($sales_results->results, '{n}.item_id', '{n}');
+            }
             foreach ($list as $index => $item) {
                 if (array_key_exists($item['item_id'], $listImage)) {
                     $list[$index]['image_first'] = $listImage[$item['item_id']];
                 }
                 if (array_key_exists($item['box_id'], $listBox)) {
                     $list[$index]['box'] = $listBox[$item['box_id']];
+                }
+                //* sales 販売情報 複数の販売情報ができる(販売中や、販売キャンセル、 )
+                if (! empty($listSales)) {
+                    if (array_key_exists($item['item_id'], $listSales)) {
+                        $sales_results_by_item_id = $salesModel->apiGet(['item_id' => $item['item_id']]);
+                        $list[$index]['sales'] = $sales_results_by_item_id->results; 
+                    }
                 }
             }
         }
