@@ -75,7 +75,7 @@
 
                 <div class="form-group col-lg-12 col-sm-12">
                   <h3>振込依頼履歴</h3>
-                  <?php if (empty($sales_completed)):?>
+                  <?php if (empty($transfer_completed)):?>
                   <p class="form-control-static">振込明細はありません。</p>
                   <?php else:?>
                   <p class="form-control-static">対象月をクリックすると、振込明細をご確認いただけます。</p>
@@ -84,37 +84,25 @@
                       <thead>
                         <tr>
                           <th>振込依頼月</th>
-                          <!--
                           <th>注文合計</th>
                           <th>手数料</th>
-                          -->
-                          <th>販売額</th>
+                          <th>送金額</th>
                           <th>振込手続日</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php foreach($sales_completed as $completed): ?>
+                        <?php foreach($transfer_completed as $completed): ?>
                         <tr>
-                          <?php if (!empty($completed['pay_requested'])):?>
-                          <td><a class="animsition-link" href="/sale/order_detail"><?php echo($this->Time->format($completed['pay_requested'], '%Y-%m'));?></a></td>
-                          <?php else:?><?php /* test中 pay_requestedなしの場合 */ ?>
-                          <td><a class="animsition-link" href="/sale/order_detail">2016/00</a></td>
-                          <?php endif;?>
-                          <!--
-                          <td>50,000円</td>
-                          <td>5,000円</td>
-                          -->
-                          <td><?php echo number_format(h(floor($completed['price'])));?>0円</td>
-                          <?php if (!empty($completed['paid'])):?>
-                          <td><?php echo($this->Time->format($completed['paid'], '%Y-%m-%d'));?></td>
-                          <?php else:?><?php /* test中 paidなしの場合 */?>
-                          <td></td>
-                          <?php endif;?>
+                          <td><a class="animsition-link" href="/sale/transfer_detail/<?php echo $completed['transfer_id'];?>"><?php echo($this->Time->format($completed['transfer_requested'], '%Y-%m'));?></a></td>
+                          <td><?php echo number_format(h(floor($completed['subtotal_price'])));?>円</td>
+                          <td><?php echo number_format(h(floor($completed['charge_price'])));?>円</td>
+                          <td><?php echo number_format(h(floor($completed['total_price'])));?>0円</td>
+                          <td><?php echo($this->Time->format($completed['transfer_completed'], '%Y-%m-%d'));?></td>
                         </tr>
                         <?php endforeach;?>
                       </tbody>
                     </table>
-                    <a class="btn btn-info btn-md pull-right" href="/sale/order_list">振込依頼一覧を見る</a>
+                    <a class="btn btn-info btn-md pull-right" href="/sale/transfer_list">振込依頼一覧を見る</a>
                   </div>
                   <?php endif;?>
                 </div>

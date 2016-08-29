@@ -44,6 +44,7 @@ if (! empty($_SERVER['REQUEST_URI'])) {
             Router::connect('/sale/item/:action/:id', ['controller' => 'SaleItem'], ['id' => '[A-Z\-0-9]+']);
             
             Router::connect('/sale/:action', ['controller' => 'Sale']);
+            Router::connect('/sale/:action/:id', ['controller' => 'Sale'], ['id' => '[A-Z\-0-9]+']);
 
             // purchase
             Router::connect('/purchase/:id', ['controller' => 'Purchase', 'action' => 'index'], ['id' => '[A-Z\-0-9]+']);
