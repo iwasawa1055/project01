@@ -1,6 +1,9 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('ApiCachedModel', 'Model');
+App::uses('OutboundList', 'Model');
+App::uses('CustomerEnvAuthed', 'Model');
 
 class PurchaseRegisterController extends MinikuraController
 {
@@ -235,7 +238,8 @@ class PurchaseRegisterController extends MinikuraController
             $this->loadModel(self::MODEL_CUSTOMER_INFO);
             $this->CustomerRegistInfo->set($data[self::MODEL_CUSTOMER_INFO]);
             if (!$this->CustomerRegistInfo->validates()) {
-                // $this->set('validErrors', $model->validationErrors);
+                // メアド入力ページへの導線表示
+                $this->set('invalid_CustomerRegistInfo', true);
                 return $this->render('complete');
             }
 
@@ -245,17 +249,17 @@ class PurchaseRegisterController extends MinikuraController
             // card_seq 除外
             $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
             if (!$this->PaymentGMOSecurityCard->validates()) {
-                // $this->set('validErrors', $model->validationErrors);
+                // クレジット入力ページへの導線表示
+                $this->set('invalid_CreditCard', true);
                 return $this->render('complete');
             }
 
             // ユーザー本登録
             $res = $this->CustomerRegistInfo->regist();
             if (!empty($res->error_message)) {
-                // $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'] = '';
-                // $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
-                // $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
+                CakeSession::delete('PurchaseRegister');
+                $this->Flash->set($res->error_message);
+                return $this->redirect('/purchase/' . $sales_id);
             }
 
             // ログイン
@@ -265,8 +269,9 @@ class PurchaseRegisterController extends MinikuraController
 
             $res = $this->CustomerLogin->login();
             if (!empty($res->error_message)) {
-                // $this->Flash->set($res->error_message);
-                return $this->render('customer_add_info');
+                CakeSession::delete('PurchaseRegister');
+                $this->Flash->set($res->error_message);
+                return $this->redirect('/purchase/' . $sales_id);
             }
 
             // カスタマー情報を取得しセッションに保存
@@ -277,8 +282,11 @@ class PurchaseRegisterController extends MinikuraController
             // カード登録
             $res = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
             if (!empty($res->error_message)) {
-                // $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'add']);
+                // マイページへの導線表示
+                CakeSession::delete('PurchaseRegister');
+                $this->Flash->set($res->error_message);
+                $this->set('apierror_CreditCard', true);
+                return $this->render('complete');
             }
 
             // カード取得
@@ -296,15 +304,31 @@ class PurchaseRegisterController extends MinikuraController
             // address_id 除外
             $this->PaymentGMOPurchase->validator()->remove('address_id');
             if (!$this->PaymentGMOPurchase->validates()) {
-                // $this->Flash->set(__('empty_session_data'));
-                // return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+                CakeSession::delete('PurchaseRegister');
+
+                $this->CustomerLogin->logout();
+                // セッション値をクリア
+                ApiCachedModel::deleteAllCache();
+                OutboundList::delete();
+                CustomerData::delete();
+
+                $this->Flash->set('アイテムの購入ができませんでした');
+                return $this->redirect('/purchase/' . $sales_id);
             }
 
             // api
             $res = $this->PaymentGMOPurchase->apiPost($this->PaymentGMOPurchase->toArray());
             if (!empty($res->error_message)) {
-                // $this->Flash->set($res->error_message);
-                // return $this->redirect(['action' => 'input', 'id' => $sales_id]);
+                CakeSession::delete('PurchaseRegister');
+
+                $this->CustomerLogin->logout();
+                // セッション値をクリア
+                ApiCachedModel::deleteAllCache();
+                OutboundList::delete();
+                CustomerData::delete();
+
+                $this->Flash->set($res->error_message);
+                return $this->redirect('/purchase/' . $sales_id);
             }
 
             $this->set('email', $data[self::MODEL_CUSTOMER_INFO]['email']);
