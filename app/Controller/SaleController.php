@@ -63,14 +63,14 @@ class SaleController extends MinikuraController
         }
         $this->set('transfer_price', $transfer_price);
 
-        //* todo 振り込み済み履歴 暫定 =>別途振り込み済みの取得APIが出来る予定
-        $sales_completed = null;
-        $sales_completed_result = $this->Sales->apiGet(['sales_status' => SALES_STATUS_REMITTANCE_COMPLETED]);
-        if (!empty($sales_completed_result->results)) {
-            $sales_completed = $sales_completed_result->results;
+        //* 振り込み済み履歴 
+        $transfer_completed = null;
+        //$transfer_completed_result = $this->Transfer->apiGet(['limit' => '3']);
+        $transfer_completed_result = $this->Transfer->apiGet();
+        if (!empty($transfer_completed_result->results)) {
+            $transfer_completed = $transfer_completed_result->results;
         }
-        $this->set('sales_completed', $sales_completed);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_completed, true));
+        $this->set('transfer_completed', $transfer_completed);
 
         //* set sales_status master for select box  
         $master_sales_status_array = [];
@@ -203,72 +203,43 @@ class SaleController extends MinikuraController
     }
 
     /**
-     * 暫定 order_list 振り込み一覧 
+     * 暫定 transfer_list 振り込み一覧 
      */
-    public function order_list()
+    public function transfer_list()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        //* 暫定 API　でき次第
-        $stub = [];
-        //* 暫定 type 1=販売中 2=購入手続き中 3=販売中 4=hoge
-        $stub[] = ['id' =>1, 'type' =>1, 'hoge' => 'fuga'];
-        $stub[] = ['id' =>2, 'type' =>1, 'hoge' => 'fuga2'];
-        $stub[] = ['id' =>3, 'type' =>1, 'hoge' => 'fuga3'];
-        $stub[] = ['id' =>4, 'type' =>1, 'hoge' => 'fuga4'];
-        $stub[] = ['id' =>5, 'type' =>1, 'hoge' => 'fuga5'];
-        $stub[] = ['id' =>6, 'type' =>1, 'hoge' => 'fuga6'];
-        $stub[] = ['id' =>7, 'type' =>1, 'hoge' => 'fuga7'];
-        $stub[] = ['id' =>8, 'type' =>1, 'hoge' => 'fuga8'];
-        $stub[] = ['id' =>9, 'type' =>1, 'hoge' => 'fuga9'];
-        $stub[] = ['id' =>10,'type' =>1,  'hoge' => 'fuga10'];
-        $stub[] = ['id' =>11,'type' =>1,  'hoge' => 'fuga10'];
-        $stub[] = ['id' =>12,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>13,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>14,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>15,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>16,'type' =>3,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>17,'type' =>3,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>18,'type' =>4,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>19,'type' =>4,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>20,'type' =>4,  'hoge' => 'fuga11'];
-        $all = $stub;
-        $list = $this->paginate($all);
-        $this->set('order_list', $list);
+        $transfer_completed = null;
+        $transfer_completed_result = $this->Transfer->apiGet(['limit' => '3']);
+        if (!empty($transfer_completed_result->results)) {
+            $transfer_completed = $transfer_completed_result->results;
+        }
+        $list = $this->paginate($transfer_completed);
+        $this->set('transfer_completed', $list);
 
     }
 
     /**
-     * 暫定 order_detail 振り込み詳細 
+     * 暫定 transfer_detail 振り込み詳細 
      */
-    public function order_detail()
+    public function transfer_detail()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        //* 暫定 API　でき次第
-        $stub = [];
-        //* 暫定 type 1=販売中 2=購入手続き中 3=販売中 4=hoge
-        $stub[] = ['id' =>1, 'type' =>1, 'hoge' => 'fuga'];
-        $stub[] = ['id' =>2, 'type' =>1, 'hoge' => 'fuga2'];
-        $stub[] = ['id' =>3, 'type' =>1, 'hoge' => 'fuga3'];
-        $stub[] = ['id' =>4, 'type' =>1, 'hoge' => 'fuga4'];
-        $stub[] = ['id' =>5, 'type' =>1, 'hoge' => 'fuga5'];
-        $stub[] = ['id' =>6, 'type' =>1, 'hoge' => 'fuga6'];
-        $stub[] = ['id' =>7, 'type' =>1, 'hoge' => 'fuga7'];
-        $stub[] = ['id' =>8, 'type' =>1, 'hoge' => 'fuga8'];
-        $stub[] = ['id' =>9, 'type' =>1, 'hoge' => 'fuga9'];
-        $stub[] = ['id' =>10,'type' =>1,  'hoge' => 'fuga10'];
-        $stub[] = ['id' =>11,'type' =>1,  'hoge' => 'fuga10'];
-        $stub[] = ['id' =>12,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>13,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>14,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>15,'type' =>2,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>16,'type' =>3,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>17,'type' =>3,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>18,'type' =>4,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>19,'type' =>4,  'hoge' => 'fuga11'];
-        $stub[] = ['id' =>20,'type' =>4,  'hoge' => 'fuga11'];
-        $all = $stub;
-        $list = $this->paginate($all);
-        $this->set('order_detail', $list);
+        $transfer_results = null;
+        $transfer_detail = null;
+        $total_price = 0;
+
+        $id = $this->params['id'];
+        //* 明細
+        $transfer_results = $this->Sales->apiGet(['transfer_id' => $id ]);
+        if (! empty($transfer_results->results)) {
+            $transfer_detail = $transfer_results->results;
+            foreach ($transfer_detail as $detail) {
+                $total_price += floor($detail['price']);
+            }
+        }
+        $list = $this->paginate($transfer_detail);
+        $this->set('total_price', $total_price);
+        $this->set('transfer_detail', $list);
 
     }
 }
