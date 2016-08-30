@@ -54,7 +54,14 @@
                         <?php endif; ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">
+                            <?php if ( empty($sales) ):?>
                             <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToAuction; ?>" target="_blank">ヤフオク!に出品</a>
+                            <?php else:?>
+                            <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" >ヤフオク!に出品</a>
+                            <p class="error-message">
+                              <?php echo __('sales_status_' . $sales['sales_status']); ?>
+                            </p>
+                            <?php endif;?>
                         </span>
                         <?php endif; ?>
                       </div>
@@ -87,14 +94,12 @@
                                             <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
                                             <?php echo $this->Form->error('Sales.sales_note', null, ['wrap' => 'p']);?>
                                           </div>
-                                          <?php /*販売中かstatus確認して、新規かキャンセルか分岐、 編集不可*/ ?>
-                                          
                                           <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >この内容で確認する</button>
                                           <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>
                                           <?php echo $this->Form->end(); ?>
                                         <?php endif;?>
 
-                                        <?php /*販売中status 販売を止める , snsでシェアするボタンを表示  */ ?>
+                                        <?php /*販売中は 販売を止める&& snsでシェアするボタンを表示  */ ?>
                                         <?php if (! empty($sales['sales_status']) && $sales['sales_status'] === '1'):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/cancel/", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
@@ -127,6 +132,13 @@
                                           <?php echo $this->Form->hidden('Sales.sales_id', ['value' => $sales['sales_id']]); ?>
                                           <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>
                                           <?php echo $this->Form->end(); ?>
+                                        <?php endif;?>
+
+                                        <?php /*購入中〜送金処理中 */ ?>
+                                        <?php if (! empty($sales) && ($sales['sales_status'] >= SALES_STATUS_IN_PURCHASE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED )):?>
+                                          <p class="error-message">
+                                            <?php echo __('sales_status_' . $sales['sales_status']); ?>
+                                          </p>
                                         <?php endif;?>
                                         </div>
                                       </div>

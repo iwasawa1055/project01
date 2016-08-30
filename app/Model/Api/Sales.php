@@ -79,7 +79,32 @@ class Sales extends ApiModel
         ],
     ];
 
-    //* sumPrice
+    /* checkSales
+    * @params array $_item アイテムデータ 
+    *
+    * @return array sales情報 
+    */
+    public function checkSales($_item)
+    {
+        if (Hash::get($_item, 'sales')) {
+            $sales = Hash::get($_item, 'sales');
+            foreach ($sales as $sales_key => $sales_val) {
+                //* 購入キャンセル, 販売キャンセルは複数できる continue、
+                if ( in_array($sales_val['sales_status'], [SALES_STATUS_PURCHASE_CANCEL, SALES_STATUS_SALES_CANCEL])) {
+                    continue;
+                } else {
+                    return $sales_val;
+                }
+            }
+        }
+        return null;
+    }
+
+    /* sumPrice
+    * @param array $_data sales情報
+    *
+    * @return string $total_price  
+    */
     public function sumPrice($_data)
     {
         $total_price = 0;

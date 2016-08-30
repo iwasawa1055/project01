@@ -74,6 +74,33 @@ msgstr "預け入れ依頼中"
 msgid "boxitem_status_230"
 msgstr "預け入れ依頼中"
 
+msgid "sales_status_1"
+msgstr "販売中"
+
+msgid "sales_status_2"
+msgstr "購入手続き中"
+
+msgid "sales_status_3"
+msgstr "振り込み可能中"
+
+msgid "sales_status_4"
+msgstr "送金依頼中"
+
+msgid "sales_status_5"
+msgstr "送金保留中"
+
+msgid "sales_status_6"
+msgstr "送金済み"
+
+msgid "sales_status_7"
+msgstr "購入キャンセル"
+
+msgid "sales_status_8"
+msgstr "販売キャンセル"
+
+msgid "sales_status_2"
+msgstr "購入手続き中"
+
 msgid "select_sort_desc"
 msgstr "（降順）"
 
