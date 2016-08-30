@@ -4,16 +4,7 @@
     <div>
       <h2>購入完了（5/5）</h2>
     </div>
-    <div class="row">
-      <div class="info">
-        <div class="photo">
-          <img src="<?php echo $sale_image; ?>" alt="" />
-        </div>
-        <div class="caption">
-          <h3><?php echo h($sales_title); ?></h3>
-        </div>
-      </div>
-    </div>
+    <?php echo $this->element('purchase_item', ['sales' => $sales]); ?>
   <?php if (empty($invalid_CustomerRegistInfo) && empty($invalid_CreditCard) && empty($apierror_CreditCard)) : ?>
     <div class="row">
       <div class="form">

@@ -3,16 +3,7 @@
     <div>
       <h2>クレジットカード情報を入力（3/5）</h2>
     </div>
-    <div class="row">
-      <div class="info">
-        <div class="photo">
-          <img src="<?php echo $sale_image; ?>" alt="" />
-        </div>
-        <div class="caption">
-          <h3><?php echo h($sales_title); ?></h3>
-        </div>
-      </div>
-    </div>
+    <?php echo $this->element('purchase_item', ['sales' => $sales]); ?>
     <div class="row">
       <div class="form">
         <div class="address">

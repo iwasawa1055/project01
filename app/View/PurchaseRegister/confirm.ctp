@@ -4,16 +4,7 @@
     <div>
       <h2>入力情報を確認（4/5）</h2>
     </div>
-    <div class="row">
-      <div class="info">
-        <div class="photo">
-          <img src="<?php echo $sale_image; ?>" alt="" />
-        </div>
-        <div class="caption">
-          <h3><?php echo h($sales_title); ?></h3>
-        </div>
-      </div>
-    </div>
+    <?php echo $this->element('purchase_item', ['sales' => $sales]); ?>
     <div class="row">
     <?php echo $this->Form->create(false, ['url' => ['controller' => 'PurchaseRegister', 'action' => 'complete']]); ?>
       <div class="form">

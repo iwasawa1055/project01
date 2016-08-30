@@ -42,15 +42,13 @@ class PurchaseRegisterController extends MinikuraController
         if ($sale[0]['sales_status'] !== SALES_STATUS_ON_SALE) {
             return $this->redirect(Configure::read('site.market.url') . $purchase['sales_id']);
         }
+
+        $this->set('sales', $sale[0]);
     }
 
     public function address()
     {
         $data = CakeSession::read('PurchaseRegister');
-        $purchase = Hash::get($data, self::MODEL_NAME);
-        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
-        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
-        $this->set('sales_title', $sale[0]['sales_title']);
 
         $res_datetime = [];
         if ($this->request->is('get')) {
@@ -157,10 +155,6 @@ class PurchaseRegisterController extends MinikuraController
     public function credit()
     {
         $data = CakeSession::read('PurchaseRegister');
-        $purchase = Hash::get($data, self::MODEL_NAME);
-        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
-        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
-        $this->set('sales_title', $sale[0]['sales_title']);
 
         if ($this->request->is('get')) {
             // 登録系フローからの戻り時
@@ -203,10 +197,6 @@ class PurchaseRegisterController extends MinikuraController
     public function confirm()
     {
         $data = CakeSession::read('PurchaseRegister');
-        $purchase = Hash::get($data, self::MODEL_NAME);
-        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
-        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
-        $this->set('sales_title', $sale[0]['sales_title']);
 
         $sales_id = Hash::get($data, 'PaymentGMOPurchase.sales_id');
         $this->set('sales_id', $sales_id);
@@ -224,10 +214,6 @@ class PurchaseRegisterController extends MinikuraController
     public function complete()
     {
         $data = CakeSession::read('PurchaseRegister');
-        $purchase = Hash::get($data, self::MODEL_NAME);
-        $sale = $this->Sales->apiGetSale(['sales_id' => $purchase['sales_id']]);
-        $this->set('sale_image', $sale[0]['item_image']['0']['image_url']);
-        $this->set('sales_title', $sale[0]['sales_title']);
 
         if ($this->request->is('post')) {
 

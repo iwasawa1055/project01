@@ -5,16 +5,7 @@
     <div>
       <h2>配送情報を選択（2/4）</h2>
     </div>
-    <div class="row">
-      <div class="info">
-        <div class="photo">
-          <img src="<?php echo $sales['item_image']['0']['image_url']; ?>" alt="" />
-        </div>
-        <div class="caption">
-          <h3><?php echo h($sales['sales_title']); ?></h3>
-        </div>
-      </div>
-    </div>
+    <?php echo $this->element('purchase_item', ['sales' => $sales]); ?>
     <div class="row">
       <?php echo $this->Form->create('PaymentGMOPurchase', ['url' => '/purchase/'. $sales_id . '/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
       <div class="form">
