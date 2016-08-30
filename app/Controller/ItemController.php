@@ -230,7 +230,6 @@ class ItemController extends MinikuraController
         //* 販売情報 
         $sales = null;
         $market_url = null;
-        */
         /* viewで表示分け用
         *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php 
         */
