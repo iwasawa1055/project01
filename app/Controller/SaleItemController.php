@@ -18,14 +18,6 @@ class SaleItemController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_INFO_ITEM);
     }
 
-    /**
-     * index
-     */
-    public function index()
-    {
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-
-    }
 
     /**
      * 暫定 edit
@@ -34,7 +26,6 @@ class SaleItemController extends MinikuraController
     public function edit()
     {
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->params, true));
-        //* todo 販売設定onか確認いる
 
         //* get
         if ($this->request->is('get')) {
@@ -46,18 +37,19 @@ class SaleItemController extends MinikuraController
             $id = $data['item_id'];
             $this->Sales->set($data);
             if ( $this->Sales->validates()) {
-                
+                //* session write
                 CakeSession::write(self::MODEL_NAME_SALES, $data);
-
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
-                //todo render
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
+                // renderはSaleItem/edit
             }
         }
         $item = $this->InfoItem->apiGetResultsFind([], ['item_id' => $id]);
         if (empty($item)) {
             //* no data
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['controller' => 'item', 'action' => 'index' ]);
         }
         $this->set('item', $item);
 
@@ -73,7 +65,7 @@ class SaleItemController extends MinikuraController
     {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-        //todo reload
+        //* reload
         $data = CakeSession::read([self::MODEL_NAME_SALES]);
         CakeSession::delete(self::MODEL_NAME_SALES);
         if (empty($data)) {
@@ -89,7 +81,11 @@ class SaleItemController extends MinikuraController
                 $this->set('sale_item', $data);
                 //* to API
                 $sales_result = $this->Sales->apiPost($data);
-                //* todo error
+                //*  error
+                if (!empty($sales_result->error_message)) {
+                    $this->Flash->set($sales_result->error_message);
+                    return $this->redirect('/item/detail/'.$data['item_id']);
+                }
 
                 //* item, box
                 $id = $data['item_id'];
@@ -113,6 +109,7 @@ class SaleItemController extends MinikuraController
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
                 //todo render
+                return $this->redirect('/item/detail/'.$data['item_id']);
             }
         }
     }
@@ -125,7 +122,8 @@ class SaleItemController extends MinikuraController
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
         if (!$this->request->is('post')) {
-            //* error
+            //* redirect
+            return $this->redirect($this->referer());
         }
         //* post
         if ($this->request->is('post')) {
@@ -135,8 +133,12 @@ class SaleItemController extends MinikuraController
             if ( $this->Sales->validates(['fieldList' => ['sales_id']])) {
                 //* to API
                 $sales_put_result = $this->Sales->apiPut($data);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_put_result, true));
-                //todo error
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_put_result, true));
+                // error
+                if (!empty($sales_put_result->error_message)) {
+                    $this->Flash->set($sales_put_result->error_message);
+                    return $this->redirect('/item/detail/'.$id);
+                }
 
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
@@ -147,6 +149,8 @@ class SaleItemController extends MinikuraController
             $item = $this->InfoItem->apiGetResultsFind([], ['item_id' => $id]);
             if (empty($item)) {
                 //* no data
+                $this->Flash->set(__('empty_session_data'));
+                return $this->redirect(['controller' => 'item', 'action' => 'index' ]);
             }
             $this->set('item', $item);
 

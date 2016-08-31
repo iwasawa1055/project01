@@ -48,13 +48,11 @@ class AccountController extends MinikuraController
     public function customer_confirm()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->query, true));
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->params, true));
 
         //* get
         if (!$this->request->is('post')) {
-            //error
+            //* redirect
+            return $this->redirect(['action' => 'customer_index']);
         }
         //* for UI ,  PUT or POST
         $step = Hash::get($this->request->params, 'step');
@@ -62,16 +60,14 @@ class AccountController extends MinikuraController
         if ($step === 'edit') {
             $customer_account = $this->Customer->getCustomerBankAccount();
             $this->set('customer_account', $customer_account);
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account, true));
         }
         //* post
         if ($this->request->is('post')) {
             $data = $this->request->data[self::MODEL_NAME_ACCOUNT];
             $this->CustomerAccount->set($data);
             if ( $this->CustomerAccount->validates()) {
-                
+                //* session
                 CakeSession::write(self::MODEL_NAME_ACCOUNT, $data);
-
             } else {
                 $this->set('validErrors', $this->CustomerAccount->validationErrors);
                 //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
@@ -90,12 +86,11 @@ class AccountController extends MinikuraController
     public function customer_edit()
     {
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
 
         //* api get
         $customer_account = null;
         $customer_account_result = $this->CustomerAccount->apiGet();
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account_result, true));
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account_result, true));
         if (!empty($customer_account_result->results[0])) {
             $customer_account = $customer_account_result->results[0];
         } else {
@@ -113,13 +108,12 @@ class AccountController extends MinikuraController
         if ($this->request->is('post')) {
             $this->CustomerAccount->set($this->request->data[self::MODEL_NAME_ACCOUNT]);
             if ( $this->CustomerAccount->validates()) {
-
+                //* session write
                 CakeSession::write(self::MODEL_NAME_ACCOUNT, $data);
-
             } else {
                 $this->set('validErrors', $this->CustomerAccount->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
-                //todo render
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
+                //* render
                 return $this->render('customer_edit');
             }
         }
@@ -134,7 +128,7 @@ class AccountController extends MinikuraController
         CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_ACCOUNT), true));
 
-        //todo reload
+        //* reload
         $data = CakeSession::read([self::MODEL_NAME_ACCOUNT]);
         CakeSession::delete(self::MODEL_NAME_ACCOUNT);
         if (empty($data)) {
@@ -162,16 +156,16 @@ class AccountController extends MinikuraController
                 } else {
                     $customer_account_result = $this->CustomerAccount->apiPost($data);
                 }
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account_result, true));
-                //* todo error
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_account_result, true));
+                //* error
                 if (!empty($customer_account_result->error_message)) {
                     $this->Flash->set($customer_account_result->error_message);
                     $this->redirect(['action' => 'customer_index']);
                 }
             } else {
                 $this->set('validErrors', $this->CustomerAccount->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
-                //todo render redirectにする
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->CustomerAccount->validationErrors, true));
+                //* redirect
                 $this->Flash->set(__('empty_session_data'));
                 return $this->redirect(['action' => 'customer_index']);
             }
