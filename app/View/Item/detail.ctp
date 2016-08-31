@@ -39,6 +39,7 @@
                         </span-->
                       </div>
                       <div class="col-lg-6 col-md-6 col-xs-12">
+                        <?php /*取出し*/ ?>
                         <?php if (empty($denyOutboundList)) : ?>
                         <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                         <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '1']); ?>
@@ -52,15 +53,15 @@
                             <p class="error-message"><?php echo $denyOutboundList; ?></p>
                         </span>
                         <?php endif; ?>
+
+                        <?php /*ヤフオク*/ ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">
-                            <?php if ( empty($sales) ):?>
+                            <?php if (empty($denyOutboundList)) : ?>
                             <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToAuction; ?>" target="_blank">ヤフオク!に出品</a>
                             <?php else:?>
                             <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" >ヤフオク!に出品</a>
-                            <p class="error-message">
-                              <?php echo __('sales_status_' . $sales['sales_status']); ?>
-                            </p>
+                            <p class="error-message"><?php echo $denyOutboundList; ?></p>
                             <?php endif;?>
                         </span>
                         <?php endif; ?>
@@ -79,8 +80,13 @@
                                     <div class="col-lg-12">
                                       <div class="row">
                                         <div class="col-lg-12">
+                                        <?php /* 暫定 預け入れ(入庫中)以外はアイテム販売設定できない */ ?>
+                                        <?php if ( $item['item_status'] !== (int)BOXITEM_STATUS_INBOUND_DONE ):?>
+                                          <p class="error-message">
+                                            <?php echo __('boxitem_status_' . $item['item_status']); ?>
+                                          </p>
 
-                                        <?php if ( empty($sales) ):?>
+                                        <?php elseif ( empty($sales) ):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
                                             <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>

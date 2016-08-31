@@ -39,8 +39,8 @@
                         <?php endforeach;?>
                       </tbody>
                     </table>
-                    <a class="btn btn-info btn-md pull-right" href="/sale/index">アイテム販売へ戻る</a>
                     <?php echo $this->element('paginator'); ?>
+                    <a class="btn btn-info btn-md pull-right" href="/sale/index">アイテム販売へ戻る</a>
                   </div>
                   <?php endif;?>
                 </div>
