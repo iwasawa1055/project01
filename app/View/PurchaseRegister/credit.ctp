@@ -48,8 +48,8 @@
             <p class="help-block">（※半角大文字英数字、半角スペース）</p>
           </div>
           <div class="row">
-            <div class="text-center btn-commit">
-              <button type="submit" class="btn">入力情報を確認へ（4/5）</button>
+            <div class="text-center">
+              <button type="submit" class="btn commit">入力情報を確認へ（4/5）</button>
             </div>
           </div>
           <?php echo $this->Form->end(); ?>

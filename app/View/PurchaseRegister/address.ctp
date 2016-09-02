@@ -77,8 +77,8 @@
             <?php echo $this->Form->error('CustomerRegistInfo.datetime_cd', null, ['wrap' => 'p']) ?>
           </div>
           <div class="row">
-            <div class="text-center btn-commit">
-              <button type="submit" class="btn">クレジットカード情報の入力へ（3/5）</button>
+            <div class="text-center">
+              <button type="submit" class="btn commit">クレジットカード情報の入力へ（3/5）</button>
             </div>
           </div>
         <?php echo $this->Form->end(); ?>

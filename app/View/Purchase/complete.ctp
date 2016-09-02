@@ -13,8 +13,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
-          <a href="<?php echo Configure::read('site.market.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn">この商品のページに戻る</a>
+        <div class="text-center">
+          <a href="<?php echo Configure::read('site.market.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn commit">この商品のページに戻る</a>
         </div>
       </div>
     </div>

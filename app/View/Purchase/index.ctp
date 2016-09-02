@@ -19,8 +19,8 @@
             <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
           </div>
           <div class="row">
-            <div class="text-center btn-commit">
-              <button type="submit" class="btn">ログイン</button>
+            <div class="text-center">
+              <button type="submit" class="btn commit">ログイン</button>
             </div>
           </div>
           <?php echo $this->Form->end(); ?>
@@ -48,8 +48,8 @@
             <?php echo $this->Form->error('CustomerEntry.newsletter', null, ['wrap' => 'p']) ?>
           </div>
           <div class="row">
-            <div class="text-center btn-commit">
-              <button type="submit" class="btn">配送先住所を入力へ（2/5）</button>
+            <div class="text-center">
+              <button type="submit" class="btn commit">配送先住所を入力へ（2/5）</button>
             </div>
           </div>
           <?php echo $this->Form->end(); ?>

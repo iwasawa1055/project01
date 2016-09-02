@@ -80,8 +80,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
-          <button type="submit" class="btn">この内容で確認する（3/4）</button>
+        <div class="text-center">
+          <button type="submit" class="btn commit">この内容で確認する（3/4）</button>
         </div>
       <?php echo $this->Form->end(); ?>
       </div>

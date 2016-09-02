@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/purchase_register', ['block' => 'scriptMinikura']); ?>
 <section id="form">
   <div class="container">
     <div>
@@ -60,12 +61,20 @@
       </div>
       <div class="row">
       <?php echo $this->Form->create('PaymentGMOPurchase', ['url' => '/purchase/'. $sales_id . '/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-        <div class="text-center btn-commit">
-          <button type="submit" class="btn">この内容で購入する（5/5）</button>
+        <div class="text-center">
+          <div class="btn-orrection">
+            <a class="btn btn-info btn-xs" href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input name="remember" type="checkbox" class="agree-before-submit">
+              minikura利用規約に同意する </label>
+          </div>
         </div>
-        <!-- <div class="text-center btn-commit">
-          <a class="btn" href="/purchase/9999/input?back=true">戻る</a>
-        </div> -->
+        <div class="text-center">
+          <button type="submit" class="btn commit">この内容で購入する（5/5）</button>
+          <a href="/purchase/<?php echo $sales_id ?>/input?back=true" class="btn return">配送先情報入力に戻る</a>
+        </div>
       <?php echo $this->Form->end(); ?>
       </div>
     </div>
