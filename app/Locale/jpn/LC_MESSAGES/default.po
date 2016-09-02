@@ -98,8 +98,11 @@ msgstr "購入キャンセル"
 msgid "sales_status_8"
 msgstr "販売キャンセル"
 
-msgid "sales_status_2"
-msgstr "購入手続き中"
+msgid "can_not_sales"
+msgstr "購入できません"
+
+msgid "can_not_yahoo_auction"
+msgstr "出品できません"
 
 msgid "select_sort_desc"
 msgstr "（降順）"

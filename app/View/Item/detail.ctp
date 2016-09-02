@@ -57,11 +57,11 @@
                         <?php /*ヤフオク*/ ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">
-                            <?php if (empty($denyOutboundList)) : ?>
+                            <?php if (empty($denyOutboundList) && empty($sales)) : ?>
                             <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToAuction; ?>" target="_blank">ヤフオク!に出品</a>
                             <?php else:?>
-                            <a class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" >ヤフオク!に出品</a>
-                            <p class="error-message"><?php echo $denyOutboundList; ?></p>
+                            <button class="btn btn-yahoo btn-md btn-block btn-detail btn-regist" disabled="disabled" >ヤフオク!に出品</button>
+                            <p class="error-message"><?php echo __('can_not_yahoo_auction'); ?></p>
                             <?php endif;?>
                         </span>
                         <?php endif; ?>
@@ -83,7 +83,7 @@
                                         <?php /* 暫定 預け入れ(入庫中)以外はアイテム販売設定できない */ ?>
                                         <?php if ( $item['item_status'] !== (int)BOXITEM_STATUS_INBOUND_DONE ):?>
                                           <p class="error-message">
-                                            <?php echo __('boxitem_status_' . $item['item_status']); ?>
+                                            <?php echo __('can_not_sales'); ?>
                                           </p>
 
                                         <?php elseif ( empty($sales) ):?>
