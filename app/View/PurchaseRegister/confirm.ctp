@@ -81,7 +81,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
+        <div class="text-center">
           <div class="btn-orrection">
             <a class="btn btn-info btn-xs" href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>
           </div>
@@ -90,7 +90,9 @@
               <input name="remember" type="checkbox" class="agree-before-submit">
               minikura利用規約に同意する </label>
           </div>
-          <button type="submit" class="btn">この内容で購入する（5/5）</button>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn commit">この内容で購入する（5/5）</button>
         </div>
       </div>
     <?php echo $this->Form->end(); ?>

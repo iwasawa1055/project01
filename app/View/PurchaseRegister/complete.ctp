@@ -18,8 +18,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
-          <a href="<?php echo Configure::read('site.market.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn">この商品のページに戻る</a>
+        <div class="text-center">
+          <a href="<?php echo Configure::read('site.market.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn commit">この商品のページに戻る</a>
         </div>
       </div>
     </div>
@@ -33,8 +33,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
-          <a href="<?php echo '/purchase/' . $sales_id ?>" class="animsition-link btn">メールアドレス入力ページヘ</a>
+        <div class="text-center">
+          <a href="<?php echo '/purchase/' . $sales_id ?>" class="animsition-link btn commit">メールアドレス入力ページヘ</a>
         </div>
       </div>
     </div>
@@ -48,8 +48,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
-          <a href="/purchase/register/credit" class="animsition-link btn">クレジットカード情報入力ページヘ</a>
+        <div class="text-center">
+          <a href="/purchase/register/credit" class="animsition-link btn commit">クレジットカード情報入力ページヘ</a>
         </div>
       </div>
     </div>
@@ -63,8 +63,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="text-center btn-commit">
-          <a href="/customer/credit_card/add" class="animsition-link btn">クレジットカード情報入力ページヘ</a>
+        <div class="text-center">
+          <a href="/customer/credit_card/add" class="animsition-link btn commit">クレジットカード情報入力ページヘ</a>
         </div>
       </div>
     </div>
