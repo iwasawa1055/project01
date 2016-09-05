@@ -249,6 +249,7 @@ Configure::load('AppConfig');
 
 // 環境別設定
 // ドメイン名による切り替え
+const HOSTS_STAGING_STATIC = 'b-www.minikura.com';
 const HOSTS_STAGING = 'b-mypage.minikura.com';
 const HOSTS_PRODUCTION = 'mypage.minikura.com';
 switch (true) {
@@ -258,6 +259,7 @@ switch (true) {
         include_once('EnvConfig/Production/email.php');
         break;
     case $_SERVER['SERVER_NAME'] === HOSTS_STAGING:
+    case $_SERVER['SERVER_NAME'] === HOSTS_STAGING_STATIC:
         // staging
         Configure::load('EnvConfig/Staging/AppConfig', 'default', false);
         include_once('EnvConfig/Staging/email.php');
