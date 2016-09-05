@@ -12,7 +12,7 @@
               <div class="col-lg-12">
                 <h2>現在の金融機関情報変更</h2>
                 <div class="col-lg-12">
-                  <p class="form-control-static"><?php echo h($customer_account['bank_name']);?>銀行　<?php echo h($customer_account['bank_branch_name']);?>支店　<?php echo BANK_ACCOUNT_TYPE[$customer_account['bank_account_type']];?>　<?php echo h($customer_account['bank_account_number']);?></p>
+                  <p class="form-control-static"><?php echo h($customer_account['bank_name']);?>　<?php echo h($customer_account['bank_branch_name']);?>　<?php echo BANK_ACCOUNT_TYPE[$customer_account['bank_account_type']];?>　<?php echo h($customer_account['bank_account_number']);?></p>
                 </div>
               </div>
 

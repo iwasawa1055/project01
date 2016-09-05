@@ -19,11 +19,11 @@
                 <?php echo $this->Form->create('CustomerAccount', ['url' => "/customer/account/complete/{$step}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <div class="form-group col-lg-12">
                   <label>金融機関名</label>
-                  <p><?php echo $this->Form->data['CustomerAccount']['bank_name']; ?>銀行</p>
+                  <p><?php echo $this->Form->data['CustomerAccount']['bank_name']; ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>支店名</label>
-                  <p><?php echo $this->Form->data['CustomerAccount']['bank_branch_name']; ?>支店</p>
+                  <p><?php echo $this->Form->data['CustomerAccount']['bank_branch_name']; ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>口座種別</label>
