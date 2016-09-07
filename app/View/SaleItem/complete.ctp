@@ -60,16 +60,16 @@
                                           <p class="form-control-static"><?php echo nl2br(h($sales['sales_note']));?></p>
                                           <?php /* sns */ ?>
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
-                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($market_url); ?>&t=" >
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($trade_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>
                                           <a class="btn btn-block btn-social btn-xs btn-twitter"
-                                             href="https://twitter.com/share?url=<?php echo h($market_url); ?>&text=" >
+                                             href="https://twitter.com/share?url=<?php echo h($trade_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
-                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($market_url); ?>">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($trade_url); ?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
-                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($market_url);?>"></iframe>'>
+                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($trade_url);?>"></iframe>'>
                                           <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>
 
                                         </div>

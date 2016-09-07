@@ -21,7 +21,7 @@ class PurchaseRegisterController extends MinikuraController
     {
         parent::beforeFilter();
         // Layouts
-        $this->layout = 'market';
+        $this->layout = 'trade';
 
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_DATETIME_DELIVERY);
@@ -40,7 +40,7 @@ class PurchaseRegisterController extends MinikuraController
         }
 
         if ($sale[0]['sales_status'] !== SALES_STATUS_ON_SALE) {
-            return $this->redirect(Configure::read('site.market.url') . $purchase['sales_id']);
+            return $this->redirect(Configure::read('site.trade.url') . $purchase['sales_id']);
         }
 
         $this->set('sales', $sale[0]);

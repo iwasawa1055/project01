@@ -129,17 +129,17 @@
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
 
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
-                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($market_url); ?>&t=" >
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($trade_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>
                                           <a class="btn btn-block btn-social btn-xs btn-twitter"
-                                             href="https://twitter.com/share?url=<?php echo h($market_url); ?>&text=" >
+                                             href="https://twitter.com/share?url=<?php echo h($trade_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
                                           <?php /* sns貼り付け用 url作成 */ ?>
-                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($market_url);?>">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($trade_url);?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
-                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($market_url);?>" scrolling="no" frameborder="no"></iframe>'>
+                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($trade_url);?>" scrolling="no" frameborder="no"></iframe>'>
                                           <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>
                                           <?php echo $this->Form->hidden('Sales.sales_id', ['value' => $sales['sales_id']]); ?>
                                           <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>

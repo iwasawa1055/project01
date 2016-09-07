@@ -100,11 +100,11 @@ class SaleItemController extends MinikuraController
                 if (!empty($sales_result->results[0])) {
                     $sales = $sales_result->results[0];
                     $sales_id = $sales['sales_id'];
-                    //* market page url
-                    $market_url = Configure::read('site.market.url').$sales_id;
+                    //* trade page url
+                    $trade_url = Configure::read('site.trade.url').$sales_id;
                 }
                 $this->set('sales', $sales);
-                $this->set('market_url', $market_url);
+                $this->set('trade_url', $trade_url);
 
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);

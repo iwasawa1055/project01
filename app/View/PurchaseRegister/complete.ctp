@@ -19,7 +19,7 @@
       </div>
       <div class="row">
         <div class="text-center">
-          <a href="<?php echo Configure::read('site.market.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn commit">この商品のページに戻る</a>
+          <a href="<?php echo Configure::read('site.trade.url'); ?><?php echo $sales_id; ?>" class="animsition-link btn commit">この商品のページに戻る</a>
         </div>
       </div>
     </div>

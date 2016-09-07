@@ -22,7 +22,7 @@ class PurchaseController extends MinikuraController
         parent::beforeFilter();
 
         // Layouts
-        $this->layout = 'market';
+        $this->layout = 'trade';
 
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_DATETIME);
@@ -42,7 +42,7 @@ class PurchaseController extends MinikuraController
             }
 
             if ($sale[0]['sales_status'] !== SALES_STATUS_ON_SALE) {
-                return $this->redirect(Configure::read('site.market.url') . $sales_id);
+                return $this->redirect(Configure::read('site.trade.url') . $sales_id);
             }
 
             $this->set('sales_id', $sales_id);
