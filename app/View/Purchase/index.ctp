@@ -2,7 +2,7 @@
   <div class="container">
   <?php  echo $this->Flash->render();?>  
     <div>
-      <h2>ログイン/配送先情報入力</h2>
+      <h2>ログイン/購入情報入力</h2>
     </div>
     <?php echo $this->element('purchase_item', ['sales' => $sales]); ?>
     <div class="row">
@@ -26,8 +26,8 @@
           <?php echo $this->Form->end(); ?>
         </div>
         <div class="signin">
-          <h4>配送先情報を入力して購入</h4>
-          <p>メールアドレスとパスワードを設定（1/5）</p>
+          <h4>まだアカウントをお持ちはない方</h4>
+          <p>まだアカウントをお持ちでない方、登録情報を入力して購入（1/5）</p>
           <?php echo $this->Form->create('CustomerEntry', ['url' => '/purchase/'. $sales_id . '/register/', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <?php echo $this->Form->hidden('PaymentGMOPurchase.sales_id', ['value' => $sales_id]); ?>
           <div class="form-group">

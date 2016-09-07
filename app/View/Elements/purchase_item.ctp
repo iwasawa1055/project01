@@ -5,7 +5,7 @@
         </div>
         <div class="caption">
           <h3><?php echo h($sales['sales_title']); ?></h3>
-          <p class="price">価格：<?php echo h(number_format(floor($sales['price'])));?>円</p>
+          <p class="price">価格：<?php echo h(number_format(floor($sales['price'])));?>円（税込）</p>
         </div>
       </div>
     </div>

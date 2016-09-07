@@ -85,11 +85,11 @@ a.return:hover {
 	font-size: 18px;
 }
 #form .photo {
-	width: 10%;
+	width: 30%;
 	margin: 0 20px 0 20px;
 }
 #form .caption {
-	width: 90%;
+	width: 70%;
 	margin: 0 20px 0 20px;
 }
 #form .caption h3 {
