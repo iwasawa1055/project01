@@ -83,7 +83,7 @@
                                           <label>商品説明</label>
                                           <p class="form-control-static"><?php echo nl2br(h($this->Form->data['Sales']['sales_note']));?></p>
                                           <a class="btn btn-info btn-xs btn-block animsition-link" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura利用規約</a>
-                                          <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >利用規約に同意して販売する</button>
+                                          <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >販売する</button>
                                         <?php echo $this->Form->end(); ?>
                                         <?php endif; ?>
 

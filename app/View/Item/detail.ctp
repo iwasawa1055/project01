@@ -89,11 +89,11 @@
                                         <?php elseif ( empty($sales) ):?>
                                         <?php echo $this->Form->create('Sales', ['url' => "/sale/item/edit/{$item['item_id']}", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false]);?>
+                                            <?php echo $this->Form->input('Sales.sales_title', ['class' => 'form-control', 'placeholder' => '販売名', 'error' => false, 'value' => $session_sales['sales_title']]);?>
                                             <?php echo $this->Form->error('Sales.sales_title', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格 (税別)', 'error' => false]);?>
+                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格 (税別)', 'error' => false, 'value' => $session_sales['price']]);?>
                                             <?php echo $this->Form->error('Sales.price', null, ['wrap' => 'p']);?>
                                             <p class="sale-caption">※ご注意事項</p>
                                             <ul class="sale-caption">
@@ -103,7 +103,7 @@
                                             </ul>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
+                                            <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false, 'value' => $session_sales['sales_note']]);?>
                                             <?php echo $this->Form->error('Sales.sales_note', null, ['wrap' => 'p']);?>
                                           </div>
                                           <button type="submit" class="btn btn-danger btn-md btn-block animsition-link" >この内容で確認する</button>

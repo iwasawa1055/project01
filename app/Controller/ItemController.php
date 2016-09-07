@@ -239,6 +239,10 @@ class ItemController extends MinikuraController
             //* trade page url
             $trade_url = Configure::read('site.trade.url').$sales_id;
         }
+        //*  戻る用
+        $session_sales = null;
+        $session_sales = CakeSession::read(self::MODEL_NAME_SALES);
+        $this->set('session_sales', $session_sales);
 
         $this->set('sales', $sales);
         $this->set('trade_url', $trade_url);

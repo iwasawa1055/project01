@@ -112,9 +112,10 @@
                     <table class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
-                          <th>振込依頼月</th>
+                          <th>売買完了日</th>
                           <th>注文合計</th>
-                          <th>手数料</th>
+                          <th>引落し手数料</th>
+                          <th>販売手数料</th>
                           <th>送金額</th>
                           <th>振込手続日</th>
                         </tr>
@@ -125,7 +126,8 @@
                           <td><a class="animsition-link" href="/sale/transfer_detail/<?php echo $completed['transfer_id'];?>"><?php echo($this->Time->format($completed['transfer_requested'], '%Y-%m'));?></a></td>
                           <td><?php echo number_format(h(floor($completed['subtotal_price'])));?>円</td>
                           <td><?php echo number_format(h(floor($completed['charge_price'])));?>円</td>
-                          <td><?php echo number_format(h(floor($completed['total_price'])));?>0円</td>
+                          <td><?php /* 販売手数料　キャンペーン中でしばらく0円 */ ;?>0円</td>
+                          <td><?php echo number_format(h(floor($completed['total_price'])));?>円</td>
                           <td><?php echo($this->Time->format($completed['transfer_completed'], '%Y-%m-%d'));?></td>
                         </tr>
                         <?php endforeach;?>
