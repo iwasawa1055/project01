@@ -715,6 +715,16 @@ tfoot td {
 .sale h4{
 	margin:5px 0;
 }
+
+.sale-caption {
+	font-size: 60%;
+	display: block;
+	    margin: 5px 0 5px;
+}
+ul.sale-caption {
+	padding-left:20px;
+	list-style: circle;
+}
 .sale textarea.form-control{
 	margin-top:15px;
 }
