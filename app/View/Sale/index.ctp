@@ -29,6 +29,7 @@
                 <h2>販売機能設定</h2>
               </div>
             </div>
+            <?php if ($customer_sales['sales_flag'] === '0' || empty($customer_sales)):?>
             <div class="col-lg-6">
               <div class="row">
                 <span class="col-sm-6 col-xs-12">
@@ -41,7 +42,6 @@
                   minikura利用規約に同意する </label>
               </div>
             </div>
-            <?php if ($customer_sales['sales_flag'] === '0' || empty($customer_sales)):?>
             <?php echo $this->Form->create('CustomerSales', ['url' => ['controller' => 'Sale', 'action' => 'edit']]); ?>
             <span class="col-sm-6 col-xs-12">
               <?php echo $this->Form->hidden('sales_flag', ['value' => '1']); ?>
