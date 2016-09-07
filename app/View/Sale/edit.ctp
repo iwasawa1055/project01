@@ -1,6 +1,6 @@
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
+        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> minikuraTRADE</h1>
       </div>
     </div>
     <div class="row">
@@ -12,17 +12,12 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="form-group col-lg-12">
-                  <p class="form-control-static">アイテム販売機能をONにしました。</p>
+                  <p class="form-control-static">minikuraTRADE機能をONにしました。</br>
+                  アイテム一覧ページよりお好きなアイテムを選択し、商品情報・出品金額を決めて販売設定を行ってください。</p>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/item/">アイテム一覧に移動する</a>
                 </span>
-                <?php /*  口座情報 分岐 */ ?>
-                <?php if(empty($customer_bank_account)):?>
-                <span class="col-lg-12 col-md-12 col-xs-12">
-                <a class="btn btn-danger btn-lg btn-block animsition-link" href="/customer/account/add">金融機関情報を登録する（初回のみ）</a>
-                </span>
-                <?php endif;?>
               </div>
             </div>
           </div>
@@ -34,7 +29,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="form-group col-lg-12">
-                  <p class="form-control-static">アイテム販売機能をOFFにしました。</p>
+                  <p class="form-control-static">minikuraTRADE機能をOFFにしました。</p>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block animsition-link" href="/">マイページへ戻る</a>
