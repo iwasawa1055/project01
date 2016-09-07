@@ -45,7 +45,7 @@
                             <div class="col-xs-12 col-lg-12">
                               <div class="panel panel-default">
                                 <div class=" panel-heading">
-                                  <h4>アイテム販売</h4>
+                                  <h4>minikuraTRADE</h4>
                                 </div>
                                 <div class="panel-body">
                                   <div class="row">
@@ -55,21 +55,21 @@
                                           <label>販売名</label>
                                           <p class="form-control-static"><?php echo h($sales['sales_title']);?></p>
                                           <label>販売価格</label>
-                                          <p class="form-control-static"><?php echo h(floor($sales['price']));?>円</p>
+                                          <p class="form-control-static"><?php echo h(floor($sales['price']));?>円(税込)</p>
                                           <label>商品説明</label>
                                           <p class="form-control-static"><?php echo nl2br(h($sales['sales_note']));?></p>
                                           <?php /* sns */ ?>
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
-                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($market_url); ?>&t=" >
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($trade_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>
                                           <a class="btn btn-block btn-social btn-xs btn-twitter"
-                                             href="https://twitter.com/share?url=<?php echo h($market_url); ?>&text=" >
+                                             href="https://twitter.com/share?url=<?php echo h($trade_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
-                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($market_url); ?>">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($trade_url); ?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
-                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($market_url);?>"></iframe>'>
+                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($trade_url);?>"></iframe>'>
                                           <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>
 
                                         </div>

@@ -5,7 +5,7 @@ $config['site.env_name'] = 'development';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://b-www.minikura.com/contents/sneakers/';
 
-//* market 
+//* trade 
 /*
 * コンテンツ側からApacheでAlias設定中 
 * 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
@@ -21,36 +21,36 @@ switch (true) {
     case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'osada-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://osada-mypage.minikura.com';
-        $config['site.market.url'] = 'https://osada-contents.minikura.com/market/';
+        $config['site.trade.url'] = 'https://osada-contents.minikura.com/trade/';
         break;
 
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'goto-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
-        $config['site.market.url'] = 'https://goto-contents.minikura.com/market/';
+        $config['site.trade.url'] = 'https://goto-contents.minikura.com/trade/';
         break;
         
     case $_SERVER['HTTP_HOST'] === 'harasawa.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'harasawa-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://harasawa-mypage.minikura.com';
-        $config['site.market.url'] = 'https://harasawa.minikura.com/market/';
+        $config['site.trade.url'] = 'https://harasawa.minikura.com/trade/';
         break;
 
     case $_SERVER['HTTP_HOST'] === 'maekawa-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'maekawa-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://maekawa-mypage.minikura.com';
-        $config['site.market.url'] = 'https://maekawa-contents.minikura.com/market/';
+        $config['site.trade.url'] = 'https://maekawa-contents.minikura.com/trade/';
         break;
         
     case $_SERVER['HTTP_HOST'] === 'rikiji-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'rikiji-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://rikiji-mypage.minikura.com';
-        $config['site.market.url'] = 'https://rikiji-contents.minikura.com/market/';
+        $config['site.trade.url'] = 'https://rikiji-contents.minikura.com/trade/';
         break;
 
     default:
         $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
-        $config['site.market.url'] = 'https://b-www.minikura.com/market/';
+        $config['site.trade.url'] = 'https://b-www.minikura.com/trade/';
 }
 
 /**

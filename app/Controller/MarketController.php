@@ -11,7 +11,7 @@ App::uses('MinikuraController', 'Controller');
 * app/webroot/.htaccess mod_rewrite設定中
 * 
 */
-class MarketController extends MinikuraController
+class TradeController extends MinikuraController
 {
     const MODEL_NAME_SALES = 'Sales';
 
@@ -22,7 +22,7 @@ class MarketController extends MinikuraController
     public function beforeRender()
     {
         //* mypageとは違うlayoutにする
-        $this->layout = 'market';
+        $this->layout = 'trade';
     }
 
 

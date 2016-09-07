@@ -229,19 +229,19 @@ class ItemController extends MinikuraController
         $this->set('customer_sales', $customer_sales);
         //* 販売情報 
         $sales = null;
-        $market_url = null;
+        $trade_url = null;
         /* viewで表示分け用
         *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php 
         */
         $sales = $this->Sales->checkSales($item);
         if (!empty($sales) && $sales['sales_status'] === SALES_STATUS_ON_SALE) {
             $sales_id = $sales['sales_id'];
-            //* market page url
-            $market_url = Configure::read('site.market.url').$sales_id;
+            //* trade page url
+            $trade_url = Configure::read('site.trade.url').$sales_id;
         }
 
         $this->set('sales', $sales);
-        $this->set('market_url', $market_url);
+        $this->set('trade_url', $trade_url);
 
     
     }

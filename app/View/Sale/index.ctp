@@ -1,7 +1,23 @@
     <?php $this->Html->script('minikura/sale', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
+        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> minikuraTRADE</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h2>minikuraTRADE機能とは？</h2>
+              </div>
+            </div>
+            <div class="form-group col-lg-12">
+              minikuraTRADE機能とは、「minikuraMONO」でお預かりただいている商品をFacebook、TwitterなどのSNSやブログなど、お好きなサイトで販売できる販売機能サービスです。商品が購入されると、minikuraから購入者へ商品を匿名で配送しますので、手間がかからないラクちんサービスです。
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -63,6 +79,19 @@
                   <?php echo h($customer_bank_account['bank_name']);?>　<?php echo h($customer_bank_account['bank_branch_name']);?>　<?php echo BANK_ACCOUNT_TYPE[$customer_bank_account['bank_account_type']];?>　<?php echo h($customer_bank_account['bank_account_number']);?>
                 <?php endif;?>
                   <p class="form-control-static">金融機関情報の変更は<a class="animsition-link" href="/customer/account/index">「金融機関情報」</a>から変更してください。 </p>
+                </div>
+
+                <h2>お振込みについて</h2>
+                <div class="form-group col-lg-12">
+                  販売代金を受け取るには、「振込みを依頼する」より振込申請を行ってください。<br>
+                  実際のお振込みに関しては以下費用を差し引いた金額が指定口座に振込されます。<br>
+                  <br>
+                  販売手数料：販売代金の２０％<br>
+                  振込手数料：１回の振込につき３００円<br>
+                  <br>
+                  販売代金の受け取りは最大６ヶ月まで繰り越すことができます。<br>
+                  まとめて振込申請をすることで、振込手数料の負担軽減につながります。<br>
+                  なお６ヶ月以上経過した場合は、販売金額は無効となりますので、ご注意ください。
                 </div>
                 
                 <span class="col-lg-6 col-md-6 col-xs-12">

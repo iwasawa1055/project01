@@ -73,7 +73,7 @@
                             <div class="col-xs-12 col-lg-12">
                               <div class="panel panel-default">
                                 <div class=" panel-heading">
-                                  <h4>アイテム販売</h4>
+                                  <h4>minikuraTRADE</h4>
                                 </div>
                                 <div class="panel-body">
                                   <div class="row">
@@ -93,8 +93,14 @@
                                             <?php echo $this->Form->error('Sales.sales_title', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格', 'error' => false]);?>
+                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格 (税別)', 'error' => false]);?>
                                             <?php echo $this->Form->error('Sales.price', null, ['wrap' => 'p']);?>
+                                            <p class="sale-caption">※ご注意事項</p>
+                                            <ul class="sale-caption">
+                                              <li>金額は1,000円〜50,000円の範囲で設定ください。</li>
+                                              <li>送料800円は出品者負担となりますのでご注意ください。</li>
+                                              <li>設定金額は税込金額です。</li>
+                                            </ul>
                                           </div>
                                           <div class="form-group">
                                             <?php echo $this->Form->textarea('Sales.sales_note', ['class' => 'form-control', 'rows' => 5, 'placeholder' => '商品説明', 'error' => false]);?>
@@ -123,17 +129,17 @@
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
 
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
-                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($market_url); ?>&t=" >
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($trade_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>
                                           <a class="btn btn-block btn-social btn-xs btn-twitter"
-                                             href="https://twitter.com/share?url=<?php echo h($market_url); ?>&text=" >
+                                             href="https://twitter.com/share?url=<?php echo h($trade_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
                                           <?php /* sns貼り付け用 url作成 */ ?>
-                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($market_url);?>">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($trade_url);?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
-                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($market_url);?>"></iframe>'>
+                                          <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($trade_url);?>" scrolling="no" frameborder="no"></iframe>'>
                                           <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>
                                           <?php echo $this->Form->hidden('Sales.sales_id', ['value' => $sales['sales_id']]); ?>
                                           <?php echo $this->Form->hidden('Sales.item_id', ['value' => $item['item_id']]); ?>

@@ -30,16 +30,16 @@
 
 
 <?php /* コンテンツ側から参照しているので、絶対ドメインパス */ ?>
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/animsition.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/animate.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/common/css/app.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/css/app.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/trade/common/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/trade/common/css/animsition.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/trade/common/css/animate.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/trade/common/css/app.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/trade/css/app.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/css/app_dev.css">
-<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/market/css/app_dev.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Configure::read('site.mypage.url');?>/trade/css/app_dev.min.css">
 
 <!-- Custom Fonts -->
-<link href="<?php echo Configure::read('site.mypage.url');?>/market/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="<?php echo Configure::read('site.mypage.url');?>/trade/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -76,7 +76,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header page-scroll">
-      <a class="navbar-brand animsition-link" href="<?php echo Configure::read('site.static_content_url');?>"><img src="<?php echo Configure::read('site.mypage.url');?>/market/common/images/logo.png" alt=""/></a>
+      <a class="navbar-brand animsition-link" href="<?php echo Configure::read('site.static_content_url');?>"><img src="<?php echo Configure::read('site.mypage.url');?>/trade/common/images/logo.png" alt=""/></a>
     </div>
   </div>
 </nav>
@@ -172,12 +172,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- FOOTER -->
 
 
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/jquery.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/bootstrap.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/jquery.easing.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/classie.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/animsition.min.js"></script>
-<script src="<?php echo Configure::read('site.mypage.url');?>/market/common/js/wow.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/trade/common/js/jquery.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/trade/common/js/bootstrap.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/trade/common/js/jquery.easing.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/trade/common/js/classie.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/trade/common/js/animsition.min.js"></script>
+<script src="<?php echo Configure::read('site.mypage.url');?>/trade/common/js/wow.min.js"></script>
 <script>
     new WOW().init();
 </script>

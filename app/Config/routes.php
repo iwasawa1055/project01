@@ -2,15 +2,15 @@
 
 if (! empty($_SERVER['REQUEST_URI'])) {
     switch (true) {
-        case preg_match('{^/market}i', $_SERVER['REQUEST_URI']):
-            Router::connect('/:id', ['controller' => 'Market', 'action' => 'index'], ['id' => '[A-Z\-0-9]+']);
-            Router::connect('/input/*', ['controller' => 'Market', 'action' => 'input']);
-            Router::connect('/confirm/*', ['controller' => 'Market', 'action' => 'confirm']);
-            Router::connect('/complete/*', ['controller' => 'Market', 'action' => 'complete']);
+        case preg_match('{^/trade}i', $_SERVER['REQUEST_URI']):
+            Router::connect('/:id', ['controller' => 'Trade', 'action' => 'index'], ['id' => '[A-Z\-0-9]+']);
+            Router::connect('/input/*', ['controller' => 'Trade', 'action' => 'input']);
+            Router::connect('/confirm/*', ['controller' => 'Trade', 'action' => 'confirm']);
+            Router::connect('/complete/*', ['controller' => 'Trade', 'action' => 'complete']);
             Router::connect('/:controller/:action/*', []);
             Router::connect('/:controller/', ['action' => 'index']);
-            Router::connect('/:action/*', ['controller' => 'Market']);
-            Router::connect('/', ['controller' => 'Market', 'action' => 'index']);
+            Router::connect('/:action/*', ['controller' => 'Trade']);
+            Router::connect('/', ['controller' => 'Trade', 'action' => 'index']);
             break;
         default:
             // customer
