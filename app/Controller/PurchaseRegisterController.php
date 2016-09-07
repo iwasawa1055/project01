@@ -243,7 +243,6 @@ class PurchaseRegisterController extends MinikuraController
             // ユーザー本登録
             $res = $this->CustomerRegistInfo->regist();
             if (!empty($res->error_message)) {
-                CakeSession::delete('PurchaseRegister');
                 $this->Flash->set($res->error_message);
                 return $this->redirect('/purchase/' . $sales_id);
             }
