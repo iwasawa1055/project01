@@ -93,7 +93,7 @@
                                             <?php echo $this->Form->error('Sales.sales_title', null, ['wrap' => 'p']);?>
                                           </div>
                                           <div class="form-group">
-                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格 (税別)', 'error' => false, 'value' => $session_sales['price']]);?>
+                                            <?php echo $this->Form->input('Sales.price', ['class' => 'form-control', 'placeholder' => '販売価格 (税込)', 'error' => false, 'value' => $session_sales['price']]);?>
                                             <?php echo $this->Form->error('Sales.price', null, ['wrap' => 'p']);?>
                                             <p class="sale-caption">※ご注意事項</p>
                                             <ul class="sale-caption">
@@ -120,7 +120,7 @@
                                           </div>
                                           <div class="form-group">
                                             <label>価格</label>
-                                            <?php echo h( floor($sales['price']));?>円
+                                            <?php echo h( floor($sales['price']));?>円 (税込)
                                           </div>
                                           <div class="form-group">
                                             <label>商品説明</label>
