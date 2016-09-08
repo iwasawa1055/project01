@@ -25,7 +25,6 @@ class SaleItemController extends MinikuraController
      */
     public function edit()
     {
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->params, true));
 
         //* get
         if ($this->request->is('get')) {
@@ -63,8 +62,6 @@ class SaleItemController extends MinikuraController
      */
     public function complete()
     {
-        CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
         //* reload
         $data = CakeSession::read([self::MODEL_NAME_SALES]);
         CakeSession::delete(self::MODEL_NAME_SALES);
@@ -119,8 +116,6 @@ class SaleItemController extends MinikuraController
      */
     public function cancel()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
         if (!$this->request->is('post')) {
             //* redirect
             return $this->redirect($this->referer());
@@ -142,7 +137,7 @@ class SaleItemController extends MinikuraController
 
             } else {
                 $this->set('validErrors', $this->Sales->validationErrors);
-                CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
+                //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->Sales->validationErrors, true));
                 //todo render
             }
             //* 表示用

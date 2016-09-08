@@ -37,8 +37,6 @@ class SaleController extends MinikuraController
      */
     public function index()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-
         //*  販売機能　設定状況 
         $customer_sales = null;
         $customer_sales_result = $this->CustomerSales->apiGet();
@@ -108,9 +106,6 @@ class SaleController extends MinikuraController
     public function edit()
     {
 
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-
         if ($this->request->is('post')) {
             $this->CustomerSales->set($this->request->data[self::MODEL_NAME_CUSTOMER_SALES]);
             if ($this->CustomerSales->validates()) {
@@ -146,7 +141,6 @@ class SaleController extends MinikuraController
      */
     public function transfer()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
 
         if ($this->request->is('get')) {
             //* 口座情報
@@ -155,7 +149,7 @@ class SaleController extends MinikuraController
                 $customer_bank_account = $this->Customer->getCustomerBankAccount();
             }
             $this->set('customer_bank_account', $customer_bank_account);
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
 
             //*  振り込み可能リスト 金額
             $sales = null;
@@ -167,8 +161,7 @@ class SaleController extends MinikuraController
             }
             $this->set('sales', $sales);
             $this->set('transfer_price', $transfer_price);
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($transfer_price, true));
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
         }
     }
 
@@ -177,18 +170,12 @@ class SaleController extends MinikuraController
      */
     public function transfer_complete()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-
-        if ($this->request->is('get')) {
-            //* todo error
-        }
 
         if ($this->request->is('post')) {
             //*  API parameterはtokenのみ　validate不要
             $data = [];
             $transfer_result = $this->Transfer->apiPost($data); 
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($transfer_result, true));
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($transfer_result, true));
 
             //* success
             if (!empty($transfer_result->results[0])) {
@@ -207,7 +194,6 @@ class SaleController extends MinikuraController
      */
     public function transfer_list()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         $transfer_completed = null;
         $transfer_completed_result = $this->Transfer->apiGet(['limit' => '3']);
         if (!empty($transfer_completed_result->results)) {
@@ -223,7 +209,6 @@ class SaleController extends MinikuraController
      */
     public function transfer_detail()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
         $transfer_results = null;
         $transfer_detail = null;
         $total_price = 0;

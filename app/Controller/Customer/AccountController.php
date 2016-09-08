@@ -21,9 +21,6 @@ class AccountController extends MinikuraController
      */
     public function customer_index()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
-
         $customer_account = null;
         $customer_account_result = $this->CustomerAccount->apiGet();
         if (!empty($customer_account_result->results[0])) {
@@ -47,8 +44,6 @@ class AccountController extends MinikuraController
      */
     public function customer_confirm()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-
         //* get
         if (!$this->request->is('post')) {
             //* redirect
@@ -85,7 +80,6 @@ class AccountController extends MinikuraController
      */
     public function customer_edit()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
 
         //* api get
         $customer_account = null;
@@ -125,9 +119,6 @@ class AccountController extends MinikuraController
      */
     public function customer_complete()
     {
-        CakeLog::write(BENCH_LOG, get_class($this) . __METHOD__);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(CakeSession::read(self::MODEL_NAME_ACCOUNT), true));
-
         //* reload
         $data = CakeSession::read([self::MODEL_NAME_ACCOUNT]);
         CakeSession::delete(self::MODEL_NAME_ACCOUNT);

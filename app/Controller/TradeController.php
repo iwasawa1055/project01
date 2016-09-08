@@ -31,7 +31,6 @@ class TradeController extends MinikuraController
      */
     public function index()
     {
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->params, true));
 
         $this->loadModel(self::MODEL_NAME_SALES);
         $sales = null;
@@ -41,8 +40,7 @@ class TradeController extends MinikuraController
             $sales = $sales_result->results[0];
         }
         $this->set('sales', $sales);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
-        //* todo sales_status=1 販売中　以外の見せ方
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
 
     }
 
@@ -52,7 +50,7 @@ class TradeController extends MinikuraController
     public function input()
     {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
-
+        $this->redirect(['action' => 'index']);
     }
     /**
      * 暫定 confirm
@@ -60,6 +58,7 @@ class TradeController extends MinikuraController
     public function confirm()
     {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
+        $this->redirect(['action' => 'index']);
 
     }
     /**
@@ -68,6 +67,7 @@ class TradeController extends MinikuraController
     public function complete()
     {
         CakeLog::write(DEBUG_LOG, get_class($this) . __METHOD__);
+        $this->redirect(['action' => 'index']);
 
     }
 
