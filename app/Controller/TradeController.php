@@ -45,6 +45,26 @@ class TradeController extends MinikuraController
     }
 
     /**
+     * widget
+     */
+    public function widget()
+    {
+        //* widget 用
+        $this->autoLayout = false;
+
+        $this->loadModel(self::MODEL_NAME_SALES);
+        $sales = null;
+        $id = $this->params['id'];
+        $sales_result = $this->Sales->apiGet(['sales_id' => $id]);
+        if (!empty($sales_result->results[0])) {
+            $sales = $sales_result->results[0];
+        }
+        $this->set('sales', $sales);
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
+
+    }
+
+    /**
      * 暫定 input
      */
     public function input()

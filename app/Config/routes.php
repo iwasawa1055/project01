@@ -4,6 +4,7 @@ if (! empty($_SERVER['REQUEST_URI'])) {
     switch (true) {
         case preg_match('{^/trade}i', $_SERVER['REQUEST_URI']):
             Router::connect('/:id', ['controller' => 'Trade', 'action' => 'index'], ['id' => '[A-Z\-0-9]+']);
+            Router::connect('/widget/:id', ['controller' => 'Trade', 'action' => 'widget'], ['id' => '[A-Z\-0-9]+']);
             Router::connect('/input/*', ['controller' => 'Trade', 'action' => 'input']);
             Router::connect('/confirm/*', ['controller' => 'Trade', 'action' => 'confirm']);
             Router::connect('/complete/*', ['controller' => 'Trade', 'action' => 'complete']);

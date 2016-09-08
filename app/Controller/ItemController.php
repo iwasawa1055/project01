@@ -230,6 +230,7 @@ class ItemController extends MinikuraController
         //* 販売情報 
         $sales = null;
         $trade_url = null;
+        $widget_url = null;
         /* viewで表示分け用
         *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php 
         */
@@ -238,6 +239,8 @@ class ItemController extends MinikuraController
             $sales_id = $sales['sales_id'];
             //* trade page url
             $trade_url = Configure::read('site.trade.url').$sales_id;
+            //* widget page url
+            $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
         }
         //*  戻る用
         $session_sales = null;
@@ -246,6 +249,7 @@ class ItemController extends MinikuraController
 
         $this->set('sales', $sales);
         $this->set('trade_url', $trade_url);
+        $this->set('widget_url', $widget_url);
 
     
     }
