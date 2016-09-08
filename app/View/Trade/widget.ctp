@@ -63,6 +63,16 @@ body {
 </head>
 
 <body>
+
+<?php if ( empty($sales)):?>
+<div class="logo">
+  <a href="<?php echo Configure::read('site.mypage.url');?>"><img src="<?php echo Configure::read('site.mypage.url');?>/trade/images/logo.png" alt=""></a>
+</div>
+<div id="wrapper">
+  <p style="text-align : center";>存在しないデータです</p>
+</div>
+
+<?php else:?>
 <div class="logo">
   <a href="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>"><img src="<?php echo Configure::read('site.mypage.url');?>/trade/images/logo.png" alt=""></a>
 </div>
@@ -79,7 +89,10 @@ body {
   <div class="price">
     <?php echo number_format(h($sales['price']));?> 円 (税込)
   </div>
+  <?php if ($sales['sales_status'] === SALES_STATUS_ON_SALE):?>
   <a href="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>" target="_parent" class="btn">このアイテムを購入する</a>
+  <?php endif;?>
 </div>
+<?php endif;?>
 </body>
 </html>

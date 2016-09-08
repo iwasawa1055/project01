@@ -1,7 +1,7 @@
 
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
+        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> minikuraTRADE</h1>
       </div>
     </div>
     <div class="row">
@@ -42,7 +42,7 @@
                       </tbody>
                     </table>
                     <?php echo $this->element('paginator'); ?>
-                    <a class="btn btn-info btn-md pull-right" href="/sale/index">アイテム販売へ戻る</a>
+                    <a class="btn btn-info btn-md pull-right" href="/sale/index">minikuraTRADEへ戻る</a>
                   </div>
                   <?php endif;?>
                 </div>
