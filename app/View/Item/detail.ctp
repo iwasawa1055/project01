@@ -129,11 +129,11 @@
                                           <button type="submit" class="btn btn-danger btn-xs btn-block animsition-link" >販売をやめる</button>
 
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
-                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($widget_url); ?>&t=" >
+                                             href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($trade_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>
                                           <a class="btn btn-block btn-social btn-xs btn-twitter"
-                                             href="https://twitter.com/share?url=<?php echo h($widget_url); ?>&text=" >
+                                             href="https://twitter.com/share?url=<?php echo h($trade_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
                                           <?php /* sns貼り付け用 url作成 */ ?>
