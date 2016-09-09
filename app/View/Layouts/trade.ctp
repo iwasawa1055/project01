@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
 <meta charset="utf-8">
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="cache-control" content="no-cache" />
@@ -10,6 +10,22 @@
 <meta name="keywords" content="minikura,あずける,トラクルーム,収納スペース">
 <meta name="description" content="箱であずかる収納サービス minikura。箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
 <meta name="author" content="">
+
+<meta property="og:site_name"  content="minikura" />
+<?php if( !empty($sales)):?>
+<meta property="og:title" content="<?php echo h($sales['sales_title']);?>" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>" />
+<meta property="og:image" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
+<meta property="og:description" content="minikuraTRADE機能とは、「minikuraMONO」でお預かりただいている商品をFacebook、TwitterなどのSNSやブログなど、お好きなサイトで販売できる販売機能サービスです。商品が購入されると、minikuraから購入者へ商品を匿名で配送しますので、手間がかからないラクちんサービスです。" />
+<?php else:?>
+<meta property="og:title" content="minikura" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="<?php echo Configure::read('site.static_content_url');?>" />
+<meta property="og:description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！" />
+<?php endif;?>
+<meta name="twitter:card" content="summary" />
+
 <title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->fetch('meta');
