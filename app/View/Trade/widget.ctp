@@ -16,7 +16,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>" />
 <meta property="og:image" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
-<meta property="og:description" content="minikuraTRADE機能とは、「minikuraMONO」でお預かりただいている商品をFacebook、TwitterなどのSNSやブログなど、お好きなサイトで販売できる販売機能サービスです。商品が購入されると、minikuraから購入者へ商品を匿名で配送しますので、手間がかからないラクちんサービスです。" />
+<meta property="og:description" content="<?php echo h($sales['sales_note']);?>" />
 <?php else:?>
 <meta property="og:title" content="minikura" />
 <meta property="og:type" content="website" />
