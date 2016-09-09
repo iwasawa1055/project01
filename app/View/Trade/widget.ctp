@@ -1,5 +1,15 @@
 <!doctype html>
-<html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="keywords" content="minikura,あずける,トラクルーム,収納スペース">
+<meta name="description" content="箱であずかる収納サービス minikura。箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
+<meta name="author" content="">
 <head>
 <meta charset="UTF-8">
 <style>
