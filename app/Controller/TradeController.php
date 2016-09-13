@@ -40,7 +40,17 @@ class TradeController extends MinikuraController
             $sales = $sales_result->results[0];
         }
         $this->set('sales', $sales);
-        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales_result, true));
+        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
+
+        //* test for og:image 
+        if (!empty($sales)) {
+           //* url  
+           $image_url_data = explode('/', $sales['item_image'][0]['image_url']);
+           $test_replace = preg_replace('/\.jpg/', '.png', $image_url_data[6]);
+
+           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($image_url_data, true));
+           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($test_replace, true));
+        }
 
     }
 

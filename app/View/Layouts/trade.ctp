@@ -16,15 +16,21 @@
 <meta property="og:title" content="<?php echo h($sales['sales_title']);?>" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>" />
-<meta property="og:image" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
 <meta property="og:description" content="<?php echo h($sales['sales_note']);?>" />
+<meta property="og:image" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
+<meta property="og:image:width" content="1528" />
+<meta property="og:image:width" content="800" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="<?php echo h($sales['sales_title']);?>" />
+<meta name="twitter:description" content="<?php echo h($sales['sales_note']);?>" />
+<meta name="twitter:image:src" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
 <?php else:?>
 <meta property="og:title" content="minikura" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="<?php echo Configure::read('site.static_content_url');?>" />
 <meta property="og:description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！" />
-<?php endif;?>
 <meta name="twitter:card" content="summary" />
+<?php endif;?>
 
 <title><?php $this->Title->p(); ?></title>
 <?php

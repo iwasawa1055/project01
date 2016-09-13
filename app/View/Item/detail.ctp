@@ -120,7 +120,7 @@
                                           </div>
                                           <div class="form-group">
                                             <label>価格</label>
-                                            <?php echo h( floor($sales['price']));?>円 (税込)
+                                            <?php echo number_format(h( floor($sales['price'])));?>円 (税込)
                                           </div>
                                           <div class="form-group">
                                             <label>商品説明</label>
@@ -137,7 +137,7 @@
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
                                           <?php /* sns貼り付け用 url作成 */ ?>
-                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($widget_url);?>">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($trade_url);?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
                                           <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($widget_url);?>" scrolling="no" frameborder="0" height="640"></iframe>'>
                                           <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>

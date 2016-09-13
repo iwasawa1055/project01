@@ -55,7 +55,7 @@
                                           <label>販売名</label>
                                           <p class="form-control-static"><?php echo h($sales['sales_title']);?></p>
                                           <label>販売価格</label>
-                                          <p class="form-control-static"><?php echo h(floor($sales['price']));?>円(税込)</p>
+                                          <p class="form-control-static"><?php echo number_format(h(floor($sales['price'])));?>円(税込)</p>
                                           <label>商品説明</label>
                                           <p class="form-control-static"><?php echo nl2br(h($sales['sales_note']));?></p>
                                           <?php /* sns */ ?>
@@ -67,7 +67,7 @@
                                              href="https://twitter.com/share?url=<?php echo h($trade_url); ?>&text=" >
                                             <i class="fa fa-twitter"></i>twitter でシェア
                                           </a>
-                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($widget_url); ?>">
+                                          <input class="form-control" id="copy-sns-url"  value="<?php echo h($trade_url); ?>">
                                           <a class="btn btn-danger btn-md btn-copy-sns">リンクをコピー</a>
                                           <input class="form-control" id="copy-tag"  value='<iframe src = "<?php echo h($widget_url);?>" scrolling="no" frameborder="0" height="640" ></iframe>'>
                                           <a class="btn btn-danger btn-md btn-copy-tag">タグをコピー</a>
