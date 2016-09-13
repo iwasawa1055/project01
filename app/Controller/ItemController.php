@@ -335,6 +335,13 @@ class ItemController extends MinikuraController
             echo $return;
             exit;
         } else {
+            /*
+            * for upload, fine_name
+            */
+           $image_url_data = explode('/', $image_url);
+           $replace_image_file = preg_replace('/\.jpg/', '_fb.png', $image_url_data[6]);
+           $replace_image_file = explode('?', $replace_image_file);
+
             //* recommend for og:image  (横:縦,1.91:1) 
             $width = '1528'; 
             $height = '800';
@@ -348,46 +355,26 @@ class ItemController extends MinikuraController
             $position_y = 0;
             imagecopy($create_image, $get_image, $position_x, $position_y, 0, 0, 800, 800);
             //* create
-            $image_name = 'test_' . date('md_Hi') . '.png';
-            imagepng($create_image, APP  . 'tmp' . DS  . $image_name);
+            imagepng($create_image, APP  . 'tmp' . DS  . $replace_image_file[0]);
 
             /*
             * file upload to drvsrv
             */
-           $image_url_data = explode('/', $image_url);
-           $replace_image_file = preg_replace('/\.jpg/', '_fb.png', $image_url_data[6]);
-           $replace_image_file = explode('?', $replace_image_file);
 
-
-           /*
-           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($image_url_data, true));
-           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($replace_image_file, true));
-           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export(Configure::read('app.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0], true));
-            */
             $fileObject  = new AppFile();
             $file_upload_flag = $fileObject->upload(
                 $host = Configure::read('app.strage.host'), 
-                $user = Configure::read('app.strage.ssh,username'), 
+                $user = Configure::read('app.strage.ssh.username'), 
                 $publick = Configure::read('app.strage.ssh.rsa.id_rsa_public'), 
                 $id_rsa = Configure::read('app.strage.ssh.rsa.id_rsa'), 
-                $image_src = APP  . 'tmp' . DS  . $image_name,
-                $to_srv = Configure::read('app.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0] 
+                $image_src = APP  . 'tmp' . DS  . $replace_image_file[0],
+                $upload_file = Configure::read('app.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0] 
             );
-           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($file_upload_flag, true));
-
-            /*
-            $config['app.strage.host'] = '192.168.16.124';
-            $config['app.strage.file_dir'] = '/data/s/dev-image.minikura.com/app/webroot/i/';
-            $config['app.strage.url'] = 'http://dev-image.minikura.com:10080/i/';
-            $config['app.strage.ssh.username'] = 'minikura.com';
-            $config['app.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
-            $config['app.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
-            */
 
             imagedestroy($create_image);
 
             // *作成ファイルも消す todo test
-            unlink(APP  . 'tmp' . DS . $image_name);
+            unlink(APP  . 'tmp' . DS . $replace_image_file[0]);
         
         }
 
