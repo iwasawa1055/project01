@@ -63,7 +63,7 @@ $config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 // 不要なログはDropします。
 // CakeLog::drop('error');
 // CakeLog::drop('mail');
-CakeLog::drop('bench');
+//CakeLog::drop('bench');
 CakeLog::drop('debug');
 
 /**

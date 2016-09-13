@@ -323,7 +323,7 @@ class ItemController extends MinikuraController
         $replacements[2] = 'stag-image.minikura.lan';
         $replacements[3] = 'stag-image.minikura.lan';
         $replace_image_url = preg_replace($patterns, $replacements, $image_url);
-
+        //* create
         $get_image = imagecreatefromjpeg($replace_image_url);
         if ($get_image === false) {
             //*  error
