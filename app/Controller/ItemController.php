@@ -318,10 +318,10 @@ class ItemController extends MinikuraController
         $patterns[2] = '/stag-image.minikura.com:10080/';
         $patterns[3] = '/stag-image.minikura.com:10443/';
         $replacements = [];
-        $replacements[0] = 'dev-image.minikura.lan:80';
-        $replacements[1] = 'dev-image.minikura.lan:443';
-        $replacements[2] = 'stag-image.minikura.lan:80';
-        $replacements[3] = 'stag-image.minikura.lan:443';
+        $replacements[0] = 'dev-image.minikura.lan';
+        $replacements[1] = 'dev-image.minikura.lan';
+        $replacements[2] = 'stag-image.minikura.lan';
+        $replacements[3] = 'stag-image.minikura.lan';
         $replace_image_url = preg_replace($patterns, $replacements, $image_url);
 
         $get_image = imagecreatefromjpeg($replace_image_url);

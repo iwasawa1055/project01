@@ -58,10 +58,10 @@ class TradeController extends MinikuraController
             $patterns[2] = '/stag-image.minikura.com:10080/';
             $patterns[3] = '/stag-image.minikura.com:10443/';
             $replacements = [];
-            $replacements[0] = 'dev-image.minikura.lan:80';
-            $replacements[1] = 'dev-image.minikura.lan:443';
-            $replacements[2] = 'stag-image.minikura.lan:80';
-            $replacements[3] = 'stag-image.minikura.lan:443';
+            $replacements[0] = 'dev-image.minikura.lan';
+            $replacements[1] = 'dev-image.minikura.lan';
+            $replacements[2] = 'stag-image.minikura.lan';
+            $replacements[3] = 'stag-image.minikura.lan';
             $check_url = preg_replace($patterns, $replacements, $replace_image_file);
             //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($check_url, true));
 
