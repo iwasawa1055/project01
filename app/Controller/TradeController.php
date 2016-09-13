@@ -39,18 +39,40 @@ class TradeController extends MinikuraController
         if (!empty($sales_result->results[0])) {
             $sales = $sales_result->results[0];
         }
-        $this->set('sales', $sales);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
 
-        //* test for og:image 
+        //* for og:image 
         if (!empty($sales)) {
-           //* url  
-           $image_url_data = explode('/', $sales['item_image'][0]['image_url']);
-           $test_replace = preg_replace('/\.jpg/', '.png', $image_url_data[6]);
+            //* url  
+            $replace_image_file = preg_replace('/\.jpg/', '_fb.png', $sales['item_image'][0]['image_url']);
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($replace_image_file, true));
 
-           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($image_url_data, true));
-           CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($test_replace, true));
+            /*
+            * file_get_contents() 確認用 検証機用
+            * 開発srvから画像検証srvへ接続するには以下必要
+            * ゲートウェイがポートフォワーディングしている関係の為
+            */
+            $patterns = [];
+            $patterns[0] = '/dev-image.minikura.com:10080/';
+            $patterns[1] = '/dev-image.minikura.com:10443/';
+            $patterns[2] = '/stag-image.minikura.com:10080/';
+            $patterns[3] = '/stag-image.minikura.com:10443/';
+            $replacements = [];
+            $replacements[0] = 'dev-image.minikura.lan:80';
+            $replacements[1] = 'dev-image.minikura.lan:443';
+            $replacements[2] = 'stag-image.minikura.lan:80';
+            $replacements[3] = 'stag-image.minikura.lan:443';
+            $check_url = preg_replace($patterns, $replacements, $replace_image_file);
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($check_url, true));
+
+            if (!file_get_contents($check_url)) {
+                new AppInternalInfo('Error : found not fb.png ', $code = 500);
+            } else {
+                $sales['og_fb_image_url'] = $replace_image_file;
+            }
         }
+        $this->set('sales', $sales);
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
 
     }
 

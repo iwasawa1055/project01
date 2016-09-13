@@ -296,7 +296,6 @@ class ItemController extends MinikuraController
     {
         $this->autoLayout =null;
         $return = true;
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($this->request->data, true));
 
         //* 800 * 800 jpeg from img_server
         if (empty($this->request->data['image_url'])) {
@@ -307,8 +306,6 @@ class ItemController extends MinikuraController
             exit;
         }
         $image_url = $this->request->data['image_url'];
-
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($image_url, true));
 
         //* image src
         /*
@@ -335,9 +332,7 @@ class ItemController extends MinikuraController
             echo $return;
             exit;
         } else {
-            /*
-            * for upload, fine_name
-            */
+            //* for upload, fine_name
            $image_url_data = explode('/', $image_url);
            $replace_image_file = preg_replace('/\.jpg/', '_fb.png', $image_url_data[6]);
            $replace_image_file = explode('?', $replace_image_file);
@@ -365,15 +360,15 @@ class ItemController extends MinikuraController
             $file_upload_flag = $fileObject->upload(
                 $host = Configure::read('app.strage.host'), 
                 $user = Configure::read('app.strage.ssh.username'), 
-                $publick = Configure::read('app.strage.ssh.rsa.id_rsa_public'), 
+                $public_key = Configure::read('app.strage.ssh.rsa.id_rsa_public'), 
                 $id_rsa = Configure::read('app.strage.ssh.rsa.id_rsa'), 
                 $image_src = APP  . 'tmp' . DS  . $replace_image_file[0],
                 $upload_file = Configure::read('app.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0] 
             );
 
+            //* メモリから開放
             imagedestroy($create_image);
-
-            // *作成ファイルも消す todo test
+            //* 作成ファイルを消す
             unlink(APP  . 'tmp' . DS . $replace_image_file[0]);
         
         }

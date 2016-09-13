@@ -17,9 +17,15 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>" />
 <meta property="og:description" content="<?php echo h($sales['sales_note']);?>" />
-<meta property="og:image" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
+  <?php if (! empty($sales['og_fb_image_url'])) :?>
+<meta property="og:image" content="<?php echo $sales['og_fb_image_url'];?>" />
 <meta property="og:image:width" content="1528" />
 <meta property="og:image:width" content="800" />
+  <?php else:?>
+<meta property="og:image" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
+<meta property="og:image:width" content="800" />
+<meta property="og:image:width" content="800" />
+  <?php endif;?>
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="<?php echo h($sales['sales_title']);?>" />
 <meta name="twitter:description" content="<?php echo h($sales['sales_note']);?>" />
