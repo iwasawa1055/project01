@@ -79,7 +79,7 @@
                                           <label>販売名</label>
                                           <p class="form-control-static"><?php echo h($this->Form->data['Sales']['sales_title']);?></p>
                                           <label>販売価格</label>
-                                          <p class="form-control-static"><?php echo $this->Form->data['Sales']['price'];?>円 (税込)</p>
+                                          <p class="form-control-static"><?php echo number_format(h($this->Form->data['Sales']['price']));?>円 (税込)</p>
                                           <label>商品説明</label>
                                           <p class="form-control-static"><?php echo nl2br(h($this->Form->data['Sales']['sales_note']));?></p>
                                           <a class="btn btn-info btn-xs btn-block" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura利用規約</a>

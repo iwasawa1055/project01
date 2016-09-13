@@ -22,7 +22,6 @@ var Act_sns =
             }).done(function (data, textStatus, errorThrown) {
                 console.log(data);
             }).fail(function(data, textStatus, errorThrown){
-                //*中断しない 
                 console.log(textStatus);
             }).always(function(data){
             }); 
