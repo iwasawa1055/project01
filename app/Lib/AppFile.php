@@ -13,7 +13,7 @@ class AppFile
 	 * @param string $_id_rsa_public id_rsa.pubのファイルパス
 	 * @param string $_id_rsa id_rsaのファイルパス
 	 * @param string $_local_image ローカルに一時保存されたファイルのパス(ファイル名まで必要)
-	 * @param string $_upload_image ローカルに一時保存されたファイルのパス(ファイル名まで必要)
+	 * @param string $_upload_image アップロード先のファイルのパス(ファイル名まで必要)
 	 */
 	public function upload($_host, $_username, $_id_rsa_public, $_id_rsa, $_local_image, $_upload_image)
 	{
