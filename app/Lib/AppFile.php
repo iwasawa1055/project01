@@ -1,7 +1,6 @@
 <?php
-
 /**
- * ファイル操作関連ライブラリ
+ * ファイル操作関連
  */
 class AppFile
 {
@@ -26,7 +25,7 @@ class AppFile
 			new AppInternalCritical(AppE::NOT_FOUND . 'image', 404);
 		}
 
-		// 画像送信
+		// scp送信
 		$send_results = ssh2_scp_send(
 			$this->ssh_connection,
 			$_local_image,
@@ -84,28 +83,4 @@ class AppFile
 		return ssh2_exec($this->ssh_connection, 'exit');
 	}
 
-	/**
-	 * ssh2接続先に指定のdirがあるかどうかチェック
-	 */
-	protected function _ssh2IsDir($_remote_dir)
-	{
-		$is_dir = $this->_ssh2ExecResponse('cd '.$_remote_dir.';pwd;');
-		if ($is_dir . '/' !== $_remote_dir) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * ssh接続先でのlinuxコマンド結果取得
-	 */
-	protected function _ssh2ExecResponse($_command)
-	{
-		$stream = ssh2_exec($this->ssh_connection, $_command);
-
-		stream_set_blocking($stream, true);
-		return trim(stream_get_contents($stream));
-	}
-
 }
-
