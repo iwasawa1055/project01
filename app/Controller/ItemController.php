@@ -349,7 +349,6 @@ class ItemController extends MinikuraController
             imagecopy($create_image, $get_image, $position_x, $position_y, 0, 0, 800, 800);
             //* create
             $image_name = 'test_' . date('md_Hi') . '.png';
-            imagepng($create_image, APP  . WEBROOT_DIR . DS . 'images' . DS . $image_name);
             imagepng($create_image, APP  . 'tmp' . DS  . $image_name);
 
             /*
@@ -388,8 +387,7 @@ class ItemController extends MinikuraController
             imagedestroy($create_image);
 
             // *作成ファイルも消す todo test
-            unlink(APP  . WEBROOT_DIR . DS . 'images' . DS . 'test_0912_1921.png');
-            unlink(APP  . 'tmp' . DS . 'test_0912_1921.png');
+            unlink(APP  . 'tmp' . DS . $image_name);
         
         }
 
