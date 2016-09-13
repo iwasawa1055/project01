@@ -47,12 +47,12 @@ $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 $config['api.sneakers.oem_key'] = 'ABSJCmGg6Uwm4m9031AbHtaeELCC3q10je0ZvTdfVDYp_x8Hzb8sCmgAQdtnmJ.QIX7HfB.hNKo-';
 
 //* strage server
-$config['app.strage.host'] = '192.168.16.191';
-$config['app.strage.file_dir'] = '/data/s/image.minikura.com/app/webroot/i/';
-$config['app.strage.url'] = 'http://image.minikura.com/i/';
-$config['app.strage.ssh.username'] = 'minikura.com';
-$config['app.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
-$config['app.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
+$config['api.strage.host'] = '192.168.16.191';
+$config['api.strage.file_dir'] = '/data/s/image.minikura.com/app/webroot/i/';
+$config['api.strage.url'] = 'http://image.minikura.com/i/';
+$config['api.strage.ssh.username'] = 'minikura.com';
+$config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
+$config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 
 //*** Log
 // 不要なログはDropします。

@@ -358,12 +358,12 @@ class ItemController extends MinikuraController
 
             $fileObject  = new AppFile();
             $file_upload_flag = $fileObject->upload(
-                $host = Configure::read('app.strage.host'), 
-                $user = Configure::read('app.strage.ssh.username'), 
-                $public_key = Configure::read('app.strage.ssh.rsa.id_rsa_public'), 
-                $id_rsa = Configure::read('app.strage.ssh.rsa.id_rsa'), 
+                $host = Configure::read('api.strage.host'), 
+                $user = Configure::read('api.strage.ssh.username'), 
+                $public_key = Configure::read('api.strage.ssh.rsa.id_rsa_public'), 
+                $id_rsa = Configure::read('api.strage.ssh.rsa.id_rsa'), 
                 $image_src = APP  . 'tmp' . DS  . $replace_image_file[0],
-                $upload_file = Configure::read('app.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0] 
+                $upload_file = Configure::read('api.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0] 
             );
 
             //* メモリから開放

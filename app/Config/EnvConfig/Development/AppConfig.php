@@ -54,12 +54,12 @@ switch (true) {
 }
 
 //* strage server
-$config['app.strage.host'] = '192.168.16.124';
-$config['app.strage.file_dir'] = '/data/s/dev-image.minikura.com/app/webroot/i/';
-$config['app.strage.url'] = 'http://dev-image.minikura.com:10080/i/';
-$config['app.strage.ssh.username'] = 'minikura.com';
-$config['app.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
-$config['app.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
+$config['api.strage.host'] = '192.168.16.124';
+$config['api.strage.file_dir'] = '/data/s/dev-image.minikura.com/app/webroot/i/';
+$config['api.strage.url'] = 'http://dev-image.minikura.com:10080/i/';
+$config['api.strage.ssh.username'] = 'minikura.com';
+$config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
+$config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 
 /**
  * エラー表示
