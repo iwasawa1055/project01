@@ -51,6 +51,14 @@ $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
 $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 
+//* strage server
+$config['app.strage.host'] = '192.168.16.124';
+$config['app.strage.file_dir'] = '/data/s/stag-image.minikura.com/app/webroot/i/';
+$config['app.strage.url'] = 'http://stag-image.minikura.com:10080/i/';
+$config['app.strage.ssh.username'] = 'minikura.com';
+$config['app.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
+$config['app.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');
