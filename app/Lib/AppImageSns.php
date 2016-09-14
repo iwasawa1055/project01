@@ -32,11 +32,13 @@ class AppImageSns
         $patterns[1] = '/dev-image.minikura.com:10443/';
         $patterns[2] = '/stag-image.minikura.com:10080/';
         $patterns[3] = '/stag-image.minikura.com:10443/';
+        $patterns[4] = '/image.minikura.com/';
         $replacements = [];
         $replacements[0] = 'dev-image.minikura.lan';
         $replacements[1] = 'dev-image.minikura.lan';
         $replacements[2] = 'stag-image.minikura.lan';
         $replacements[3] = 'stag-image.minikura.lan';
+        $replacements[4] = 'image.minikura.lan';
         $replace_image_url = preg_replace($patterns, $replacements, $image_url);
         //* create
         $get_image = imagecreatefromjpeg($replace_image_url);
