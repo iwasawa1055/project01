@@ -4,6 +4,7 @@ App::uses('AppFile', 'Lib');
 /*
 * ajaxでやっていた処理を、クラス化 => 実行するタイミングをTRADE設定後に変更してみる　
 * todo 暫定　あとで整理必要
+* 現在使用していない 
 *
 */
 class AppImageSns

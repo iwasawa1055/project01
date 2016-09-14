@@ -5,17 +5,15 @@ var Act_sns =
      *
      * */
     a : function(){
-        //* FB shareの時、og:image 対策 
-        //var image_url = $('.item').attr('src');
-        //console.log(image_url);
+        //* FB shareの時、og:image 対策する 元画像url 
+        var image_url = $('.item').attr('src');
 
-        //* image
-        //* fb_ogp.sns　でdeferred test　使用しない間はクラス名をdummyにしておく
+        //* fb_ogp.js　deferredで非同期test 　使用しない間はクラス名をdummyにしておく
         //$(document).on('click', '.btn-facebook-dummy', function(event){
-        //* 元
+
+        //* 画像処理とupload 
         $(document).on('click', '.btn-facebook', function(event){
            //* image process  
-           /*
            $.ajax({
                 type: 'post',
                 dataType: 'text',
@@ -27,9 +25,9 @@ var Act_sns =
                 console.log(data);
             }).fail(function(data, textStatus, errorThrown){
                 console.log(textStatus);
+                alert('FB画像の処理にエラーが発生しました');
             }).always(function(data){
             }); 
-            */
 
             //* sns share
             var href = $(this).attr('href'); 

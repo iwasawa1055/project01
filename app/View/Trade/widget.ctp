@@ -35,6 +35,7 @@
 body {
 	margin: 0;
 	padding: 0;
+	font-family: Meiryo, メイリオ, 'MS Pgothic', 'ＭＳ Ｐゴシック', 'Hiragino Kaku Gothic', ヒラギノ角ゴ, Helvetica, Arial, sans-serif
 }
 .logo{
 	margin:5px 0 0 10px;

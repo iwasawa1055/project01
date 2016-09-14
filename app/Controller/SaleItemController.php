@@ -104,20 +104,27 @@ class SaleItemController extends MinikuraController
                     //* widget page url
                     $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
 
-                    //* test facebookにキャッシュさせる
+                    //* test facebook share用のurlをFB側にキャッシュさせる
+                    /*
                     $ch = curl_init();
-                    $facebook_developper_url = 'https://developers.facebook.com/tools/debug/sharing/?q='.urlencode($trade_url);
+                    $post_data = ['q' => $trade_url];
+                    $facebook_developper_url = 'https://developers.facebook.com/tools/debug/sharing/?';
+                    //$facebook_developper_url = 'https://developers.facebook.com/tools/debug/sharing/?q='.urlencode($trade_url);
                     //$facebook_developper_url = 'https://graph.facebook.com/?scrape=true&id='.urlencode($trade_url);
                     curl_setopt($ch, CURLOPT_URL, $facebook_developper_url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
                     $curl_result = curl_exec($ch);
                     $curl_info = curl_getinfo($ch);
                     //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($curl_info, true));
                     curl_close($ch);
+                    */
                 }
-
-                //* image processing & file upload test
-                AppImageSns::image_facebook($sales['item_image'][0]['image_url']);
+                /*
+                *  [test]image processing & file upload 
+                *  [test]FB shareボタンを押した時に走るajaxの処理を、アイテム販売完了時に行ってみる
+                */
+                //AppImageSns::image_facebook($sales['item_image'][0]['image_url']);
 
                 $this->set('sales', $sales);
                 $this->set('trade_url', $trade_url);

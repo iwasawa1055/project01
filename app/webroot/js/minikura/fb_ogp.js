@@ -1,3 +1,8 @@
+/**
+ * deferredで非同期処理。画像の加工とupload後に、facebook share
+ * 現在未使用 
+ * */
+
 var Act_fb =
 {
     /*
@@ -7,9 +12,8 @@ var Act_fb =
     share : function(query){
         //* Deferred
         var defer = $.Deferred();
-        //* FB shareの時、og:image 対策
+        //* FB shareの時、og:image 対策処理 元画像
         var image_url = $('.item').attr('src');
-        console.log(image_url);
 
         $.ajax({
             type: 'post',
@@ -28,14 +32,15 @@ var Act_fb =
 //* click
 //* 元 
 //$('.btn-facebook').on('click', function(event){
+
 //* 使用しない間は、クラス名をdummyにしておく
 $('.btn-facebook-dummy').on('click', function(event){
    //* fb url
     var href = $(this).attr('href');
-    console.log('dummy');
+    //console.log('dummy');
     //* sns share
     Act_fb.share('jquery deferred').done(function(data){
-        console.log(data);
+        //console.log(data);
         $('.fb-window').prop('href', href);
         $('.fb-window').prop('target', '_blank');
         $('.fb-window').trigger('click');
