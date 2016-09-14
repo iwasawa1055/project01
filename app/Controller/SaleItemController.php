@@ -103,9 +103,20 @@ class SaleItemController extends MinikuraController
                     $trade_url = Configure::read('site.trade.url').$sales_id;
                     //* widget page url
                     $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
-                }
-                //* image processing & file upload test
 
+                    //* test facebookにキャッシュさせる
+                    $ch = curl_init();
+                    $facebook_developper_url = 'https://developers.facebook.com/tools/debug/sharing/?q='.urlencode($trade_url);
+                    //$facebook_developper_url = 'https://graph.facebook.com/?scrape=true&id='.urlencode($trade_url);
+                    curl_setopt($ch, CURLOPT_URL, $facebook_developper_url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_result = curl_exec($ch);
+                    $curl_info = curl_getinfo($ch);
+                    //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($curl_info, true));
+                    curl_close($ch);
+                }
+
+                //* image processing & file upload test
                 AppImageSns::image_facebook($sales['item_image'][0]['image_url']);
 
                 $this->set('sales', $sales);
