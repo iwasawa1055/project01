@@ -1,4 +1,5 @@
 <?php $this->Html->script('minikura/sns', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/fb_ogp', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-heart-o"></i> アイテム</h1>
@@ -58,8 +59,11 @@
                                           <p class="form-control-static"><?php echo number_format(h(floor($sales['price'])));?>円(税込)</p>
                                           <label>商品説明</label>
                                           <p class="form-control-static"><?php echo nl2br(h($sales['sales_note']));?></p>
+                                          <?php /* test fb share 別タブ */ ?>
+                                          <a class="fb-window" href="" target="_blank" style="display:none;"></a>
                                           <?php /* sns */ ?>
                                           <a class="btn btn-block btn-social btn-xs btn-facebook"
+                                             target='_blank'  
                                              href="https://www.facebook.com/sharer/sharer.php?u=<?php echo h($trade_url); ?>&t=" >
                                             <i class="fa fa-facebook"></i>Facebook でシェア
                                           </a>

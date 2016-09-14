@@ -13,10 +13,10 @@
 <meta property="og:locale" content="ja_JP" /> 
 <meta property="og:site_name"  content="minikura" />
 <?php if( !empty($sales)):?>
-<meta property="og:title" content="<?php echo h($sales['sales_title']);?>" />
+<meta property="og:title" content="【minikuraTRADE】<?php echo h($sales['sales_title']);?>" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="<?php echo Configure::read('site.trade.url') . $sales['sales_id'];?>" />
-<meta property="og:description" content="<?php echo h($sales['sales_note']);?>" />
+<meta property="og:description" content="<?php echo h($sales['sales_note']);?> 価格:<?php echo number_format(h(floor($sales['price'])));?> (税込み)" />
   <?php if (! empty($sales['og_fb_image_url'])) :?>
 <meta property="og:image" content="<?php echo $sales['og_fb_image_url'];?>" />
 <meta property="og:image:width" content="1528" />

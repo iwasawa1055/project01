@@ -1,6 +1,8 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('AppFile', 'Lib');
+App::uses('AppImageSns', 'Lib');
 
 /**
 * 販売機能 アイテム　各ページ  
@@ -102,6 +104,10 @@ class SaleItemController extends MinikuraController
                     //* widget page url
                     $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
                 }
+                //* image processing & file upload test
+
+                AppImageSns::image_facebook($sales['item_image'][0]['image_url']);
+
                 $this->set('sales', $sales);
                 $this->set('trade_url', $trade_url);
                 $this->set('widget_url', $widget_url);
@@ -155,7 +161,5 @@ class SaleItemController extends MinikuraController
             $box = $item['box'];
             $this->set('box', $box);
         }
-
     }
-
 }

@@ -6,12 +6,16 @@ var Act_sns =
      * */
     a : function(){
         //* FB shareの時、og:image 対策 
-        var image_url = $('.item').attr('src');
-        console.log(image_url);
+        //var image_url = $('.item').attr('src');
+        //console.log(image_url);
 
         //* image
+        //* fb_ogp.sns　でdeferred test　使用しない間はクラス名をdummyにしておく
+        //$(document).on('click', '.btn-facebook-dummy', function(event){
+        //* 元
         $(document).on('click', '.btn-facebook', function(event){
            //* image process  
+           /*
            $.ajax({
                 type: 'post',
                 dataType: 'text',
@@ -25,6 +29,7 @@ var Act_sns =
                 console.log(textStatus);
             }).always(function(data){
             }); 
+            */
 
             //* sns share
             var href = $(this).attr('href'); 
