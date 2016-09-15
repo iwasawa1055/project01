@@ -16,8 +16,7 @@ if ($action === 'customer_edit') {
             <div class="row">
               <div class="col-lg-12">
                 <h2>クレジットカード<?php echo $actionName; ?></h2>
-              <?php //echo $this->Form->create(false, ['url' => ['action' => 'complete']]); ?>
-              <?php echo $this->Form->create(false, ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete']]); ?>
+              <?php echo $this->Form->create(false, ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete', '?' => ['return' => Hash::get($this->request->query, 'return')]]]); ?>
                 <div class="form-group col-lg-12">
                   <label>クレジットカード番号</label>
                   <p><?php echo $security_card['card_no']; ?></p>
@@ -35,8 +34,7 @@ if ($action === 'customer_edit') {
                   <p><?php echo h($security_card['holder_name']); ?></p>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <!-- <a class="btn btn-primary btn-lg btn-block" href="/customer/credit_card/edit?back=true">戻る</a> -->
-                  <?php echo $this->Html->link('戻る', ['controller' => 'credit_card', 'action' => $action, '?' => ['back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
+                  <?php echo $this->Html->link('戻る', ['controller' => 'credit_card', 'action' => $action, '?' => ['back' => 'true', 'return' => Hash::get($this->request->query, 'return')]], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
                 </span>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block"><?php echo $actionName; ?>する</button>

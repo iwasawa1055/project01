@@ -1,0 +1,41 @@
+button.commit {
+	margin: 20px 0;
+}
+button.commit {
+	font-size: 18px;
+	border: 1px solid #ff0000;
+	border-radius: 3px;
+	color: #ffffff;
+	background-color: #ff0000;
+	padding: 10px 40px;
+}
+button.commit:hover {
+	text-decoration: none;
+	border: 1px solid #ff0000;
+	color: #ff0000;
+	background-color: #ffffff;
+}
+@media (max-width:768px) {
+	button.commit {
+		font-size: 14px;
+		display: block;
+		margin: 0 30px 20px;
+		padding: 10px 20px;
+	}
+}
+.btn-orrection button,
+.btn-orrection input[type="submit"] {
+	font-size: 14px;
+	border: 1px solid #666666;
+	border-radius: 3px;
+	color: #666666;
+	background-color: #ffffff;
+	padding: 5px 20px;
+}
+.btn-orrection button:hover,
+.btn-orrection input[type="submit"]:hover {
+	text-decoration: none;
+	border: 1px solid #666666;
+	color: #ffffff;
+	background-color: #666666;
+}

@@ -14,6 +14,14 @@ $config['site.env_name'] = 'staging';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://b-www.minikura.com/contents/sneakers/';
 
+//* trade 
+/*
+* コンテンツ側からApacheでAlias設定中 
+* 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
+*/
+$config['site.mypage.url'] = 'https://b-mypage.minikura.com';
+$config['site.trade.url'] = 'https://b-www.minikura.com/trade/';
+
 /**
  * エラー表示
  */
@@ -40,13 +48,22 @@ $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikur
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+$config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+
+//* strage server
+$config['api.strage.host'] = '192.168.16.124';
+$config['api.strage.file_dir'] = '/data/s/stag-image.minikura.com/app/webroot/i/';
+$config['api.strage.url'] = 'http://stag-image.minikura.com:10080/i/';
+$config['api.strage.ssh.username'] = 'minikura.com';
+$config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
+$config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');
 // CakeLog::drop('mail');
-CakeLog::drop('bench');
+//CakeLog::drop('bench');
 CakeLog::drop('debug');
 
 /**

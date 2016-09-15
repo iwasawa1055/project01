@@ -1,0 +1,195 @@
+header h2,
+section h2 {
+	font-size: 24px;
+}
+a.commit {
+	margin: 20px 0;
+}
+a.commit {
+	font-size: 18px;
+	border: 1px solid #ff0000;
+	border-radius: 3px;
+	color: #ffffff;
+	background-color: #ff0000;
+	padding: 10px 40px;
+}
+a.commit:hover {
+	text-decoration: none;
+	border: 1px solid #ff0000;
+	color: #ff0000;
+	background-color: #ffffff;
+}
+a.return {
+	margin: 20px 0;
+}
+a.return {
+	font-size: 18px;
+	border: 1px solid #666666;
+	border-radius: 3px;
+	color: #ffffff;
+	background-color: #666666;
+	padding: 10px 40px;
+}
+a.return:hover {
+	text-decoration: none;
+	border: 1px solid #666666;
+	color: #666666;
+	background-color: #ffffff;
+}
+.btn-orrection a {
+	font-size: 14px;
+	border: 1px solid #666666;
+	border-radius: 3px;
+	color: #666666;
+	background-color: #ffffff;
+	padding: 5px 20px;
+}
+.btn-orrection a:hover {
+	text-decoration: none;
+	border: 1px solid #666666;
+	color: #ffffff;
+	background-color: #666666;
+}
+#detail,
+#form {
+	width: 100%;
+	color: #000;
+}
+#detail .container,
+#form .container {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	color: #000;
+	margin: 65px auto 50px;
+}
+#detail .info,
+#form .info,
+#form .form {
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	align-items: flex-start;
+}
+.photo img {
+	width: 100%
+}
+#detail .photo {
+	width: 30%;
+	margin: 0 20px 0 20px;
+}
+#detail .caption {
+	width: 70%;
+	margin: 0 20px 0 20px;
+}
+#detail .caption .price {
+	font-size: 18px;
+}
+#form .photo {
+	width: 30%;
+	margin: 0 20px 0 20px;
+}
+#form .caption {
+	width: 70%;
+	margin: 0 20px 0 20px;
+}
+#form .caption h3 {
+	font-size: 18px;
+	margin: 0 0 20px;
+}
+#form .form {
+	margin: 20px 0;
+}
+#form .login,
+#form .signin,
+#form .a-confirm,
+#form .c-confirm {
+	width: 50%;
+	margin: 0 20px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 10px 20px;
+}
+#form .address {
+	width: 100%;
+	margin: 0 20px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 10px 20px;
+}
+a.link {
+	color: #ff0000;
+}
+
+@media (min-width:768px) {
+}
+
+@media (min-width:767px) {
+}
+
+@media (max-width:768px) {
+header h2,
+section h2 {
+	font-size: 18px;
+}
+a.commit,
+a.return {
+	font-size: 14px;
+	display: block;
+	margin: 0 30px 20px;
+	padding: 10px 20px;
+}
+/****/
+#detail {
+	margin-bottom: 20px;
+}
+#detail .container,
+#form .container {
+	margin: 55px 10px 10px;
+}
+#detail .info,
+#form .form {
+	justify-content: center;
+	flex-wrap: wrap;
+	padding-top: 0;
+}
+#detail .photo {
+	width: 90%;
+	margin: 0 20px 0 20px;
+}
+#detail .caption {
+	width: 90%;
+	margin-top: 15px;
+}
+/****/
+#form .photo {
+	margin: 0 0 0 10px;
+}
+#form .caption {
+	margin: 0 10px;
+}
+#form .caption h3 {
+	font-size: 14px;
+}
+#form .form {
+	margin: 10px 10px 0;
+}
+#form .login,
+#form .signin,
+#form .address {
+	width: 100%;
+	margin: 0 0 15px;
+	padding: 10px 10px 0;
+}
+#form .a-confirm,
+#form .c-confirm {
+	width: 100%;
+	margin: 0 0 15px;
+	padding: 10px;
+}
+}
+
+@media (min-width:992px) {
+}
+
+@media (min-width:1200px) {
+}

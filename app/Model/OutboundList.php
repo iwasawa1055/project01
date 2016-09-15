@@ -163,6 +163,15 @@ class OutboundList
                 if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
                     return 'ボックスに含まれるアイテムが出庫またはオプション作業中です。';
                 }
+                if (Hash::get($i, 'sales')) {
+                    $sales = Hash::get($i, 'sales');
+                    foreach ($sales as $key => $value) {
+                        // 購入キャンセル, 販売キャンセル 以外は、取り出し不可
+                        if (! in_array($value['sales_status'], [SALES_STATUS_PURCHASE_CANCEL, SALES_STATUS_SALES_CANCEL])) {
+                            return 'ボックスに販売アイテムが含まれています。';
+                        }
+                    }
+                }
             }
         }
         return null;
@@ -199,6 +208,15 @@ class OutboundList
         }
         if (in_array($item['box_id'], $this->getBoxIdFromBoxList(), true)) {
             return 'ボックスとして既に取り出しリストに追加されています。';
+        }
+        if (Hash::get($item, 'sales')) {
+            $sales = Hash::get($item, 'sales');
+            foreach ($sales as $key => $value) {
+                // 購入キャンセル, 販売キャンセル 以外は、取り出し不可
+                if (! in_array($value['sales_status'], [SALES_STATUS_PURCHASE_CANCEL, SALES_STATUS_SALES_CANCEL])) {
+                    return '販売アイテムは選択できません。';
+                }
+            }
         }
         return null;
     }

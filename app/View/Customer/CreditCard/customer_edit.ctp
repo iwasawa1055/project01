@@ -3,6 +3,7 @@ $actionName = '変更';
 if ($action === 'customer_add') {
     $actionName = '登録';
 }
+$return = Hash::get($this->request->query, 'return');
 ?>
     <div class="row">
       <div class="col-lg-12">
@@ -16,7 +17,7 @@ if ($action === 'customer_add') {
             <div class="row">
               <div class="col-lg-12">
                 <h2>クレジットカード<?php echo $actionName; ?></h2>
-              <?php echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'confirm'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+              <?php echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'confirm', '?' => ['return' => $return]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('PaymentGMOSecurityCard.card_no', ['class' => "form-control", 'maxlength' => 19, 'placeholder'=>'クレジットカード番号', 'error' => false]); ?>
                   <?php echo $this->Form->error('PaymentGMOSecurityCard.card_no', null, ['wrap' => 'p']) ?>

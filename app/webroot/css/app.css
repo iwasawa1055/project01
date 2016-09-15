@@ -7,10 +7,15 @@ body {
 }
 #wrapper {
 	width: 100%;
+	max-width: 1280px;
+    margin: 0 auto;
 }
 #page-wrapper {
 	padding: 0 15px;
 	min-height: 568px;
+	background-color: #fff;
+}
+.login-wrapper {
 	background-color: #fff;
 }
 a {
@@ -119,8 +124,8 @@ a:hover {
 .btn-social {
 	text-align: center;
 }
-.item-list {
-	overflow: auto;
+.item-list{
+	overflow:auto;
 }
 
 @media(min-width:768px) {
@@ -393,6 +398,8 @@ table.dataTable thead .sorting:after {
 .footer {
 	background-color: #F4F4F4;
 	text-align: center;
+	max-width: 1280px;
+    margin: 0 auto;
 }
 .footer ul li {
 	list-style: none;
@@ -508,7 +515,7 @@ ul.tile {
 }
 ul.tile li {
 	width: 18%;
-	min-width: 178px;
+	min-width: 168px;
 	display: inline-block;
 	margin: 0 10px 10px 0;
 }
@@ -517,6 +524,12 @@ ul.tile li a:hover {
 }
 ul.tile li img {
 	width: 100%;
+}
+ul.tile li .sale-icon {
+	position: absolute;
+	font-size: 18px;
+	color: #ff0000;
+	margin: 10px 0 0 10px;
 }
 .item-detail img {
 	width: 100%;
@@ -650,7 +663,8 @@ tfoot td {
 	border-color: #666666 !important;
 }
 .btn-yahoo {
-	background-color: #ffda45;
+	background-color: #ffda45!important;
+	border: none !important;
 }
 .lh25 {
 	line-height: 2.5;
@@ -695,7 +709,30 @@ tfoot td {
 	height: 50px;
 	resize: vertical;
 }
+.sale{
+	margin-top:15px;
+}
+.sale h4{
+	margin:5px 0;
+}
 
+.sale-caption {
+	font-size: 60%;
+	display: block;
+	    margin: 5px 0 5px;
+}
+ul.sale-caption {
+	padding-left:20px;
+	list-style: circle;
+}
+.sale textarea.form-control{
+	margin-top:15px;
+}
+.sale-complete-text{
+	font-weight:bold;
+	font-size:110%;
+color: #ff0000;
+}
 @media screen and (max-width: 991px) {
 .form-control {
 	margin-bottom: 5px;
@@ -707,6 +744,9 @@ tfoot td {
 }
 .panel-body .btn-sort {
 	margin: 0;
+}
+.sale-complete-text{
+	margin-top:15px;
 }
 }
 
@@ -847,4 +887,11 @@ div.panel-body .sp-navi a:hover {
 	background-color: #666;
 	border-color: #666;
 }
+.sale input.form-control{
+	margin-top:10px;
+}
+.sale div.panel-body .col-lg-12 {
+    margin: 0 15px;
+}
+
 }

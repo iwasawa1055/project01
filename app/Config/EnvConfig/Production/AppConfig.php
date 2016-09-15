@@ -12,6 +12,14 @@ $config['site.env_name'] = 'production';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://minikura.com/contents/sneakers/';
 
+//* trade 
+/*
+* コンテンツ側からApacheでAlias設定中 
+* 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
+*/
+$config['site.mypage.url'] = 'https://mypage.minikura.com';
+$config['site.trade.url'] = 'https://minikura.com/trade/';
+
 /**
  * エラー表示
  */
@@ -30,12 +38,21 @@ $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikur
 $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
 $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+$config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 
 /**
  * nike_snkrs用
  */
 $config['api.sneakers.oem_key'] = 'ABSJCmGg6Uwm4m9031AbHtaeELCC3q10je0ZvTdfVDYp_x8Hzb8sCmgAQdtnmJ.QIX7HfB.hNKo-';
+
+//* strage server
+$config['api.strage.host'] = '192.168.16.191';
+$config['api.strage.file_dir'] = '/data/s/image.minikura.com/app/webroot/i/';
+$config['api.strage.url'] = 'http://image.minikura.com/i/';
+$config['api.strage.ssh.username'] = 'minikura.com';
+$config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
+$config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 
 //*** Log
 // 不要なログはDropします。

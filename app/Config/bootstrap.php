@@ -53,17 +53,19 @@ Cache::config('default', array('engine' => 'File'));
 
     App::build(array(
         'Controller' => array(
-            ROOT . DS . APP_DIR . DS . 'Controller' . DS,
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'C2cSale' . DS,
             ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'Customer' . DS,
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS,
         ),
         'View' => array(
-            ROOT . DS . APP_DIR . DS . 'View' . DS,
+            ROOT . DS . APP_DIR . DS . 'View' . DS . 'C2cSale' . DS,
             ROOT . DS . APP_DIR . DS . 'View' . DS . 'Customer' . DS,
+            ROOT . DS . APP_DIR . DS . 'View' . DS,
         ),
         'Model' => array(
-            ROOT . DS . APP_DIR . DS . 'Model' . DS,
             ROOT . DS . APP_DIR . DS . 'Model' . DS . 'Api' . DS,
             ROOT . DS . APP_DIR . DS . 'Model' . DS . 'ApiDev' . DS,
+            ROOT . DS . APP_DIR . DS . 'Model' . DS,
         ),
     ));
 
@@ -136,6 +138,7 @@ App::uses('CakeLog', 'Log');
 define('ERROR_LOG', 'error');
 define('DEBUG_LOG', 'debug');
 define('MAIL_LOG', 'mail');
+define('BENCH_LOG', 'bench');
 
 // add mail level
 CakeLog::levels([MAIL_LOG]);
@@ -246,15 +249,19 @@ Configure::load('AppConfig');
 
 // 環境別設定
 // ドメイン名による切り替え
+const HOSTS_STAGING_STATIC = 'b-www.minikura.com';
 const HOSTS_STAGING = 'b-mypage.minikura.com';
+const HOSTS_PRODUCTION_STATIC = 'minikura.com';
 const HOSTS_PRODUCTION = 'mypage.minikura.com';
 switch (true) {
     case $_SERVER['SERVER_NAME'] === HOSTS_PRODUCTION:
+    case $_SERVER['SERVER_NAME'] === HOSTS_PRODUCTION_STATIC:
         // production
         Configure::load('EnvConfig/Production/AppConfig', 'default', false);
         include_once('EnvConfig/Production/email.php');
         break;
     case $_SERVER['SERVER_NAME'] === HOSTS_STAGING:
+    case $_SERVER['SERVER_NAME'] === HOSTS_STAGING_STATIC:
         // staging
         Configure::load('EnvConfig/Staging/AppConfig', 'default', false);
         include_once('EnvConfig/Staging/email.php');

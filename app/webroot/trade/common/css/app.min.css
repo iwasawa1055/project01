@@ -1,0 +1,212 @@
+body {
+	overflow-x: hidden;
+	font-family: Meiryo, メイリオ, 'MS Pgothic', 'ＭＳ Ｐゴシック', 'Hiragino Kaku Gothic', ヒラギノ角ゴ, Helvetica, Arial, sans-serif
+}
+p {
+	line-height: 1.75
+}
+a,
+a.active,
+a:active,
+a:focus,
+a:hover {
+	outline: 0;
+	color: #fff
+}
+li {
+	list-style: none;
+}
+.navbar-default {
+	background-color: #ff0000;
+	border-color: transparent
+}
+.navbar-default .navbar-brand.active,
+.navbar-default .navbar-brand:active,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover {
+	color: #fff
+}
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle {
+	background-color: #ff0000;
+	border-color: #fff
+}
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #fff
+}
+.navbar-default .navbar-toggle:hover {
+	background-color: #999
+}
+.navbar {
+	min-height: 45px;
+	margin-bottom: 0;
+	padding: 0;
+	border: 0;
+}
+.navbar-brand {
+	margin: 0;
+	height: 25px;
+	padding: 10px 15px;
+	font-size: 18px;
+	line-height: 20px;
+	width: auto;
+}
+.navbar-default .nav li a {
+	font-size: 14px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	color: #fff;
+	line-height: 1.5;
+	padding: 12px 15px 0;
+}
+.navbar-default .nav li a:focus,
+.navbar-default .nav li a:hover {
+	color: #fff;
+	outline: 0
+}
+.navbar-default .nav li a.login,
+.navbar-default .nav li a.signin {
+	font-size: 12px;
+	background: #fff;
+	color: #f00;
+	border-radius: 3px;
+	line-height: 1.2;
+	padding: 8px;
+	margin-top: 7px;
+}
+.navbar-default .nav li a.login {
+	margin-right: 10px;
+}
+.navbar-default .navbar-nav>.active>a {
+	height: 73px;
+	border-radius: 0;
+	color: #191919;
+	background-color: #fff;
+	line-height: 3
+}
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover {
+	color: #191919;
+	background-color: #fff
+}
+footer {
+	width: 100%;
+	background-color: #666666;
+	color: #fff;
+}
+.footer-top {
+	padding: 20px 0;
+	background-color: #666666;
+}
+.footer-top-inner {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+}
+.footer-top span {
+	margin: 0 30px;
+}
+.footer-top ul {
+	margin: 0 40px 10px 40px;
+	padding-left: 0;
+	text-align: left;
+}
+.footer-top li a {
+	font-size: 12px;
+	display: inline;
+}
+.footer-bottom {
+	background-color: #666666;
+	margin-bottom: 100px;
+	padding: 10px;
+	text-align: center;
+	font-size: 12px;
+}
+
+@media (min-width:768px) {
+.navbar-default {
+}
+.navbar-default .navbar-brand img {
+	width: 50%;
+}
+.navbar-default .nav li a {
+	padding: 12px 5px 0;
+}
+.navbar-default.navbar-shrink {
+	background-color: #222;
+	padding: 10px 0
+}
+.navbar-default.navbar-shrink .navbar-brand img {
+	width: 35%
+}
+}
+
+@media (min-width:768px) {
+}
+header h2,
+section h2 {
+	font-weight: normal;
+	margin: 15px 5px;
+	line-height: 1.5
+}
+
+@media (min-width:767px) {
+.navbar-default .navbar-brand {
+	width: auto
+}
+}
+
+@media (max-width:767px) {
+.navbar-nav {
+	margin: 0 -15px;
+}
+.navbar-default .navbar-brand img {
+	width: 50%;
+}
+.navbar-default .navbar-nav>.active>a {
+	line-height: 4
+}
+.navbar-default .nav li a {
+	font-size: 16px;
+	letter-spacing: 1px;
+	color: #fff;
+	line-height: 2.5;
+	padding: 10px 15px 9px;
+	border-bottom: 1px solid #ffffff;
+}
+.navbar-default .nav li a.login,
+.navbar-default .nav li a.signin {
+	font-size: 16px;
+	letter-spacing: 1px;
+	color: #fff;
+	line-height: 2.5;
+	margin-top: 0;
+	margin-right: 0;
+	padding: 9px 0 8px 15px;
+	border-bottom: 1px solid #ffffff;
+	background: #f00;
+	border-radius: 0;
+}
+.footer-top-inner {
+	display: block;
+}
+.footer-bottom {
+	margin-bottom: 0;
+}
+}
+
+@media (min-width:992px) {
+.navbar-default .nav li a {
+	padding: 12px 15px 0 0;
+}
+#form .narrow {
+	width: 640px;
+}
+}
+
+@media (min-width:1200px) {
+.navbar-default .navbar-brand img {
+	width: 50%;
+}
+}

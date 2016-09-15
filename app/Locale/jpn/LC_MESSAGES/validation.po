@@ -209,6 +209,30 @@ msgstr "支払方法"
 msgid "use_point"
 msgstr "利用ポイント"
 
+msgid "price"
+msgstr "販売価格"
+
+msgid "sales_flag"
+msgstr "販売設定"
+
+msgid "sales_title"
+msgstr "販売タイトル"
+
+msgid "sales_note"
+msgstr "販売商品説明"
+
+msgid "bank_name"
+msgstr "金融機関名"
+
+msgid "bank_branch_name"
+msgstr "支店名"
+
+msgid "bank_account_number"
+msgstr "口座番号"
+
+msgid "bank_account_holder"
+msgstr "口座名義"
+
 # Validation
 msgid "notBlank"
 msgstr "%sは必須です"
@@ -242,3 +266,12 @@ msgstr "いずれかの%sを選択してください"
 
 msgid "maxLengthWith"
 msgstr "%sと%sはあわせて%d文字以内で入力してください"
+
+msgid "isStringInteger"
+msgstr "%sは整数値を入力してください"
+
+msgid "range"
+msgstr "%sは%s以上%s以下を入力してください"
+
+msgid "inList"
+msgstr "%sは%dから%dを入力してください"

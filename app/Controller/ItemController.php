@@ -2,11 +2,13 @@
 
 App::uses('MinikuraController', 'Controller');
 App::uses('OutboundList', 'Model');
+App::uses('AppFile', 'Lib');
 
 class ItemController extends MinikuraController
 {
     const MODEL_NAME = 'InfoItem';
     const MODEL_NAME_ITEM_EDIT = 'Item';
+    const MODEL_NAME_SALES = 'Sales';
 
     protected $paginate = array(
         'limit' => 20,
@@ -22,6 +24,7 @@ class ItemController extends MinikuraController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel('InfoBox');
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);
+        $this->loadModel(self::MODEL_NAME_SALES);
 
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -124,8 +127,8 @@ class ItemController extends MinikuraController
         if (!empty(Hash::get($this->request->query, 'hide_outbound', 1))) {
             $withOutboundDone = false;
         }
-		
-		//*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
+        
+        //*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
         // 商品指定
         $product = $this->request->query('product');
 
@@ -133,8 +136,8 @@ class ItemController extends MinikuraController
         if (!$this->checkProduct($product)) {
             $product = null;
         }
-		$where = [];
-		$where['product'] = $product;
+        $where = [];
+        $where['product'] = $product;
 
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
@@ -221,6 +224,35 @@ class ItemController extends MinikuraController
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
         $this->set('denyOutboundList', $outboundList->canAddItem($item));
+        
+        //* 販売機能
+        $customer_sales = $this->Customer->isCustomerSales();
+        $this->set('customer_sales', $customer_sales);
+        //* 販売情報 
+        $sales = null;
+        $trade_url = null;
+        $widget_url = null;
+        /* viewで表示分け用
+        *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php 
+        */
+        $sales = $this->Sales->checkSales($item);
+        if (!empty($sales) && $sales['sales_status'] === SALES_STATUS_ON_SALE) {
+            $sales_id = $sales['sales_id'];
+            //* trade page url
+            $trade_url = Configure::read('site.trade.url').$sales_id;
+            //* widget page url
+            $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
+        }
+        //*  戻る用
+        $session_sales = null;
+        $session_sales = CakeSession::read(self::MODEL_NAME_SALES);
+        $this->set('session_sales', $session_sales);
+
+        $this->set('sales', $sales);
+        $this->set('trade_url', $trade_url);
+        $this->set('widget_url', $widget_url);
+
+    
     }
 
     /**
@@ -255,5 +287,95 @@ class ItemController extends MinikuraController
 
             return $this->redirect(['controller' => 'item', 'action' => 'detail', 'id' => $id]);
         }
+    }
+
+    /*
+    * for sns share
+    */
+    public function ajax_image_up()
+    {
+        $this->autoLayout =null;
+        $return = true;
+
+        //* 800 * 800 jpeg from img_server
+        if (empty($this->request->data['image_url'])) {
+            //* error info
+            new AppInternalCritical('Error : no request data  image_url', $code = 500);
+            $return = false;
+            echo $return;
+            exit;
+        }
+        $image_url = $this->request->data['image_url'];
+
+        //* image src
+        /*
+        * 開発srvから画像検証srvへ接続するには以下必要
+        * ゲートウェイがポートフォワーディングしている関係の為
+        */
+        $patterns = [];
+        $patterns[0] = '/dev-image.minikura.com:10080/';
+        $patterns[1] = '/dev-image.minikura.com:10443/';
+        $patterns[2] = '/stag-image.minikura.com:10080/';
+        $patterns[3] = '/stag-image.minikura.com:10443/';
+        $patterns[4] = '/image.minikura.com/';
+        $replacements = [];
+        $replacements[0] = 'dev-image.minikura.lan';
+        $replacements[1] = 'dev-image.minikura.lan';
+        $replacements[2] = 'stag-image.minikura.lan';
+        $replacements[3] = 'stag-image.minikura.lan';
+        $replacements[4] = 'image.minikura.lan';
+        $replace_image_url = preg_replace($patterns, $replacements, $image_url);
+        //* create
+        $get_image = imagecreatefromjpeg($replace_image_url);
+        if ($get_image === false) {
+            //*  error
+            new AppInternalCritical('Error : not create image_resouce_id from  image_url', $code = 500);
+            $return = false;
+            echo $return;
+            exit;
+        } else {
+            //* for upload, fine_name
+           $image_url_data = explode('/', $image_url);
+           $replace_image_file = preg_replace('/\.jpg/', '_fb.png', $image_url_data[6]);
+           $replace_image_file = explode('?', $replace_image_file);
+
+            //* recommend for og:image  (横:縦,1.91:1) 
+            $width = '1528'; 
+            $height = '800';
+            $create_image = imagecreatetruecolor($width, $height);
+            $background = imagecolorallocate($create_image, 0, 0, 0);
+            //* 背景を透明に
+            imagecolortransparent($create_image, $background);
+            
+            //* $get_imageの配置position_x  =  (1528 - 800) / 2 , position_y=0
+            $position_x = ($width - $height) / 2 ;
+            $position_y = 0;
+            imagecopy($create_image, $get_image, $position_x, $position_y, 0, 0, 800, 800);
+            //* create
+            imagepng($create_image, APP  . 'tmp' . DS  . $replace_image_file[0]);
+
+            /*
+            * file upload to drvsrv
+            */
+
+            $fileObject  = new AppFile();
+            $file_upload_flag = $fileObject->upload(
+                $host = Configure::read('api.strage.host'), 
+                $user = Configure::read('api.strage.ssh.username'), 
+                $public_key = Configure::read('api.strage.ssh.rsa.id_rsa_public'), 
+                $id_rsa = Configure::read('api.strage.ssh.rsa.id_rsa'), 
+                $image_src = APP  . 'tmp' . DS  . $replace_image_file[0],
+                $upload_file = Configure::read('api.strage.file_dir') . $image_url_data[4] . DS . $image_url_data[5] . DS . $replace_image_file[0] 
+            );
+
+            //* メモリから開放
+            imagedestroy($create_image);
+            //* 作成ファイルを消す
+            unlink(APP  . 'tmp' . DS . $replace_image_file[0]);
+        
+        }
+
+        echo $return;
+        exit; 
     }
 }

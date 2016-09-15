@@ -8,8 +8,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="keywords" content="minikura,あずける,トラクルーム,収納スペース">
-<meta name="description" content="箱であずかる収納サービス minikura。箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
-<meta name="author" content="">
+<meta name="description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
+<meta property="og:locale" content="ja_JP" /> 
+<meta property="og:site_name"  content="minikura" />
+<meta property="og:title" content="minikura" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="<?php echo Configure::read('site.static_content_url');?>" />
+<meta property="og:description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！" />
+<meta name="twitter:card" content="summary" />
+
 <title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->fetch('meta');
@@ -23,6 +30,7 @@
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
   $this->Html->css('app_sneakers', ['inline' => false]);
+  $this->Html->css('bootstrap-social', ['inline' => false]);
 
   echo $this->fetch('css');
 ?>
