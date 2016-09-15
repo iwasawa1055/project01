@@ -27,8 +27,8 @@
 <meta property="og:image:width" content="800" />
   <?php endif;?>
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="<?php echo h($sales['sales_title']);?>" />
-<meta name="twitter:description" content="<?php echo h($sales['sales_note']);?>" />
+<meta name="twitter:title" content="【minikuraTRADE】<?php echo h($sales['sales_title']);?>" />
+<meta name="twitter:description" content="<?php echo h($sales['sales_note']);?> 価格:<?php echo number_format(h(floor($sales['price'])));?> 円(税込)" />
 <meta name="twitter:image:src" content="<?php echo $sales['item_image'][0]['image_url'];?>" />
 <?php else:?>
 <meta property="og:title" content="minikura" />
