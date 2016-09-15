@@ -57,13 +57,15 @@ class TradeController extends MinikuraController
             $patterns[1] = '/dev-image.minikura.com:10443/';
             $patterns[2] = '/stag-image.minikura.com:10080/';
             $patterns[3] = '/stag-image.minikura.com:10443/';
+            $patterns[4] = '/image.minikura.com/';
             $replacements = [];
             $replacements[0] = 'dev-image.minikura.lan';
             $replacements[1] = 'dev-image.minikura.lan';
             $replacements[2] = 'stag-image.minikura.lan';
             $replacements[3] = 'stag-image.minikura.lan';
+            $replacements[4] = 'image.minikura.lan';
             $check_url = preg_replace($patterns, $replacements, $replace_image_file);
-            CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($check_url, true));
+            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($check_url, true));
 
             if (!file_get_contents($check_url)) {
                 new AppInternalInfo('Error : found not fb.png ', $code = 500);
@@ -72,7 +74,7 @@ class TradeController extends MinikuraController
             }
         }
         $this->set('sales', $sales);
-        CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
+        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
 
     }
 
