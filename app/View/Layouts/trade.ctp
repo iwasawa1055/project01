@@ -131,34 +131,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </ul>
           <span><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/option.html">オプション</a>
           </span>
-          <!--ul>
-            <li><a href="/usageguide_artist">minikuraMONO VIEW</a>
+          <ul>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/sale.html">minikuraTRADE</a>
             </li>
-            <li><a href="/usageguide_artist">データ化オプション</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/monoview.html">minikuraMONO VIEW</a>
             </li>
-            <li><a href="/usageguide_artist">クリーニングオプション</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/data.html">データ化オプション</a>
             </li>
-            <li><a href="/usageguide_artist">あんしんオプション</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/option_cleaning.html">クリーニングオプション</a>
             </li>
-            <li><a href="/usageguide_artist">文書溶解サービス</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/relief.html">あんしんオプション</a>
             </li>
-          </ul-->
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/recycle.html">あんしんオプション</a>
+            </li>
+          </ul>
         </div>
         <div>
           <span><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">ご利用の流れ</a>
           </span>
           <ul>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">ユーザー登録〜ボックス購入</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/registration.html">ユーザー登録からボックス購入まで</a>
             </li>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">ボックスに詰めてお預け入れ</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html">専用ボックスの到着から預け入れまで</a>
             </li>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">マイページの使い方</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/mypage.html">マイページの使い方</a>
             </li>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">ヤフオク!へ個品から手軽に出品する場合</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/delivery.html">取り出し手続きから配送まで</a>
             </li>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">ヤフオク!へまとめて一括出品する場合</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/trade_sale.html">minikuraTRADEで販売</a>
             </li>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html">ヤフオク!落札商品の配送方法</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/trade_request.html">minikuraTRADEで振込申請</a>
+            </li>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/auction_personal.html">アイテムを1点づつヤフオク!へ出品</a>
+            </li>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/auction_business.html">アイテムを一括してヤフオク!へ出品</a>
+            </li>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/monoview.html">minikuraMONO VIEWの申し込み</a>
             </li>
           </ul>
         </div>
@@ -182,8 +190,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </li>
             <li><a href="<?php echo Configure::read('site.mypage.url');?>/inquiry/add" target="_blank">お問い合わせ</a>
             </li>
-            <!--li><a href="https://minikura.com/news/197/">特許：第5578581号</a>
-            </li-->
+            <li><a href="https://minikura.com/info/news/255">特許：第5578581号</a>
+            </li>
+            <li><a href="https://minikura.com/info/news/255">特許：第5919351号</a>
+            </li>
           </ul>
         </div>
       </div>
