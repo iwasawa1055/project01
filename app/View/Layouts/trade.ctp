@@ -142,7 +142,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </li>
             <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/relief.html">あんしんオプション</a>
             </li>
-            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/recycle.html">あんしんオプション</a>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/recycle.html">文書溶解サービス</a>
             </li>
           </ul>
         </div>
