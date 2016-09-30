@@ -67,7 +67,7 @@ class TradeController extends MinikuraController
             $check_url = preg_replace($patterns, $replacements, $replace_image_file);
             //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($check_url, true));
 
-            if (!file_get_contents($check_url)) {
+            if (!@file_get_contents($check_url)) {
                 new AppInternalInfo('Error : found not fb.png ', $code = 500);
             } else {
                 $sales['og_fb_image_url'] = $replace_image_file;

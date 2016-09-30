@@ -11,7 +11,8 @@
               <div class="col-lg-12">
                 <h2>振込依頼</h2>
                 <div class="form-group col-lg-12">
-                  ただいま振込可能な金額は <span class="point"><?php echo number_format($transfer_price);?></span> 円
+                  ただいま振込可能な金額は <span class="point"><?php echo number_format($transfer_price);?></span> 円<br>
+                  ※実際振り込まれる金額は振込手数料324円(税込)を差し引いた金額となります。
                 </div>
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
