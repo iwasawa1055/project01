@@ -68,7 +68,7 @@
           <div class="checkbox">
             <label>
               <input name="remember" type="checkbox" class="agree-before-submit">
-              minikura利用規約に同意する </label>
+              <a class="link-privacy" href="<?php echo Configure::read("site.static_content_url"); ?>/privacy/" target="_blank">個人情報について</a>、及びminikura利用規約に同意する </label>
           </div>
         </div>
         <div class="text-center">
