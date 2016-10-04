@@ -132,7 +132,7 @@
               <div class="checkbox">
                 <label>
                   <input name="remember" type="checkbox" value="Remember Me" class="agree-before-submit">
-                  <a class="link_privacy" href="<?php echo Configure::read("site.static_content_url"); ?>/privacy/" target="_blank">個人情報について</a>、及びminikura利用規約に同意する </label>
+                  <a class="link-privacy" href="<?php echo Configure::read("site.static_content_url"); ?>/privacy/" target="_blank">個人情報について</a>、及びminikura利用規約に同意する </label>
               </div>
             </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
