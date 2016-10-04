@@ -31,8 +31,9 @@ Thumbs.db
 
 # Addition
 ########
-.swp
-.swo
+*.swp
+*.swo
+*.un~
 
 # 2015/11 added by harasawa@movsquad
 vagrant/.vagrant/
