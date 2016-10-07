@@ -718,7 +718,8 @@ ul.sale-caption {
 .sale textarea.form-control {
         margin-top: 15px;
 }
-.sale-complete-text {
+.sale-complete-text,
+.sale-complete-text:hover {
         font-weight: bold;
         font-size: 110%;
         color: #ff0000;
@@ -892,4 +893,3 @@ div.panel-body .sp-navi a:hover {
         margin: 0 15px;
 }
 }
-
