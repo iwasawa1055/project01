@@ -16,6 +16,13 @@
             <div class="form-group col-lg-12">
               minikuraTRADE機能とは、「minikuraMONO」でお預かりただいている商品をFacebook、TwitterなどのSNSやブログなど、お好きなサイトで販売できる販売機能サービスです。商品が購入されると、minikuraから購入者へ商品を匿名で配送しますので、手間がかからないラクちんサービスです。
             </div>
+            <span class="col-sm-12 col-xs-12">
+              <p><a class="sale-complete-text" href="https://minikura.com/lineup/sale.html" target="_blank">今ならオープニングキャンペーンにて販売手数料無料！</a></p>
+              <a class="btn btn-danger btn-lg" href="https://minikura.com/lineup/sale.html" target="_blank">詳しくはこちら</a>
+            </span>
+            <span class="col-sm-12 col-xs-12">
+              <a class="btn btn-info btn-md" href="https://minikura.com/help/trade_sale.html" target="_blank">minikuraTARADE販売方法を確認する</a>
+            </span>
           </div>
         </div>
       </div>
@@ -92,9 +99,9 @@
                   販売代金の受け取りは最大６ヶ月まで繰り越すことができます。<br>
                   まとめて振込申請をすることで、振込手数料の負担軽減につながります。<br>
                   なお６ヶ月以上経過した場合は、毎月のminikura請求金額から相殺して請求させていただきます。<br>
-                  請求金額がない場合は、minikuraポイントで売上金相当分のポイントを還元いたします。
+                  請求金額がない場合は、minikuraポイントで売上金相当分のポイントを還元いたします。<br>
+                  <a class="btn btn-info btn-md" href="https://minikura.com/help/trade_request.html" target="_blank">minikura TRADE振り込み方法を確認する</a>
                 </div>
-                
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <?php if (floor($transfer_price) > 0 ): ?>
                 <a class="btn btn-danger btn-md" href="/sale/transfer/">振込を依頼する</a>
