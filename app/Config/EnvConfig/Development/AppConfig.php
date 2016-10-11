@@ -22,32 +22,33 @@ switch (true) {
     case $_SERVER['SERVER_NAME'] === 'osada-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://osada-mypage.minikura.com';
         $config['site.trade.url'] = 'https://osada-contents.minikura.com/trade/';
+		$config['site.static_content_url'] = 'https://osada-contents.minikura.com';
         break;
-
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'goto-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
         $config['site.trade.url'] = 'https://goto-contents.minikura.com/trade/';
+		$config['site.static_content_url'] = 'https://goto-contents.minikura.com';
         break;
-        
     case $_SERVER['HTTP_HOST'] === 'harasawa.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'harasawa-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://harasawa-mypage.minikura.com';
         $config['site.trade.url'] = 'https://harasawa.minikura.com/trade/';
+		$config['site.static_content_url'] = 'https://harasawa-contents.minikura.com';
         break;
 
     case $_SERVER['HTTP_HOST'] === 'maekawa-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'maekawa-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://maekawa-mypage.minikura.com';
         $config['site.trade.url'] = 'https://maekawa-contents.minikura.com/trade/';
+		$config['site.static_content_url'] = 'https://maekawa-contents.minikura.com';
         break;
-        
-    case $_SERVER['HTTP_HOST'] === 'rikiji-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'rikiji-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://rikiji-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://rikiji-contents.minikura.com/trade/';
+    case $_SERVER['HTTP_HOST'] === 'murai-contents.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 'murai-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://murai-mypage.minikura.com';
+        $config['site.trade.url'] = 'https://murai-contents.minikura.com/trade/';
+		$config['site.static_content_url'] = 'https://murai-contents.minikura.com';
         break;
-
     default:
         $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
         $config['site.trade.url'] = 'https://b-www.minikura.com/trade/';
