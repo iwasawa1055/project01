@@ -41,12 +41,10 @@ class TradeController extends MinikuraController
         }
         //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
         
-        //販売中止ステータスなら404を返す
+        //販売中止ステータスならAppTerminalE(404)を返す
         if ($this->Sales->isSaleCancel($sales))
         {
-            $this->autoRender = false;
-            $this->response->statusCode(404);
-            return;
+            new AppTerminalE('', 404);
         }
         
         //* for og:image 
