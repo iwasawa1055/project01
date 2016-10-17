@@ -42,9 +42,10 @@ class TradeController extends MinikuraController
         //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
         
         //販売中止ステータスならAppTerminalErrorを発生させる
+        //NotFoundページ表示、メール飛ばし無し
         if ($this->Sales->isSaleCancel($sales))
         {
-            new AppTerminalError(AppE::NOT_FOUND, 404);
+            new AppTerminalError(AppE::NOT_FOUND . 'Sales' . $id . ' is SalesCancel', 404);
         }
         
         //* for og:image 
