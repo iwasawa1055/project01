@@ -5,7 +5,7 @@
 -->
 <section id="detail">
   <div class="container">
-  <?php if (! empty($sales)):?>
+  <?php if (! empty($sales) && !$is_sale_cancel):?>
     <div>
       <h2><?php echo h($sales['sales_title']);?></h2>
     </div>
