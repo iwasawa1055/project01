@@ -72,8 +72,8 @@ $(function() {
   }
 
   function getDatetime() {
-    var elem_postal = $('#CustomerRegistInfoPostal');
-    var elem_datetime = $('#CustomerRegistInfoDatetimeCd');
+    var elem_postal = $('#CustomerInfoPostal');
+    var elem_datetime = $('#CustomerInfoDatetimeCd');
 
     if (!elem_postal.val()) {
       elem_datetime.empty();
@@ -83,7 +83,7 @@ $(function() {
     $('option:first', elem_datetime).prop('selected', true);
     elem_datetime.attr("disabled", "disabled");
 
-    $.post('/purchase/register/getAddressDatetime',
+    $.post('/purchase/entry_register/getAddressDatetime',
       { postal: elem_postal.val() },
       function(data){
         if (data.result) {

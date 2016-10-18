@@ -10,6 +10,7 @@
         <div class="login">
           <h4>ログインして購入（1/4）</h4>
           <?php echo $this->Form->create('CustomerLogin', ['url' => '/purchase/'. $sales_id, 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->hidden('PaymentGMOPurchase.sales_id', ['value' => $sales_id]); ?>
           <div class="form-group">
             <?php echo $this->Form->input('CustomerLogin.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
             <?php echo $this->Form->error('CustomerLogin.email', null, ['wrap' => 'p']) ?>

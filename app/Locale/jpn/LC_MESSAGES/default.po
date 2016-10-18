@@ -154,3 +154,6 @@ msgstr "販売価格"
 
 msgid "not_available_entry_corp"
 msgstr "エントリーユーザーまたは法人ユーザーはご利用いただけません"
+
+msgid "not_available_corp"
+msgstr "法人ユーザーはご利用いただけません"
