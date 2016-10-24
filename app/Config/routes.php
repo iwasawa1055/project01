@@ -50,6 +50,7 @@ if (! empty($_SERVER['REQUEST_URI'])) {
             // purchase
             Router::connect('/purchase/:id', ['controller' => 'Purchase', 'action' => 'index'], ['id' => '[A-Z\-0-9]+']);
             Router::connect('/purchase/register/:action', ['controller' => 'PurchaseRegister']);
+            Router::connect('/purchase/entry_register/:action', ['controller' => 'PurchaseEntryRegister']);
 
             // default
             Router::connect('/:controller', ['action' => 'index']);

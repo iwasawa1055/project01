@@ -116,5 +116,59 @@ class Sales extends ApiModel
         }
         return $total_price;
     }
+    
+    /**
+     * 販売キャンセルか否かを返す
+     * 
+     * @param array $sale 単一のsale情報
+     * @return bool true:販売キャンセル false:販売キャンセルでない
+     */
+    public function isSaleCancel($sale)
+    {
+         if (empty($sale))
+        {
+            return false;
+        }
+        // sales_statusが８なら販売キャンセル
+        if (Hash::get($sale, 'sales_status') == SALES_STATUS_SALES_CANCEL)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 販売済みか否かを返す
+     * 
+     * @param array $sale 単一のsale情報
+     * @return bool true:販売済み false:販売済みでない
+     */
+    public function isSoldout($sale)
+    {
+        if (empty($sale))
+        {
+            return false;
+        }
+        
+        $sales_status = Hash::get($sale, 'sales_status');
+        // sales_statusが２～７なら販売済み
+        if ($sales_status)
+        {
+            switch($sales_status)
+            {
+                case SALES_STATUS_IN_PURCHASE:
+                case SALES_STATUS_TRANSFER_ALLOWED:
+                case SALES_STATUS_IN_ORDER:
+                case SALES_STATUS_PENDING:
+                case SALES_STATUS_REMITTANCE_COMPLETED:
+                case SALES_STATUS_PURCHASE_CANCEL:
+                    return true;
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
+    
 }
 

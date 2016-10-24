@@ -11,6 +11,7 @@ class PurchaseController extends MinikuraController
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryOutbound';
     const MODEL_NAME_ENTRY = 'CustomerEntry';
     const MODEL_NAME_SALES = 'Sales';
+    const MODEL_NAME_CUSTOMER_LOGIN = 'CustomerLogin';
 
     public function beforeFilter ()
     {
@@ -63,13 +64,19 @@ class PurchaseController extends MinikuraController
 
         if ($this->request->is('get')) {
             if ($this->Customer->isLogined()) {
+                //*  エントリーユーザーは、アドレス入力へ
+                if ($this->Customer->isEntry()) {
+                    CakeSession::write('PurchaseEntryRegister.PaymentGMOPurchase', ['sales_id' => $sales_id]);
+                    CakeSession::write('PurchaseEntryRegister.CustomerLogin', ['email' => $this->Customer->getInfo()['email'], 'password' => $this->Customer->getPassword()] );
+                    return $this->redirect(['controller' => 'PurchaseEntryRegister', 'action' => 'address']);
+                }
                 // ログイン済みの個人本登録ユーザーは入力ページへリダイレクト
-                if ($this->Customer->isPrivateCustomer() && !$this->Customer->isEntry()) {
+                if ( $this->Customer->isPrivateCustomer() ) {
                     return $this->redirect(['controller' => 'purchase', 'action' => 'input', 'id' => $sales_id]);
                 }
 
-                // エントリー、法人は利用不可
-                $this->Flash->set(__('not_available_entry_corp'));
+                // 法人は利用不可
+                $this->Flash->set(__('not_available_corp'));
                 return $this->render('index');
             }
 
@@ -86,9 +93,15 @@ class PurchaseController extends MinikuraController
         if ($this->request->is('post')) {
 
             if ($this->Customer->isLogined()) {
-                // エントリー、法人は利用不可
-                if (! ($this->Customer->isPrivateCustomer() && !$this->Customer->isEntry())) {
-                    $this->Flash->set(__('not_available_entry_corp'));
+                // エントリーユーザーはアドレス入力へ
+                if ($this->Customer->isEntry()) {
+                    CakeSession::write('PurchaseEntryRegister.PaymentGMOPurchase', $this->request->data[self::MODEL_NAME]);
+                    CakeSession::write('PurchaseEntryRegister.CustomerLogin', $this->request->data[self::MODEL_NAME_CUSTOMER_LOGIN]);
+                    return $this->redirect(['controller' => 'PurchaseEntryRegister', 'action' => 'address']);
+                }
+                // 法人は利用不可
+                if (! $this->Customer->isPrivateCustomer() ) {
+                    $this->Flash->set(__('not_available_corp'));
                     $this->request->data['CustomerLogin']['password'] = '';
                     return $this->render('index');
                 }
@@ -120,15 +133,21 @@ class PurchaseController extends MinikuraController
                 $this->Customer->setPassword($this->request->data['CustomerLogin']['password']);
                 $this->Customer->getInfo();
 
-                // エントリー、法人は利用不可
-                if (! ($this->Customer->isPrivateCustomer() && !$this->Customer->isEntry())) {
+                // エントリーはアドレス入力へ
+                if ( $this->Customer->isEntry() ) {
+                    CakeSession::write('PurchaseEntryRegister.PaymentGMOPurchase', $this->request->data[self::MODEL_NAME]);
+                    CakeSession::write('PurchaseEntryRegister.CustomerLogin', $this->request->data[self::MODEL_NAME_CUSTOMER_LOGIN]);
+                    return $this->redirect(['controller' => 'PurchaseEntryRegister', 'action' => 'address']);
+                }
+                // 法人は利用不可
+                if (! $this->Customer->isPrivateCustomer() ) {
                     $this->CustomerLogin->logout();
                     // セッション値をクリア
                     ApiCachedModel::deleteAllCache();
                     OutboundList::delete();
                     CustomerData::delete();
 
-                    $this->Flash->set(__('not_available_entry_corp'));
+                    $this->Flash->set(__('not_available_corp'));
                     $this->request->data['CustomerLogin']['password'] = '';
                     return $this->render('index');
                 }
@@ -194,6 +213,15 @@ class PurchaseController extends MinikuraController
         $isBack = Hash::get($this->request->query, 'back');
         $res_datetime = [];
         $data = CakeSession::read(self::MODEL_NAME);
+        $sales_id = $this->params['id'];
+
+        //*  エントリーユーザーは、アドレス入力へ
+        if ($this->Customer->isEntry()) {
+            CakeSession::write('PurchaseEntryRegister.PaymentGMOPurchase', ['sales_id' => $sales_id]);
+            CakeSession::write('PurchaseEntryRegister.CustomerLogin', ['email' => $this->Customer->getInfo()['email'], 'password' => $this->Customer->getPassword()] );
+            return $this->redirect(['controller' => 'PurchaseEntryRegister', 'action' => 'address']);
+        }
+
         if ($isBack && !empty($data)) {
             if (!array_key_exists('address_id', $data)) {
                 $data['address_id'] = '';

@@ -5,7 +5,7 @@
 -->
 <section id="detail">
   <div class="container">
-  <?php if (! empty($sales)):?>
+  <?php if (! empty($sales) && !$is_sale_cancel):?>
     <div>
       <h2><?php echo h($sales['sales_title']);?></h2>
     </div>
@@ -18,6 +18,9 @@
         <div class="caption">
           <p><?php echo nl2br( h($sales['sales_note']) );?></p>
           <p class="price">価格：<?php echo number_format(h(floor($sales['price'])));?>円 (税込)</p>
+          <?php if ($is_soldout):?>
+              <p class="soldout">SOLD OUT</p>
+          <?php endif;?>
         </div>
       </div>
     </div>

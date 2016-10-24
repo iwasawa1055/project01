@@ -40,7 +40,7 @@ class TradeController extends MinikuraController
             $sales = $sales_result->results[0];
         }
         //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
-
+                
         //* for og:image 
         if (!empty($sales)) {
             //* url  
@@ -75,7 +75,20 @@ class TradeController extends MinikuraController
         }
         $this->set('sales', $sales);
         //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
-
+        
+        //SOLD OUTか否かをViewに渡す
+        $this->set('is_soldout', $this->Sales->isSoldout($sales));
+        
+        //販売キャンセルか否かをViewに渡す
+        $is_sale_cancel = $this->Sales->isSaleCancel($sales);
+        $this->set('is_sale_cancel', $is_sale_cancel);
+        
+        //存在しない商品指定or販売キャンセルならばHTTPステータスコードは404
+        //(SEOキャッシュ対策の為)
+        if (empty($sales) || $is_sale_cancel) {
+            $this->response->statusCode(404);
+        }
+        
     }
 
     /**

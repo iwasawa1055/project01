@@ -110,10 +110,10 @@ msgstr "アイテムノート"
 msgid "carrier"
 msgstr "配送業者"
 
-msgid "outboud_address"
+msgid "outbound_address"
 msgstr "お届け先住所"
 
-msgid "outboud_datetime"
+msgid "outbound_datetime"
 msgstr "お届け希望日と時間帯"
 
 msgid "product"
