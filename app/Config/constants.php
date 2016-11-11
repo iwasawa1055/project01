@@ -320,11 +320,17 @@ const BANK_ACCOUNT_TYPE = [
 ];
 
 //* 販売機能 ステータス
-const SALES_STATUS_ON_SALE = '1';
-const SALES_STATUS_IN_PURCHASE = '2';
-const SALES_STATUS_TRANSFER_ALLOWED = '3';
-const SALES_STATUS_IN_ORDER = '4';
-const SALES_STATUS_PENDING = '5';
-const SALES_STATUS_REMITTANCE_COMPLETED = '6';
-const SALES_STATUS_PURCHASE_CANCEL = '7';
-const SALES_STATUS_SALES_CANCEL = '8';
+const SALES_STATUS_ON_SALE = '1'; // 販売中
+const SALES_STATUS_IN_PURCHASE = '2'; // 購入手続き中
+const SALES_STATUS_TRANSFER_ALLOWED = '3'; // 振込可能
+const SALES_STATUS_IN_ORDER = '4'; // 送金依頼中
+const SALES_STATUS_PENDING = '5'; // 送金保留
+const SALES_STATUS_REMITTANCE_COMPLETED = '6'; // 送金済み
+const SALES_STATUS_PURCHASE_CANCEL = '7'; // 購入キャンセル
+const SALES_STATUS_SALES_CANCEL = '8'; // 販売キャンセル
+
+/**
+ * minikuraTRADE 手数料関連
+ */
+// 振込手数料
+const TRANSFER_CHARGE_PRICE = 324;
