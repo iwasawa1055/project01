@@ -124,7 +124,7 @@
                   請求金額がない場合は、minikuraポイントで売上金相当分のポイントを還元いたします。<br>
                   <a class="btn btn-info btn-md" href="https://minikura.com/help/trade_request.html" target="_blank">minikura TRADE振り込み方法を確認する</a>
                 </div>
-                <span class="col-lg-6 col-md-6 col-xs-12">
+                <span class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php if (floor($transfer_price) > 0 ): ?>
                 <a class="btn btn-danger btn-md" href="/sale/transfer/">振込を依頼する</a>
                 <?php else:?>
@@ -132,7 +132,7 @@
                 <?php endif;?>
                 </span>
 
-                <div class="form-group col-lg-12 col-sm-12">
+                <div class="form-group col-lg-12 col-sm-12 col-xs-12">
                   <h3>振込依頼履歴</h3>
                   <?php if (empty($transfer_completed)):?>
                   <p class="form-control-static">振込明細はありません。</p>
