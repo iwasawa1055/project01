@@ -350,12 +350,14 @@ table .product-name {
 }
 .sidebar ul li {
 	background-color: #F4F4F4;
-	border-bottom: 1px solid #99999;
 }
 .sidebar ul li a.active {
 	background-color: #ff0000;
 	color: #fff;
 }
+.sidebar ul li.separator{
+    border-bottom: 1px solid #999999;
+	}
 .navbar-default {
 	background-color: #F4F4F4;
 	border: 0;
@@ -727,14 +729,6 @@ ul.sale-caption {
 .link-privacy,
 .link-privacy:hover {
 	color: #ff0000;
-}
-.item-list-table {
-	table-layout: fixed;
-}
-.item-title {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 991px) {

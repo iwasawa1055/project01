@@ -41,7 +41,7 @@
         </li>
         <?php endif; ?>
         <?php if (!empty($customer) && $customer->canOutbound()) : ?>
-        <li> <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 取り出し<span class="fa arrow"></span></a>
+        <li class="separator"> <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 取り出し<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/outbound/mono"><i class="fa fa-arrow-circle-o-down fa-fw"></i> アイテムを取り出す</a> </li>
             <li> <a class="animsition-link" href="/outbound/box"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
@@ -51,6 +51,9 @@
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-shopping-basket fa-fw"></i>minikuraTRADE</a></li>
         <li>
+            <a href="/rentalcase/mono"><i class="fa fa-suitcase fa-fw"></i> レンタルケース取り出し</a>
+        </li>
+        <li class="separator">
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
         </li>
         <?php endif; ?>
