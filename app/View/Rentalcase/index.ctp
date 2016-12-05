@@ -1,4 +1,4 @@
-<?php $this->Html->script('minikura/outbound', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/outbound_limit', ['block' => 'scriptMinikura']); ?>
 <?php $noSelect = (count($itemList) === 0 && count($boxList) === 0)  ?>
 <div class="row">
   <div class="col-lg-12">
@@ -12,7 +12,7 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
-            <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
+            <?php echo $this->Form->error("OutboundLimit.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
             <?php if (!empty($itemList)) : ?>
             <h2>取り出すアイテム</h2>
             <?php endif; ?>
@@ -92,19 +92,19 @@
       <div class="panel-body">
         <div class="form-group col-lg-12">
           <label>お届け先住所</label>
-          <?php echo $this->Form->select("Outbound.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false]); ?>
-          <?php echo $this->Form->error("Outbound.address_id", null, ['wrap' => 'p']) ?>
-          <?php if (!$this->Form->isFieldError('Outbound.address_id')) : ?>
-          <?php echo $this->Form->error('Outbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->select("OutboundLimit.address_id", $this->Order->setAddress($addressList), ['class' => 'form-control select-add-address', 'empty' => '以下からお選びください', 'error' => false, 'id' => 'OutboundAddressId']); ?>
+          <?php echo $this->Form->error("OutboundLimit.address_id", null, ['wrap' => 'p']) ?>
+          <?php if (!$this->Form->isFieldError('OutboundLimit.address_id')) : ?>
+          <?php echo $this->Form->error('OutboundLimit.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <?php echo $this->Form->error('OutboundLimit.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
           <?php endif; ?>
         </div>
 
@@ -124,15 +124,15 @@
             <div class="panel-footer">
               <label>お届け品の中に上記の品物が含まれますか？</label>
               <div>
-                <?php echo $this->Form->input("Outbound.aircontent_select", ['legend' => false, 'type' => 'radio', 'options' => OUTBOUND_HAZMAT, 'error' => false,
+                <?php echo $this->Form->input("OutboundLimit.aircontent_select", ['legend' => false, 'type' => 'radio', 'options' => OUTBOUND_HAZMAT, 'error' => false,
                       'class' => 'aircontent_select', 'before' => '<label>', 'after' => '</label>', 'separator' => '</label><label>']); ?>
-                <?php echo $this->Form->error("Outbound.aircontent_select", null, ['wrap' => 'p']) ?>
+                <?php echo $this->Form->error("OutboundLimit.aircontent_select", null, ['wrap' => 'p']) ?>
               </div>
               <!--航空機輸送禁止品目が含まれている場合、ここから表示-->
               <div class="aircontent">
                 <label>含まれている場合、その品目をご記入ください。</label>
-                <?php echo $this->Form->textarea('Outbound.aircontent', ['class' => 'aircontent_text', 'error' => false]); ?>
-                <?php echo $this->Form->error('Outbound.aircontent', null, ['wrap' => 'p']) ?>
+                <?php echo $this->Form->textarea('OutboundLimit.aircontent', ['class' => 'aircontent_text', 'error' => false]); ?>
+                <?php echo $this->Form->error('OutboundLimit.aircontent', null, ['wrap' => 'p']) ?>
               </div>
               <!--航空機輸送禁止品目が含まれている場合、ここまで表示-->
             </div>
@@ -142,22 +142,17 @@
 
         <div class="form-group col-lg-12 datetime_select">
           <label>お届け希望日と時間帯</label>
-          <?php echo $this->Form->select("Outbound.datetime_cd", $this->Order->setDatetime($dateItemList), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
-          <?php echo $this->Form->error("Outbound.datetime_cd", null, ['wrap' => 'p']) ?>
+          <?php echo $this->Form->select("OutboundLimit.datetime_cd", $this->Order->setDatetime($dateItemList), ['class' => 'form-control', 'empty' => false, 'error' => false, 'id' => 'OutboundDatetimeCd']); ?>
+          <?php echo $this->Form->error("OutboundLimit.datetime_cd", null, ['wrap' => 'p']) ?>
         </div>
-        <div class="form-group col-lg-12">
-            <label>ご返却予定日</label>
-            <select class="form-control">
-              <option>00月00日</option>
-              <option>00月00日</option>
-              <option>00月00日</option>
-              <option>00月00日</option>
-              <option>00月00日</option>
-            </select>
+        <div class="form-group col-lg-12 outbound-expire" style="display:none;">
+          <label>ご返却予定日</label>
+          <p id="outbound-expire-date"></p>
+          <?php echo $this->Form->hidden('OutboundLimit.expire', []);?>
         </div>
 
         <div class="form-group col-lg-12">
-          <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
+          <?php echo $this->Form->error("OutboundLimit.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
         </div>
 
         <span class="col-lg-6 col-md-6 col-xs-12">

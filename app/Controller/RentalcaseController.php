@@ -2,13 +2,13 @@
 
 App::uses('MinikuraController', 'Controller');
 App::uses('OutboundList', 'Model');
-App::uses('Outbound', 'Model');
+App::uses('OutboundLimit', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
 
 class RentalcaseController extends MinikuraController
 {
-    const MODEL_NAME = 'Outbound';
+    const MODEL_NAME = 'OutboundLimit';
     const MODEL_NAME_POINT_BALANCE = 'PointBalance';
     const MODEL_NAME_POINT_USE = 'PointUse';
 
@@ -24,7 +24,7 @@ class RentalcaseController extends MinikuraController
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
-        $this->loadModel('Outbound');
+        $this->loadModel('OutboundLimit');
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
         $this->loadModel(self::MODEL_NAME_POINT_USE);
 
@@ -123,7 +123,7 @@ class RentalcaseController extends MinikuraController
         // 対象ボックス一覧
         $where = [
             'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
-            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_SNEAKERS],
+            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK],
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
@@ -167,7 +167,6 @@ class RentalcaseController extends MinikuraController
                 PRODUCT_CD_HAKO,
                 PRODUCT_CD_CLEANING_PACK,
                 PRODUCT_CD_SHOES_PACK,
-                PRODUCT_CD_SNEAKERS,
             ]
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
@@ -210,7 +209,6 @@ class RentalcaseController extends MinikuraController
                 PRODUCT_CD_HAKO,
                 PRODUCT_CD_CLEANING_PACK,
                 PRODUCT_CD_SHOES_PACK,
-                PRODUCT_CD_SNEAKERS,
             ]
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
@@ -262,7 +260,7 @@ class RentalcaseController extends MinikuraController
                 $data[self::MODEL_NAME]['datetime_cd'] = '';
             }
             $this->request->data = $data;
-            $addressId = $this->request->data['Outbound']['address_id'];
+            $addressId = $this->request->data['OutboundLimit']['address_id'];
             $address = $this->Address->find($addressId);
             $postal = $address['postal'];
             // お届け希望日と時間
@@ -295,7 +293,7 @@ class RentalcaseController extends MinikuraController
         if ($this->request->is('post')) {
             $data = $this->request->data;
             // 届け先追加を選択の場合は追加画面へ遷移
-            if (Hash::get($data, 'Outbound.address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+            if (Hash::get($data, 'OutboundLimit.address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 return $this->redirect([
                     'controller' => 'address', 'action' => 'add', 'customer' => true,
@@ -304,14 +302,14 @@ class RentalcaseController extends MinikuraController
             }
 
             // product
-            $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
+            $data['OutboundLimit']['product'] = $this->OutboundLimit->buildParamProduct($boxList, $itemList);
 
             // お届け先
-            $addressId = $data['Outbound']['address_id'];
+            $addressId = $data['OutboundLimit']['address_id'];
             $address = $this->Address->find($addressId);
             $postal = Hash::get($address, 'postal');
 
-            $data['Outbound'] = $this->Address->merge($addressId, $data['Outbound']);
+            $data['OutboundLimit'] = $this->Address->merge($addressId, $data['OutboundLimit']);
 
             // ポイント取得
             $pointBalance = [];
@@ -329,27 +327,26 @@ class RentalcaseController extends MinikuraController
             // ポイント残高
             $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $pointBalance['point_balance'];
 
-            $this->Outbound->set($data);
+            $this->OutboundLimit->set($data);
 
             $isIsolateIsland = false;
-            if (!empty($this->Outbound->data['Outbound']['pref'])) {
-                $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+            if (!empty($this->OutboundLimit->data['OutboundLimit']['pref'])) {
+                $isIsolateIsland = in_array($this->OutboundLimit->data['OutboundLimit']['pref'], ISOLATE_ISLANDS);
             }
 
             // 離島 and 航空搭載不可あり
-            if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
-                $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
-                $this->Outbound->validator()->remove('datetime_cd');
+            if (!empty($this->OutboundLimit->data['OutboundLimit']['pref']) && $isIsolateIsland &&
+                $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+                $this->OutboundLimit->validator()->remove('datetime_cd');
             }
 
-            $validOutbound = $this->Outbound->validates();
+            $validOutboundLimit = $this->OutboundLimit->validates();
             $validPointUse = $this->PointUse->validates();
-            // if ($this->Outbound->validates()) {
-            if ($validOutbound && $validPointUse) {
+            if ($validOutboundLimit && $validPointUse) {
                 // 表示ラベル
                 $address = $this->Address->find($addressId);
                 $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
-                $datetime = $this->getDatetimeOne($address['postal'], $data['Outbound']['datetime_cd']);
+                $datetime = $this->getDatetimeOne($address['postal'], $data['OutboundLimit']['datetime_cd']);
                 $this->set('datetime_text', $datetime['text']);
                 $this->set('isolateIsland', $isIsolateIsland);
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
@@ -387,33 +384,33 @@ class RentalcaseController extends MinikuraController
             return $this->redirect(['action' => 'add']);
         }
 
-        $this->Outbound->set($data);
+        $this->OutboundLimit->set($data);
         // 利用ポイント
         $this->PointUse->set($pointUse);
 
         $isIsolateIsland = false;
-        if (!empty($this->Outbound->data['Outbound']['pref'])) {
-            $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+        if (!empty($this->OutboundLimit->data['OutboundLimit']['pref'])) {
+            $isIsolateIsland = in_array($this->OutboundLimit->data['OutboundLimit']['pref'], ISOLATE_ISLANDS);
         }
 
         $existHazmat = false;
         // 離島 and 航空搭載不可あり
-        if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
-            $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
-            $this->Outbound->validator()->remove('datetime_cd');
+        if (!empty($this->Outbound->data['OutboundLimit']['pref']) && $isIsolateIsland &&
+            $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+            $this->OutboundLimit->validator()->remove('datetime_cd');
             $existHazmat = true;
         }
 
-        $validOutbound = $this->Outbound->validates();
+        $validOutboundLimit = $this->OutboundLimit->validates();
         $validPointUse = $this->PointUse->validates();
         // if ($this->Outbound->validates()) {
-        if ($validOutbound && $validPointUse) {
+        if ($validOutboundLimit && $validPointUse) {
             // api
             if ($existHazmat) {
                 $this->loadModel('ContactAny');
-                $res = $this->ContactAny->apiPostIsolateIsland($this->Outbound->data['Outbound']);
+                $res = $this->ContactAny->apiPostIsolateIsland($this->OutboundLimit->data['OutboundLimit']);
             } else {
-                $res = $this->Outbound->apiPost($this->Outbound->toArray());
+                $res = $this->OutboundLimit->apiPost($this->OutboundLimit->toArray());
             }
 
             if (!empty($res->error_message)) {

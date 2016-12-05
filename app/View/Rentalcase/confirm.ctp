@@ -70,11 +70,11 @@
               <div class="panel panel-red">
                 <div class="panel-body">
                   <label>航空機で輸送できないお預かり品</label>
-                  <p class="form-control-static"><?php echo OUTBOUND_HAZMAT[$this->Form->data['Outbound']['aircontent_select']] ?></p>
-                  <?php if ($this->Form->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) : ?>
+                  <p class="form-control-static"><?php echo OUTBOUND_HAZMAT[$this->Form->data['OutboundLimit']['aircontent_select']] ?></p>
+                  <?php if ($this->Form->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) : ?>
                   <label>お預かり品名</label>
                   <p class="form-control-static">
-                    <?php echo nl2br(h($this->Form->data['Outbound']['aircontent'])); ?>
+                    <?php echo nl2br(h($this->Form->data['OutboundLimit']['aircontent'])); ?>
                   </p>
                   <?php endif; ?>
                 </div>
@@ -82,7 +82,7 @@
             </div>
             <!--航空機輸送禁止品目が含まれている場合、ここまで表示-->
             <?php endif; ?>
-            <?php if (($isolateIsland && $this->Form->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_NOT_EXIST) || !$isolateIsland) : ?>
+            <?php if (($isolateIsland && $this->Form->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_NOT_EXIST) || !$isolateIsland) : ?>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
