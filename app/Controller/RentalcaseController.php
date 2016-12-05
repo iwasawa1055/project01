@@ -350,7 +350,7 @@ class RentalcaseController extends MinikuraController
                 $this->set('datetime_text', $datetime['text']);
                 $this->set('isolateIsland', $isIsolateIsland);
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
-                CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
+                CakeSession::write(self::MODEL_NAME, $this->OutboundLimit->data);
                 CakeSession::write(self::MODEL_NAME_POINT_USE, $this->PointUse->data);
                 $this->set('pointUse', $this->PointUse->data[self::MODEL_NAME_POINT_USE]);
             } else {

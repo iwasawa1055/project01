@@ -104,5 +104,6 @@ function getExpireDate() {
 
 
   $('#outbound-expire-date').html(expire_date + 'までに返却してください');
+  $('#OutboundLimitExpire').val(expire_date);
   $('.outbound-expire').css('display', 'block');
 }
