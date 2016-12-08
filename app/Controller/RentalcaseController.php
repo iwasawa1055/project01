@@ -123,7 +123,7 @@ class RentalcaseController extends MinikuraController
         // 対象ボックス一覧
         $where = [
             'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
-            'product_cd' => [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK],
+            'product_cd' => [PRODUCT_CD_MONO],
         ];
         $list = $this->InfoBox->apiGetResultsWhere([], $where);
         // 取り出しリスト追加済みフラグ、追加不可フラグ
@@ -164,9 +164,6 @@ class RentalcaseController extends MinikuraController
             'box_id' => $outMonoKeyList,
             'box.product_cd' => [
                 PRODUCT_CD_MONO,
-                PRODUCT_CD_HAKO,
-                PRODUCT_CD_CLEANING_PACK,
-                PRODUCT_CD_SHOES_PACK,
             ]
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
@@ -180,57 +177,10 @@ class RentalcaseController extends MinikuraController
     }
 
     /**
-     * ボックス一覧
-     */
-    public function box()
-    {
-        $outBoxList = $this->outboundList->getBoxList();
-
-        // 更新処理し成功した場合取り出しリストへ遷移
-        if ($this->request->is('post')) {
-            // 更新キーIDと増減情報
-            $idList = $this->mergeDataKey('box_id', $outBoxList);
-            // check and save
-            $errorList = $this->outboundList->setBox($idList);
-            if (empty($errorList)) {
-                $this->redirect(['action' => 'index']);
-            } else {
-                // has error
-                $outBoxList = $this->outboundList->getBoxList();
-                $this->set('errorList', $errorList);
-            }
-        }
-
-        // 対象ボックス一覧
-        $where = [
-            'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
-            'product_cd' => [
-                PRODUCT_CD_MONO,
-                PRODUCT_CD_HAKO,
-                PRODUCT_CD_CLEANING_PACK,
-                PRODUCT_CD_SHOES_PACK,
-            ]
-        ];
-        $list = $this->InfoBox->apiGetResultsWhere([], $where);
-
-        // 取り出しリスト追加済みフラグ、追加不可フラグ
-        foreach ($list as &$box) {
-            $box['outbound_list_cehcked'] = in_array($box['box_id'], $this->outboundList->getBoxIdFromBoxList(), true);
-            $box['outbound_list_deny'] = $this->outboundList->canAddBox($box, false);
-        }
-        //* 入庫/出庫ページ用sort #8679
-        HashSorter::sort($list, InfoBox::INBOUND_OUTBOUND_SORT_KEY);
-        $this->set('boxList', $list);
-    }
-
-    /**
      * 取り出しリスト
      */
     public function index()
     {
-        $boxList = $this->outboundList->getBoxList();
-        HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
-        $this->set('boxList', $boxList);
 
         $itemList = $this->outboundList->getItemList();
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
@@ -249,6 +199,7 @@ class RentalcaseController extends MinikuraController
 
         $dateItemList = [];
         $isIsolateIsland = '';
+        $expireDate = '';
 
         $isBack = Hash::get($this->request->query, 'back');
         $data = CakeSession::read(self::MODEL_NAME . 'FORM');
@@ -268,9 +219,15 @@ class RentalcaseController extends MinikuraController
             // 利用ポイント
             $this->request->data[self::MODEL_NAME_POINT_USE] = $pointUse[self::MODEL_NAME_POINT_USE];
             $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
+
+            // ご返却予定日
+            if(!empty($data[self::MODEL_NAME]['expire'])){
+                $expireDate = $data[self::MODEL_NAME]['expire'];
+            };
         }
         $this->set('dateItemList', $dateItemList);
         $this->set('isolateIsland', $isIsolateIsland);
+        $this->set('expireDate', $expireDate);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
         CakeSession::delete(self::MODEL_NAME_POINT_USE);
     }
@@ -280,9 +237,6 @@ class RentalcaseController extends MinikuraController
      */
     public function confirm()
     {
-        $boxList = $this->outboundList->getBoxList();
-        HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
-        $this->set('boxList', $boxList);
 
         $itemList = $this->outboundList->getItemList();
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
@@ -297,12 +251,12 @@ class RentalcaseController extends MinikuraController
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 return $this->redirect([
                     'controller' => 'address', 'action' => 'add', 'customer' => true,
-                    '?' => ['return' => 'outbound']
+                    '?' => ['return' => 'rentalcase']
                 ]);
             }
 
             // product
-            $data['OutboundLimit']['product'] = $this->OutboundLimit->buildParamProduct($boxList, $itemList);
+            $data['OutboundLimit']['product'] = $this->OutboundLimit->buildParamProduct([], $itemList);
 
             // お届け先
             $addressId = $data['OutboundLimit']['address_id'];
@@ -338,7 +292,11 @@ class RentalcaseController extends MinikuraController
             if (!empty($this->OutboundLimit->data['OutboundLimit']['pref']) && $isIsolateIsland &&
                 $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
                 $this->OutboundLimit->validator()->remove('datetime_cd');
+                $this->OutboundLimit->validator()->remove('expire');
             }
+
+            // ご返却予定日
+            $expireDate = $this->OutboundLimit->data['OutboundLimit']['expire'];
 
             $validOutboundLimit = $this->OutboundLimit->validates();
             $validPointUse = $this->PointUse->validates();
@@ -349,6 +307,7 @@ class RentalcaseController extends MinikuraController
                 $datetime = $this->getDatetimeOne($address['postal'], $data['OutboundLimit']['datetime_cd']);
                 $this->set('datetime_text', $datetime['text']);
                 $this->set('isolateIsland', $isIsolateIsland);
+                $this->set('expiredate_text', date("n月j日",strtotime($expireDate)));
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 CakeSession::write(self::MODEL_NAME, $this->OutboundLimit->data);
                 CakeSession::write(self::MODEL_NAME_POINT_USE, $this->PointUse->data);
@@ -362,6 +321,7 @@ class RentalcaseController extends MinikuraController
                 }
                 $this->set('dateItemList', $dateItemList);
                 $this->set('isolateIsland', $isIsolateIsland);
+                $this->set('expireDate', $expireDate);
                 return $this->render('index');
             }
         }
@@ -381,7 +341,7 @@ class RentalcaseController extends MinikuraController
 
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
+            return $this->redirect(['action' => 'index']);
         }
 
         $this->OutboundLimit->set($data);
@@ -395,9 +355,10 @@ class RentalcaseController extends MinikuraController
 
         $existHazmat = false;
         // 離島 and 航空搭載不可あり
-        if (!empty($this->Outbound->data['OutboundLimit']['pref']) && $isIsolateIsland &&
+        if (!empty($this->OutboundLimit->data['OutboundLimit']['pref']) && $isIsolateIsland &&
             $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
             $this->OutboundLimit->validator()->remove('datetime_cd');
+            $this->OutboundLimit->validator()->remove('expire');
             $existHazmat = true;
         }
 
@@ -434,7 +395,7 @@ class RentalcaseController extends MinikuraController
             (new Announcement())->deleteCache();
         } else {
             $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
+            return $this->redirect(['action' => 'index']);
         }
     }
 }

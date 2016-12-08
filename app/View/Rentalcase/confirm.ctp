@@ -18,7 +18,7 @@
                     <!--loop-->
                     <div class="col-lg-12">
                       <div class="panel panel-default">
-                        <?php echo $this->element('List/item_body', ['item' => $item]); ?>
+                        <?php echo $this->element('List/item_body_none_link', ['item' => $item]); ?>
                         <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
                       </div>
                     </div>
@@ -26,33 +26,6 @@
                     <?php endforeach; ?>
                   </div>
                 </div>
-
-              <div class="col-lg-12">
-                <?php if (!empty($boxList)) : ?>
-                <h2>取り出すボックス</h2>
-                <?php endif; ?>
-                <div class="row box-list">
-                  <?php foreach ($boxList as $box): ?>
-                  <?php $url = '/box/detail/' . $box['box_id']; ?>
-                  <!--loop-->
-                  <div class="col-lg-12">
-                    <div class="panel panel-default">
-                      <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
-                        <div class="row">
-                          <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h3 class="boxitem-name"><a href="<?php echo $url; ?>"><?php echo h($box['box_name']); ?></a>
-                            </h3>
-                          </div>
-                          <!-- <div class="col-lg-4 col-md-4 col-xs-12"></div> -->
-                        </div>
-                      </div>
-                      <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
-                    </div>
-                  </div>
-                  <!--loop end-->
-                  <?php endforeach; ?>
-                </div>
-              </div>
             </div>
             <?php if(!$customer->isSneaker()) : ?>
             <div class="form-group col-lg-12">
@@ -87,11 +60,11 @@
               <label>お届け希望日時</label>
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
             </div>
-            <?php endif; ?>
             <div class="form-group col-lg-12">
               <label>ご返却予定日</label>
-              <p class="form-control-static">00月00日</p>
+              <p class="form-control-static"><?php echo $expiredate_text; ?></p>
             </div>
+            <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
             <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/?back=true">戻る</a>
             </span>

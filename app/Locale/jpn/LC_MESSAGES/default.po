@@ -39,22 +39,19 @@ msgid "boxitem_status_120"
 msgstr "-"
 
 msgid "boxitem_status_130"
-msgstr "オプション作業中"
+msgstr "オプション依頼中"
 
 msgid "boxitem_status_140"
-msgstr "オプション作業中"
+msgstr "オプション中"
 
 msgid "boxitem_status_150"
-msgstr "オプション作業中"
+msgstr "オプション中"
 
 msgid "boxitem_status_155"
-msgstr "オプション作業中"
+msgstr "オプション中"
 
 msgid "boxitem_status_160"
-msgstr "オプション作業中"
-
-msgid "boxitem_status_160"
-msgstr "オプション作業中"
+msgstr "オプション中"
 
 msgid "boxitem_status_170"
 msgstr "-"

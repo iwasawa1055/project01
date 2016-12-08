@@ -94,6 +94,11 @@ class AddressController extends MinikuraController
                         'controller' => 'outbound', 'action' => 'index', 'customer' => false,
                         '?' => ['back' => 'true']
                     ]);
+                } else if ($returnTo === 'rentalcase') {
+                    return $this->redirect([
+                        'controller' => 'rentalcase', 'action' => 'index', 'customer' => false,
+                        '?' => ['back' => 'true']
+                    ]);
                 } else if ($returnTo === 'purchase') {
                     $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
                     return $this->redirect([

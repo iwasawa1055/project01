@@ -175,3 +175,23 @@ p.error-message a:hover,
 .outbound-expire {
   display: none;
 }
+
+.panel-body .none-link{
+  color: #666;
+}
+.accordion-heading,
+.accordion-heading:hover,
+.accordion-heading:focus{
+  color: inherit;
+}
+.input-point .panel-heading h2{
+  padding-left: 15px;
+  font-size: 24px;
+}
+.input-point .panel-heading{
+  padding-top: 15px;
+  padding-bottom: 0px;
+}
+.input-point .panel-body{
+  padding-top: 0px;
+}

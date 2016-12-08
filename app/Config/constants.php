@@ -91,6 +91,13 @@ const BOXITEM_STATUS_BUYKIT_DONE = '30';
 const BOXITEM_STATUS_INBOUND_START = '40';
 const BOXITEM_STATUS_INBOUND_IN_PROGRESS = '60';
 const BOXITEM_STATUS_INBOUND_DONE = '70';
+// 出庫・依頼 一時
+const BOXITEM_STATUS_OUTBOUND_LIMIT_START = '130';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_IN_PROGRESS = '140';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_DONE = '150';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_DONE = '155';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_IN_PROGRESS = '160';
+
 // 出庫・依頼
 const BOXITEM_STATUS_OUTBOUND_START = '180';
 const BOXITEM_STATUS_OUTBOUND_IN_PROGRESS = '200';
@@ -103,8 +110,12 @@ const BOX_STATUS_LIST = [
     '40' => 'お預かり中',
     '60' => 'お預かり中',
     '70' => 'お預かり中',
+    '130' => 'お預かり中',
+    '155' => 'お預かり中',
+    '160' => 'お預かり中',
     '180' => 'お預かり中',
     '200' => 'お預かり中',
+    '150' => '取り出し済み',
     '210' => '取り出し済み',
 ];
 // 再入庫・依頼

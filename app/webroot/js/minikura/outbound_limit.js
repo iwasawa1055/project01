@@ -5,6 +5,7 @@ $(function() {
 
   $('#OutboundAddressId').change(function() {
     getDatetime();
+    initExpireDate();
   });
 
   $("#OutboundDatetimeCd").change(function() {
@@ -64,17 +65,35 @@ function initDisp() {
     $('.datetime_select').hide();
   }
 
+  // 日付選択にエラーがなく返却日エラーの場合 返却日を保持していた場合 返却予定日を表示
+  if(!$('.datetime_select .error-message')[0]) {
+    if($('.outbound-expire .error-message')[0] || $('#OutboundLimitExpire').val() !== '') {
+      getExpireDate();
+      $('.outbound-expire').show();
+    }
+  }
+
   if($('.aircontent_select:checked').length > 0) {
     changeAircontent($('.aircontent_select:checked'));
+  }
+
+  // ポイント部分表示 ポイント使用、もしくはエラーあり
+  if((Number($('#PointUseUsePoint').val()) !== 0) || $('.input-point .error-message')[0]) {
+    $('#collapse-point').addClass('in');
+    $('#collapse-point').attr({'aria-expanded' : 'true'});
   }
 };
 
 function changeAircontent(elm) {
   if (elm.val() === '1') {
     $('.datetime_select').hide();
+    $('.outbound-expire').hide();
     $('.aircontent').show();
   } else {
     $('.datetime_select').show();
+    if ($('#OutboundLimitExpire').val() !== '') {
+      $('.outbound-expire').show();
+    }
     $('.aircontent').hide();
   }
 };
@@ -85,8 +104,13 @@ function getExpireDate() {
 
   // 未選択また「追加」を選択
   if (!elem_outbound_datetime_cd.val() || elem_outbound_datetime_cd.val() == '0000-00-00') {
-    elem_outbound_expire_cd.empty();
+    initExpireDate();
     return;
+  }
+
+  // 日付未選択時のエラーメッセージをクリア
+  if($('.datetime_select .error-message')[0]) {
+    $('.outbound-expire .error-message').remove();
   }
 
   $('option:first', elem_outbound_expire_cd).prop('selected', true);
@@ -100,10 +124,18 @@ function getExpireDate() {
   selected_date = new Date(selected_date);
   selected_date.setDate(selected_date.getDate() + 7);
   expire_datetime = selected_date.toLocaleString();
-  expire_date = expire_datetime.slice(0, 10).replace(/[\/]/g, '-');
+  text_month = selected_date.getMonth() + 1;
+  expire_date = selected_date.getFullYear() + '-' + text_month + '-' + selected_date.getDate();
 
 
   $('#outbound-expire-date').html(expire_date + 'までに返却してください');
   $('#OutboundLimitExpire').val(expire_date);
   $('.outbound-expire').css('display', 'block');
+}
+
+function initExpireDate() {
+    $('.outbound-expire .error-message').remove();
+    $('#OutboundLimitExpire').val('');
+    $("#OutboundDatetimeCd").empty();
+    $('.outbound-expire').hide();
 }
