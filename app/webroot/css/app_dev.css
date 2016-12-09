@@ -172,6 +172,7 @@ p.error-message a:hover,
 	color: #d9534f;
 }
 
+/* rental case */
 .outbound-expire {
   display: none;
 }
@@ -179,6 +180,16 @@ p.error-message a:hover,
 .panel-body .none-link{
   color: #666;
 }
+
+#accordion-point {
+  background-color:#f5f5f5;
+}
+
+.accordion-point-header:hover {
+  opacity: 0.4;
+}
+
+/*
 .accordion-heading,
 .accordion-heading:hover,
 .accordion-heading:focus{
@@ -195,3 +206,4 @@ p.error-message a:hover,
 .input-point .panel-body{
   padding-top: 0px;
 }
+*/
