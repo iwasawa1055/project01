@@ -68,8 +68,8 @@ function initDisp() {
   // 日付選択にエラーがなく返却日エラーの場合 返却日を保持していた場合 返却予定日を表示
   if(!$('.datetime_select .error-message')[0]) {
     if($('.outbound-expire .error-message')[0] || $('#OutboundLimitExpire').val() !== '') {
-      getExpireDate();
       $('.outbound-expire').show();
+      getExpireDate();
     }
   }
 
@@ -124,8 +124,8 @@ function getExpireDate() {
   selected_date = new Date(selected_date);
   selected_date.setDate(selected_date.getDate() + 7);
   expire_datetime = selected_date.toLocaleString();
-  text_month = selected_date.getMonth() + 1;
-  expire_date = selected_date.getFullYear() + '-' + text_month + '-' + selected_date.getDate();
+  text_month = ('0' + (selected_date.getMonth() + 1)).slice(-2);
+  expire_date = selected_date.getFullYear() + '-' + text_month + '-' + ( '0' + selected_date.getDate() ).slice(-2);
 
 
   $('#outbound-expire-date').html(expire_date + 'までに返却してください');
