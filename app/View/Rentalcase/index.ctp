@@ -41,9 +41,11 @@
     <div class="panel panel-default" id="accordion-point">
       <div class="panel-body">
         <div class="row">
-          <div class="col-lg-12 accordion-heading accordion-point-header" data-toggle="collapse" data-parent="#accordion-point" href="#collapse-point">
-            <h2>ポイントのご利用</h2>
-          </div>
+          <a data-toggle="collapse" data-parent="#accordion-point" href="#collapse-point">
+            <div class="col-lg-12 accordion-heading accordion-point-header">
+              <h2>ポイントのご利用</h2>
+            </div>
+          </a>
           <div class="col-lg-12 panel-collapse collapse" id="collapse-point">
             <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
               <br />

@@ -189,6 +189,13 @@ p.error-message a:hover,
   opacity: 0.4;
 }
 
+.accordion-point-header,
+.accordion-point-header:hover,
+.accordion-point-header:focus {
+  color: #666;
+  display:block;
+}
+
 /*
 .accordion-heading,
 .accordion-heading:hover,
