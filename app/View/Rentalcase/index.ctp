@@ -43,7 +43,7 @@
         <div class="row">
           <a data-toggle="collapse" data-parent="#accordion-point" href="#collapse-point">
             <div class="col-lg-12 accordion-heading accordion-point-header">
-              <h2>ポイントのご利用</h2>
+              <h2><i class="fa fa-angle-right" aria-hidden="true"></i> ポイントのご利用</h2>
             </div>
           </a>
           <div class="col-lg-12 panel-collapse collapse" id="collapse-point">
@@ -72,43 +72,6 @@
         </div>
       </div>
     </div>
-    <?php /*
-    <div class="panel panel-default" id="accordion-point">
-      <div class="row">
-        <div class="col-lg-12 input-point">
-          <a class="accordion-heading" data-toggle="collapse" data-parent="#accordion-point" href="#collapse-point">
-            <div class="panel-heading">
-              <h2>ポイントのご利用</h2>
-            </div>
-          </a>
-          <div id="collapse-point" class="panel-collapse collapse">
-            <div class="panel-body">
-               <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
-                <br />
-                ※1ポイント＝1円換算<br />
-                ※100ポイントから利用可能です。<br />
-                ※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
-              <div class="form-group col-lg-12">
-                 <span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です。
-                <p class="help-block">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。
-                  取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。</p>
-                <h3>利用ポイント</h3>
-                <div class="form-group col-lg-2">
-                  <?php if (!empty($pointBalance['point_balance'])) : ?>
-                    <?php echo $this->Form->input('PointUse.use_point', ['class' => 'form-control', 'error' => false]); ?>
-                  <?php else : ?>
-                    <?php echo $this->Form->input('PointUse.use_point', ['class' => 'form-control', 'value' => '0', 'readonly' => 'readonly', 'error' => false]); ?>
-                  <?php endif; ?>
-                </div>
-                <div class="form-group col-lg-12">
-                  <?php echo $this->Form->error("PointUse.use_point", null, ['wrap' => 'p']) ?>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>*/ ?>
     <?php else : ?>
       <?php echo $this->Form->hidden("PointUse.use_point", ['value' => '0']); ?>
     <?php endif; ?>
