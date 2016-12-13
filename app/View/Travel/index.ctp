@@ -25,7 +25,7 @@
               <!--loop-->
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <?php echo $this->element('List/item_body_rentalcase', ['item' => $item]); ?>
+                  <?php echo $this->element('List/item_body_travel', ['item' => $item]); ?>
                   <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
                 </div>
               </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <?php echo $this->Form->create('Rentalcase', ['url' => '/rentalcase/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
+    <?php echo $this->Form->create('Travel', ['url' => '/travel/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
     <?php if(!$customer->isSneaker()) : ?>
     <div class="panel panel-default" id="accordion-point">
       <div class="panel-body">
@@ -144,10 +144,10 @@
         </div>
 
         <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/item">アイテムを選択に戻る</a>
+          <a class="btn btn-primary btn-lg btn-block" href="/travel/item">アイテムを選択に戻る</a>
         </span>
         <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/mono">ボックスを選択に戻る</a>
+          <a class="btn btn-primary btn-lg btn-block" href="/travel/mono">ボックスを選択に戻る</a>
         </span>
         <span class="col-lg-12 col-md-12 col-xs-12">
           <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で確認する</button>
@@ -164,10 +164,10 @@
           <?php echo $this->element('List/empty_outbound'); ?>
         </div>
         <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/item">アイテムを取り出す</a>
+          <a class="btn btn-primary btn-lg btn-block" href="/travel/item">アイテムを取り出す</a>
         </span>
         <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/mono">ボックスを取り出す</a>
+          <a class="btn btn-primary btn-lg btn-block" href="/travel/mono">ボックスを取り出す</a>
         </span>
       </div>
     </div>

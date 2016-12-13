@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('Rentalcase', ['url' => '/rentalcase/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('Travel', ['url' => '/travel/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -66,7 +66,7 @@
             </div>
             <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/?back=true">戻る</a>
+            <a class="btn btn-primary btn-lg btn-block" href="/travel/?back=true">戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
             <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で取り出す</button>

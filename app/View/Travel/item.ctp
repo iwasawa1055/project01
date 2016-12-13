@@ -11,7 +11,7 @@ if (!empty($errorList)) {
 <div class="row">
   <div class="col-lg-12">
     <div class="panel panel-default">
-      <?php echo $this->Form->create('RentalcaseBox', ['url' => '/rentalcase/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->create('TravelBox', ['url' => '/travel/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
@@ -27,7 +27,7 @@ if (!empty($errorList)) {
               <!--loop-->
               <div class="col-lg-12">
                 <div class="panel panel-default">
-                  <?php echo $this->element('List/item_body_rentalcase_checkbox', ['item' => $item, 'default' => false]); ?>
+                  <?php echo $this->element('List/item_body_travel_checkbox', ['item' => $item, 'default' => false]); ?>
                   <?php echo $this->element('List/item_footer', ['item' => $item]); ?>
                 </div>
               </div>
@@ -37,7 +37,7 @@ if (!empty($errorList)) {
           </div>
         </div>
         <span class="col-lg-6 col-md-6 col-xs-12">
-          <a class="btn btn-primary btn-lg btn-block" href="/rentalcase/mono">ボックス一覧に戻る</a>
+          <a class="btn btn-primary btn-lg btn-block" href="/travel/mono">ボックス一覧に戻る</a>
         </span>
         <span class="col-lg-6 col-md-6 col-xs-12">
             <button type="submit" class="btn btn-danger btn-lg btn-block">取り出しリストを確認する</button>

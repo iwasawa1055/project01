@@ -51,7 +51,7 @@
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-shopping-basket fa-fw"></i> minikuraTRADE</a></li>
         <li>
-            <a href="/rentalcase/mono"><i class="fa fa-suitcase fa-fw"></i> レンタルケース取り出し</a>
+            <a href="/travel/mono"><i class="fa fa-suitcase fa-fw"></i> レンタルケース取り出し</a>
         </li>
         <li class="separator">
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>

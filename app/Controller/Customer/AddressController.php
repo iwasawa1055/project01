@@ -94,9 +94,9 @@ class AddressController extends MinikuraController
                         'controller' => 'outbound', 'action' => 'index', 'customer' => false,
                         '?' => ['back' => 'true']
                     ]);
-                } else if ($returnTo === 'rentalcase') {
+                } else if ($returnTo === 'travel') {
                     return $this->redirect([
-                        'controller' => 'rentalcase', 'action' => 'index', 'customer' => false,
+                        'controller' => 'travel', 'action' => 'index', 'customer' => false,
                         '?' => ['back' => 'true']
                     ]);
                 } else if ($returnTo === 'purchase') {

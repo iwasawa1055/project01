@@ -31,7 +31,7 @@ function getDatetime() {
   elem_datetime.attr("disabled", "disabled");
   elem_datetime.empty();
 
-  $.post('/rentalcase/getAddressDatetime', {
+  $.post('/travel/getAddressDatetime', {
           address_id: elem_address.val()
       },
       function(data) {

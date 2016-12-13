@@ -6,7 +6,7 @@ App::uses('OutboundLimit', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
 
-class RentalcaseController extends MinikuraController
+class TravelController extends MinikuraController
 {
     const MODEL_NAME = 'OutboundLimit';
     const MODEL_NAME_POINT_BALANCE = 'PointBalance';
@@ -251,7 +251,7 @@ class RentalcaseController extends MinikuraController
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
                 return $this->redirect([
                     'controller' => 'address', 'action' => 'add', 'customer' => true,
-                    '?' => ['return' => 'rentalcase']
+                    '?' => ['return' => 'travel']
                 ]);
             }
 
