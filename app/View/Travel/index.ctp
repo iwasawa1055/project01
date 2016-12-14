@@ -2,7 +2,7 @@
 <?php $noSelect = (count($itemList) === 0)  ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i>取り出し</h1>
+    <h1 class="page-header"><i class="fa fa-suitcase"></i> minikuraTRAVEL</h1>
   </div>
 </div>
 <div class="row">
@@ -31,6 +31,53 @@
               </div>
               <!--loop end-->
               <?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <h2>minikuraTRAVELでのお取り出しについて</h2>
+            <div class="row box-list">
+              <div id="travel" class="col-lg-12">
+                <h3>ご利用料金</h3>
+                <ul>
+                  <li>¥5,000（税込）/1お申込みあたり</li>
+                </ul>
+                <h3>セットに含まれるサービス</h3>
+                <ul>
+                  <li>スーツケース　7日間レンタル料金（一律1週間）</li>
+                  <li>往復送料</li>
+                  <li>お洋服のクリーニング（3着まで）</li>
+                </ul>
+                <h3>ご注意事項</h3>
+                <ul>
+                  <li>スーツケースはお選びいただけません。（色：黒　外寸：60×41×26cm　容量：57L　重量：4.0kg）</li>
+                  <li>鍵を掛けてお送りいたしますので、お申込後、鍵番号をメールにて配信いたします。</li>
+                  <li>スーツケースのレンタル期間超過に関しては、300円（税込）/1日あたり　追加でいただきます。</li>
+                  <li>スーツケースのレンタル期間はお届け希望日から、運送会社が返送を受け取る日までの1週間です。</li>
+                  <li>クリーニングはお洋服3点までがセット料金に含まれます。</li>
+                  <li>以下のものはクリーニングができません。
+                    <ul>
+                      <li>以下の衣類はお取り扱いできません。</li>
+                      <li>皮革・毛皮製品</li>
+                      <li>和服（着物・浴衣）</li>
+                      <li>肌着・下着類</li>
+                      <li>帽子・ドレスなど輸送中に型崩れが危惧されるもの</li>
+                      <li>絹・カシミヤ・アンゴラ・ビキューナ5%以上の商品</li>
+                      <li>乾いていない衣類（輸送中にカビ、においが付く恐れがあるため）</li>
+                      <li>布団・毛布・枕など寝具類</li>
+                      <li>礼服・制服類（急な入用の際、希望日にお届けできないため）＜寄託者の承諾がある場合は除きます＞</li>
+                      <li>その他、クリーニング不可能と当社が判断したもの</li>
+                    </ul>
+                  </li>
+                  <li>スーツケースをお戻しいただく際、以前お預かりしていたアイテムは極力元のボックスにお戻しいたします。また再撮影はいたしません。</li>
+                  <li>新規のアイテムが多数ある場合、新しくボックスを作成し保管いたします（月額250円になります）。</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

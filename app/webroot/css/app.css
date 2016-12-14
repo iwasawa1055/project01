@@ -355,9 +355,9 @@ table .product-name {
 	background-color: #ff0000;
 	color: #fff;
 }
-.sidebar ul li.separator{
-    border-bottom: 1px solid #999999;
-	}
+.sidebar ul li.separator {
+	border-bottom: 1px solid #999999;
+}
 .navbar-default {
 	background-color: #F4F4F4;
 	border: 0;
@@ -730,6 +730,9 @@ ul.sale-caption {
 .link-privacy:hover {
 	color: #ff0000;
 }
+#travel ul {
+	padding-left: 20px;
+}
 
 @media screen and (max-width: 991px) {
 .form-control {
@@ -893,5 +896,14 @@ div.panel-body .sp-navi a:hover {
 }
 .sale div.panel-body .col-lg-12 {
 	margin: 0 15px;
+}
+#travel h3 {
+	font-size: 14px;
+}
+#travel ul {
+	padding-left: 15px;
+}
+#travel ul li {
+	font-size: 12px;
 }
 }

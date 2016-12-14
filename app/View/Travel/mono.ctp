@@ -5,7 +5,7 @@ if (!empty($errorList)) {
 ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-suitcase"></i> レンタルケースで取り出す</h1>
+    <h1 class="page-header"><i class="fa fa-suitcase"></i> minikuraTRAVEL</h1>
   </div>
 </div>
 <div class="row">
@@ -21,7 +21,7 @@ if (!empty($errorList)) {
           <?php else: ?>
             <p class="form-control-static col-lg-12">お預かり済みの専用ボックスの一覧です。<br />
               取り出したいアイテムが入っているボックスの「ボックス選択」にチェックを入れて「内容を確認する」にすすんでください。</p>
-            <span class="col-lg-12"> <a class="btn btn-danger btn-lg" href="#" target="_blank">レンタルケースで取り出しとは？</a> </span>
+            <span class="col-lg-12"> <a class="btn btn-danger btn-lg" href="https://minikura.com/lineup/travel.html" target="_blank">minikuraTRAVELとは？</a> </span>
           <?php endif; ?>
             <div class="row box-list">
                 <?php foreach ($boxList as $box): ?>

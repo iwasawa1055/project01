@@ -72,6 +72,9 @@ class TitleHelper extends AppHelper {
         'point' => [
             'index' => 'ポイント',
         ],
+        'travel' => [
+            'index' => 'minikuraTRAVEL',
+        ],
     ];
 
     public function p() {
