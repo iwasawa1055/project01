@@ -288,6 +288,11 @@ class TravelController extends MinikuraController
                 $isIsolateIsland = in_array($this->OutboundLimit->data['OutboundLimit']['pref'], ISOLATE_ISLANDS);
             }
 
+            // aircontent_selectがpostされない場合の対応
+            if (!array_key_exists('aircontent_select', $this->OutboundLimit->data['OutboundLimit'])) {
+                $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] = '';
+            }
+
             // 離島 and 航空搭載不可あり
             if (!empty($this->OutboundLimit->data['OutboundLimit']['pref']) && $isIsolateIsland &&
                 $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
