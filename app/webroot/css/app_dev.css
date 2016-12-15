@@ -84,6 +84,7 @@ p.error-message a:hover,
 /* app.cssのbox-item-nameと同じ効果、
 実装タイミングの要因でこちらを利用する */
 .boxitem-name {
+  font-size: 18px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

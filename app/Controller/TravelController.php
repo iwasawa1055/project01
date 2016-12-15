@@ -289,6 +289,8 @@ class TravelController extends MinikuraController
             }
 
             // aircontent_selectがpostされない場合の対応
+            // todo: この対応は通常の出庫でも同様の対応が必要。かつ、バリデーションとなるためModelに共通で実装する必要がある。
+            // todo: modelに実装する場合、影響範囲が広くなるため、暫定処置とする (2016.12.15)
             if (!array_key_exists('aircontent_select', $this->OutboundLimit->data['OutboundLimit'])) {
                 $this->OutboundLimit->data['OutboundLimit']['aircontent_select'] = '';
             }
