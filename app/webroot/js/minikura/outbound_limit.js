@@ -12,7 +12,17 @@ $(function() {
     getExpireDate();
   });
 
+  $(".box_select_checkbox :checkbox").change(function() {
+    checkCheckboxSelect('.box_select_checkbox');
+  });
+
+  $(".outbound_select_checkbox :checkbox").change(function() {
+    checkCheckboxSelect('.outbound_select_checkbox');
+  });
+
   initDisp();
+
+  initCheckboxSelect();
 });
 
 function getDatetime() {
@@ -138,4 +148,23 @@ function initExpireDate() {
     $('#OutboundLimitExpire').val('');
     $("#OutboundDatetimeCd").empty();
     $('.outbound-expire').hide();
+}
+
+function initCheckboxSelect(){
+  if($('#TravelMonoForm')[0]){
+    checkCheckboxSelect('.box_select_checkbox');
+  }
+
+  if($('#TravelBoxItemForm')[0])
+  {
+    checkCheckboxSelect('.outbound_select_checkbox');
+  }
+}
+
+function checkCheckboxSelect(selector) {
+  if($(selector + ' :checkbox:checked').length > 0){
+    $("#check-select-before-submit").prop("disabled", false);
+  } else {
+    $("#check-select-before-submit").prop("disabled", true);
+  }
 }

@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/outbound_limit', ['block' => 'scriptMinikura']); ?>
 <?php
 if (!empty($errorList)) {
     $this->Form->validationErrors['box_id'] = $errorList;
@@ -39,7 +40,7 @@ if (!empty($errorList)) {
         </div>
       <?php if (!empty($boxList)) : ?>
         <span class="col-lg-12 col-md-12 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">内容を確認する</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block" id="check-select-before-submit" disabled="disabled">内容を確認する</button>
         </span>
       <?php endif; ?>
       </div>
