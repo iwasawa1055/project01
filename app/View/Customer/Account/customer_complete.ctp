@@ -1,6 +1,6 @@
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
+        <h1 class="page-header"><i class="fa fa-exchange"></i> minikuraTRADE</h1>
       </div>
     </div>
     <div class="row">
@@ -15,7 +15,7 @@
                 </div>
               </div>
               <span class="col-lg-12 col-md-12 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/index">アイテム販売に戻る</a>
+              <a class="btn btn-danger btn-lg btn-block animsition-link" href="/sale/index">minikuraTRADEに戻る</a>
               </span>
             </div>
           </div>

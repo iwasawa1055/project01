@@ -14,7 +14,7 @@
       }
     ?>
     <?php if ($sales_icon_flag === true):?>
-  <p class="sale-icon"><i class="fa fa-shopping-basket"></i></p>
+  <p class="sale-icon"><i class="fa fa-exchange"></i></p>
     <?php endif;?>
   <img src="<?php echo Hash::get($item, 'image_first.image_url'); ?>" alt="<?php echo $item['item_id'] ?>" class="item">
   <?php endif; ?>
