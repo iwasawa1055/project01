@@ -73,7 +73,7 @@ class TitleHelper extends AppHelper {
             'index' => 'ポイント',
         ],
         'travel' => [
-            'index' => 'minikuraTRAVEL',
+            'index' => 'minikura teburaTRAVEL',
         ],
     ];
 

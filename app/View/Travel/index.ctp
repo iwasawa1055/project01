@@ -2,7 +2,7 @@
 <?php $noSelect = (count($itemList) === 0)  ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-suitcase"></i> minikuraTRAVEL</h1>
+    <h1 class="page-header"><i class="fa fa-suitcase"></i> minikura teburaTRAVEL</h1>
   </div>
 </div>
 <div class="row">
@@ -40,7 +40,7 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
-            <h2>minikuraTRAVELでのお取り出しについて</h2>
+            <h2>minikura teburaTRAVELでのお取り出しについて</h2>
             <div class="row box-list">
               <div id="travel" class="col-lg-12">
                 <h3>ご利用料金</h3>
