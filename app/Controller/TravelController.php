@@ -184,6 +184,10 @@ class TravelController extends MinikuraController
 
         $itemList = $this->outboundList->getItemList();
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
+        // アイテム選択数が0の場合、アイテム選択画面へリダイレクト
+        if (count($itemList) === 0) {
+            $this->redirect(['controller' => 'travel', 'action' => 'item']);
+        }
         $this->set('itemList', $itemList);
 
         // ポイント取得
@@ -241,7 +245,10 @@ class TravelController extends MinikuraController
         $itemList = $this->outboundList->getItemList();
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
-
+        // アイテム選択数が0の場合、アイテム選択画面へリダイレクト
+        if (count($itemList) === 0) {
+            $this->redirect(['controller' => 'travel', 'action' => 'item']);
+        }
         $dateItemList = [];
 
         if ($this->request->is('post')) {
