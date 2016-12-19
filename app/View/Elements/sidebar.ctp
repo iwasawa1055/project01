@@ -50,8 +50,8 @@
         <?php endif; ?>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-exchange fa-fw"></i> minikuraTRADE</a></li>
-        <li>
-            <a href="/travel/mono"><i class="fa fa-suitcase fa-fw"></i> minikura teburaTRAVEL</a>
+        <li<?php if($active_status['travel']):?> class="active"<?php endif;?>>
+            <a href="/travel/mono"<?php if($active_status['travel']):?> class="active"<?php endif;?>><i class="fa fa-suitcase fa-fw"></i> minikura teburaTRAVEL</a>
         </li>
         <li class="separator">
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
