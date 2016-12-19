@@ -256,6 +256,7 @@ class TravelController extends MinikuraController
             // 届け先追加を選択の場合は追加画面へ遷移
             if (Hash::get($data, 'OutboundLimit.address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
+                CakeSession::write(self::MODEL_NAME_POINT_USE, [self::MODEL_NAME_POINT_USE => $this->request->data[self::MODEL_NAME_POINT_USE]]);
                 return $this->redirect([
                     'controller' => 'address', 'action' => 'add', 'customer' => true,
                     '?' => ['return' => 'travel']
