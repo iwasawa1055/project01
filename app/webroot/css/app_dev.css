@@ -84,6 +84,7 @@ p.error-message a:hover,
 /* app.cssのbox-item-nameと同じ効果、
 実装タイミングの要因でこちらを利用する */
 .boxitem-name {
+  font-size: 18px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -170,4 +171,28 @@ p.error-message a:hover,
 /* v2.2 をマージしたら消す */
 .panel-red a:focus {
 	color: #d9534f;
+}
+
+/* travel */
+.outbound-expire {
+  display: none;
+}
+
+.panel-body .none-link{
+  color: #666;
+}
+
+#accordion-point {
+  background-color:#f5f5f5;
+}
+
+.accordion-point-header:hover {
+  opacity: 0.4;
+}
+
+.accordion-point-header,
+.accordion-point-header:hover,
+.accordion-point-header:focus {
+  color: #666;
+  display:block;
 }

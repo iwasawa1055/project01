@@ -4,10 +4,10 @@
         <li> <a class="animsition-link" href="/"><i class="fa fa-home fa-fw"></i> マイページ</a> </li>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
 
-        <li<?php if($active_status['item']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-diamond fa-fw"></i>アイテムリスト<span class="fa arrow"></span></a>
+        <li<?php if($active_status['item']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-diamond fa-fw"></i> アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <?php if (! empty($product_summary)):?>
-              <li> <a class="animsition-link<?php if($active_status['item']['all']):?> active<?php endif;?>" href="/item?product="><i class="fa fa-diamond fa-fw"></i>すべてのアイテム</a> </li>
+              <li> <a class="animsition-link<?php if($active_status['item']['all']):?> active<?php endif;?>" href="/item?product="><i class="fa fa-diamond fa-fw"></i> すべてのアイテム</a> </li>
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
@@ -18,7 +18,7 @@
             <?php endforeach;?>
           </ul>
         </li>
-        <li<?php if($active_status['box']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-cube fa-fw"></i>ボックスリスト<span class="fa arrow"></span></a>
+        <li<?php if($active_status['box']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-cube fa-fw"></i> ボックスリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <?php if (! empty($summary_all)):?>
               <li> <a class="animsition-link<?php if($active_status['box']['all']):?> active<?php endif;?>" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
@@ -41,7 +41,7 @@
         </li>
         <?php endif; ?>
         <?php if (!empty($customer) && $customer->canOutbound()) : ?>
-        <li> <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 取り出し<span class="fa arrow"></span></a>
+        <li class="separator"> <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 取り出し<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/outbound/mono"><i class="fa fa-arrow-circle-o-down fa-fw"></i> アイテムを取り出す</a> </li>
             <li> <a class="animsition-link" href="/outbound/box"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
@@ -49,13 +49,16 @@
         </li>
         <?php endif; ?>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
-        <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-shopping-basket fa-fw"></i>minikuraTRADE</a></li>
-        <li>
+        <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-exchange fa-fw"></i> minikuraTRADE</a></li>
+        <li<?php if($active_status['travel']):?> class="active"<?php endif;?>>
+            <a href="/travel/mono"<?php if($active_status['travel']):?> class="active"<?php endif;?>><i class="fa fa-suitcase fa-fw"></i> minikura teburaTRAVEL</a>
+        </li>
+        <li class="separator">
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
         </li>
         <?php endif; ?>
         <li>
-          <a href="https://help.minikura.com/hc/ja" target="_blank"><i class="fa fa-question-circle fa-fw"></i>ヘルプ</a>
+          <a href="https://help.minikura.com/hc/ja" target="_blank"><i class="fa fa-question-circle fa-fw"></i> ヘルプ</a>
         </li>
       </ul>
     </div>

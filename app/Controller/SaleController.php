@@ -55,11 +55,14 @@ class SaleController extends MinikuraController
 
         //*  振り込み可能 金額
         $transfer_price = 0;
+        $sales_transfer_allowed_list = [];
         $sales_transfer_allowed_result = $this->Sales->apiGet(['sales_status' => SALES_STATUS_TRANSFER_ALLOWED]);
         if (!empty($sales_transfer_allowed_result->results)) {
             $transfer_price = $this->Sales->sumPrice($sales_transfer_allowed_result->results);
+            $sales_transfer_allowed_list = $sales_transfer_allowed_result->results;
         }
         $this->set('transfer_price', $transfer_price);
+        $this->set('sales_transfer_allowed_list', $sales_transfer_allowed_list);
 
         //* 振り込み済み履歴 
         $transfer_completed = null;
@@ -156,12 +159,28 @@ class SaleController extends MinikuraController
             $transfer_price = 0;
             $sales_result = $this->Sales->apiGet(['sales_status' => SALES_STATUS_TRANSFER_ALLOWED]);
             if (!empty($sales_result->results)) {
-                $transfer_price = $this->Sales->sumPrice($sales_result->results);
+                $transfer_price_all = $this->Sales->sumPrice($sales_result->results);
+                $transfer_price = $this->Sales->subtractCharge($transfer_price_all);
                 $sales =  $sales_result->results;
             }
             $this->set('sales', $sales);
             $this->set('transfer_price', $transfer_price);
+            $this->set('transfer_price_all', $transfer_price_all);
             //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
+
+            //* 振り込み済み履歴 
+            $transfer_completed = null;
+            //$transfer_completed_result = $this->Transfer->apiGet(['limit' => '3']);
+            $transfer_completed_result = $this->Transfer->apiGet();
+            if (!empty($transfer_completed_result->results)) {
+                $transfer_completed = $transfer_completed_result->results;
+            }
+            $this->set('transfer_completed', $transfer_completed);
+
+            // 手数料関連
+            $transfer_charge_price = TRANSFER_CHARGE_PRICE;
+            $this->set('transfer_charge_price', $transfer_charge_price);
+
         }
     }
 

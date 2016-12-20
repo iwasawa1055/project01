@@ -1,7 +1,7 @@
     <?php $this->Html->script('minikura/sale', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> minikuraTRADE</h1>
+        <h1 class="page-header"><i class="fa fa-exchange"></i> minikuraTRADE</h1>
       </div>
     </div>
     <div class="row">
@@ -79,6 +79,28 @@
                 <h2>振込可能合計金額</h2>
                 <div class="form-group col-lg-12">
                   ただいま振込可能な金額は <span class="point"><?php echo number_format($transfer_price);?></span> 円
+                  <table class="table table-striped table-bordered table-hover item-list-table">
+                    <thead>
+                      <tr>
+                        <th>販売完了日</th>
+                        <th>販売商品名</th>
+                        <th>販売金額</th>
+                        <th>販売手数料</th>
+                        <th>送金金額</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach ($sales_transfer_allowed_list as $sales_transfer_allowed) :?>
+                      <tr>
+                        <td><?php echo h($this->Time->format($sales_transfer_allowed['purchased'], '%Y-%m-%d'));?></td>
+                        <td class="item-title"><?php echo h($sales_transfer_allowed['sales_title']);?></td>
+                        <td><?php echo number_format(h($sales_transfer_allowed['price']));?>円</td>
+                        <td>0円</td>
+                        <td><?php echo number_format(h($sales_transfer_allowed['price']));?>円</td>
+                      </tr>
+                      <?php endforeach;?>
+                    </tbody>
+                  </table>
                 </div>
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
@@ -90,11 +112,11 @@
 
                 <h2>お振込みについて</h2>
                 <div class="form-group col-lg-12">
-                  販売代金を受け取るには、「振込みを依頼する」より振込申請を行ってください。<br>
+                  販売代金を受け取るには、「振込を依頼する」より振込申請を行ってください。<br>
                   実際のお振込みに関しては以下費用を差し引いた金額が指定口座に振込されます。<br>
                   <br>
                   販売手数料：販売代金の２０％<br>
-                  振込手数料：１回の振込につき３24円(税込)<br>
+                  振込手数料：１回の振込につき３２４円（税込）<br>
                   <br>
                   販売代金の受け取りは最大６ヶ月まで繰り越すことができます。<br>
                   まとめて振込申請をすることで、振込手数料の負担軽減につながります。<br>
@@ -102,7 +124,7 @@
                   請求金額がない場合は、minikuraポイントで売上金相当分のポイントを還元いたします。<br>
                   <a class="btn btn-info btn-md" href="https://minikura.com/help/trade_request.html" target="_blank">minikura TRADE振り込み方法を確認する</a>
                 </div>
-                <span class="col-lg-6 col-md-6 col-xs-12">
+                <span class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <?php if (floor($transfer_price) > 0 ): ?>
                 <a class="btn btn-danger btn-md" href="/sale/transfer/">振込を依頼する</a>
                 <?php else:?>
@@ -110,7 +132,7 @@
                 <?php endif;?>
                 </span>
 
-                <div class="form-group col-lg-12 col-sm-12">
+                <div class="form-group col-lg-12 col-sm-12 col-xs-12">
                   <h3>振込依頼履歴</h3>
                   <?php if (empty($transfer_completed)):?>
                   <p class="form-control-static">振込明細はありません。</p>
@@ -120,7 +142,7 @@
                     <table class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
-                          <th>売買完了日</th>
+                          <th>振込依頼月</th>
                           <th>注文合計</th>
                           <th>振込手数料</th>
                           <th>販売手数料</th>

@@ -101,10 +101,11 @@ class Sales extends ApiModel
     }
 
     /* sumPrice
-    * @param array $_data sales情報
-    *
-    * @return string $total_price  
-    */
+     * @param array $_data sales情報
+     *
+     * @return string $total_price  
+     * 振込手数料をを差し引くように変更 by maekawa 2016.11.9
+     */
     public function sumPrice($_data)
     {
         $total_price = 0;
@@ -114,7 +115,27 @@ class Sales extends ApiModel
         foreach ($_data as $sales) {
             $total_price += $sales['price'];
         }
+
         return $total_price;
+    }
+
+    /**
+     * 各種手数料を差し引く
+     * todo: 販売手数料については現状は考えない 2016.11.11 maekawa
+     */
+    public function subtractCharge($_total_price = 0)
+    {
+        // 金額が1円以上である場合、手数料を差し引く
+        if ($_total_price > 0) {
+            // 振込手数料を差し引く
+            $_total_price -= TRANSFER_CHARGE_PRICE;
+
+            // 手数料を差し引いた額が0円以下の場合、0円とする
+            if ($_total_price <= 0) {
+                $_total_price = 0;
+            }
+        }
+        return $_total_price;
     }
     
     /**

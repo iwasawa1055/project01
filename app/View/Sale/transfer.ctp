@@ -1,6 +1,6 @@
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-basket"></i> アイテム販売</h1>
+        <h1 class="page-header"><i class="fa fa-exchange"></i> minikuraTRADE</h1>
       </div>
     </div>
     <div class="row">
@@ -11,8 +11,27 @@
               <div class="col-lg-12">
                 <h2>振込依頼</h2>
                 <div class="form-group col-lg-12">
-                  ただいま振込可能な金額は <span class="point"><?php echo number_format($transfer_price);?></span> 円<br>
-                  ※実際振り込まれる金額は振込手数料324円(税込)を差し引いた金額となります。
+                  ただいま振込可能な金額は <span class="point"><?php echo number_format($transfer_price_all);?></span> 円<br>
+                </div>
+                <div class="form-group col-lg-12">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>振込可能金額</th>
+                          <th>振込手数料</th>
+                          <th>振込金額</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><?php echo number_format(h($transfer_price_all));?>円</td>
+                          <td><?php echo number_format(h($transfer_charge_price));?>円</td>
+                          <td><?php echo number_format(h($transfer_price));?>円</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <h2>振込予定口座</h2>
                 <div class="form-group col-lg-12">
@@ -25,90 +44,22 @@
                 <?php if (floor($transfer_price) > '0' && !empty($customer_bank_account) ):?>
                 <p class="form-control-static point col-lg-12">上記の内容で振込依頼をしますか？</p>
                 <?php echo $this->Form->create('Sale', ['url' => ['controller' => 'Sale', 'action' => 'transfer_complete']]); ?>
-                <span class="col-lg-12 col-md-12 col-xs-12">
+                <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">振込依頼する</button>
                 </span>
-                <span class="col-lg-12 col-md-12 col-xs-12">
+                <span class="col-lg-6 col-md-6 col-xs-12">
                   <a class="btn btn-primary btn-lg btn-block" href="/sale/index/">戻る</a>
                 </span>
                 <?php echo $this->Form->end(); ?>
                 <?php else:?>
-                <span class="col-lg-12 col-md-12 col-xs-12">
+                <span class="col-lg-6 col-md-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block" disabled="disabled">振込依頼する</button>
                 </span>
-                <span class="col-lg-12 col-md-12 col-xs-12">
+                <span class="col-lg-6 col-md-6 col-xs-12">
                   <a class="btn btn-primary btn-lg btn-block" href="/sale/index/">戻る</a>
                 </span>
                 <?php endif;?>
-
-                <?php if (! empty($sales)):?>
-                  <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>販売日</th>
-                          <th>商品名</th>
-                          <th>金額</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php foreach($sales as $key => $val ):?>
-                        <tr>
-                          <td><?php echo($this->Time->format($val['sales_end'], '%Y-%m-%d'));?></td>
-                          <td><?php echo h($val['sales_title']);?></td>
-                          <td><?php echo number_format($val['price']);?>円</td>
-                        </tr>
-                        <?php endforeach;?>
-                      </tbody>
-                    </table>
-                  </div>
-                <?php endif;?>
-
               </div>  
-              <div class="col-lg-12">
-              <!--  
-              </div>  
-              <div class="col-lg-12">
-              -->
-              
-              <!--  
-                <div class="form-group col-lg-12">
-                  <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>販売日</th>
-                          <th>商品名</th>
-                          <th>金額</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>2016/09/25</td>
-                          <td>商品名11111111</td>
-                          <td>1,000円</td>
-                        </tr>
-                        <tr>
-                          <td>2016/09/25</td>
-                          <td>商品名11111111</td>
-                          <td>1,000円</td>
-                        </tr>
-                        <tr>
-                          <td>2016/09/25</td>
-                          <td>商品名11111111</td>
-                          <td>1,000円</td>
-                        </tr>
-                        <tr>
-                          <td>2016/09/25</td>
-                          <td>商品名11111111</td>
-                          <td>1,000円</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-               --> 
-              </div>
             </div>
           </div>
         </div>

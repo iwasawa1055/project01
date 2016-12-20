@@ -123,6 +123,7 @@ class MinikuraController extends AppController
 
     /**
      * item, boxのリンクアクティブを取得
+     * todo: 暫定処置 View/Elements/sidebar.ctp 内でPHPでactiveを表示している。もっと汎用的な方法を考える必要がある
      */
     protected function getActiveStatus() 
     {
@@ -150,6 +151,7 @@ class MinikuraController extends AppController
                 'shoes' => false,
                 'sneakers' => false,
             ],
+            'travel' => false,
         ];
 
         $active_status_tmp = [];
@@ -194,9 +196,9 @@ class MinikuraController extends AppController
             } elseif (preg_match('/\/box/', $url)) {
                 $active_status['box'] = $active_status_tmp;
             }
+        }  elseif (preg_match('/\/travel/', $url)) {
+            $active_status['travel'] = true;
         }
-
-
         return $active_status;
     }
 }

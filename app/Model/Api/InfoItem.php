@@ -42,6 +42,10 @@ class InfoItem extends ApiCachedModel
         $where['item_status'] = [
             BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
             BOXITEM_STATUS_INBOUND_DONE * 1,
+            BOXITEM_STATUS_OUTBOUND_LIMIT_START * 1,
+            BOXITEM_STATUS_OUTBOUND_LIMIT_IN_PROGRESS * 1,
+            BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_DONE * 1,
+            BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_IN_PROGRESS * 1,
             BOXITEM_STATUS_OUTBOUND_START * 1,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
@@ -50,6 +54,7 @@ class InfoItem extends ApiCachedModel
             if (!empty($outboundOnly)) {
                 unset($where['item_status']);
             }
+            $where['item_status'][] = BOXITEM_STATUS_OUTBOUND_LIMIT_DONE * 1;
             $where['item_status'][] = BOXITEM_STATUS_OUTBOUND_DONE * 1;
         }
 
@@ -140,6 +145,10 @@ class InfoItem extends ApiCachedModel
         $where = [
             'item_status' => [
                 BOXITEM_STATUS_INBOUND_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_START * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_IN_PROGRESS * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_IN_PROGRESS * 1,
                 BOXITEM_STATUS_OUTBOUND_START * 1,
                 BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
             ]

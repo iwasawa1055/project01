@@ -51,6 +51,17 @@ class OutboundList
     {
         return $this->itemList;
     }
+    // PRODUCT CD に紐づくアイテム一覧を取得
+    public function getItemListByProductCd($_productCd)
+    {
+        $results = [];
+        foreach ($this->itemList as $itemId => $itemData) {
+            if ($itemData['box']['product_cd'] === $_productCd) {
+                $results[$itemId] = $itemData;
+            }
+        }
+        return $results;
+    }
     public function getItemIdFromItemList()
     {
         return Hash::extract($this->getItemList(), '{s}.item_id');
@@ -160,7 +171,7 @@ class OutboundList
             $item = new InfoItem();
             $itemList = $item->apiGetResultsWhere([], ['box_id' => $box['box_id']]);
             foreach ($itemList as $i) {
-                if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
+                if (!in_array($i['item_status'], [BOXITEM_STATUS_INBOUND_DONE * 1, BOXITEM_STATUS_OUTBOUND_LIMIT_DONE * 1, BOXITEM_STATUS_OUTBOUND_DONE * 1], true)) {
                     return 'ボックスに含まれるアイテムが出庫またはオプション作業中です。';
                 }
                 if (Hash::get($i, 'sales')) {

@@ -91,6 +91,13 @@ const BOXITEM_STATUS_BUYKIT_DONE = '30';
 const BOXITEM_STATUS_INBOUND_START = '40';
 const BOXITEM_STATUS_INBOUND_IN_PROGRESS = '60';
 const BOXITEM_STATUS_INBOUND_DONE = '70';
+// 出庫・依頼 一時
+const BOXITEM_STATUS_OUTBOUND_LIMIT_START = '130';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_IN_PROGRESS = '140';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_DONE = '150';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_DONE = '155';
+const BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_IN_PROGRESS = '160';
+
 // 出庫・依頼
 const BOXITEM_STATUS_OUTBOUND_START = '180';
 const BOXITEM_STATUS_OUTBOUND_IN_PROGRESS = '200';
@@ -103,8 +110,12 @@ const BOX_STATUS_LIST = [
     '40' => 'お預かり中',
     '60' => 'お預かり中',
     '70' => 'お預かり中',
+    '130' => 'お預かり中',
+    '155' => 'お預かり中',
+    '160' => 'お預かり中',
     '180' => 'お預かり中',
     '200' => 'お預かり中',
+    '150' => '取り出し済み',
     '210' => '取り出し済み',
 ];
 // 再入庫・依頼
@@ -320,11 +331,17 @@ const BANK_ACCOUNT_TYPE = [
 ];
 
 //* 販売機能 ステータス
-const SALES_STATUS_ON_SALE = '1';
-const SALES_STATUS_IN_PURCHASE = '2';
-const SALES_STATUS_TRANSFER_ALLOWED = '3';
-const SALES_STATUS_IN_ORDER = '4';
-const SALES_STATUS_PENDING = '5';
-const SALES_STATUS_REMITTANCE_COMPLETED = '6';
-const SALES_STATUS_PURCHASE_CANCEL = '7';
-const SALES_STATUS_SALES_CANCEL = '8';
+const SALES_STATUS_ON_SALE = '1'; // 販売中
+const SALES_STATUS_IN_PURCHASE = '2'; // 購入手続き中
+const SALES_STATUS_TRANSFER_ALLOWED = '3'; // 振込可能
+const SALES_STATUS_IN_ORDER = '4'; // 送金依頼中
+const SALES_STATUS_PENDING = '5'; // 送金保留
+const SALES_STATUS_REMITTANCE_COMPLETED = '6'; // 送金済み
+const SALES_STATUS_PURCHASE_CANCEL = '7'; // 購入キャンセル
+const SALES_STATUS_SALES_CANCEL = '8'; // 販売キャンセル
+
+/**
+ * minikuraTRADE 手数料関連
+ */
+// 振込手数料
+const TRANSFER_CHARGE_PRICE = 324;

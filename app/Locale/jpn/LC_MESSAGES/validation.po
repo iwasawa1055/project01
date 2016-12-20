@@ -233,6 +233,9 @@ msgstr "口座番号"
 msgid "bank_account_holder"
 msgstr "口座名義"
 
+msgid "outbound_expire"
+msgstr "ご返却予定日"
+
 # Validation
 msgid "notBlank"
 msgstr "%sは必須です"
