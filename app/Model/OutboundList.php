@@ -51,6 +51,17 @@ class OutboundList
     {
         return $this->itemList;
     }
+    // PRODUCT CD に紐づくアイテム一覧を取得
+    public function getItemListByProductCd($_productCd)
+    {
+        $results = [];
+        foreach ($this->itemList as $itemId => $itemData) {
+            if ($itemData['box']['product_cd'] === $_productCd) {
+                $results[$itemId] = $itemData;
+            }
+        }
+        return $results;
+    }
     public function getItemIdFromItemList()
     {
         return Hash::extract($this->getItemList(), '{s}.item_id');

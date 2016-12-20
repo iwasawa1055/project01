@@ -138,7 +138,7 @@ class TravelController extends MinikuraController
 
     public function item()
     {
-        $outItemList = $this->outboundList->getItemList();
+        $outItemList = $this->outboundList->getItemListByProductCd(PRODUCT_CD_MONO);
 
         // 更新処理し成功した場合取り出しリストへ遷移
         if ($this->request->is('post')) {
@@ -149,7 +149,7 @@ class TravelController extends MinikuraController
                 $this->redirect(['action' => 'index']);
             } else {
                 // has error
-                $outItemList = $this->outboundList->getItemList();
+                $outItemList = $this->outboundList->getItemListByProductCd(PRODUCT_CD_MONO);
                 $this->set('errorList', $errorList);
             }
         }
@@ -181,8 +181,8 @@ class TravelController extends MinikuraController
      */
     public function index()
     {
+        $itemList = $this->outboundList->getItemListByProductCd(PRODUCT_CD_MONO);
 
-        $itemList = $this->outboundList->getItemList();
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         // アイテム選択数が0の場合、アイテム選択画面へリダイレクト
         if (count($itemList) === 0) {
@@ -242,7 +242,7 @@ class TravelController extends MinikuraController
     public function confirm()
     {
 
-        $itemList = $this->outboundList->getItemList();
+        $itemList = $this->outboundList->getItemListByProductCd(PRODUCT_CD_MONO);
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
         // アイテム選択数が0の場合、アイテム選択画面へリダイレクト
