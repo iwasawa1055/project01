@@ -733,6 +733,9 @@ ul.sale-caption {
 #travel ul {
 	padding-left: 20px;
 }
+.caution img {
+	margin-right: 10px;
+}
 
 @media screen and (max-width: 991px) {
 .form-control {
@@ -905,5 +908,8 @@ div.panel-body .sp-navi a:hover {
 }
 #travel ul li {
 	font-size: 12px;
+}
+.caution img {
+	width: 75px;
 }
 }

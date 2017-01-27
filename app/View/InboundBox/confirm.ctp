@@ -87,9 +87,13 @@
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
-                  発火性・引火性のある危険物、液体・生物・その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a>
-                  で定められたものはお預かりできません。 </label>
+                  発火性・引火性のある危険物（スプレー缶等）、割れ物（精密機器、ガラス製品、陶磁器 等）、液体、食品、生物、その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a> で定められたものはお預かりできません。  </label>
               </p>
+              <div class="caution">
+                <img src="/images/burning@1x.png" srcset="/images/burning@1x.png 1x, /images/burning@2x.png 2x">
+                <img src="/images/crack@1x.png" srcset="/images/crack@1x.png 1x, /images/crack@2x.png 2x">
+                <img src="/images/liquid@1x.png" srcset="/images/liquid@1x.png 1x, /images/liquid@2x.png 2x">
+              </div>
             </div>
             <div class="panel-footer">
               <label>
