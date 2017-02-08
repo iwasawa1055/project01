@@ -49,6 +49,13 @@ $config['api.user_agent'] = 'minikura';
 
 
 /**
+ * 静的ページからの遷移先変更
+ */
+$config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
+$config['app']['switch_redirect']['param'] = 'option';
+$config['app']['switch_redirect']['option']['cleaning'] = 'cleaning';
+
+/**
  * エラー表示(デフォルトは表示)
  */
 // CakePHP Debug Level
