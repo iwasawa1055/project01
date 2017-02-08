@@ -44,6 +44,9 @@ class LoginController extends MinikuraController
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
 
+                // ログイン前のページに戻る
+                $this->_endJunction();
+
                 return $this->redirect(['controller' => 'MyPage', 'action' => 'index']);
 
             } else {
@@ -54,6 +57,9 @@ class LoginController extends MinikuraController
             // ログイン済
             return $this->redirect(['controller' => 'MyPage', 'action' => 'index']);
         } else {
+            // ログイン前のページ設定
+            $this->_startJunction();
+
 			// 未ログイン add_sneakersから遷移時 logo切り替え 
 			$code = Hash::get($this->request->query, 'code');
 			$key = Hash::get($this->request->query, 'key');

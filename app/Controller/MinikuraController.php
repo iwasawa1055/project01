@@ -32,7 +32,49 @@ class MinikuraController extends AppController
         // ログインチェック
         if ($this->checkLogined) {
             if (!$this->Customer->isLogined()) {
-                return $this->redirect(['controller' => 'login', 'action' => 'index', 'customer' => false]);
+                $query_string_url = Router::reverse($this->request);
+
+                $start_pos = strpos($query_string_url, '/', 1);
+                if ($start_pos  === false) {
+                    // コントローラ名＋パラメータ名 item?product=
+                    $set_controller = $this->name;
+                    $start_pos = strlen($set_controller);
+                } else {
+                    // コントローラ名＋アクション名
+                    $set_controller = substr($query_string_url, 0, $start_pos + 1);
+                }
+
+                $end_pos = strpos($query_string_url, '?');
+
+                $set_action = substr($query_string_url, $start_pos + 1);
+                if ($set_action === false) {
+                    // コントローラ名のみ /outbound
+                    $set_action = $this->request->action;
+                }
+
+                // actionにパラメータが入り混んでいる場合
+                if (strpos($set_action, '?') !== false) {
+                    // コントローラ名＋パラメータ名 item?product=
+                    $set_action = $this->request->action;
+                }
+
+                if ($end_pos !== false) {
+                    if ($start_pos + 1 !== $end_pos) {
+                        // コントローラ名＋アクション名 + パラメータ
+                        $set_action = substr($query_string_url, $start_pos + 1, $end_pos);
+                    }
+                }
+
+                $set_param = [
+                    'c' => $set_controller,
+                    'a' => $set_action,
+                    'p' => http_build_query($this->request->query),
+                ];
+
+                CakeLog::write(DEBUG_LOG, 'junktion param get query_string_url ' . $query_string_url);
+                CakeLog::write(DEBUG_LOG, 'set junktion param ' . print_r($set_param, true));
+
+                return $this->redirect(['controller' => 'login', 'action' => 'index', 'customer' => false, '?' => $set_param]);
             }
 
             // 負債ユーザ遷移制限
