@@ -53,7 +53,7 @@ $config['api.user_agent'] = 'minikura';
  */
 $config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
 $config['app']['switch_redirect']['param'] = 'option';
-$config['app']['switch_redirect']['option']['cleaning'] = 'cleaning';
+
 
 /**
  * エラー表示(デフォルトは表示)
