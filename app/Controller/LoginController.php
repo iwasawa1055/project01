@@ -79,7 +79,7 @@ class LoginController extends MinikuraController
         CustomerData::delete();
         // todo: ここで（もしくは別の場所）クッキーを削除したい
 
-        return $this->redirect(['controller' => 'login', 'action' => 'index']);
+        return $this->redirect(['controller' => 'login', 'action' => 'index', '?' => array('logout' => 'true')]);
     }
 
     /**
@@ -121,6 +121,12 @@ class LoginController extends MinikuraController
 
         // 取得した配列のカウントが2ではない場合、処理終了
         if (count($login_params) !== 2) {
+            return false;
+        }
+
+        $logout = filter_input(INPUT_GET,  Configure::read( 'app.login_cookie.param' ));
+        if($logout){
+            setcookie('token', '', time() - 1800);
             return false;
         }
 

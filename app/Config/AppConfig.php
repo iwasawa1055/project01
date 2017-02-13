@@ -49,6 +49,11 @@ $config['api.user_agent'] = 'minikura';
 
 
 /**
+ * 恒久ログインlogout パラメータ
+ */
+$config['app']['login_cookie']['param'] = 'logout';
+
+/**
  * 静的ページからの遷移先変更
  */
 $config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
