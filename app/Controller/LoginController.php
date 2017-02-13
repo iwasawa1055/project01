@@ -4,6 +4,7 @@ App::uses('MinikuraController', 'Controller');
 App::uses('ApiCachedModel', 'Model');
 App::uses('OutboundList', 'Model');
 App::uses('CustomerEnvAuthed', 'Model');
+App::uses('AppCode', 'Lib');
 
 class LoginController extends MinikuraController
 {
@@ -15,6 +16,8 @@ class LoginController extends MinikuraController
      */
     public function index()
     {
+        $this->_checkLoginCookie();
+
         if ($this->request->is('post')) {
             $this->loadModel('CustomerLogin');
             $this->CustomerLogin->set($this->request->data);
@@ -28,18 +31,8 @@ class LoginController extends MinikuraController
                     $this->Flash->set($res->error_message);
                     return $this->render('index');
                 }
-
-                // セッション値をクリア
-                ApiCachedModel::deleteAllCache();
-                OutboundList::delete();
-                CustomerData::delete();
-                // セッションID変更
-                CakeSession::renew();
-
-                // カスタマー情報を取得しセッションに保存
-                $this->Customer->setTokenAndSave($res->results[0]);
-                $this->Customer->setPassword($this->request->data['CustomerLogin']['password']);
-                $this->Customer->getInfo();
+                // ログイン処理
+                $this->_execLogin($res);
 
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
@@ -47,6 +40,7 @@ class LoginController extends MinikuraController
                 // ログイン前のページに戻る
                 $this->_endJunction();
 
+                // ユーザの状態によってログイン先を変更
                 $this->_switchRedirctUrl();
 
             } else {
@@ -83,8 +77,84 @@ class LoginController extends MinikuraController
         ApiCachedModel::deleteAllCache();
         OutboundList::delete();
         CustomerData::delete();
+        // todo: ここで（もしくは別の場所）クッキーを削除したい
 
         return $this->redirect(['controller' => 'login', 'action' => 'index']);
+    }
+
+    /**
+     * ログイン時の共通処理
+     */
+    private function _execLogin($_res)
+    {
+        // セッション値をクリア
+        ApiCachedModel::deleteAllCache();
+        OutboundList::delete();
+        CustomerData::delete();
+        // セッションID変更
+        CakeSession::renew();
+
+        // カスタマー情報を取得しセッションに保存
+        $this->Customer->setTokenAndSave($_res->results[0]);
+        $this->Customer->setPassword($this->request->data['CustomerLogin']['password']);
+        $this->Customer->getInfo();
+
+        // ログイン情報を暗号化してクッキーへ保存
+        $cookie_login_data = $this->request->data['CustomerLogin']['email'] . ' ' . $this->request->data['CustomerLogin']['password'];
+        $hash = AppCode::encodeLoginData($cookie_login_data);
+        // 有効時間 (60秒 * 60分 * 24時 * 180日)
+        $expired = time() + 60 * 60 * 24 * 180 ;
+        setcookie('token', $hash, $expired, '.' . $_SERVER['HTTP_HOST']);
+    }
+
+    /**
+     * クッキー上のログイン情報のチェック
+     */
+    private function _checkLoginCookie()
+    {
+        // tokenが空の場合、処理終了
+        if (empty($_COOKIE['token'])) {
+            return false;
+        }
+        $cookie_login_param = AppCode::decodeLoginData($_COOKIE['token']);
+        $login_params = explode(' ', $cookie_login_param);
+
+        // 取得した配列のカウントが2ではない場合、処理終了
+        if (count($login_params) !== 2) {
+            return false;
+        }
+
+        // ログインパラメータセット
+        $this->request->data['CustomerLogin']['email'] = $login_params[0];
+        $this->request->data['CustomerLogin']['password'] = $login_params[1];
+
+        // ログイン処理
+        $this->loadModel('CustomerLogin');
+        $this->CustomerLogin->set($this->request->data);
+
+        if ($this->CustomerLogin->validates()) {
+            $res = $this->CustomerLogin->login();
+            if (!empty($res->error_message)) {
+                // パスワード不正などの場合、処理終了
+                return false;
+            }
+            // ログイン処理
+            $this->_execLogin($res);
+
+            // ユーザー環境値登録
+            $this->Customer->postEnvAuthed();
+
+            // ログイン前のページに戻る
+            $this->_endJunction();
+
+            // ユーザの状態によってログイン先を変更
+            $this->_switchRedirctUrl();            
+        } else {
+            // バリデーションに引っかかる場合、処理終了
+            return false;
+        }
+
+        return true;
     }
 
     protected function _switchRedirctUrl()
