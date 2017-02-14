@@ -73,9 +73,9 @@
         </p>
         <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができるクラウドストレージ。
         </p>
-        <p class="select-number">未選択</p>
+        <p class="select-number"><?php if ($select_starter_kit) : ?><span>1セット選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-starter"> <img src="/first_order/images/box_starter@1x.png" srcset="/first_order/images/box_starter@1x.png 1x, /first_order/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
-        <a class="btn-starter"><i class="fa fa-play-circle-o "></i> このボックスを選ぶ</a>
+        <a class="btn-starter"><i class="fa fa-play-circle-o <?php if ($select_starter_kit) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
         <input id="select_starter_kit" name="select_starter_kit" type="hidden" value="0"/>
         <?php echo $this->Form->error('select_starter_kit', null, ['wrap' => 'p']);?>
       </div>

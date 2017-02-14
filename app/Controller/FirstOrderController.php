@@ -1,10 +1,12 @@
 <?php
 App::uses('MinikuraController', 'Controller');
+App::uses('OutboundLimit', 'Model');
 
 class FirstOrderController extends MinikuraController
 {
     // アクセス許可
     protected $checkLogined = false;
+    const MODEL_NAME = 'OutboundLimit';
 
     /**
      * 制御前段処理.
@@ -23,6 +25,53 @@ class FirstOrderController extends MinikuraController
      */
     public function index()
     {
+
+        // 遷移時にオプションが設定されている場合
+        $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
+        if (!is_null($option)) {
+            CakeLog::write(DEBUG_LOG, 'FirstOrder set option ' . $option);
+            CakeSession::write(Configure::read('app.lp_option.session_name'), $option);
+        }
+
+        // 初回購入フローに入らない場合の遷移先
+        $none_first_redirect_param = array(
+            'controller' => 'login',
+            'action' => 'index',
+            '?' => array(Configure::read('app.switch_redirect.param'), $option));
+
+        // オートログイン確認
+        // tokenが存在する
+        if (!empty($_COOKIE['token'])) {
+            $cookie_login_param = AppCode::decodeLoginData($_COOKIE['token']);
+            $login_params = explode(' ', $cookie_login_param);
+
+            // 取得した配列のカウントが2である
+            if (count($login_params) === 2) {
+                // オートログイン
+                $this->redirect($none_first_redirect_param);
+            }
+        }
+
+        // set action ログインしている
+        if (!empty($customer) && $customer->isLogined()) {
+
+            // エントリーユーザでない
+            if (!$this->Customer->isEntry()) {
+                $this->redirect($none_first_redirect_param);
+            }
+
+            // スニーカーユーザでない
+            if ($this->Customer->isSneaker()) {
+                $this->redirect($none_first_redirect_param);
+            }
+
+            // ログイン済みエントリーユーザ
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
+
+        }
+
+        // スターターキット購入フロー
+        $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
 
     }
 
