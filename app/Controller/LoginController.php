@@ -32,10 +32,14 @@ class LoginController extends MinikuraController
                     return $this->render('index');
                 }
                 
-                $cookie_enable = ( $this->request->data['remember'] ? TRUE : FALSE );
+                if ( $this->request->data['remember'] ) {
+                    $cookie_enable = true;
+                } else {
+                    $cookie_enable = false;
+                }
 
                 // ログイン処理
-                $this->_execLogin($res,$cookie_enable);
+                $this->_execLogin($res, $cookie_enable);
 
                 // ユーザー環境値登録
                 $this->Customer->postEnvAuthed();
@@ -88,7 +92,7 @@ class LoginController extends MinikuraController
     /**
      * ログイン時の共通処理
      */
-    private function _execLogin($_res,$_usecookie=FALSE)
+    private function _execLogin($_res, $_usecookie = false)
     {
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
@@ -103,14 +107,14 @@ class LoginController extends MinikuraController
         $this->Customer->getInfo();
 
         // ログイン情報を暗号化してクッキーへ保存
-        if ( $_usecookie !== FALSE ) {
+        if ( $_usecookie !== false ) {
           $cookie_login_data = $this->request->data['CustomerLogin']['email'] . ' ' . $this->request->data['CustomerLogin']['password'];
           $hash = AppCode::encodeLoginData($cookie_login_data);
           $cookie_period = Configure::read( 'app.login_cookie.cookie_period' );
 
           // 有効時間 (60秒 * 60分 * 24時 * 設定)
           //   設定：AppConfig.php->app.login_cookie.cookie_period
-          $expired = time() + 60 * 60 * 24 * $cookie_period;
+          $expired = time() + $cookie_period;
           setcookie('token', $hash, $expired, '.' . $_SERVER['HTTP_HOST']);
         }
     }
