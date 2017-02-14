@@ -51,6 +51,7 @@ $config['api.user_agent'] = 'minikura';
 /**
  * 恒久ログインlogout パラメータ
  */
+$config['app']['login_cookie']['cookie_period'] = 180;
 $config['app']['login_cookie']['param'] = 'logout';
 
 /**

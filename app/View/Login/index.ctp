@@ -1,10 +1,10 @@
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-6 col-md-offset-3">
         <h1 class="page-header"><i class="fa fa-sign-in"></i> ログイン</h1>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-12">
+    <div class="row" id="login">
+      <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="col-lg-12 col-md-12 none-title">
@@ -19,7 +19,7 @@
               </div>
               <div class="checkbox">
                 <label>
-                  <input name="remember" type="checkbox" value="Remember Me">
+                  <input name="remember" type="checkbox" value="1">
                   次回ログイン時に入力を省く </label>
               </div>
               <div class="row">
