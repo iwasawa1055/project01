@@ -1,4 +1,3 @@
-  <?php if (!empty($validErrors)) { $this->validationErrors['CustomerEmail'] = $validErrors; } ?>
   <section id="pagenation">
     <ul>
       <li><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
@@ -16,106 +15,69 @@
     </ul>
   </section>
   <!-- ADRESS -->
+  <form method="post" action="/FirstOrder/confirm_email">
   <section id="adress">
     <div class="wrapper">
       <div class="form">
         <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-        <input class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50">
+        <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form">
         <label>パスワード<span class="required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
-        <input type="password" class="password" size="20" maxlength="20">
+        <input type="password" class="password" size="20" maxlength="20" name="password" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form">
         <label>パスワード（確認用）<span class="required">※</span></label>
-        <input type="password" class="password" size="20" maxlength="20">
+        <input type="password" class="password" size="20" maxlength="20" name="password_confirm" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="divider"></div>
       <div class="form form-line">
         <label>生年月日<span class="required">※</span></label>
-        <select class="select-birth-year">
-          <option value="">1985年</option>
-          <option value="">1986年</option>
-          <option value="">1987年</option>
-          <option value="">1988年</option>
-          <option value="">1989年</option>
-          <option value="">1990年</option>
+	
+        <select class="select-birth-year" name="birth_year" required>
+        <?php for ($i = date('Y'); $i >= $login_config['birthyear_start']; $i--) { ?>
+          <option value="<?php echo $i;?>"><?php echo $i;?>年</option>
+	<?php } ?>
         </select>
-        <select class="select-birth-month">
-          <option value="">1月</option>
-          <option value="">2月</option>
-          <option value="">3月</option>
-          <option value="">4月</option>
-          <option value="">5月</option>
-          <option value="">6月</option>
-          <option value="">7月</option>
-          <option value="">8月</option>
-          <option value="">9月</option>
-          <option value="">10月</option>
-          <option value="">11月</option>
-          <option value="">12月</option>
+        <select class="select-birth-month" name="birth_month" required>
+        <?php for ($i = 1; $i <= 12; $i++) { ?>
+          <option value="<?php echo $i;?>"><?php echo $i;?>月</option>
+	<?php } ?>
         </select>
-        <select class="select-birth-day">
-          <option value="">1日</option>
-          <option value="">2日</option>
-          <option value="">3日</option>
-          <option value="">4日</option>
-          <option value="">5日</option>
-          <option value="">6日</option>
-          <option value="">7日</option>
-          <option value="">8日</option>
-          <option value="">9日</option>
-          <option value="">10日</option>
-          <option value="">11日</option>
-          <option value="">12日</option>
-          <option value="">13日</option>
-          <option value="">14日</option>
-          <option value="">15日</option>
-          <option value="">16日</option>
-          <option value="">17日</option>
-          <option value="">18日</option>
-          <option value="">19日</option>
-          <option value="">20日</option>
-          <option value="">21日</option>
-          <option value="">22日</option>
-          <option value="">23日</option>
-          <option value="">24日</option>
-          <option value="">25日</option>
-          <option value="">26日</option>
-          <option value="">27日</option>
-          <option value="">28日</option>
-          <option value="">29日</option>
-          <option value="">30日</option>
-          <option value="">31日</option>
+        <select class="select-birth-day" name="birth_day" required>
+        <?php for ($i = 1; $i <= 31; $i++) { ?>
+          <option value="<?php echo $i;?>"><?php echo $i;?>日</option>
+	<?php } ?>
         </select>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form form-line">
         <label>性別<span class="required">※</span></label>
-        <label class="genders"><input type="radio" name="gender" value="man" id="man"><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="woman" id="woman"><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
+        <label class="genders"><input type="radio" name="gender" value="m" id="man"><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="f" id="woman"><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
       </div>
       <div class="divider"></div>
       <div class="form form-line">
         <label>お知らせメール</label>
-        <select class="select-info">
-          <option value="">受信する</option>
-          <option value="">受信しない</option>
+        <select class="select-info" name="newsletter" required>
+          <option value="0">受信する</option>
+          <option value="1">受信しない</option>
         </select>
       </div>
       <div class="form form-line">
         <label>紹介コード</label>
-        <input type="text" size="20" maxlength="20">
+        <input type="text" size="20" maxlength="20" name="alliance_cd">
       </div>
       <div class="divider"></div>
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term" id="term"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
+        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
         <span class="validation">validation,validation,validation,validation</span>
         <a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> minikura利用規約</a>
       </div>
     </div>
   </section>
-  <section class="nextback"><a href="add_credit" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><a href="confirm" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></a>
+  <section class="nextback"><a href="add_credit" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
   </section>
+  </form>

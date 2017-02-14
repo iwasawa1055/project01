@@ -680,7 +680,16 @@ class AppValid
 		//* Return
 		return $ret;
 	}
-
+   
+    /// 利用規約に同意するチェックがされているか判定
+    public static function validateTermsAgree($remember)
+    {
+        $ret = [];
+        if ($remember != 'Remember Me') {
+            $ret['remember'] = '利用規約への同意は必須です';
+        }
+        return $ret;
+    }
 
 }
 
