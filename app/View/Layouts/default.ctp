@@ -91,13 +91,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <?php endif;?>
     <?php else : ?>
       <?php echo $this->element('navbar_right_nonlogin'); ?>
-      <?php echo $this->element('sidebar_nonlogin'); ?>
+      <?php //echo $this->element('sidebar_nonlogin'); ?>
     <?php endif; ?>
   </nav>
+  <?php if (!empty($customer) && $customer->isLogined()) : ?>
   <div id="page-wrapper">
     <?php echo $this->Flash->render(); ?>
     <?php echo $this->fetch('content'); ?>
   </div>
+  <?php else : ?>
+    <div class="col-lg-12 login-wrapper">
+      <?php echo $this->Flash->render(); ?>
+      <?php echo $this->fetch('content'); ?>
+    </div>
+  <?php endif; ?>
   <div class="footer">
     <div class="col-lg-12 col-md-12 col-xs-12">
       <ul class="list-inline">
