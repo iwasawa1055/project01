@@ -72,7 +72,7 @@
       </div>
       <div class="divider"></div>
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="1"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
+        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
         <span class="validation">validation,validation,validation,validation</span>
         <a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> minikura利用規約</a>
       </div>

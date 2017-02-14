@@ -1,0 +1,29 @@
+
+button[class^="btn-"] {
+	margin: 1.5rem 0 0 0;
+	padding: 1rem;
+	font-size: 18px;
+	font-size: 1.8rem;
+	color: #ffffff;
+	text-align: center;
+	border-radius: .2rem;
+}
+button[class^="btn-"]:hover {
+	color: #ffffff;
+	text-decoration: none;
+}
+button.btn-next,
+button.btn-next-full,
+button.btn-submit,
+button.btn-return,
+button.btn-starter {
+	margin-left: .5rem;
+	background: #ff0000;
+	border: .1rem solid #ff0000;
+}
+button.btn-next,
+button.btn-next-full {
+	display: inline-block;
+	width: 30rem;
+	margin-left: 1rem;
+}

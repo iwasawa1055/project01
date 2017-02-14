@@ -9,7 +9,7 @@ class FirstOrderController extends MinikuraController
     // アクセス許可
     protected $checkLogined = false;
     const MODEL_NAME = 'OutboundLimit';
-
+    
     /**
      * 制御前段処理.
      */
@@ -160,18 +160,32 @@ class FirstOrderController extends MinikuraController
 
     public function add_address()
     {
-
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order'], true) === false) {
-            //* NG redirect
-            $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
-        }
-
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
 
 
         }
+    }
+    
+    public function confirm_address()
+    {
+        $params = [
+            'firstname'              => filter_input(INPUT_POST, 'firstname'),
+            'firstname_kana'    => filter_input(INPUT_POST, 'firstname_kana'),
+            'lastname'              => filter_input(INPUT_POST, 'lastname'),
+            'lastname_kana'    => filter_input(INPUT_POST, 'lastname_kana'),
+            'tel1'                      => filter_input(INPUT_POST, 'tel1'),
+            'postal'                  => filter_input(INPUT_POST, 'postal'),
+            'address1'              => filter_input(INPUT_POST, 'address1'),
+            'address2'              => filter_input(INPUT_POST, 'address2'),
+            'address3'              => filter_input(INPUT_POST, 'address3'),
+        ];
+
+        
+        
+        
+        
+        $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_credit']);
     }
 
     public function add_credit()
@@ -184,24 +198,90 @@ class FirstOrderController extends MinikuraController
         }
     }
 
+    public function confirm_credit()
+    {
+        $this->loadModel("PaymentGMOSecurityCard");
+        $this->loadModel('PaymentGMOCard');
+
+        $params = [
+            'card_no'              => str_replace("-","",filter_input(INPUT_POST, 'card_no')),
+            'security_cd'         => filter_input(INPUT_POST, 'security_cd'),
+            'expire'                  => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
+            'holder_name'       => filter_input(INPUT_POST, 'holder_name'),
+        ];
+        
+        //*  validation 基本は共通クラスのAppValidで行う
+        $validation = AppValid::validate($params);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->render('add_credit');
+            return;
+        }
+
+        $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_email']);
+    }
+
     public function add_email()
     {
         $loginconfigure = Configure::read('app.register');
 
         // 入力カード情報セット
         $this->set('login_config', $loginconfigure);
-
-
-
-        $back  = filter_input(INPUT_GET, 'back');
-        if ($back) {
-
-
-        }
     }
 
     public function confirm_email()
     {
+        $password = filter_input(INPUT_POST, 'password');
+        $password_confirm = filter_input(INPUT_POST, 'password_confirm');
+        
+        $params = [
+            'email'                 => filter_input(INPUT_POST, 'email'),
+            'password'         => $password,
+            'password_confirm' => $password_confirm,
+            'birth'                       => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+            'gender'              => filter_input(INPUT_POST, 'gender'),
+            'newsletter'        => filter_input(INPUT_POST, 'newsletter'),
+            'alliance_cd'       => filter_input(INPUT_POST, 'alliance_cd'),
+        ];
+        
+        //*  validation 基本は共通クラスのAppValidで行う
+        $validation = AppValid::validate($params);
+        $is_validation_error = false;
+        
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        // 確認用パスワード一致チェック
+        if ($password !== $password_confirm) {
+            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
+            $is_validation_error = true;
+        }
+        
+        // 規約同意を確認する
+        $validation = AppValid::validateTermsAgree(filter_input(INPUT_POST, 'remember'));
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        if ($is_validation_error === true) {
+            $this->render('add_email');
+            return;
+        }
+        
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'confirm']);
     }
 
