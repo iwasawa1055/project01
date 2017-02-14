@@ -1,6 +1,8 @@
 <?php
+App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('OutboundLimit', 'Model');
+
 
 class FirstOrderController extends MinikuraController
 {
@@ -103,6 +105,9 @@ class FirstOrderController extends MinikuraController
             }
         }
 
+        //* Session write
+        CakeSession::write('is_logined', $is_logined );
+
 
     }
 
@@ -117,6 +122,8 @@ class FirstOrderController extends MinikuraController
         //* post parameter
         $select_starter_kit = filter_input(INPUT_POST, 'select_starter_kit');
 
+        print_r('select_starter_kit');
+        print_r($select_starter_kit);
         $params = ['select_starter_kit' => $select_starter_kit];
 
         //* Session write
@@ -130,12 +137,18 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            // 仮
+            $is_logined = CakeSession::read('is_logined');
+            $this->set('is_logined', $is_logined);
+            $this->set('select_starter_kit', $select_starter_kit);
+
             $this->render('add_order');
             return;
         }
 
-        // 入力カード情報セット
-        $this->set('select_starter_kit', $params['select_starter_kit']);
+        // 購入情報によって分岐
+        CakeSession::write('order',
+            array(KIT_CD_STARTER_MONO => 1, KIT_CD_STARTER_MONO_APPAREL => 1, KIT_CD_STARTER_MONO_BOOK => 1));
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -147,6 +160,12 @@ class FirstOrderController extends MinikuraController
 
     public function add_address()
     {
+
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
+        }
 
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {

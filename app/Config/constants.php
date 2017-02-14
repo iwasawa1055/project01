@@ -72,6 +72,9 @@ const KIT_CD_WINE_HAKO = '77';
 const KIT_CD_WINE_MONO = '83';
 const KIT_CD_CLEANING_PACK = '75';
 const KIT_CD_SNEAKERS = '120';
+const KIT_CD_STARTER_MONO = '200';
+const KIT_CD_STARTER_MONO_APPAREL = '201';
+const KIT_CD_STARTER_MONO_BOOK = '202';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
