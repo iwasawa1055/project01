@@ -9,7 +9,6 @@ class FirstOrderController extends MinikuraController
 
     // アクセス許可
     protected $checkLogined = false;
-    const MODEL_NAME = 'OutboundLimit';
 
     /**
      * 制御前段処理.
@@ -33,7 +32,7 @@ class FirstOrderController extends MinikuraController
         $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
         if (!is_null($option)) {
             CakeLog::write(DEBUG_LOG, 'FirstOrder set option ' . $option);
-            CakeSession::write(Configure::read('app.lp_option.session_name'), $option);
+            CakeSession::write('lp_option', $option);
         }
 
         // 初回購入フローに入らない場合の遷移先
@@ -70,12 +69,10 @@ class FirstOrderController extends MinikuraController
 
             // ログイン済みエントリーユーザ
             $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
-
         }
 
         // スターターキット購入フロー
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
-
     }
 
     /**
@@ -92,23 +89,78 @@ class FirstOrderController extends MinikuraController
             $is_logined = true;
         }
 
-        $this->set('is_logined', $is_logined);
-        $this->set('select_starter_kit', false);
+        $lp_option = CakeSession::read('lp_option');
+        $kit_select_type = 'all';
+        switch ($lp_option) {
+            case 'mono':
+                // ログインしている場合はmonoを表示
+                if($is_logined) {
+                    $kit_select_type = 'mono';
+                } else {
+                    $kit_select_type = 'starter_kit';
+                }
+                break;
+            case 'hako':
+                if($is_logined) {
+                    $kit_select_type = 'hako';
+                }
+                break;
+            case 'cleaning':
+                if($is_logined) {
+                    $kit_select_type = 'cleaning';
+                }
+                break;
+            case 'is_code':
+            default:
+                if($is_logined) {
+                    $kit_select_type = 'all';
+                } else {
+                    $kit_select_type = 'starter_kit';
+                }
+                break;
+        }
 
+        $this->set('kit_select_type', $kit_select_type);
+
+        // boxの選択のタイプによって処理を変更する。
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
-
-            if($is_logined) {
-
-            } else {
-                $select_starter_kit = CakeSession::read('select_starter_kit');
-                $this->set('select_starter_kit', $select_starter_kit);
+            switch ($kit_select_type) {
+                case 'all':
+                    break;
+                case 'mono':
+                    break;
+                case 'hako':
+                    break;
+                case 'cleaning':
+                    break;
+                case 'starter_kit':
+                    $select_starter_kit = CakeSession::read('select_starter_kit');
+                    $this->set('select_starter_kit', 0);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch ($kit_select_type) {
+                case 'all':
+                    break;
+                case 'mono':
+                    break;
+                case 'hako':
+                    break;
+                case 'cleaning':
+                    break;
+                case 'starter_kit':
+                    $this->set('select_starter_kit', 0);
+                    break;
+                default:
+                    break;
             }
         }
 
         //* Session write
-        CakeSession::write('is_logined', $is_logined );
-
+        CakeSession::write('kit_select_type', $kit_select_type );
 
     }
 
@@ -138,11 +190,25 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            // 仮
-            $is_logined = CakeSession::read('is_logined');
-            $this->set('is_logined', $is_logined);
-            $this->set('select_starter_kit', $select_starter_kit);
+            $kit_select_type = CakeSession::read('kit_select_type');
+            $this->set('kit_select_type', $kit_select_type);
 
+            switch ($kit_select_type) {
+                case 'all':
+                    break;
+                case 'mono':
+                    break;
+                case 'hako':
+                    break;
+                case 'cleaning':
+                    break;
+                case 'starter_kit':
+                    $select_starter_kit = CakeSession::read('select_starter_kit');
+                    $this->set('select_starter_kit', 0);
+                    break;
+                default:
+                    break;
+            }
             $this->render('add_order');
             return;
         }

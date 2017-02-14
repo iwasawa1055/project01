@@ -16,14 +16,11 @@
 </section>
 
 <!-- LINEUP -->
-<?php if ($is_logined) : ?>
-  <form method="post" action="/FirstOrder/confirm_order_authed">
-<?php else : ?>
-  <form method="post" action="/FirstOrder/confirm_order">
-<?php endif; ?>
+
+<form method="post" action="/FirstOrder/confirm_order">
 <section id="lineup">
   <div class="wrapper">
-    <?php if ($is_logined) : ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono')) : ?>
       <!-- MONO -->
       <div class="lineup-box">
         <h3>minikuraMONO</h3>
@@ -38,6 +35,8 @@
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
       </div>
+    <?php endif; ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
       <!-- HAKO -->
       <div class="lineup-box">
         <h3>minikuraHAKO</h3>
@@ -51,6 +50,8 @@
         <div class="box-hako"> <img src="/first_order/images/box_hako@1x.png" srcset="/first_order/images/box_hako@1x.png 1x, /first_order/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
       </div>
+    <?php endif; ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'cleaning')) : ?>
       <!-- CLEANING -->
       <div class="lineup-box">
         <h3>クリーニングパック</h3>
@@ -64,7 +65,8 @@
         <div class="box-cleaning"><img src="/first_order/images/box_cleaning@1x.png" srcset="/first_order/images/box_cleaning@1x.png 1x, /first_order/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
       </div>
-    <?php else : ?>
+    <?php endif; ?>
+    <?php if ($kit_select_type === 'starter_kit') : ?>
       <!-- STARTER -->
       <div class="lineup-box">
         <h3>スターターキット</h3>
@@ -85,9 +87,7 @@
 <section class="nextback">
   <a href="adress.php" class="btn-next-full">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <button class="btn-next-full" type="submit">お届け先を入力<i class="fa fa-chevron-circle-right"></i></button>
-
 </section>
-</form>
 
 <!--MONO modal-->
 <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -223,7 +223,7 @@
     <p class="caption">文庫本で約xxx冊、A4サイズの書類で約xxx枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-  <a class="btn-submit" href="adress.php">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <button class="btn-submit" type="submit" disabled>お届け先を入力</button>>
 </div>
 <!--Cleaning modal-->
 <div class="remodal items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -252,3 +252,4 @@
   <a class="btn-submit" href="adress.php">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <button class="btn-submit" type="submit" disabled>お届け先を入力</button>>
 </div>
+</form>

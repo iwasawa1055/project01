@@ -57,7 +57,6 @@ $config['app']['login_cookie']['param'] = 'logout';
 /**
  * 静的ページからの遷移先変更
  */
-$config['app']['lp_option']['session_name'] = 'switch_lp_option';
 $config['app']['lp_option']['param'] = 'option';
 
 $config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
