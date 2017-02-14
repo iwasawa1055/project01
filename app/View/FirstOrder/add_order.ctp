@@ -16,12 +16,12 @@
 </section>
 
 <!-- LINEUP -->
+<?php if ($is_logined) : ?>
+  <form method="post" action="/FirstOrder/confirm_order_authed">
+<?php else : ?>
+  <form method="post" action="/FirstOrder/confirm_order">
+<?php endif; ?>
 <section id="lineup">
-  <?php if ($is_logined) : ?>
-    <form method="post" action="/FirstOrder/confirm_order_authed">
-  <?php else : ?>
-    <form method="post" action="/FirstOrder/confirm_order">
-  <?php endif; ?>
   <div class="wrapper">
     <?php if ($is_logined) : ?>
       <!-- MONO -->
@@ -77,14 +77,18 @@
         <div class="box-starter"> <img src="/first_order/images/box_starter@1x.png" srcset="/first_order/images/box_starter@1x.png 1x, /first_order/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
         <a class="btn-starter"><i class="fa fa-play-circle-o <?php if ($select_starter_kit) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
         <input id="select_starter_kit" name="select_starter_kit" type="hidden" value="0"/>
-        <?php echo $this->Form->error('select_starter_kit', null, ['wrap' => 'p']);?>
+        <?php echo $this->Flash->render('select_starter_kit'); ?>
       </div>
     <?php endif; ?>
   </div>
-  </form>
 </section>
-<section class="nextback"><a href="adress.php" class="btn-next-full">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+<section class="nextback">
+  <a href="adress.php" class="btn-next-full">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <button class="btn-next-full" type="submit">お届け先を入力<i class="fa fa-chevron-circle-right"></i></button>
+
 </section>
+</form>
+
 <!--MONO modal-->
 <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
   <div class="box">
@@ -246,4 +250,5 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit" href="adress.php">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <button class="btn-submit" type="submit" disabled>お届け先を入力</button>>
 </div>
