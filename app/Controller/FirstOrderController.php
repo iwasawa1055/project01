@@ -3,7 +3,6 @@ App::uses('MinikuraController', 'Controller');
 
 class FirstOrderController extends MinikuraController
 {
-
     // アクセス許可
     protected $checkLogined = false;
 
@@ -119,12 +118,23 @@ class FirstOrderController extends MinikuraController
 
     public function add_email()
     {
+        $loginconfigure = Configure::read('app.register');
+
+        // 入力カード情報セット
+        $this->set('login_config', $loginconfigure);
+
+
 
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
 
 
         }
+    }
+
+    public function confirm_email()
+    {
+        $this->redirect(['controller' => 'FirstOrder', 'action' => 'confirm']);
     }
 
     public function confirm()

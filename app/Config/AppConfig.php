@@ -55,6 +55,12 @@ $config['app']['login_cookie']['cookie_period'] = 60 * 60 * 24 * 180;
 $config['app']['login_cookie']['param'] = 'logout';
 
 /**
+ * 会員登録用パラメタ―
+ */
+$config['app']['register']['birthyear_start'] = 1920;
+$config['app']['register']['birthyear_period'] = 100;
+
+/**
  * 静的ページからの遷移先変更
  */
 $config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
