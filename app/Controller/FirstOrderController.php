@@ -248,7 +248,16 @@ class FirstOrderController extends MinikuraController
 
     public function add_address()
     {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_credit'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+
         $back  = filter_input(INPUT_GET, 'back');
+        
         if ($back) {
             $Address = CakeSession::read('Address');
             $this->set('Address', $Address);
@@ -277,6 +286,14 @@ class FirstOrderController extends MinikuraController
     
     public function confirm_address()
     {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_address', 'FirstOrder/add_credit'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+        
         $params = [
             'firstname'         => filter_input(INPUT_POST, 'firstname'),
             'firstname_kana'    => filter_input(INPUT_POST, 'firstname_kana'),
@@ -306,12 +323,6 @@ class FirstOrderController extends MinikuraController
             return;
         }
 
-
-
-        exit;
-        
-        
-        
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
@@ -320,16 +331,46 @@ class FirstOrderController extends MinikuraController
 
     public function add_credit()
     {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_address', 'FirstOrder/add_email'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
 
         $back  = filter_input(INPUT_GET, 'back');
+        
         if ($back) {
+            $Address = CakeSession::read('Credit');
+            $this->set('Credit', $Address);
+        } else {
+            // orderリセット
+            CakeSession::delete('Credit');
 
-
+            $Credit = array(
+                'card_no'      => "",
+                'security_cd'  => "",
+                'expire'       => "",
+                'holder_name'  => "",
+            );
+            $this->set('Credit', $Credit);
         }
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
     public function confirm_credit()
     {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_credit', 'FirstOrder/add_email'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+        
         $this->loadModel("PaymentGMOSecurityCard");
         $this->loadModel('PaymentGMOCard');
 
@@ -339,7 +380,10 @@ class FirstOrderController extends MinikuraController
             'expire'        => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
             'holder_name'   => filter_input(INPUT_POST, 'holder_name'),
         ];
-        
+
+        //* Session write
+        CakeSession::write('Credit', $params);
+
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
 
@@ -348,35 +392,87 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $this->set('Credit', $params);
             $this->render('add_credit');
             return;
         }
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_email']);
     }
 
     public function add_email()
     {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_credit', 'FirstOrder/confirm'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+        
         $loginconfigure = Configure::read('app.register');
 
         // 入力カード情報セット
         $this->set('login_config', $loginconfigure);
+
+        $back  = filter_input(INPUT_GET, 'back');
+        
+        if ($back) {
+            $Email = CakeSession::read('Email');
+            list($Email['birth_year'],$Email['birth_month'],$Email['birth_day']) = explode("-",$Email['birth']);
+            $this->set('Email', $Email);
+        } else {
+            // orderリセット
+            CakeSession::delete('Email');
+
+            $Email = array(
+                'email'             => "",
+                'password'          => "",
+                'password_confirm'  => "",
+                'birth_year'        => "",
+                'birth_month'       => "",
+                'birth_day'         => "",
+                'gender'            => "",
+                'newsletter'        => "",
+                'alliance_cd'       => "",
+                'remember'          => "",
+            );
+            $this->set('Email', $Email);
+        }
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
     public function confirm_email()
     {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_email', 'FirstOrder/confirm'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+        
         $password = filter_input(INPUT_POST, 'password');
         $password_confirm = filter_input(INPUT_POST, 'password_confirm');
         
         $params = [
-            'email'                 => filter_input(INPUT_POST, 'email'),
+            'email'            => filter_input(INPUT_POST, 'email'),
             'password'         => $password,
             'password_confirm' => $password_confirm,
-            'birth'                       => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
-            'gender'              => filter_input(INPUT_POST, 'gender'),
-            'newsletter'        => filter_input(INPUT_POST, 'newsletter'),
-            'alliance_cd'       => filter_input(INPUT_POST, 'alliance_cd'),
+            'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+            'gender'           => filter_input(INPUT_POST, 'gender'),
+            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+            'remember'         => filter_input(INPUT_POST, 'remember'),
         ];
+
+        //* Session write
+        CakeSession::write('Email', $params);
 
         //*  validation 基本は共通クラスのAppValidで行う
         $is_validation_error = false;
@@ -397,37 +493,67 @@ class FirstOrderController extends MinikuraController
         }
         
         // 規約同意を確認する
-        $validation = AppValid::validateTermsAgree(filter_input(INPUT_POST, 'remember'));
+        $validation = AppValid::validateTermsAgree($params['remember']);
 
         //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation)) {
+        if ( !empty($validation) ) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
             $is_validation_error = true;
         }
 
+        
         if ($is_validation_error === true) {
+            list($params['birth_year'],$params['birth_month'],$params['birth_day']) = explode("-",$params['birth']);
+    
+            $loginconfigure = Configure::read('app.register');
+      
+            // 入力カード情報セット
+            $this->set('login_config', $loginconfigure);
+
+            $this->set('Email', $params);
             $this->render('add_email');
             return;
         }
+        
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'confirm']);
     }
 
     public function confirm()
     {
-
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+        
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
 
 
         }
+        
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+        
     }
 
     public function complete()
     {
-
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm','FirstOrder/confirm'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
+        */
+        
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
 

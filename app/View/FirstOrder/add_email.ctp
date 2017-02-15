@@ -1,3 +1,8 @@
+<?php echo $this->element('FirstOrder/first'); ?>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>メールアドレス・パスワード入力 - minikura</title>
+<?php echo $this->element('FirstOrder/header'); ?>
+<?php echo $this->element('FirstOrder/nav'); ?>
   <section id="pagenation">
     <ul>
       <li><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
@@ -20,18 +25,18 @@
     <div class="wrapper">
       <div class="form">
         <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-        <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" required>
-        <span class="validation">validation,validation,validation,validation</span>
+        <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo $Email['email'];?>" required>
+        <?php echo $this->Flash->render('email');?>
       </div>
       <div class="form">
         <label>パスワード<span class="required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
         <input type="password" class="password" size="20" maxlength="20" name="password" required>
-        <span class="validation">validation,validation,validation,validation</span>
+        <?php echo $this->Flash->render('password');?>
       </div>
       <div class="form">
         <label>パスワード（確認用）<span class="required">※</span></label>
         <input type="password" class="password" size="20" maxlength="20" name="password_confirm" required>
-        <span class="validation">validation,validation,validation,validation</span>
+        <?php echo $this->Flash->render('password_confirm');?>
       </div>
       <div class="divider"></div>
       <div class="form form-line">
@@ -39,24 +44,25 @@
 	
         <select class="select-birth-year" name="birth_year" required>
         <?php for ($i = date('Y'); $i >= $login_config['birthyear_start']; $i--) { ?>
-          <option value="<?php echo $i;?>"><?php echo $i;?>年</option>
+          <option value="<?php echo $i;?>"<?php if ( $i === (int) $Email['birth_year'] ) echo " SELECTED";?>><?php echo $i;?>年</option>
 	<?php } ?>
         </select>
         <select class="select-birth-month" name="birth_month" required>
         <?php for ($i = 1; $i <= 12; $i++) { ?>
-          <option value="<?php echo $i;?>"><?php echo $i;?>月</option>
+          <option value="<?php echo $i;?>"<?php if ( $i === (int) $Email['birth_month'] ) echo " SELECTED";?>><?php echo $i;?>月</option>
 	<?php } ?>
         </select>
         <select class="select-birth-day" name="birth_day" required>
         <?php for ($i = 1; $i <= 31; $i++) { ?>
-          <option value="<?php echo $i;?>"><?php echo $i;?>日</option>
+          <option value="<?php echo $i;?>"<?php if ( $i === (int) $Email['birth_day'] ) echo " SELECTED";?>><?php echo $i;?>日</option>
 	<?php } ?>
         </select>
-        <span class="validation">validation,validation,validation,validation</span>
+        <?php echo $this->Flash->render('birth');?>
       </div>
       <div class="form form-line">
         <label>性別<span class="required">※</span></label>
-        <label class="genders"><input type="radio" name="gender" value="m" id="man"><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="f" id="woman"><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
+        <label class="genders"><input type="radio" name="gender" value="m" id="man"<?php if ( $Email['gender'] === "m" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( $Email['gender'] === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
+        <?php echo $this->Flash->render('gender');?>
       </div>
       <div class="divider"></div>
       <div class="form form-line">
@@ -68,16 +74,19 @@
       </div>
       <div class="form form-line">
         <label>紹介コード</label>
-        <input type="text" size="20" maxlength="20" name="alliance_cd">
+        <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo $Email['alliance_cd'];?>">
       </div>
       <div class="divider"></div>
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
-        <span class="validation">validation,validation,validation,validation</span>
+        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"<?php if ( $Email['remember'] === "Remember Me" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
+        <?php echo $this->Flash->render('remember');?>
         <a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> minikura利用規約</a>
       </div>
     </div>
   </section>
-  <section class="nextback"><a href="add_credit" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="nextback"><a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
+<?php echo $this->element('FirstOrder/footer'); ?>
+<?php echo $this->element('FirstOrder/js'); ?>
+<?php echo $this->element('FirstOrder/last'); ?>
