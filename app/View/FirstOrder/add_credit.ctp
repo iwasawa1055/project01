@@ -36,15 +36,15 @@
       <div class="form">
         <label>カード有効期限<span class="required">※</span></label>
         <select class="select-month" name="expire_month" required>
-	<?php foreach ( $this->Html->creditcardExpireMonth() as $value=>$string ) {?>
+	<?php foreach ( $this->Html->creditcardExpireMonth() as $value=>$string ):?>
           <option value="<?php echo $value;?>"<?php if ( $value === substr($Credit['expire'],0,2) ) echo " SELECTED";?>><?php echo $string;?></option>
-	<?php } ?>
+	<?php endforeach ?>
         </select>
         /
         <select class="select-year" name="expire_year" required>
-	<?php foreach ( $this->Html->creditcardExpireYear() as $value=>$string ) {?>
+	<?php foreach ( $this->Html->creditcardExpireYear() as $value=>$string ):?>
           <option value="<?php echo $value;?>"<?php if ( (string) $value === substr($Credit['expire'],2,2) ) echo " SELECTED";?>><?php echo $string;?></option>
-	<?php } ?>
+	<?php endforeach ?>
         </select>
         <?php echo $this->Flash->render('expire');?>
       </div>

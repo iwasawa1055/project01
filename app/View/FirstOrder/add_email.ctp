@@ -43,19 +43,19 @@
         <label>生年月日<span class="required">※</span></label>
 	
         <select class="select-birth-year" name="birth_year" required>
-        <?php for ($i = date('Y'); $i >= $login_config['birthyear_start']; $i--) { ?>
+        <?php for ($i = date('Y'); $i >= $login_config['birthyear_start']; $i--):?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) $Email['birth_year'] ) echo " SELECTED";?>><?php echo $i;?>年</option>
-	<?php } ?>
+        <?php endfor;?>
         </select>
         <select class="select-birth-month" name="birth_month" required>
-        <?php for ($i = 1; $i <= 12; $i++) { ?>
+        <?php for ($i = 1; $i <= 12; $i++):?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) $Email['birth_month'] ) echo " SELECTED";?>><?php echo $i;?>月</option>
-	<?php } ?>
+        <?php endfor;?>
         </select>
         <select class="select-birth-day" name="birth_day" required>
-        <?php for ($i = 1; $i <= 31; $i++) { ?>
+        <?php for ($i = 1; $i <= 31; $i++):?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) $Email['birth_day'] ) echo " SELECTED";?>><?php echo $i;?>日</option>
-	<?php } ?>
+        <?php endfor;?>
         </select>
         <?php echo $this->Flash->render('birth');?>
       </div>
@@ -68,8 +68,8 @@
       <div class="form form-line">
         <label>お知らせメール</label>
         <select class="select-info" name="newsletter" required>
-          <option value="0">受信する</option>
-          <option value="1">受信しない</option>
+          <option value="1">受信する</option>
+          <option value="0">受信しない</option>
         </select>
       </div>
       <div class="form form-line">
