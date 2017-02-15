@@ -1,3 +1,8 @@
+<?php echo $this->element('FirstOrder/first'); ?>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>メールアドレス・パスワード入力 - minikura</title>
+<?php echo $this->element('FirstOrder/header'); ?>
+<?php echo $this->element('FirstOrder/nav'); ?>
 <section id="pagenation">
   <ul>
     <li><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
@@ -75,5 +80,8 @@
       </div>
     </div>
   </section>
-  <section class="nextback"><a href="add_email" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><a href="complete" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></a>
+  <section class="nextback"><a href="/first_order/add_email?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><a href="complete" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></a>
   </section>
+<?php echo $this->element('FirstOrder/footer'); ?>
+<?php echo $this->element('FirstOrder/js'); ?>
+<?php echo $this->element('FirstOrder/last'); ?>
