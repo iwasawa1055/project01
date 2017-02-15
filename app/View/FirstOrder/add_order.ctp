@@ -1,3 +1,9 @@
+<?php echo $this->element('FirstOrder/first'); ?>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ボックス選択 - minikura</title>
+<?php echo $this->element('FirstOrder/header'); ?>
+<?php echo $this->element('FirstOrder/nav'); ?>
+
 <section id="pagenation">
   <ul>
     <li class="on"><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
@@ -30,7 +36,7 @@
         </p>
         <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができる クラウドストレージ。
         </p>
-        <p class="select-number" id="select_mono"><?php if ($Order['mono_num'] !== 0) : ?><span><?php echo h($Order['mono_num'])?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_mono"><?php if ($Order['mono_total_num'] !== 0) : ?><span><?php echo h($Order['mono_num'])?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-mono"><img src="/first_order/images/box_mono@1x.png" srcset="/first_order/images/box_mono@1x.png 1x, /first_order/images/box_mono@2x.png 2x" alt="minikuraMONO">
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -47,7 +53,7 @@
         </p>
         <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
         </p>
-        <p class="select-number" id="select_hako"><?php if ($Order['hako_num'] !== 0) : ?><span><?php echo h($Order['hako_num'])?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_hako"><?php if ($Order['hako_total_num'] !== 0) : ?><span><?php echo h($Order['hako_num'])?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-hako"> <img src="/first_order/images/box_hako@1x.png" srcset="/first_order/images/box_hako@1x.png 1x, /first_order/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <?php echo $this->Flash->render('select_hako'); ?>
@@ -63,7 +69,7 @@
         </p>
         <p class="box-caption">10点までの高品質クリーニングと 6ヶ月保管がセットになった 衣類専用クラウドストレージ。
         </p>
-        <p class="select-number" id="select_cleaning"><?php if ($Order['cleaning_num'] !== 0) : ?><span><?php echo h($Order['cleaning_num'])?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_cleaning"><?php if ($Order['cleaning'] !== 0) : ?><span><?php echo h($Order['cleaning'])?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-cleaning"><img src="/first_order/images/box_cleaning@1x.png" srcset="/first_order/images/box_cleaning@1x.png 1x, /first_order/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <?php echo $this->Flash->render('select_cleaning'); ?>
@@ -100,7 +106,7 @@
       <h3>レギュラーボックス</h3>
       <select class="item-number js-item-number js-item-mono" name="mono" data-box_type="mono">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo $Order['mono']['mono_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <option value="<?php echo $i;?>"<?php echo $Order['mono']['mono'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -114,7 +120,7 @@
       <h3>アパレルボックス</h3>
       <select class="item-number js-item-number js-item-mono" name="mono_apparel" data-box_type="mono">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-          <option value="<?php echo $i;?>"<?php echo $Order['mono']['apparel_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+          <option value="<?php echo $i;?>"<?php echo $Order['mono']['mono_apparel'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -128,7 +134,7 @@
       <h3>ブックボックス</h3>
       <select class="item-number js-item-number js-item-mono" name="mono_book" data-box_type="mono">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-          <option value="<?php echo $i;?>"<?php echo $Order['mono']['book_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+          <option value="<?php echo $i;?>"<?php echo $Order['mono']['mono_book'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -147,7 +153,7 @@
       <h3>レギュラーボックス</h3>
       <select class="item-number js-item-number js-item-hako" name="hako" data-box_type="hako">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo $Order['hako']['hako_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <option value="<?php echo $i;?>"<?php echo $Order['hako']['hako'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -161,7 +167,7 @@
       <h3>アパレルボックス</h3>
       <select class="item-number js-item-number js-item-hako" name="hako_apparel" data-box_type="hako">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo $Order['hako']['hako_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <option value="<?php echo $i;?>"<?php echo $Order['hako']['hako_apparel'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -175,7 +181,7 @@
       <h3>ブックボックス</h3>
       <select class="item-number js-item-number js-item-hako" name="hako_book" data-box_type="hako">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo $Order['hako']['hako_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <option value="<?php echo $i;?>"<?php echo $Order['hako']['hako_book'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -194,7 +200,7 @@
       <h3>クリーニングパック</h3>
       <select class="item-number js-item-number js-item-cleaning" name="cleaning" data-box_type="cleaning">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo $Order['cleaning_num'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <option value="<?php echo $i;?>"<?php echo $Order['cleaning'] == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
@@ -206,3 +212,7 @@
   <button class="btn-submit" type="submit" disabled>お届け先を入力</button>
 </div>
 </form>
+
+<?php echo $this->element('FirstOrder/footer'); ?>
+<?php echo $this->element('FirstOrder/js'); ?>
+<?php echo $this->element('FirstOrder/last'); ?>

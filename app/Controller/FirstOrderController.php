@@ -17,7 +17,7 @@ class FirstOrderController extends MinikuraController
         parent::beforeFilter();
 
         //* mypageとは違うlayoutにする
-        $this->layout = 'first_order';
+        $this->layout = 'element_set';
 
     }
 
@@ -149,11 +149,11 @@ class FirstOrderController extends MinikuraController
             // orderリセット
             CakeSession::delete('order');
 
-            $Order = array( 'mono' => array('mono_num' => 0, 'apparel_num' => 0, 'book_num' => 0),
-                            'mono_num' => 0,
-                            'hako' => array('hako_num' => 0, 'apparel_num' => 0, 'book_num' => 0),
-                            'hako_num' => 0,
-                            'cleaning_num' => 0,
+            $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
+                            'mono_total_num' => 0,
+                            'hako' => array('hako' => 0, 'hako_apparel' => 0, 'hako_book' => 0),
+                            'hako_total_num' => 0,
+                            'cleaning' => 0,
                             'starter' => 0);
             $this->set('Order', $Order);
         }
@@ -181,6 +181,7 @@ class FirstOrderController extends MinikuraController
         // 購入情報によって分岐
         switch (true) {
             case $kit_select_type === 'all':
+                $Order = $this->set_mono_order($Order);
                 break;
             case $kit_select_type === 'mono':
                 break;
@@ -394,5 +395,30 @@ class FirstOrderController extends MinikuraController
 
         }
     }
-    
+
+    private function set_mono_order($Order)
+    {
+        $params = null;
+
+        $params = [
+            'mono'          => filter_input(INPUT_POST, 'mono'),
+            'mono_apparel'  => filter_input(INPUT_POST, 'mono_apparel'),
+            'mono_book'     => filter_input(INPUT_POST, 'mono_book'),
+        ];
+
+        $Order['mono'] = $params;
+
+        return $Order;
+    }
+
+/*
+             $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
+                            'mono_total_num' => 0,
+                            'hako' => array('hako' => 0, 'hako_apparel' => 0, 'hako_book' => 0),
+                            'hako_total_num' => 0,
+                            'cleaning' => 0,
+                            'starter' => 0);
+
+ */
+
 }
