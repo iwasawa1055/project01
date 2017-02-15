@@ -20,38 +20,47 @@
     <div class="wrapper">
       <div class="form">
         <label>お名前<span class="required">※</span></label>
-        <input type="text" name="lastname" class="name-last" placeholder="寺田" size="10" maxlength="30" required><input type="text" name="firstname" class="name-first" placeholder="太郎" size="10" maxlength="30" required>
+        <input type="text" name="lastname" class="name-last" placeholder="寺田" size="10" maxlength="30" value="<?php echo $Address['lastname'];?>" required><input type="text" name="firstname" class="name-first" placeholder="太郎" size="10" maxlength="30" value="<?php echo $Address['firstname'];?>" required>
+        <?php echo $this->Flash->render('lastname'); ?>
+        <?php echo $this->Flash->render('firstname'); ?>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form">
         <label>フリガナ<span class="required">※</span></label>
-        <input type="text" name="lastname_kana" class="name-last-kana" placeholder="テラダ" size="10" maxlength="30" required><input type="text" name="firstname_kana" class="name-first-kana" placeholder="タロウ" size="10" maxlength="30" required>
+        <input type="text" name="lastname_kana" class="name-last-kana" placeholder="テラダ" size="10" maxlength="30" value="<?php echo $Address['lastname_kana'];?>" required><input type="text" name="firstname_kana" class="name-first-kana" placeholder="タロウ" size="10" maxlength="30" value="<?php echo $Address['firstname_kana'];?>" required>
+        <?php echo $this->Flash->render('lastname_kana'); ?>
+        <?php echo $this->Flash->render('firstname_kana'); ?>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="divider"></div>
       <div class="form">
         <label>郵便番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。<br>入力すると以下の住所が自動で入力されます。</span></label>
-        <input type="text" name="postal" class="postal" placeholder="0123456" size="8" maxlength="8" required>
+        <input type="text" name="postal" class="postal" placeholder="0123456" size="8" maxlength="8" value="<?php echo $Address['postal'];?>" required>
+        <?php echo $this->Flash->render('postal');?>
+      </div>
+      <div class="form">
+        <label>都道府県<span class="required">※</span></label>
+        <input type="text" name="pref" class="adress1" placeholder="東京都" size="28" maxlength="50" value="<?php echo $Address['pref'];?>" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form">
-        <label>都道府県市区郡（町村）<span class="required">※</span></label>
-        <input type="text" name="address1" class="adress1" placeholder="東京都品川区東品川" size="28" maxlength="50" required>
+        <label>住所<span class="required">※</span></label>
+        <input type="text" name="address1" class="adress1" placeholder="品川区" size="28" maxlength="50" value="<?php echo $Address['address1'];?>" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form">
-        <label>丁目以降<span class="required">※</span></label>
-        <input type="text" name="address2" class="adress2" placeholder="2-2-28" size="28" maxlength="50" required>
+        <label>番地<span class="required">※</span></label>
+        <input type="text" name="address2" class="adress2" placeholder="東品川2-2-28" size="28" maxlength="50" value="<?php echo $Address['address2'];?>" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="form">
         <label>建物名</label>
-        <input type="text" name="address3" class="build" placeholder="Tビル" size="28" maxlength="50">
+        <input type="text" name="address3" class="build" placeholder="Tビル" size="28" maxlength="50" value="<?php echo $Address['address3'];?>">
       </div>
       <div class="divider"></div>
       <div class="form">
         <label>電話番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="text" name="tel1" class="tel" placeholder="01234567890" size="15" maxlength="15" required>
+        <input type="text" name="tel1" class="tel" placeholder="01234567890" size="15" maxlength="15" value="<?php echo $Address['tel1'];?>" required>
         <span class="validation">validation,validation,validation,validation</span>
       </div>
       <div class="divider"></div>

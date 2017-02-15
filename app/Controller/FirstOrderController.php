@@ -247,14 +247,31 @@ class FirstOrderController extends MinikuraController
 
     public function add_address()
     {
-        // DEBUG
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true) );
-
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
+            $Address = CakeSession::read('Address');
+            $this->set('Address', $Address);
+        } else {
+            // orderリセット
+            CakeSession::delete('Address');
 
-
+            $Address = array(
+                'firstname'      => "",
+                'firstname_kana' => "",
+                'lastname'       => "",
+                'lastname_kana'  => "",
+                'tel1'           => "",
+                'postal'         => "",
+                'pref'           => "",
+                'address1'       => "",
+                'address2'       => "",
+                'address3'       => "",
+            );
+            $this->set('Address', $Address);
         }
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
     
     public function confirm_address()
@@ -266,14 +283,36 @@ class FirstOrderController extends MinikuraController
             'lastname_kana'     => filter_input(INPUT_POST, 'lastname_kana'),
             'tel1'              => filter_input(INPUT_POST, 'tel1'),
             'postal'            => filter_input(INPUT_POST, 'postal'),
+            'pref'              => filter_input(INPUT_POST, 'pref'),
             'address1'          => filter_input(INPUT_POST, 'address1'),
             'address2'          => filter_input(INPUT_POST, 'address2'),
             'address3'          => filter_input(INPUT_POST, 'address3'),
         ];
 
+        //* Session write
+        CakeSession::write('Address', $params);
+
+        //*  validation 基本は共通クラスのAppValidで行う
+        $validation = AppValid::validate($params);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->set('Address', $params);
+            $this->render('add_address');
+            return;
+        }
+
+
+
+        exit;
         
         
         
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_credit']);
     }
@@ -294,10 +333,10 @@ class FirstOrderController extends MinikuraController
         $this->loadModel('PaymentGMOCard');
 
         $params = [
-            'card_no'              => str_replace("-","",filter_input(INPUT_POST, 'card_no')),
-            'security_cd'         => filter_input(INPUT_POST, 'security_cd'),
-            'expire'                  => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
-            'holder_name'       => filter_input(INPUT_POST, 'holder_name'),
+            'card_no'       => str_replace("-","",filter_input(INPUT_POST, 'card_no')),
+            'security_cd'   => filter_input(INPUT_POST, 'security_cd'),
+            'expire'        => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
+            'holder_name'   => filter_input(INPUT_POST, 'holder_name'),
         ];
         
         //*  validation 基本は共通クラスのAppValidで行う
