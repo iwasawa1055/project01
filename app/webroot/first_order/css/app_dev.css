@@ -27,3 +27,11 @@ button.btn-next-full {
 	width: 30rem;
 	margin-left: 1rem;
 }
+
+.validation {
+	/**display:none;**/
+	font-size: 12px;
+	color: #ff0000;
+	line-height: 1.5;
+	margin-left: 5px;
+}

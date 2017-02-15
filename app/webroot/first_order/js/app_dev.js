@@ -11,6 +11,24 @@ var AppDev =
 				$('#select_starter_kit').val(0);
 			}
 		});},
+	b: function () {
+		// ボックス数選択
+		$('.js-item-number').change(function () {
+			var selector = $(this).data("box_type");
+			var number = Number(0);
+
+			$('.js-item-'+ selector).each(function () {
+				number += Number($(this).val());
+				// console.log('number:' + number);
+			});
+
+			if (number === 0) {
+				$('#select_' + selector).html('未選択');
+			} else {
+				$('#select_' + selector).html('<span>' +  number +'個選択済み</span>');
+			}
+		});
+	},
 }
 
 /*
@@ -19,5 +37,5 @@ var AppDev =
 $(function()
 {
 	AppDev.a();
-	//AppDev.b();
+	AppDev.b();
 });

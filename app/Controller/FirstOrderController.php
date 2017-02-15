@@ -27,6 +27,9 @@ class FirstOrderController extends MinikuraController
     public function index()
     {
 
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
         // 遷移時にオプションが設定されている場合
         $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
         if (!is_null($option)) {
@@ -48,29 +51,34 @@ class FirstOrderController extends MinikuraController
 
             // 取得した配列のカウントが2である
             if (count($login_params) === 2) {
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is auto login user' . $option);
                 // オートログイン
                 $this->redirect($none_first_redirect_param);
             }
         }
 
         // set action ログインしている
-        if (!empty($customer) && $customer->isLogined()) {
+        if ($this->Customer->isLogined()) {
 
             // エントリーユーザでない
             if (!$this->Customer->isEntry()) {
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is none entry user' . $option);
                 $this->redirect($none_first_redirect_param);
             }
 
             // スニーカーユーザでない
             if ($this->Customer->isSneaker()) {
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is isSneaker' . $option);
                 $this->redirect($none_first_redirect_param);
             }
 
             // ログイン済みエントリーユーザ
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login entry user' . $option);
             $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
         }
 
         // スターターキット購入フロー
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' starter user ' . $option);
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
     }
 
@@ -79,19 +87,24 @@ class FirstOrderController extends MinikuraController
      */
     public function add_order()
     {
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index', 'FirstOrder/confirm_order'], true) === false) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' NG redirect ' . CakeSession::read('app.data.session_referer'));
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
+        }
 
         // ログインしているか
         $is_logined = false;
-        if (!empty($customer) && $customer->isLogined()) {
+        if ($this->Customer->isLogined()) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login ');
             $is_logined = true;
         }
+        $this->set('is_logined', $is_logined);
 
         $lp_option = CakeSession::read('lp_option');
         $kit_select_type = 'all';
-        switch ($lp_option) {
-            case 'mono':
+        switch (true) {
+            case $lp_option === 'mono':
                 // ログインしている場合はmonoを表示
                 if($is_logined) {
                     $kit_select_type = 'mono';
@@ -99,17 +112,17 @@ class FirstOrderController extends MinikuraController
                     $kit_select_type = 'starter_kit';
                 }
                 break;
-            case 'hako':
+            case $lp_option === 'hako':
                 if($is_logined) {
                     $kit_select_type = 'hako';
                 }
                 break;
-            case 'cleaning':
+            case $lp_option === 'cleaning':
                 if($is_logined) {
                     $kit_select_type = 'cleaning';
                 }
                 break;
-            case 'is_code':
+            case $lp_option === 'is_code':
             default:
                 if($is_logined) {
                     $kit_select_type = 'all';
@@ -121,67 +134,74 @@ class FirstOrderController extends MinikuraController
 
         $this->set('kit_select_type', $kit_select_type);
 
+        //* Session write
+        CakeSession::write('kit_select_type', $kit_select_type );
+
         // boxの選択のタイプによって処理を変更する。
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
-            switch ($kit_select_type) {
-                case 'all':
-                    break;
-                case 'mono':
-                    break;
-                case 'hako':
-                    break;
-                case 'cleaning':
-                    break;
-                case 'starter_kit':
-                    $select_starter_kit = CakeSession::read('select_starter_kit');
-                    $this->set('select_starter_kit', 0);
-                    break;
-                default:
-                    break;
-            }
+
+            $Order = CakeSession::read('Order');
+
+            $this->set('Order', $Order);
+
         } else {
-            switch ($kit_select_type) {
-                case 'all':
-                    break;
-                case 'mono':
-                    break;
-                case 'hako':
-                    break;
-                case 'cleaning':
-                    break;
-                case 'starter_kit':
-                    $this->set('select_starter_kit', 0);
-                    break;
-                default:
-                    break;
-            }
+            // orderリセット
+            CakeSession::delete('order');
+
+            $Order = array( 'mono' => array('mono_num' => 0, 'apparel_num' => 0, 'book_num' => 0),
+                            'mono_num' => 0,
+                            'hako' => array('hako_num' => 0, 'apparel_num' => 0, 'book_num' => 0),
+                            'hako_num' => 0,
+                            'cleaning_num' => 0,
+                            'starter' => 0);
+            $this->set('Order', $Order);
         }
 
-        //* Session write
-        CakeSession::write('kit_select_type', $kit_select_type );
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
     }
 
     public function confirm_order()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrder/add_order'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrder/add_address'], true) === false) {
             //* NG redirect
-            $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_order']);
+            $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
         }
 
-        //* post parameter
-        $select_starter_kit = filter_input(INPUT_POST, 'select_starter_kit');
+        $kit_select_type = CakeSession::read('kit_select_type');
 
-        print_r('select_starter_kit');
-        print_r($select_starter_kit);
-        $params = ['select_starter_kit' => $select_starter_kit];
+        // order情報
+        $Order = CakeSession::read('Order');
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true) );
+
+        //* post parameter
+        // 購入情報によって分岐
+        switch (true) {
+            case $kit_select_type === 'all':
+                break;
+            case $kit_select_type === 'mono':
+                break;
+            case $kit_select_type === 'hako':
+                break;
+            case $kit_select_type === 'cleaning':
+                break;
+            case $kit_select_type === 'starter_kit':
+                $select_starter_kit = filter_input(INPUT_POST, 'select_starter_kit');
+                $params = ['select_starter_kit' => $select_starter_kit];
+                $Order['starter'] = $select_starter_kit;
+                break;
+            default:
+                break;
+        }
 
         //* Session write
-        CakeSession::write('select_starter_kit', $params );
+        CakeSession::write('Order', $Order);
 
         //*  validation 基本は共通クラスのAppValidで行う
+        $is_validation_error = false;
         $validation = AppValid::validate($params);
 
         //* 共通バリデーションでエラーあったらメッセージセット
@@ -189,32 +209,33 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $kit_select_type = CakeSession::read('kit_select_type');
-            $this->set('kit_select_type', $kit_select_type);
-
-            switch ($kit_select_type) {
-                case 'all':
-                    break;
-                case 'mono':
-                    break;
-                case 'hako':
-                    break;
-                case 'cleaning':
-                    break;
-                case 'starter_kit':
-                    $select_starter_kit = CakeSession::read('select_starter_kit');
-                    $this->set('select_starter_kit', 0);
-                    break;
-                default:
-                    break;
-            }
-            $this->render('add_order');
+            $is_validation_error = true;
             return;
         }
 
-        // 購入情報によって分岐
-        CakeSession::write('order',
-            array(KIT_CD_STARTER_MONO => 1, KIT_CD_STARTER_MONO_APPAREL => 1, KIT_CD_STARTER_MONO_BOOK => 1));
+        // 確認用パスワード一致チェック
+/*        if ($password !== $password_confirm) {
+            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
+            $is_validation_error = true;
+        }
+*/
+        // 規約同意を確認する
+        $validation = AppValid::validateTermsAgree(filter_input(INPUT_POST, 'remember'));
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        if ($is_validation_error === true) {
+            $this->set('kit_select_type', $kit_select_type);
+            $this->set('Order', $Order);
+            $this->render('add_order');
+            return;
+        }
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -226,6 +247,9 @@ class FirstOrderController extends MinikuraController
 
     public function add_address()
     {
+        // DEBUG
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true) );
+
         $back  = filter_input(INPUT_GET, 'back');
         if ($back) {
 
@@ -236,15 +260,15 @@ class FirstOrderController extends MinikuraController
     public function confirm_address()
     {
         $params = [
-            'firstname'              => filter_input(INPUT_POST, 'firstname'),
+            'firstname'         => filter_input(INPUT_POST, 'firstname'),
             'firstname_kana'    => filter_input(INPUT_POST, 'firstname_kana'),
-            'lastname'              => filter_input(INPUT_POST, 'lastname'),
-            'lastname_kana'    => filter_input(INPUT_POST, 'lastname_kana'),
-            'tel1'                      => filter_input(INPUT_POST, 'tel1'),
-            'postal'                  => filter_input(INPUT_POST, 'postal'),
-            'address1'              => filter_input(INPUT_POST, 'address1'),
-            'address2'              => filter_input(INPUT_POST, 'address2'),
-            'address3'              => filter_input(INPUT_POST, 'address3'),
+            'lastname'          => filter_input(INPUT_POST, 'lastname'),
+            'lastname_kana'     => filter_input(INPUT_POST, 'lastname_kana'),
+            'tel1'              => filter_input(INPUT_POST, 'tel1'),
+            'postal'            => filter_input(INPUT_POST, 'postal'),
+            'address1'          => filter_input(INPUT_POST, 'address1'),
+            'address2'          => filter_input(INPUT_POST, 'address2'),
+            'address3'          => filter_input(INPUT_POST, 'address3'),
         ];
 
         
@@ -313,11 +337,11 @@ class FirstOrderController extends MinikuraController
             'newsletter'        => filter_input(INPUT_POST, 'newsletter'),
             'alliance_cd'       => filter_input(INPUT_POST, 'alliance_cd'),
         ];
-        
+
         //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($params);
         $is_validation_error = false;
-        
+        $validation = AppValid::validate($params);
+
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
@@ -370,5 +394,5 @@ class FirstOrderController extends MinikuraController
 
         }
     }
-
+    
 }

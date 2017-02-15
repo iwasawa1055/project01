@@ -263,7 +263,7 @@ class LoginController extends MinikuraController
 
             // 4 入庫中アイテムあり
             if (array_key_exists(PRODUCT_CD_MONO, $summary)) {
-                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono');
+                //CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono');
                 return $this->redirect(['controller' => 'item', 'action' => 'index']);
             }
 

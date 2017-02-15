@@ -68,6 +68,10 @@ $config['app']['lp_option']['param'] = 'option';
 $config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
 $config['app']['switch_redirect']['param'] = 'option';
 
+/**
+ * 静的ページからの最大注文箱数
+ */
+$config['app']['first_order']['max_box'] = 20;
 
 /**
  * エラー表示(デフォルトは表示)

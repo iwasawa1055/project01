@@ -62,16 +62,16 @@
                             <a href="#page-top"></a>
                         </li>
                         <li>
-                            <a class="animsition-link" href="/lineup/"><i class="fa fa-list-ul"></i> ラインナップ</a>
+                            <a class="animsition-link" href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/"><i class="fa fa-list-ul"></i> ラインナップ</a>
                         </li>
                         <li>
-                            <a class="animsition-link" href="/help/flow.html"><i class="fa fa-sitemap"></i> ご利用の流れ</a>
+                            <a class="animsition-link" href="<?php echo Configure::read('site.static_content_url'); ?>/help/flow.html"><i class="fa fa-sitemap"></i> ご利用の流れ</a>
                         </li>
                         <li>
                             <a class="animsition-link" href="https://help.minikura.com/hc/ja"><i class="fa fa-question"></i> ヘルプセンター</a>
                         </li>
                         <li>
-                            <a class="login" href="/" target="_blank"><i class="fa fa-unlock-alt"></i> ログイン</a>
+                            <a class="login" href="/login" target="_blank"><i class="fa fa-unlock-alt"></i> ログイン</a>
                         </li>
                         <li>
                             <a class="signin" href="/customer/register/add" target="_blank"><i class="fa fa-sign-in"></i> ユーザー登録</a>
