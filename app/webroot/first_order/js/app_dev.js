@@ -18,7 +18,10 @@ var AppDev =
 			var number = Number(0);
 
 			$('.js-item-'+ selector).each(function () {
-				number += Number($(this).val());
+				var set_number = $(this).val();
+				var selector_name = $(this).data("name");
+				$('input[name='+ selector_name + ']').val(set_number);
+				number += Number(set_number);
 				// console.log('number:' + number);
 			});
 
@@ -27,6 +30,12 @@ var AppDev =
 			} else {
 				$('#select_' + selector).html('<span>' +  number +'個選択済み</span>');
 			}
+		});
+	},
+
+	c: function () {
+		$('.btn-submit').on('click', function (e) {
+			$('form').submit();
 		});
 	},
 }
@@ -38,4 +47,5 @@ $(function()
 {
 	AppDev.a();
 	AppDev.b();
+	AppDev.c();
 });

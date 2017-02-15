@@ -670,7 +670,27 @@ class AppValid
 					break;
 				case $name === 'select_starter_kit':
 					if ($value === '0') {
-						print_r("eee");
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'select_oreder_mono':
+					CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_oreder_mono ');
+					if ($value === 0) {
+						CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_oreder_mono in ');
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'select_oreder_hako':
+					CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_oreder_hako ');
+					if ($value === 0) {
+						CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_oreder_hako in ');
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'select_oreder_cleaning':
+					CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_oreder_cleaning ');
+					if ($value === 0) {
+						CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_oreder_cleaning in ');
 						$ret[$name] = 'ボックスを選択してください。';
 					}
 					break;
