@@ -175,38 +175,19 @@ class FirstOrderController extends MinikuraController
 
         //* post parameter
         // 購入情報によって分岐
-        $params = array();
         switch (true) {
             case $kit_select_type === 'all':
                 $Order = $this->set_mono_order($Order);
-                $Order = $this->set_hako_order($Order);
-                $Order = $this->set_cleaning_order($Order);
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set Order ' . print_r($Order, true) );
-
-                // 箱選択されているか
-                if (array_sum(array($Order['mono_total_num'], $Order['hako_total_num'], $Order['cleaning'])) === 0) {
-                    $params = array(
-                        'select_oreder_mono' => $Order['mono_total_num'],
-                        'select_oreder_hako' => $Order['hako_total_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']
-                    );
-                }
                 break;
             case $kit_select_type === 'mono':
-                $Order = $this->set_mono_order($Order);
-                $params = array('select_oreder_mono' => $Order['mono_total_num']);
                 break;
             case $kit_select_type === 'hako':
-                $Order = $this->set_hako_order($Order);
-                $params = array('select_oreder_hako' => $Order['hako_total_num']);
                 break;
             case $kit_select_type === 'cleaning':
-                $Order = $this->set_cleaning_order($Order);
-                $params = array('select_oreder_cleaning' => $Order['cleaning']);
                 break;
             case $kit_select_type === 'starter_kit':
                 $select_starter_kit = filter_input(INPUT_POST, 'select_starter_kit');
-                $params = array('select_starter_kit' => $select_starter_kit);
+                $params = ['select_starter_kit' => $select_starter_kit];
                 $Order['starter'] = $select_starter_kit;
                 break;
             default:
@@ -217,6 +198,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('Order', $Order);
 
         //*  validation 基本は共通クラスのAppValidで行う
+        $is_validation_error = false;
         $validation = AppValid::validate($params);
 
         //* 共通バリデーションでエラーあったらメッセージセット
@@ -362,8 +344,8 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Address = CakeSession::read('Credit');
-            $this->set('Credit', $Address);
+            $Credit = CakeSession::read('Credit');
+            $this->set('Credit', $Credit);
         } else {
             // Creditセッションデータリセット
 //            CakeSession::delete('Credit');
@@ -408,6 +390,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('Credit', $params);
 
         //*  validation 基本は共通クラスのAppValidで行う
+        $is_validation_error = false;
         $validation = AppValid::validate($params);
 
         //* 共通バリデーションでエラーあったらメッセージセット
@@ -415,6 +398,37 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $is_validation_error = true;
+        }
+        
+        //* クレジットカードのチェック
+        $requestdata['PaymentGMOSecurityCard'] = [
+            'card_no'       => $params['card_no'],
+            'security_cd'   => $params['security_cd'],
+            'expire_month'  => filter_input(INPUT_POST, 'expire_month'),
+            'expire_year'   => filter_input(INPUT_POST, 'expire_year'),
+            'holder_name'   => $params['holder_name'],
+            'card_seq'      => 0,
+        ];
+
+        $this->PaymentGMOSecurityCard->set($requestdata);
+        // Expire
+        $this->PaymentGMOSecurityCard->setExpire($requestdata);
+        // ハイフン削除
+        $this->PaymentGMOSecurityCard->trimHyphenCardNo($requestdata);
+
+        // card_seq 除外
+        $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+            
+        // update
+        $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+        
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
+            $is_validation_error = true;
+        }
+        
+        if ($is_validation_error === true) {
             $this->set('Credit', $params);
             $this->render('add_credit');
             return;
@@ -564,16 +578,12 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
         }
         */
-        
-        $back  = filter_input(INPUT_GET, 'back');
-        if ($back) {
 
+        $Address = CakeSession::read('Address');
+        $this->set('Address', $Address);
 
-        }
-        
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-        
+        $Email = CakeSession::read('Email');
+        $this->set('Email', $Email);
     }
 
     /**
@@ -588,12 +598,7 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
         }
         */
-        
-        $back  = filter_input(INPUT_GET, 'back');
-        if ($back) {
 
-
-        }
     }
 
     /**
@@ -643,36 +648,12 @@ class FirstOrderController extends MinikuraController
         $params = null;
 
         $params = [
-            'mono'          => (int)filter_input(INPUT_POST, 'mono'),
-            'mono_apparel'  => (int)filter_input(INPUT_POST, 'mono_apparel'),
-            'mono_book'     => (int)filter_input(INPUT_POST, 'mono_book'),
+            'mono'          => filter_input(INPUT_POST, 'mono'),
+            'mono_apparel'  => filter_input(INPUT_POST, 'mono_apparel'),
+            'mono_book'     => filter_input(INPUT_POST, 'mono_book'),
         ];
 
         $Order['mono'] = $params;
-        $Order['mono_total_num'] = array_sum($params);
-
-        return $Order;
-    }
-
-    private function set_hako_order($Order)
-    {
-        $params = null;
-
-        $params = [
-            'hako'          => (int)filter_input(INPUT_POST, 'hako'),
-            'hako_apparel'  => (int)filter_input(INPUT_POST, 'hako_apparel'),
-            'hako_book'     => (int)filter_input(INPUT_POST, 'hako_book'),
-        ];
-
-        $Order['hako'] = $params;
-        $Order['hako_total_num'] = array_sum($params);
-
-        return $Order;
-    }
-
-    private function set_cleaning_order($Order)
-    {
-        $Order['cleaning'] = (int)filter_input(INPUT_POST, 'cleaning');
 
         return $Order;
     }

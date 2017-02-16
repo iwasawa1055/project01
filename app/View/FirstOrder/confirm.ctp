@@ -59,11 +59,11 @@
       <div class="divider"></div>
       <div class="form">
         <label>お届け先住所</label>
-        <p>〒140-0002</p>
-        <p>東京都品川区東品川2-2-28 Tビル7階</p>
-        <p>寺田　太郎</p>
-        <p>テラダ　タロウ</p>
-        <p>000-0000-0000</p>
+        <p>〒<?php echo $Address['postal'];?></p>
+        <p><?php echo $Address['pref'];?><?php echo $Address['address1'];?><?php echo $Address['address2'];?> <?php echo $Address['address3'];?></p>
+        <p><?php echo $Address['lastname'];?>　<?php echo $Address['firstname'];?></p>
+        <p><?php echo $Address['lastname_kana'];?>　<?php echo $Address['firstname_kana'];?></p>
+        <p><?php echo $Address['tel1'];?></p>
       </div>
       <div class="form">
         <label>お届け日時</label>
@@ -72,11 +72,17 @@
       <div class="divider"></div>
       <div class="form">
         <label>メールアドレス</label>
-        <p>terrada@minikura.com</p>
+        <p><?php echo $Email['email'];?></p>
       </div>
       <div class="form">
         <label>お知らせメール</label>
-        <p>希望する</p>
+        <p>
+	  <?php if ( $Email['newsletter'] === "1" ) : ?>
+	    希望する
+	  <?php else: ?>
+	    希望しない
+	  <?php endif ?>
+	</p>
       </div>
     </div>
   </section>
