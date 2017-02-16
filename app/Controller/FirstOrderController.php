@@ -2,6 +2,7 @@
 App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('KitDeliveryDatetime', 'Model');
+App::uses('EmailModel', 'Model');
 
 
 class FirstOrderController extends MinikuraController
@@ -380,14 +381,19 @@ class FirstOrderController extends MinikuraController
         $this->loadModel('PaymentGMOCard');
 
         $params = [
-            'card_no'       => str_replace("-","",filter_input(INPUT_POST, 'card_no')),
+            'card_no'       => filter_input(INPUT_POST, 'card_no'),
             'security_cd'   => filter_input(INPUT_POST, 'security_cd'),
+            'expire_month'  => filter_input(INPUT_POST, 'expire_month'),
+            'expire_year'   => filter_input(INPUT_POST, 'expire_year'),
             'expire'        => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
             'holder_name'   => filter_input(INPUT_POST, 'holder_name'),
         ];
 
         //* Session write
         CakeSession::write('Credit', $params);
+
+        // ハイフン削除はバリデーション前に実施
+        $params['card_no'] = str_replace("-", "", $params['card_no']);
 
         //*  validation 基本は共通クラスのAppValidで行う
         $is_validation_error = false;
@@ -401,19 +407,13 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
         
-        //* クレジットカードのチェック
-        $requestdata['PaymentGMOSecurityCard'] = [
-            'card_no'       => $params['card_no'],
-            'security_cd'   => $params['security_cd'],
-            'expire_month'  => filter_input(INPUT_POST, 'expire_month'),
-            'expire_year'   => filter_input(INPUT_POST, 'expire_year'),
-            'holder_name'   => $params['holder_name'],
-            'card_seq'      => 0,
-        ];
+        //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
+/*        $requestdata['PaymentGMOSecurityCard'] = $params;
 
         $this->PaymentGMOSecurityCard->set($requestdata);
         // Expire
         $this->PaymentGMOSecurityCard->setExpire($requestdata);
+
         // ハイフン削除
         $this->PaymentGMOSecurityCard->trimHyphenCardNo($requestdata);
 
@@ -427,7 +427,7 @@ class FirstOrderController extends MinikuraController
             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
             $is_validation_error = true;
         }
-        
+*/
         if ($is_validation_error === true) {
             $this->set('Credit', $params);
             $this->render('add_credit');
@@ -546,6 +546,18 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
+        // 既存ユーザか確認する
+        $this->loadModel('Email');
+        $result = $this->Email->getEmail(array('email' => $params['email']));
+
+        CakeSession::write('registered', false);
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial result ' . print_r($result, true));
+        if ($result->status === "0") {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
+            $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
+            CakeSession::write('registered', true);
+            $is_validation_error = true;
+        }
         
         if ($is_validation_error === true) {
             list($params['birth_year'],$params['birth_month'],$params['birth_day']) = explode("-",$params['birth']);
@@ -610,6 +622,7 @@ class FirstOrderController extends MinikuraController
             return false;
         }
 
+        // 画面描画しない
         $this->autoRender = false;
 
         $postal = filter_input(INPUT_POST, 'postal');
@@ -624,7 +637,7 @@ class FirstOrderController extends MinikuraController
         // 配送日時情報取得
         $this->loadModel('KitDeliveryDatetime');
 
-        $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(['postal' => $postal]);
+        $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(array('postal' => $postal));
         $status = !empty($result);
 
         // コードを表示用文字列に変換

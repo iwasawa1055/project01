@@ -27,7 +27,14 @@
         <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
         <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo $Email['email'];?>" required>
         <?php echo $this->Flash->render('email');?>
+        <?php echo $this->Flash->render('check_email');?>
       </div>
+      <?php if (CakeSession::read('registered')) : ?>
+      <div class="form">
+        <label>ログインしサービスをご利用ください<br></label>
+          <a class="login" href="/login">ログイン</a>
+      </div>
+      <?php endif; ?>
       <div class="form">
         <label>パスワード<span class="required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
         <input type="password" class="password" size="20" maxlength="20" name="password" required>
