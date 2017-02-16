@@ -88,7 +88,7 @@ class FirstOrderController extends MinikuraController
     public function add_order()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index', 'FirstOrder/confirm_order'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index', 'FirstOrder/add_order', 'FirstOrder/confirm_order', 'FirstOrder/add_address'], true) === false) {
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' NG redirect ' . CakeSession::read('app.data.session_referer'));
             $this->redirect(['controller' => 'FirstOrder', 'action' => 'index']);
         }
@@ -96,7 +96,7 @@ class FirstOrderController extends MinikuraController
         // ログインしているか
         $is_logined = false;
         if ($this->Customer->isLogined()) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login ');
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
             $is_logined = true;
         }
         $this->set('is_logined', $is_logined);
@@ -132,22 +132,16 @@ class FirstOrderController extends MinikuraController
                 break;
         }
 
-        $this->set('kit_select_type', $kit_select_type);
-
         //* Session write
         CakeSession::write('kit_select_type', $kit_select_type );
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
 
         // boxの選択のタイプによって処理を変更する。
         $back  = filter_input(INPUT_GET, 'back');
-        if ($back) {
+        if (!$back) {
 
-            $Order = CakeSession::read('Order');
-
-            $this->set('Order', $Order);
-
-        } else {
             // Orderセッションデータリセット
-            CakeSession::delete('Order');
+            //CakeSession::delete('Order');
 
             $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
                             'mono_total_num' => 0,
@@ -155,7 +149,7 @@ class FirstOrderController extends MinikuraController
                             'hako_total_num' => 0,
                             'cleaning' => 0,
                             'starter' => 0);
-            $this->set('Order', $Order);
+            CakeSession::write('Order', $Order);
         }
 
         //* session referer set
@@ -230,8 +224,6 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->set('kit_select_type', $kit_select_type);
-            $this->set('Order', $Order);
             $this->render('add_order');
             return;
         }
@@ -271,7 +263,7 @@ class FirstOrderController extends MinikuraController
             $this->set('Address', $Address);
         } else {
             // Addressリセット
-            CakeSession::delete('Address');
+            //CakeSession::delete('Address');
 
             $Address = array(
                 'firstname'      => "",
@@ -288,6 +280,8 @@ class FirstOrderController extends MinikuraController
             );
 
             // お届け希望日のリスト
+            CakeSession::write('select_delivery_list', "");
+            CakeSession::write('Address', $Address);
             $this->set('select_delivery_list', "");
             $this->set('Address', $Address);
         }
@@ -372,7 +366,7 @@ class FirstOrderController extends MinikuraController
             $this->set('Credit', $Address);
         } else {
             // Creditセッションデータリセット
-            CakeSession::delete('Credit');
+//            CakeSession::delete('Credit');
 
             $Credit = array(
                 'card_no'      => "",
