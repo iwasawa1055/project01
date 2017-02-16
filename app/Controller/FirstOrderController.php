@@ -1,7 +1,7 @@
 <?php
 App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
-App::uses('OutboundLimit', 'Model');
+App::uses('KitDeliveryDatetime', 'Model');
 
 
 class FirstOrderController extends MinikuraController
@@ -22,7 +22,7 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
-     *
+     * 静的ページからの遷移 セットアクション
      */
     public function index()
     {
@@ -83,7 +83,7 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
-     *
+     * Boxの選択 静的ページからのオプション、ユーザ条件によって表示内容を変更
      */
     public function add_order()
     {
@@ -146,8 +146,8 @@ class FirstOrderController extends MinikuraController
             $this->set('Order', $Order);
 
         } else {
-            // orderリセット
-            CakeSession::delete('order');
+            // Orderセッションデータリセット
+            CakeSession::delete('Order');
 
             $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
                             'mono_total_num' => 0,
@@ -163,6 +163,9 @@ class FirstOrderController extends MinikuraController
 
     }
 
+    /**
+     * Boxの選択 確認
+     */
     public function confirm_order()
     {
         //* session referer check
@@ -175,7 +178,6 @@ class FirstOrderController extends MinikuraController
 
         // order情報
         $Order = CakeSession::read('Order');
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true) );
 
         //* post parameter
         // 購入情報によって分岐
@@ -241,7 +243,9 @@ class FirstOrderController extends MinikuraController
 
     }
 
-
+    /**
+     * ユーザ名 住所の登録
+     */
     public function add_address()
     {
         //* session referer check
@@ -256,9 +260,17 @@ class FirstOrderController extends MinikuraController
         
         if ($back) {
             $Address = CakeSession::read('Address');
+
+            // お届け希望日のリスト
+            $select_delivery_list =  json_decode($Address['select_delivery']);
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
+            if(is_null($select_delivery_list)) {
+                $select_delivery_list = "";
+            }
+            $this->set('select_delivery_list', $select_delivery_list);
             $this->set('Address', $Address);
         } else {
-            // orderリセット
+            // Addressリセット
             CakeSession::delete('Address');
 
             $Address = array(
@@ -272,14 +284,21 @@ class FirstOrderController extends MinikuraController
                 'address1'       => "",
                 'address2'       => "",
                 'address3'       => "",
+                'select_delivery' => "",
             );
+
+            // お届け希望日のリスト
+            $this->set('select_delivery_list', "");
             $this->set('Address', $Address);
         }
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
-    
+
+    /**
+     * ユーザ名 住所 確認
+     */
     public function confirm_address()
     {
         //* session referer check
@@ -301,6 +320,8 @@ class FirstOrderController extends MinikuraController
             'address1'          => filter_input(INPUT_POST, 'address1'),
             'address2'          => filter_input(INPUT_POST, 'address2'),
             'address3'          => filter_input(INPUT_POST, 'address3'),
+            'datetime_cd'       => filter_input(INPUT_POST, 'datetime_cd'),
+            'select_delivery'   => filter_input(INPUT_POST, 'select_delivery'),
         ];
 
         //* Session write
@@ -314,6 +335,12 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $select_delivery_list =  json_decode($params['select_delivery']);
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
+            if(is_null($select_delivery_list)) {
+                $select_delivery_list = "";
+            }
+            $this->set('select_delivery_list', $select_delivery_list);
             $this->set('Address', $params);
             $this->render('add_address');
             return;
@@ -325,6 +352,9 @@ class FirstOrderController extends MinikuraController
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_credit']);
     }
 
+    /**
+     * クレジットカード 登録
+     */
     public function add_credit()
     {
         //* session referer check
@@ -341,7 +371,7 @@ class FirstOrderController extends MinikuraController
             $Address = CakeSession::read('Credit');
             $this->set('Credit', $Address);
         } else {
-            // orderリセット
+            // Creditセッションデータリセット
             CakeSession::delete('Credit');
 
             $Credit = array(
@@ -357,6 +387,9 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
+    /**
+     * クレジットカード 確認
+     */
     public function confirm_credit()
     {
         //* session referer check
@@ -399,6 +432,9 @@ class FirstOrderController extends MinikuraController
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'add_email']);
     }
 
+    /**
+     * メールアドレス 登録
+     */
     public function add_email()
     {
         //* session referer check
@@ -418,10 +454,10 @@ class FirstOrderController extends MinikuraController
         
         if ($back) {
             $Email = CakeSession::read('Email');
-            list($Email['birth_year'],$Email['birth_month'],$Email['birth_day']) = explode("-",$Email['birth']);
+            list($Email['birth_year'], $Email['birth_month'], $Email['birth_day']) = explode("-", $Email['birth']);
             $this->set('Email', $Email);
         } else {
-            // orderリセット
+            // Emailセッションデータリセット
             CakeSession::delete('Email');
 
             $Email = array(
@@ -443,6 +479,9 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
+    /**
+     * メールアドレス 確認
+     */
     public function confirm_email()
     {
         //* session referer check
@@ -519,6 +558,9 @@ class FirstOrderController extends MinikuraController
         $this->redirect(['controller' => 'FirstOrder', 'action' => 'confirm']);
     }
 
+    /**
+     * オーダー 会員登録
+     */
     public function confirm()
     {
         //* session referer check
@@ -540,6 +582,9 @@ class FirstOrderController extends MinikuraController
         
     }
 
+    /**
+     * オーダー 完了
+     */
     public function complete()
     {
         //* session referer check
@@ -557,6 +602,48 @@ class FirstOrderController extends MinikuraController
         }
     }
 
+    /**
+     * 指定IDの配送日時情報取得
+     */
+    public function as_get_address_datetime()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $postal = filter_input(INPUT_POST, 'postal');
+
+        // ハイフンチェック
+        if (mb_strlen($postal) > 7) {
+            // ハイフン部分を削除 macの場合全角ハイフンの文字コードが異なるため単純な全角半角変換ができない
+            $postal = mb_substr($postal,0, 3) . mb_substr($postal, 4, 4);
+        }
+        $postal = mb_convert_kana($postal, 'nhk', "utf-8");
+
+        // 配送日時情報取得
+        $this->loadModel('KitDeliveryDatetime');
+
+        $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(['postal' => $postal]);
+        $status = !empty($result);
+
+        // コードを表示用文字列に変換
+        App::uses('AppHelper', 'View/Helper');
+        $appHelper = new AppHelper(new View());
+
+        $results = [];
+        $i = 0;
+        foreach ($result->results as $datetime) {
+            $datetime_cd = $datetime['datetime_cd'];
+            $results[$i]["datetime_cd"] = $datetime_cd;
+            $results[$i]["text"] = $appHelper->convDatetimeCode($datetime_cd);
+            $i++;
+        }
+
+        return json_encode(compact('status', 'results'));
+    }
+
     private function set_mono_order($Order)
     {
         $params = null;
@@ -566,9 +653,6 @@ class FirstOrderController extends MinikuraController
             'mono_apparel'  => (int)filter_input(INPUT_POST, 'mono_apparel'),
             'mono_book'     => (int)filter_input(INPUT_POST, 'mono_book'),
         ];
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set mono ' . filter_input(INPUT_POST, 'mono') );
-
 
         $Order['mono'] = $params;
         $Order['mono_total_num'] = array_sum($params);

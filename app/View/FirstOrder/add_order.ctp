@@ -103,7 +103,7 @@
 <input type="hidden" name="hako_apparel"  value="<?php echo h($Order['hako']['hako_apparel'])?>">
 <input type="hidden" name="hako_book"     value="<?php echo h($Order['hako']['hako_book'])?>">
 <input type="hidden" name="cleaning"      value="<?php echo h($Order['cleaning'])?>">
-</form>>
+</form>
 <!--MONO modal-->
 <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
   <div class="box">
@@ -220,4 +220,5 @@
 
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
+<script src="/first_order/js/first_order/add_order.js"></script>
 <?php echo $this->element('FirstOrder/last'); ?>

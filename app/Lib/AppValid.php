@@ -389,10 +389,12 @@ class AppValid
 
 	public static function isPostalCodeJp(&$_value)
 	{
-		if (! preg_match('/^\d{3}-\d{4}$/', $_value)) {
+		if ( preg_match('/^\d{7}$/', $_value) || preg_match('/^\d{3}-\d{4}$/', $_value)) {
+			return true;
+		} else {
+			//* NG
 			return false;
 		}
-		return true;
 	}
 
 	public static function isPrefNameJp(&$_value, $_pref_pos = null)
@@ -431,6 +433,35 @@ class AppValid
 		if (! preg_match('/^[0-9a-zA-Z!,.:?@^_~]{6,64}$/', $_value)) {
 			return false;
 		}
+		return true;
+	}
+
+	/// ＡＰＩ用の日時コードかどうかチェック
+	/// 【例】2012-09-25-2（2012/09/25 (火) 午前中）
+	/// 2012-09-25のように時間帯なしの場合もある
+	public static function isDatetimeCd($_value)
+	{
+		$params = explode('-', $_value);
+		if (count($params) == 4) {  // YYYY-MM-DD-時間帯
+			// 年月日チェック
+			if (!checkdate($params[1], $params[2], $params[0])) {
+				return false;
+			}
+			// 時間帯コードチェック
+			if (!(2 <= $params[3] and $params[3] <= 7)) {
+				return false;
+			}
+		}
+		elseif (count($params) == 3) {  // YYYY-MM-DD
+			// 年月日チェック
+			if (!checkdate($params[1], $params[2], $params[0])) {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+
 		return true;
 	}
 

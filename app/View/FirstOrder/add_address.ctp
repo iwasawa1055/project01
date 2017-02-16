@@ -38,7 +38,7 @@
       <div class="divider"></div>
       <div class="form">
         <label>郵便番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。<br>入力すると以下の住所が自動で入力されます。</span></label>
-        <input type="text" name="postal" class="postal search_address_postal" placeholder="0123456" size="8" maxlength="8" value="<?php echo $Address['postal'];?>" required>
+        <input type="tel" name="postal" id="postal" class="postal search_address_postal" placeholder="0123456" size="8" maxlength="8" value="<?php echo $Address['postal'];?>" required>
         <?php echo $this->Flash->render('postal');?>
       </div>
       <div class="form">
@@ -64,20 +64,21 @@
       <div class="divider"></div>
       <div class="form">
         <label>電話番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="text" name="tel1" class="tel" placeholder="01234567890" size="15" maxlength="15" value="<?php echo $Address['tel1'];?>" required>
+        <input type="tel" name="tel1" class="tel" placeholder="01234567890" size="15" maxlength="15" value="<?php echo $Address['tel1'];?>" required>
         <?php echo $this->Flash->render('tel1');?>
       </div>
       <div class="divider"></div>
       <div class="form">
-        <label>お届け希望日<span class="required">※</span></label>
-        <select name="datetime_cd" class="select-delivery" required>
-          <option value="">0000年00月00日 午前中</option>
-          <option value="">0000年00月00日 12時〜</option>
-          <option value="">0000年00月00日 14時〜</option>
-          <option value="">0000年00月00日 16時〜</option>
-          <option value="">0000年00月00日 18時〜</option>
+        <label>お届け希望日<span class="required ">※</span></label>
+        <select name="datetime_cd" id="datetime_cd" class="select-delivery">
+          <option value="">以下からお選びください</option>
+          <?php foreach ( $select_delivery_list as $key => $value ) {?>
+          <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === $Address['datetime_cd'] ) echo " selected";?>><?php echo $value->text;?></option>
+          <?php } ?>
         </select>
         <?php echo $this->Flash->render('datetime_cd');?>
+        <input type="hidden" name="select_delivery" id="select_delivery" value="<?php if (!empty($Address['select_delivery'])) : ?><?php echo h($Address['select_delivery'])?><?php else : ?><?php endif; ?>">
+
       </div>
     </div>
   </section>
@@ -87,5 +88,7 @@
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places"></script>
-<script type="text/javascript" src="/js/minikura/address.js"></script>
+<script src="/js/minikura/address.js"></script>
+<script src="/first_order/js/first_order/add_address.js"></script>
+
 <?php echo $this->element('FirstOrder/last'); ?>

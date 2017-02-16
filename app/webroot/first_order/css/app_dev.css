@@ -34,4 +34,8 @@ section#adress .form .validation {
 
 .validation {
 	display	: inline-block;
-}}
+}
+
+.select-delivery{
+	min-width: 210px;
+}
