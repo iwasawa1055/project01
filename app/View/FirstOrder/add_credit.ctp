@@ -20,7 +20,7 @@
     </ul>
   </section>
   <!-- ADRESS -->
-  <form method="post" action="/FirstOrder/confirm_credit">
+  <form method="post" action="/first_order/confirm_credit">
   <section id="adress">
     <div class="wrapper">
       <div class="form">

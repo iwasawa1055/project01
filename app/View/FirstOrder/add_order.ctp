@@ -24,7 +24,7 @@
 <!-- LINEUP -->
 <?php $kit_select_type = CakeSession::read('kit_select_type'); ?>
 
-<form method="post" action="/FirstOrder/confirm_order">
+<form method="post" action="/first_order/confirm_order">
 <section id="lineup">
   <div class="wrapper">
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono')) : ?>
