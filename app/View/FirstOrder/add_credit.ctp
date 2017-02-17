@@ -30,7 +30,7 @@
       </div>
       <div class="form">
         <label>セキュリティコード<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="text" class="postal" name="security_cd" placeholder="0123" size="6" maxlength="6" value="<?php echo CakeSession::read('Credit.security_cd');?>" required>
+        <input type="text" class="postal" name="security_cd" placeholder="0123" size="6" maxlength="6" value="" required>
         <?php echo $this->Flash->render('security_cd');?>
       </div>
       <div class="form">

@@ -72,7 +72,7 @@
         <label>お届け希望日<span class="required ">※</span></label>
         <select name="datetime_cd" id="datetime_cd" class="select-delivery">
           <option value="">以下からお選びください</option>
-          <?php foreach ( $select_delivery_list as $key => $value ) {?>
+          <?php foreach ( CakeSession::read('Address.select_delivery_list') as $key => $value ) {?>
           <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
           <?php } ?>
         </select>
