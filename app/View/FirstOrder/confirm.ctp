@@ -59,27 +59,30 @@
       <div class="divider"></div>
       <div class="form">
         <label>お届け先住所</label>
-        <p>〒<?php echo $Address['postal'];?></p>
-        <p><?php echo $Address['pref'];?><?php echo $Address['address1'];?><?php echo $Address['address2'];?> <?php echo $Address['address3'];?></p>
-        <p><?php echo $Address['lastname'];?>　<?php echo $Address['firstname'];?></p>
-        <p><?php echo $Address['lastname_kana'];?>　<?php echo $Address['firstname_kana'];?></p>
-        <p><?php echo $Address['tel1'];?></p>
+        <p>〒<?php echo CakeSession::read('Address.postal');?></p>
+        <p><?php echo CakeSession::read('Address.pref');?><?php echo CakeSession::read('Address.address1');?><?php echo CakeSession::read('Address.address2');?> <?php echo CakeSession::read('Address.address3');?></p>
+        <p><?php echo CakeSession::read('Address.lastname');?>　<?php echo CakeSession::read('Address.firstname');?></p>
+        <p><?php echo CakeSession::read('Address.lastname_kana');?>　<?php echo CakeSession::read('Address.firstname_kana');?></p>
+        <p><?php echo CakeSession::read('Address.tel1');?></p>
       </div>
       <div class="form">
         <label>お届け日時</label>
-        <p>0000年00月00日 午前中</p>
+        <?php foreach ( json_decode(CakeSession::read('Address.select_delivery')) as $key => $value ) {?>
+          <?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) :?>
+            <p><?php echo $value->text;?></p>
+          <?php endif ?>
+        <?php } ?>
       </div>
       <div class="divider"></div>
       <div class="form">
         <label>メールアドレス</label>
-        <p><?php echo $Email['email'];?></p>
+        <p><?php echo CakeSession::read('Email.email');?></p>
       </div>
-
       <?php if (!$is_logined) : ?>
         <div class="form">
           <label>お知らせメール</label>
           <p>
-            <?php if ( $Email['newsletter'] === "1" ) : ?>
+            <?php if ( CakeSession::read('Email.newsletter') === "1" ) : ?>
               希望する
             <?php else: ?>
               希望しない
@@ -87,7 +90,6 @@
           </p>
         </div>
       <?php endif; ?>
-
     </div>
   </section>
   <section class="nextback"><a href="/first_order/add_email?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><a href="complete" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></a>
