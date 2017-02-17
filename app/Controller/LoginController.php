@@ -158,7 +158,7 @@ class LoginController extends MinikuraController
                 return false;
             }
             // ログイン処理
-            $this->_execLogin($res);
+            $this->_execLogin($res, true);
 
             // ユーザー環境値登録
             $this->Customer->postEnvAuthed();
