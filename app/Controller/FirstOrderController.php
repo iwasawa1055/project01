@@ -396,9 +396,6 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
         */
-        
-        $this->loadModel("PaymentGMOSecurityCard");
-        $this->loadModel('PaymentGMOCard');
 
         $params = [
             'card_no'       => filter_input(INPUT_POST, 'card_no'),
@@ -428,26 +425,14 @@ class FirstOrderController extends MinikuraController
         }
         
         //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
-/*        $requestdata['PaymentGMOSecurityCard'] = $params;
+        $this->loadModel('CardCheck');
+        $res = $this->CardCheck->getCardCheck($params);
 
-        $this->PaymentGMOSecurityCard->set($requestdata);
-        // Expire
-        $this->PaymentGMOSecurityCard->setExpire($requestdata);
-
-        // ハイフン削除
-        $this->PaymentGMOSecurityCard->trimHyphenCardNo($requestdata);
-
-        // card_seq 除外
-        $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-            
-        // update
-        $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
-        
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
             $is_validation_error = true;
         }
-*/
+
         if ($is_validation_error === true) {
             $this->render('add_credit');
             return;
