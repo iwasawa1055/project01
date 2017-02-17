@@ -9,3 +9,4 @@
 <!-- Custom Theme JavaScript -->
 <script src="/first_order/js/app.js"></script>
 <script src="/first_order/js/app_dev.js"></script>
+<script src="/js/jquery.airCenter.js"></script>
