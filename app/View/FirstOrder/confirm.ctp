@@ -19,6 +19,7 @@
     </li>
   </ul>
 </section>
+  <form method="post" action="/first_order/complete">
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
@@ -33,6 +34,13 @@
             </tr>
           </thead>
           <tbody>
+          <?php if (CakeSession::read('Order.starter.starter') !== 0 ) {?>
+            <tr>
+              <th><?php echo Configure::read('app.first_order.starter_kit.name') ?></th>
+              <td><div class="text-right">1</div></td>
+              <td><div class="text-right"><?php echo Configure::read('app.first_order.starter_kit.price') ?>円</div></td>
+            </tr>
+          <?php } else { ?>
             <?php foreach ( CakeSession::read('PurchaseOrder') as $key => $value ) {?>
               <tr>
                 <th><?php echo $value['kit_name'] ?></th>
@@ -40,6 +48,7 @@
                 <td><div class="text-right"><?php echo $value['price'] ?>円</div></td>
               </tr>
             <?php } ?>
+          <?php } ?>
           </tbody>
         </table>
       </div>
@@ -54,11 +63,7 @@
       </div>
       <div class="form">
         <label>お届け日時</label>
-        <?php foreach ( json_decode(CakeSession::read('Address.select_delivery')) as $key => $value ) {?>
-          <?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) :?>
-            <p><?php echo $value->text;?></p>
-          <?php endif ?>
-        <?php } ?>
+        <p><?php echo CakeSession::read('Address.select_delivery_text') ?></p>
       </div>
       <div class="divider"></div>
       <div class="form">
@@ -79,8 +84,9 @@
       <?php endif; ?>
     </div>
   </section>
-  <section class="nextback"><a href="/first_order/add_email?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><a href="complete" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></a>
+  <section class="nextback"><a href="/first_order/add_email?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
   </section>
+  </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <?php echo $this->element('FirstOrder/last'); ?>

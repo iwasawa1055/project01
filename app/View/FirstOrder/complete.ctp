@@ -26,7 +26,7 @@
   <div class="wrapper">
     <div class="form">
       <p class="dialog">専用ボックスのご注文ありがとうございました。</p>
-      <p class="dialog"><strong><></strong>にご指定いただいた住所へお届けする予定です。お届けまでしばらくお待ちください。</p>
+      <p class="dialog"><strong><?php echo CakeSession::read('Address.select_delivery_text') ?></strong>にご指定いただいた住所へお届けする予定です。お届けまでしばらくお待ちください。</p>
       <p class="dialog">またお届けまでのあいだ、<a href="https://minikura.com/help/packing.html" target="_blank">専用ボックスの到着から預け入れまで <i class="fa fa-external-link-square"></i></a> をお読みいただけると、その後のお手続きがスムーズに進みますので併せてご確認ください。</p>
   </div>
   </div>
