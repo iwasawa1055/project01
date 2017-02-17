@@ -10,7 +10,10 @@ class FirstOrderController extends MinikuraController
 {
     // アクセス許可
     protected $checkLogined = false;
-
+    const MODEL_NAME_REGIST = 'CustomerRegistInfo';
+    const MODEL_NAME_CARD = 'PaymentGMOCard';
+    const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
+    
     /**
      * 制御前段処理.
      */
@@ -261,7 +264,6 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if (!$back) {
-
             // Addressリセット
             if (empty(CakeSession::read('Address'))) {
 
@@ -517,7 +519,7 @@ class FirstOrderController extends MinikuraController
             // ログインしている場合
             $params = [
                 'email'            => $this->Customer->getInfo()['email'],
-                'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+                'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
                 'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
                 'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
                 'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
@@ -534,7 +536,7 @@ class FirstOrderController extends MinikuraController
                 'email'            => filter_input(INPUT_POST, 'email'),
                 'password'         => $password,
                 'password_confirm' => $password_confirm,
-                'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+                'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
                 'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
                 'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
                 'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
@@ -683,6 +685,72 @@ class FirstOrderController extends MinikuraController
         }
         */
 
+        //* 会員登録
+        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
+
+        $this->loadModel(self::MODEL_NAME_REGIST);
+        $this->CustomerRegistInfo->set($data);
+
+        //*  validation
+        if (!$this->CustomerRegistInfo->validates()) {
+            //* 失敗時の処理
+            echo "ERR";
+        } else {
+            if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
+                unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
+            }
+
+            // 本登録
+            $res = $this->CustomerRegistInfo->regist();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->render('confirm');
+            }
+
+            // ログイン
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
+            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
+
+            $res = $this->CustomerLogin->login();
+
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->render('confirm');
+            }
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($res->results[0]);
+            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+            $this->Customer->getInfo();
+
+            //* クレジットカード登録
+            $this->loadModel(self::MODEL_NAME_SECURITY);
+            $data[self::MODEL_NAME_SECURITY] = CakeSession::read('Credit');
+
+            $this->PaymentGMOSecurityCard->set($data);
+
+            // Expire
+            $this->PaymentGMOSecurityCard->setExpire($data);
+
+            // ハイフン削除
+            $this->PaymentGMOSecurityCard->trimHyphenCardNo($data);
+
+            // validates
+            // card_seq 除外
+            $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+
+            if (!$this->PaymentGMOSecurityCard->validates()) {
+                echo "ERR(CREDIT)";
+            }
+
+            $res = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->render('confirm');
+            }
+        }
 
         $this->set('select_delivery', CakeSession::read('Address.select_delivery'));
 
@@ -691,7 +759,6 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('Credit');
         CakeSession::delete('Email');
         CakeSession::delete('DisplyOrder');
-
     }
 
     /**
