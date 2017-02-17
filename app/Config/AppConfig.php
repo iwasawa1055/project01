@@ -83,7 +83,7 @@ $config['app']['first_order']['kit_code'] = array(
     'hako'          => KIT_CD_HAKO,
     'hako_apparel'  => KIT_CD_HAKO_APPAREL,
     'hako_book'     => KIT_CD_HAKO_BOOK,
-    'cleaning'      => CLEANING_PACK,
+    'cleaning'      => KIT_CD_CLEANING_PACK,
 );
 
 $config['app']['first_order']['kit_code']['starter'] = array(

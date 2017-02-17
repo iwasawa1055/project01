@@ -80,7 +80,6 @@
         <?php echo $this->Flash->render('gender');?>
       </div>
       <div class="divider"></div>
-<<<<<<< HEAD
 
       <?php if (!$is_logined) : ?>
         <div class="form form-line">
@@ -92,25 +91,11 @@
         </div>
         <div class="form form-line">
           <label>紹介コード</label>
-          <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo $Email['alliance_cd'];?>">
+          <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
         </div>
         <div class="divider"></div>
       <?php endif; ?>
 
-=======
-      <div class="form form-line">
-        <label>お知らせメール</label>
-        <select class="select-info" name="newsletter" required>
-          <option value="1">受信する</option>
-          <option value="0">受信しない</option>
-        </select>
-      </div>
-      <div class="form form-line">
-        <label>紹介コード</label>
-        <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
-      </div>
-      <div class="divider"></div>
->>>>>>> origin/feature_ux_jung
       <div class="form">
         <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"<?php if ( CakeSession::read('Email.remember') === "Remember Me" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
         <?php echo $this->Flash->render('remember');?>

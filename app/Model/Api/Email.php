@@ -11,7 +11,7 @@ class Email extends ApiModel
     }
 
     /**
-     * キット配送日時・取得
+     * 既存メールチェック
      *
      * @return type
      */
