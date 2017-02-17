@@ -259,16 +259,13 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Address = CakeSession::read('Address');
-
             // お届け希望日のリスト
-            $select_delivery_list =  json_decode($Address['select_delivery']);
+            $select_delivery_list =  json_decode(CakeSession::read('Address.select_delivery'));
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
             if(is_null($select_delivery_list)) {
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
-            $this->set('Address', $Address);
         } else {
             // Addressリセット
             //CakeSession::delete('Address');
@@ -291,7 +288,6 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('select_delivery_list', "");
             CakeSession::write('Address', $Address);
             $this->set('select_delivery_list', "");
-            $this->set('Address', $Address);
         }
 
         //* session referer set
@@ -343,7 +339,6 @@ class FirstOrderController extends MinikuraController
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
-            $this->set('Address', $params);
             $this->render('add_address');
             return;
         }
@@ -370,8 +365,7 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Credit = CakeSession::read('Credit');
-            $this->set('Credit', $Credit);
+
         } else {
             // Creditセッションデータリセット
 //            CakeSession::delete('Credit');
@@ -382,7 +376,8 @@ class FirstOrderController extends MinikuraController
                 'expire'       => "",
                 'holder_name'  => "",
             );
-            $this->set('Credit', $Credit);
+
+            CakeSession::write('Credit', $Credit);
         }
 
         //* session referer set
@@ -454,7 +449,6 @@ class FirstOrderController extends MinikuraController
         }
 */
         if ($is_validation_error === true) {
-            $this->set('Credit', $params);
             $this->render('add_credit');
             return;
         }
@@ -486,12 +480,10 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Email = CakeSession::read('Email');
-            list($Email['birth_year'], $Email['birth_month'], $Email['birth_day']) = explode("-", $Email['birth']);
-            $this->set('Email', $Email);
+
         } else {
             // Emailセッションデータリセット
-            CakeSession::delete('Email');
+            // CakeSession::delete('Email');
 
             $Email = array(
                 'email'             => "",
@@ -505,7 +497,8 @@ class FirstOrderController extends MinikuraController
                 'alliance_cd'       => "",
                 'remember'          => "",
             );
-            $this->set('Email', $Email);
+            
+            CakeSession::write('Email', $Email);
         }
 
         //* session referer set
@@ -533,6 +526,9 @@ class FirstOrderController extends MinikuraController
             'password'         => $password,
             'password_confirm' => $password_confirm,
             'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
             'gender'           => filter_input(INPUT_POST, 'gender'),
             'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
             'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
@@ -584,14 +580,10 @@ class FirstOrderController extends MinikuraController
         }
         
         if ($is_validation_error === true) {
-            list($params['birth_year'],$params['birth_month'],$params['birth_day']) = explode("-",$params['birth']);
-    
             $loginconfigure = Configure::read('app.register');
       
             // 入力カード情報セット
             $this->set('login_config', $loginconfigure);
-
-            $this->set('Email', $params);
             $this->render('add_email');
             return;
         }
@@ -627,7 +619,6 @@ class FirstOrderController extends MinikuraController
             }
  */       }
 
-
         //
         $kitPrice = new CustomerKitPrice();
         $r = $kitPrice->apiGet([
@@ -640,14 +631,6 @@ class FirstOrderController extends MinikuraController
             $total['price'] += $price;
         }
 
-
-        $Address = CakeSession::read('Address');
-        $this->set('Address', $Address);
-
-        $Email = CakeSession::read('Email');
-        $this->set('Email', $Email);
-
-        //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
