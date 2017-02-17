@@ -23,28 +23,36 @@
   <form method="post" action="/FirstOrder/confirm_email">
   <section id="adress">
     <div class="wrapper">
+      <?php if ($is_logined) : ?>
       <div class="form">
-        <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-        <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo $Email['email'];?>" required>
-        <?php echo $this->Flash->render('email');?>
-        <?php echo $this->Flash->render('check_email');?>
+        <label>メールアドレス</label>
+        <p><?php echo $Email['email'];?></p>
       </div>
-      <?php if (CakeSession::read('registered')) : ?>
-      <div class="form">
-        <label>ログインしサービスをご利用ください<br></label>
-          <a class="login" href="/login">ログイン</a>
-      </div>
+      <?php else : ?>
+        <div class="form">
+          <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
+          <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo $Email['email'];?>" required>
+          <?php echo $this->Flash->render('email');?>
+          <?php echo $this->Flash->render('check_email');?>
+        </div>
+        <?php if (CakeSession::read('registered')) : ?>
+        <div class="form">
+          <label>ログインしサービスをご利用ください<br></label>
+            <a class="login" href="/login">ログイン</a>
+        </div>
+        <?php endif; ?>
+        <div class="form">
+          <label>パスワード<span class="required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
+          <input type="password" class="password" size="20" maxlength="20" name="password" required>
+          <?php echo $this->Flash->render('password');?>
+        </div>
+        <div class="form">
+          <label>パスワード（確認用）<span class="required">※</span></label>
+          <input type="password" class="password" size="20" maxlength="20" name="password_confirm" required>
+          <?php echo $this->Flash->render('password_confirm');?>
+        </div>
       <?php endif; ?>
-      <div class="form">
-        <label>パスワード<span class="required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
-        <input type="password" class="password" size="20" maxlength="20" name="password" required>
-        <?php echo $this->Flash->render('password');?>
-      </div>
-      <div class="form">
-        <label>パスワード（確認用）<span class="required">※</span></label>
-        <input type="password" class="password" size="20" maxlength="20" name="password_confirm" required>
-        <?php echo $this->Flash->render('password_confirm');?>
-      </div>
+
       <div class="divider"></div>
       <div class="form form-line">
         <label>生年月日<span class="required">※</span></label>
@@ -72,18 +80,22 @@
         <?php echo $this->Flash->render('gender');?>
       </div>
       <div class="divider"></div>
-      <div class="form form-line">
-        <label>お知らせメール</label>
-        <select class="select-info" name="newsletter" required>
-          <option value="1">受信する</option>
-          <option value="0">受信しない</option>
-        </select>
-      </div>
-      <div class="form form-line">
-        <label>紹介コード</label>
-        <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo $Email['alliance_cd'];?>">
-      </div>
-      <div class="divider"></div>
+
+      <?php if (!$is_logined) : ?>
+        <div class="form form-line">
+          <label>お知らせメール</label>
+          <select class="select-info" name="newsletter" required>
+            <option value="1">受信する</option>
+            <option value="0">受信しない</option>
+          </select>
+        </div>
+        <div class="form form-line">
+          <label>紹介コード</label>
+          <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo $Email['alliance_cd'];?>">
+        </div>
+        <div class="divider"></div>
+      <?php endif; ?>
+
       <div class="form">
         <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"<?php if ( $Email['remember'] === "Remember Me" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
         <?php echo $this->Flash->render('remember');?>

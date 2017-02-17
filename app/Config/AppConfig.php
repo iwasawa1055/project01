@@ -74,6 +74,25 @@ $config['app']['switch_redirect']['param'] = 'option';
 $config['app']['first_order']['max_box'] = 20;
 
 /**
+ * 静的ページからの最大注文箱数
+ */
+$config['app']['first_order']['kit_code'] = array(
+    'mono'          => KIT_CD_MONO,
+    'mono_apparel'  => KIT_CD_MONO_APPAREL,
+    'mono_book'     => KIT_CD_MONO_BOOK,
+    'hako'          => KIT_CD_HAKO,
+    'hako_apparel'  => KIT_CD_HAKO_APPAREL,
+    'hako_book'     => KIT_CD_HAKO_BOOK,
+    'cleaning'      => CLEANING_PACK,
+);
+
+$config['app']['first_order']['kit_code']['starter'] = array(
+    'starter_mono'  => KIT_CD_STARTER_MONO,
+    'starter_hako'  => KIT_CD_STARTER_MONO_APPAREL,
+    'starter_mono'  => KIT_CD_STARTER_MONO_BOOK,
+);
+
+/**
  * エラー表示(デフォルトは表示)
  */
 // CakePHP Debug Level
