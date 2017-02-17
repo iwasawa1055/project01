@@ -687,6 +687,8 @@ class FirstOrderController extends MinikuraController
 
         //* 会員登録
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
+        unset($data['select_delivery']);
+        unset($data['select_delivery_list']);
 
         $this->loadModel(self::MODEL_NAME_REGIST);
         $this->CustomerRegistInfo->set($data);
