@@ -1,6 +1,6 @@
 <?php echo $this->element('FirstOrder/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>メールアドレス・パスワード入力 - minikura</title>
+<title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
 <section id="pagenation">
@@ -34,26 +34,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>minikura スターターパック</th>
-              <td>1</td>
-              <td>000円</td>
-            </tr>
-            <tr>
-              <th>MONO レギュラーボックス</th>
-              <td>1</td>
-              <td>000円</td>
-            </tr>
-            <tr>
-              <th>HAKO レギュラーボックス</th>
-              <td>1</td>
-              <td>000円</td>
-            </tr>
-            <tr>
-              <th>クリーニングパック</th>
-              <td>1</td>
-              <td>000円</td>
-            </tr>
+            <?php foreach ( CakeSession::read('PurchaseOrder') as $key => $value ) {?>
+              <tr>
+                <th><?php echo $value['kit_name'] ?></th>
+                <td><div class="text-right"><?php echo $value['number'] ?></div></td>
+                <td><div class="text-right"><?php echo $value['price'] ?>円</div></td>
+              </tr>
+            <?php } ?>
           </tbody>
         </table>
       </div>

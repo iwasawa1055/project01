@@ -26,7 +26,7 @@
       <?php if ($is_logined) : ?>
       <div class="form">
         <label>メールアドレス</label>
-        <p><?php echo $Email['email'];?></p>
+        <p><?php echo CakeSession::read('Email.email'); ?></p>
       </div>
       <?php else : ?>
         <div class="form">

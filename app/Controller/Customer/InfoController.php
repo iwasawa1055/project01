@@ -84,15 +84,6 @@ class InfoController extends MinikuraController
                 return $this->render('customer_add');
             }
 
-            // edit 初期表示データ取得
-            $model = $this->Customer->getInfoGetModel();
-            $res = $model->apiGet();
-            print_r($res);
-            
-
-echo "PASS2";
-exit;
-
             if ($step === 'confirm') {
                 CakeSession::write(self::MODEL_NAME, $model->toArray());
                 return $this->render('customer_confirm');

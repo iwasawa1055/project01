@@ -76,14 +76,14 @@ $config['app']['first_order']['max_box'] = 20;
 /**
  * 静的ページからの最大注文箱数
  */
-$config['app']['first_order']['kit_code'] = array(
-    'mono'          => KIT_CD_MONO,
-    'mono_apparel'  => KIT_CD_MONO_APPAREL,
-    'mono_book'     => KIT_CD_MONO_BOOK,
-    'hako'          => KIT_CD_HAKO,
-    'hako_apparel'  => KIT_CD_HAKO_APPAREL,
-    'hako_book'     => KIT_CD_HAKO_BOOK,
-    'cleaning'      => KIT_CD_CLEANING_PACK,
+$config['app']['first_order']['kit']['none_starter'] = array(
+    'mono'          => array('code' => KIT_CD_MONO,             'name'  => 'MONO レギュラーボックス'),
+    'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name'  => 'MONO アパレルボックス'),
+    'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name'  => 'MONO ブックボックス'),
+    'hako'          => array('code' => KIT_CD_HAKO,             'name'  => 'HAKO レギュラーボックス'),
+    'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name'  => 'HAKO アパレルボックス'),
+    'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name'  => 'HAKO ブックボックス'),
+    'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name'  => 'クリーニングパック'),
 );
 
 $config['app']['first_order']['kit_code']['starter'] = array(
@@ -91,6 +91,8 @@ $config['app']['first_order']['kit_code']['starter'] = array(
     'starter_hako'  => KIT_CD_STARTER_MONO_APPAREL,
     'starter_mono'  => KIT_CD_STARTER_MONO_BOOK,
 );
+
+$config['app']['first_order']['kit_name']['starter'] = 'minikura スターターパック';
 
 /**
  * エラー表示(デフォルトは表示)
