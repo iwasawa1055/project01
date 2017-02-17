@@ -20,7 +20,7 @@
     </ul>
   </section>
   <!-- ADRESS -->
-  <form method="post" action="/FirstOrder/confirm_email">
+  <form method="post" action="/first_order/confirm_email">
   <section id="adress">
     <div class="wrapper">
       <?php if ($is_logined) : ?>

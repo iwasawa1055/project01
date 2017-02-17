@@ -6,8 +6,6 @@ $(function() {
   $('a[href^="/"]a[target!="_blank"]').addClass('animsition-link');
   $('button[type=submit]').addClass('page-transition-link');
 
-  $('.agree-before-submit[type="checkbox"]').click(checkAgreeBeforeSubmit);
-  checkAgreeBeforeSubmit();
 
   $('form').submit(function() {
     $('button[type=submit]', this).attr('disabled', 'true');
@@ -15,12 +13,6 @@ $(function() {
       setTimeout(function() {
         $('button.submit_after_restore').attr('disabled', false);
       }, 1000);
-    }
-  });
-
-  $('select.select-add-address').change(function() {
-    if ($(this).val() == '-99') {
-      $('form.select-add-address-form').submit();
     }
   });
 });
