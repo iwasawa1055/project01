@@ -30,7 +30,7 @@
                 <?php if (!empty($code) && $code ===  Configure::read('api.sneakers.alliance_cd')) : ?>
                     <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add_sneakers?key=<?php echo $key;?>"  target="_blank">ユーザー登録はこちら</a>
                 <?php else : ?>
-                   <a class="btn btn-primary btn-md btn-block" href="/customer/register/add" target="_blank">ユーザー登録はこちら</a>
+                   <a class="btn btn-primary btn-md btn-block" href="/customer/register/add_info" target="_blank">ユーザー登録はこちら</a>
                 <?php endif; ?>
                 </span>
                 <span class="col-sm-6 col-xs-12">
@@ -41,8 +41,6 @@
                 </span-->
               </div>
             <?php echo $this->Form->end(); ?>
-            <a class="btn btn-default btn-xs btn-block" href="credit_card_reset/index.php" target="_blank">※債務クレジットカードの場合</a>
-
             </div>
           </div>
         </div>

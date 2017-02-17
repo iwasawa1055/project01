@@ -111,25 +111,22 @@ class FirstOrderController extends MinikuraController
         switch (true) {
             case $lp_option === 'mono':
                 // ログインしている場合はmonoを表示
-                if($is_logined) {
+                if ($is_logined) {
                     $kit_select_type = 'mono';
                 } else {
                     $kit_select_type = 'starter_kit';
                 }
                 break;
             case $lp_option === 'hako':
-                if($is_logined) {
-                    $kit_select_type = 'hako';
-                }
+                $kit_select_type = 'hako';
                 break;
             case $lp_option === 'cleaning':
-                if($is_logined) {
-                    $kit_select_type = 'cleaning';
-                }
+                $kit_select_type = 'cleaning';
                 break;
             case $lp_option === 'is_code':
+                // todo: ここはどうなる？
             default:
-                if($is_logined) {
+                if ($is_logined) {
                     $kit_select_type = 'all';
                 } else {
                     $kit_select_type = 'starter_kit';
