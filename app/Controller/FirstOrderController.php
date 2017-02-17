@@ -262,7 +262,7 @@ class FirstOrderController extends MinikuraController
             // お届け希望日のリスト
             $select_delivery_list =  json_decode(CakeSession::read('Address.select_delivery'));
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
-            if(is_null($select_delivery_list)) {
+            if (is_null($select_delivery_list)) {
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
@@ -474,6 +474,8 @@ class FirstOrderController extends MinikuraController
         if ($back) {
 
         } else {
+            CakeSession::write('registered', false);
+            
             // Emailセッションデータリセット
             // CakeSession::delete('Email');
 
@@ -526,7 +528,7 @@ class FirstOrderController extends MinikuraController
             // ログインしている場合
             $params = [
                 'email'            => $this->Customer->getInfo()['email'],
-                'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+                'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
                 'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
                 'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
                 'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
@@ -543,7 +545,7 @@ class FirstOrderController extends MinikuraController
                 'email'            => filter_input(INPUT_POST, 'email'),
                 'password'         => $password,
                 'password_confirm' => $password_confirm,
-                'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+                'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
                 'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
                 'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
                 'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
@@ -678,7 +680,15 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
         */
-
+        if ($this->request->is('get')) {
+            return $this->render('complete');
+        } elseif ($this->request->is('post')) {
+            echo "PASS";
+            
+            
+            
+            
+        }
     }
 
     /**
