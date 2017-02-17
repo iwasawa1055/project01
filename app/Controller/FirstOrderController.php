@@ -108,25 +108,22 @@ class FirstOrderController extends MinikuraController
         switch (true) {
             case $lp_option === 'mono':
                 // ログインしている場合はmonoを表示
-                if($is_logined) {
+                if ($is_logined) {
                     $kit_select_type = 'mono';
                 } else {
                     $kit_select_type = 'starter_kit';
                 }
                 break;
             case $lp_option === 'hako':
-                if($is_logined) {
-                    $kit_select_type = 'hako';
-                }
+                $kit_select_type = 'hako';
                 break;
             case $lp_option === 'cleaning':
-                if($is_logined) {
-                    $kit_select_type = 'cleaning';
-                }
+                $kit_select_type = 'cleaning';
                 break;
             case $lp_option === 'is_code':
+                // todo: ここはどうなる？
             default:
-                if($is_logined) {
+                if ($is_logined) {
                     $kit_select_type = 'all';
                 } else {
                     $kit_select_type = 'starter_kit';
@@ -262,7 +259,7 @@ class FirstOrderController extends MinikuraController
             // お届け希望日のリスト
             $select_delivery_list =  json_decode(CakeSession::read('Address.select_delivery'));
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
-            if(is_null($select_delivery_list)) {
+            if (is_null($select_delivery_list)) {
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
@@ -335,7 +332,7 @@ class FirstOrderController extends MinikuraController
             }
             $select_delivery_list =  json_decode($params['select_delivery']);
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
-            if(is_null($select_delivery_list)) {
+            if (is_null($select_delivery_list)) {
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
