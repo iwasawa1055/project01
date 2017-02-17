@@ -259,16 +259,13 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Address = CakeSession::read('Address');
-
             // お届け希望日のリスト
-            $select_delivery_list =  json_decode($Address['select_delivery']);
+            $select_delivery_list =  json_decode(CakeSession::read('Address.select_delivery'));
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' select_delivery_list ' . print_r($select_delivery_list, true));
             if(is_null($select_delivery_list)) {
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
-            $this->set('Address', $Address);
         } else {
             // Addressリセット
             //CakeSession::delete('Address');
@@ -291,7 +288,6 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('select_delivery_list', "");
             CakeSession::write('Address', $Address);
             $this->set('select_delivery_list', "");
-            $this->set('Address', $Address);
         }
 
         //* session referer set
@@ -343,7 +339,6 @@ class FirstOrderController extends MinikuraController
                 $select_delivery_list = "";
             }
             $this->set('select_delivery_list', $select_delivery_list);
-            $this->set('Address', $params);
             $this->render('add_address');
             return;
         }
@@ -370,8 +365,7 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Credit = CakeSession::read('Credit');
-            $this->set('Credit', $Credit);
+
         } else {
             // Creditセッションデータリセット
 //            CakeSession::delete('Credit');
@@ -382,7 +376,8 @@ class FirstOrderController extends MinikuraController
                 'expire'       => "",
                 'holder_name'  => "",
             );
-            $this->set('Credit', $Credit);
+
+            CakeSession::write('Credit', $Credit);
         }
 
         //* session referer set
@@ -454,7 +449,6 @@ class FirstOrderController extends MinikuraController
         }
 */
         if ($is_validation_error === true) {
-            $this->set('Credit', $params);
             $this->render('add_credit');
             return;
         }
@@ -477,7 +471,14 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
         */
-        
+
+        $is_logined = false;
+        if ($this->Customer->isLogined()) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
+            $is_logined = true;
+        }
+        $this->set('is_logined', $is_logined);
+
         $loginconfigure = Configure::read('app.register');
 
         // 入力カード情報セット
@@ -486,12 +487,10 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         
         if ($back) {
-            $Email = CakeSession::read('Email');
-            list($Email['birth_year'], $Email['birth_month'], $Email['birth_day']) = explode("-", $Email['birth']);
-            $this->set('Email', $Email);
+
         } else {
             // Emailセッションデータリセット
-            CakeSession::delete('Email');
+            // CakeSession::delete('Email');
 
             $Email = array(
                 'email'             => "",
@@ -505,7 +504,10 @@ class FirstOrderController extends MinikuraController
                 'alliance_cd'       => "",
                 'remember'          => "",
             );
-            $this->set('Email', $Email);
+            if ($is_logined) {
+                $Email['email'] = $this->Customer->getInfo()['email'];
+            }
+            CakeSession::write('Email', $Email);
         }
 
         //* session referer set
@@ -524,26 +526,71 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
         */
-        
-        $password = filter_input(INPUT_POST, 'password');
-        $password_confirm = filter_input(INPUT_POST, 'password_confirm');
-        
-        $params = [
-            'email'            => filter_input(INPUT_POST, 'email'),
-            'password'         => $password,
-            'password_confirm' => $password_confirm,
-            'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
-            'gender'           => filter_input(INPUT_POST, 'gender'),
-            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
-            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
-            'remember'         => filter_input(INPUT_POST, 'remember'),
-        ];
+
+        $is_logined = false;
+        if ($this->Customer->isLogined()) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
+            $is_logined = true;
+        }
+
+        // バリデーションエラーフラグ
+        $is_validation_error = false;
+
+        // ログイン状態により処理を変更
+        if ($is_logined) {
+            // ログインしている場合
+            $params = [
+                'email'            => $this->Customer->getInfo()['email'],
+                'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+                'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+                'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+                'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+                'gender'           => filter_input(INPUT_POST, 'gender'),
+                'remember'         => filter_input(INPUT_POST, 'remember'),
+            ];
+
+        } else {
+            // ログインしていない場合
+            $password = filter_input(INPUT_POST, 'password');
+            $password_confirm = filter_input(INPUT_POST, 'password_confirm');
+
+            $params = [
+                'email'            => filter_input(INPUT_POST, 'email'),
+                'password'         => $password,
+                'password_confirm' => $password_confirm,
+                'birth'            => sprintf("%04d-%02d-%02d",filter_input(INPUT_POST, 'birth_year'),filter_input(INPUT_POST, 'birth_month'),filter_input(INPUT_POST, 'birth_day')),
+                'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+                'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+                'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+                'gender'           => filter_input(INPUT_POST, 'gender'),
+                'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+                'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+                'remember'         => filter_input(INPUT_POST, 'remember'),
+            ];
+
+            // 確認用パスワード一致チェック
+            if ($password !== $password_confirm) {
+                $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
+                $is_validation_error = true;
+            }
+
+            // 既存ユーザか確認する
+            $this->loadModel('Email');
+            $result = $this->Email->getEmail(array('email' => $params['email']));
+
+            CakeSession::write('registered', false);
+            if ($result->status === "0") {
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
+                $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
+                CakeSession::write('registered', true);
+                $is_validation_error = true;
+            }
+        }
 
         //* Session write
         CakeSession::write('Email', $params);
 
         //*  validation 基本は共通クラスのAppValidで行う
-        $is_validation_error = false;
         $validation = AppValid::validate($params);
 
         //* 共通バリデーションでエラーあったらメッセージセット
@@ -554,12 +601,6 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // 確認用パスワード一致チェック
-        if ($password !== $password_confirm) {
-            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
-            $is_validation_error = true;
-        }
-        
         // 規約同意を確認する
         $validation = AppValid::validateTermsAgree($params['remember']);
 
@@ -571,27 +612,13 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // 既存ユーザか確認する
-        $this->loadModel('Email');
-        $result = $this->Email->getEmail(array('email' => $params['email']));
-
-        CakeSession::write('registered', false);
-        if ($result->status === "0") {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
-            $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
-            CakeSession::write('registered', true);
-            $is_validation_error = true;
-        }
-        
         if ($is_validation_error === true) {
-            list($params['birth_year'],$params['birth_month'],$params['birth_day']) = explode("-",$params['birth']);
-    
             $loginconfigure = Configure::read('app.register');
       
             // 入力カード情報セット
             $this->set('login_config', $loginconfigure);
+            $this->set('is_logined', $is_logined);
 
-            $this->set('Email', $params);
             $this->render('add_email');
             return;
         }
@@ -615,21 +642,32 @@ class FirstOrderController extends MinikuraController
         }
         */
 
+        $is_logined = false;
+        if ($this->Customer->isLogined()) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
+            $is_logined = true;
+        }
+        $this->set('is_logined', $is_logined);
+
         // オーダー種類を集計
         // order情報
         $Order = CakeSession::read('Order');
 
         $DisplyOrder = array();
-        // mono 集計
-        foreach ($Order as $key => $value) {
-/*            if() {
 
-            }
- */       }
-
-
-        //
+        // キットコードと合計金額を返すAPI
         $kitPrice = new CustomerKitPrice();
+
+        // mono 集計
+/*        foreach ($Order as $kit_code => $kit_order) {
+            foreach ($kit_order as $key => $value) {
+                if($value !== 0) {
+
+                }
+            }
+        }
+*/
+        //
         $r = $kitPrice->apiGet([
             'kit' => implode(',', array())
         ]);
@@ -640,14 +678,6 @@ class FirstOrderController extends MinikuraController
             $total['price'] += $price;
         }
 
-
-        $Address = CakeSession::read('Address');
-        $this->set('Address', $Address);
-
-        $Email = CakeSession::read('Email');
-        $this->set('Email', $Email);
-
-        //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
