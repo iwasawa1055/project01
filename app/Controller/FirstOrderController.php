@@ -3,6 +3,7 @@ App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
+App::uses('CustomerKitPrice', 'Model');
 
 
 class FirstOrderController extends MinikuraController
@@ -145,12 +146,13 @@ class FirstOrderController extends MinikuraController
             //CakeSession::delete('Order');
 
             $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
-                            'mono_total_num' => 0,
                             'hako' => array('hako' => 0, 'hako_apparel' => 0, 'hako_book' => 0),
-                            'hako_total_num' => 0,
-                            'cleaning' => 0,
-                            'starter' => 0);
+                            'cleaning' => array('cleaning' => 0),
+                            'starter' => array('starter' => 0));
+            $OrderTotal = array('mono_num' => 0,
+                                'hako_num' => 0);
             CakeSession::write('Order', $Order);
+            CakeSession::write('OrderTotal', $OrderTotal);
         }
 
         //* session referer set
@@ -171,25 +173,47 @@ class FirstOrderController extends MinikuraController
 
         $kit_select_type = CakeSession::read('kit_select_type');
 
-        // order情報
+        // order情報取得
         $Order = CakeSession::read('Order');
+        $OrderTotal = CakeSession::read('OrderTotal');
 
         //* post parameter
         // 購入情報によって分岐
+        $params = array();
         switch (true) {
             case $kit_select_type === 'all':
-                $Order = $this->set_mono_order($Order);
-                break;
+                $Order = $this->_set_mono_order($Order);
+                $OrderTotal['mono_num'] = array_sum($Order['mono']);
+                $Order = $this->_set_hako_order($Order);
+                $OrderTotal['hako_num'] = array_sum($Order['hako']);
+                $Order = $this->_set_cleaning_order($Order);
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set Order ' . print_r($Order, true) );
+
+                // 箱選択されているか
+                if (array_sum($Order) === 0) {
+                    $params = array(
+                        'select_oreder_mono' => $OrderTotal['mono_num'],
+                        'select_oreder_hako' => $OrderTotal['hako_num'],
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                    );
+                }                break;
             case $kit_select_type === 'mono':
+                $Order = $this->_set_mono_order($Order);
+                $OrderTotal['mono_num'] = array_sum($Order['mono']);
+                $params = array('select_oreder_mono' => $Order['mono_total_num']);
                 break;
             case $kit_select_type === 'hako':
+                $Order = $this->_set_hako_order($Order);
+                $OrderTotal['hako_num'] = array_sum($Order['hako']);
+                $params = array('select_oreder_hako' => $Order['hako_total_num']);
                 break;
             case $kit_select_type === 'cleaning':
+                $Order = $this->_set_cleaning_order($Order);
+                $params = array('select_oreder_cleaning' => $Order['cleaning']['cleaning']);
                 break;
             case $kit_select_type === 'starter_kit':
-                $select_starter_kit = filter_input(INPUT_POST, 'select_starter_kit');
-                $params = ['select_starter_kit' => $select_starter_kit];
-                $Order['starter'] = $select_starter_kit;
+                $Order = $this->_set_starter_order($Order);
+                $params = array('select_starter_kit' => $Order['starter']['starter']);
                 break;
             default:
                 break;
@@ -197,6 +221,7 @@ class FirstOrderController extends MinikuraController
 
         //* Session write
         CakeSession::write('Order', $Order);
+        CakeSession::write('OrderTotal', $OrderTotal);
 
         //*  validation 基本は共通クラスのAppValidで行う
         $is_validation_error = false;
@@ -551,7 +576,6 @@ class FirstOrderController extends MinikuraController
         $result = $this->Email->getEmail(array('email' => $params['email']));
 
         CakeSession::write('registered', false);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial result ' . print_r($result, true));
         if ($result->status === "0") {
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
             $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
@@ -591,11 +615,40 @@ class FirstOrderController extends MinikuraController
         }
         */
 
+        // オーダー種類を集計
+        // order情報
+        $Order = CakeSession::read('Order');
+
+        $DisplyOrder = array();
+        // mono 集計
+        foreach ($Order as $key => $value) {
+/*            if() {
+
+            }
+ */       }
+
+
+        //
+        $kitPrice = new CustomerKitPrice();
+        $r = $kitPrice->apiGet([
+            'kit' => implode(',', array())
+        ]);
+        if ($r->isSuccess()) {
+
+            $price = $r->results[0]['total_price'] * 1;
+            $product['subtotal']['price'] = $price;
+            $total['price'] += $price;
+        }
+
+
         $Address = CakeSession::read('Address');
         $this->set('Address', $Address);
 
         $Email = CakeSession::read('Email');
         $this->set('Email', $Email);
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
     /**
@@ -656,17 +709,46 @@ class FirstOrderController extends MinikuraController
         return json_encode(compact('status', 'results'));
     }
 
-    private function set_mono_order($Order)
+    private function _set_mono_order($Order)
     {
         $params = null;
 
-        $params = [
+        $params = array(
             'mono'          => filter_input(INPUT_POST, 'mono'),
             'mono_apparel'  => filter_input(INPUT_POST, 'mono_apparel'),
             'mono_book'     => filter_input(INPUT_POST, 'mono_book'),
-        ];
+        );
 
         $Order['mono'] = $params;
+
+        return $Order;
+    }
+
+    private function _set_hako_order($Order)
+    {
+        $params = null;
+
+        $params = array(
+            'hako'          => (int)filter_input(INPUT_POST, 'hako'),
+            'hako_apparel'  => (int)filter_input(INPUT_POST, 'hako_apparel'),
+            'hako_book'     => (int)filter_input(INPUT_POST, 'hako_book'),
+        );
+
+        $Order['hako'] = $params;
+
+        return $Order;
+    }
+
+    private function _set_cleaning_order($Order)
+    {
+        $Order['cleaning']['cleaning'] = (int)filter_input(INPUT_POST, 'cleaning');
+
+        return $Order;
+    }
+
+    private function _set_starter_order($Order)
+    {
+        $Order['starter']['starter'] = (int)filter_input(INPUT_POST, 'starter');
 
         return $Order;
     }

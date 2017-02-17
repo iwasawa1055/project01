@@ -37,7 +37,7 @@
         </p>
         <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができる クラウドストレージ。
         </p>
-        <p class="select-number" id="select_mono"><?php if (CakeSession::read('Order.mono_total_num') !== 0) : ?><span><?php echo h(CakeSession::read('Order.mono_total_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') !== 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-mono"><img src="/first_order/images/box_mono@1x.png" srcset="/first_order/images/box_mono@1x.png 1x, /first_order/images/box_mono@2x.png 2x" alt="minikuraMONO">
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -54,7 +54,7 @@
         </p>
         <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
         </p>
-        <p class="select-number" id="select_hako"><?php if (CakeSession::read('Order.hako_total_num') !== 0) : ?><span><?php echo h(CakeSession::read('Order.hako_total_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') !== 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-hako"> <img src="/first_order/images/box_hako@1x.png" srcset="/first_order/images/box_hako@1x.png 1x, /first_order/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <?php echo $this->Flash->render('select_oreder_hako'); ?>
@@ -70,7 +70,7 @@
         </p>
         <p class="box-caption">10点までの高品質クリーニングと 6ヶ月保管がセットになった 衣類専用クラウドストレージ。
         </p>
-        <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning') !== 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') !== 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-cleaning"><img src="/first_order/images/box_cleaning@1x.png" srcset="/first_order/images/box_cleaning@1x.png 1x, /first_order/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
@@ -88,8 +88,8 @@
         <p class="select-number js-select-starter"><?php if (CakeSession::read('Order.starter')) : ?><span>1セット選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-starter"> <img src="/first_order/images/box_starter@1x.png" srcset="/first_order/images/box_starter@1x.png 1x, /first_order/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
         <a class="btn-starter"><i class="fa fa-play-circle-o <?php if (CakeSession::read('Order.starter')) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
-        <input id="select_starter_kit" name="select_starter_kit" type="hidden" value="0"/>
-        <?php echo $this->Flash->render('select_starter_kit'); ?>
+        <input id="select_starter_kit" name="starter" type="hidden" value="0"/>
+        <?php echo $this->Flash->render('select_starter'); ?>
       </div>
     <?php endif; ?>
   </div>
@@ -103,7 +103,7 @@
 <input type="hidden" name="hako"          value="<?php echo h(CakeSession::read('Order.hako.hako')); ?>" />
 <input type="hidden" name="hako_apparel"  value="<?php echo h(CakeSession::read('Order.hako.hako_apparel')); ?>" />
 <input type="hidden" name="hako_book"     value="<?php echo h(CakeSession::read('Order.hako.hako_book')); ?>" />
-<input type="hidden" name="cleaning"      value="<?php echo h(CakeSession::read('Order.cleaning')); ?>" />
+<input type="hidden" name="cleaning"      value="<?php echo h(CakeSession::read('Order.cleaning.cleaning')); ?>" />
 </form>
 <!--MONO modal-->
 <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -208,7 +208,7 @@
       <h3>クリーニングパック</h3>
       <select class="item-number js-item-number js-item-cleaning" data-name="cleaning" data-box_type="cleaning">
         <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.cleaning') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.cleaning.cleaning') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
