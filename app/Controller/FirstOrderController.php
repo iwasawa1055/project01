@@ -653,30 +653,59 @@ class FirstOrderController extends MinikuraController
         // order情報
         $Order = CakeSession::read('Order');
 
-        $DisplyOrder = array();
+        $PurchaseOrder = array();
 
         // キットコードと合計金額を返すAPI
         $kitPrice = new CustomerKitPrice();
 
-        // mono 集計
-/*        foreach ($Order as $kit_code => $kit_order) {
-            foreach ($kit_order as $key => $value) {
-                if($value !== 0) {
+        // 添字に対応するコードを取得
+        $kit_code = Configure::read('app.first_order.kit.none_starter');
 
+        // スターターキット価格取得
+        if ($Order['starter']['starter'] !== 0) {
+            $starterkit_code = Configure::read('app.first_order.kit_code.starter');
+            $total_price = 0;
+            foreach ($starterkit_code as $key => $code) {
+                // キット毎の価格を取得
+                $r = $kitPrice->apiGet([
+                    'kit' =>  $code . ':1'
+                ]);
+                if ($r->isSuccess()) {
+                    $price = $r->results[0]['total_price'] * 1;
+                    $total_price += $price;
+                }
+            }
+            $PurchaseOrder['starter']['number'] = 1;
+            $PurchaseOrder['starter']['price'] = $total_price;
+            $PurchaseOrder['starter']['kit_name'] = Configure::read('app.first_order.kit_name.starter');
+        }
+
+        // 注文Order集計
+        foreach ($Order as $orders => $kit_order) {
+            foreach ($kit_order as $param => $value) {
+                if ($value !== 0) {
+
+                    // 対応するキットコードがあるか
+                    if (array_key_exists ($param, $kit_code)) {
+                        //
+                        $set_kit_code = $kit_code[$param]['code'];
+                        $r = $kitPrice->apiGet([
+                            'kit' =>  $set_kit_code . ':' .  $value
+                        ]);
+                        if ($r->isSuccess()) {
+                            $price = $r->results[0]['total_price'] * 1;
+                            $PurchaseOrder[$param]['price'] = number_format($price);
+                        }
+                        $PurchaseOrder[$param]['number'] = $value;
+                        $PurchaseOrder[$param]['kit_name'] = $kit_code[$param]['name'];
+                    }
                 }
             }
         }
-*/
-        //
-        $r = $kitPrice->apiGet([
-            'kit' => implode(',', array())
-        ]);
-        if ($r->isSuccess()) {
 
-            $price = $r->results[0]['total_price'] * 1;
-            $product['subtotal']['price'] = $price;
-            $total['price'] += $price;
-        }
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' PurchaseOrder ' . print_r($PurchaseOrder, true));
+
+        CakeSession::write('PurchaseOrder', $PurchaseOrder);
 
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
@@ -693,6 +722,15 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
         */
+
+
+        $this->set('select_delivery', CakeSession::read('Address.select_delivery'));
+
+        CakeSession::delete('Order');
+        CakeSession::delete('Email');
+        CakeSession::delete('Credit');
+        CakeSession::delete('Email');
+        CakeSession::delete('DisplyOrder');
 
     }
 
