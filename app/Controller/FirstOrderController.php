@@ -44,6 +44,16 @@ class FirstOrderController extends MinikuraController
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'set option ' . $option);
         }
 
+        // 紹介コードで遷移してきた場合
+        CakeSession::delete(Configure::read('app.lp_code.param'));
+        $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
+        if (!is_null($code)) {
+            // オプションをコードに変更
+            CakeSession::write(Configure::read('app.lp_option.param'), 'is_code');
+            CakeSession::write(Configure::read('app.lp_code.param'), $code);
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code set_code[ ' . $code . ' ]');
+        }
+
         // 初回購入フローに入らない場合の遷移先
         $none_first_redirect_param = array(
             'controller' => 'login',
@@ -481,6 +491,15 @@ class FirstOrderController extends MinikuraController
                 }
                 CakeSession::write('Email', $Email);
             }
+
+            // 紹介コードを挿入
+            $code = CakeSession::read(Configure::read('app.lp_code.param'));
+            if (!is_null($code)) {
+                $Email = CakeSession::read('Email');
+                $Email['alliance_cd'] = $code;
+                CakeSession::write('Email', $Email);
+            }
+
         }
 
         // スターターキットの場合、紹介コードリセット
@@ -579,10 +598,12 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('code_and_starter_kit');
         if (!empty($params['alliance_cd'])) {
             $Order = CakeSession::read('Order');
-            if ($Order['starter']['starter'] !== 0) {
-                $this->Flash->validation('紹介コードエラー', ['key' => 'code_and_starter_kit']);
-                CakeSession::write('code_and_starter_kit', true);
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code_and_starter_kit ');
+            if (key_exists('starter', $Order)) {
+                if ($Order['starter']['starter'] !== 0) {
+                    $this->Flash->validation('紹介コードエラー', ['key' => 'code_and_starter_kit']);
+                    CakeSession::write('code_and_starter_kit', true);
+                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code_and_starter_kit ');
+                }
             }
         }
 
@@ -657,12 +678,14 @@ class FirstOrderController extends MinikuraController
 
         // スターターキット価格取得
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
-        if ($Order['starter']['starter'] !== 0) {
-            $starterkit_code = Configure::read('app.first_order.starter_kit.code');
-            foreach ($starterkit_code as $param => $code) {
-                $PurchaseOrder[$param]['number']    = 1;
-                $PurchaseOrder[$param]['code']      = $code;
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' param ' . $param);
+        if (key_exists('starter', $Order)) {
+            if ($Order['starter']['starter'] !== 0) {
+                $starterkit_code = Configure::read('app.first_order.starter_kit.code');
+                foreach ($starterkit_code as $param => $code) {
+                    $PurchaseOrder[$param]['number'] = 1;
+                    $PurchaseOrder[$param]['code'] = $code;
+                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' param ' . $param);
+                }
             }
         }
 
