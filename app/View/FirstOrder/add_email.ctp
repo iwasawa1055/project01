@@ -35,10 +35,10 @@
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
-      <?php if (CakeSession::read('registered')) : ?>
+      <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
         <div class="form">
           <label>ログインしサービスをご利用ください<br></label>
-          <a class="login" href="/login">ログイン</a>
+          <a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログイン</a>
         </div>
         <?php endif; ?>
         <div class="form">
@@ -58,7 +58,7 @@
         <label>生年月日<span class="required">※</span></label>
 	
         <select class="select-birth-year" name="birth_year">
-        <?php for ($i = date('Y'); $i >= $login_config['birthyear_start']; $i--) :?>
+        <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
         <?php endfor;?>
         </select>
@@ -97,15 +97,18 @@
       <?php endif; ?>
 
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
+        <label class="terms"><input type="checkbox" class="term agree-before-submit" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
         <?php echo $this->Flash->render('remember');?>
         <a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> minikura利用規約</a>
       </div>
     </div>
   </section>
-  <section class="nextback"><a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="nextback" id="js-agreement_on_page">
+    <a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+    <button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
+<script src="/first_order/js/first_order/add_email.js"></script>
 <?php echo $this->element('FirstOrder/last'); ?>

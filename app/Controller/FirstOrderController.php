@@ -37,10 +37,11 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         // 遷移時にオプションが設定されている場合
+        CakeSession::delete(Configure::read('app.lp_option.param'));
         $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
         if (!is_null($option)) {
-            CakeLog::write(DEBUG_LOG, 'FirstOrder set option ' . $option);
-            CakeSession::write('lp_option', $option);
+            CakeSession::write(Configure::read('app.lp_option.param'), $option);
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'set option ' . $option);
         }
 
         // 初回購入フローに入らない場合の遷移先
@@ -107,7 +108,7 @@ class FirstOrderController extends MinikuraController
         }
         $this->set('is_logined', $is_logined);
 
-        $lp_option = CakeSession::read('lp_option');
+        $lp_option = CakeSession::read(Configure::read('app.lp_option.param'));
         $kit_select_type = 'all';
         switch (true) {
             case $lp_option === 'mono':
@@ -135,7 +136,11 @@ class FirstOrderController extends MinikuraController
                 break;
         }
 
-        //* Session write
+        //* キットタイプが変わった場合、オーダーを削除
+        $before_kit_select_type = CakeSession::read('kit_select_type', $kit_select_type );
+        if($before_kit_select_type !== $kit_select_type) {
+            CakeSession::delete('Order');
+        }
         CakeSession::write('kit_select_type', $kit_select_type );
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
 
@@ -143,17 +148,25 @@ class FirstOrderController extends MinikuraController
         $back  = filter_input(INPUT_GET, 'back');
         if (!$back) {
 
-            // Orderセッションデータリセット
-            //CakeSession::delete('Order');
+            // オーダ情報がない場合
+            if(empty(CakeSession::read('Order'))) {
+                $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
+                    'hako' => array('hako' => 0, 'hako_apparel' => 0, 'hako_book' => 0),
+                    'cleaning' => array('cleaning' => 0),
+                    'starter' => array('starter' => 0));
+                CakeSession::write('Order', $Order);
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is Order empty ');
+            }
 
-            $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
-                            'hako' => array('hako' => 0, 'hako_apparel' => 0, 'hako_book' => 0),
-                            'cleaning' => array('cleaning' => 0),
-                            'starter' => array('starter' => 0));
-            $OrderTotal = array('mono_num' => 0,
-                                'hako_num' => 0);
-            CakeSession::write('Order', $Order);
-            CakeSession::write('OrderTotal', $OrderTotal);
+            // オーダ情報がない場合
+            if(empty(CakeSession::read('OrderTotal'))) {
+                $OrderTotal = array(
+                    'mono_num' => 0,
+                    'hako_num' => 0
+                );
+                CakeSession::write('OrderTotal', $OrderTotal);
+
+            }
         }
 
         //* session referer set
@@ -201,12 +214,12 @@ class FirstOrderController extends MinikuraController
             case $kit_select_type === 'mono':
                 $Order = $this->_set_mono_order($Order);
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
-                $params = array('select_oreder_mono' => $Order['mono_total_num']);
+                $params = array('select_oreder_mono' => $OrderTotal['mono_num']);
                 break;
             case $kit_select_type === 'hako':
                 $Order = $this->_set_hako_order($Order);
                 $OrderTotal['hako_num'] = array_sum($Order['hako']);
-                $params = array('select_oreder_hako' => $Order['hako_total_num']);
+                $params = array('select_oreder_hako' => $OrderTotal['hako_num']);
                 break;
             case $kit_select_type === 'cleaning':
                 $Order = $this->_set_cleaning_order($Order);
@@ -458,10 +471,9 @@ class FirstOrderController extends MinikuraController
         }
         $this->set('is_logined', $is_logined);
 
-        $loginconfigure = Configure::read('app.register');
-
-        // 入力カード情報セット
-        $this->set('login_config', $loginconfigure);
+        // 誕生日に関するコンフィグ
+        $birthyear_configure = Configure::read('app.register.birthyear');
+        $this->set('birthyear_configure', $birthyear_configure);
 
         $back  = filter_input(INPUT_GET, 'back');
         
@@ -505,7 +517,6 @@ class FirstOrderController extends MinikuraController
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
             $is_logined = true;
         }
 
@@ -549,18 +560,6 @@ class FirstOrderController extends MinikuraController
                 $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
                 $is_validation_error = true;
             }
-
-            // 既存ユーザか確認する
-            $this->loadModel('Email');
-            $result = $this->Email->getEmail(array('email' => $params['email']));
-
-            CakeSession::write('registered', false);
-            if ($result->status === "0") {
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
-                $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
-                CakeSession::write('registered', true);
-                $is_validation_error = true;
-            }
         }
 
         //* Session write
@@ -588,11 +587,31 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
+        // もしログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
+        CakeSession::write('registered_user_login_url', null);
+        if(!$is_logined) {
+            if ($is_validation_error !== true) {
+                // 既存ユーザか確認する
+                $this->loadModel('Email');
+                $result = $this->Email->getEmail(array('email' => $params['email']));
+
+                if ($result->status === "0") {
+                    // エラーか既存アドレスか判定
+                    if($result->http_code !== "400") {
+                        $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
+                        $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
+                        CakeSession::write('registered_user_login_url', $registered_user_login_url);
+                    }
+                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
+                    $is_validation_error = true;
+                }
+            }
+        }
+
         if ($is_validation_error === true) {
-            $loginconfigure = Configure::read('app.register');
-      
-            // 入力カード情報セット
-            $this->set('login_config', $loginconfigure);
+            // 誕生日に関するコンフィグ
+            $birthyear_configure = Configure::read('app.register.birthyear');
+            $this->set('birthyear_configure', $birthyear_configure);
             $this->set('is_logined', $is_logined);
 
             $this->render('add_email');
@@ -832,7 +851,7 @@ class FirstOrderController extends MinikuraController
         $this->set('select_delivery', CakeSession::read('Address.select_delivery'));
 
         CakeSession::delete('Order');
-        CakeSession::delete('Email');
+        CakeSession::delete('Address');
         CakeSession::delete('Credit');
         CakeSession::delete('Email');
         CakeSession::delete('DisplyOrder');
