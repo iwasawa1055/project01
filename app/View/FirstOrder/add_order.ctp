@@ -37,7 +37,7 @@
         </p>
         <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができる クラウドストレージ。
         </p>
-        <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') !== 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-mono"><img src="/first_order/images/box_mono@1x.png" srcset="/first_order/images/box_mono@1x.png 1x, /first_order/images/box_mono@2x.png 2x" alt="minikuraMONO">
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -56,7 +56,7 @@
         </p>
         <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
         </p>
-        <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') !== 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-hako"> <img src="/first_order/images/box_hako@1x.png" srcset="/first_order/images/box_hako@1x.png 1x, /first_order/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <div class="form">
@@ -74,7 +74,7 @@
         </p>
         <p class="box-caption">10点までの高品質クリーニングと 6ヶ月保管がセットになった 衣類専用クラウドストレージ。
         </p>
-        <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') !== 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-cleaning"><img src="/first_order/images/box_cleaning@1x.png" srcset="/first_order/images/box_cleaning@1x.png 1x, /first_order/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <div class="form">
@@ -93,10 +93,10 @@
         </p>
         <p class="select-number js-select-starter"><?php if (CakeSession::read('Order.starter.starter')) : ?><span>1セット選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-starter"> <img src="/first_order/images/box_starter@1x.png" srcset="/first_order/images/box_starter@1x.png 1x, /first_order/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
-        <a class="btn-starter"><i class="fa fa-play-circle-o <?php if (CakeSession::read('Order.starter')) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
-        <input id="select_starter_kit" name="starter" type="hidden" value="0"/>
+        <a class="btn-starter"><i class="fa fa-play-circle-o <?php if (CakeSession::read('Order.starter.starter')) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
+        <input id="select_starter_kit" name="starter" type="hidden" value="<?php echo CakeSession::read('Order.starter.starter'); ?>"/>
         <div class="form">
-          <?php echo $this->Flash->render('select_starter'); ?>
+          <?php echo $this->Flash->render('select_starter_kit'); ?>
         </div>
       </div>
     <?php endif; ?>

@@ -125,14 +125,21 @@ class FirstOrderController extends MinikuraController
             case $lp_option === 'cleaning':
                 $kit_select_type = 'cleaning';
                 break;
+            case $lp_option === 'all':
+                $kit_select_type = 'all';
+                break;
             case $lp_option === 'is_code':
-                // todo: ここはどうなる？
-            default:
+                $kit_select_type = 'all';
+                break;
+            case $lp_option === 'starter_kit':
                 if ($is_logined) {
-                    $kit_select_type = 'all';
+                    $kit_select_type = 'mono';
                 } else {
                     $kit_select_type = 'starter_kit';
                 }
+                break;
+            default:
+                $kit_select_type = 'all';
                 break;
         }
 
@@ -140,34 +147,11 @@ class FirstOrderController extends MinikuraController
         $before_kit_select_type = CakeSession::read('kit_select_type', $kit_select_type );
         if($before_kit_select_type !== $kit_select_type) {
             CakeSession::delete('Order');
+            CakeSession::delete('OrderTotal');
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order  delete');
         }
         CakeSession::write('kit_select_type', $kit_select_type );
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
-
-        // boxの選択のタイプによって処理を変更する。
-        $back  = filter_input(INPUT_GET, 'back');
-        if (!$back) {
-
-            // オーダ情報がない場合
-            if(empty(CakeSession::read('Order'))) {
-                $Order = array( 'mono' => array('mono' => 0, 'mono_apparel' => 0, 'mono_book' => 0),
-                    'hako' => array('hako' => 0, 'hako_apparel' => 0, 'hako_book' => 0),
-                    'cleaning' => array('cleaning' => 0),
-                    'starter' => array('starter' => 0));
-                CakeSession::write('Order', $Order);
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is Order empty ');
-            }
-
-            // オーダ情報がない場合
-            if(empty(CakeSession::read('OrderTotal'))) {
-                $OrderTotal = array(
-                    'mono_num' => 0,
-                    'hako_num' => 0
-                );
-                CakeSession::write('OrderTotal', $OrderTotal);
-
-            }
-        }
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -238,6 +222,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('OrderTotal', $OrderTotal);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set Order ' . print_r($Order, true));
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set OrderTotal ' . print_r($OrderTotal, true));
 
         //*  validation 基本は共通クラスのAppValidで行う
         $is_validation_error = false;
@@ -498,6 +483,9 @@ class FirstOrderController extends MinikuraController
             }
         }
 
+        // スターターキットの場合、紹介コードリセット
+        CakeSession::delete('code_and_starter_kit');
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
@@ -587,9 +575,20 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // もしログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
+        // スターターキットの場合、紹介コードは使用できない。
+        CakeSession::delete('code_and_starter_kit');
+        if (!empty($params['alliance_cd'])) {
+            $Order = CakeSession::read('Order');
+            if ($Order['starter']['starter'] !== 0) {
+                $this->Flash->validation('紹介コードエラー', ['key' => 'code_and_starter_kit']);
+                CakeSession::write('code_and_starter_kit', true);
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code_and_starter_kit ');
+            }
+        }
+
+        // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
         CakeSession::write('registered_user_login_url', null);
-        if(!$is_logined) {
+        if (!$is_logined) {
             if ($is_validation_error !== true) {
                 // 既存ユーザか確認する
                 $this->loadModel('Email');
@@ -597,7 +596,7 @@ class FirstOrderController extends MinikuraController
 
                 if ($result->status === "0") {
                     // エラーか既存アドレスか判定
-                    if($result->http_code !== "400") {
+                    if ($result->http_code !== "400") {
                         $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
                         $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
