@@ -32,6 +32,10 @@ section#adress .form .validation {
 	display	: inline-block;
 }
 
+section#lineup .form .validation {
+    display: inline-block;
+}
+
 .validation {
 	display	: inline-block;
 }
@@ -130,4 +134,13 @@ section#adress .form .validation {
 .btn-next[disabled]:hover{
     background-color: #d9534f;
     border-color: #d43f3a;
+}
+
+section#lineup .form .validation {
+    background: #ff6666 none repeat scroll 0 0;
+    border: 0.1rem solid #ff6666;
+    border-radius: 2px;
+    color: #ffffff;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
 }

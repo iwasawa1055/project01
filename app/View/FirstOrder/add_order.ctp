@@ -41,7 +41,9 @@
         <div class="box-mono"><img src="/first_order/images/box_mono@1x.png" srcset="/first_order/images/box_mono@1x.png 1x, /first_order/images/box_mono@2x.png 2x" alt="minikuraMONO">
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-        <?php echo $this->Flash->render('select_oreder_mono'); ?>
+        <div class="form">
+          <?php echo $this->Flash->render('select_oreder_mono'); ?>
+        </div>
       </div>
     <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
@@ -57,7 +59,9 @@
         <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') !== 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-hako"> <img src="/first_order/images/box_hako@1x.png" srcset="/first_order/images/box_hako@1x.png 1x, /first_order/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-        <?php echo $this->Flash->render('select_oreder_hako'); ?>
+        <div class="form">
+          <?php echo $this->Flash->render('select_oreder_hako'); ?>
+        </div>
       </div>
     <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'cleaning')) : ?>
@@ -73,7 +77,9 @@
         <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') !== 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-cleaning"><img src="/first_order/images/box_cleaning@1x.png" srcset="/first_order/images/box_cleaning@1x.png 1x, /first_order/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
-        <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
+        <div class="form">
+          <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
+        </div>
       </div>
     <?php endif; ?>
     <?php if ($kit_select_type === 'starter_kit') : ?>
@@ -89,7 +95,9 @@
         <div class="box-starter"> <img src="/first_order/images/box_starter@1x.png" srcset="/first_order/images/box_starter@1x.png 1x, /first_order/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
         <a class="btn-starter"><i class="fa fa-play-circle-o <?php if (CakeSession::read('Order.starter')) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
         <input id="select_starter_kit" name="starter" type="hidden" value="0"/>
-        <?php echo $this->Flash->render('select_starter'); ?>
+        <div class="form">
+          <?php echo $this->Flash->render('select_starter'); ?>
+        </div>
       </div>
     <?php endif; ?>
   </div>

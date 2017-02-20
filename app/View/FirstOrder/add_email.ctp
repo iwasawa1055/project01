@@ -35,10 +35,10 @@
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
-      <?php if (CakeSession::read('registered')) : ?>
+      <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
         <div class="form">
           <label>ログインしサービスをご利用ください<br></label>
-          <a class="login" href="/login">ログイン</a>
+          <a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログイン</a>
         </div>
         <?php endif; ?>
         <div class="form">
@@ -58,7 +58,7 @@
         <label>生年月日<span class="required">※</span></label>
 	
         <select class="select-birth-year" name="birth_year">
-        <?php for ($i = date('Y'); $i >= $login_config['birthyear_start']; $i--) :?>
+        <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
         <?php endfor;?>
         </select>
