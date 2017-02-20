@@ -97,15 +97,18 @@
       <?php endif; ?>
 
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
+        <label class="terms"><input type="checkbox" class="term agree-before-submit" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
         <?php echo $this->Flash->render('remember');?>
         <a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> minikura利用規約</a>
       </div>
     </div>
   </section>
-  <section class="nextback"><a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="nextback" id="js-agreement_on_page">
+    <a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+    <button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
+<script src="/first_order/js/first_order/add_email.js"></script>
 <?php echo $this->element('FirstOrder/last'); ?>

@@ -117,3 +117,17 @@ section#adress .form .validation {
     transform: rotate(360deg);
   }
 }
+
+.form-line{
+    vertical-align:top;
+}
+
+.btn-next[disabled],
+.btn-next.active[disabled],
+.btn-next.focus[disabled],
+.btn-next[disabled]:active,
+.btn-next[disabled]:focus,
+.btn-next[disabled]:hover{
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}

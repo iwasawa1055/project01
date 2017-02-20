@@ -100,7 +100,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <?php echo $this->fetch('content'); ?>
   </div>
   <?php else : ?>
-    <div class="col-lg-12 login-wrapper">
+    <div class="col-lg-12 login-wrapper" id="js-agreement_on_page">
       <?php echo $this->Flash->render(); ?>
       <?php echo $this->fetch('content'); ?>
     </div>
