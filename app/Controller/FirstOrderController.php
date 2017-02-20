@@ -795,6 +795,9 @@ class FirstOrderController extends MinikuraController
             $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
             $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
             $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.hako.cleaning');
+            $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
+            $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
+            $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
             $gmo_kit_card['card_seq']      = CakeSession::read('Order.cleaning.cleaning');
             $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
             $gmo_kit_card['address_id']    = $address_id;
@@ -806,7 +809,14 @@ class FirstOrderController extends MinikuraController
  
             $productKitList = [
                 PRODUCT_CD_MONO => [
-                    'kitList' => [KIT_CD_MONO, KIT_CD_MONO_APPAREL, KIT_CD_MONO_BOOK],
+                    'kitList' => [
+                        KIT_CD_MONO, 
+                        KIT_CD_MONO_APPAREL, 
+                        KIT_CD_MONO_BOOK, 
+                        KIT_CD_STARTER_MONO, 
+                        KIT_CD_STARTER_MONO_APPAREL, 
+                        KIT_CD_STARTER_MONO_BOOK
+                    ],
                 ],
                 PRODUCT_CD_HAKO => [
                     'kitList' => [KIT_CD_HAKO, KIT_CD_HAKO_APPAREL, KIT_CD_HAKO_BOOK],
@@ -817,13 +827,16 @@ class FirstOrderController extends MinikuraController
             ];
 
             $dataKeyNum = [
-                KIT_CD_MONO => 'mono_num',
-                KIT_CD_MONO_APPAREL => 'mono_appa_num',
-                KIT_CD_MONO_BOOK => 'mono_book_num',
-                KIT_CD_HAKO => 'hako_num',
-                KIT_CD_HAKO_APPAREL => 'hako_appa_num',
-                KIT_CD_HAKO_BOOK => 'hako_book_num',
+                KIT_CD_MONO          => 'mono_num',
+                KIT_CD_MONO_APPAREL  => 'mono_appa_num',
+                KIT_CD_MONO_BOOK     => 'mono_book_num',
+                KIT_CD_HAKO          => 'hako_num',
+                KIT_CD_HAKO_APPAREL  => 'hako_appa_num',
+                KIT_CD_HAKO_BOOK     => 'hako_book_num',
                 KIT_CD_CLEANING_PACK => 'cleaning_num',
+                KIT_CD_STARTER_MONO          => 'starter_mono_num',
+                KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
+                KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
             ];
             $kit_params = [];
             foreach ($productKitList as $product) {
@@ -832,15 +845,18 @@ class FirstOrderController extends MinikuraController
                     $num = $gmo_kit_card[$dataKeyNum[$kitCd]];
                     if (!empty($num)) {
                         $kit_params[] = $kitCd . ':' . $num;
-                        debug($kit_params);
                     }
                 }
             }
             $gmo_kit_card['kit'] = implode(',', $kit_params);
+            
             $this->PaymentGMOKitCard->set($gmo_kit_card);
             //* todo: 購入リクエスト完了後エラーになる。
             //*       Model/Api/PaymentGMOKitCard.php 16~17行目 に問題あり？
-            //$result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+            $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+            if ($result_kit_card->status !== '1') {
+                // todo: error 処理
+            }
 
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
