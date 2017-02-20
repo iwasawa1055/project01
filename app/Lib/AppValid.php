@@ -700,7 +700,7 @@ class AppValid
 					}
 					break;
 				case $name === 'select_starter_kit':
-					if ($value === '0') {
+					if ($value === 0) {
 						$ret[$name] = 'ボックスを選択してください。';
 					}
 					break;

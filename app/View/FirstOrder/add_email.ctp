@@ -31,7 +31,7 @@
       <?php else : ?>
         <div class="form">
           <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-          <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
+          <input type="text" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
@@ -42,7 +42,7 @@
         </div>
         <?php endif; ?>
         <div class="form">
-          <label>パスワード<span class="required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
+          <label>パスワード<span class="required">※</span><br><span>半角英数記号6文字以上でご入力ください。</span></label>
           <input type="password" class="password" size="20" maxlength="20" name="password">
           <?php echo $this->Flash->render('password');?>
         </div>
@@ -92,7 +92,17 @@
         <div class="form form-line">
           <label>紹介コード</label>
           <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+          <?php echo $this->Flash->render('code_and_starter_kit');?>
         </div>
+      <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
+        <div class="form form-line">
+          <label>スターターキットを購入する場合、紹介コードをご利用できません。 <br>
+          紹介コードを使用しない（入力欄を空欄）か、再度ボックス選択画面からご注文ください。
+          </label>
+          <a  href="/first_order/index?option=all">ボックス選択ページへ</a>
+        </div>
+      <?php endif; ?>
+
         <div class="divider"></div>
       <?php endif; ?>
 
