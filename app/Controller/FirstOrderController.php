@@ -859,7 +859,7 @@ class FirstOrderController extends MinikuraController
             $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
             $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
             $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
-            $gmo_kit_card['card_seq']      = $result_security_card->results->card_seq;
+            $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
             $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
             $gmo_kit_card['address_id']    = $address_id;
             $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
