@@ -31,8 +31,8 @@ class LoginController extends MinikuraController
                     $this->Flash->set($res->error_message);
                     return $this->render('index');
                 }
-                
-                if ( $this->request->data['remember'] ) {
+
+                if (!empty($this->request->data['remember'])) {
                     $cookie_enable = true;
                 } else {
                     $cookie_enable = false;
