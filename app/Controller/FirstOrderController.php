@@ -4,6 +4,7 @@ App::uses('MinikuraController', 'Controller');
 App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
 App::uses('CustomerKitPrice', 'Model');
+App::uses('PaymentGMOKitCard', 'Model');
 
 
 class FirstOrderController extends MinikuraController
@@ -681,7 +682,6 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
         */
-
         //* 会員登録
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
@@ -744,6 +744,84 @@ class FirstOrderController extends MinikuraController
             }
 
             $res = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+
+            // お届け先登録
+            $this->loadModel('CustomerAddress');
+            $customer_address['address_id']     = '';
+            $customer_address['postal']         = CakeSession::read('Address.postal');
+            $customer_address['pref']           = CakeSession::read('Address.pref');
+            $customer_address['address1']       = CakeSession::read('Address.address1');
+            $customer_address['address2']       = CakeSession::read('Address.address2');
+            $customer_address['address3']       = CakeSession::read('Address.address3');
+            $customer_address['tel1']           = CakeSession::read('Address.tel1');
+            $customer_address['lastname']       = CakeSession::read('Address.lastname');
+            $customer_address['lastname_kana']  = CakeSession::read('Address.lastname_kana');
+            $customer_address['firstname']      = CakeSession::read('Address.firstname');
+            $customer_address['firstname_kana'] = CakeSession::read('Address.firstname_kana');
+            $this->CustomerAddress->set($customer_address);
+            $result_address = $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
+            if ($result_address->status !== '1') {
+                // todo: error 処理
+            }
+            // お届け先ID取得
+            $addresses = $this->CustomerAddress->apiGetResults();
+            $address_id = $addresses[0]['address_id'];
+
+            // 購入
+            $this->loadModel('PaymentGMOKitCard');
+            $gmo_kit_card['mono_num']      = CakeSession::read('Order.mono.mono');
+            $gmo_kit_card['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
+            $gmo_kit_card['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
+            $gmo_kit_card['hako_num']      = CakeSession::read('Order.hako.hako');
+            $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
+            $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
+            $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.hako.cleaning');
+            $gmo_kit_card['card_seq']      = CakeSession::read('Order.cleaning.cleaning');
+            $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
+            $gmo_kit_card['address_id']    = $address_id;
+            $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
+            $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
+            $gmo_kit_card['tel1']          = CakeSession::read('Address.tel1');
+            $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
+            $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+ 
+            $productKitList = [
+                PRODUCT_CD_MONO => [
+                    'kitList' => [KIT_CD_MONO, KIT_CD_MONO_APPAREL, KIT_CD_MONO_BOOK],
+                ],
+                PRODUCT_CD_HAKO => [
+                    'kitList' => [KIT_CD_HAKO, KIT_CD_HAKO_APPAREL, KIT_CD_HAKO_BOOK],
+                ],
+                PRODUCT_CD_CLEANING_PACK => [
+                    'kitList' => [KIT_CD_CLEANING_PACK],
+                ],
+            ];
+
+            $dataKeyNum = [
+                KIT_CD_MONO => 'mono_num',
+                KIT_CD_MONO_APPAREL => 'mono_appa_num',
+                KIT_CD_MONO_BOOK => 'mono_book_num',
+                KIT_CD_HAKO => 'hako_num',
+                KIT_CD_HAKO_APPAREL => 'hako_appa_num',
+                KIT_CD_HAKO_BOOK => 'hako_book_num',
+                KIT_CD_CLEANING_PACK => 'cleaning_num',
+            ];
+            $kit_params = [];
+            foreach ($productKitList as $product) {
+                // 個数集計
+                foreach ($product['kitList'] as $kitCd) {
+                    $num = $gmo_kit_card[$dataKeyNum[$kitCd]];
+                    if (!empty($num)) {
+                        $kit_params[] = $kitCd . ':' . $num;
+                        debug($kit_params);
+                    }
+                }
+            }
+            $gmo_kit_card['kit'] = implode(',', $kit_params);
+            $this->PaymentGMOKitCard->set($gmo_kit_card);
+            //* todo: 購入リクエスト完了後エラーになる。
+            //*       Model/Api/PaymentGMOKitCard.php 16~17行目 に問題あり？
+            //$result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
 
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
