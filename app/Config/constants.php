@@ -152,6 +152,9 @@ const KIT_NAME = [
     KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
     KIT_CD_SNEAKERS => 'minikura SNEAKERS KIT',
+    KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
+    KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
+    KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
 ];
 
 const PRODUCT_NAME = [
