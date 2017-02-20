@@ -34,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-          <?php if (CakeSession::read('Order.starter.starter') !== 0 ) {?>
+          <?php if (key_exists('starter', CakeSession::read('Order'))) {?>
             <tr>
               <th><?php echo Configure::read('app.first_order.starter_kit.name') ?></th>
               <td><div class="text-right">1</div></td>
@@ -54,6 +54,10 @@
       </div>
       <div class="divider"></div>
       <div class="form">
+        <?php echo $this->Flash->render('customer_regist_info');?>
+        <?php echo $this->Flash->render('customer_card_info');?>
+        <?php echo $this->Flash->render('customer_address_info');?>
+        <?php echo $this->Flash->render('customer_kit_card_info');?>
         <label>お届け先住所</label>
         <p>〒<?php echo CakeSession::read('Address.postal');?></p>
         <p><?php echo CakeSession::read('Address.pref');?><?php echo CakeSession::read('Address.address1');?><?php echo CakeSession::read('Address.address2');?> <?php echo CakeSession::read('Address.address3');?></p>
