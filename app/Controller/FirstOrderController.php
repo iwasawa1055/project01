@@ -21,7 +21,6 @@ class FirstOrderController extends MinikuraController
     public function beforeFilter()
     {
         parent::beforeFilter();
-
         //* mypageとは違うlayoutにする
         $this->layout = 'element_set';
 
@@ -32,7 +31,6 @@ class FirstOrderController extends MinikuraController
      */
     public function index()
     {
-
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
