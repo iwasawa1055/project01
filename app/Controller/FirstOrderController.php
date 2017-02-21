@@ -405,15 +405,16 @@ class FirstOrderController extends MinikuraController
         $params['card_no'] = str_replace("-", "", $params['card_no']);
 
         //*  validation 基本は共通クラスのAppValidで行う
-        $is_validation_error = false;
         $validation = AppValid::validate($params);
 
         //* 共通バリデーションでエラーあったらメッセージセット
+        //* バリデーションエラーでAPIを実行しないためここでre
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $is_validation_error = true;
+            $this->render('add_credit');
+            return;
         }
         
         //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
@@ -422,10 +423,6 @@ class FirstOrderController extends MinikuraController
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $is_validation_error = true;
-        }
-
-        if ($is_validation_error === true) {
             $this->render('add_credit');
             return;
         }
@@ -459,7 +456,7 @@ class FirstOrderController extends MinikuraController
         $this->set('birthyear_configure', $birthyear_configure);
 
         $back  = filter_input(INPUT_GET, 'back');
-        
+
         if (!$back) {
             if (empty(CakeSession::read('Email'))) {
                 $Email = array(
@@ -492,6 +489,9 @@ class FirstOrderController extends MinikuraController
 
         // スターターキットの場合、紹介コードリセット
         CakeSession::delete('code_and_starter_kit');
+
+        // 既存登録ユーザ リセット
+        CakeSession::delete('registered_user_login_url', null);
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -588,13 +588,16 @@ class FirstOrderController extends MinikuraController
                 if ($Order['starter']['starter'] !== 0) {
                     $this->Flash->validation('紹介コードエラー', ['key' => 'code_and_starter_kit']);
                     CakeSession::write('code_and_starter_kit', true);
-                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code_and_starter_kit ');
+
+                    $is_validation_error = true;
+
+                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code_and_starter_kit ');
                 }
             }
         }
 
         // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
-        CakeSession::write('registered_user_login_url', null);
+        CakeSession::delete('registered_user_login_url');
         if (!$is_logined) {
             if ($is_validation_error !== true) {
                 // 既存ユーザか確認する
@@ -608,7 +611,6 @@ class FirstOrderController extends MinikuraController
                         $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
                     }
-                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'emial error_message ' . print_r($result->error_message, true));
                     $is_validation_error = true;
                 }
             }
@@ -640,6 +642,10 @@ class FirstOrderController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
+
+        // 前処理の不要なセッションを削除
+        CakeSession::delete('registered_user_login_url');
+        CakeSession::delete('code_and_starter_kit');
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
@@ -752,7 +758,6 @@ class FirstOrderController extends MinikuraController
             }
             
             if (!empty($res->error_message)) {
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' CustomerRegistInfo ' . print_r($res, true));
                 $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
                 return $this->render('confirm');
             }
@@ -786,7 +791,6 @@ class FirstOrderController extends MinikuraController
             $this->loadModel(self::MODEL_NAME_SECURITY);
             $credit_data[self::MODEL_NAME_SECURITY] = CakeSession::read('Credit');
 
-            $credit_data['card_no'] = '1111111111111111';
             $this->PaymentGMOSecurityCard->set($credit_data);
 
             // Expire
@@ -810,28 +814,6 @@ class FirstOrderController extends MinikuraController
                 return $this->render('confirm');
             }
 
-            // お届け先登録
-            $this->loadModel('CustomerAddress');
-            $customer_address['address_id']     = '';
-            $customer_address['postal']         = CakeSession::read('Address.postal');
-            $customer_address['pref']           = CakeSession::read('Address.pref');
-            $customer_address['address1']       = CakeSession::read('Address.address1');
-            $customer_address['address2']       = CakeSession::read('Address.address2');
-            $customer_address['address3']       = CakeSession::read('Address.address3');
-            $customer_address['tel1']           = CakeSession::read('Address.tel1');
-            $customer_address['lastname']       = CakeSession::read('Address.lastname');
-            $customer_address['lastname_kana']  = CakeSession::read('Address.lastname_kana');
-            $customer_address['firstname']      = CakeSession::read('Address.firstname');
-            $customer_address['firstname_kana'] = CakeSession::read('Address.firstname_kana');
-            $this->CustomerAddress->set($customer_address);
-            $result_address = $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
-            if ($result_address->status !== '1') {
-                $this->Flash->validation($result_address->message, ['key' => 'customer_address_info']);
-                return $this->render('confirm');
-            }
-            // お届け先ID取得
-            $addresses = $this->CustomerAddress->apiGetResults();
-            $address_id = $addresses[0]['address_id'];
 
             // 購入
             $this->loadModel('PaymentGMOKitCard');
@@ -847,7 +829,7 @@ class FirstOrderController extends MinikuraController
             $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
             $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
             $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
-            $gmo_kit_card['address_id']    = $address_id;
+            $gmo_kit_card['address_id']    = '';
             $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
             $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
             $gmo_kit_card['tel1']          = CakeSession::read('Address.tel1');
@@ -913,7 +895,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('Address');
         CakeSession::delete('Credit');
         CakeSession::delete('Email');
-        CakeSession::delete('DisplyOrder');
+        CakeSession::delete('PurchaseOrder');
 
     }
 

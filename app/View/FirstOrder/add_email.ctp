@@ -96,8 +96,8 @@
         </div>
       <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
         <div class="form form-line">
-          <label>スターターキットを購入する場合、紹介コードをご利用できません。 <br>
-          紹介コードを使用しない（入力欄を空欄）か、再度ボックス選択画面からご注文ください。
+          <label class="text-danger">monoスターターキットを購入する場合、紹介コードをご利用できません。 <br>
+          紹介コードを使用しない（入力欄を空欄にする）か、再度ボックス選択画面からご注文ください。
           </label>
           <a  href="/first_order/index?option=all">ボックス選択ページへ</a>
         </div>
