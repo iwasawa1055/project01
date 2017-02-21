@@ -38,7 +38,7 @@ class RegisterController extends MinikuraController
     public function customer_add()
     {
         // 本登録画面へリダイレクト
-        return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
+        //return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
 
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
@@ -61,7 +61,7 @@ class RegisterController extends MinikuraController
     public function customer_confirm()
     {
         // 本登録画面へリダイレクト
-        return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
+        //return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
 
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
@@ -83,7 +83,7 @@ class RegisterController extends MinikuraController
     public function customer_complete()
     {
         // 本登録画面へリダイレクト
-        return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
+        //return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
 
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
