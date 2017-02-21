@@ -1,3 +1,7 @@
+:-ms-input-placeholder {
+	color: #bbb;
+}
+
 button[class^="btn-"] {
 	margin: 1.5rem 0 0 0;
 	padding: 1rem;
@@ -53,7 +57,7 @@ section#lineup .form .validation {
     display: inline-block;
 }
 
-.validation {
+.validation,.search-address-error-message {
 	display	: inline-block;
 }
 
@@ -159,5 +163,14 @@ section#lineup .form .validation {
     border-radius: 2px;
     color: #ffffff;
     margin: 0.5rem 0 0;
+    padding: 0.5rem;
+}
+
+.search-address-error-message {
+    background: #ff6666 none repeat scroll 0 0;
+    border: 0.1rem solid #ff6666;
+    border-radius: 2px;
+    color: #ffffff;
+    margin: 0.5rem 0 0 !important;
     padding: 0.5rem;
 }
