@@ -892,6 +892,7 @@ class FirstOrderController extends MinikuraController
         $this->set('select_delivery', CakeSession::read('Address.select_delivery'));
 
         CakeSession::delete('Order');
+        CakeSession::delete('OrderTotal');
         CakeSession::delete('Address');
         CakeSession::delete('Credit');
         CakeSession::delete('Email');
