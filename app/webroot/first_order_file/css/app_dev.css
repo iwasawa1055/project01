@@ -1,3 +1,7 @@
+.check-icon {
+	cursor	: pointer;
+}
+
 :-ms-input-placeholder {
 	color: #bbb;
 }
