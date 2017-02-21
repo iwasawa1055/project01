@@ -85,6 +85,7 @@ class LoginController extends MinikuraController
         OutboundList::delete();
         CustomerData::delete();
         // todo: ここで（もしくは別の場所）クッキーを削除したい
+        setcookie('token', '', time() - 1800, '/', '.' . $_SERVER['HTTP_HOST']);
 
         return $this->redirect(['controller' => 'login', 'action' => 'index', '?' => array('logout' => 'true')]);
     }
@@ -139,7 +140,7 @@ class LoginController extends MinikuraController
 
         $logout = filter_input(INPUT_GET,  Configure::read( 'app.login_cookie.param' ));
         if($logout){
-            setcookie('token', '', time() - 1800);
+            setcookie('token', '', time() - 1800, '/', '.' . $_SERVER['HTTP_HOST']);
             return false;
         }
 
