@@ -120,5 +120,5 @@
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
-<script src="/first_order/js/first_order/add_email.js"></script>
+<script src="/first_order_file/js/first_order/add_email.js"></script>
 <?php echo $this->element('FirstOrder/last'); ?>
