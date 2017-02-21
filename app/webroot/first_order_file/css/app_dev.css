@@ -1,4 +1,3 @@
-
 button[class^="btn-"] {
 	margin: 1.5rem 0 0 0;
 	padding: 1rem;
@@ -26,6 +25,24 @@ button.btn-next-full {
 	display: inline-block;
 	width: 30rem;
 	margin-left: 1rem;
+}
+
+@media screen and (max-width: 767px) {
+	button.btn-next {
+		display: inline-block;
+		width : calc(72% - 1rem);
+		margin : .5rem;
+		font-size	: 1.3rem;
+	}
+
+	button.btn-next-full {
+		display: inline-block;
+		width : 100%;
+		margin : .5rem;
+		font-size	: 1.3rem;
+	}
+
+
 }
 
 section#adress .form .validation {

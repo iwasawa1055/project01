@@ -25,12 +25,12 @@
     <div class="wrapper">
       <div class="form">
         <label>クレジットカード番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="text" class="name" name="card_no" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo CakeSession::read('Credit.card_no');?>">
+        <input type="tel" class="name" name="card_no" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo CakeSession::read('Credit.card_no');?>">
         <?php echo $this->Flash->render('card_no');?>
       </div>
       <div class="form">
         <label>セキュリティコード<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="text" class="postal" name="security_cd" placeholder="0123" size="6" maxlength="6" value="">
+        <input type="tel" class="postal" name="security_cd" placeholder="0123" size="6" maxlength="6" value="">
         <?php echo $this->Flash->render('security_cd');?>
       </div>
       <div class="form">

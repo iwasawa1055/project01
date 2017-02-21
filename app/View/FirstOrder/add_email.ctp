@@ -85,8 +85,8 @@
         <div class="form form-line">
           <label>お知らせメール</label>
           <select class="select-info" name="newsletter">
-            <option value="1">受信する</option>
-            <option value="0">受信しない</option>
+            <option value="1"<?php if ( CakeSession::read('Email.newsletter') === "1" ) echo " SELECTED";?>>受信する</option>
+            <option value="0"<?php if ( CakeSession::read('Email.newsletter') === "0" ) echo " SELECTED";?>>受信しない</option>
           </select>
         </div>
         <div class="form form-line">

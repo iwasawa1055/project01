@@ -103,7 +103,7 @@
   </div>
 </section>
 <section class="nextback">
-  <button class="btn-next-full" type="submit">お届け先を入力<i class="fa fa-chevron-circle-right"></i></button>
+  <button class="btn-next-full" type="submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
 </section>
 <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
 <input type="hidden" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
