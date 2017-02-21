@@ -52,6 +52,7 @@
           </tbody>
         </table>
       </div>
+
       <div class="divider"></div>
       <div class="form">
         <?php echo $this->Flash->render('customer_regist_info');?>

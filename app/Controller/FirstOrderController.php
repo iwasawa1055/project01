@@ -258,12 +258,10 @@ class FirstOrderController extends MinikuraController
     public function add_address()
     {
         //* session referer check
-        /*
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_credit'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrder/add_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
 
         $back  = filter_input(INPUT_GET, 'back');
         
@@ -302,12 +300,10 @@ class FirstOrderController extends MinikuraController
     public function confirm_address()
     {
         //* session referer check
-        /*
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_address', 'FirstOrder/add_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
         
         $params = [
             'firstname'         => filter_input(INPUT_POST, 'firstname'),
@@ -359,12 +355,10 @@ class FirstOrderController extends MinikuraController
     public function add_credit()
     {
         //* session referer check
-        /*
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_address', 'FirstOrder/add_email'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
 
         $back  = filter_input(INPUT_GET, 'back');
         
@@ -390,12 +384,10 @@ class FirstOrderController extends MinikuraController
     public function confirm_credit()
     {
         //* session referer check
-        /*
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_credit', 'FirstOrder/add_email'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
 
         $params = [
             'card_no'       => filter_input(INPUT_POST, 'card_no'),
@@ -450,12 +442,10 @@ class FirstOrderController extends MinikuraController
     public function add_email()
     {
         //* session referer check
-        /*
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_credit', 'FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
@@ -513,12 +503,10 @@ class FirstOrderController extends MinikuraController
     public function confirm_email()
     {
         //* session referer check
-        /*
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_email', 'FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
@@ -648,12 +636,10 @@ class FirstOrderController extends MinikuraController
     public function confirm()
     {
         //* session referer check
-        /*
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
@@ -717,12 +703,11 @@ class FirstOrderController extends MinikuraController
     public function complete()
     {
         //* session referer check
-        /*
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm','FirstOrder/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        */
+
         //* 会員登録
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
@@ -765,10 +750,11 @@ class FirstOrderController extends MinikuraController
             } else {
                 $res = $this->CustomerRegistInfo->regist();
             }
+            
             if (!empty($res->error_message)) {
                 CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' CustomerRegistInfo ' . print_r($res, true));
-                //* $this->Flash->validation($res->message, ['key' => 'customer_regist_info']);
-                //* return $this->render('confirm');
+                $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+                return $this->render('confirm');
             }
 
             // ログイン
