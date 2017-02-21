@@ -173,6 +173,17 @@ section#lineup .price span {
 	margin-left: 1.5rem;
 	font-weight: bold;
 }
+section#lineup .price span s {
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+section#lineup .price span.starter {
+	margin-left: .5rem;
+}
+section#lineup .price span.starter span {
+	color: #ff0000;
+	margin-left: .25rem;
+}
 section#lineup .box-caption {
 	margin: 1rem 0 0;
 	font-size: 14px;

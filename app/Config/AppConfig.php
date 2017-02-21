@@ -92,7 +92,7 @@ $config['app']['first_order']['starter_kit']['code'] = array(
     'starter_mono_book'     => KIT_CD_STARTER_MONO_BOOK,
 );
 
-$config['app']['first_order']['starter_kit']['price'] = '750';
+$config['app']['first_order']['starter_kit']['price'] = '250';
 $config['app']['first_order']['starter_kit']['name'] = 'minikura スターターパック';
 
 /**

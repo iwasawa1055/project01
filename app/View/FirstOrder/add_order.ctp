@@ -31,11 +31,11 @@
       <!-- MONO -->
       <div class="lineup-box">
         <h3>minikuraMONO</h3>
-        <p class="price">ボックス代金<span>250円</span>
-        </p>
         <p class="price">月額保管料<span>250円</span>
         </p>
-        <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができる クラウドストレージ。
+        <p class="price">ボックス代金<span>250円</span>
+        </p>
+        <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができるクラウドストレージ。
         </p>
         <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-mono"><img src="/first_order/images/box_mono@1x.png" srcset="/first_order/images/box_mono@1x.png 1x, /first_order/images/box_mono@2x.png 2x" alt="minikuraMONO">
@@ -50,9 +50,9 @@
       <!-- HAKO -->
       <div class="lineup-box">
         <h3>minikuraHAKO</h3>
-        <p class="price">ボックス代金<span>200円</span>
-        </p>
         <p class="price">月額保管料<span>200円</span>
+        </p>
+        <p class="price">ボックス代金<span>200円</span>
         </p>
         <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
         </p>
@@ -68,11 +68,11 @@
       <!-- CLEANING -->
       <div class="lineup-box">
         <h3>クリーニングパック</h3>
-        <p class="price">ボックス代金<span>0円</span>
+        <p class="price">6ヶ月保管＋クリーニング料セット
         </p>
-        <p class="price">半年保管料<span>12,000円</span>
+        <p class="price">ボックス代金<span>12,000円</span>
         </p>
-        <p class="box-caption">10点までの高品質クリーニングと 6ヶ月保管がセットになった 衣類専用クラウドストレージ。
+        <p class="box-caption">10点までの高品質クリーニングと 6ヶ月保管がセットになった衣類専用クラウドストレージ。
         </p>
         <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-cleaning"><img src="/first_order/images/box_cleaning@1x.png" srcset="/first_order/images/box_cleaning@1x.png 1x, /first_order/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
@@ -85,11 +85,11 @@
     <?php if ($kit_select_type === 'starter_kit') : ?>
       <!-- STARTER -->
       <div class="lineup-box">
-        <h3>スターターキット</h3>
-        <p class="price">minikuraMONO3箱セット</p>
-        <p class="price">ボックス代金<span>250円</span>
+        <h3>MONOスターターキット</h3>
+        <p class="price">月額保管料<span>250円</span>（1箱につき）
+        <p class="price">ボックス代金<span class="starter"><s>750円</s><span>今だけ250円</span></span>
         </p>
-        <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができるクラウドストレージ。
+        <p class="box-caption">minikuraMONOのボックス3種類がセットになった初回登録ユーザー限定のお得なキット。
         </p>
         <p class="select-number js-select-starter"><?php if (CakeSession::read('Order.starter.starter')) : ?><span>1セット選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-starter"> <img src="/first_order/images/box_starter@1x.png" srcset="/first_order/images/box_starter@1x.png 1x, /first_order/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
