@@ -93,7 +93,7 @@
         </p>
         <p class="select-number js-select-starter"><?php if (CakeSession::read('Order.starter.starter')) : ?><span>1セット選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-starter"> <img src="/first_order_file/images/box_starter@1x.png" srcset="/first_order_file/images/box_starter@1x.png 1x, /first_order_file/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
-        <a class="btn-starter"><i class="fa fa-play-circle-o <?php if (CakeSession::read('Order.starter.starter')) : ?> active <?php endif; ?>"></i> このボックスを選ぶ</a>
+        <a class="btn-starter <?php if (CakeSession::read('Order.starter.starter')) : ?> active <?php endif; ?>"><i class="fa fa-play-circle-o "></i> このボックスを選ぶ</a>
         <input id="select_starter_kit" name="starter" type="hidden" value="<?php echo CakeSession::read('Order.starter.starter'); ?>"/>
         <div class="form">
           <?php echo $this->Flash->render('select_starter_kit'); ?>

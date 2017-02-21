@@ -115,7 +115,7 @@ class LoginController extends MinikuraController
           // 有効時間 (60秒 * 60分 * 24時 * 設定)
           //   設定：AppConfig.php->app.login_cookie.cookie_period
           $expired = time() + $cookie_period;
-          setcookie('token', $hash, $expired, '.' . $_SERVER['HTTP_HOST']);
+          setcookie('token', $hash, $expired, '/', '.' . $_SERVER['HTTP_HOST']);
         }
     }
 

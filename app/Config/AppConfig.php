@@ -93,7 +93,7 @@ $config['app']['first_order']['starter_kit']['code'] = array(
 );
 
 $config['app']['first_order']['starter_kit']['price'] = '250';
-$config['app']['first_order']['starter_kit']['name'] = 'minikura スターターパック';
+$config['app']['first_order']['starter_kit']['name'] = 'mono スターターパック';
 
 /**
  * エラー表示(デフォルトは表示)

@@ -93,7 +93,6 @@ class FirstOrderController extends MinikuraController
         }
 
         // スターターキット購入フロー
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' starter user ' . $option);
         $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
     }
 
