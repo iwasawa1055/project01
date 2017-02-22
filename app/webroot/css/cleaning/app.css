@@ -1,0 +1,370 @@
+/** minikura ver2.5 CLEANING**/
+body#cleaning #page-wrapper {
+	font-size: 62.5%;
+}
+form {
+	display: inline-block;
+	margin-top: 0em;
+}
+input,
+textarea,
+select {
+	font-size: 16px;
+	font-size: 1.6rem;
+	outline: none;
+}
+h1.page-header {
+	margin-bottom: .5rem;
+}
+h2.page-caption {
+	font-size: 14px;
+	font-size: 1.4rem;
+	font-weight: normal;
+}
+h2.page-caption a {
+	color: #ff0000;
+}
+input[type=search] {
+	font-family: inherit;
+	display: inline-block;
+}
+input[type=search] {
+	font-family: FontAwesome;
+	font-size: 16px;
+	font-size: 1.6rem;
+	height: 4.2rem;
+	line-height: 2.3rem;
+	border: solid 1px #999999;
+	padding: .7rem 1rem .6rem 1rem;
+	width: 12rem;
+	border-radius: .2rem;
+	transition: all .5s;
+}
+input[type=search]:focus {
+	width: 30rem;
+	background-color: #ffeeee;
+	border-color: #ff0000;
+}
+.btn-option {
+	display: inline-block;
+	font-size: 16px;
+	font-size: 1.6rem;
+	color: #999999;
+	background-color: #eeeeee;
+	height: 4.2rem;
+	line-height: 4rem;
+	border: 1px solid #999999;
+	border-radius: .2rem;
+	margin: 0 .5rem 0 0;
+	padding: 0 1.5rem;
+	right: 0;
+}
+.btn-option:hover {
+	color: #999999;
+}
+.btn-option.active {
+	color: #ff0000;
+}
+.item-sort {
+	display: none;
+	right: 0;
+	margin-top: 1rem
+}
+.data-sort,
+.az-sort {
+	font-size: 16px;
+	font-size: 1.6rem;
+	appearance: none;
+	background: #eeeeee;
+	height: 4rem;
+	line-height: 4rem;
+	vertical-align: middle;
+	border: 1px solid #CCC;
+	border-radius: 0;
+	margin: 0 .5rem .5rem 0;
+	padding: 0;
+}
+.data-sort {
+	width: 10rem;
+}
+.az-sort {
+	width: 8rem;
+}
+.btn-view,
+.btn-removed,
+.btn-next,
+.btn-next-full,
+.btn-back {
+	display: inline-block;
+	font-size: 12px;
+	font-size: 1.2rem;
+	height: 4rem;
+	line-height: 4rem;
+	border-radius: .2rem;
+	padding: 0 1.5rem;
+}
+.btn-next,
+.btn-next-full,
+.btn-back {
+	font-size: 15px;
+	font-size: 1.5rem;
+}
+.btn-view {
+	color: #ffffff;
+	background-color: #ff0000;
+	border: 1px solid #ff0000;
+	margin-right: .5rem;
+}
+.btn-check {
+	display: inline-block;
+	font-size: 14px;
+	font-size: 1.4rem;
+	color: #999999;
+	background-color: #eeeeee;
+	height: 4rem;
+	line-height: 3.8rem;
+	border: 1px solid #999999;
+	border-radius: 2px;
+	margin: 0 0 0 .5rem;
+	padding: 0 .75em;
+	right: 0;
+}
+.btn-check:hover,
+.btn-check:focus {
+	color: #999999;
+}
+.btn-check.active {
+	color: #ff0000;
+}
+.nav-cleaning,
+.sp-nav-cleaning {
+	z-index: 1;
+	display: block;
+	margin-bottom: 10px;
+	padding: .5rem .5rem .5rem 0;
+}
+body.fixed .page-caption {
+	margin-bottom: 70px;
+}
+body.fixed .nav-cleaning {
+	width: 90vw;
+	max-width: 1000px;
+	position: fixed;
+	text-align: right;
+	top: 0;
+	background-color: rgba(155,155,155,0.5);
+	animation: fadeIn 1s ease 0s 1 normal;
+}
+@keyframes fadeIn {
+ 0% {
+opacity: 0
+}
+ 100% {
+opacity: 1
+}
+}
+.nav-cleaning ul,
+.sp-nav-cleaning ul {
+	margin: 0;
+	padding: 0;
+}
+.nav-cleaning ul li,
+.sp-nav-cleaning ul li {
+	display: inline-block;
+	font-size: 16px;
+	font-size: 1.6rem;
+	padding-right: .5rem;
+	list-style: none;
+}
+.nav-cleaning span,
+.sp-nav-cleaning span {
+	color: #ff0000;
+	font-weight: bold;
+	margin-left: .5rem;
+}
+.nav-cleaning .btn-next,
+.nav-cleaning .btn-next-full,
+.sp-nav-cleaning .btn-next,
+.sp-nav-cleaning .btn-next-full {
+	color: #ffffff;
+	background: #ff0000;
+	border: 1px solid #ff0000;
+}
+.nav-cleaning .btn-back,
+.sp-nav-cleaning .btn-back {
+	color: #ffffff;
+	background: #727272;
+	border: 1px solid #727272;
+}
+.sp-nav-cleaning {
+	display: none;
+}
+.grid {
+	margin: 1rem 0;
+	padding: 0;
+}
+.grid ul,
+.grid ul li {
+	margin: 0;
+	padding: 0;
+}
+.grid ul {
+	letter-spacing: -0.5rem;
+}
+.grid ul li {
+	display: inline-block;
+	width: calc(100% / 5);
+	list-style: none;
+	margin: 0 auto;
+	padding: 0 1rem;
+	letter-spacing: normal;
+}
+.grid ul li img {
+	width: 100%;
+}
+.grid .item-select {
+	position: relative;
+}
+.grid .item-select .checkbox {
+	display: none;
+}
+.grid .item-select .checkbox + .check-icon {
+	position: absolute;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+.grid .item-select .checkbox + .check-icon:before {
+	font-family: 'FontAwesome';
+	content: "\f058";
+	font-size: 28px;
+	font-size: 2.8rem;
+	color: #eeeeee;
+}
+.grid .item-select .checkbox:checked + .check-icon:before {
+	content: "\f058";
+	color: #ff0000;
+}
+.grid .item-select .item-search {
+	position: absolute;
+	font-size: 28px;
+	font-size: 2.8rem;
+	bottom: 0px;
+	right: 0px;
+}
+.grid .item-select a.item-search {
+	color: #0971b2;
+}
+.grid ul li .item-caption {
+	text-align: center
+}
+.grid ul li .item-caption .item-id {
+	display: inline-block;
+	font-size: 10px;
+	font-size: 1rem;
+	color: #dddddd;
+}
+.grid ul li .item-caption .item-price {
+	display: inline-block;
+	font-size: 12px;
+	font-size: 1.2rem;
+}
+
+@media screen and (max-width: 1440px) {
+.grid ul li {
+	width: calc(100% / 5);
+}
+body.fixed .nav-cleaning {
+	width: 75vw;
+}
+}
+
+@media screen and (max-width: 1024px) {
+.grid ul li {
+	width: calc(100% / 4);
+}
+body.fixed .nav-cleaning {
+	width: 67vw;
+}
+}
+
+@media screen and (max-width: 768px) {
+.grid ul li {
+	width: calc(100% / 3);
+}
+.nav-cleaning {
+	display: none;
+}
+body.fixed .page-caption {
+	margin-bottom: 1rem;
+}
+#sp-cleaning-wrapper .sp-nav-cleaning {
+	width: 100%;
+	position: fixed;
+	margin-bottom: 0;
+	padding: 1rem;
+	bottom: 0;
+	display: block;
+	background-color: rgba(155,155,155,0.5);
+	animation: fadeIn 1s ease 0s 1 normal;
+}
+.sp-nav-cleaning ul li {
+	display: block;
+	font-size: 17px;
+	font-size: 1.7rem;
+	margin: 0;
+	padding: 0;
+}
+.sp-nav-cleaning ul li.price {
+	margin: 0 0 0 .75rem;
+	padding-bottom: 0;
+}
+.sp-nav-cleaning ul li.nextback {
+	display: inline;
+}
+.sp-nav-cleaning a.btn-next,
+.sp-nav-cleaning a.btn-back {
+	display: inline-block;
+	width: calc(50% - 1rem);
+	text-align: center;
+	margin: .5rem .35rem;
+}
+.sp-nav-cleaning a.btn-next-full {
+	display: inline-block;
+	text-align: center;
+	width: calc(100% - 1rem);
+	margin: .5rem;
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+input[type=search]:focus {
+	width: 22rem;
+}
+.btn-view {
+	padding: 0 .5rem;
+	margin: 0 .25rem 0 0;
+}
+.data-sort,
+.az-sort {
+	margin: 0 .25em .5rem 0;
+	padding: 0;
+}
+.data-sort {
+	width: 10rem;
+}
+.az-sort {
+	width: 7rem;
+}
+.btn-option,
+.btn-check {
+	margin: 0 .25rem 0 0;
+}
+.btn-option span,
+.btn-check span {
+	display: none;
+}
+}
+@media screen and (max-width: 375px) {
+.grid ul li {
+	width: calc(100% / 2);
+}
+}

@@ -47,7 +47,6 @@ $config['api.timeout'] = 30;
 $config['api.connect_timeout'] = 30;
 $config['api.user_agent'] = 'minikura';
 
-
 /**
  * エラー表示(デフォルトは表示)
  */

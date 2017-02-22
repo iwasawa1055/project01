@@ -159,7 +159,6 @@ class InfoItem extends ApiCachedModel
         return $list;
     }
 
-
     public function editBySearchTerm($results, $params)
     {
         if (empty($params['keyword'])) {
