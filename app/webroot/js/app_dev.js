@@ -98,6 +98,11 @@ var Act =
                 return false;
             }
 
+            // クラスjs-none_loaderがある場合 ローダー表示させない 領収書DL等
+            if ($(this).hasClass('js-none_loader')) {
+                return true;
+            }
+
             $('.loader').airCenter();
             $('.airloader-overlay').show();
         });
