@@ -239,7 +239,7 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->render('add_order');
+            $this->redirect('add_order');
             return;
         }
 
@@ -337,7 +337,7 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->render('add_address');
+            $this->redirect('add_address');
             return;
         }
 
@@ -411,7 +411,7 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->render('add_credit');
+            $this->redirect('add_credit');
             return;
         }
         
@@ -421,12 +421,18 @@ class FirstOrderController extends MinikuraController
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $this->render('add_credit');
+            $this->redirect('add_credit');
             return;
         }
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // スターターキットの場合、紹介コードリセット
+        CakeSession::delete('code_and_starter_kit');
+
+        // 既存登録ユーザ リセット
+        CakeSession::delete('registered_user_login_url', null);
 
         $this->redirect(['controller' => 'first_order', 'action' => 'add_email']);
     }
@@ -483,12 +489,6 @@ class FirstOrderController extends MinikuraController
             }
 
         }
-
-        // スターターキットの場合、紹介コードリセット
-        CakeSession::delete('code_and_starter_kit');
-
-        // 既存登録ユーザ リセット
-        CakeSession::delete('registered_user_login_url', null);
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -607,6 +607,9 @@ class FirstOrderController extends MinikuraController
                         $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
                         $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
+
+                        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
+
                     }
                     $is_validation_error = true;
                 }
@@ -614,12 +617,7 @@ class FirstOrderController extends MinikuraController
         }
 
         if ($is_validation_error === true) {
-            // 誕生日に関するコンフィグ
-            $birthyear_configure = Configure::read('app.register.birthyear');
-            $this->set('birthyear_configure', $birthyear_configure);
-            $this->set('is_logined', $is_logined);
-
-            $this->render('add_email');
+            $this->redirect('add_email');
             return;
         }
         
@@ -735,147 +733,146 @@ class FirstOrderController extends MinikuraController
             CakeLog::write(DEBUG_LOG,
                 $this->name . '::' . $this->action . ' CustomerRegistInfo validationErrors ' .
                 print_r($this->CustomerRegistInfo->validationErrors, true));
-            return $this->render('confirm');
+            return $this->redirect('confirm');
+        }
+
+        if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
+            unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
+        }
+
+        // 本登録
+        if ($is_logined) {
+            $res = $this->CustomerRegistInfo->regist_no_oemkey();
         } else {
-            if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
-                unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
-            }
+            $res = $this->CustomerRegistInfo->regist();
+        }
 
-            // 本登録
-            if ($is_logined) {
-                $res = $this->CustomerRegistInfo->regist_no_oemkey();
-            } else {
-                $res = $this->CustomerRegistInfo->regist();
-            }
-            
-            if (!empty($res->error_message)) {
-                $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
-                return $this->render('confirm');
-            }
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            return $this->redirect('confirm');
+        }
 
-            // ログイン
-            $this->loadModel('CustomerLogin');
+        // ログイン
+        $this->loadModel('CustomerLogin');
 
-            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
+        $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
 
-            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
+        $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
 
-            if ($is_logined) {
-                // エントリユーザ切り替え再度ログイン
-                $this->Customer->switchEntryToCustomer();
-            }
+        if ($is_logined) {
+            // エントリユーザ切り替え再度ログイン
+            $this->Customer->switchEntryToCustomer();
+        }
 
-            $res = $this->CustomerLogin->login();
+        $res = $this->CustomerLogin->login();
 
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->render('confirm');
-            }
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
+            return $this->redirect('confirm');
+        }
 
-            // カスタマー情報を取得しセッションに保存
-            $this->Customer->setTokenAndSave($res->results[0]);
-            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+        // カスタマー情報を取得しセッションに保存
+        $this->Customer->setTokenAndSave($res->results[0]);
+        $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
 
-            $this->Customer->getInfo();
+        $this->Customer->getInfo();
 
-            //* クレジットカード登録
-            $this->loadModel(self::MODEL_NAME_SECURITY);
-            $credit_data[self::MODEL_NAME_SECURITY] = CakeSession::read('Credit');
+        //* クレジットカード登録
+        $this->loadModel(self::MODEL_NAME_SECURITY);
+        $credit_data[self::MODEL_NAME_SECURITY] = CakeSession::read('Credit');
 
-            $this->PaymentGMOSecurityCard->set($credit_data);
+        $this->PaymentGMOSecurityCard->set($credit_data);
 
-            // Expire
-            $this->PaymentGMOSecurityCard->setExpire($credit_data);
+        // Expire
+        $this->PaymentGMOSecurityCard->setExpire($credit_data);
 
-            // ハイフン削除
-            $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
+        // ハイフン削除
+        $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
 
-            // validates
-            // card_seq 除外
-            $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+        // validates
+        // card_seq 除外
+        $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
 
-            if (!$this->PaymentGMOSecurityCard->validates()) {
-                $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
-                return $this->render('confirm');
-            }
+        if (!$this->PaymentGMOSecurityCard->validates()) {
+            $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
+            return $this->redirect('confirm');
+        }
 
-            $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
-            if (!empty($result_security_card->error_message)) {
-                $this->Flash->set($result_security_card->error_message);
-                return $this->render('confirm');
-            }
+        $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+        if (!empty($result_security_card->error_message)) {
+            $this->Flash->set($result_security_card->error_message);
+            return $this->redirect('confirm');
+        }
 
+        // 購入
+        $this->loadModel('PaymentGMOKitCard');
+        $gmo_kit_card['mono_num']      = CakeSession::read('Order.mono.mono');
+        $gmo_kit_card['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
+        $gmo_kit_card['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
+        $gmo_kit_card['hako_num']      = CakeSession::read('Order.hako.hako');
+        $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
+        $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
+        $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
+        $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
+        $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
+        $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
+        $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
+        $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
+        $gmo_kit_card['address_id']    = '';
+        $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
+        $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
+        $gmo_kit_card['tel1']          = CakeSession::read('Address.tel1');
+        $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
+        $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
 
-            // 購入
-            $this->loadModel('PaymentGMOKitCard');
-            $gmo_kit_card['mono_num']      = CakeSession::read('Order.mono.mono');
-            $gmo_kit_card['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
-            $gmo_kit_card['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
-            $gmo_kit_card['hako_num']      = CakeSession::read('Order.hako.hako');
-            $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
-            $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
-            $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
-            $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
-            $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
-            $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
-            $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
-            $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
-            $gmo_kit_card['address_id']    = '';
-            $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
-            $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
-            $gmo_kit_card['tel1']          = CakeSession::read('Address.tel1');
-            $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
-            $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
- 
-            $productKitList = [
-                PRODUCT_CD_MONO => [
-                    'kitList' => [
-                        KIT_CD_MONO, 
-                        KIT_CD_MONO_APPAREL, 
-                        KIT_CD_MONO_BOOK, 
-                        KIT_CD_STARTER_MONO, 
-                        KIT_CD_STARTER_MONO_APPAREL, 
-                        KIT_CD_STARTER_MONO_BOOK
-                    ],
+        $productKitList = [
+            PRODUCT_CD_MONO => [
+                'kitList' => [
+                    KIT_CD_MONO,
+                    KIT_CD_MONO_APPAREL,
+                    KIT_CD_MONO_BOOK,
+                    KIT_CD_STARTER_MONO,
+                    KIT_CD_STARTER_MONO_APPAREL,
+                    KIT_CD_STARTER_MONO_BOOK
                 ],
-                PRODUCT_CD_HAKO => [
-                    'kitList' => [KIT_CD_HAKO, KIT_CD_HAKO_APPAREL, KIT_CD_HAKO_BOOK],
-                ],
-                PRODUCT_CD_CLEANING_PACK => [
-                    'kitList' => [KIT_CD_CLEANING_PACK],
-                ],
-            ];
+            ],
+            PRODUCT_CD_HAKO => [
+                'kitList' => [KIT_CD_HAKO, KIT_CD_HAKO_APPAREL, KIT_CD_HAKO_BOOK],
+            ],
+            PRODUCT_CD_CLEANING_PACK => [
+                'kitList' => [KIT_CD_CLEANING_PACK],
+            ],
+        ];
 
-            $dataKeyNum = [
-                KIT_CD_MONO          => 'mono_num',
-                KIT_CD_MONO_APPAREL  => 'mono_appa_num',
-                KIT_CD_MONO_BOOK     => 'mono_book_num',
-                KIT_CD_HAKO          => 'hako_num',
-                KIT_CD_HAKO_APPAREL  => 'hako_appa_num',
-                KIT_CD_HAKO_BOOK     => 'hako_book_num',
-                KIT_CD_CLEANING_PACK => 'cleaning_num',
-                KIT_CD_STARTER_MONO          => 'starter_mono_num',
-                KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
-                KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
-            ];
-            $kit_params = [];
-            foreach ($productKitList as $product) {
-                // 個数集計
-                foreach ($product['kitList'] as $kitCd) {
-                    $num = $gmo_kit_card[$dataKeyNum[$kitCd]];
-                    if (!empty($num)) {
-                        $kit_params[] = $kitCd . ':' . $num;
-                    }
+        $dataKeyNum = [
+            KIT_CD_MONO          => 'mono_num',
+            KIT_CD_MONO_APPAREL  => 'mono_appa_num',
+            KIT_CD_MONO_BOOK     => 'mono_book_num',
+            KIT_CD_HAKO          => 'hako_num',
+            KIT_CD_HAKO_APPAREL  => 'hako_appa_num',
+            KIT_CD_HAKO_BOOK     => 'hako_book_num',
+            KIT_CD_CLEANING_PACK => 'cleaning_num',
+            KIT_CD_STARTER_MONO          => 'starter_mono_num',
+            KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
+            KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
+        ];
+        $kit_params = [];
+        foreach ($productKitList as $product) {
+            // 個数集計
+            foreach ($product['kitList'] as $kitCd) {
+                $num = $gmo_kit_card[$dataKeyNum[$kitCd]];
+                if (!empty($num)) {
+                    $kit_params[] = $kitCd . ':' . $num;
                 }
             }
-            $gmo_kit_card['kit'] = implode(',', $kit_params);
-            
-            $this->PaymentGMOKitCard->set($gmo_kit_card);
-            $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
-            if ($result_kit_card->status !== '1') {
-                $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
-                return $this->render('confirm');
-            }
+        }
+        $gmo_kit_card['kit'] = implode(',', $kit_params);
+
+        $this->PaymentGMOKitCard->set($gmo_kit_card);
+        $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+        if ($result_kit_card->status !== '1') {
+            $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
+            return $this->redirect('confirm');
         }
 
         $this->set('select_delivery', CakeSession::read('Address.select_delivery'));
