@@ -63,7 +63,7 @@ $config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 /**
  * 恒久ログインlogout パラメータ
  */
-$config['app']['login_cookie']['cookie_period'] = 60 * 60 * 24 * 180;
+$config['app']['login_cookie']['cookie_period'] = 60 * 60 * 24;
 $config['app']['login_cookie']['param'] = 'logout';
 
 /**
