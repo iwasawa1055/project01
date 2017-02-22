@@ -25,13 +25,15 @@
     <div class="wrapper">
       <div class="form">
         <label>お名前<span class="required">※</span></label>
-        <input type="text" name="lastname" class="name-last" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>"><input type="text" name="firstname" class="name-first" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
+        <input type="text" name="lastname" class="name-last lastname" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
+        <input type="text" name="firstname" class="name-first firstname" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
         <?php echo $this->Flash->render('lastname'); ?>
         <?php echo $this->Flash->render('firstname'); ?>
       </div>
       <div class="form">
         <label>フリガナ<span class="required">※</span></label>
-        <input type="text" name="lastname_kana" class="name-last-kana" placeholder="テラダ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname_kana');?>"><input type="text" name="firstname_kana" class="name-first-kana" placeholder="タロウ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname_kana');?>">
+        <input type="text" name="lastname_kana" class="name-last-kana lastname_kana" placeholder="テラダ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname_kana');?>">
+        <input type="text" name="firstname_kana" class="name-first-kana firstname_kana" placeholder="タロウ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname_kana');?>">
         <?php echo $this->Flash->render('lastname_kana'); ?>
         <?php echo $this->Flash->render('firstname_kana'); ?>
       </div>
@@ -91,7 +93,7 @@
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places"></script>
-<script src="/js/minikura/address.js"></script>
+<script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_file/js/first_order/add_address.js"></script>
 
 <?php echo $this->element('FirstOrder/last'); ?>

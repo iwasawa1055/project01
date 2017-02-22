@@ -112,6 +112,20 @@ var AppAddAdress =
             }
         }
     },
+    c: function () {
+        //** Auto Kana
+        $('input.lastname').airAutoKana(
+        {
+            dest: 'input.lastname_kana',
+            katakana: true
+        });
+
+        $('input.firstname').airAutoKana(
+            {
+                dest: 'input.firstname_kana',
+                katakana: true
+            });
+    },
 }
 
 /*
@@ -121,4 +135,5 @@ $(function()
 {
     AppAddAdress.a();
     AppAddAdress.b();
+    AppAddAdress.c();
 });
