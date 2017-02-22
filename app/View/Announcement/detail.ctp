@@ -92,7 +92,7 @@
                       ) : ?>
             <?php echo $this->Form->create('Box', ['url' => '/announcement/'.$announcement['announcement_id'].'/receipt', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <span class="col-lg-12 col-md-12 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block submit_after_restore">領収証発行</button>
+                <button type="submit" class="btn btn-danger btn-lg btn-block submit_after_restore js-none_loader">領収証発行</button>
             </span>
             <?php echo $this->Form->end(); ?>
             <?php endif; ?>
