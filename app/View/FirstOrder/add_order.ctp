@@ -121,7 +121,7 @@
     <div class="select-box">
       <h3>レギュラーボックス</h3>
       <select class="item-number js-item-number js-item-mono" data-name="mono" data-box_type="mono">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++) : ?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++) : ?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
@@ -135,7 +135,7 @@
     <div class="select-box">
       <h3>アパレルボックス</h3>
       <select class="item-number js-item-number js-item-mono" data-name="mono_apparel" data-box_type="mono">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
           <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono_apparel') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
@@ -149,7 +149,7 @@
     <div class="select-box">
       <h3>ブックボックス</h3>
       <select class="item-number js-item-number js-item-mono" data-name="mono_book" data-box_type="mono">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
           <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono_book') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
@@ -168,7 +168,7 @@
     <div class="select-box">
       <h3>レギュラーボックス</h3>
       <select class="item-number js-item-number js-item-hako" data-name="hako" data-box_type="hako">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako.hako') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
@@ -182,7 +182,7 @@
     <div class="select-box">
       <h3>アパレルボックス</h3>
       <select class="item-number js-item-number js-item-hako" data-name="hako_apparel" data-box_type="hako">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako.hako_apparel') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
@@ -196,7 +196,7 @@
     <div class="select-box">
       <h3>ブックボックス</h3>
       <select class="item-number js-item-number js-item-hako" data-name="hako_book" data-box_type="hako">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako.hako_book') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
@@ -215,7 +215,7 @@
     <div class="select-box">
       <h3>クリーニングパック</h3>
       <select class="item-number js-item-number js-item-cleaning" data-name="cleaning" data-box_type="cleaning">
-        <?php for ($i = 0; $i < Configure::read('app.first_order.max_box'); $i++):?>
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.cleaning.cleaning') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>

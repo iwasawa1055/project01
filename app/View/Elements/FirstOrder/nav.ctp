@@ -32,7 +32,7 @@
                         <a class="login" href="/login" target="_blank"><i class="fa fa-unlock-alt"></i> ログイン</a>
                     </li>
                     <li>
-                        <a class="signin" href="/customer/register/add" target="_blank"><i class="fa fa-sign-in"></i> ユーザー登録</a>
+                        <a class="signin" href="/customer/register/add_info" target="_blank"><i class="fa fa-sign-in"></i> ユーザー登録</a>
                     </li>
                     <?php endif; ?>
                 </ul>

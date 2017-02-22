@@ -879,8 +879,6 @@ class FirstOrderController extends MinikuraController
             $gmo_kit_card['kit'] = implode(',', $kit_params);
             
             $this->PaymentGMOKitCard->set($gmo_kit_card);
-            //* todo: 購入リクエスト完了後エラーになる。
-            //*       Model/Api/PaymentGMOKitCard.php 16~17行目 に問題あり？
             $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
             if ($result_kit_card->status !== '1') {
                 $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
