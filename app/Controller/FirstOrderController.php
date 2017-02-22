@@ -39,7 +39,7 @@ class FirstOrderController extends MinikuraController
         $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
         if (!is_null($option)) {
             CakeSession::write(Configure::read('app.lp_option.param'), $option);
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'set option ' . $option);
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'set option ' . $option);
         }
 
         // 紹介コードで遷移してきた場合
@@ -49,7 +49,7 @@ class FirstOrderController extends MinikuraController
             // オプションをコードに変更
             CakeSession::write(Configure::read('app.lp_option.param'), 'is_code');
             CakeSession::write(Configure::read('app.lp_code.param'), $code);
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code set_code[ ' . $code . ' ]');
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code set_code[ ' . $code . ' ]');
         }
 
         // 初回購入フローに入らない場合の遷移先
@@ -66,7 +66,7 @@ class FirstOrderController extends MinikuraController
 
             // 取得した配列のカウントが2である
             if (count($login_params) === 2) {
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is auto login user' . $option);
+                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is auto login user' . $option);
                 // オートログイン
                 $this->redirect($none_first_redirect_param);
             }
@@ -77,18 +77,18 @@ class FirstOrderController extends MinikuraController
 
             // エントリーユーザでない
             if (!$this->Customer->isEntry()) {
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is none entry user' . $option);
+                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is none entry user' . $option);
                 $this->redirect($none_first_redirect_param);
             }
 
             // スニーカーユーザでない
             if ($this->Customer->isSneaker()) {
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is isSneaker' . $option);
+                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is isSneaker' . $option);
                 $this->redirect($none_first_redirect_param);
             }
 
             // ログイン済みエントリーユーザ
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login entry user' . $option);
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login entry user' . $option);
             $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
         }
 
@@ -103,14 +103,13 @@ class FirstOrderController extends MinikuraController
     {
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index', 'FirstOrder/add_order', 'FirstOrder/confirm_order', 'FirstOrder/add_address'], true) === false) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' NG redirect ' . CakeSession::read('app.data.session_referer'));
+            //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
         // ログインしているか
         $is_logined = false;
         if ($this->Customer->isLogined()) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
             $is_logined = true;
         }
         $this->set('is_logined', $is_logined);
@@ -155,7 +154,7 @@ class FirstOrderController extends MinikuraController
         if($before_kit_select_type !== $kit_select_type) {
             CakeSession::delete('Order');
             CakeSession::delete('OrderTotal');
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order  delete');
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Session Order delete');
         }
         CakeSession::write('kit_select_type', $kit_select_type );
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
@@ -445,7 +444,6 @@ class FirstOrderController extends MinikuraController
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
             $is_logined = true;
         }
         $this->set('is_logined', $is_logined);
@@ -590,7 +588,7 @@ class FirstOrderController extends MinikuraController
 
                     $is_validation_error = true;
 
-                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code_and_starter_kit ');
+                    // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code_and_starter_kit ');
                 }
             }
         }
@@ -648,7 +646,6 @@ class FirstOrderController extends MinikuraController
 
         $is_logined = false;
         if ($this->Customer->isLogined()) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login '); //
             $is_logined = true;
         }
         $this->set('is_logined', $is_logined);
@@ -666,20 +663,15 @@ class FirstOrderController extends MinikuraController
         $kit_code = Configure::read('app.first_order.kit.none_starter');
 
         // スターターキット価格取得
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
         if (key_exists('starter', $Order)) {
             if ($Order['starter']['starter'] !== 0) {
                 $starterkit_code = Configure::read('app.first_order.starter_kit.code');
                 foreach ($starterkit_code as $param => $code) {
                     $PurchaseOrder[$param]['number'] = 1;
                     $PurchaseOrder[$param]['code'] = $code;
-                    CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' param ' . $param);
                 }
             }
         }
-
-        // 注文Order集計
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
 
         foreach ($Order as $orders => $kit_order) {
             foreach ($kit_order as $param => $value) {

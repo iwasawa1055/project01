@@ -71,9 +71,6 @@ class MinikuraController extends AppController
                     'p' => http_build_query($this->request->query),
                 ];
 
-                CakeLog::write(DEBUG_LOG, 'junktion param get query_string_url ' . $query_string_url);
-                CakeLog::write(DEBUG_LOG, 'set junktion param ' . print_r($set_param, true));
-
                 return $this->redirect(['controller' => 'login', 'action' => 'index', 'customer' => false, '?' => $set_param]);
             }
 

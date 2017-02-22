@@ -84,7 +84,8 @@ class LoginController extends MinikuraController
         ApiCachedModel::deleteAllCache();
         OutboundList::delete();
         CustomerData::delete();
-        // todo: ここで（もしくは別の場所）クッキーを削除したい
+
+        // クッキー削除
         setcookie('token', '', time() - 1800, '/', '.' . $_SERVER['HTTP_HOST']);
 
         return $this->redirect(['controller' => 'login', 'action' => 'index', '?' => array('logout' => 'true')]);
@@ -183,24 +184,28 @@ class LoginController extends MinikuraController
 
         // 1 Sneaker
         if ($this->Customer->isSneaker()) {
+
+            // optionは削除
+            CakeSession::delete(Configure::read( 'app.switch_redirect.session_name'));
+
             // Sneakerでエントリユーザかどうか
             $summary = $this->InfoBox->getProductSummary(false);
 
             // スニーカが収納されている場合
             if (!empty($summary)) {
-                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker on item ');
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker on item ');
                 return $this->redirect(['controller' => 'item', 'action' => 'index']);
             }
 
             // ボックスを持っている場合
             $no_inbound_box = $this->InfoBox->getListForInbound();
             if (!empty($no_inbound_box)) {
-                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker no_inbound_box');
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker no_inbound_box');
                 return $this->redirect(['controller' => 'inbound', 'action' => 'box/add']);
             }
 
             // アイテムなし、ボックス未購入
-            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker order ');
+            // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker order ');
             return $this->redirect(['controller' => 'order', 'action' => 'add']);
 
         }
@@ -210,53 +215,37 @@ class LoginController extends MinikuraController
 
             // ボックスの状態を取得
             $summary = $this->InfoBox->getProductSummary(false);
-            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl summary ' . print_r($summary, true) );
 
             // 2,3 各オプションから遷移
             $option = CakeSession::read(Configure::read( 'app.switch_redirect.session_name'));
             CakeSession::delete(Configure::read( 'app.switch_redirect.session_name'));
-            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl option ' . $option);
             if (!is_null($option)) {
 
                 // 預けていない場合$summaryは空
                 if (empty($summary)) {
-                    CakeLog::write(DEBUG_LOG, '_switchRedirctUrl empty(summary) ');
-
-                    // 2 各オプションから遷移 入庫なし
-                    switch ($option) {
-                        case 'cleaning':
-                        case 'trade':
-                        case 'mono_view':
-                        case 'travel':
-                            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl option.cleaning ');
-                            return $this->redirect(['controller' => 'order', 'action' => 'add']);
-                            //?product=cleaning
-                            break;
-                        default:
-                            break;
-                    }
+                    // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl summary empty  ');
+                    return $this->redirect($default_redirect_param);
                 }
 
                 // 3 MONOを預けている オプション遷移
-                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on summary ');
                 if (array_key_exists(PRODUCT_CD_MONO, $summary)) {
                     switch ($option) {
                         case 'trade':
-                            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono option.trade ');
+                            // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono option.trade ');
                             return $this->redirect(['controller' => 'sale', 'action' => 'index']);
                             break;
                         case 'mono_view':
-                            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono option.mono_view ');
+                            // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono option.mono_view ');
                             return $this->redirect(['controller' => 'mini_action']);
                             break;
                         case 'travel':
-                            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono option.travel ');
+                            // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono option.travel ');
                             return $this->redirect(['controller' => 'travel', 'action' => 'mono']);
                             break;
                         // クリーニングは後日実装
                         case 'cleaning':
                         default:
-                            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl none switch ');
+                            // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl none switch ');
                             break;
                     }
                 }
@@ -264,25 +253,27 @@ class LoginController extends MinikuraController
 
             // 4 入庫中アイテムあり
             if (array_key_exists(PRODUCT_CD_MONO, $summary)) {
-                //CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono');
                 return $this->redirect(['controller' => 'item', 'action' => 'index']);
             }
 
             // 5 入庫中ボックスあり
             if (!empty($summary)) {
-                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on box');
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on box');
                 return $this->redirect(['controller' => 'box', 'action' => 'index']);
             }
 
             // 6 未入庫ボックスあり
             $no_inbound_box = $this->InfoBox->getListForInbound();
             if (!empty($no_inbound_box)) {
-                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl no_inbound_box');
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl no_inbound_box');
                 return $this->redirect(['controller' => 'inbound', 'action' => 'box/add']);
             }
         }
 
-        CakeLog::write(DEBUG_LOG, '_switchRedirctUrl Non-aggressive user');
+        // optionは削除
+        CakeSession::delete(Configure::read( 'app.switch_redirect.session_name'));
+
+        // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl None-aggressive user');
         return $this->redirect($default_redirect_param);
     }
 }
