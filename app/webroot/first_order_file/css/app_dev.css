@@ -59,6 +59,13 @@ section#adress .form .validation {
 
 section#lineup .form .validation {
     display: inline-block;
+    background: #ff6666 none repeat scroll 0 0;
+    border: 0.1rem solid #ff6666;
+    border-radius: 2px;
+    color: #ffffff;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
 }
 
 .validation,.search-address-error-message {
@@ -161,15 +168,6 @@ section#lineup .form .validation {
     border-color: #d43f3a;
 }
 
-section#lineup .form .validation {
-    background: #ff6666 none repeat scroll 0 0;
-    border: 0.1rem solid #ff6666;
-    border-radius: 2px;
-    color: #ffffff;
-    margin: 0.5rem 0 0;
-    padding: 0.5rem;
-}
-
 .search-address-error-message {
     background: #ff6666 none repeat scroll 0 0;
     border: 0.1rem solid #ff6666;
@@ -177,4 +175,8 @@ section#lineup .form .validation {
     color: #ffffff;
     margin: 0.5rem 0 0 !important;
     padding: 0.5rem;
+}
+
+a.btn-starter {
+	margin	: 0px
 }
