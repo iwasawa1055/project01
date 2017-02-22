@@ -180,3 +180,7 @@ section#lineup .form .validation {
 a.btn-starter {
 	margin	: 0px
 }
+
+a.btn-submit, a.btn-return {
+	cursor	: pointer;
+}
