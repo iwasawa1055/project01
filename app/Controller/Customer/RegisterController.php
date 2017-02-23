@@ -37,8 +37,17 @@ class RegisterController extends MinikuraController
      */
     public function customer_add()
     {
-        // 本登録画面へリダイレクト
-        return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
 
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
@@ -60,8 +69,17 @@ class RegisterController extends MinikuraController
      */
     public function customer_confirm()
     {
-        // 本登録画面へリダイレクト
-        return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
 
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
@@ -82,8 +100,17 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete()
     {
-        // 本登録画面へリダイレクト
-        return $this->redirect(['action' => 'customer_add_info', '?' => $this->request->query]);
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
 
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
