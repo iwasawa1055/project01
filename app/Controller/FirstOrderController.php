@@ -48,12 +48,13 @@ class FirstOrderController extends MinikuraController
         if (!is_null($code)) {
             // オプションコードが含まれるか?
             if (strpos($code,'?' . Configure::read('app.lp_option.param')) !== false) {
-                list($code, $option) = explode('?', $code);
+                list($code, $pram_option) = explode('?', $code);
+                list($label, $option) = explode('=', $pram_option);
                 CakeSession::write(Configure::read('app.lp_option.param'), $option);
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'set option ' . $option);
+                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set option ' . $option);
             }
             CakeSession::write(Configure::read('app.lp_code.param'), $code);
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code set_code[ ' . $code . ' ]');
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code set_code[ ' . $code . ' ]');
         }
 
         // 初回購入フローに入らない場合の遷移先
