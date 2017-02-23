@@ -5,8 +5,6 @@
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app_dev', ['block' => 'scriptMinikura']); ?>
 
-
-
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
   <h2 class="page-caption"><a href="#">minikuraクリーニング <i class="fa fa-external-link-square"></i></a> に申し込むアイテムを選択してください。</h2>
   <div id="cleaning-wrapper">
@@ -58,6 +56,7 @@
         <!--loop end-->
       </ul>
       </form>
+      <?php echo $this->element('paginator'); ?>
     </div>
 
   </div>
