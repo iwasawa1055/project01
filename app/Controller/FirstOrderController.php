@@ -46,10 +46,15 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete(Configure::read('app.lp_code.param'));
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
-            // オプションをコードに変更
-            CakeSession::write(Configure::read('app.lp_option.param'), 'is_code');
+            // オプションコードが含まれるか?
+            if (strpos($code,'?' . Configure::read('app.lp_option.param')) !== false) {
+                list($code, $pram_option) = explode('?', $code);
+                list($label, $option) = explode('=', $pram_option);
+                CakeSession::write(Configure::read('app.lp_option.param'), $option);
+                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set option ' . $option);
+            }
             CakeSession::write(Configure::read('app.lp_code.param'), $code);
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'is code set_code[ ' . $code . ' ]');
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code set_code[ ' . $code . ' ]');
         }
 
         // 初回購入フローに入らない場合の遷移先
@@ -118,8 +123,8 @@ class FirstOrderController extends MinikuraController
         $kit_select_type = 'all';
         switch (true) {
             case $lp_option === 'mono':
-                // ログインしている場合はmonoを表示
-                if ($is_logined) {
+                // 紹介コードが有る場合 mono のみ表示 そうでない場合、スターターキット
+                if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
                     $kit_select_type = 'mono';
                 } else {
                     $kit_select_type = 'starter_kit';
@@ -133,16 +138,6 @@ class FirstOrderController extends MinikuraController
                 break;
             case $lp_option === 'all':
                 $kit_select_type = 'all';
-                break;
-            case $lp_option === 'is_code':
-                $kit_select_type = 'all';
-                break;
-            case $lp_option === 'starter_kit':
-                if ($is_logined) {
-                    $kit_select_type = 'mono';
-                } else {
-                    $kit_select_type = 'starter_kit';
-                }
                 break;
             default:
                 $kit_select_type = 'all';
