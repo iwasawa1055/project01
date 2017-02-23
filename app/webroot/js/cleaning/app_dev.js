@@ -1,7 +1,7 @@
 $(function () {
   AppCleaning.initialize();
 
-  $('#item_confirm').click(function() { 
+  $('.item_confirm').click(function() { 
     $("#itemlist").submit();
   });
 
@@ -13,6 +13,7 @@ $(function () {
 var AppCleaning = {
   initialize : function() {
     var list = docCookies.getItem("mn_cleaning_list");
+    
     if ( list ) {
       var listSelected = list.split(",");
 
@@ -59,8 +60,8 @@ var AppCleaning = {
       }
     });
     
-    $("#block_selected_price").text(totalprice.toLocaleString());
-    $("#block_selected_item").text(totalselected);
+    $(".block_selected_price").text(totalprice.toLocaleString());
+    $(".block_selected_item").text(totalselected);
     
     var cookievalue = listSelected.join(",");
     docCookies.setItem("mn_cleaning_list",cookievalue);

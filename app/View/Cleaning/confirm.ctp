@@ -1,4 +1,6 @@
 <?php $this->Html->css('cleaning/app', ['block' => 'css']); ?>
+<?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
+
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
   <h2 class="page-caption">この内容でminikuraクリーニングオプションを申し込みます。</h2>
@@ -27,5 +29,15 @@
         <!--loop end-->
       </ul>
     </div>
-
+  </div>
+  <div id="sp-cleaning-wrapper">
+    <div class="sp-nav-cleaning">
+      <ul>
+        <li class="price"><i class="fa fa-calculator"></i><span><?php echo $selected_count;?></span>点<span><?php echo number_format($selected_total);?></span>円</li>
+        <li class="nextback"><a href="input" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+        </li>
+        <li class="nextback"><a href="complete" class="btn-next">申し込む <i class="fa fa-chevron-circle-right"></i></a>
+        </li>
+      </ul>
+    </div>
   </div>

@@ -10,8 +10,8 @@
   <div id="cleaning-wrapper">
     <div class="nav-cleaning">
       <ul>
-        <li><i class="fa fa-calculator"></i><span id="block_selected_item">0</span>点<span id="block_selected_price">0</span>円</li>
-        <li><button type="submit" id="item_confirm" class="btn-next-full">確認する <i class="fa fa-chevron-circle-right"></i></button></li>
+        <li><i class="fa fa-calculator"></i><span class="block_selected_item">0</span>点<span class="block_selected_price">0</span>円</li>
+        <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button></li>
       </ul>
     </div>
     <form action="input" id="item-search" novalidate="novalidate" method="get" accept-charset="utf-8">
@@ -58,5 +58,13 @@
       </form>
       <?php echo $this->element('paginator'); ?>
     </div>
-
   </div>
+<div id="sp-cleaning-wrapper">
+  <div class="sp-nav-cleaning">
+    <ul>
+      <li class="price"><i class="fa fa-calculator"></i><span class="block_selected_item">0</span>点<span class="block_selected_price">0</span>円</li>
+      <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button>
+      </li>
+    </ul>
+  </div>
+</div>

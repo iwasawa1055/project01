@@ -227,28 +227,29 @@ class CleaningController extends MinikuraController
     public function complete()
     {
         $selected_data = CakeSession::read('app.data.session_cleaning');
+        
+        // データがない場合はリダイレクト
+        if ( !$selected_data ) {
+          return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
+        }
+
         $this->set('itemList', $selected_data);
         
         // API Request
-        
-        
+//        $res = $model->apiPost($model->toArray());
+
+        // 登録に失敗した場合
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
+            return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
+        }
         
         // 登録に成功した場合
         
         
-        
-        // 登録に失敗した場合
-        
-        
-        
-        
-        
-        
         // 処理が完了したら、セッションとクッキーを削除する
-        #CakeSession::delete("app.data.session_cleaning");
-        #setcookie("mn_cleaning_list", "", time()-3600);
-        
-        
+        CakeSession::delete("app.data.session_cleaning");
+        setcookie("mn_cleaning_list", "", time()-3600);
         
     }
 }
