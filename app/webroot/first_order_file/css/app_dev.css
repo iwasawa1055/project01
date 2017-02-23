@@ -184,3 +184,7 @@ a.btn-starter {
 a.btn-submit, a.btn-return, a.btn-starter {
 	cursor	: pointer;
 }
+
+.holder_name{
+    text-transform: uppercase;
+}
