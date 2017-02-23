@@ -1,6 +1,12 @@
 <?php $this->Html->css('cleaning/app', ['block' => 'css']); ?>
 <?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
+
+<?php $this->Html->script('cleaning/jquery.infinitescroll.min', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('cleaning/app_dev', ['block' => 'scriptMinikura']); ?>
+
+
+
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
   <h2 class="page-caption"><a href="#">minikuraクリーニング <i class="fa fa-external-link-square"></i></a> に申し込むアイテムを選択してください。</h2>
   <div id="cleaning-wrapper">
@@ -35,11 +41,11 @@
       <ul>
         <!--loop-->
         <?php foreach ($itemList as $item): ?>
-        <li>
+        <li class="item">
           <div class="item-select">
             <label>
-              <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"><span class="check-icon"></span>
-              <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>">
+              <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'].",".$price[$item['item_group_cd']].",".$item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ( $item['item_id'] === $selected_id ) echo " checked";?>><span class="check-icon"></span>
+              <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>" class="item_img">
             </label>
             <a href="/item/detail/<?php echo $item['item_id'];?>" class="item-search"><i class="fa fa-search-plus"></i></a>
           </div>
@@ -47,8 +53,8 @@
             <p class="item-id"><?php echo $item['item_id'];?></p>
             <p class="item-price"><?php echo number_format($price[$item['item_group_cd']]);?>円</p>
           </div>
-          <?php endforeach; ?>
         </li>
+        <?php endforeach; ?>
         <!--loop end-->
       </ul>
       </form>

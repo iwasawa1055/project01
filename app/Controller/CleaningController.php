@@ -105,17 +105,6 @@ class CleaningController extends MinikuraController
             $results['direction'] = $query['direction'];
         }
 
-        // フォームhidden値設定
-        if (isset($query['hide_outbound'])) {
-            if ($query['hide_outbound'] === '0' ) {
-                $results['hide_outbound'] = '0';
-            } else {
-                $results['hide_outbound'] = '1';
-            }
-        } else {
-            $results['hide_outbound'] = '1';
-        }
-
         return $results;
     }
 
@@ -134,6 +123,14 @@ class CleaningController extends MinikuraController
      */
     public function input()
     {
+        // 引数でidがリターンされた場合はすでにチェックを入れる
+        if ( isset($this->request->query['id']) ) {
+            $selected_id = $this->request->query['id'];
+        } else {
+            $selected_id = null;
+        }
+        $this->set('selected_id', $selected_id);
+        
         // 商品指定
         $where = [];
         $where['product'] = null;
@@ -141,7 +138,7 @@ class CleaningController extends MinikuraController
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
 
-        // Sessionにデータがある場合
+        // 保管品リストを取得する
         $results = $this->InfoItem->getListForServiced($sortKey, $where, false, true);
         $results = $this->InfoItem->editBySearchTerm($results, $this->request->query);
         
@@ -162,8 +159,12 @@ class CleaningController extends MinikuraController
         $this->set('keyword', $query_params['keyword']);
         $this->set('order', $query_params['order']);
         $this->set('direction', $query_params['direction']);
+
         
         $this->set('price',Configure::read('app.kit.cleaning.item_group_cd'));
+        
+        // Session Referer
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
     /**
@@ -171,9 +172,32 @@ class CleaningController extends MinikuraController
      */
     public function input_confirm()
     {
-        //print_r($this->request);
+        $flg_error = false;
+
+        // 選択されたID一覧をセッションに保管する
+        if ( !isset($this->request->data['selected']) ) {
+            $flg_error = true;
+        }
+        $selected_ids = $this->request->data['selected'];
+        if ( count($selected_ids) < 1 ) {
+            $flg_error = true;
+        }
         
+        if ( $flg_error ) {
+          return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
+        }
         
+        $session_data = array();
+
+        foreach ( $selected_ids as $_tmp ) {
+            list($data['item_id'], $data['price'], $data['image_url']) = explode(",",$_tmp,3);
+            array_push($session_data,$data);
+        }
+        
+        CakeSession::write('app.data.session_cleaning',$session_data);
+        
+        // Session Referer
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
         return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
     }
@@ -183,36 +207,18 @@ class CleaningController extends MinikuraController
      */
     public function confirm()
     {
-/*
-        if ($this->request->is('post')) {
-            $this->CustomerSales->set($this->request->data[self::MODEL_NAME_CUSTOMER_SALES]);
-            if ($this->CustomerSales->validates()) {
-                //* To API
-                $result = $this->CustomerSales->apiPatch($this->CustomerSales->toArray());
-                //* error
-                if (!empty($result->error_message)) {
-                    $this->Flash->set($result->error_message);
-                    return $this->redirect(['action' => 'index']);
-                }
-                //* 販売設定　状態set
-                $this->set('is_customer_sales', $this->Customer->isCustomerSales());
-
-                //* 口座情報 set
-                $customer_bank_account = null;
-                if (!empty($this->Customer->getCustomerBankAccount())){
-                    $customer_bank_account = $this->Customer->getCustomerBankAccount();
-                }
-                $this->set('customer_bank_account', $customer_bank_account);
-            } else {
-                //* test exception info
-                //new AppInternalInfo('Error : sales_flag != 0 or 1', $code = 500);
-                //* message
-                $this->Flash->set(__($this->CustomerSales->validationErrors['sales_flag'][0]));
-                //* redirect
-                return $this->redirect(['action' => 'index']);
-            }
+        $selected_data = CakeSession::read('app.data.session_cleaning');
+        $this->set('selected_count', count($selected_data));
+        
+        $totalprice = 0;
+        foreach ( $selected_data as $tmp ) {
+            $totalprice += $tmp['price'];
         }
-*/
+        $this->set('selected_total', $totalprice);
+        $this->set('itemList', $selected_data);
+
+        // Session Referer
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
     /**
@@ -220,44 +226,29 @@ class CleaningController extends MinikuraController
      */
     public function complete()
     {
-/*
-        if ($this->request->is('get')) {
-            //* 口座情報
-            $customer_bank_account = null;
-            if (!empty($this->Customer->getCustomerBankAccount())){
-                $customer_bank_account = $this->Customer->getCustomerBankAccount();
-            }
-            $this->set('customer_bank_account', $customer_bank_account);
-            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($customer_bank_account, true));
-
-            //*  振り込み可能リスト 金額
-            $sales = null;
-            $transfer_price = 0;
-            $sales_result = $this->Sales->apiGet(['sales_status' => SALES_STATUS_TRANSFER_ALLOWED]);
-            if (!empty($sales_result->results)) {
-                $transfer_price_all = $this->Sales->sumPrice($sales_result->results);
-                $transfer_price = $this->Sales->subtractCharge($transfer_price_all);
-                $sales =  $sales_result->results;
-            }
-            $this->set('sales', $sales);
-            $this->set('transfer_price', $transfer_price);
-            $this->set('transfer_price_all', $transfer_price_all);
-            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
-
-            //* 振り込み済み履歴 
-            $transfer_completed = null;
-            //$transfer_completed_result = $this->Transfer->apiGet(['limit' => '3']);
-            $transfer_completed_result = $this->Transfer->apiGet();
-            if (!empty($transfer_completed_result->results)) {
-                $transfer_completed = $transfer_completed_result->results;
-            }
-            $this->set('transfer_completed', $transfer_completed);
-
-            // 手数料関連
-            $transfer_charge_price = TRANSFER_CHARGE_PRICE;
-            $this->set('transfer_charge_price', $transfer_charge_price);
-        }
-
-*/
+        $selected_data = CakeSession::read('app.data.session_cleaning');
+        $this->set('itemList', $selected_data);
+        
+        // API Request
+        
+        
+        
+        // 登録に成功した場合
+        
+        
+        
+        // 登録に失敗した場合
+        
+        
+        
+        
+        
+        
+        // 処理が完了したら、セッションとクッキーを削除する
+        #CakeSession::delete("app.data.session_cleaning");
+        #setcookie("mn_cleaning_list", "", time()-3600);
+        
+        
+        
     }
 }

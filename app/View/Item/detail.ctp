@@ -54,6 +54,14 @@
                         </span>
                         <?php endif; ?>
 
+
+                        <?php /*クリーニング*/ ?>
+                        <?php if (!empty($linkToCleaning)): ?>
+                        <span class="col-xs-12 col-lg-12">
+                            <a class="btn btn-info btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToCleaning; ?>">クリーニングを申し込む</a>
+                        </span>
+                        <?php endif; ?>
+
                         <?php /*ヤフオク*/ ?>
                         <?php if (!empty($linkToAuction)): ?>
                         <span class="col-xs-12 col-lg-12">

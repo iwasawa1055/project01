@@ -5,21 +5,25 @@
   <div id="cleaning-wrapper">
     <div class="nav-cleaning">
       <ul>
-        <li><i class="fa fa-calculator"></i><span>000</span>点<span>000,000</span>円</li>
-        <li><a href="complete" class="btn-next-full">確認する <i class="fa fa-chevron-circle-right"></i></a></li>
+        <li><i class="fa fa-calculator"></i><span><?php echo $selected_count;?></span>点<span><?php echo number_format($selected_total);?></span>円</li>
+        <li><a href="input" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a></li>
+        <li><a href="complete" class="btn-next">申し込む <i class="fa fa-chevron-circle-right"></i></a>
       </ul>
     </div>
     <div class="grid">
       <ul>
         <!--loop-->
+        <?php foreach ($itemList as $item): ?>
         <li>
-          <div class="item-select"><img src="http://dev-image.minikura.com:10080/i/minikura/30678/MN-0001-001_0.jpg?key=PnE0Rye3aaMvz8yX8kMh86W2BC5W2X8d.ViZJY_XeszoCtezBQz7PPe9QWwW8gzPtihpI__R3wE-" alt="xxx_xxxx">
+          <div class="item-select">
+            <img src="<?php echo $item['image_url'];?>" alt="<?php echo $item['item_id'];?>">
           </div>
           <div class="item-caption">
-            <p class="item-id">MN-0001-001</p>
-            <p class="item-price">0,000円</p>
+            <p class="item-id"><?php echo $item['item_id'];?></p>
+            <p class="item-price"><?php echo number_format($item['price']);?>円</p>
           </div>
         </li>
+        <?php endforeach; ?>
         <!--loop end-->
       </ul>
     </div>

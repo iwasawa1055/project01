@@ -216,6 +216,14 @@ class ItemController extends MinikuraController
         $box = $item['box'];
         $this->set('box', $box);
 
+        $linkToCleaning = null;
+        $cleaningConfig = Configure::read('app.kit.cleaning.item_group_cd');
+        
+        if ( isset($cleaningConfig[$item['item_group_cd']]) ){
+            $linkToCleaning = "/cleaning/input?id=".$item['item_id'];
+        }
+        $this->set('linkToCleaning', $linkToCleaning);
+        
         $linkToAuction = null;
         if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK], true)) {
             $linkToAuction = "/mini_auction/lite/item/${item['box_id']}/${item['item_id']}";
