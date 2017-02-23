@@ -181,6 +181,6 @@ a.btn-starter {
 	margin	: 0px
 }
 
-a.btn-submit, a.btn-return {
+a.btn-submit, a.btn-return, a.btn-starter {
 	cursor	: pointer;
 }

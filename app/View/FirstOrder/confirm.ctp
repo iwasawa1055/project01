@@ -20,7 +20,7 @@
     </li>
   </ul>
 </section>
-  <form method="post" action="/first_order/complete">
+  <form method="post" action="/first_order/complete" novalidate>
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
