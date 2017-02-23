@@ -388,7 +388,7 @@ class FirstOrderController extends MinikuraController
             'expire_month'  => filter_input(INPUT_POST, 'expire_month'),
             'expire_year'   => filter_input(INPUT_POST, 'expire_year'),
             'expire'        => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
-            'holder_name'   => filter_input(INPUT_POST, 'holder_name'),
+            'holder_name'   => strtoupper(filter_input(INPUT_POST, 'holder_name')),
         ];
 
         //* Session write
