@@ -118,12 +118,7 @@ class FirstOrderController extends MinikuraController
         $kit_select_type = 'all';
         switch (true) {
             case $lp_option === 'mono':
-                // ログインしている場合はmonoを表示
-                if ($is_logined) {
-                    $kit_select_type = 'mono';
-                } else {
-                    $kit_select_type = 'starter_kit';
-                }
+                $kit_select_type = 'mono';
                 break;
             case $lp_option === 'hako':
                 $kit_select_type = 'hako';
@@ -131,21 +126,14 @@ class FirstOrderController extends MinikuraController
             case $lp_option === 'cleaning':
                 $kit_select_type = 'cleaning';
                 break;
-            case $lp_option === 'all':
-                $kit_select_type = 'all';
-                break;
             case $lp_option === 'is_code':
                 $kit_select_type = 'all';
                 break;
-            case $lp_option === 'starter_kit':
-                if ($is_logined) {
-                    $kit_select_type = 'mono';
-                } else {
-                    $kit_select_type = 'starter_kit';
-                }
+            case $lp_option === 'all':
+                $kit_select_type = 'all';
                 break;
             default:
-                $kit_select_type = 'all';
+                $kit_select_type = 'starter_kit';
                 break;
         }
 
