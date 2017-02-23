@@ -140,7 +140,11 @@ class FirstOrderController extends MinikuraController
                 $kit_select_type = 'all';
                 break;
             default:
-                $kit_select_type = 'starter_kit';
+                if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
+                    $kit_select_type = 'all';
+                } else {
+                    $kit_select_type = 'starter_kit';
+                }
                 break;
         }
 
