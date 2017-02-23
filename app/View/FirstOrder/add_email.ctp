@@ -20,7 +20,7 @@
     </ul>
   </section>
   <!-- ADRESS -->
-  <form method="post" action="/first_order/confirm_email">
+  <form method="post" action="/first_order/confirm_email" novalidate>
   <section id="adress">
     <div class="wrapper">
       <?php if ($is_logined) : ?>
@@ -31,7 +31,7 @@
       <?php else : ?>
         <div class="form">
           <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-          <input type="text" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
+          <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
