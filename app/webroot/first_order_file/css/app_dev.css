@@ -2,9 +2,16 @@
 	cursor	: pointer;
 }
 
-:-ms-input-placeholder {
-	color: #dddddd;
+::-moz-placeholder, :-moz-placeholder{
+    opacity: 0.4;
 }
+::-webkit-input-placeholder {
+    opacity: 0.4;
+}
+:-ms-input-placeholder {
+    opacity: 0.4;
+}
+
 
 button[class^="btn-"] {
 	margin: 1.5rem 0 0 0;
