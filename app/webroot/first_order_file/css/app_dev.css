@@ -188,3 +188,7 @@ a.btn-submit, a.btn-return, a.btn-starter {
 .holder_name{
     text-transform: uppercase;
 }
+
+section#already-login {
+    font-size:100%;
+}

@@ -20,6 +20,18 @@
     </ul>
   </section>
   <!-- ADRESS -->
+  <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
+    <section id="already-login">
+      <div class="wrapper">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 col-md-8 col-md-offset-2">
+            <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このメールアドレスはご利用できません。すでにアカウントを持っているお客様は<a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインください。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
   <form method="post" action="/first_order/confirm_email" novalidate>
   <section id="adress">
     <div class="wrapper">
@@ -35,12 +47,6 @@
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
-      <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
-        <div class="form">
-          <label>ログインしサービスをご利用ください<br></label>
-          <a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログイン</a>
-        </div>
-        <?php endif; ?>
         <div class="form">
           <label>パスワード<span class="required">※</span><br><span>半角英数記号6文字以上でご入力ください。</span></label>
           <input type="password" class="password" size="20" maxlength="20" name="password">
