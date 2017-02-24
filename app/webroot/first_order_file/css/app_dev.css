@@ -190,5 +190,6 @@ a.btn-submit, a.btn-return, a.btn-starter {
 }
 
 section#already-login {
+    padding: 0 15px 0 15px;
     font-size:100%;
 }

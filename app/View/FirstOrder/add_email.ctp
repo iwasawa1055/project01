@@ -21,13 +21,11 @@
   </section>
   <!-- ADRESS -->
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
-    <section id="already-login">
+    <section id="adress">
       <div class="wrapper">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2 col-md-8 col-md-offset-2">
-            <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このメールアドレスはご利用できません。すでにアカウントを持っているお客様は<a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインください。</div>
+        <div class="form">
+          <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このメールアドレスはご利用できません。すでにアカウントをお持ちの方は<a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインしてください。</div>
           </div>
-        </div>
       </div>
     </section>
   <?php endif; ?>
