@@ -95,7 +95,7 @@
         </div>
         <div class="form form-line">
           <label>紹介コード</label>
-          <input type="text" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+          <input type="email" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
           <?php echo $this->Flash->render('code_and_starter_kit');?>
         </div>
       <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
@@ -119,7 +119,7 @@
   </section>
   <section class="nextback" id="js-agreement_on_page">
     <a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
-    <button type="submit" class="btn-next">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+    <button type="submit" class="btn-next agree-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
