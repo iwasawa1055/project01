@@ -111,9 +111,10 @@
       <?php endif; ?>
 
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term agree-before-submit" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> <label for="term" class="term">minikura利用規約に同意する</label></label>
+        <label class="terms"><input type="checkbox" class="term agree-before-submit" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>
+          <label for="term" class="term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
+        </label>
         <?php echo $this->Flash->render('remember');?>
-        <a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> minikura利用規約</a>
       </div>
     </div>
   </section>
