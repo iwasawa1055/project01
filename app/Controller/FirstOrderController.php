@@ -461,7 +461,7 @@ class FirstOrderController extends MinikuraController
                     'email' => "",
                     'password' => "",
                     'password_confirm' => "",
-                    'birth_year' => "",
+                    'birth_year' => "1980",
                     'birth_month' => "",
                     'birth_day' => "",
                     'gender' => "",
@@ -469,9 +469,6 @@ class FirstOrderController extends MinikuraController
                     'alliance_cd' => "",
                     'remember' => "",
                 );
-                if ($is_logined) {
-                    $Email['email'] = $this->Customer->getInfo()['email'];
-                }
                 CakeSession::write('Email', $Email);
             }
 
@@ -482,7 +479,13 @@ class FirstOrderController extends MinikuraController
                 $Email['alliance_cd'] = $code;
                 CakeSession::write('Email', $Email);
             }
+        }
 
+        // ログインしている場合メールアドレスを挿入
+        if ($is_logined) {
+            $Email = CakeSession::read('Email');
+            $Email['email'] = $this->Customer->getInfo()['email'];
+            CakeSession::write('Email', $Email);
         }
 
         //* session referer set
