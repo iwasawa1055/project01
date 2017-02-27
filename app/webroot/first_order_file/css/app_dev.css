@@ -84,6 +84,7 @@ section#lineup .form .validation {
     cursor: pointer;
 }
 
+.item-number,
 .select-month,
 .select-year,
 .select-birth-year,
