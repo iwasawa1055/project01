@@ -106,7 +106,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
   <?php endif; ?>
   <div class="footer">
-    <div class="col-lg-12 col-md-12 col-xs-12">
+    <div class="col-xs-12">
       <ul class="list-inline">
         <li><a href="https://minikura-logitech.com/" target="_blank">運営チーム</a>
         </li>
@@ -122,10 +122,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </li>
       </ul>
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-xs-12">
-        <p>© 2012 Warehouse TERRADA</p>
-      </div>
+    <div class="col-xs-12">
+      <p>© 2012 Warehouse TERRADA</p>
     </div>
   </div>
 </div>
