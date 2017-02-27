@@ -26,7 +26,7 @@
   <div class="wrapper">
     <div class="form">
       <p class="dialog">専用ボックスのご注文ありがとうございました。</p>
-      <p class="dialog">ご登録いただいたメールアドレス宛に登録完了メールをお送りしましたのでそちらをご確認ください。</p>
+      <p class="dialog">ご登録メールアドレスにお送りしました完了メールをご確認ください。</p>
   </div>
   </div>
 </section>
