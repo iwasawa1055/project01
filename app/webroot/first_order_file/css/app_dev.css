@@ -200,6 +200,10 @@ section#already-login {
     padding: 0 15px 0 15px;
     font-size:100%;
 }
+.submit_disabled_wrapper_parent{
+    display:inline-block;
+    position:relative;
+}
 
 .submit_disabled_wrapper{
     position:absolute;
@@ -209,10 +213,25 @@ section#already-login {
     bottom:0;
     margin-top: 1.5rem;
     margin-left: 1rem;
+    margin-right: 0rem;
 }
 
 .submit_disabled_wrapper.active {
-    width: 100%;
+    width: 30rem;
+}
+
+@media screen and (max-width: 767px) {
+    .submit_disabled_wrapper_parent {
+        width : calc(72% - 1rem);
+    }
+    .submit_disabled_wrapper_parent button.btn-next{
+        width: 100%;
+    }
+    .submit_disabled_wrapper.active {
+        width: 100%;
+        margin : .5rem;
+        font-size	: 1.3rem;
+    }
 }
 
 .submit_disabled_wrapper.disabled {

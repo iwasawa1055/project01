@@ -121,10 +121,11 @@
   </section>
   <section class="nextback" id="js-agreement_on_page">
     <a href="/first_order/add_credit?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
-    <div style="display:inline-block; position:relative;">
+    <div class="submit_disabled_wrapper_parent">
       <button type="submit" class="btn-next agree-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
       <div id="js-submit_disabled_wrapper" class="submit_disabled_wrapper active"></div>
-    </div>  </section>
+    </div>
+  </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
