@@ -28,6 +28,7 @@
     <link rel="manifest" href="/images/manifest.json">
     <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="theme-color" content="#ff0000">
+    <meta name="format-detection" content="telephone=no">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

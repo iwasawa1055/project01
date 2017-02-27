@@ -1,6 +1,5 @@
 <?php echo $this->element('FirstOrder/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="format-detection" content="telephone=no">
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>

@@ -1,5 +1,4 @@
 <?php echo $this->element('FirstOrder/first'); ?>
-<meta name="robots" content="noindex,nofollow,noarchive">
 <title>ボックス選択 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
