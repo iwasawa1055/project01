@@ -870,8 +870,6 @@ class FirstOrderController extends MinikuraController
             return $this->redirect('confirm');
         }
 
-        $this->set('select_delivery', CakeSession::read('Address.select_delivery'));
-
         CakeSession::delete('Order');
         CakeSession::delete('OrderTotal');
         CakeSession::delete('Address');
