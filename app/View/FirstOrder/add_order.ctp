@@ -26,6 +26,24 @@
 <form method="post" action="/first_order/confirm_order" novalidate>
 <section id="lineup">
   <div class="wrapper">
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
+    <!-- HAKO -->
+    <div class="lineup-box">
+      <h3>minikuraHAKO</h3>
+      <p class="price">月額保管料<span>200円</span>
+      </p>
+      <p class="price">ボックス代金<span>200円</span>
+      </p>
+      <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
+      </p>
+      <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+      <div class="box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
+      <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
+      <div class="form">
+        <?php echo $this->Flash->render('select_oreder_hako'); ?>
+      </div>
+    </div>
+    <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono')) : ?>
       <!-- MONO -->
       <div class="lineup-box">
@@ -42,24 +60,6 @@
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <div class="form">
           <?php echo $this->Flash->render('select_oreder_mono'); ?>
-        </div>
-      </div>
-    <?php endif; ?>
-    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
-      <!-- HAKO -->
-      <div class="lineup-box">
-        <h3>minikuraHAKO</h3>
-        <p class="price">月額保管料<span>200円</span>
-        </p>
-        <p class="price">ボックス代金<span>200円</span>
-        </p>
-        <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
-        </p>
-        <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-        <div class="box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
-        <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-        <div class="form">
-          <?php echo $this->Flash->render('select_oreder_hako'); ?>
         </div>
       </div>
     <?php endif; ?>
@@ -86,7 +86,7 @@
       <div class="lineup-box">
         <h3>MONOスターターキット</h3>
         <p class="price">月額保管料<span>250円</span>（1箱につき）
-        <p class="price">ボックス代金<span class="starter"><s>750円</s><span>今だけ250円</span></span>
+        <p class="price">スターターキット(3箱)<span class="starter">250円</span>
         </p>
         <p class="box-caption">minikuraMONOのボックス3種類がセットになった初回登録ユーザー限定のお得なキット。
         </p>

@@ -281,7 +281,7 @@ section#adress .form select[class^="select-"] {
 }
 section#adress .form label.genders {
 	display: inline-block;
-	margin-right: .5rem;
+	margin-right: 1.5rem;
 }
 section#adress .form label.terms {
 	display: block;
@@ -306,14 +306,14 @@ section#adress .form input[type=checkbox] + .check-icon {
 section#adress .form input[type=radio] + .check-icon:before,
 section#adress .form input[type=checkbox] + .check-icon:before {
 	font-family: 'FontAwesome';
-	content: "\f058";
+	content: "\f096";
 	font-size: 24px;
 	font-size: 2.4rem;
 	color: #999999;
 }
 section#adress .form input[type=radio]:checked + .check-icon:before,
 section#adress .form input[type=checkbox]:checked + .check-icon:before {
-	content: "\f058";
+	content: "\f046";
 	color: #ff0000;
 }
 section#adress .form .select-delivery {
@@ -332,7 +332,11 @@ section#adress .form .validation {
 	border: .1rem solid #ff6666;
 	border-radius: 2px;
 }
-section#adress .form a.link-terms {
+section#adress .form a.link-terms,
+section#adress .form a.link-terms:focus,
+section#adress .form a.link-terms:active {
+	display: inline-block;
+	margin: 0 0 0 .5rem;
 	font-size: 14px;
 	font-size: 1.4rem;
 }
@@ -564,7 +568,7 @@ section#lineup .box-cleaning img {
 	padding: .5rem 1rem 1rem;
 }
 .items .box {
-	margin-bottom: 1rem;
+	margin-bottom: .5rem;
 }
 .items .box .pict-box img {
 	width: 100px;
@@ -578,7 +582,7 @@ section#lineup .box-cleaning img {
 .items .box .caption {
 	font-size: 12px;
 	font-size: 1.2rem;
-	line-height: 1.5;
+	line-height: 1.2;
 }
 section#adress .form {
 	display: block;
@@ -589,6 +593,16 @@ section#adress .form {
 section#adress .form-line {
 	display: inline-block;
 	margin-right: .5rem;
+}
+section#adress .form label.genders .gender,
+section#adress .form label.terms .term {
+	font-size: 13px;
+	font-size: 1.3rem;
+	font-weight: 600;
+}
+section#adress .form a.link-terms {
+	font-size: 12px;
+	font-size: 1.2rem;
 }
 section#adress .form table {
 	margin: 0;
