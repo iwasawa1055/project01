@@ -115,7 +115,7 @@
           <label for="term" class="term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
         </label>
         <?php echo $this->Flash->render('remember');?>
-        <span class="validation" id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span
+        <span class="validation" id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
       </div>
     </div>
   </section>
