@@ -80,7 +80,19 @@ section#lineup .form .validation {
 }
 
 .select-delivery{
-	min-width: 210px;
+    min-width: 210px;
+    cursor: pointer;
+}
+
+.item-number,
+.select-month,
+.select-year,
+.select-birth-year,
+.select-birth-month,
+.select-birth-day,
+.select-info,
+.select_agreement{
+    cursor: pointer;
 }
 
 /* Loader */
