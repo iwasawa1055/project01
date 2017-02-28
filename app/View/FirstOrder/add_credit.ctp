@@ -25,23 +25,23 @@
     <div class="wrapper">
       <div class="form">
         <label>クレジットカード番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="tel" class="name" name="card_no" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo CakeSession::read('Credit.card_no');?>">
+        <input type="tel" class="name focused" name="card_no" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo CakeSession::read('Credit.card_no');?>">
         <?php echo $this->Flash->render('card_no');?>
       </div>
       <div class="form">
         <label>セキュリティコード<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-        <input type="tel" class="postal" name="security_cd" placeholder="0123" size="6" maxlength="6" value="">
+        <input type="tel" class="postal focused" name="security_cd" placeholder="0123" size="6" maxlength="6" value="">
         <?php echo $this->Flash->render('security_cd');?>
       </div>
       <div class="form">
         <label>カード有効期限<span class="required">※</span></label>
-        <select class="select-month" name="expire_month">
+        <select class="select-month focused" name="expire_month">
           <?php foreach ( $this->Html->creditcardExpireMonth() as $value => $string ) :?>
                 <option value="<?php echo $value;?>"<?php if ( $value === substr(CakeSession::read('Credit.expire'),0,2) ) echo " SELECTED";?>><?php echo $string;?></option>
           <?php endforeach ?>
         </select>
         /
-        <select class="select-year" name="expire_year">
+        <select class="select-year focused" name="expire_year">
           <?php foreach ( $this->Html->creditcardExpireYear() as $value => $string ) :?>
                 <option value="<?php echo $value;?>"<?php if ( (string) $value === substr(CakeSession::read('Credit.expire'),2,2) ) echo " SELECTED";?>><?php echo $string;?></option>
           <?php endforeach ?>
@@ -50,7 +50,7 @@
       </div>
       <div class="form">
         <label>カード名義<span class="required">※</span></label>
-        <input type="email" class="adress2 holder_name" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>">
+        <input type="email" class="adress2 holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>">
         <?php echo $this->Flash->render('holder_name');?>
       </div>
     </div>

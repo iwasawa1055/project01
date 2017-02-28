@@ -279,6 +279,9 @@ section#adress .form select[class^="select-"] {
 	border: 1px solid #CCC;
 	border-radius: 0;
 }
+section#adress .form .referral {
+	display: inline-block;
+}
 section#adress .form label.genders {
 	display: inline-block;
 	margin-right: 1.5rem;
@@ -322,15 +325,6 @@ section#adress .form .select-delivery {
 section#adress .form .select-month,
 section#adress .form .select-year {
 	display: inline-block;
-}
-section#adress .form .validation {
-	display: none;
-	margin: .5rem 0 0 0;
-	padding: .5rem;
-	color: #ffffff;
-	background: #ff6666;
-	border: .1rem solid #ff6666;
-	border-radius: 2px;
 }
 section#adress .form a.link-terms,
 section#adress .form a.link-terms:focus,
@@ -483,10 +477,12 @@ section#pagenation ul li span {
 section.nextback {
 	display: block;
 	width: 100%;
-	position: fixed;
 	margin-bottom: 0;
 	padding: 1rem;
 	bottom: 0;
+}
+section.nextback.fix {
+	position: fixed;
 	background: rgba(155,155,155,0.5);
 	animation: fadeIn 1s ease 0s 1 normal;
 }
@@ -523,9 +519,12 @@ section {
 	margin: 0 auto 3rem;
 	padding: 0;
 }
+section#lineup.fix {
+	margin: 0 auto 9rem;
+}
 section#lineup,
 section#adress {
-	margin: 0 auto 9rem;
+	margin: 0 auto;
 }
 section#adress {
 	padding: 0 1rem 0;

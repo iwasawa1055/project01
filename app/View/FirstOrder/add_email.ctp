@@ -41,18 +41,18 @@
       <?php else : ?>
         <div class="form">
           <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-          <input type="email" class="mail" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
+          <input type="email" class="mail focused" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
         <div class="form">
           <label>パスワード<span class="required">※</span><br><span>半角英数記号6文字以上でご入力ください。</span></label>
-          <input type="password" class="password" size="20" maxlength="20" name="password">
+          <input type="password" class="password focused" size="20" maxlength="20" name="password">
           <?php echo $this->Flash->render('password');?>
         </div>
         <div class="form">
           <label>パスワード（確認用）<span class="required">※</span></label>
-          <input type="password" class="password" size="20" maxlength="20" name="password_confirm">
+          <input type="password" class="password focused" size="20" maxlength="20" name="password_confirm">
           <?php echo $this->Flash->render('password_confirm');?>
         </div>
       <?php endif; ?>
@@ -61,17 +61,17 @@
       <div class="form form-line">
         <label>生年月日<span class="required">※</span></label>
 	
-        <select class="select-birth-year" name="birth_year">
+        <select class="select-birth-year focused" name="birth_year">
         <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
         <?php endfor;?>
         </select>
-        <select class="select-birth-month" name="birth_month">
+        <select class="select-birth-month focused" name="birth_month">
         <?php for ($i = 1; $i <= 12; $i++) :?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_month') ) echo " SELECTED";?>><?php echo $i;?>月</option>
         <?php endfor;?>
         </select>
-        <select class="select-birth-day" name="birth_day">
+        <select class="select-birth-day focused" name="birth_day">
         <?php for ($i = 1; $i <= 31; $i++) :?>
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
         <?php endfor;?>
@@ -89,14 +89,14 @@
       <?php if (!$is_logined) : ?>
         <div class="form form-line">
           <label>お知らせメール</label>
-          <select class="select-info" name="newsletter">
+          <select class="select-info focused" name="newsletter">
             <option value="1"<?php if ( CakeSession::read('Email.newsletter') === "1" ) echo " SELECTED";?>>受信する</option>
             <option value="0"<?php if ( CakeSession::read('Email.newsletter') === "0" ) echo " SELECTED";?>>受信しない</option>
           </select>
         </div>
         <div class="form form-line">
           <label>紹介コード</label>
-          <input type="email" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+          <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
           <?php echo $this->Flash->render('code_and_starter_kit');?>
         </div>
       <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
@@ -112,7 +112,7 @@
       <?php endif; ?>
 
       <div class="form">
-        <label class="terms"><input type="checkbox" class="term agree-before-submit" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>
+        <label class="terms"><input type="checkbox" class="term agree-before-submit focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>
           <label for="term" class="term select_agreement">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
         </label>
         <?php echo $this->Flash->render('remember');?>

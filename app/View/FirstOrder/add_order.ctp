@@ -24,7 +24,7 @@
 <?php $kit_select_type = CakeSession::read('kit_select_type'); ?>
 
 <form method="post" action="/first_order/confirm_order" novalidate>
-<section id="lineup">
+<section id="lineup" class="fix">
   <div class="wrapper">
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
     <!-- HAKO -->
@@ -100,7 +100,7 @@
     <?php endif; ?>
   </div>
 </section>
-<section class="nextback">
+<section class="nextback fix">
   <button class="btn-next-full" type="submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
 </section>
 <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />

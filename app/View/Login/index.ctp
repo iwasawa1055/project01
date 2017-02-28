@@ -30,7 +30,7 @@
                 <?php if (!empty($code) && $code ===  Configure::read('api.sneakers.alliance_cd')) : ?>
                     <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add_sneakers?key=<?php echo $key;?>"  target="_blank">ユーザー登録はこちら</a>
                 <?php else : ?>
-                   <a class="btn btn-primary btn-md btn-block" href="/customer/register/add_info" target="_blank">ユーザー登録はこちら</a>
+                   <a class="btn btn-primary btn-md btn-block" href="/first_order/index" target="_blank">はじめて購入するかたはこちら</a>
                 <?php endif; ?>
                 </span>
                 <span class="col-sm-6 col-xs-12">
