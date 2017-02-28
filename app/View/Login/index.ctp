@@ -1,9 +1,7 @@
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h1 class="page-header"><i class="fa fa-sign-in"></i> ログイン</h1>
-      </div>
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="page-header"><i class="fa fa-sign-in"></i> ログイン</h1>
     </div>
-    <div class="row" id="login">
+    <div id="login">
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-body">
