@@ -1,5 +1,5 @@
 		$(function () {
-			$("#header").load("/elements/header.html");
+			/**$("#header").load("/elements/header.html");**/
 			/**$("#footer").load("/elements/footer.html");**/
 		});
 		$(function () {
