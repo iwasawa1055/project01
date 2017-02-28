@@ -4,11 +4,11 @@
 					$('.btn-option').toggleClass("active");
 				});
 			});
-			$(function () {
-				$('.btn-check').click(function () {
-					$('.btn-check').toggleClass("active");
-				});
-			});
+			//$(function () {
+			//	$('.btn-check').click(function () {
+			//		$('.btn-check').toggleClass("active");
+			//	});
+			//});
 			$(function () {
 				var $body = $('body'),
 					$navCleaning = $('.nav-cleaning'),

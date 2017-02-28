@@ -1,10 +1,10 @@
 <?php $this->Html->css('cleaning/app', ['block' => 'css']); ?>
 <?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
 
+<?php $this->Html->script('remodal.min', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/jquery.infinitescroll.min', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app_dev', ['block' => 'scriptMinikura']); ?>
-
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
   <h2 class="page-caption"><a href="#">minikuraクリーニング <i class="fa fa-external-link-square"></i></a> に申し込むアイテムを選択してください。</h2>
   <div id="cleaning-wrapper">
@@ -31,25 +31,38 @@
       <?php endforeach ?>
       </select>
       <button type="submit" class="btn-view">表示する</button>
-      <a href="#" class="btn-check"><i class="fa fa-check-circle"></i><span> クリア</span></a>
+      <button type="button" id="ClearSelected" class="btn-check active"><i class="fa fa-check-circle"></i><span> クリア</span></button>
     </div>
     </form>
     <div class="grid">
       <form action="input_confirm" id="itemlist" method="post">
+      <input type="hidden" id="ItemSelected" value="<?php echo $selected_id;?>">
       <ul>
         <!--loop-->
         <?php foreach ($itemList as $item): ?>
         <li class="item">
           <div class="item-select">
             <label>
-              <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'].",".$price[$item['item_group_cd']].",".$item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ( $item['item_id'] === $selected_id ) echo " checked";?>><span class="check-icon"></span>
+              <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'].",".$item['item_group_cd'].",".$item['box_id'].",".$item['box']['product_cd'].",".$item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ( $item['item_id'] === $selected_id ) echo " checked";?>><span class="check-icon"></span>
               <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>" class="item_img">
             </label>
-            <a href="/item/detail/<?php echo $item['item_id'];?>" class="item-search"><i class="fa fa-search-plus"></i></a>
+            <a href="#" class="item-search" data-remodal-target="<?php echo $item['item_id'];?>"><i class="fa fa-search-plus"></i></a>
           </div>
           <div class="item-caption">
             <p class="item-id"><?php echo $item['item_id'];?></p>
             <p class="item-price"><?php echo number_format($price[$item['item_group_cd']]);?>円</p>
+          </div>
+          <!--Item modal-->
+          <div class="remodal items" data-remodal-id="<?php echo $item['item_id'];?>" role="dialog" aria-labelledby="<?php echo $item['item_name'];?>" aria-describedby="<?php echo $item['item_note'];?>" data-remodal-options="hashTracking:false">
+            <div class="pict-box">
+              <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>">
+            </div>
+            <div class="title-box">
+              <p class="item-id"><?php echo $item['item_id'];?></p>
+              <h3><?php echo $item['item_name'];?></h3>
+              <p class="item-caption"><?php echo $item['item_note'];?></p>
+            </div>
+            <a class="btn-close" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
           </div>
         </li>
         <?php endforeach; ?>

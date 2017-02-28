@@ -15,7 +15,8 @@
     <div class="grid">
       <ul>
         <!--loop-->
-        <?php foreach ($itemList as $item): ?>
+        <?php foreach ($itemList as $items): ?>
+        <?php foreach ($items as $item): ?>
         <li>
           <div class="item-select">
             <img src="<?php echo $item['image_url'];?>" alt="<?php echo $item['item_id'];?>">
@@ -25,6 +26,7 @@
             <p class="item-price"><?php echo number_format($item['price']);?>円</p>
           </div>
         </li>
+        <?php endforeach; ?>
         <?php endforeach; ?>
         <!--loop end-->
       </ul>

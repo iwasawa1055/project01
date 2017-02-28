@@ -1,6 +1,5 @@
 $(function () {
   AppCleaning.initialize();
-
   $('.item_confirm').click(function() { 
     $("#itemlist").submit();
   });
@@ -8,14 +7,27 @@ $(function () {
   $(document).on("change",".item-select input[type=checkbox]",function(){
     AppCleaning.updateList();
   });
+  
+  $("#ClearSelected").click(function() {
+    $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked",false);
+    AppCleaning.updateList();
+  });
+
+
+
 });
 
 var AppCleaning = {
   initialize : function() {
     var list = docCookies.getItem("mn_cleaning_list");
+    var selectedItem = $("#ItemSelected").val();
     
-    if ( list ) {
-      var listSelected = list.split(",");
+    if ( list || selectedItem ) {
+      if ( list ) {
+        var listSelected = list.split(",");
+      } else {
+        var listSelected = [selectedItem];
+      }
 
       $(".grid ul").infinitescroll({
         dataType  : "html",
@@ -34,7 +46,8 @@ var AppCleaning = {
             }
           });
           AppCleaning.updateList();
-	});
+          $('.remodal').remodal();
+        });
     } else {
       $(".grid ul").infinitescroll({
         dataType  : "html",
@@ -43,6 +56,8 @@ var AppCleaning = {
         itemSelector : "#itemlist ul li",
         finishedMsg  : "",
         msgText     : "",
+	},function(){
+          $('.remodal').remodal();
 	});
     }
   },

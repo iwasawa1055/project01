@@ -188,10 +188,15 @@ class CleaningController extends MinikuraController
         }
         
         $session_data = array();
-
-        foreach ( $selected_ids as $_tmp ) {
-            list($data['item_id'], $data['price'], $data['image_url']) = explode(",",$_tmp,3);
-            array_push($session_data,$data);
+        $price = Configure::read('app.kit.cleaning.item_group_cd');
+        foreach ( $selected_ids as $item ) {
+            $data = array();
+            list($data['item_id'], $data['item_group_cd'], $data['box_id'], $data['product_cd'],$data['image_url']) = explode(",",$item,5);
+            $data['price']= $price[$data['item_group_cd']];
+            
+            if ( !isset($session_data[$data['item_group_cd']]) ) $session_data[$data['item_group_cd']] = array();
+            
+            array_push($session_data[$data['item_group_cd']],$data);
         }
         
         CakeSession::write('app.data.session_cleaning',$session_data);
@@ -208,12 +213,18 @@ class CleaningController extends MinikuraController
     public function confirm()
     {
         $selected_data = CakeSession::read('app.data.session_cleaning');
-        $this->set('selected_count', count($selected_data));
-        
+
+        $totalCount = 0;
         $totalprice = 0;
-        foreach ( $selected_data as $tmp ) {
-            $totalprice += $tmp['price'];
+        foreach ( $selected_data as $items ) {
+            foreach ( $items as $item ) {
+                $totalprice += $item['price'];
+            }
+            $totalCount += count($items);
         }
+        
+        
+        $this->set('selected_count',$totalCount);
         $this->set('selected_total', $totalprice);
         $this->set('itemList', $selected_data);
 
@@ -226,29 +237,76 @@ class CleaningController extends MinikuraController
      */
     public function complete()
     {
-        $selected_data = CakeSession::read('app.data.session_cleaning');
-        
         // データがない場合はリダイレクト
-        if ( !$selected_data ) {
+        if ( !CakeSession::read('app.data.session_cleaning') ) {
           return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
         }
-
-        $this->set('itemList', $selected_data);
         
-        // API Request
-//        $res = $model->apiPost($model->toArray());
+        // モデルをロードする
+        $this->loadModel('Cleaning');
 
-        // 登録に失敗した場合
-        if (!empty($res->error_message)) {
-            $this->Flash->set($res->error_message);
-            return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
+        // Item_Group_Idごとにデータを処理する
+        $request_data = array();
+        $selectedItems = CakeSession::read('app.data.session_cleaning');
+        
+        foreach ( CakeSession::read('app.data.session_cleaning') as $workType=>$items ) {
+            $requestParam = array(
+                "work_type"  => $workType,
+                "product"    => $this->Cleaning->buildParamProduct($items),
+            );
+            
+            $this->Cleaning->set($requestParam);
+            $validCleaning = $this->Cleaning->validates();
+            
+            if ( !$validCleaning ) {
+                $this->Flash->set("データに誤りがあります");
+                return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
+            }
+            
+            // ポイント消費
+            print_r($this->Cleaning->toArray());
+            $res = $this->Cleaning->apiPost($this->Cleaning->toArray());
+
+            print_r($res);
+            exit;
+            
+
+            // API Request
+            // $res = $model->apiPost($model->toArray());
+            // 登録に失敗した場合
+            if (!empty($res->error_message)) {
+                // Cookieを更新する
+                
+            
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
+            } else {
+                // 処理完了した分に関してはセッションから削除する
+                //CakeSession::delete("app.data.session_cleaning.".$workType);
+            }
         }
         
+        exit;
+
+
+/*STUB
+        $res = (object) array(
+            "status" => "0",
+            "message"=> "Parameter Invalid - foo",
+            "error_message"=> "Parameter Invalid - foo",
+            "results"=> array(
+                "reference"=>"https://maekawa-doc-api.minikura.com/common_item",
+                "support"=>"uniqueid99999",
+                "debug"=>"required foo.",
+            )
+        );
+*/
         // 登録に成功した場合
-        
+        $this->set('itemList', $selectedItems);
         
         // 処理が完了したら、セッションとクッキーを削除する
-        CakeSession::delete("app.data.session_cleaning");
+        CakeSession::delete("app.data.session_cleaning"); 
+#        
         setcookie("mn_cleaning_list", "", time()-3600);
         
     }
