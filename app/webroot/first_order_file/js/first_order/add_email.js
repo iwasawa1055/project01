@@ -40,9 +40,6 @@ var AppAddEmail =
             if (1 > count) {
                 // チェックされていない チェックバリデーション表示
                 $('#js-remember_validation').show();
-                $('body').delay(100).animate({
-                    scrollTop: $(document).height()
-                },1500);
             }
         });})
     }
