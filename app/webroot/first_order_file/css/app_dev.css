@@ -90,6 +90,7 @@ section#lineup .form .validation {
 .select-birth-year,
 .select-birth-month,
 .select-birth-day,
+.gender,
 .select-info,
 .select_agreement{
     cursor: pointer;
