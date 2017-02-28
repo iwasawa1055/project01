@@ -78,6 +78,7 @@
         </select>
         <?php echo $this->Flash->render('birth');?>
       </div>
+      <div class="divider"></div>
       <div class="form form-line">
         <label>性別<span class="required">※</span></label>
         <label class="genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
