@@ -29,7 +29,7 @@
                         <a class="animsition-link" href="https://help.minikura.com/hc/ja"><i class="fa fa-question"></i> ヘルプセンター</a>
                     </li>
                     <li>
-                        <a class="login" href="/login" target="_blank"><i class="fa fa-unlock-alt"></i> ログイン</a>
+                        <a class="login" href="/login"><i class="fa fa-unlock-alt"></i> ログイン</a>
                     </li>
                     <li>
                         <a class="signin" href="/customer/register/add_info" target="_blank"><i class="fa fa-sign-in"></i> ユーザー登録</a>

@@ -873,6 +873,9 @@ class FirstOrderController extends MinikuraController
             return $this->redirect('confirm');
         }
 
+        // 完了したページ情報を保存
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
         CakeSession::delete('Order');
         CakeSession::delete('OrderTotal');
         CakeSession::delete('Address');
