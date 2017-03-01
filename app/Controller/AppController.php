@@ -75,4 +75,22 @@ class AppController extends Controller
 
         return;
     }
+
+    /**
+     * 全角半角変換　Mac全角ハイフン対応版
+     *
+     * @access    public
+     * @param     全角文字列
+     * @return    半角文字列
+     */
+    /// 全角変換
+    public static function _wrapConvertKana($str)
+    {
+        $phyhen = array(
+            '-', '﹣', '－', '−', '⁻', '₋',
+            '‐', '‑', '‒', '–', '—', '―', '﹘','ー'
+        );
+
+        return mb_convert_kana(str_replace($phyhen, '', $str), 'nhk', "utf-8");
+    }
 }

@@ -324,6 +324,8 @@ class FirstOrderController extends MinikuraController
 
         CakeSession::write('Address', $params);
 
+        $params['tel1'] = self::_wrapConvertKana($params['tel1']);
+
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
 
@@ -395,7 +397,8 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('Credit', $params);
 
         // ハイフン削除はバリデーション前に実施
-        $params['card_no'] = str_replace("-", "", $params['card_no']);
+        $params['card_no'] = self::_wrapConvertKana($params['card_no']);
+        $params['security_cd'] = mb_convert_kana($params['security_cd'], 'nhk', "utf-8");;
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
@@ -720,6 +723,8 @@ class FirstOrderController extends MinikuraController
         }
         $this->set('is_logined', $is_logined);
 
+        $data['tel1'] = self::_wrapConvertKana($data['tel1']);
+
         // post値をセット
         $this->CustomerRegistInfo->set($data);
 
@@ -746,6 +751,11 @@ class FirstOrderController extends MinikuraController
         }
 
         if (!empty($res->error_message)) {
+            // 紹介コードエラーの場合 紹介コード入力に遷移
+            if (strpos($res->message, 'alliance_cd') !== false) {
+                $this->Flash->validation($res->error_message, ['key' => 'alliance_cd']);
+                return $this->redirect('add_email');
+            }
             $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
             return $this->redirect('confirm');
         }
@@ -777,7 +787,12 @@ class FirstOrderController extends MinikuraController
 
         //* クレジットカード登録
         $this->loadModel(self::MODEL_NAME_SECURITY);
-        $credit_data[self::MODEL_NAME_SECURITY] = CakeSession::read('Credit');
+
+        $Credit = CakeSession::read('Credit');
+        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+
+        $credit_data[self::MODEL_NAME_SECURITY] = $Credit;
 
         $this->PaymentGMOSecurityCard->set($credit_data);
 
@@ -815,11 +830,11 @@ class FirstOrderController extends MinikuraController
         $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
-        $gmo_kit_card['security_cd']   = CakeSession::read('Credit.security_cd');
+        $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('Credit.security_cd'));
         $gmo_kit_card['address_id']    = '';
         $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
         $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
-        $gmo_kit_card['tel1']          = CakeSession::read('Address.tel1');
+        $gmo_kit_card['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
         $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
         $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
 
@@ -899,12 +914,7 @@ class FirstOrderController extends MinikuraController
 
         $postal = filter_input(INPUT_POST, 'postal');
 
-        // ハイフンチェック
-        if (mb_strlen($postal) > 7) {
-            // ハイフン部分を削除 macの場合全角ハイフンの文字コードが異なるため単純な全角半角変換ができない
-            $postal = mb_substr($postal,0, 3) . mb_substr($postal, 4, 4);
-        }
-        $postal = mb_convert_kana($postal, 'nhk', "utf-8");
+        $postal = self::_wrapConvertKana($postal);
 
         // 配送日時情報取得
         $this->loadModel('KitDeliveryDatetime');
