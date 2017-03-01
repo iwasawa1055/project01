@@ -789,7 +789,7 @@ class FirstOrderController extends MinikuraController
 
         if (!empty($res->error_message)) {
             if (strpos($res->message, 'Allow Only Entry') !== false) {
-                $this->Flash->validation('ユーザ登録済のため購入完了できませんでした。', ['key' => 'customer_regist_info']);
+                $this->Flash->validation('登録済ユーザのため購入完了できませんでした。', ['key' => 'customer_regist_info']);
             } else {
                 $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
             }

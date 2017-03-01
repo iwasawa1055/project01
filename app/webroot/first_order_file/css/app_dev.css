@@ -258,3 +258,7 @@ section#adress .form label span.required,
 section#adress .form label span.check-icon{
     opacity: 1.0;
 }
+
+section#lineup .form{
+    font-size: 1.6rem;
+}
