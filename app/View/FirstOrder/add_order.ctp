@@ -26,6 +26,23 @@
 <form method="post" action="/first_order/confirm_order" novalidate>
 <section id="lineup" class="fix">
   <div class="wrapper">
+    <?php if ($kit_select_type === 'starter_kit') : ?>
+    <!-- STARTER -->
+    <div class="lineup-box">
+      <h3>MONOスターターキット</h3>
+      <p class="price">月額保管料<span>250円</span>（1箱につき）
+      <p class="price">スターターキット(3箱)<span class="starter">250円</span>
+      </p>
+      <p class="box-caption">初回限定！MONOボックス3種類がセットになったお得なキット。
+      </p>
+      <p class="select-number js-select-starter"><span>1セット選択済み</span></p>
+      <div class="box-starter"> <img src="/first_order_file/images/box_starter@1x.png" srcset="/first_order_file/images/box_starter@1x.png 1x, /first_order_file/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
+      <input id="select_starter_kit" name="starter" type="hidden" value="1"/>
+      <div class="form">
+        <?php echo $this->Flash->render('select_starter_kit'); ?>
+      </div>
+    </div>
+    <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
     <!-- HAKO -->
     <div class="lineup-box">
@@ -34,7 +51,7 @@
       </p>
       <p class="price">ボックス代金<span>200円</span>
       </p>
-      <p class="box-caption">箱につめて送るだけで、ボックス単位で管理できるお手軽クラウドストレージ。
+      <p class="box-caption">収納・片付けするならHAKOがオススメ！ボックスに詰めて送るだけでお手軽管理。
       </p>
       <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       <div class="box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
@@ -52,7 +69,7 @@
         </p>
         <p class="price">ボックス代金<span>250円</span>
         </p>
-        <p class="box-caption">最大30カットの写真撮影でマイページでアイテム管理ができるクラウドストレージ。
+        <p class="box-caption">便利な1点ごとのアイテム管理！アイテム毎の取り出しやオプション機能充実。
         </p>
         <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO">
@@ -71,30 +88,13 @@
         </p>
         <p class="price">ボックス代金<span>12,000円</span>
         </p>
-        <p class="box-caption">10点までの高品質クリーニングと 6ヶ月保管がセットになった衣類専用クラウドストレージ。
+        <p class="box-caption">大切な衣類をしっかり保管したい方に！クリーニング付き衣類専用保管パック。
         </p>
         <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="box-cleaning"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <div class="form">
           <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
-        </div>
-      </div>
-    <?php endif; ?>
-    <?php if ($kit_select_type === 'starter_kit') : ?>
-      <!-- STARTER -->
-      <div class="lineup-box">
-        <h3>MONOスターターキット</h3>
-        <p class="price">月額保管料<span>250円</span>（1箱につき）
-        <p class="price">スターターキット(3箱)<span class="starter">250円</span>
-        </p>
-        <p class="box-caption">minikuraMONOのボックス3種類がセットになった初回登録ユーザー限定のお得なキット。
-        </p>
-        <p class="select-number js-select-starter"><span>1セット選択済み</span></p>
-        <div class="box-starter"> <img src="/first_order_file/images/box_starter@1x.png" srcset="/first_order_file/images/box_starter@1x.png 1x, /first_order_file/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
-        <input id="select_starter_kit" name="starter" type="hidden" value="1"/>
-        <div class="form">
-          <?php echo $this->Flash->render('select_starter_kit'); ?>
         </div>
       </div>
     <?php endif; ?>
