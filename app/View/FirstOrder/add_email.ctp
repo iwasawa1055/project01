@@ -28,14 +28,6 @@
     </section>
   <?php endif; ?>
 
-  <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
-    <section id="adress">
-        <div class="form">
-          <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> monoスターターキットを購入する場合、紹介コードをご利用できません。 <br>紹介コードを使用しない（入力欄を空欄にする）か、再度ボックス選択画面からご注文ください。<a  href="/first_order/index?option=all">ボックス選択ページへ</a></div>
-        </div>
-    </section>
-  <?php endif; ?>
-
   <form method="post" action="/first_order/confirm_email" novalidate>
   <section id="adress">
     <div class="wrapper">

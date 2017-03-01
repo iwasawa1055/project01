@@ -139,7 +139,7 @@
       </select>
     </div>
     <p class="size">W60cm×H20cm×D38cm</p>
-    <p class="caption">男性用スーツ・ジャケットをハンガーに掛けた状態で2つ折りで約xxx着収納できるボックスです。</p>
+    <p class="caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
   </div>
   <div class="box">
     <div class="pict-box"><img src="/first_order_file/images/box_book@1x.png" srcset="/first_order_file/images/box_book@1x.png 1x, /first_order_file/images/box_book@2x.png 2x" alt="">
@@ -153,7 +153,7 @@
       </select>
     </div>
     <p class="size">W42cm×H29cm×D33cm</p>
-    <p class="caption">文庫本で約xxx冊、A4サイズの書類で約xxx枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+    <p class="caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
@@ -186,7 +186,7 @@
       </select>
     </div>
     <p class="size">W60cm×H20cm×D38cm</p>
-    <p class="caption">男性用スーツ・ジャケットをハンガーに掛けた状態で2つ折りで約xxx着収納できるボックスです。</p>
+    <p class="caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
   </div>
   <div class="box">
     <div class="pict-box"><img src="/first_order_file/images/box_book@1x.png" srcset="/first_order_file/images/box_book@1x.png 1x, /first_order_file/images/box_book@2x.png 2x" alt="">
@@ -200,7 +200,7 @@
       </select>
     </div>
     <p class="size">W42cm×H29cm×D33cm</p>
-    <p class="caption">文庫本で約xxx冊、A4サイズの書類で約xxx枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+    <p class="caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>

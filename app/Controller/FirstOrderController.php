@@ -575,20 +575,6 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // スターターキットの場合、紹介コードは使用できない。 UI上ここにくることはないがフェールセーフ
-        CakeSession::delete('code_and_starter_kit');
-        if (!empty($params['alliance_cd'])) {
-            $Order = CakeSession::read('Order');
-            if (key_exists('starter', $Order)) {
-                if ($Order['starter']['starter'] !== 0) {
-                    $this->Flash->validation('紹介コードエラー', ['key' => 'alliance_cd']);
-                    CakeSession::write('code_and_starter_kit', true);
-                    $is_validation_error = true;
-                    // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code_and_starter_kit ');
-                }
-            }
-        }
-
         // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
         CakeSession::delete('registered_user_login_url');
         if (!$is_logined) {
