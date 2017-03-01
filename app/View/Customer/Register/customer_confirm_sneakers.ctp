@@ -17,10 +17,12 @@
                 <label>パスワード</label>
                 <p>入力されたパスワード</p>
               </div>
+			<?php /* Sneakers 要件変更 key 制限解除 2017/03/01 modified by osada@terrada
               <div class="form-group">
                 <label>キーコード</label>
                 <p><?php echo h($this->Form->data['CustomerEntry']['key']); ?></p>
               </div>
+				*/ ?>
 			  <!-- input => hidden-->
               <?php echo $this->Form->hidden('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64,  'error' => false]); ?>
 			  <!-- input => hidden-->
@@ -30,7 +32,10 @@
               </div>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">
+			<?php /* Sneakers 要件変更 key 制限解除 2017/03/01 modified by osada@terrada
               <?php echo $this->Html->link('戻る', ['controller' => 'register', 'action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key, 'back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
+			*/ ?>
+              <?php echo $this->Html->link('戻る', ['controller' => 'register', 'action' => 'customer_add_sneakers', '?' => ['code' => $code, 'back' => 'true']], ['class' => 'btn btn-primary btn-lg btn-block']); ?>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で登録する</button>
