@@ -61,15 +61,16 @@ button.btn-next-full {
 }
 
 section#adress .form .validation {
-	display	: inline-block;
+    display	: inline-block;
+    color: #ff6666;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
 }
 
 section#lineup .form .validation {
     display: inline-block;
-    background: #ff6666 none repeat scroll 0 0;
-    border: 0.1rem solid #ff6666;
-    border-radius: 2px;
-    color: #ffffff;
+    color: #ff6666;
     margin: 0.5rem 0 0;
     padding: 0.5rem;
     font-size: 1.6rem;
@@ -189,10 +190,7 @@ section#lineup .form .validation {
 }
 
 .search-address-error-message {
-    background: #ff6666 none repeat scroll 0 0;
-    border: 0.1rem solid #ff6666;
-    border-radius: 2px;
-    color: #ffffff;
+    color: #ff6666;
     margin: 0.5rem 0 0 !important;
     padding: 0.5rem;
 }
@@ -249,4 +247,14 @@ section#already-login {
 
 .submit_disabled_wrapper.disabled {
     width: 0%;
+}
+
+section#adress .form label span{
+    color: silver;
+    opacity: 0.4;
+}
+
+section#adress .form label span.required,
+section#adress .form label span.check-icon{
+    opacity: 1.0;
 }

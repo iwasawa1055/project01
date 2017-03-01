@@ -76,12 +76,14 @@
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
         <?php endfor;?>
         </select>
+        <br>
         <?php echo $this->Flash->render('birth');?>
       </div>
       <div class="divider"></div>
       <div class="form form-line">
         <label>性別<span class="required">※</span></label>
         <label class="genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
+        <br>
         <?php echo $this->Flash->render('gender');?>
       </div>
       <div class="divider"></div>
@@ -98,6 +100,7 @@
           <label>紹介コード</label>
           <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
           <?php echo $this->Flash->render('code_and_starter_kit');?>
+          <br><?php echo $this->Flash->render('alliance_cd');?>
         </div>
       <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
         <div class="form form-line">
@@ -116,7 +119,7 @@
           <label for="term" class="term select_agreement">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
         </label>
         <?php echo $this->Flash->render('remember');?>
-        <span class="validation" id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
+        <span id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
       </div>
     </div>
   </section>
