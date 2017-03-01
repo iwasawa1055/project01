@@ -30,9 +30,11 @@
                 <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerEntry.password_confirm', null, ['wrap' => 'p']) ?>
               </div>
+			<?php /* Sneakers 要件変更 key 制限解除 2017/03/01 modified by osada@terrada
               <div class="form-group">
                 <?php echo $this->Form->input('CustomerEntry.key', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'キーコードをお持ちの方はこちらにご入力ください', 'value' => $key, 'error' => false]); ?>
               </div>
+			*/ ?>
 			  <!-- input => hidden-->
               <?php echo $this->Form->hidden('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64,  'error' => false]); ?>
 			  <!-- input => hidden-->
@@ -47,7 +49,10 @@
                   <a class="link-privacy" href="<?php echo Configure::read("site.static_content_url"); ?>/privacy/" target="_blank">個人情報について</a>、及びminikura利用規約に同意する </label>
               </div>
               <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録する</button>
-              <a class="btn btn-primary btn-xs btn-block" href="/login?code=<?php echo $code;?>&key=<?php echo $key;?>">ログインはこちら</a>
+			<?php /* Sneakers 要件変更 key 制限解除 2017/03/01 modified by osada@terrada
+			<?php  <a class="btn btn-primary btn-xs btn-block" href="/login?code=<?php echo $code;?>&key=<?php echo $key;?>">ログインはこちら</a> ?>
+			*/ ?>
+              <a class="btn btn-primary btn-xs btn-block" href="/login?code=<?php echo $code;?>">ログインはこちら</a>
             </div>
           <?php echo $this->Form->end(); ?>
           </div>
