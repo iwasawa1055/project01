@@ -18,7 +18,7 @@
               <div class="checkbox">
                 <label>
                   <input name="remember" type="checkbox" value="1">
-                  次回ログイン時に入力を省く </label>
+                  ログイン状態を保持する  </label>
               </div>
               <div class="row">
                 <span class="col-sm-6 col-xs-12">
@@ -28,7 +28,7 @@
                 <?php if (!empty($code) && $code ===  Configure::read('api.sneakers.alliance_cd')) : ?>
                     <a class="btn btn-primary btn-xs btn-block" href="/customer/register/add_sneakers?key=<?php echo $key;?>"  target="_blank">ユーザー登録はこちら</a>
                 <?php else : ?>
-                   <a class="btn btn-primary btn-md btn-block" href="/first_order/index" target="_blank">はじめて購入するかたはこちら</a>
+                   <a class="btn btn-primary btn-md btn-block" href="/first_order/index" target="_blank">はじめて購入する方はこちら</a>
                 <?php endif; ?>
                 </span>
                 <span class="col-sm-6 col-xs-12">

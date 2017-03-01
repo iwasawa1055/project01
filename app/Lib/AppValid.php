@@ -516,7 +516,18 @@ class AppValid
 				case $name === 'lastname_kana':
 				case $name === 'firstname_kana':
 					if ($value == '') {
-						$ret[$name] = '入力してください。';
+						$msg_add = '';
+						switch ($name) {
+							case 'lastname_kana':
+								$msg_add = '苗字カナを';
+								break;
+							case 'firstname_kana':
+								$msg_add = '名前カナを';
+								break;
+							default:
+								break;
+						}
+						$ret[$name] = $msg_add . '入力してください。';
 					}
 					if (! self::isFwKana($value)) {
 						$ret[$name] = 'カナの入力をご確認ください。';
@@ -596,6 +607,15 @@ class AppValid
 					$parts = explode('-', $value);
 					if (130 < (intval(date('Y')) - intval($parts[0]))) {
 						$ret[$name] = '生年月日の入力をご確認ください。';
+					}
+					break;
+				case $name === 'alliance_cd':
+					// 未記入用を許容
+					if ($value == '') {
+						break;
+					}
+					if (! preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
+						$ret[$name] = '入力をご確認ください。';
 					}
 					break;
 				case $name === 'offset':

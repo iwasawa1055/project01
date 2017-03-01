@@ -46,6 +46,7 @@
                 <option value="<?php echo $value;?>"<?php if ( (string) $value === substr(CakeSession::read('Credit.expire'),2,2) ) echo " SELECTED";?>><?php echo $string;?></option>
           <?php endforeach ?>
         </select>
+        <br>
         <?php echo $this->Flash->render('expire');?>
       </div>
       <div class="form">

@@ -72,6 +72,10 @@ class FirstOrderController extends MinikuraController
             // 取得した配列のカウントが2である
             if (count($login_params) === 2) {
                 // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is auto login user' . $option);
+
+                // セッションクリーン
+                $this->_clean_first_order_session();
+
                 // オートログイン
                 $this->redirect($none_first_redirect_param);
             }
@@ -83,12 +87,20 @@ class FirstOrderController extends MinikuraController
             // エントリーユーザでない
             if (!$this->Customer->isEntry()) {
                 // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is none entry user' . $option);
+
+                // セッションクリーン
+                $this->_clean_first_order_session();
+
                 $this->redirect($none_first_redirect_param);
             }
 
             // スニーカーユーザでない
             if ($this->Customer->isSneaker()) {
                 // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is isSneaker' . $option);
+
+                // セッションクリーン
+                $this->_clean_first_order_session();
+
                 $this->redirect($none_first_redirect_param);
             }
 
@@ -251,7 +263,7 @@ class FirstOrderController extends MinikuraController
     public function add_address()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrder/add_credit'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrder/add_credit', 'FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -350,7 +362,7 @@ class FirstOrderController extends MinikuraController
     public function add_credit()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_address', 'FirstOrder/add_credit', 'FirstOrder/add_email'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_address', 'FirstOrder/add_credit', 'FirstOrder/add_email', 'FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -578,22 +590,6 @@ class FirstOrderController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // スターターキットの場合、紹介コードは使用できない。
-        CakeSession::delete('code_and_starter_kit');
-        if (!empty($params['alliance_cd'])) {
-            $Order = CakeSession::read('Order');
-            if (key_exists('starter', $Order)) {
-                if ($Order['starter']['starter'] !== 0) {
-                    $this->Flash->validation('紹介コードエラー', ['key' => 'code_and_starter_kit']);
-                    CakeSession::write('code_and_starter_kit', true);
-
-                    $is_validation_error = true;
-
-                    // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code_and_starter_kit ');
-                }
-            }
-        }
-
         // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
         CakeSession::delete('registered_user_login_url');
         if (!$is_logined) {
@@ -653,7 +649,7 @@ class FirstOrderController extends MinikuraController
         // order情報
         $Order = CakeSession::read('Order');
 
-        $PurchaseOrder = array();
+        $FirstOrderList = array();
 
         // キットコードと合計金額を返すAPI
         $kitPrice = new CustomerKitPrice();
@@ -666,8 +662,8 @@ class FirstOrderController extends MinikuraController
             if ($Order['starter']['starter'] !== 0) {
                 $starterkit_code = Configure::read('app.first_order.starter_kit.code');
                 foreach ($starterkit_code as $param => $code) {
-                    $PurchaseOrder[$param]['number'] = 1;
-                    $PurchaseOrder[$param]['code'] = $code;
+                    $FirstOrderList[$param]['number'] = 1;
+                    $FirstOrderList[$param]['code'] = $code;
                 }
             }
         }
@@ -678,18 +674,18 @@ class FirstOrderController extends MinikuraController
                     // 対応するキットコードがあるか
                     if (array_key_exists ($param, $kit_code)) {
                         //
-                        $PurchaseOrder[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
-                        $PurchaseOrder[$param]['number']    = $value;
-                        $PurchaseOrder[$param]['kit_name']  = $kit_code[$param]['name'];
-                        $PurchaseOrder[$param]['code']      = $kit_code[$param]['code'];
+                        $FirstOrderList[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
+                        $FirstOrderList[$param]['number']    = $value;
+                        $FirstOrderList[$param]['kit_name']  = $kit_code[$param]['name'];
+                        $FirstOrderList[$param]['code']      = $kit_code[$param]['code'];
                     }
                 }
             }
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' PurchaseOrder ' . print_r($PurchaseOrder, true));
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
 
-        CakeSession::write('PurchaseOrder', $PurchaseOrder);
+        CakeSession::write('FirstOrderList', $FirstOrderList);
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
@@ -704,6 +700,55 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        // 購入前にログインし、エントリユーザでない場合のチェック
+        $is_logined = false;
+        if ($this->Customer->isLogined()) {
+            if (!$this->Customer->isEntry()) {
+
+                // セッションクリーン
+                $this->_clean_first_order_session();
+
+                $this->redirect(array('controller' => 'login', 'action' => 'index'));
+            }
+
+            $is_logined = true;
+        }
+        $this->set('is_logined', $is_logined);
+
+        // セッションが古い場合があるので再チェック
+        // 発送日一覧のエラーチェック
+        $result = $this->_get_address_datetime(CakeSession::read('Address.postal'));
+
+        $check_address_datetime_cd = false;
+        $address_datetime = CakeSession::read('Address.datetime_cd');
+        foreach ($result->results as $key => $value) {
+            if ($value['datetime_cd'] === $address_datetime) {
+                $check_address_datetime_cd = true;
+            }
+        }
+
+        if (!$check_address_datetime_cd) {
+            $this->Flash->validation('お届け希望日時を選択してください。',
+                ['key' => 'datetime_cd']);
+            CakeLog::write(DEBUG_LOG,
+                $this->name . '::' . $this->action . ' check_address_datetime_cd error');
+
+            return $this->redirect('add_address');
+        }
+
+        // カードの有効性をチェック
+        //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
+        $this->loadModel('CardCheck');
+        $Credit = CakeSession::read('Credit');
+        $Credit['card_no'] = str_replace("-", "", $Credit['card_no']);
+        $res = $this->CardCheck->getCardCheck($Credit);
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
+            $this->redirect('add_credit');
+            return;
+        }
+
         //* 会員登録
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
@@ -711,17 +756,14 @@ class FirstOrderController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_REGIST);
 
-        $is_logined = false;
-        if ($this->Customer->isLogined()) {
+        if ($is_logined) {
             $data['token'] = CakeSession::read(ApiModel::SESSION_API_TOKEN);
             $data['password'] = $this->Customer->getPassword();
 
             // バリデーションルールを変更
             $this->CustomerRegistInfo->validator()->remove('password_confirm');
 
-            $is_logined = true;
         }
-        $this->set('is_logined', $is_logined);
 
         $data['tel1'] = self::_wrapConvertKana($data['tel1']);
 
@@ -756,7 +798,11 @@ class FirstOrderController extends MinikuraController
                 $this->Flash->validation($res->error_message, ['key' => 'alliance_cd']);
                 return $this->redirect('add_email');
             }
-            $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            if (strpos($res->message, 'Allow Only Entry') !== false) {
+                $this->Flash->validation('登録済ユーザのため購入完了できませんでした。', ['key' => 'customer_regist_info']);
+            } else {
+                $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            }
             return $this->redirect('confirm');
         }
 
@@ -775,7 +821,7 @@ class FirstOrderController extends MinikuraController
         $res = $this->CustomerLogin->login();
 
         if (!empty($res->error_message)) {
-            $this->Flash->set($res->error_message);
+            $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
             return $this->redirect('confirm');
         }
 
@@ -813,7 +859,7 @@ class FirstOrderController extends MinikuraController
 
         $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
         if (!empty($result_security_card->error_message)) {
-            $this->Flash->set($result_security_card->error_message);
+            $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
             return $this->redirect('confirm');
         }
 
@@ -884,24 +930,23 @@ class FirstOrderController extends MinikuraController
         $this->PaymentGMOKitCard->set($gmo_kit_card);
         $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
         if ($result_kit_card->status !== '1') {
-            $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
+            if ($result_kit_card->http_code === 400) {
+                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+            } else {
+                $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
+            }
             return $this->redirect('confirm');
         }
 
         // 完了したページ情報を保存
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        CakeSession::delete('Order');
-        CakeSession::delete('OrderTotal');
-        CakeSession::delete('Address');
-        CakeSession::delete('Credit');
-        CakeSession::delete('Email');
-        CakeSession::delete('PurchaseOrder');
+        $this->_clean_first_order_session();
 
     }
 
     /**
-     * 指定IDの配送日時情報取得
+     * ajax 指定IDの配送日時情報取得
      */
     public function as_get_address_datetime()
     {
@@ -914,12 +959,8 @@ class FirstOrderController extends MinikuraController
 
         $postal = filter_input(INPUT_POST, 'postal');
 
-        $postal = self::_wrapConvertKana($postal);
+        $result = $this->_get_address_datetime($postal);
 
-        // 配送日時情報取得
-        $this->loadModel('KitDeliveryDatetime');
-
-        $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(array('postal' => $postal));
         $status = !empty($result);
 
         // コードを表示用文字列に変換
@@ -936,6 +977,26 @@ class FirstOrderController extends MinikuraController
         }
 
         return json_encode(compact('status', 'results'));
+    }
+
+    /**
+     * 指定IDの配送日時情報取得
+     */
+    private function _get_address_datetime($postal)
+    {
+        // ハイフンチェック
+        if (mb_strlen($postal) > 7) {
+            // ハイフン部分を削除 macの場合全角ハイフンの文字コードが異なるため単純な全角半角変換ができない
+            $postal = mb_substr($postal,0, 3) . mb_substr($postal, 4, 4);
+        }
+        $postal = mb_convert_kana($postal, 'nhk', "utf-8");
+
+        // 配送日時情報取得
+        $this->loadModel('KitDeliveryDatetime');
+
+        $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(array('postal' => $postal));
+
+        return $result;
     }
 
     /**
@@ -983,5 +1044,20 @@ class FirstOrderController extends MinikuraController
         $Order['starter']['starter'] = (int)filter_input(INPUT_POST, 'starter');
         return $Order;
     }
+
+    /**
+     * first orderで使用しているセッション類を削除
+     */
+    private function _clean_first_order_session()
+    {
+        CakeSession::delete('Order');
+        CakeSession::delete('OrderTotal');
+        CakeSession::delete('Address');
+        CakeSession::delete('Credit');
+        CakeSession::delete('Email');
+        CakeSession::delete('FirstOrderList');
+    }
+
+
 
 }

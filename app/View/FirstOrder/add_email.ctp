@@ -22,11 +22,9 @@
   <!-- ADRESS -->
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
     <section id="adress">
-      <div class="wrapper">
         <div class="form">
           <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このメールアドレスはご利用できません。すでにアカウントをお持ちの方は<a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインしてください。</div>
-          </div>
-      </div>
+        </div>
     </section>
   <?php endif; ?>
 
@@ -76,12 +74,14 @@
           <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
         <?php endfor;?>
         </select>
+        <br>
         <?php echo $this->Flash->render('birth');?>
       </div>
       <div class="divider"></div>
       <div class="form form-line">
         <label>性別<span class="required">※</span></label>
         <label class="genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="man" class="gender">男</label></label><label class="genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="gender">女</label></label>
+        <br>
         <?php echo $this->Flash->render('gender');?>
       </div>
       <div class="divider"></div>
@@ -94,19 +94,14 @@
             <option value="0"<?php if ( CakeSession::read('Email.newsletter') === "0" ) echo " SELECTED";?>>受信しない</option>
           </select>
         </div>
-        <div class="form form-line">
-          <label>紹介コード</label>
-          <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
-          <?php echo $this->Flash->render('code_and_starter_kit');?>
-        </div>
-      <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
-        <div class="form form-line">
-          <label class="text-danger">monoスターターキットを購入する場合、紹介コードをご利用できません。 <br>
-          紹介コードを使用しない（入力欄を空欄にする）か、再度ボックス選択画面からご注文ください。
-          </label>
-          <a  href="/first_order/index?option=all">ボックス選択ページへ</a>
-        </div>
-      <?php endif; ?>
+
+        <?php if (CakeSession::read('kit_select_type') !== 'starter_kit') : ?>
+          <div class="form form-line">
+            <label>紹介コード</label>
+            <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+            <br><?php echo $this->Flash->render('alliance_cd');?>
+          </div>
+        <?php endif; ?>
 
         <div class="divider"></div>
       <?php endif; ?>
@@ -116,7 +111,7 @@
           <label for="term" class="term select_agreement">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
         </label>
         <?php echo $this->Flash->render('remember');?>
-        <span class="validation" id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
+        <span id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
       </div>
     </div>
   </section>

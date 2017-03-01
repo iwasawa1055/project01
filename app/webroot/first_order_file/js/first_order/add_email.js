@@ -27,6 +27,8 @@ var AppAddEmail =
                     $('#js-submit_disabled_wrapper').addClass('disabled');
 
                     // チェックバリデーション非表示
+                    // バリデーションクラスを足し引きしないとページ内エラーとして検知されてしまう
+                    $('#js-remember_validation').removeClass('validation');
                     $('#js-remember_validation').hide();
                 }
             }
@@ -39,6 +41,8 @@ var AppAddEmail =
             var count = $('.agree-before-submit[type="checkbox"]:checked').length;
             if (1 > count) {
                 // チェックされていない チェックバリデーション表示
+                // バリデーションクラスを足し引きしないとページ内エラーとして検知されてしまう
+                $('#js-remember_validation').addClass('validation');
                 $('#js-remember_validation').show();
             }
         });})
