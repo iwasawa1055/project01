@@ -22,11 +22,17 @@
   <!-- ADRESS -->
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
     <section id="adress">
-      <div class="wrapper">
         <div class="form">
           <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このメールアドレスはご利用できません。すでにアカウントをお持ちの方は<a class="login" href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインしてください。</div>
-          </div>
-      </div>
+        </div>
+    </section>
+  <?php endif; ?>
+
+  <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
+    <section id="adress">
+        <div class="form">
+          <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> monoスターターキットを購入する場合、紹介コードをご利用できません。 <br>紹介コードを使用しない（入力欄を空欄にする）か、再度ボックス選択画面からご注文ください。<a  href="/first_order/index?option=all">ボックス選択ページへ</a></div>
+        </div>
     </section>
   <?php endif; ?>
 
@@ -96,20 +102,14 @@
             <option value="0"<?php if ( CakeSession::read('Email.newsletter') === "0" ) echo " SELECTED";?>>受信しない</option>
           </select>
         </div>
-        <div class="form form-line">
-          <label>紹介コード</label>
-          <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
-          <?php echo $this->Flash->render('code_and_starter_kit');?>
-          <br><?php echo $this->Flash->render('alliance_cd');?>
-        </div>
-      <?php if (CakeSession::read('code_and_starter_kit') === true) : ?>
-        <div class="form form-line">
-          <label class="text-danger">monoスターターキットを購入する場合、紹介コードをご利用できません。 <br>
-          紹介コードを使用しない（入力欄を空欄にする）か、再度ボックス選択画面からご注文ください。
-          </label>
-          <a  href="/first_order/index?option=all">ボックス選択ページへ</a>
-        </div>
-      <?php endif; ?>
+
+        <?php if (CakeSession::read('kit_select_type') !== 'starter_kit') : ?>
+          <div class="form form-line">
+            <label>紹介コード</label>
+            <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+            <br><?php echo $this->Flash->render('alliance_cd');?>
+          </div>
+        <?php endif; ?>
 
         <div class="divider"></div>
       <?php endif; ?>

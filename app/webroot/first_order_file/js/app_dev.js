@@ -43,7 +43,7 @@ var Act =
     {
         // validation メッセージが表示される時に、ページ上部に表示する
         if ($('span').hasClass('validation')) {
-            $('<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div>').insertBefore('div.wrapper');
+            $('<div class="form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.wrapper');
         }
     },
 };
