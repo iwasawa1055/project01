@@ -16,9 +16,6 @@ class Cleaning extends ApiModel
                 'required' => true,
                 'message' => ['notBlank', 'work_type'],
             ],
-            'checkWorkType' => [
-                'rule' => 'checkWorkType',
-            ],
         ],
         'product' => [
             'notBlank' => [
@@ -37,15 +34,13 @@ class Cleaning extends ApiModel
         return implode(',', $list);
     }
 
-    public function checkWorkType()
+    public function getWorkType($_itemGroupCD)
     {
-        $_priceconf = Configure::read('app.kit.cleaning.item_group_cd');
-        
-        if ( !in_array($this->data[$this->model_name]['work_type'], array_keys($_priceconf))) {
-            return "クリーニングできないものです";
+        $_worktypes = Configure::read('app.kit.cleaning.work_type');
+        if ( isset($_worktypes[$_itemGroupCD]) ) {
+            return $_worktypes[$_itemGroupCD];
+        } else {
+            return false;
         }
-        
-        return true;
     }
-
 }

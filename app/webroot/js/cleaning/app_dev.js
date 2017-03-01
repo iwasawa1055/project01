@@ -12,9 +12,6 @@ $(function () {
     $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked",false);
     AppCleaning.updateList();
   });
-
-
-
 });
 
 var AppCleaning = {
@@ -28,34 +25,39 @@ var AppCleaning = {
       } else {
         var listSelected = [selectedItem];
       }
-
+      
       $(".grid ul").infinitescroll({
-        dataType  : "html",
-        navSelector  : ".pagination ",
-        nextSelector : ".next a",
-        itemSelector : "#itemlist ul li",
-        finishedMsg  : "",
-        msgText : "",
-        img : null,
-	  prefill : true,
-	},function(){
-          $("#itemlist .item .item-select input[type=checkbox]").each(function() {
-            itemId = $(this).data("itemid");
-            if ( $.inArray(itemId, listSelected) != -1  ) {
-              $(this).prop("checked",true);
-            }
-          });
-          AppCleaning.updateList();
-          $('.remodal').remodal();
+        dataType         : "html",
+        navSelector    : ".pagination ",
+        nextSelector   : ".next a",
+        itemSelector   : "#itemlist ul li",
+        prefill           : true,
+        loading           : { 
+          finishedMsg     : "",
+          msgText           : "",
+          img                  : null,
+        },
+      },function(){
+        $("#itemlist .item .item-select input[type=checkbox]").each(function() {
+          itemId = $(this).data("itemid");
+          if ( $.inArray(itemId, listSelected) != -1  ) {
+            $(this).prop("checked",true);
+          }
         });
+        AppCleaning.updateList();
+        $('.remodal').remodal();
+      });
     } else {
       $(".grid ul").infinitescroll({
-        dataType  : "html",
-        navSelector  : ".pagination ",
-        nextSelector : ".next a",
-        itemSelector : "#itemlist ul li",
-        finishedMsg  : "",
-        msgText     : "",
+        dataType         : "html",
+        navSelector    : ".pagination ",
+        nextSelector   : ".next a",
+        itemSelector   : "#itemlist ul li",
+        loading           : { 
+          msgText           : "",
+          finishedMsg     : "",
+          msgText           : "",
+        },
 	},function(){
           $('.remodal').remodal();
 	});

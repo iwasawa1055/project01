@@ -249,9 +249,9 @@ class CleaningController extends MinikuraController
         $request_data = array();
         $selectedItems = CakeSession::read('app.data.session_cleaning');
         
-        foreach ( CakeSession::read('app.data.session_cleaning') as $workType=>$items ) {
+        foreach ( CakeSession::read('app.data.session_cleaning') as $itemGroupCD=>$items ) {
             $requestParam = array(
-                "work_type"  => $workType,
+                "work_type"  => $this->Cleaning->getWorkType($itemGroupCD),
                 "product"    => $this->Cleaning->buildParamProduct($items),
             );
             
@@ -264,15 +264,8 @@ class CleaningController extends MinikuraController
             }
             
             // ポイント消費
-            print_r($this->Cleaning->toArray());
             $res = $this->Cleaning->apiPost($this->Cleaning->toArray());
 
-            print_r($res);
-            exit;
-            
-
-            // API Request
-            // $res = $model->apiPost($model->toArray());
             // 登録に失敗した場合
             if (!empty($res->error_message)) {
                 // Cookieを更新する
@@ -282,31 +275,15 @@ class CleaningController extends MinikuraController
                 return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
             } else {
                 // 処理完了した分に関してはセッションから削除する
-                //CakeSession::delete("app.data.session_cleaning.".$workType);
+                CakeSession::delete("app.data.session_cleaning.".$itemGroupCD);
             }
         }
         
-        exit;
-
-
-/*STUB
-        $res = (object) array(
-            "status" => "0",
-            "message"=> "Parameter Invalid - foo",
-            "error_message"=> "Parameter Invalid - foo",
-            "results"=> array(
-                "reference"=>"https://maekawa-doc-api.minikura.com/common_item",
-                "support"=>"uniqueid99999",
-                "debug"=>"required foo.",
-            )
-        );
-*/
         // 登録に成功した場合
         $this->set('itemList', $selectedItems);
         
         // 処理が完了したら、セッションとクッキーを削除する
         CakeSession::delete("app.data.session_cleaning"); 
-#        
         setcookie("mn_cleaning_list", "", time()-3600);
         
     }

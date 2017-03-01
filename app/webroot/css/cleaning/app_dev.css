@@ -1,19 +1,32 @@
+.grid ul li .item-caption .item-id {
+  display    : block;
+}
+
 .btn-option {
-	cursor : pointer;
+  cursor : pointer;
 }
 
 #cleaning-wrapper {
-	position	: relative;
+  position  : relative;
 }
 
 
 @media screen and (max-width: 768px) {
-	#sp-cleaning-wrapper {
-		position	: absolute;
-		left		: 0px;
-	}
-	.btn-next-full {
-		width		: 100%;
-	}
+  #sp-cleaning-wrapper {
+    position  : absolute;
+    left    : 0px;
+  }
+  .btn-next-full {
+    width    : 100%;
+  }
 }
 
+#infscr-loading {
+  text-align    : center;
+  margin      : 0 auto;
+  letter-spacing  : normal;
+}
+
+.pagination {
+  visibility    : hidden;
+}
