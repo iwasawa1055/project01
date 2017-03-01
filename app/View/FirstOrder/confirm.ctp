@@ -41,7 +41,7 @@
               <td><div class="text-right"><?php echo Configure::read('app.first_order.starter_kit.price') ?>円</div></td>
             </tr>
           <?php } else { ?>
-            <?php foreach ( CakeSession::read('PurchaseOrder') as $key => $value ) {?>
+            <?php foreach ( CakeSession::read('FirstOrderList') as $key => $value ) {?>
               <tr>
                 <th><?php echo $value['kit_name'] ?></th>
                 <td><div class="text-right"><?php echo $value['number'] ?></div></td>
@@ -94,4 +94,5 @@
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
+<script src="/first_order_file/js/first_order/confirm.js"></script>
 <?php echo $this->element('FirstOrder/last'); ?>
