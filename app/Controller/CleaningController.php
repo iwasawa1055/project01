@@ -131,7 +131,27 @@ class CleaningController extends MinikuraController
         } else {
             $selected_id = null;
         }
+        $query = $this->request->query;
         $this->set('selected_id', $selected_id);
+
+        // confirmからのバックの場合は選択を保持する
+        if ( isset($_COOKIE['mn_cleaning_list']) && isset($query['back']) ) {
+            $toloadPage = CakeSession::read('app.data.session_cleaning_loaded');
+            $storedList = $_COOKIE['mn_cleaning_list'];
+        } else {
+            $storedList = false;
+            
+            // Autoloading対応
+            if ( !isset($query['page']) ) {
+                CakeSession::write('app.data.session_cleaning_loaded',1);
+                setcookie("mn_cleaning_list", "", time()-3600);
+            }
+        }
+
+        // ページが設定されていない場合は１を設定
+        if ( !isset($query['page']) ) {
+            $query['page'] = 1;
+        }
         
         // 商品指定
         $where = [];
@@ -145,26 +165,33 @@ class CleaningController extends MinikuraController
         // 保管品リストを取得する
         $results = $this->InfoItem->getListWhere($sortKey, $where);
         $results = $this->InfoItem->editBySearchTerm($results, $this->request->query);
-        
         $item_all_count = count($results);
-
+        
         // paginate
-        $list = $this->paginate(self::MODEL_NAME, $results);
+        if ( $storedList ) {
+            $list = array();
+            for ( $_i=1; $_i<=$toloadPage; $_i++ ) {
+               $this->request->query['page'] = $_i;
+               $query['page'] = $_i;
+               $tmplist = $this->paginate(self::MODEL_NAME, $results);
+               $list = array_merge($list,$tmplist);
+            }
+        } else {
+            $list = $this->paginate(self::MODEL_NAME, $results);
+        }
         
         $this->set('itemList', $list);
         $this->set('item_all_count', $item_all_count);
 
-        $query = $this->request->query;
-        $query['page'] = 1;
         $url = Router::url(['action'=>'input', '?' => http_build_query($query)]);
-
         $query_params = $this->setQueryParameter();
 
         $this->set('keyword', $query_params['keyword']);
         $this->set('order', $query_params['order']);
         $this->set('direction', $query_params['direction']);
-
-        
+        $this->set('page',$query['page']);
+        CakeSession::write('app.data.session_cleaning_loaded',$query['page']);
+                
         $this->set('price',Configure::read('app.kit.cleaning.item_group_cd'));
         
         // Session Referer
@@ -172,65 +199,58 @@ class CleaningController extends MinikuraController
     }
 
     /**
-     * input
+     *  confirm
      */
-    public function input_confirm()
+    public function confirm()
     {
         $flg_error = false;
-
-        // 選択されたID一覧をセッションに保管する
-        if ( !isset($this->request->data['selected']) ) {
-            $flg_error = true;
-        }
-        $selected_ids = $this->request->data['selected'];
-        if ( count($selected_ids) < 1 ) {
-            $flg_error = true;
+        $pathReturn = "input";
+        
+        // ***リターンの分岐処理は暫定
+        if ( isset($this->request->query['item']) ) {
+            $item = base64_decode($this->request->query['item']);
+            $selected_ids = array($item);
+            list($itemId,$dummy) = explode(",",$item,2);
+            $pathReturn = "/item/detail/".$itemId;
+        } else {
+            // 選択されたID一覧をセッションに保管する
+            if ( !isset($this->request->data['selected']) ) {
+                $flg_error = true;
+            }
+            $selected_ids = $this->request->data['selected'];
+            if ( count($selected_ids) < 1 ) {
+                $flg_error = true;
+            }
         }
         
         if ( $flg_error ) {
           return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
         }
-        
+
         $session_data = array();
         $price = Configure::read('app.kit.cleaning.item_group_cd');
+
+        $totalCount = 0;
+        $totalprice = 0;
+
         foreach ( $selected_ids as $item ) {
             $data = array();
             list($data['item_id'], $data['item_group_cd'], $data['box_id'], $data['product_cd'],$data['image_url']) = explode(",",$item,5);
             $data['price']= $price[$data['item_group_cd']];
             
             if ( !isset($session_data[$data['item_group_cd']]) ) $session_data[$data['item_group_cd']] = array();
-            
             array_push($session_data[$data['item_group_cd']],$data);
+
+            $totalprice += $data['price'];
+            $totalCount++;
         }
         
         CakeSession::write('app.data.session_cleaning',$session_data);
-        
-        // Session Referer
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-        
-        return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
-    }
 
-    /**
-     *  confirm
-     */
-    public function confirm()
-    {
-        $selected_data = CakeSession::read('app.data.session_cleaning');
-
-        $totalCount = 0;
-        $totalprice = 0;
-        foreach ( $selected_data as $items ) {
-            foreach ( $items as $item ) {
-                $totalprice += $item['price'];
-            }
-            $totalCount += count($items);
-        }
-        
-        
         $this->set('selected_count',$totalCount);
         $this->set('selected_total', $totalprice);
-        $this->set('itemList', $selected_data);
+        $this->set('itemList', $session_data);
+        $this->set('linkBack',$pathReturn);
 
         // Session Referer
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);

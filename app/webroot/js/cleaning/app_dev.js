@@ -1,9 +1,10 @@
 $(function () {
   AppCleaning.initialize();
+
   $('.item_confirm').click(function() { 
     $("#itemlist").submit();
   });
-
+    
   $(document).on("change",".item-select input[type=checkbox]",function(){
     AppCleaning.updateList();
   });
@@ -17,13 +18,12 @@ $(function () {
 var AppCleaning = {
   initialize : function() {
     var list = docCookies.getItem("mn_cleaning_list");
-    var selectedItem = $("#ItemSelected").val();
     
-    if ( list || selectedItem ) {
+    if ( list ) {
       if ( list ) {
         var listSelected = list.split(",");
       } else {
-        var listSelected = [selectedItem];
+        var listSelected = [];
       }
 
       $("#itemlist .item .item-select input[type=checkbox]").each(function() {
@@ -33,43 +33,20 @@ var AppCleaning = {
         }
       });
       AppCleaning.updateList();
-        
-      $(".grid ul").infinitescroll({
-        dataType         : "html",
-        navSelector    : ".pagination ",
-        nextSelector   : ".next a",
-        itemSelector   : "#itemlist ul li",
-        prefill           : true,
-        loading           : { 
-          finishedMsg     : "",
-          msgText           : "",
-          img                  : null,
-        },
-      },function(){
-        $("#itemlist .item .item-select input[type=checkbox]").each(function() {
-          itemId = $(this).data("itemid");
-          if ( $.inArray(itemId, listSelected) != -1  ) {
-            $(this).prop("checked",true);
-          }
-        });
-        AppCleaning.updateList();
-        $('.remodal').remodal();
-      });
-    } else {
-      $(".grid ul").infinitescroll({
-        dataType         : "html",
-        navSelector    : ".pagination ",
-        nextSelector   : ".next a",
-        itemSelector   : "#itemlist ul li",
-        loading           : { 
-          msgText           : "",
-          finishedMsg     : "",
-          msgText           : "",
-        },
-	},function(){
-          $('.remodal').remodal();
-	});
     }
+    
+    $(".grid ul").infinitescroll({
+      dataType         : "html",
+      navSelector    : ".pagination ",
+      nextSelector   : ".next a",
+      itemSelector   : "#itemlist ul li",
+      loading           : { 
+        finishedMsg     : "",
+        msgText           : "",
+      },
+    },function(data){
+      $('.remodal').remodal();
+    });
   },
   updateList : function() {
     var listSelected = [];

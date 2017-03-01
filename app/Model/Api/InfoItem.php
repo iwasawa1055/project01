@@ -50,8 +50,6 @@ class InfoItem extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
         
-        print_r($where);
-        
         if ($withOutboundDone) {
             // 出庫済みのみフラグが立っている場合、出庫済み以外をunsetする
             if (!empty($outboundOnly)) {

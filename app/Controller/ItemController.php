@@ -220,7 +220,8 @@ class ItemController extends MinikuraController
         $cleaningConfig = Configure::read('app.kit.cleaning.item_group_cd');
         
         if ( isset($cleaningConfig[$item['item_group_cd']]) ){
-            $linkToCleaning = "/cleaning/input?id=".$item['item_id'];
+            $Cleaningparam = $item['item_id'].",".$item['item_group_cd'].",".$item['box_id'].",".$item['box']['product_cd'].",".$item['image_first']['image_url'];
+            $linkToCleaning = "/cleaning/confirm?item=".base64_encode($Cleaningparam);
         }
         $this->set('linkToCleaning', $linkToCleaning);
         
@@ -261,6 +262,8 @@ class ItemController extends MinikuraController
         $this->set('trade_url', $trade_url);
         $this->set('widget_url', $widget_url);
 
+        // Session Referer
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     
     }
 

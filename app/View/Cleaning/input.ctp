@@ -17,7 +17,7 @@
     <form action="input" id="item-search" novalidate="novalidate" method="get" accept-charset="utf-8">
     <div class="item-search">
       <a class="btn-option"><i class="fa fa-cog"></i><span> OPTION</span></a>
-        <input type="search" placeholder="&#xF002; SEARCH" id="ItemSearchKeyword">
+        <input type="search" placeholder="&#xF002; SEARCH" id="ItemSearchKeyword" name="keyword" />
     </div>
     <div class="item-sort">
       <select name="order" id="ItemSortOrder" class="data-sort">
@@ -35,13 +35,13 @@
     </div>
     </form>
     <div class="grid">
-      <form action="input_confirm" id="itemlist" method="post">
+      <form action="confirm" id="itemlist" method="post">
       <input type="hidden" id="ItemSelected" value="<?php echo $selected_id;?>">
       <ul>
         <!--loop-->
         <?php foreach ($itemList as $item): ?>
         <li class="item">
-          <div class="item-select">
+          <div class="item-select" data-page="<?php echo $page;?>">
             <label>
               <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'].",".$item['item_group_cd'].",".$item['box_id'].",".$item['box']['product_cd'].",".$item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ( $item['item_id'] === $selected_id ) echo " checked";?>><span class="check-icon"></span>
               <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>" class="item_img">
