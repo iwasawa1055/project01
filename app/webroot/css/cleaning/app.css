@@ -143,6 +143,39 @@ input[type=search]:focus {
 	margin-bottom: 10px;
 	padding: .5rem .5rem .5rem 0;
 }
+
+.items .title-box h3 {
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+.items .title-box .item-caption {
+	font-size: 14px;
+	font-size: 1.4rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.items .title-box .item-id {
+	font-size: 10px;
+	font-size: 1rem;
+	color: #dddddd;
+}
+.items a.btn-close {
+	display: inline-block;
+	width: 50%;
+	margin: .5rem 0;
+	padding: 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+	color: #ffffff;
+	text-align: center;
+	background: #666666;
+	border: 1px solid #666666;
+	border-radius: .2rem;
+}
+.items a.btn-close:hover {
+	text-decoration: none;
+}
 body.fixed .page-caption {
 	margin-bottom: 70px;
 }
@@ -155,12 +188,20 @@ body.fixed .nav-cleaning {
 	background-color: rgba(155,155,155,0.5);
 	animation: fadeIn 1s ease 0s 1 normal;
 }
-@keyframes fadeIn {
+ @keyframes fadeIn {
  0% {
 opacity: 0
 }
  100% {
 opacity: 1
+}
+}
+@keyframes fadeOut {
+ 0% {
+opacity: 1
+}
+ 100% {
+opacity: 0
 }
 }
 .nav-cleaning ul,
@@ -362,7 +403,22 @@ input[type=search]:focus {
 .btn-check span {
 	display: none;
 }
+.items .title-box h3 {
+	font-size: 14px;
+	font-size: 1.4rem;
 }
+.items .title-box .item-caption {
+	font-size: 12px;
+	font-size: 1.2rem;
+}
+.items a.btn-close {
+	display: block;
+	width: 100%;
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+}
+
 @media screen and (max-width: 375px) {
 .grid ul li {
 	width: calc(100% / 2);

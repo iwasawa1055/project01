@@ -25,7 +25,15 @@ var AppCleaning = {
       } else {
         var listSelected = [selectedItem];
       }
-      
+
+      $("#itemlist .item .item-select input[type=checkbox]").each(function() {
+        itemId = $(this).data("itemid");
+        if ( $.inArray(itemId, listSelected) != -1  ) {
+          $(this).prop("checked",true);
+        }
+      });
+      AppCleaning.updateList();
+        
       $(".grid ul").infinitescroll({
         dataType         : "html",
         navSelector    : ".pagination ",

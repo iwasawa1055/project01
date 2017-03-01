@@ -49,6 +49,9 @@ class InfoItem extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_START * 1,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
+        
+        print_r($where);
+        
         if ($withOutboundDone) {
             // 出庫済みのみフラグが立っている場合、出庫済み以外をunsetする
             if (!empty($outboundOnly)) {
@@ -99,7 +102,36 @@ class InfoItem extends ApiCachedModel
         return $list;
     }
 
+    // 条件を指定してリストを取得する
+    public function getListWhere($sortKey = [], $where = [])
+    {
+        
+        if ( !isset($where['item_status']) ) {
+            $where['item_status'] = [
+                BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
+                BOXITEM_STATUS_INBOUND_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_START * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_IN_PROGRESS * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_IN_PROGRESS * 1,
+                BOXITEM_STATUS_OUTBOUND_START * 1,
+                BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
+            ];
+        }
+        //* アイテム取得、 中でアイテム画像とボックス情報取得
+        $list = $this->apiGetResultsWhere([], $where);
 
+        //* アイテム取得後にproduct_cdでリストを再生成する
+        if (! empty($productCd)) {
+            $productData['product_cd'] = $productCd;
+            $list = $this->_selectByProductCd($list, $productData);
+        }
+
+        // sort
+        HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
+        return $list;
+    }
+    
     public function apiGetResults($data = [])
     {
         $imageModel = new ImageItem();

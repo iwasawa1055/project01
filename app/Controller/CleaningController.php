@@ -29,6 +29,8 @@ class CleaningController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);
         $this->loadModel(self::MODEL_NAME_SALES);
 
+        (new InfoBox())->deleteCache();
+        (new InfoItem())->deleteCache();
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
     }
@@ -134,12 +136,14 @@ class CleaningController extends MinikuraController
         // 商品指定
         $where = [];
         $where['product'] = null;
-        
+        $where['item_status'] = array(70);
+        $where['item_group_cd'] = array_keys(Configure::read('app.kit.cleaning.item_group_cd'));
+
         // 並び替えキー指定
         $sortKey = $this->getRequestSortKey();
 
         // 保管品リストを取得する
-        $results = $this->InfoItem->getListForServiced($sortKey, $where, false, true);
+        $results = $this->InfoItem->getListWhere($sortKey, $where);
         $results = $this->InfoItem->editBySearchTerm($results, $this->request->query);
         
         $item_all_count = count($results);
@@ -257,7 +261,7 @@ class CleaningController extends MinikuraController
             
             $this->Cleaning->set($requestParam);
             $validCleaning = $this->Cleaning->validates();
-            
+
             if ( !$validCleaning ) {
                 $this->Flash->set("データに誤りがあります");
                 return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
@@ -278,13 +282,12 @@ class CleaningController extends MinikuraController
                 CakeSession::delete("app.data.session_cleaning.".$itemGroupCD);
             }
         }
-        
+
         // 登録に成功した場合
         $this->set('itemList', $selectedItems);
         
         // 処理が完了したら、セッションとクッキーを削除する
         CakeSession::delete("app.data.session_cleaning"); 
         setcookie("mn_cleaning_list", "", time()-3600);
-        
     }
 }

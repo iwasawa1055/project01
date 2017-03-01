@@ -30,3 +30,7 @@
 .pagination {
   visibility    : hidden;
 }
+
+.items a.btn-close {
+  cursor         : pointer;
+}

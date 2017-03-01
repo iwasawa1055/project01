@@ -65,10 +65,9 @@ $config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 // クリーニング費用設定
 $config['app']['kit']['cleaning']['item_group_cd']['010'] = 650;
 $config['app']['kit']['cleaning']['item_group_cd']['030'] = 3500;
-$config['app']['kit']['cleaning']['item_group_cd']['130'] = 1500;
 
 $config['app']['kit']['cleaning']['work_type']['010'] = "030";
-$config['app']['kit']['cleaning']['work_type']['030'] = "033";
+$config['app']['kit']['cleaning']['work_type']['030'] = "032";
 
 /**
  * エラー表示
