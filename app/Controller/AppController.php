@@ -9,43 +9,6 @@ class AppController extends Controller
     public function beforeFilter()
     {
         parent::beforeFilter();
-        // 既にセッションスタートしてる事が条件
-        // マイページ側セッションクローズ
-
-        $before_session_id = session_id();
-        session_write_close();
-
-        // コンテンツ側のセッション名に変更
-        $SESS_ID = '';
-        if(isset($_COOKIE['WWWMINIKURACOM'])) {
-            $SESS_ID = $_COOKIE['WWWMINIKURACOM'];
-        }
-
-        if( !empty($SESS_ID)) {
-            // セッション再開
-            session_id($SESS_ID);
-            session_start();
-
-            // 紹介コード削除処理
-            if (!empty($_SESSION['ref_code'])) {
-                unset($_SESSION['ref_code']);
-                CakeLog::write(DEBUG_LOG, 'ref_code is unset SESS_ID ' . print_r($SESS_ID, true));
-            }
-
-            // コンテンツ側セッションクローズ
-            session_write_close();
-        }
-
-        // マイページ側セッション名に変更
-        session_name('MINIKURACOM');
-
-        if (!empty($before_session_id)) {
-            session_id($before_session_id);
-        }
-
-        // マイページ側セッション再開
-        session_start();
-
     }
 
     public function afterFilter()
