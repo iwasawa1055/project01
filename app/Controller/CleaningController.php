@@ -11,7 +11,7 @@ class CleaningController extends MinikuraController
 {
     const MODEL_NAME = 'Cleaning';
     const MODEL_NAME_ITEM = 'InfoItem';
-
+    
     protected $paginate = array(
         'limit' => 20,
         'paramType' => 'querystring'
@@ -25,9 +25,7 @@ class CleaningController extends MinikuraController
         parent::beforeFilter();
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_ITEM);
-        $this->loadModel('InfoBox');
 
-        (new InfoBox())->deleteCache();
         (new InfoItem())->deleteCache();
         $this->set('sortSelectList', $this->makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -184,6 +182,12 @@ class CleaningController extends MinikuraController
      */
     public function confirm()
     {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Cleaning/input', 'Cleaning/confirm', 'Cleaning/complete'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
+        }
+        
         $flg_error = false;
 
         if ( !isset($this->request->data['selected']) ) {
@@ -196,7 +200,7 @@ class CleaningController extends MinikuraController
         }
         
         if ( $flg_error ) {
-          return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
+          return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
 
         $session_data = array();
@@ -230,9 +234,15 @@ class CleaningController extends MinikuraController
      */
     public function complete()
     {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Cleaning/confirm'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
+        }
+        
         // データがない場合はリダイレクト
         if ( !CakeSession::read('app.data.session_cleaning') ) {
-          return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
+          return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
 
         // Item_Group_Idごとにデータを処理する
@@ -250,7 +260,7 @@ class CleaningController extends MinikuraController
 
             if ( !$validCleaning ) {
                 $this->Flash->set("データに誤りがあります");
-                return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
+                return $this->redirect(['controller' => 'Cleaning', 'action' => 'confirm']);
             }
             
             // ポイント消費
@@ -261,7 +271,7 @@ class CleaningController extends MinikuraController
                 // Cookieを更新する
 
                 $this->Flash->set($res->error_message);
-                return $this->redirect(['controller' => 'cleaning', 'action' => 'confirm']);
+                return $this->redirect(['controller' => 'Cleaning', 'action' => 'confirm']);
             } else {
                 // 処理完了した分に関してはセッションから削除する
                 CakeSession::delete("app.data.session_cleaning.".$itemGroupCD);
