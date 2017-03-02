@@ -44,7 +44,7 @@ class FirstOrderController extends MinikuraController
 
         // 紹介コードで遷移してきた場合
         CakeSession::delete(Configure::read('app.lp_code.param'));
-        CakeSession::delete('Address.datetime_cd');
+        CakeSession::delete('Email.alliance_cd');
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
             // オプションコードが含まれるか?
