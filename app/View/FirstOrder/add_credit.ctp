@@ -20,7 +20,7 @@
     </ul>
   </section>
   <!-- ADRESS -->
-  <form method="post" action="/first_order/confirm_credit" novalidate>
+  <form method="post" action="/first_order/confirm_credit">
   <section id="adress">
     <div class="wrapper">
       <div class="form">
@@ -57,7 +57,7 @@
     </div>
   </section>
   <section class="nextback"><a href="/first_order/add_address?back=true" class="btn-back">
-    <i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">メールアドレスを入力<i class="fa fa-chevron-circle-right"></i></button>
+    <i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next" formnovalidate>メールアドレスを入力<i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>

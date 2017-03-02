@@ -23,7 +23,7 @@
 <!-- LINEUP -->
 <?php $kit_select_type = CakeSession::read('kit_select_type'); ?>
 
-<form method="post" action="/first_order/confirm_order" novalidate>
+<form method="post" action="/first_order/confirm_order">
 <section id="lineup" class="fix">
   <div class="wrapper">
     <?php if ($kit_select_type === 'starter_kit') : ?>
@@ -101,7 +101,7 @@
   </div>
 </section>
 <section class="nextback fix">
-  <button class="btn-next-full" type="submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
+  <button class="btn-next-full" type="submit" formnovalidate>お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
 </section>
 <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
 <input type="hidden" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
