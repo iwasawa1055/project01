@@ -44,7 +44,7 @@ class FirstOrderController extends MinikuraController
 
         // 紹介コードで遷移してきた場合
         CakeSession::delete(Configure::read('app.lp_code.param'));
-        CakeSession::delete('Address.datetime_cd');
+        CakeSession::delete('Email.alliance_cd');
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
             // オプションコードが含まれるか?
@@ -105,6 +105,9 @@ class FirstOrderController extends MinikuraController
                 $this->redirect($none_first_redirect_param);
             }
 
+            // エントリユーザ 紹介コードで遷移してきた場合 コードを削除
+            CakeSession::delete(Configure::read('app.lp_code.param'));
+
             // ログイン済みエントリーユーザ
             // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login entry user' . $option);
             $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
@@ -137,11 +140,7 @@ class FirstOrderController extends MinikuraController
                 if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
                     $kit_select_type = 'mono';
                 } else {
-                    if($is_logined) {
-                        $kit_select_type = 'mono';
-                    } else {
-                        $kit_select_type = 'starter_kit';
-                    }
+                    $kit_select_type = 'starter_kit';
                 }
                 break;
             case $lp_option === 'hako':

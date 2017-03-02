@@ -32,7 +32,7 @@
                         <a class="login" href="/login"><i class="fa fa-unlock-alt"></i> ログイン</a>
                     </li>
                     <li>
-                        <a class="signin" href="/customer/register/add_info" target="_blank"><i class="fa fa-sign-in"></i> 初回購入</a>
+                        <a class="signin" href="/first_order/index" target="_blank"><i class="fa fa-sign-in"></i> 初回購入</a>
                     </li>
                     <?php endif; ?>
                 </ul>
