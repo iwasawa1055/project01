@@ -239,16 +239,20 @@ class CleaningController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
-        
+
+        // Session Referer
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
         // データがない場合はリダイレクト
         if ( !CakeSession::read('app.data.session_cleaning') ) {
           return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
 
         // Item_Group_Idごとにデータを処理する
+        $flgComplete = true;
         $request_data = array();
-        $selectedItems = CakeSession::read('app.data.session_cleaning');
-        
+
+        $ct = 0;
         foreach ( CakeSession::read('app.data.session_cleaning') as $itemGroupCD=>$items ) {
             $requestParam = array(
                 "work_type"  => $this->Cleaning->getWorkType($itemGroupCD),
@@ -260,29 +264,41 @@ class CleaningController extends MinikuraController
 
             if ( !$validCleaning ) {
                 $this->Flash->set("データに誤りがあります");
-                return $this->redirect(['controller' => 'Cleaning', 'action' => 'confirm']);
+                $flgComplete = false;
+                break;
+            } else {
+                // クリーニング申し込み
+                if ( $ct === 0 ) {
+                    $res = $this->Cleaning->apiPost($this->Cleaning->toArray());
+                } else {
+                    $res = (object) [];
+                    $res->error_message = "ERROR";
+                }
+
+                // 登録に失敗した場合
+                if (!empty($res->error_message)) {
+                    // Cookieを更新する
+
+                    #$this->Flash->set($res->error_message);
+                    $flgComplete = false;
+                    break;
+                } else {
+                    // 処理完了した分に関してはセッションから削除する
+                    CakeSession::delete("app.data.session_cleaning.".$itemGroupCD);
+                }
             }
             
-            // ポイント消費
-            $res = $this->Cleaning->apiPost($this->Cleaning->toArray());
-
-            // 登録に失敗した場合
-            if (!empty($res->error_message)) {
-                // Cookieを更新する
-
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['controller' => 'Cleaning', 'action' => 'confirm']);
-            } else {
-                // 処理完了した分に関してはセッションから削除する
-                CakeSession::delete("app.data.session_cleaning.".$itemGroupCD);
-            }
+            $ct++;
         }
 
         // 登録に成功した場合
-        $this->set('itemList', $selectedItems);
+        $this->set('itemList', CakeSession::read('app.data.session_cleaning'));
+        $this->set('flgComplete', $flgComplete);
         
         // 処理が完了したら、セッションとクッキーを削除する
         CakeSession::delete("app.data.session_cleaning"); 
-        setcookie("mn_cleaning_list", "", time()-3600);
+        if ( $flgComplete ) {
+            //setcookie("mn_cleaning_list", "", time()-3600);
+        }
     }
 }
