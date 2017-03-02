@@ -125,10 +125,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログインしているか
-        $is_logined = false;
-        if ($this->Customer->isLogined()) {
-            $is_logined = true;
-        }
+        $is_logined = $this->_check_login();
         $this->set('is_logined', $is_logined);
 
         $lp_option = CakeSession::read(Configure::read('app.lp_option.param'));
@@ -268,6 +265,9 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        // ログインチェック
+        $this->_check_login();
+
         $back  = filter_input(INPUT_GET, 'back');
         
         if (!$back) {
@@ -309,7 +309,10 @@ class FirstOrderController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        
+
+        // ログインチェック
+        $this->_check_login();
+
         $params = [
             'firstname'         => filter_input(INPUT_POST, 'firstname'),
             'firstname_kana'    => filter_input(INPUT_POST, 'firstname_kana'),
@@ -366,6 +369,9 @@ class FirstOrderController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
+
+        // ログインチェック
+        $this->_check_login();
 
         $back  = filter_input(INPUT_GET, 'back');
         
@@ -458,10 +464,7 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
-        $is_logined = false;
-        if ($this->Customer->isLogined()) {
-            $is_logined = true;
-        }
+        $is_logined = $this->_check_login();
         $this->set('is_logined', $is_logined);
 
         // 誕生日に関するコンフィグ
@@ -518,10 +521,7 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
-        $is_logined = false;
-        if ($this->Customer->isLogined()) {
-            $is_logined = true;
-        }
+        $is_logined = $this->_check_login();
 
         // バリデーションエラーフラグ
         $is_validation_error = false;
@@ -639,10 +639,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('registered_user_login_url');
         CakeSession::delete('code_and_starter_kit');
 
-        $is_logined = false;
-        if ($this->Customer->isLogined()) {
-            $is_logined = true;
-        }
+        $is_logined = $this->_check_login();
         $this->set('is_logined', $is_logined);
 
         // オーダー種類を集計
@@ -701,18 +698,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // 購入前にログインし、エントリユーザでない場合のチェック
-        $is_logined = false;
-        if ($this->Customer->isLogined()) {
-            if (!$this->Customer->isEntry()) {
-
-                // セッションクリーン
-                $this->_clean_first_order_session();
-
-                $this->redirect(array('controller' => 'login', 'action' => 'index'));
-            }
-
-            $is_logined = true;
-        }
+        $is_logined = $this->_check_login();
         $this->set('is_logined', $is_logined);
 
         // セッションが古い場合があるので再チェック
@@ -1046,10 +1032,36 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
+     * 全角半角変換　Mac全角ハイフン対応版
+     *
+     * @access    private
+     * @param
+     * @return    ログイン済 true ,未ログイン false
+     */
+    private function _check_login()
+    {
+        $is_logined = false;
+        if ($this->Customer->isLogined()) {
+            if (!$this->Customer->isEntry()) {
+
+                // セッションクリーン
+                $this->_clean_first_order_session();
+
+                $this->redirect(array('controller' => 'login', 'action' => 'index'));
+            }
+
+            $is_logined = true;
+        }
+
+        return $is_logined;
+    }
+
+    /**
      * first orderで使用しているセッション類を削除
      */
     private function _clean_first_order_session()
     {
+        CakeSession::delete('kit_select_type');
         CakeSession::delete('Order');
         CakeSession::delete('OrderTotal');
         CakeSession::delete('Address');
