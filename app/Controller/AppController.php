@@ -11,6 +11,8 @@ class AppController extends Controller
         parent::beforeFilter();
         // 既にセッションスタートしてる事が条件
         // マイページ側セッションクローズ
+
+        $before_session_id = session_id();
         session_write_close();
 
         // コンテンツ側のセッション名に変更
@@ -36,6 +38,10 @@ class AppController extends Controller
 
         // マイページ側セッション名に変更
         session_name('MINIKURACOM');
+
+        if (!empty($before_session_id)) {
+            session_id($before_session_id);
+        }
 
         // マイページ側セッション再開
         session_start();
