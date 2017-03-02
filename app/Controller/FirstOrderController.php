@@ -639,7 +639,12 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('registered_user_login_url');
         CakeSession::delete('code_and_starter_kit');
 
-        $is_logined = $this->_check_login();
+        // 確認画面でリダイレクトさせると本登録後にNGの場合リダイレクトしてしまう
+        $is_logined = false;
+        if ($this->Customer->isLogined()) {
+            $is_logined = true;
+        }
+
         $this->set('is_logined', $is_logined);
 
         // オーダー種類を集計
@@ -726,7 +731,9 @@ class FirstOrderController extends MinikuraController
         //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
         $this->loadModel('CardCheck');
         $Credit = CakeSession::read('Credit');
-        $Credit['card_no'] = str_replace("-", "", $Credit['card_no']);
+        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+
         $res = $this->CardCheck->getCardCheck($Credit);
 
         if (!empty($res->error_message)) {
