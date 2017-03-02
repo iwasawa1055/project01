@@ -140,11 +140,7 @@ class FirstOrderController extends MinikuraController
                 if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
                     $kit_select_type = 'mono';
                 } else {
-                    if($is_logined) {
-                        $kit_select_type = 'mono';
-                    } else {
-                        $kit_select_type = 'starter_kit';
-                    }
+                    $kit_select_type = 'starter_kit';
                 }
                 break;
             case $lp_option === 'hako':
