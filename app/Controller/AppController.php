@@ -9,6 +9,35 @@ class AppController extends Controller
     public function beforeFilter()
     {
         parent::beforeFilter();
+        // 既にセッションスタートしてる事が条件
+        // マイページ側セッションクローズ
+        session_write_close();
+
+        // コンテンツ側のセッション名に変更
+        session_name('WWWMINIKURACOM');
+
+        // コンテンツ側セッションスタート
+        session_start();
+
+        CakeLog::write(DEBUG_LOG, 'session before ' .  print_r($_SESSION, true));
+        // 紹介コード削除処理
+        if (! empty($_SESSION['ref_code'])) {
+            unset($_SESSION['ref_code']);
+            // unset($_SESSION) してはいけない
+        }
+        CakeLog::write(DEBUG_LOG, 'session after'  . print_r($_SESSION, true));
+
+        // コンテンツ側セッションクローズ
+        session_write_close();
+
+        // マイページ側セッション名に変更
+        session_name('MINIKURACOM');
+
+        // マイページ側セッション再開
+        session_start();
+
+        CakeLog::write(DEBUG_LOG, 'session end ' .  print_r($_SESSION, true));
+
     }
 
     public function afterFilter()
