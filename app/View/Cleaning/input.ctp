@@ -30,6 +30,7 @@
         <option value="<?php echo $value;?>"<?php if( $direction === $value ) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
+      <input type="hidden" name="reset" value="true">
       <button type="submit" class="btn-view">表示する</button>
       <button type="button" id="ClearSelected" class="btn-check active"><i class="fa fa-check-circle"></i><span> クリア</span></button>
     </div>

@@ -219,9 +219,8 @@ class ItemController extends MinikuraController
         $linkToCleaning = null;
         $cleaningConfig = Configure::read('app.kit.cleaning.item_group_cd');
         
-        if ( isset($cleaningConfig[$item['item_group_cd']]) ){
-            $Cleaningparam = $item['item_id'].",".$item['item_group_cd'].",".$item['box_id'].",".$item['box']['product_cd'].",".$item['image_first']['image_url'];
-            $linkToCleaning = "/cleaning/confirm?item=".base64_encode($Cleaningparam);
+        if ( isset($cleaningConfig[$item['item_group_cd']]) && $item['item_status'] === 70 ){
+            $linkToCleaning = "/cleaning/input?id=".urlencode($item['item_id']);
         }
         $this->set('linkToCleaning', $linkToCleaning);
         

@@ -101,7 +101,7 @@ class InfoItem extends ApiCachedModel
     }
 
     // 条件を指定してリストを取得する
-    public function getListWhere($sortKey = [], $where = [])
+    public function getListWhere($sortKey = [], $where = [], $priorities = [])
     {
         
         if ( !isset($where['item_status']) ) {
@@ -127,6 +127,51 @@ class InfoItem extends ApiCachedModel
 
         // sort
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
+        
+        //* 優先項目がある場合はトップに持ってくる
+        if ( count($priorities) > 0 ) {
+            // 優先項目で指定されているキーを収取する
+            $indexKeys = [];
+            $indexes = [];
+            foreach ( $priorities as $tmp ) {
+                array_push($indexKeys,key($tmp));
+            }
+            
+            $indexKeys = array_unique($indexKeys);
+
+            // Indexキーをもとにリストからインデックスを生成する
+            foreach ( $list as $itemNo=>$item ) {
+                foreach ( $indexKeys as $indexKey ) {
+                    if ( isset($item[$indexKey]) ) {
+                        $indexes[$indexKey][$item[$indexKey]] = $itemNo;
+                    }
+                }
+            }
+            
+            // 優先項目を取得する
+            $priorityList = [];
+
+            foreach ( $priorities as $pItem ) {
+                $searchKey = key($pItem);
+                if ( isset($indexes[$searchKey][$pItem[$searchKey]]) ) {
+                    $_indexNo = $indexes[$searchKey][$pItem[$searchKey]];
+
+                    if ( isset($list[$_indexNo]) ) {
+                        array_push($priorityList,$list[$_indexNo]);
+                        // 既存のリストから削除
+                        unset($list[$_indexNo]);
+                    }
+                }
+            }
+            
+            // リストを結合する
+            $list = array_merge($priorityList,$list);
+            
+            // 空いている要素があるため、ソートする
+            ksort($list);
+
+        }
+        
         return $list;
     }
     
