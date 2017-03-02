@@ -10,7 +10,6 @@
   position  : relative;
 }
 
-
 @media screen and (max-width: 768px) {
   #sp-cleaning-wrapper {
     position  : absolute;

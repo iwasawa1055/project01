@@ -37,7 +37,6 @@
     </form>
     <div class="grid">
       <form action="confirm" id="itemlist" method="post">
-      <input type="hidden" id="ItemSelected" value="<?php echo $selected_id;?>">
       <ul>
         <!--loop-->
         <?php foreach ($itemList as $item): ?>
@@ -73,12 +72,12 @@
       <?php echo $this->element('paginator'); ?>
     </div>
   </div>
-<div id="sp-cleaning-wrapper">
-  <div class="sp-nav-cleaning">
-    <ul>
-      <li class="price"><i class="fa fa-calculator"></i><span class="block_selected_item">0</span>点<span class="block_selected_price">0</span>円</li>
-      <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button>
-      </li>
-    </ul>
+  <div id="sp-cleaning-wrapper">
+    <div class="sp-nav-cleaning">
+      <ul>
+        <li class="price"><i class="fa fa-calculator"></i><span class="block_selected_item">0</span>点<span class="block_selected_price">0</span>円</li>
+        <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
