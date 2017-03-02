@@ -44,6 +44,7 @@ class FirstOrderController extends MinikuraController
 
         // 紹介コードで遷移してきた場合
         CakeSession::delete(Configure::read('app.lp_code.param'));
+        CakeSession::delete('Address.datetime_cd');
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
             // オプションコードが含まれるか?
@@ -136,7 +137,11 @@ class FirstOrderController extends MinikuraController
                 if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
                     $kit_select_type = 'mono';
                 } else {
-                    $kit_select_type = 'starter_kit';
+                    if($is_logined) {
+                        $kit_select_type = 'mono';
+                    } else {
+                        $kit_select_type = 'starter_kit';
+                    }
                 }
                 break;
             case $lp_option === 'hako':
