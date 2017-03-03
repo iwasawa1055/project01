@@ -24,6 +24,40 @@ a:focus,
 a:hover {
 	color: #ffffff;
 }
+@font-face {
+  font-family: 'cleaning';
+  src:  url('/fonts/cleaning.eot?uydqi6');
+  src:  url('/fonts/cleaning.eot?uydqi6#iefix') format('embedded-opentype'),
+    url('/fonts/cleaning.ttf?uydqi6') format('truetype'),
+    url('/fonts/cleaning.woff?uydqi6') format('woff'),
+    url('/fonts/cleaning.svg?uydqi6#cleaning') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'cleaning' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-clothes:before {
+  content: "\e901";
+}
+.icon-shoes:before {
+  content: "\e902";
+}
+.icon-cleaning:before {
+  content: "\e900";
+}
 
 @media(min-width:768px) {
 #page-wrapper {
@@ -389,10 +423,12 @@ table .product-name {
 	min-width: 0;
 }
 .footer {
-	background-color: #F4F4F4;
 	text-align: center;
 	max-width: 1280px;
 	margin: 0 auto;
+}
+.footer .col-xs-12 {
+	background-color: #F4F4F4;
 }
 .footer ul li {
 	list-style: none;
@@ -403,6 +439,7 @@ table .product-name {
 	color: #ff0000;
 }
 .footer p {
+	display: inline-block;
 	font-size: 10px;
 }
 .footer img {
@@ -912,4 +949,5 @@ div.panel-body .sp-navi a:hover {
 .caution img {
 	width: 75px;
 }
+
 }

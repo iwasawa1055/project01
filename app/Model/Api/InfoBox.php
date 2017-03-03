@@ -149,6 +149,9 @@ class InfoBox extends ApiCachedModel
             case KIT_CD_MONO:
             case KIT_CD_MONO_BOOK:
             case KIT_CD_MONO_APPAREL:
+            case KIT_CD_STARTER_MONO:
+            case KIT_CD_STARTER_MONO_BOOK:
+            case KIT_CD_STARTER_MONO_APPAREL:
                 $productCd = PRODUCT_CD_MONO;
                 break;
             case KIT_CD_HAKO:

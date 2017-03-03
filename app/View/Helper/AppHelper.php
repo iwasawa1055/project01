@@ -85,4 +85,26 @@ class AppHelper extends Helper
         }
         return $pointType;
     }
+
+    // 日付CD変換
+    public function convDatetimeCode ( $data_code ){
+        // 時間CODE変換表
+        $timeList = array( 2 => '午前中',
+            3 => '12～14時',
+            4 => '14～16時',
+            5 => '16～18時',
+            6 => '18～20時',
+            7 => '20～21時' );
+
+        // 日付
+        $date = substr( $data_code, 0, 10 );
+
+        // 時間
+        $time = substr( $data_code, 11, 1 );
+
+        // 戻り値
+        $datetime = date( "Y年m月d日", strtotime( $date ) );
+        if( isset( $timeList[$time] )  ) $datetime .= ' '.$timeList[$time];
+        return $datetime;
+    }
 }

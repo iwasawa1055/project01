@@ -91,15 +91,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <?php endif;?>
     <?php else : ?>
       <?php echo $this->element('navbar_right_nonlogin'); ?>
-      <?php echo $this->element('sidebar_nonlogin'); ?>
+      <?php //echo $this->element('sidebar_nonlogin'); ?>
     <?php endif; ?>
   </nav>
+  <?php if (!empty($customer) && $customer->isLogined()) : ?>
   <div id="page-wrapper">
     <?php echo $this->Flash->render(); ?>
     <?php echo $this->fetch('content'); ?>
   </div>
+  <?php else : ?>
+    <div class="col-lg-12 login-wrapper" id="js-agreement_on_page">
+      <?php echo $this->Flash->render(); ?>
+      <?php echo $this->fetch('content'); ?>
+    </div>
+  <?php endif; ?>
   <div class="footer">
-    <div class="col-lg-12 col-md-12 col-xs-12">
+    <div class="col-xs-12">
       <ul class="list-inline">
         <li><a href="https://minikura-logitech.com/" target="_blank">運営チーム</a>
         </li>
@@ -115,10 +122,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </li>
       </ul>
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-xs-12">
-        <p>© 2012 Warehouse TERRADA</p>
-      </div>
+    <div class="col-xs-12">
+      <p>© 2012 Warehouse TERRADA</p>
     </div>
   </div>
 </div>

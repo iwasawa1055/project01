@@ -28,9 +28,9 @@ $(function() {
 function checkAgreeBeforeSubmit() {
   var count = $('.agree-before-submit[type="checkbox"]').length;
   if (0 < count) {
-    $('#page-wrapper button[type=submit]').attr('disabled', 'true');
+    $('#page-wrapper button[type=submit], #js-agreement_on_page button[type=submit]').attr('disabled', 'true');
     if (count === $('.agree-before-submit[type="checkbox"]:checked').length) {
-      $('#page-wrapper button[type=submit]').attr('disabled', null);
+      $('#page-wrapper button[type=submit], #js-agreement_on_page button[type=submit]').attr('disabled', null);
     }
   }
 }
@@ -96,6 +96,11 @@ var Act =
         {
             if ($(this).prop('href') === 'javascript:void(0)') {
                 return false;
+            }
+
+            // クラスjs-none_loaderがある場合 ローダー表示させない 領収書DL等
+            if ($(this).hasClass('js-none_loader')) {
+                return true;
             }
 
             $('.loader').airCenter();

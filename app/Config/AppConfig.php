@@ -49,6 +49,53 @@ $config['api.user_agent'] = 'minikura';
 
 
 /**
+ * 恒久ログインlogout パラメータ
+ */
+$config['app']['login_cookie']['cookie_period'] = 60 * 60 * 24 * 180;
+$config['app']['login_cookie']['param'] = 'logout';
+
+/**
+ * 会員登録用パラメタ―
+ */
+$config['app']['register']['birthyear']['birthyear_start'] = 1920;
+
+/**
+ * 静的ページからの遷移先変更
+ */
+$config['app']['lp_option']['param'] = 'option';
+$config['app']['lp_code']['param'] = 'code';
+
+$config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
+$config['app']['switch_redirect']['param'] = 'option';
+
+/**
+ * 静的ページからの最大注文箱数
+ */
+$config['app']['first_order']['max_box'] = 20;
+
+/**
+ * 静的ページからの最大注文箱数
+ */
+$config['app']['first_order']['kit']['none_starter'] = array(
+    'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス',     'price' => 250),
+    'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス',      'price' => 250),
+    'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス',       'price' => 250),
+    'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス',     'price' => 200),
+    'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス',      'price' => 200),
+    'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス',       'price' => 200),
+    'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック',          'price' => 12000),
+);
+
+$config['app']['first_order']['starter_kit']['code'] = array(
+    'starter_mono'          => KIT_CD_STARTER_MONO,
+    'starter_mono_apparel'  => KIT_CD_STARTER_MONO_APPAREL,
+    'starter_mono_book'     => KIT_CD_STARTER_MONO_BOOK,
+);
+
+$config['app']['first_order']['starter_kit']['price'] = '250';
+$config['app']['first_order']['starter_kit']['name'] = 'mono スターターパック';
+
+/**
  * エラー表示(デフォルトは表示)
  */
 // CakePHP Debug Level

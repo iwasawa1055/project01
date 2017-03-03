@@ -400,6 +400,7 @@ class OrderController extends MinikuraController
             return $this->redirect(['action' => 'add']);
         }
         $model = $this->Order->model($data);
+
         if ($model->validates()) {
             // api
             $res = $model->apiPost($model->toArray());

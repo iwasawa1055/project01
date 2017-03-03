@@ -24,6 +24,13 @@ class CustomerRegistInfo extends ApiModel
         return $responses;
     }
 
+    public function regist_no_oemkey()
+    {
+        $responses = $this->request('/customer', $this->data[$this->model_name], 'POST');
+
+        return $responses;
+    }
+
     public $validate = [
         'lastname' => [
             'notBlank' => [

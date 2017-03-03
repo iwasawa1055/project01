@@ -72,6 +72,9 @@ const KIT_CD_WINE_HAKO = '77';
 const KIT_CD_WINE_MONO = '83';
 const KIT_CD_CLEANING_PACK = '75';
 const KIT_CD_SNEAKERS = '120';
+const KIT_CD_STARTER_MONO = '200';
+const KIT_CD_STARTER_MONO_APPAREL = '201';
+const KIT_CD_STARTER_MONO_BOOK = '202';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -149,6 +152,9 @@ const KIT_NAME = [
     KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
     KIT_CD_SNEAKERS => 'minikura SNEAKERS KIT',
+    KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
+    KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
+    KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
 ];
 
 const PRODUCT_NAME = [

@@ -1,0 +1,621 @@
+/** minikura ver2.5 REGISTRATION **/
+
+section#test {
+	/** layout **/
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	/** text **/
+	font-size: 10px;
+	font-size: 1rem;
+	color: #000000;
+	text-decoration: none;
+	line-height: 1.5;
+	text-align: center;
+	/** decoration **/
+	background-color: #ffffff;
+	border: .1rem solid #000000;
+	border-radius: .2rem;
+}
+section {
+	width: 100%;
+	max-width: 1170px;
+	margin: 0 auto 2rem;
+	padding: 0;
+	font-size: 62.5%;
+}
+section h2 {
+	font-size: 24px;
+	font-size: 2.4rem;
+	text-align: center;
+}
+section h3 {
+	margin: 1rem auto 2rem;
+	font-size: 18px;
+	font-size: 1.8rem;
+	text-align: center;
+}
+section a,
+section a:hover {
+	color: #ff0000;
+}
+section#pagenation {
+	margin: 9rem auto 4rem;
+	padding: 0;
+	text-align: center;
+}
+section#pagenation ul {
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 0;
+}
+section#pagenation ul li {
+	margin: 0 1.5rem;
+}
+section#pagenation ul li i {
+	width: 5rem;
+	height: 5rem;
+	font-size: 18px;
+	font-size: 1.8rem;
+	line-height: 5rem;
+	text-align: center;
+	color: #cccccc;
+	background: #ffffff;
+	border: .1rem solid #cccccc;
+	border-radius: 50%;
+}
+section#pagenation ul li span {
+	display: block;
+	margin: .5rem 0 0 0;
+	font-size: 12px;
+	font-size: 1.2rem;
+	line-height: 1.3rem;
+	color: #cccccc;
+}
+section#pagenation ul li.on i {
+	color: #ff6666;
+	background: #ffffff;
+	border: .1rem solid #ff6666;
+}
+section#pagenation ul li.on span {
+	color: #ff6666;
+}
+section.nextback {
+	margin-bottom: 2rem;
+	padding: 0;
+	text-align: center;
+}
+a[class^="btn-"] {
+	margin: 1.5rem 0 0 0;
+	padding: 1rem;
+	font-size: 18px;
+	font-size: 1.8rem;
+	color: #ffffff;
+	text-align: center;
+	border-radius: .2rem;
+}
+a[class^="btn-"]:hover {
+	color: #ffffff;
+	text-decoration: none;
+}
+a.btn-next,
+a.btn-next-full,
+a.btn-submit,
+a.btn-return,
+a.btn-starter {
+	margin-left: .5rem;
+	background: #ff0000;
+	border: .1rem solid #ff0000;
+}
+a.btn-next,
+a.btn-next-full {
+	display: inline-block;
+	width: 30rem;
+	margin-left: 1rem;
+}
+a.btn-back {
+	display: inline-block;
+	width: 30rem;
+	background: #666666;
+	border: 1px solid #666666;
+}
+a.btn-starter,
+a.btn-select {
+	display: block;
+}
+a.btn-starter,
+a.btn-select {
+	background: #0971b2;
+	border: .1rem solid #0971b2;
+}
+a.btn-starter.active {
+	color: #0971b2;
+	background: #ffffff;
+	border: .1rem solid #0971b2;
+}
+a.btn-submit,
+a.btn-return {
+	display: inline-block;
+	margin: .5rem 0;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+a.btn-submit,
+a.btn-return {
+	width: calc(60% - 1rem);
+}
+a.btn-return {
+	width: calc(40% - 1rem);
+	background: #666666;
+	border: 1px solid #666666;
+}
+section#lineup .lineup-box {
+	width: calc((100% / 4) - 1rem);
+	margin: 2rem .5rem 4rem;
+	padding: 2rem 1.5rem 1.5rem 1.5rem;
+	border: .1rem solid #bbbbbb;
+	border-radius: .2rem;
+}
+section#lineup .price {
+	margin: 0 0 .1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+	line-height: 2.5rem;
+}
+section#lineup .price span {
+	margin-left: 1.5rem;
+	font-weight: bold;
+}
+section#lineup .price span s {
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+section#lineup .price span.starter {
+	margin-left: .5rem;
+}
+section#lineup .price span.starter span {
+	color: #ff0000;
+	margin-left: .25rem;
+}
+section#lineup .box-caption {
+	margin: 1rem 0 0;
+	font-size: 14px;
+	font-size: 1.4rem;
+	line-height: 2rem;
+}
+section#lineup .select-number {
+	font-size: 16px;
+	font-size: 1.6rem;
+	font-weight: bold;
+	margin: 1rem 0;
+}
+section#lineup .select-number span {
+	color: #ff0000;
+}
+section#lineup .wrapper {
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	margin-bottom: 2rem;
+}
+section#adress {
+	max-width: 768px;
+	margin: 0 auto 3rem;
+	padding: 0 .5rem;
+}
+section.complete {
+	height: 50vh;
+}
+section#adress .wrapper {
+	display: block;
+	margin: 4rem 0 6rem;
+}
+section#adress .form {
+	display: block;
+	margin: 0 0 2rem 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section#adress .form-line {
+	display: inline-block;
+	margin-right: 2rem;
+}
+section#adress .form .required {
+	margin-left: .25rem;
+	font-size: 12px;
+	font-size: 1.2rem;
+	color: #ff0000;
+}
+section#adress .form .dialog {
+	margin: 0;
+}
+section#adress .form p {
+	margin: 0 0 0 2rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section#adress .form label {
+	display: block;
+	position: relative;
+	font-size: 16px;
+	font-size: 1.6rem;
+	font-weight: 300;
+}
+section#adress .form label span {
+	font-size: 11px;
+	font-size: 1.1rem;
+	font-weight: normal;
+	color: #ff6666;
+}
+section#adress .form input {
+	display: block;
+	border: .1rem solid #cccccc;
+	padding: 1rem;
+}
+section#adress .form input[class^="name-"] {
+	display: inline-block;
+}
+section#adress .form input[class^="name-first"] {
+	margin-left: 1rem;
+}
+section#adress .form select[class^="select-"] {
+	height: 4rem;
+	margin-bottom: 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+	line-height: 4rem;
+	vertical-align: middle;
+	appearance: none;
+	background: #eeeeee;
+	border: 1px solid #CCC;
+	border-radius: 0;
+}
+section#adress .form .referral {
+	display: inline-block;
+}
+section#adress .form label.genders {
+	display: inline-block;
+	margin-right: 1.5rem;
+}
+section#adress .form label.terms {
+	display: block;
+}
+section#adress .form label.genders .gender,
+section#adress .form label.terms .term {
+	margin-left: 2.5rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section#adress .form input[type=radio],
+section#adress .form input[type=checkbox] {
+	display: none;
+}
+section#adress .form input[type=radio] + .check-icon,
+section#adress .form input[type=checkbox] + .check-icon {
+	position: absolute;
+	vertical-align: middle;
+	margin-right: 1rem;
+	line-height: 1;
+}
+section#adress .form input[type=radio] + .check-icon:before,
+section#adress .form input[type=checkbox] + .check-icon:before {
+	font-family: 'FontAwesome';
+	content: "\f096";
+	font-size: 24px;
+	font-size: 2.4rem;
+	color: #999999;
+}
+section#adress .form input[type=radio]:checked + .check-icon:before,
+section#adress .form input[type=checkbox]:checked + .check-icon:before {
+	content: "\f046";
+	color: #ff0000;
+}
+section#adress .form .select-delivery {
+	display: block;
+}
+section#adress .form .select-month,
+section#adress .form .select-year {
+	display: inline-block;
+}
+section#adress .form a.link-terms,
+section#adress .form a.link-terms:focus,
+section#adress .form a.link-terms:active {
+	display: inline-block;
+	margin: 0 0 0 .5rem;
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+section#adress .divider {
+	display: block;
+	margin-bottom: 2rem;
+	border-bottom: .1rem solid #cccccc;
+}
+section#adress .form table {
+	margin: 0 0 0 2rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section#adress .form th,
+section#adress .form td {
+	margin-right: 3rem;
+	padding: 1rem 3rem 1rem 0;
+	font-weight: normal;
+	border-bottom: .1rem solid #cccccc;
+}
+section#adress .form thead td,
+section#adress .form tbody td {
+	text-align: center;
+}
+.items {
+	margin: 0 auto;
+}
+.items .item-number {
+	display: inline-block;
+	width: 15rem;
+	height: 4rem;
+	margin: 0 0 0 .5rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+	appearance: none;
+	line-height: 4rem;
+	vertical-align: middle;
+	background: #eeeeee;
+	border: 1px solid #CCC;
+	border-radius: 0;
+}
+.items label {
+	display: block;
+	text-align: center;
+}
+.items div[class^="items-"] {
+	display: none;
+}
+.remodal {
+	max-width: 50rem;
+	margin: 0 auto;
+	padding: .5rem 1rem 1rem;
+}
+.items .box {
+	width: 100%;
+	margin-bottom: 1.5rem;
+	text-align: left;
+	border-bottom: .1rem solid #cccccc;
+}
+.items .box .pict-box,
+.items .box .select-box {
+	display: inline-block;
+}
+.items .box .pict-box img {
+	width: 200px;
+}
+.items .box .select-box {
+	margin-left: 1rem;
+}
+.items .box .select-box h3 {
+	font-size: 18px;
+	font-size: 1.8rem;
+	margin: 1rem;
+}
+.items .box .size,
+.items .box .caption {
+	margin-bottom: .5rem;
+	font-size: 14px;
+	font-size: 1.4rem;
+	line-height: 1.5;
+}
+.items .box .cleaning {
+	text-align: center;
+}
+.items .box .cleaning img {
+	width: 50%;
+}
+section#lineup div[class^="box-"] {
+	text-align: center;
+}
+section#lineup .box-starter {
+	margin: 3.3rem 0;
+}
+section#lineup .box-starter img {
+	width: 100%;
+	height: 100%;
+}
+section#lineup .box-mono img,
+section#lineup .box-hako img,
+section#lineup .box-cleaning img {
+	width: 50%;
+}
+
+@media screen and (max-width: 1024px) {
+section#lineup .lineup-box {
+	width: calc((100% / 4) - 1rem);
+}
+}
+
+@media screen and (max-width:1023px) {
+section#lineup .lineup-box {
+	width: calc((100% / 2) - 1rem);
+	margin: .5rem .5rem 1rem;
+}
+section#lineup .box-starter {
+	margin: 4.35rem 0;
+}
+}
+
+@media screen and (max-width:767px) {
+section#lineup .lineup-box {
+	width: calc((100% / 1) - 1rem);
+	margin: .5rem;
+	padding-top: 1rem;
+}
+section#pagenation {
+	margin: 7rem 0 2rem;
+}
+section#pagenation ul li {
+	margin: 0 1rem;
+}
+section#pagenation ul li i {
+	width: 3rem;
+	height: 3rem;
+	font-size: 14px;
+	font-size: 1.4rem;
+	line-height: 3rem;
+}
+section#pagenation ul li span {
+	margin: .5rem 0 0 0;
+	font-size: 10px;
+	font-size: 1rem;
+}
+section.nextback {
+	display: block;
+	width: 100%;
+	margin-bottom: 0;
+	padding: 1rem;
+	bottom: 0;
+}
+section.nextback.fix {
+	position: fixed;
+	background: rgba(155,155,155,0.5);
+	animation: fadeIn 1s ease 0s 1 normal;
+}
+a.btn-next {
+	display: inline-block;
+	width: calc(75% - 1rem);
+	margin: .5rem;
+	font-size: 13px;
+	font-size: 1.3rem;
+}
+a.btn-next-full {
+	display: inline-block;
+	width: calc(100% - 1rem);
+	margin: .5rem;
+	font-size: 13px;
+	font-size: 1.3rem;
+}
+a.btn-back {
+	display: inline-block;
+	width: calc(25% - 1rem);
+	margin: .5rem;
+	font-size: 13px;
+	font-size: 1.3rem;
+}
+a.btn-submit,
+a.btn-return,
+a.btn-select,
+a.btn-starter {
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+section {
+	width: 100%;
+	margin: 0 auto 3rem;
+	padding: 0;
+}
+section#lineup.fix {
+	margin: 0 auto 9rem;
+}
+section#lineup,
+section#adress {
+	margin: 0 auto;
+}
+section#adress {
+	padding: 0 1rem 0;
+}
+section h2,
+section h2 {
+	margin-bottom: 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+	font-weight: bold;
+}
+section h3 {
+	margin: 1rem 0;
+	font-size: 18px;
+	font-size: 1.8rem;
+	font-weight: bold;
+}
+section#lineup .wrapper,
+section#adress .wrapper {
+	margin: 0;
+}
+section#lineup .price {
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+section#lineup .box-starter {
+	margin: 0;
+}
+section#lineup .box-starter img {
+	width: 75%;
+}
+section#lineup .box-mono img,
+section#lineup .box-hako img,
+section#lineup .box-cleaning img {
+	width: 50%;
+}
+.remodal {
+	max-width: 37.5rem;
+	margin: 0 auto;
+	padding: .5rem 1rem 1rem;
+}
+.items .box {
+	margin-bottom: .5rem;
+}
+.items .box .pict-box img {
+	width: 100px;
+}
+.items .box .select-box h3 {
+	font-size: 16px;
+	font-size: 1.6rem;
+	margin: 1rem .5rem;
+}
+.items .box .size,
+.items .box .caption {
+	font-size: 12px;
+	font-size: 1.2rem;
+	line-height: 1.2;
+}
+section#adress .form {
+	display: block;
+	margin: 0 1rem 2rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section#adress .form-line {
+	display: inline-block;
+	margin-right: .5rem;
+}
+section#adress .form label.genders .gender,
+section#adress .form label.terms .term {
+	font-size: 13px;
+	font-size: 1.3rem;
+	font-weight: 600;
+}
+section#adress .form a.link-terms {
+	font-size: 12px;
+	font-size: 1.2rem;
+}
+section#adress .form table {
+	margin: 0;
+	font-size: 13px;
+	font-size: 1.3rem;
+}
+section#adress .form th,
+section#adress .form td {
+	margin-right: 1rem;
+	padding: .5rem 1rem .5rem 0;
+}
+section#adress .form label {
+	font-size: 14px;
+	font-size: 1.4rem;
+	font-weight: 600;
+}
+}

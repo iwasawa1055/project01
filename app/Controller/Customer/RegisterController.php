@@ -32,10 +32,23 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     *
+     * エントリー登録フォーム
+     *  - 現在は非アクティブ 2017.2.16
      */
     public function customer_add()
     {
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
+
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
@@ -51,10 +64,23 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * 
+     * エントリー登録フォーム（確認）
+     *  - 現在は非アクティブ 2017.2.16
      */
     public function customer_confirm()
     {
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
+
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
 
@@ -69,10 +95,23 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     *
+     * エントリー登録フォーム（完了）
+     *  - 現在は非アクティブ 2017.2.16
      */
     public function customer_complete()
     {
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
+
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
 
@@ -123,7 +162,8 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     *
+     * 本登録フォーム
+     *  - 現在はこちらのみアクティブ 2017.2.16
      */
     public function customer_add_info()
     {
@@ -252,10 +292,12 @@ class RegisterController extends MinikuraController
 		//* loginはこちらリンク logo切り替え用
         $this->set('code', $code);
 
+/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
         //* sneakers key  sneakersのLPから遷移するorエラー時にredirectで
         $key = Hash::get($this->request->query, 'key');
 		//* 値を入力欄にset
         $this->set('key', $key);
+*/
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
@@ -279,6 +321,7 @@ class RegisterController extends MinikuraController
 		}
         $this->set('code', $code);
 
+/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 		//* key (form) 
 		$key = $this->request->data[self::MODEL_NAME]['key'];
         $this->set('key', $key);
@@ -301,6 +344,7 @@ class RegisterController extends MinikuraController
             $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
 			return $this->render('customer_add_sneakers');
         }
+*/
 
         $this->loadModel(self::MODEL_NAME);
         $this->CustomerEntry->set($this->request->data);
@@ -323,15 +367,23 @@ class RegisterController extends MinikuraController
 		//* alliance_cd 
 		$code = $data['alliance_cd'];
         $this->set('code', $code);
+
+/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 		//* key
 		$key = $data['key'];
         $this->set('key', $key);
+*/
 
         CakeSession::delete(self::MODEL_NAME);
         if (empty($data)) {
             $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+			/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
+            //return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+			*/
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
         }
+
+/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 		//* keyの有効性check
 		$exist_flg = $this->_checkSneakersKey($key);
 		//* リストに無い=無効なkey error
@@ -346,6 +398,7 @@ class RegisterController extends MinikuraController
             $this->Flash->set(__('empty_sneakers_key_data'));
             return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
         }
+*/
 
         $this->loadModel(self::MODEL_NAME);
         $this->CustomerEntry->set($data);
@@ -357,7 +410,10 @@ class RegisterController extends MinikuraController
                 $this->CustomerEntry->data[self::MODEL_NAME]['password'] = '';
                 $this->CustomerEntry->data[self::MODEL_NAME]['password_confirm'] = '';
                 $this->Flash->set($res->error_message);
+				/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
                 return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+				*/
+                return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
             }
 
             // ログイン
@@ -392,9 +448,11 @@ class RegisterController extends MinikuraController
                 $this->set('summary_all', $summary_all);
             }
 
+/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 			//* keyを登録済みとして管理する
 			$input_data = $key . "," .$data['email'] . "\n";
 			$this->_postRegisteredSneakersKey($input_data);
+*/
 
             // 完了画面
             $this->set('alliance_cd', $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd']);
@@ -402,13 +460,17 @@ class RegisterController extends MinikuraController
 
         } else {
             $this->Flash->set(__('empty_session_data'));
+/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
             return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code, 'key' => $key]]);
+*/
+            return $this->redirect(['action' => 'customer_add_sneakers', '?' => ['code' => $code]]);
         }
     }
 
 	/**
 	* sneakers ユーザーのaccess_key check
 	*/
+	/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 	private function _checkSneakersKey($_key)
 	{
 		//* flg	
@@ -436,10 +498,12 @@ class RegisterController extends MinikuraController
 
 		return $exist_flg;
 	}
+	*/
 
 	/**
 	* sneakers ユーザーのaccess_key 登録済み処理
 	*/
+	/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 	private function _postErrorSneakersKey($_input_data, $_reason)
 	{
 		$post_info = false;
@@ -455,11 +519,13 @@ class RegisterController extends MinikuraController
 		$post_info = file_put_contents($file, json_encode($data) . "\n", FILE_APPEND | LOCK_EX);
 		return $post_info;
 	}
+	*/
 
 
 	/**
 	* sneakers ユーザーのaccess_key 登録済み処理
 	*/
+	/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 	private function _postRegisteredSneakersKey($_input_data)
 	{
 		$post_info = false;
@@ -468,10 +534,12 @@ class RegisterController extends MinikuraController
 		$post_info = file_put_contents($file, $_input_data, FILE_APPEND | LOCK_EX);
 		return $post_info;
 	}
+	*/
 
 	/**
 	* sneakers ユーザーのaccess_keyが登録済みかcheck
 	*/
+	/* Sneakers 要件変更 キー制限解除 2017/03/01 by osada@terrada
 	private function _checkRegisteredSneakersKey($_key)
 	{
 		//* flg	
@@ -499,6 +567,7 @@ class RegisterController extends MinikuraController
 		}
 		return $registered_flg;
 	}
+	*/
 	
     /**
      * 法人カスタマー登録（いきなり本登録）

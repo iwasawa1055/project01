@@ -12,12 +12,12 @@
     <?php endif; ?>
   <?php endif; ?>
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-6 col-md-offset-3">
         <h1 class="page-header"><i class="fa fa-keyboard-o"></i> ユーザー登録</h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-body">
             <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_confirm_info', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
