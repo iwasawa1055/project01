@@ -188,7 +188,11 @@ class LoginController extends MinikuraController
             // optionは削除
             CakeSession::delete(Configure::read( 'app.switch_redirect.session_name'));
 
-            // Sneakerでエントリユーザかどうか
+            // Sneakerで かつエントリユーザの場合 → キット購入画面へ
+            if ($this->Customer->isEntry()) {
+                return $this->redirect(['controller' => 'order', 'action' => 'add']);
+            }
+
             $summary = $this->InfoBox->getProductSummary(false);
 
             // スニーカが収納されている場合
