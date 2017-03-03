@@ -5,7 +5,7 @@ App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
 App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
-
+App::uses('AppCode', 'Lib');
 
 class FirstOrderController extends MinikuraController
 {
