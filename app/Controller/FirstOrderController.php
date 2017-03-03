@@ -105,9 +105,6 @@ class FirstOrderController extends MinikuraController
                 $this->redirect($none_first_redirect_param);
             }
 
-            // エントリユーザ 紹介コードで遷移してきた場合 コードを削除
-            CakeSession::delete(Configure::read('app.lp_code.param'));
-
             // ログイン済みエントリーユーザ
             // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login entry user' . $option);
             $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
