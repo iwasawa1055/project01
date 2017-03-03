@@ -39,7 +39,7 @@
       <?php else : ?>
         <div class="form">
           <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-          <input type="email" class="mail focused" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
+          <input type="url" class="mail focused" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>" novalidate>
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
