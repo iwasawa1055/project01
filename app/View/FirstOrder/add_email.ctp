@@ -98,7 +98,7 @@
         <?php if (CakeSession::read('kit_select_type') !== 'starter_kit') : ?>
           <div class="form form-line">
             <label>紹介コード</label>
-            <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+            <input type="url" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
             <br><?php echo $this->Flash->render('alliance_cd');?>
           </div>
         <?php endif; ?>
