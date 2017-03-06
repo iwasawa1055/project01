@@ -47,53 +47,22 @@ class OrderController extends MinikuraController
     /**
      *
      */
-    public function getAddressDatetime()
+    public function add()
     {
-        if (!$this->request->is('ajax')) {
-            return false;
+        if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
+            return $this->setAction('add_sneakers');
         }
 
-        $this->autoRender = false;
-
-        $address_id = $this->request->data['address_id'];
-        $result = $this->getDatetimeDeliveryKit($address_id);
-        $status = !empty($result);
-
-        return json_encode(compact('status', 'result'));
-    }
-
-    private function getDatetimeDeliveryKit($address_id)
-    {
-        $address = $this->Address->find($address_id);
-        if (!empty($address) && !empty($address['postal'])) {
-            $res = $this->DatetimeDeliveryKit->apiGet([
-                'postal' => $address['postal'],
-            ]);
-            if ($res->isSuccess()) {
-                return $res->results;
-            }
-        }
-        return [];
-    }
-
-    private function getDatetime($address_id, $datetime_cd)
-    {
-        $data = [];
-        $result = $this->getDatetimeDeliveryKit($address_id);
-        foreach ($result as $datetime) {
-            if ($datetime['datetime_cd'] === $datetime_cd) {
-                $data = $datetime;
-            }
-        }
-        return $data;
+        return $this->setAction('input');
     }
 
     /**
      *
      */
-    public function add()
+    public function input()
     {
-        if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
+        // スニーカー判定
+        if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
             return $this->setAction('add_sneakers');
         }
 
@@ -117,34 +86,6 @@ class OrderController extends MinikuraController
         }
 
         $this->set('datetime', $res_datetime);
-
-        CakeSession::delete(self::MODEL_NAME);
-    }
-
-    public function add_sneakers()
-    {
-        $isBack = Hash::get($this->request->query, 'back');
-        $res_datetime = [];
-        $data = CakeSession::read(self::MODEL_NAME);
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.print_r($data, true));
-        if ($isBack && !empty($data)) {
-            if (!array_key_exists('address_id', $data)) {
-                $data['address_id'] = '';
-            }
-            // 前回追加選択は最後のお届け先を選択
-            if ($data['address_id'] === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-                $data['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
-                $data['datetime_cd'] = '';
-            }
-            $this->request->data[self::MODEL_NAME] = $data;
-            if (!empty($data['address_id'])) {
-                $res_datetime = $this->getDatetimeDeliveryKit($data['address_id']);
-            }
-        }
-
-        $this->set('datetime', $res_datetime);
-
-        $this->render('add_sneakers');
 
         CakeSession::delete(self::MODEL_NAME);
     }
@@ -276,6 +217,83 @@ class OrderController extends MinikuraController
         }
     }
 
+    /**
+     *
+     */
+    public function complete()
+    {
+        if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
+            return $this->setAction('complete_sneakers');
+        }
+
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'add']);
+        }
+        $model = $this->Order->model($data);
+
+        if ($model->validates()) {
+            // api
+            $res = $model->apiPost($model->toArray());
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'add']);
+            }
+
+            $address_id = $data['address_id'];
+            $address = $this->Address->find($address_id);
+            $this->set('data', $data);
+
+            if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
+                // カード
+                $default_payment = $this->Customer->getDefaultCard();
+                $this->set('default_payment_text', "{$default_payment['card_no']}　{$default_payment['holder_name']}");
+            }
+            // お届け先
+            $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
+            // お届け希望日時
+            $datetime = $this->getDatetime($address_id, $data['datetime_cd']);
+            $this->set('datetime', $datetime['text']);
+
+            // 料金
+            $this->set('productKitList', unserialize($data['view_data_productKitList']));
+            $this->set('total', unserialize($data['view_data_total']));
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'add']);
+        }
+    }
+
+    public function add_sneakers()
+    {
+        $isBack = Hash::get($this->request->query, 'back');
+        $res_datetime = [];
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.print_r($data, true));
+        if ($isBack && !empty($data)) {
+            if (!array_key_exists('address_id', $data)) {
+                $data['address_id'] = '';
+            }
+            // 前回追加選択は最後のお届け先を選択
+            if ($data['address_id'] === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+                $data['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
+                $data['datetime_cd'] = '';
+            }
+            $this->request->data[self::MODEL_NAME] = $data;
+            if (!empty($data['address_id'])) {
+                $res_datetime = $this->getDatetimeDeliveryKit($data['address_id']);
+            }
+        }
+
+        $this->set('datetime', $res_datetime);
+
+        $this->render('add_sneakers');
+
+        CakeSession::delete(self::MODEL_NAME);
+    }
+
     public function confirm_sneakers()
     {
 
@@ -391,7 +409,7 @@ class OrderController extends MinikuraController
     /**
      *
      */
-    public function complete()
+    public function complete_sneakers()
     {
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
@@ -432,7 +450,56 @@ class OrderController extends MinikuraController
             return $this->redirect(['action' => 'add']);
         }
     }
+
+    /**
+     * 注文不可ユーザ用表示メソッド
+     */
     public function cannot()
     {
     }
+
+    /**
+     *
+     */
+    public function getAddressDatetime()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $address_id = $this->request->data['address_id'];
+        $result = $this->getDatetimeDeliveryKit($address_id);
+        $status = !empty($result);
+
+        return json_encode(compact('status', 'result'));
+    }
+
+    private function getDatetimeDeliveryKit($address_id)
+    {
+        $address = $this->Address->find($address_id);
+        if (!empty($address) && !empty($address['postal'])) {
+            $res = $this->DatetimeDeliveryKit->apiGet([
+                'postal' => $address['postal'],
+            ]);
+            if ($res->isSuccess()) {
+                return $res->results;
+            }
+        }
+        return [];
+    }
+
+    private function getDatetime($address_id, $datetime_cd)
+    {
+        $data = [];
+        $result = $this->getDatetimeDeliveryKit($address_id);
+        foreach ($result as $datetime) {
+            if ($datetime['datetime_cd'] === $datetime_cd) {
+                $data = $datetime;
+            }
+        }
+        return $data;
+    }
+
 }
