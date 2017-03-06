@@ -604,6 +604,10 @@ class FirstOrderController extends MinikuraController
                     if ($result->http_code !== "400") {
                         $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
                         $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
+                        if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
+                            $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_code.param') . '=' . CakeSession::read(Configure::read('app.lp_code.param'))
+                                                                                           . '?' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
+                        }
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
 
                         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
