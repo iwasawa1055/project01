@@ -1,4 +1,4 @@
-<?php $this->Html->script('minikura/order', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
     <div class="row">
       <div class="col-lg-12">
