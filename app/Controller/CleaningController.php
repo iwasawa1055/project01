@@ -107,7 +107,7 @@ class CleaningController extends MinikuraController
         $where['product'] = null;
         // ItemStatusは70のみを表示
         $where['item_status'] = array(70);
-        // ItemgroupCDはConfig/EnvConfig/[Development]/AppConfig.phpを参照
+        // itemgroup_cdはConfig/EnvConfig/[Development]/AppConfig.phpを参照
         $where['item_group_cd'] = array_keys(Configure::read('app.kit.cleaning.item_group_cd'));
 
         // 並び替えキー指定
@@ -180,7 +180,7 @@ class CleaningController extends MinikuraController
         }
 
         $session_data = array();
-        $totalCount = 0;
+        $totalcount = 0;
         $totalprice = 0;
 
         // 選択データを整理してセッション用データを作成する
@@ -202,14 +202,14 @@ class CleaningController extends MinikuraController
             
             // 金額合計とアイテム数を計算する
             $totalprice += $data['price'];
-            $totalCount++;
+            $totalcount++;
         }
         
         // 処理したデータをセッションに保管する
         CakeSession::write('app.data.session_cleaning',$session_data);
 
         // View用の変数をセット
-        $this->set('selected_count',$totalCount);
+        $this->set('selected_count',$totalcount);
         $this->set('selected_total', $totalprice);
         $this->set('itemList', $session_data);
 
@@ -229,71 +229,75 @@ class CleaningController extends MinikuraController
         }
 
         // Session Referer
-        // ※最後に設定すると途中エラー発生時、リファラー判断の問題があるので先に設定する
+        // ※最後に設定すると途中エラー発生時、リロード時再処理することを防ぐため
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         // セッションデータがない場合はリダイレクト
         if ( !CakeSession::read('app.data.session_cleaning') ) {
-          return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
+            return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
 
         // Item_Group_Idごとにデータを処理する
         $flg_complete = true;
-        $request_data = array();
+        $complete_data = [];
+        $request_data  = [];
 
-        $ct = 0;
         // セッションデータかAPIにリクエストする
-        foreach ( CakeSession::read('app.data.session_cleaning') as $itemGroupCD=>$items ) {
+        $ct=0;
+        foreach ( CakeSession::read('app.data.session_cleaning') as $itemgroup_cd=>$items ) {
             // APIリクエストのためのパラメータをセット
             //  Model/API/Cleaning
             $request_param = array(
-                "work_type"  => $this->Cleaning->getWorkType($itemGroupCD),
+                "work_type"  => $this->Cleaning->getWorkType($itemgroup_cd),
                 "product"    => $this->Cleaning->buildParamProduct($items),
             );
             
             // パラメータセット
             $this->Cleaning->set($request_param);
             // Validate
-            $validCleaning = $this->Cleaning->validates();
+            $valid_cleaning = $this->Cleaning->validates();
 
-            if ( !$validCleaning ) {
+            if ( !$valid_cleaning ) {
                 // Validateに失敗した場合
                 $this->Flash->set("データに誤りがあります");
                 $flg_complete = false;
                 break;
             } else {
-                // クリーニング申し込み
-                if ( $ct === 0 ) {
-                    $res = $this->Cleaning->apiPost($this->Cleaning->toArray());
-                } else {
-                    $res = (object) [];
-                    $res->error_message = "ERROR";
-                }
+                // API:クリーニング申し込み
+                $res = $this->Cleaning->apiPost($this->Cleaning->toArray());
 
                 // 登録に失敗した場合
                 if (!empty($res->error_message)) {
-                    // Cookieを更新する
+                    // 未処理のアイテムリストを収集する
+                    $selected_items = [];
+                    foreach ( CakeSession::read('app.data.session_cleaning')  as $itemgroup2 ) {
+                        foreach ( $itemgroup2 as $items2 ) {
+                            array_push($selected_items,$items2['item_id']);
+                        }
+                    }
+                    // Cookieを更新する(
+                    setcookie("mn_cleaning_list", implode(",",$selected_items));
 
                     #$this->Flash->set($res->error_message);
                     $flg_complete = false;
                     break;
                 } else {
+                    $complete_data[$itemgroup_cd] = $items;
                     // 処理完了した分に関してはセッションから削除する
-                    CakeSession::delete("app.data.session_cleaning.".$itemGroupCD);
+                    CakeSession::delete("app.data.session_cleaning.".$itemgroup_cd);
                 }
             }
-            
-            $ct++;
         }
 
         // View用の変数をセット
-        $this->set('itemList', CakeSession::read('app.data.session_cleaning'));
+        $this->set('itemList', $complete_data);
         $this->set('flgComplete', $flg_complete);
         
         // 処理が完了したら、セッションとクッキーを削除する
         CakeSession::delete("app.data.session_cleaning"); 
+        
         if ( $flg_complete ) {
-            //setcookie("mn_cleaning_list", "", time()-3600);
+            setcookie("mn_cleaning_list", "", time()-3600);
         }
     }
 
@@ -301,14 +305,14 @@ class CleaningController extends MinikuraController
     private function _makeSelectSortUrl()
     {
         // 並び替え選択
-        $selectSortKeys = [
+        $selected_sortkey = [
             'item_id' => __('item_id'),
             'item_name' => __('item_name'),
         ];
 
         $page = $this->request->query('page');
         $data = [];
-        foreach ($selectSortKeys as $key => $value) {
+        foreach ($selected_sortkey as $key => $value) {
             $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc', 'page' => $page]]);
             $data[$desc] = $value . __('select_sort_desc');
             $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc', 'page' => $page]]);

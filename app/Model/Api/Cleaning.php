@@ -2,6 +2,7 @@
 
 App::uses('ApiModel', 'Model');
 
+// Cleaning Model
 class Cleaning extends ApiModel
 {
     public function __construct()
@@ -9,6 +10,7 @@ class Cleaning extends ApiModel
         parent::__construct('Cleaning', '/cleaning', 'minikura_v5');
     }
 
+    // Validate項目設定
     public $validate = [
         'work_type' => [
             'notBlank' => [
@@ -34,11 +36,15 @@ class Cleaning extends ApiModel
         return implode(',', $list);
     }
 
-    public function getWorkType($_itemGroupCD)
+    public function getWorkType($itemgroup_cd)
     {
-        $_worktypes = Configure::read('app.kit.cleaning.work_type');
-        if ( isset($_worktypes[$_itemGroupCD]) ) {
-            return $_worktypes[$_itemGroupCD];
+        // Worktypeを取得する
+        // WorktypeはConfig/EnvConfig/[Development]/AppConfig.phpを参照
+        $worktypes = Configure::read('app.kit.cleaning.work_type');
+        
+        // Worktypesが設定されていればリターン
+        if ( isset($worktypes[$itemgroup_cd]) ) {
+            return $worktypes[$itemgroup_cd];
         } else {
             return false;
         }
