@@ -27,28 +27,8 @@ class CleaningController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_ITEM);
 
         (new InfoItem())->deleteCache();
-        $this->set('sortSelectList', $this->makeSelectSortUrl());
+        $this->set('sortSelectList', $this->_makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
-    }
-
-    private function makeSelectSortUrl()
-    {
-        // 並び替え選択
-        $selectSortKeys = [
-            'item_id' => __('item_id'),
-            'item_name' => __('item_name'),
-        ];
-
-        $page = $this->request->query('page');
-        $data = [];
-        foreach ($selectSortKeys as $key => $value) {
-            $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc', 'page' => $page]]);
-            $data[$desc] = $value . __('select_sort_desc');
-            $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc', 'page' => $page]]);
-            $data[$asc] = $value . __('select_sort_asc');
-        }
-
-        return $data;
     }
 
     protected function setQueryParameter()
@@ -79,16 +59,6 @@ class CleaningController extends MinikuraController
         return $results;
     }
 
-    private function getRequestSortKey()
-    {
-        $order = $this->request->query('order');
-        $direction = $this->request->query('direction');
-        if (!empty($order)) {
-            return [$order => ($direction === 'asc')];
-        }
-        return [];
-    }
-
     /**
      * input
      */
@@ -96,81 +66,82 @@ class CleaningController extends MinikuraController
     {
         $priorities = [];
         $storedList = null;
-        $selected_id = null;
 
+        // 引数を取得
+        $selected_id = filter_input(INPUT_GET,"id");
+
+        $params = [
+            "page"          => filter_input(INPUT_GET,"page"),
+            "keyword"     => filter_input(INPUT_GET,"keyword"),
+            "order"        => filter_input(INPUT_GET,"order"),
+            "direction"  => filter_input(INPUT_GET,"direction"),
+        ];
+        
         // resetが設定されている場合はすべてリセットする
-        if ( isset($this->request->query['reset']) ) {
-            // 廃止予定
-            #CakeSession::write('app.data.session_cleaning_loaded',1);
+        if ( null !== filter_input(INPUT_GET,"reset") ) {
+            // 選択リストCookieを削除する
             setcookie("mn_cleaning_list", "", time()-3600);
-        } else {
-            // 引数でidがリターンされた場合はすでにチェックを入れる
-            if ( isset($this->request->query['id']) ) {
-                $selected_id = $this->request->query['id'];
-                array_push($priorities,["item_id"=>$selected_id]);
-            }
-            
-            $query = $this->request->query;
-            // confirmからのバックの場合は選択を保持する
-            if ( isset($_COOKIE['mn_cleaning_list'])  ) {
-                // 廃止予定
-                #$toloadPage = CakeSession::read('app.data.session_cleaning_loaded');
-                
-                foreach ( explode(",", $_COOKIE['mn_cleaning_list']) as $tmp ) {
+        } 
+
+        // 引数でidがリターンされた場合はすでにチェックを入れる
+        if ( !is_null($selected_id) ) {
+            // リストの優先アイテムとして追加する （トップに持ってくるため）
+            array_push($priorities, ["item_id"=>$selected_id]);
+        }
+
+        // confirmからのバックの場合は選択を保持する
+        if ( isset($_COOKIE['mn_cleaning_list']) ) {
+            // 選択されたアイテムを優先アイテムとして追加する
+            foreach ( explode(",", $_COOKIE['mn_cleaning_list']) as $tmp ) {
                 array_push($priorities,["item_id"=>$tmp]);
-                }
             }
         }
 
         // ページが設定されていない場合は１を設定
-        if ( !isset($query['page']) ) {
-            $query['page'] = 1;
+        if ( !isset($params['page']) ) {
+            $params['page'] = 1;
         }
         
         // 商品指定
         $where = [];
         $where['product'] = null;
+        // ItemStatusは70のみを表示
         $where['item_status'] = array(70);
+        // ItemgroupCDはConfig/EnvConfig/[Development]/AppConfig.phpを参照
         $where['item_group_cd'] = array_keys(Configure::read('app.kit.cleaning.item_group_cd'));
 
         // 並び替えキー指定
-        $sortKey = $this->getRequestSortKey();
+        $sortKey = $this->_getRequestSortKey();
 
         // 保管品リストを取得する
+        // sortkey:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
         $results = $this->InfoItem->getListWhere($sortKey, $where, $priorities);
-        $results = $this->InfoItem->editBySearchTerm($results, $this->request->query);
+        $results = $this->InfoItem->editBySearchTerm($results, $params);
+
+        // 全体のアイテム数を取得
         $item_all_count = count($results);
         
-        // paginate(仕様変更により廃止予定）
-/*
-        if ( $storedList ) {
-            $list = array();
-            for ( $_i=1; $_i<=$toloadPage; $_i++ ) {
-               $this->request->query['page'] = $_i;
-               $query['page'] = $_i;
-               $tmplist = $this->paginate(self::MODEL_NAME, $results);
-               $list = array_merge($list,$tmplist);
-            }
-        } else {
-        }
-*/
+        // ページング
         $list = $this->paginate(self::MODEL_NAME, $results);
         
+        // 取得したリストをセット
         $this->set('itemList', $list);
+
+        // 取得したリストをセット
         $this->set('item_all_count', $item_all_count);
 
-        $url = Router::url(['action'=>'input', '?' => http_build_query($query)]);
+        $url = Router::url(['action'=>'input', '?' => http_build_query($params)]);
         $query_params = $this->setQueryParameter();
 
+        // View用の変数をセット
         $this->set('keyword', $query_params['keyword']);
         $this->set('order', $query_params['order']);
         $this->set('direction', $query_params['direction']);
-        $this->set('page',$query['page']);
+        $this->set('page',$params['page']);
         $this->set('selected_id', $selected_id);
-
-        // 廃止予定
-        #CakeSession::write('app.data.session_cleaning_loaded',$query['page']);
-
+        
+        // 金額情報を変数に入れる
+        // 金額情報はConfig/EnvConfig/[Development]/AppConfig.phpを参照
         $this->set('price',Configure::read('app.kit.cleaning.item_group_cd'));
         
         // Session Referer
@@ -189,16 +160,21 @@ class CleaningController extends MinikuraController
         }
         
         $flg_error = false;
+        $params = [
+            "selected"          => filter_input(INPUT_POST,"selected",FILTER_DEFAULT,FILTER_REQUIRE_ARRAY),
+        ];
 
-        if ( !isset($this->request->data['selected']) ) {
+        // 選択リストがない場合はエラー
+        if ( is_null($params['selected']) ) {
             $flg_error = true;
         } else {
-            $selected_ids = $this->request->data['selected'];
-            if ( count($selected_ids) < 1 ) {
+            // 選択リストから数を確認する
+            if ( count($params['selected']) < 1 ) {
                 $flg_error = true;
             }
         }
         
+        // エラーの場合はinputにリダイレクト
         if ( $flg_error ) {
           return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
@@ -207,20 +183,32 @@ class CleaningController extends MinikuraController
         $totalCount = 0;
         $totalprice = 0;
 
-        foreach ( $selected_ids as $item ) {
+        // 選択データを整理してセッション用データを作成する
+        foreach ( $params['selected'] as $item ) {
             $data = array();
+            
+            // アイテムデータ文字列を分解する
             list($data['item_id'], $data['item_group_cd'], $data['box_id'], $data['product_cd'],$data['image_url']) = explode(",",$item,5);
+
+            // アイテムの価格を設定
+            // 金額情報はConfig/EnvConfig/[Development]/AppConfig.phpを参照
             $data['price']= Configure::read('app.kit.cleaning.item_group_cd')[$data['item_group_cd']];
             
+            // item_group_cd配列がない場合は追加して初期化
             if ( !isset($session_data[$data['item_group_cd']]) ) $session_data[$data['item_group_cd']] = array();
+            
+            // itemgroup->itemの配列に処理したデータを収納
             array_push($session_data[$data['item_group_cd']],$data);
-
+            
+            // 金額合計とアイテム数を計算する
             $totalprice += $data['price'];
             $totalCount++;
         }
         
+        // 処理したデータをセッションに保管する
         CakeSession::write('app.data.session_cleaning',$session_data);
 
+        // View用の変数をセット
         $this->set('selected_count',$totalCount);
         $this->set('selected_total', $totalprice);
         $this->set('itemList', $session_data);
@@ -241,30 +229,37 @@ class CleaningController extends MinikuraController
         }
 
         // Session Referer
+        // ※最後に設定すると途中エラー発生時、リファラー判断の問題があるので先に設定する
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // データがない場合はリダイレクト
+        // セッションデータがない場合はリダイレクト
         if ( !CakeSession::read('app.data.session_cleaning') ) {
           return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
 
         // Item_Group_Idごとにデータを処理する
-        $flgComplete = true;
+        $flg_complete = true;
         $request_data = array();
 
         $ct = 0;
+        // セッションデータかAPIにリクエストする
         foreach ( CakeSession::read('app.data.session_cleaning') as $itemGroupCD=>$items ) {
-            $requestParam = array(
+            // APIリクエストのためのパラメータをセット
+            //  Model/API/Cleaning
+            $request_param = array(
                 "work_type"  => $this->Cleaning->getWorkType($itemGroupCD),
                 "product"    => $this->Cleaning->buildParamProduct($items),
             );
             
-            $this->Cleaning->set($requestParam);
+            // パラメータセット
+            $this->Cleaning->set($request_param);
+            // Validate
             $validCleaning = $this->Cleaning->validates();
 
             if ( !$validCleaning ) {
+                // Validateに失敗した場合
                 $this->Flash->set("データに誤りがあります");
-                $flgComplete = false;
+                $flg_complete = false;
                 break;
             } else {
                 // クリーニング申し込み
@@ -280,7 +275,7 @@ class CleaningController extends MinikuraController
                     // Cookieを更新する
 
                     #$this->Flash->set($res->error_message);
-                    $flgComplete = false;
+                    $flg_complete = false;
                     break;
                 } else {
                     // 処理完了した分に関してはセッションから削除する
@@ -291,14 +286,45 @@ class CleaningController extends MinikuraController
             $ct++;
         }
 
-        // 登録に成功した場合
+        // View用の変数をセット
         $this->set('itemList', CakeSession::read('app.data.session_cleaning'));
-        $this->set('flgComplete', $flgComplete);
+        $this->set('flgComplete', $flg_complete);
         
         // 処理が完了したら、セッションとクッキーを削除する
         CakeSession::delete("app.data.session_cleaning"); 
-        if ( $flgComplete ) {
+        if ( $flg_complete ) {
             //setcookie("mn_cleaning_list", "", time()-3600);
         }
+    }
+
+
+    private function _makeSelectSortUrl()
+    {
+        // 並び替え選択
+        $selectSortKeys = [
+            'item_id' => __('item_id'),
+            'item_name' => __('item_name'),
+        ];
+
+        $page = $this->request->query('page');
+        $data = [];
+        foreach ($selectSortKeys as $key => $value) {
+            $desc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'desc', 'page' => $page]]);
+            $data[$desc] = $value . __('select_sort_desc');
+            $asc = Router::url(['action'=>'index', '?' => ['order' => $key, 'direction' => 'asc', 'page' => $page]]);
+            $data[$asc] = $value . __('select_sort_asc');
+        }
+
+        return $data;
+    }
+
+    private function _getRequestSortKey()
+    {
+        $order = $this->request->query('order');
+        $direction = $this->request->query('direction');
+        if (!empty($order)) {
+            return [$order => ($direction === 'asc')];
+        }
+        return [];
     }
 }
