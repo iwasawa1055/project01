@@ -215,9 +215,12 @@
             </div>
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>
-              <?php foreach ( CakeSession::read('Order.select_delivery_list') as $key => $value ) {?>
-               <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-              <?php } ?>
+                <select name="datetime_cd" id="datetime_cd" class="select-delivery focused">
+                  <option value="">以下からお選びください</option>
+                  <?php foreach ( CakeSession::read('Order.select_delivery_list') as $key => $value ) {?>
+                   <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                  <?php } ?>
+                </select>
             </div>
           <?php endif; ?>
             <span class="col-lg-12 col-md-12 col-xs-12">

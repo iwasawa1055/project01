@@ -85,6 +85,33 @@ class OrderController extends MinikuraController
             }
         }
 
+        // Addressリセット
+        if (empty(CakeSession::read('Order'))) {
+
+            $Order = array(
+                'select_delivery' => "",
+                'select_delivery_text' => "",
+                'select_delivery_list' => array(),
+            );
+
+            // お届け希望日のリスト
+            CakeSession::write('Order', $Order);
+        }
+
+        CakeLog::write(DEBUG_LOG, 'default_payment '.print_r($this->default_payment, true));
+        // カード利用かどうか
+        if (!$this->Customer->isEntry() && !$this->Customer->isCustomerCreditCardUnregist() && !$this->Customer->isCorprateCreditCardUnregist()) {
+            // カード情報取得
+            if ($this->Customer->isPrivateCustomer() || !$this->Customer->getCorporatePayment()) {
+                // カード情報取得
+                //$default_payment = $this->Customer->getDefaultCard();
+
+            }
+        }
+
+
+
+
         $this->set('datetime', $res_datetime);
 
         CakeSession::delete(self::MODEL_NAME);
