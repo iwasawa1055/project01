@@ -4,6 +4,7 @@ $(function () {
   AppCleaning.a();
   AppCleaning.b();
   AppCleaning.c();
+  AppCleaning.d();
 });
 
 var AppCleaning = {
@@ -26,6 +27,12 @@ var AppCleaning = {
       $("#itemlist").submit();
     });
   },
+  d : function() {
+    $("#item-search").submit(function() {
+        // Cookieにリセットフラグを保存
+        docCookies.setItem("mn_cleaning_reset","1");
+    });
+  }
 }
 
 var AppSelection = {

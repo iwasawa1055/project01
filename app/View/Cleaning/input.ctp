@@ -18,7 +18,7 @@
     <form action="input" id="item-search" novalidate="novalidate" method="get" accept-charset="utf-8">
     <div class="item-search">
       <a class="btn-option"><i class="fa fa-cog"></i><span> OPTION</span></a>
-        <input type="search" placeholder="&#xF002; SEARCH" id="ItemSearchKeyword" name="keyword" />
+        <input type="search" placeholder="&#xF002; SEARCH" id="ItemSearchKeyword" name="keyword" value="<?php echo $keyword;?>" />
     </div>
     <div class="item-sort">
       <select name="order" id="ItemSortOrder" class="data-sort">
@@ -31,7 +31,6 @@
         <option value="<?php echo $value;?>"<?php if( $direction === $value ) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
-      <input type="hidden" name="reset" value="true">
       <button type="submit" class="btn-view">表示する</button>
       <button type="button" id="ClearSelected" class="btn-check active"><i class="fa fa-check-circle"></i><span> クリア</span></button>
     </div>

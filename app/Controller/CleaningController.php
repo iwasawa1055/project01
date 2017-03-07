@@ -13,8 +13,8 @@ class CleaningController extends MinikuraController
     const MODEL_NAME_ITEM = 'InfoItem';
     
     protected $paginate = array(
-        'limit' => 20,
-        'paramType' => 'querystring'
+        'limit'         => 20,
+        'paramType'  => 'querystring'
     );
 
     /**
@@ -66,6 +66,7 @@ class CleaningController extends MinikuraController
     {
         $priorities = [];
         $storedList = null;
+        $list = [];
 
         // 引数を取得
         $selected_id = filter_input(INPUT_GET,"id");
@@ -78,9 +79,10 @@ class CleaningController extends MinikuraController
         ];
         
         // resetが設定されている場合はすべてリセットする
-        if ( null !== filter_input(INPUT_GET,"reset") ) {
+        if ( isset($_COOKIE['mn_cleaning_reset']) ) {
             // 選択リストCookieを削除する
             setcookie("mn_cleaning_list", "", time()-3600);
+            setcookie("mn_cleaning_reset", "", time()-3600);
         } 
 
         // 引数でidがリターンされた場合はすでにチェックを入れる
@@ -101,7 +103,7 @@ class CleaningController extends MinikuraController
         if ( !isset($params['page']) ) {
             $params['page'] = 1;
         }
-        
+
         // 商品指定
         $where = [];
         $where['product'] = null;
@@ -115,14 +117,27 @@ class CleaningController extends MinikuraController
 
         // 保管品リストを取得する
         // sort_key:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
+        $columns = [
+            'item_name' => 100, 
+        ];
         $results = $this->InfoItem->getListWhere($sort_key, $where, $priorities);
-        $results = $this->InfoItem->editBySearchTerm($results, $params);
+        $results = $this->InfoItem->editBySearchTerm($results, $params,$columns);
 
         // 全体のアイテム数を取得
         $item_all_count = count($results);
         
-        // ページング
-        $list = $this->paginate(self::MODEL_NAME, $results);
+        // 選択したアイテム(Cookie)が一ページの上限を超えた場合
+        if ( count($priorities) > $this->paginate["limit"] ) {
+            // 読み込む数を取得
+            $num_loadpage = ceil(count($priorities)/$this->paginate["limit"]);
+            for ( $i=1 ; $i<=$num_loadpage; $i++ ) {
+                $list = array_merge($list,$this->paginate(self::MODEL_NAME, $results,null,$this->paginate["limit"],$i));
+            }
+            $params['page'] = $num_loadpage;
+        } else {
+            // ページング
+            $list = $this->paginate(self::MODEL_NAME, $results);
+        }
         
         // 取得したリストをセット
         $this->set('itemList', $list);
