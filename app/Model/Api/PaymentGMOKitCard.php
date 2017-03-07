@@ -2,6 +2,7 @@
 
 App::uses('ApiModel', 'Model');
 App::uses('Announcement', 'Model');
+App::uses('InfoBox', 'Model');
 
 class PaymentGMOKitCard extends ApiModel
 {

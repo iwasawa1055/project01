@@ -389,10 +389,12 @@ class AppValid
 
 	public static function isPostalCodeJp(&$_value)
 	{
-		if (! preg_match('/^\d{3}-\d{4}$/', $_value)) {
+		if ( preg_match('/^\d{7}$/', $_value) || preg_match('/^\d{3}-\d{4}$/', $_value)) {
+			return true;
+		} else {
+			//* NG
 			return false;
 		}
-		return true;
 	}
 
 	public static function isPrefNameJp(&$_value, $_pref_pos = null)
@@ -433,5 +435,326 @@ class AppValid
 		}
 		return true;
 	}
+
+	/// ＡＰＩ用の日時コードかどうかチェック
+	/// 【例】2012-09-25-2（2012/09/25 (火) 午前中）
+	/// 2012-09-25のように時間帯なしの場合もある
+	public static function isDatetimeCd($_value)
+	{
+		$params = explode('-', $_value);
+		if (count($params) == 4) {  // YYYY-MM-DD-時間帯
+			// 年月日チェック
+			if (!checkdate($params[1], $params[2], $params[0])) {
+				return false;
+			}
+			// 時間帯コードチェック
+			if (!(2 <= $params[3] and $params[3] <= 7)) {
+				return false;
+			}
+		}
+		elseif (count($params) == 3) {  // YYYY-MM-DD
+			// 年月日チェック
+			if (!checkdate($params[1], $params[2], $params[0])) {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * 共通 validation
+	 * $_requestsの内容をチェックする。フォーマットは
+	 * $_requests = [
+	 *     'keyhoge' => valuehoge,
+	 *     'keydoge' => valuedoge,
+	 * ]
+	 * の連想配列
+	 * どんなチェックをするかはkey名に依存する。
+	 *
+	 * $ret = [
+	 *     '引っかかったキー' => 'エラーメッセージ'
+	 * ]
+	 * のフォーマットで返る(エラーなしなら空の配列を返す)。
+	 *
+	 * $_excludesにはチェックしないキー名を入れる
+	 */
+	public function validate($_requests, array $_excludes = array())
+	{
+		$ret = [];
+		//* Detail Validation
+		foreach ($_requests as $name => $value) {
+			//* Exclusion
+			if (in_array($name, $_excludes)) {
+				continue;
+			}
+			//* Case
+			switch (true) {
+				case $name === 'lastname':
+				case $name === 'firstname':
+					if ($value == '') {
+						$msg_add = '';
+						switch ($name) {
+							case 'lastname':
+								$msg_add = '苗字を';
+								break;
+							case 'firstname':
+								$msg_add = '名前を';
+								break;
+							default:
+								break;
+						}
+						$ret[$name] = $msg_add . '入力してください。';
+					}
+					elseif (29 < mb_strlen($value)){
+						$ret[$name] = '29文字以内で入力してください。';
+					}
+					break;
+				case $name === 'lastname_kana':
+				case $name === 'firstname_kana':
+					if ($value == '') {
+						$msg_add = '';
+						switch ($name) {
+							case 'lastname_kana':
+								$msg_add = '苗字カナを';
+								break;
+							case 'firstname_kana':
+								$msg_add = '名前カナを';
+								break;
+							default:
+								break;
+						}
+						$ret[$name] = $msg_add . '入力してください。';
+					}
+					if (! self::isFwKana($value)) {
+						$ret[$name] = 'カナの入力をご確認ください。';
+					}
+					elseif (29 < mb_strlen($value)){
+						$ret[$name] = '29文字以内で入力してください。';
+					}
+					break;
+				case $name === 'postal':
+					if (! self::isPostalCodeJp($value)) {
+						$ret[$name] = '郵便番号の入力をご確認ください。';
+					}
+					break;
+				case $name === 'pref':
+					if (! in_array($value, self::$prefs, 'true')) {
+						$ret[$name] = '都道府県の入力をご確認ください。';
+					}
+					break;
+				case $name === 'address1':
+					if ($value == '') {
+						$ret[$name] = '住所を入力してください。';
+					}
+					elseif (8 < mb_strlen($value)) {
+						$ret[$name] = '8文字以下で入力してください。';
+					}
+					break;
+				case $name === 'address3': // ※建物名はブランクOK
+					if (30 < mb_strlen($value)) {
+						$ret[$name] = '30文字以下で入力してください。';
+					}
+					break;
+				case $name === 'address2':
+					if ($value == '') {
+						$ret[$name] = '町村番地を入力してください。';
+					}
+					elseif (18 < mb_strlen($value)) {
+						$ret[$name] = '18文字以下で入力してください。';
+					}
+					break;
+				case $name === 'tel1':
+				case $name === 'tel2':
+					if (! self::isPhoneNumberJp($value)) {
+						$ret[$name] = '電話番号の入力をご確認ください。';
+					}
+					break;
+				case $name === 'email':
+				case $name === 'email_confirm':
+					if ($value == '') {
+						$ret[$name] = 'メールアドレスを入力してください。';
+					}
+					elseif (! self::isMailAddress($value)) {
+						$ret[$name] = 'メールアドレスの入力をご確認ください。';
+					}
+					break;
+				case $name === 'password':
+				case $name === 'password_confirm':
+				case $name === 'new_password':
+				case $name === 'now_password':
+					if (preg_match('/[^\da-z!,.:?@^_~]/i', $value)) {
+						$ret[$name] = 'パスワードに使用できない文字があります。再入力をお願いします';
+					}
+					else if (6 > strlen($value) || strlen($value) > 64) {
+						$ret[$name] = 'パスワードは6文字以上64文字以下です。';
+						//$ret[$name] = 'パスワードが一致しません。';
+					}
+					break;
+				case $name === 'birth':
+					if (! self::isDate($value)) {
+						$ret[$name] = '生年月日の入力をご確認ください。';
+					}
+					//* Future Check
+					if ($value > date('Y-m-d')) {
+						$ret[$name] = '生年月日の入力をご確認ください。';
+					}
+
+					//* Older Check
+					$parts = explode('-', $value);
+					if (130 < (intval(date('Y')) - intval($parts[0]))) {
+						$ret[$name] = '生年月日の入力をご確認ください。';
+					}
+					break;
+				case $name === 'alliance_cd':
+					// 未記入用を許容
+					if ($value == '') {
+						break;
+					}
+					if (! preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
+						$ret[$name] = '入力をご確認ください。';
+					}
+					break;
+				case $name === 'offset':
+					if (! preg_match('/^\d$|^[1-9][\d]*$/', $value)) {
+						$ret[$name] = '入力をご確認ください。';
+					}
+					break;
+				case $name === 'limit':
+					if (! preg_match('/^\d$|^[1-9][\d]*$/', $value)) {
+						$ret[$name] = '入力をご確認ください。';
+					}
+					else if (1000 < $value){
+						$ret[$name] = '1000以内の数字を入力してください。';
+					}
+					break;
+				case $name === 'item_id':
+					if (! preg_match('/^[A-Z\-]{2,}\d{3,20}[A-Z]{0,}/', $value)) {
+						$ret[$name] = '入力内容をご確認ください。';
+					}
+					break;
+				case $name === 'box':
+					$box_data = explode(',', $value);
+
+					//* Count Check
+					if (50 < count($box_data)) {
+						//new AppTerminalError(AppE::PARAMETER_INVALID . $name . ' : The boxes maximum number can be up to 50 counts.', 400);
+						$ret[$name] = '50件以内で入力してください。';
+					}
+					break;
+				case $name === 'product':
+					$product_data = explode(',', $value);
+
+					//* Count Check
+					if (100 < count($product_data)) {
+						//new AppTerminalError(AppE::PARAMETER_INVALID . $name . ' : The products maximum number can be up to 100 counts.', 400);
+						$ret[$name] = '100件以内で入力してください。';
+					}
+					//* Format Check
+					for ($i = 0; $i < count($product_data); $i++) {
+						if (preg_match('/[^\dA-Z\-:]/i', $product_data[$i])) {
+							$ret[$name] = '入力内容をご確認ください。';
+							break;
+						}
+					}
+					break;
+				case $name === 'approval':
+				case $name === 'newsletter':
+					if (! preg_match('/^[01]{1}$/', $value)) {
+						$ret[$name] = '入力内容をご確認ください。';
+					}
+					break;
+				case $name === 'gender':
+					if (! in_array($value, array('m', 'f'), true) ) {
+						$ret[$name] = '入力内容をご確認ください。';
+					}
+					break;
+				case $name === 'card_no':
+					if(!self::isCreditCardNumber($value)){
+						$ret[$name] = 'クレジットカード番号をご確認ください。';
+					}
+					break;
+				case $name === 'security_cd':
+					if(!self::isCreditCardSecurityCode($value)){
+						$ret[$name] = 'セキュリティコードをご確認ください。';
+					}
+					break;
+				case $name === 'holder_name':
+					if ($value == '') {
+						$ret[$name] = 'クレジットカード名義を入力してください。';
+					}
+					elseif(!self::isCreditCardHolderName($value)){
+						$ret[$name] = 'クレジットカード名義をご確認ください。';
+					}
+					break;
+				case $name === 'expire':
+					if(!self::isCreditCardExpireReverse($value)){
+						$ret[$name] = 'カードの有効期限をご確認ください。';
+					}
+					break;
+				case $name === 'kit_1':
+				case $name === 'kit_6':
+					if (! preg_match('/^[\d]*$/', $value)) {
+						$ret[$name] = '個数をご確認ください。';
+					}
+					break;
+				case $name === 'address_id':
+					if ($value == '') {
+						$ret[$name] = 'お届け先を選択してください。';
+					}
+					break;
+				case $name === 'datetime_cd':
+					if ($value == '') {
+						$ret[$name] = 'お届け希望日時を選択してください。';
+					}
+					elseif (!self::isDatetimeCd($value)) {
+						$ret[$name] = 'お届け希望日時をご確認ください。';
+					}
+					break;
+				case $name === 'payment_method':
+					if (! preg_match('/^[01]{1}$/', $value)) {
+						$ret[$name] = 'お支払い方法をご確認ください。';
+					}
+					break;
+				case $name === 'select_starter_kit':
+					if ($value === 0) {
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'select_oreder_mono':
+					if ($value === 0) {
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'select_oreder_hako':
+					if ($value === 0) {
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'select_oreder_cleaning':
+					if ($value === 0) {
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+			}
+		}
+
+		//* Return
+		return $ret;
+	}
+   
+    /// 利用規約に同意するチェックがされているか判定
+    public static function validateTermsAgree($remember)
+    {
+        $ret = [];
+        if ($remember != 'Remember Me') {
+            $ret['remember'] = '利用規約への同意は必須です';
+        }
+        return $ret;
+    }
+
 }
 

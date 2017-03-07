@@ -32,10 +32,23 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     *
+     * エントリー登録フォーム
+     *  - 現在は非アクティブ 2017.2.16
      */
     public function customer_add()
     {
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
+
         // 紹介コード
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
@@ -51,10 +64,23 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * 
+     * エントリー登録フォーム（確認）
+     *  - 現在は非アクティブ 2017.2.16
      */
     public function customer_confirm()
     {
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
+
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
 
@@ -69,10 +95,23 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     *
+     * エントリー登録フォーム（完了）
+     *  - 現在は非アクティブ 2017.2.16
      */
     public function customer_complete()
     {
+        $queries = array();
+        $query = '';
+        // 初回キット購入導線へリダイレクト
+        if (!empty($this->request->query)) {
+            foreach ($this->request->query as $param => $value) {
+                $queries[] = "{$param}=$value";
+            }
+            $query = implode('&', $queries);
+            $query = "?" . $query;
+        }
+        return $this->redirect('/first_order/' . $query);
+
         $code = Hash::get($this->request->query, 'code');
         $this->set('code', $code);
 
@@ -123,7 +162,8 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     *
+     * 本登録フォーム
+     *  - 現在はこちらのみアクティブ 2017.2.16
      */
     public function customer_add_info()
     {
