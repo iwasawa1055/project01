@@ -234,7 +234,7 @@ class InfoItem extends ApiCachedModel
         return $list;
     }
 
-    public function editBySearchTerm($results, $params, $columns=null)
+    public function editBySearchTerm($results, $params)
     {
         if (empty($params['keyword'])) {
             return $results;
@@ -261,22 +261,20 @@ class InfoItem extends ApiCachedModel
         }
 
         // ランク付け用にポイントをそれぞれ設定
-        if ( is_null($columns) ) {
-            $columns = [
-                'item_name' => 100, 
-                'item_id' => 80, 
-                'item_note' => 60, 
-                'box_name' => 40, 
-                'box_id' => 20,
-            ];
-        } 
-        
+        $columns = [
+            'item_name' => 100, 
+            'item_id' => 80, 
+            'item_note' => 60, 
+            'box_name' => 40, 
+            'box_id' => 20,
+        ];
+
         // 検索
         $hits = AppSearch::makeRank($results, $keywords, $columns, $all_minus_flag);
 
         // sort
         if (!empty($params['order']) && !empty($params['direction'])) {
-            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];
+            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];            
             HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
         }
 

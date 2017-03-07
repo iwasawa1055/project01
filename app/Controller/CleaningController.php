@@ -117,11 +117,8 @@ class CleaningController extends MinikuraController
 
         // 保管品リストを取得する
         // sort_key:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
-        $columns = [
-            'item_name' => 100, 
-        ];
         $results = $this->InfoItem->getListWhere($sort_key, $where, $priorities);
-        $results = $this->InfoItem->editBySearchTerm($results, $params,$columns);
+        $results = $this->InfoItem->editBySearchTerm($results, $params);
 
         // 全体のアイテム数を取得
         $item_all_count = count($results);
