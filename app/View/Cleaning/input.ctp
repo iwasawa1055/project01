@@ -1,8 +1,9 @@
 <?php $this->Html->css('cleaning/app', ['block' => 'css']); ?>
 <?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
 
-<?php $this->Html->script('remodal.min', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('/lib/jquery/js/jquery.infinitescroll.min', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('/lib/cookie/js/docCookies', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('remodal.min', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app_dev', ['block' => 'scriptMinikura']); ?>
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>

@@ -111,11 +111,11 @@ class CleaningController extends MinikuraController
         $where['item_group_cd'] = array_keys(Configure::read('app.kit.cleaning.item_group_cd'));
 
         // 並び替えキー指定
-        $sortKey = $this->_getRequestSortKey();
+        $sort_key = $this->_getRequestSortKey();
 
         // 保管品リストを取得する
-        // sortkey:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
-        $results = $this->InfoItem->getListWhere($sortKey, $where, $priorities);
+        // sort_key:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
+        $results = $this->InfoItem->getListWhere($sort_key, $where, $priorities);
         $results = $this->InfoItem->editBySearchTerm($results, $params);
 
         // 全体のアイテム数を取得
