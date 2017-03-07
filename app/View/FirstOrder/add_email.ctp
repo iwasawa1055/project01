@@ -28,7 +28,7 @@
     </section>
   <?php endif; ?>
 
-  <form method="post" action="/first_order/confirm_email">
+  <form method="post" action="/first_order/confirm_email" novalidate>
   <section id="adress">
     <div class="wrapper">
       <?php if ($is_logined) : ?>
