@@ -347,6 +347,7 @@ class CleaningController extends MinikuraController
         CakeSession::delete("app.data.session_cleaning"); 
         
         if ($flg_complete) {
+            CakeSession::delete('app.data.session_cleaning_search');
             setcookie("mn_cleaning_list", "", time()-3600);
         }
     }
