@@ -11,11 +11,7 @@ class CleaningController extends MinikuraController
 {
     const MODEL_NAME = 'Cleaning';
     const MODEL_NAME_ITEM = 'InfoItem';
-    
-    protected $paginate = array(
-        'limit'         => 20,
-        'paramType'  => 'querystring'
-    );
+    const PER_PAGE = 20;
 
     /**
      * 制御前段処理.
@@ -67,6 +63,7 @@ class CleaningController extends MinikuraController
         $priorities = [];
         $storedList = null;
         $list = [];
+        $pager = null;
 
         // 引数を取得
         $selected_id = filter_input(INPUT_GET,"id");
@@ -92,14 +89,13 @@ class CleaningController extends MinikuraController
         }
 
         // confirmからのバックの場合は選択を保持する
-        if ( isset($_COOKIE['mn_cleaning_list']) ) {
+        if ( isset($_COOKIE['mn_cleaning_list']) &&  $_COOKIE['mn_cleaning_list'] !== "" ) {
             // 選択されたアイテムを優先アイテムとして追加する
             foreach ( explode(",", $_COOKIE['mn_cleaning_list']) as $tmp ) {
                 array_push($priorities,["item_id"=>$tmp]);
             }
         }
-
-        // ページが設定されていない場合は１を設定
+        // 現在のページ指定
         if ( !isset($params['page']) ) {
             $params['page'] = 1;
         }
@@ -123,34 +119,63 @@ class CleaningController extends MinikuraController
         // 全体のアイテム数を取得
         $item_all_count = count($results);
         
+        App::uses('AppHelperHelper', 'View/Helper');
+        $appHelper = new AppHelperHelper(new View());
+
         // 選択したアイテム(Cookie)が一ページの上限を超えた場合
-        if ( count($priorities) > $this->paginate["limit"] ) {
-            // 読み込む数を取得
-            $num_loadpage = ceil(count($priorities)/$this->paginate["limit"]);
-            for ( $i=1 ; $i<=$num_loadpage; $i++ ) {
-                $list = array_merge($list,$this->paginate(self::MODEL_NAME, $results,null,$this->paginate["limit"],$i));
+        if ( count($priorities) > self::PER_PAGE ) {
+            $num_loadpage = ceil(count($priorities)/self::PER_PAGE);
+            
+            if ( $params['page'] > $num_loadpage ) {
+                // ページャー
+                if ($item_all_count > self::PER_PAGE) {
+                    $pager = $appHelper->getPagerInfo($params['page'], self::PER_PAGE, $item_all_count);
+                    
+                    if ( $pager['total_page'] >= $params['page'] ) {
+                        // 表示データ取得
+                        $list = array_slice($results, $pager["start_row"], $pager["view_count"]);
+                    }
+                } else {
+                    $list = $results;
+                }
+            } else {
+                // 表示データ取得
+                $list = array_merge($list,array_slice($results, 0, self::PER_PAGE*$num_loadpage));
+                $params['page'] = $num_loadpage;
+                $pager = $appHelper->getPagerInfo($params['page'], self::PER_PAGE, $item_all_count);
             }
-            $params['page'] = $num_loadpage;
         } else {
-            // ページング
-            $list = $this->paginate(self::MODEL_NAME, $results);
+            // ページャー
+            if ($item_all_count > self::PER_PAGE) {
+                $pager = $appHelper->getPagerInfo($params['page'], self::PER_PAGE, $item_all_count);
+                
+                if ( $pager['total_page'] >= $params['page'] ) {
+                    // 表示データ取得
+                    $list = array_slice($results, $pager["start_row"], $pager["view_count"]);
+                }
+            } else {
+                $list = $results;
+            }
         }
         
         // 取得したリストをセット
         $this->set('itemList', $list);
-
         // 取得したリストをセット
         $this->set('item_all_count', $item_all_count);
 
-        $url = Router::url(['action'=>'input', '?' => http_build_query($params)]);
-        $query_params = $this->setQueryParameter();
+        $linkparams = $params;
+        $linkparams['page'] = $pager['next_page'];
 
+        $nexturl = Router::url(['action'=>'input', '?' => http_build_query($linkparams)]);
+        $query_params = $this->setQueryParameter();
+        
         // View用の変数をセット
         $this->set('keyword', $query_params['keyword']);
         $this->set('order', $query_params['order']);
         $this->set('direction', $query_params['direction']);
-        $this->set('page',$params['page']);
         $this->set('selected_id', $selected_id);
+        $this->set('pager', $pager);
+        $this->set('nexturl', $nexturl);
         
         // 金額情報を変数に入れる
         // 金額情報はConfig/EnvConfig/[Development]/AppConfig.phpを参照

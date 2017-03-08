@@ -41,7 +41,7 @@
         <!--loop-->
         <?php foreach ($itemList as $item): ?>
         <li class="item">
-          <div class="item-select" data-page="<?php echo $page;?>">
+          <div class="item-select">
             <label>
               <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'].",".$item['item_group_cd'].",".$item['box_id'].",".$item['box']['product_cd'].",".$item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ( $item['item_id'] === $selected_id ) echo " checked";?>><span class="check-icon"></span>
               <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>" class="item_img">
@@ -69,9 +69,12 @@
         <!--loop end-->
       </ul>
       </form>
-      <?php echo $this->element('paginator'); ?>
     </div>
   </div>
+      <div class="pagination">
+        <a href="<?php echo $nexturl;?>" class="next"><?php echo $nexturl;?></a>
+      </div>
+
   <div id="sp-cleaning-wrapper">
     <div class="sp-nav-cleaning">
       <ul>

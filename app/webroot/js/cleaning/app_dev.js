@@ -45,7 +45,7 @@ var AppSelection = {
     if ( list ) {
       // リストは「コンマ」区切りでItemID保管されているので分解
       var listSelected = list.split(",");
-     
+
      // Itemlist内のアイテムのループ処理
       $("#itemlist .item .item-select input[type=checkbox]").each(function() {
         // 要素からitemIdを取得
@@ -60,13 +60,22 @@ var AppSelection = {
     
     // リストデータの更新(金額の計算、数の表示）
     AppSelection.updateList();
-   
+
+    path=new Array();
+    path.push(location.href+"?page=");
+    path.push("");
+    
     // Infinitescroll
     $(".grid ul").infinitescroll({
       dataType         : "html",
-      navSelector    : ".pagination ",
-      nextSelector   : ".next a",
+      navSelector    : ".pagination",
+      nextSelector   : ".pagination .next",
       itemSelector   : "#itemlist ul li",
+      debug              : true,
+      path                : path,
+    state: {
+      currPage: 2
+    }, 
       loading           : { 
         finishedMsg     : "",
         msgText           : "",
