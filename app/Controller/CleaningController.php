@@ -83,8 +83,8 @@ class CleaningController extends MinikuraController
         // resetが設定されている場合はすべてリセットする
         if (isset($_COOKIE['mn_cleaning_reset'])) {
             // 選択リストCookieを削除する
-            setcookie("mn_cleaning_list", "", time()-3600);
-            setcookie("mn_cleaning_reset", "", time()-3600);
+            setcookie("mn_cleaning_list", "", time() - 3600);
+            setcookie("mn_cleaning_reset", "", time() - 3600);
         } 
 
         // 引数でidがリターンされた場合はすでにチェックを入れる
@@ -226,6 +226,7 @@ class CleaningController extends MinikuraController
         
         // エラーの場合はinputにリダイレクト
         if ($flg_error) {
+          $this->Flash->set("アイテムを選択してください。");
           return $this->redirect(['controller' => 'Cleaning', 'action' => 'input']);
         }
 
@@ -348,7 +349,7 @@ class CleaningController extends MinikuraController
         
         if ($flg_complete) {
             CakeSession::delete('app.data.session_cleaning_search');
-            setcookie("mn_cleaning_list", "", time()-3600);
+            setcookie("mn_cleaning_list", "", time() - 3600);
         }
     }
 

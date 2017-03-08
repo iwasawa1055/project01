@@ -11,6 +11,7 @@ var AppCleaning = {
   a : function() {
     // アイテムのチェックボックスに変化が起きた場合の処理
     $(document).on("change", ".item-select input[type=checkbox]", function(){
+      AppSelection.check();
       AppSelection.updateList();
     });
   },
@@ -24,7 +25,15 @@ var AppCleaning = {
   c : function() {
     // 確認ボタンが押された場合の処理
     $('.item_confirm').click(function() { 
-      $("#itemlist").submit();
+      if ($("#itemlist .item .item-select input[type=checkbox]:checked").length == 0) {
+        if (!$("#flashMessage").length ) {
+          var _msg = $('<p id="flashMessage" class="error-message message" style="display:none;">アイテムを選択してください。</p>');
+            $(".page-header").before(_msg);
+            _msg.slideDown("fast");
+        }
+      } else {
+        $("#itemlist").submit();
+      }
     });
   },
   d : function() {
@@ -60,6 +69,7 @@ var AppSelection = {
     
     // リストデータの更新(金額の計算、数の表示）
     AppSelection.updateList();
+    AppSelection.check();
 
     var current_page = $("#current_page").val();
     path=new Array();
@@ -114,5 +124,14 @@ var AppSelection = {
     
     // Cookieに保存
     docCookies.setItem("mn_cleaning_list", cookievalue);
+  },
+  check : function() {
+    // チェックされているアイテムがなければボタンを有効/無効にする
+    if ($("#itemlist .item .item-select input[type=checkbox]:checked").length == 0) {
+      $(".item_confirm").addClass("disabled");
+    } else {
+      $("#flashMessage").slideUp("fast");
+      $(".item_confirm").removeClass("disabled");
+    }
   },
 };

@@ -12,7 +12,7 @@
     <div class="nav-cleaning">
       <ul>
         <li><i class="fa fa-calculator"></i><span class="block_selected_item">0</span>点<span class="block_selected_price">0</span>円</li>
-        <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button></li>
+        <li><button type="button" class="btn-next-full item_confirm disabled">確認する <i class="fa fa-chevron-circle-right"></i></button></li>
       </ul>
     </div>
     <form action="input" id="item-search" novalidate="novalidate" method="post" accept-charset="utf-8">
@@ -22,12 +22,12 @@
     </div>
     <div class="item-sort">
       <select name="order" id="ItemSortOrder" class="data-sort">
-      <?php foreach (SORT_ORDER['item'] as $value=>$name) : ?>
+      <?php foreach (SORT_ORDER['item'] as $value => $name) : ?>
         <option value="<?php echo $value;?>"<?php if($order === $value) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
       <select name="direction" id="ItemSortDirection" class="az-sort">
-      <?php foreach (SORT_DIRECTION as $value=>$name) : ?>
+      <?php foreach (SORT_DIRECTION as $value => $name) : ?>
         <option value="<?php echo $value;?>"<?php if($direction === $value) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
@@ -85,7 +85,7 @@
     <div class="sp-nav-cleaning">
       <ul>
         <li class="price"><i class="fa fa-calculator"></i><span class="block_selected_item">0</span>点<span class="block_selected_price">0</span>円</li>
-        <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button>
+        <li><button type="button" class="btn-next-full item_confirm disabled">確認する <i class="fa fa-chevron-circle-right"></i></button>
         </li>
       </ul>
     </div>
