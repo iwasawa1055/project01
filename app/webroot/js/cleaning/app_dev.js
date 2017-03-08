@@ -32,6 +32,8 @@ var AppCleaning = {
             _msg.slideDown("fast",function(){
                 scrollTo($("#flashMessage"),-200);
             });
+        } else {
+          scrollTo($("#flashMessage"),-200);
         }
       } else {
         $("#itemlist").submit();
