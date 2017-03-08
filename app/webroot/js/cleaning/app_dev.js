@@ -10,14 +10,14 @@ $(function () {
 var AppCleaning = {
   a : function() {
     // アイテムのチェックボックスに変化が起きた場合の処理
-    $(document).on("change",".item-select input[type=checkbox]",function(){
+    $(document).on("change", ".item-select input[type=checkbox]", function(){
       AppSelection.updateList();
     });
   },
   b : function() {
     // クリアーボタンが押された時の処理
     $("#ClearSelected").click(function() {
-      $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked",false);
+      $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked", false);
       AppSelection.updateList();
     });
   },
@@ -30,7 +30,7 @@ var AppCleaning = {
   d : function() {
     $("#item-search").submit(function() {
         // Cookieにリセットフラグを保存
-        docCookies.setItem("mn_cleaning_reset","1");
+        docCookies.setItem("mn_cleaning_reset", "1");
     });
   }
 }
@@ -52,8 +52,8 @@ var AppSelection = {
         itemId = $(this).data("itemid");
         
         // 選択リストにItemIDが存在する場合はチェックを入れる
-        if ( $.inArray(itemId, listSelected) != -1  ) {
-          $(this).prop("checked",true);
+        if ($.inArray(itemId, listSelected) != -1) {
+          $(this).prop("checked", true);
         }
       });
     }
@@ -63,7 +63,7 @@ var AppSelection = {
 
     var current_page = $("#current_page").val();
     path=new Array();
-    path.push(location.href+"?page=");
+    path.push(location.href + "?page=");
     path.push("");
     
     // Infinitescroll
@@ -113,6 +113,6 @@ var AppSelection = {
     var cookievalue = listSelected.join(",");
     
     // Cookieに保存
-    docCookies.setItem("mn_cleaning_list",cookievalue);
+    docCookies.setItem("mn_cleaning_list", cookievalue);
   },
 };

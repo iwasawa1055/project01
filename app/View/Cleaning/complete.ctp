@@ -3,7 +3,7 @@
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
   <h2 class="page-caption">
     以下の内容でクリーニングの申し込み手続きが完了しました。
-    <?php if ( !$flgComplete ) : ?>
+    <?php if (!$flgComplete) : ?>
     <p style="color:#f00;">エラーが発生し、一部申し込みができませんでした。</p>
     <?php endif ?>
   </h2>
@@ -14,7 +14,7 @@
       </li>
     </ul>
     </div>
-    <?php if ( $itemList ) : ?>
+    <?php if ($itemList) : ?>
     <div class="grid">
       <ul>
         <!--loop-->
@@ -34,7 +34,5 @@
     </div>
     <?php else: ?>
   処理したデータがありません
-
     <?php endif ?>
-
   </div>

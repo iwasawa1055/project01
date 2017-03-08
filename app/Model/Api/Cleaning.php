@@ -43,7 +43,7 @@ class Cleaning extends ApiModel
         $worktypes = Configure::read('app.kit.cleaning.work_type');
         
         // Worktypesが設定されていればリターン
-        if ( isset($worktypes[$itemgroup_cd]) ) {
+        if (isset($worktypes[$itemgroup_cd])) {
             return $worktypes[$itemgroup_cd];
         } else {
             return false;

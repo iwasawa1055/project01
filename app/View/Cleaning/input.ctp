@@ -22,13 +22,13 @@
     </div>
     <div class="item-sort">
       <select name="order" id="ItemSortOrder" class="data-sort">
-      <?php foreach ( SORT_ORDER['item'] as $value=>$name ) : ?>
-        <option value="<?php echo $value;?>"<?php if( $order === $value ) echo " selected"; ?>><?php echo $name;?></option>
+      <?php foreach (SORT_ORDER['item'] as $value=>$name) : ?>
+        <option value="<?php echo $value;?>"<?php if($order === $value) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
       <select name="direction" id="ItemSortDirection" class="az-sort">
-      <?php foreach ( SORT_DIRECTION as $value=>$name ) : ?>
-        <option value="<?php echo $value;?>"<?php if( $direction === $value ) echo " selected"; ?>><?php echo $name;?></option>
+      <?php foreach (SORT_DIRECTION as $value=>$name) : ?>
+        <option value="<?php echo $value;?>"<?php if($direction === $value) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
       <button type="submit" class="btn-view">表示する</button>
@@ -36,7 +36,7 @@
     </div>
     </form>
     <div class="grid">
-      <?php if ( $item_all_count > 0 ) : ?>
+      <?php if ($item_all_count > 0) : ?>
       <form action="confirm" id="itemlist" method="post">
       <ul>
         <!--loop-->
@@ -44,7 +44,7 @@
         <li class="item">
           <div class="item-select">
             <label>
-              <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'].",".$item['item_group_cd'].",".$item['box_id'].",".$item['box']['product_cd'].",".$item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ( $item['item_id'] === $selected_id ) echo " checked";?>><span class="check-icon"></span>
+              <input type="checkbox" name="selected[]" class="checkbox" value="<?php echo $item['item_id'] . "," . $item['item_group_cd'] . "," . $item['box_id'] . "," . $item['box']['product_cd'] . "," . $item['image_first']['image_url'];?>" data-itemid="<?php echo $item['item_id'];?>" data-price="<?php echo $price[$item['item_group_cd']];?>"<?php if ($item['item_id'] === $selected_id) echo " checked";?>><span class="check-icon"></span>
               <img src="<?php echo $item['image_first']['image_url'];?>" alt="<?php echo $item['item_id'];?>" class="item_img">
             </label>
             <a href="#" class="item-search" data-remodal-target="<?php echo $item['item_id'];?>"><i class="fa fa-search-plus"></i></a>
@@ -75,7 +75,7 @@
       <?php endif ?>
     </div>
   </div>
-  <?php if ( !is_null($pager) ) :?>
+  <?php if (!is_null($pager)) :?>
   <div class="pagination">
     <a href="<?php echo $nexturl;?>" class="next"><?php echo $nexturl;?></a>
   </div>
