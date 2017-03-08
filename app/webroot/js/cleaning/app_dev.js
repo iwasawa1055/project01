@@ -131,6 +131,7 @@ var AppSelection = {
       $(".item_confirm").addClass("disabled");
     } else {
       $("#flashMessage").slideUp("fast");
+      $("#flashMessage").remove();
       $(".item_confirm").removeClass("disabled");
     }
   },
