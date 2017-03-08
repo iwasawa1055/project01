@@ -67,14 +67,19 @@ class CleaningController extends MinikuraController
 
         // 引数を取得
         $selected_id = filter_input(INPUT_GET,"id");
-
-        $params = [
-            "page"          => filter_input(INPUT_GET,"page"),
-            "keyword"     => filter_input(INPUT_GET,"keyword"),
-            "order"        => filter_input(INPUT_GET,"order"),
-            "direction"  => filter_input(INPUT_GET,"direction"),
-        ];
+        $page = filter_input(INPUT_GET,"page");
         
+        // 検索情報を読み込む
+        $search_options = CakeSession::read('app.data.session_cleaning_search');
+        if ( filter_input(INPUT_POST,"order") ) {
+            $search_options = [
+                "keyword"     => filter_input(INPUT_POST,"keyword"),
+                "order"        => filter_input(INPUT_POST,"order"),
+                "direction"  => filter_input(INPUT_POST,"direction"),
+            ];
+            CakeSession::write('app.data.session_cleaning_search',$search_options);
+        }
+      
         // resetが設定されている場合はすべてリセットする
         if ( isset($_COOKIE['mn_cleaning_reset']) ) {
             // 選択リストCookieを削除する
@@ -96,8 +101,8 @@ class CleaningController extends MinikuraController
             }
         }
         // 現在のページ指定
-        if ( !isset($params['page']) ) {
-            $params['page'] = 1;
+        if ( !isset($page) ) {
+            $page = 1;
         }
 
         // 商品指定
@@ -109,47 +114,58 @@ class CleaningController extends MinikuraController
         $where['item_group_cd'] = array_keys(Configure::read('app.kit.cleaning.item_group_cd'));
 
         // 並び替えキー指定
-        $sort_key = $this->_getRequestSortKey();
-
+        if ( !empty($search_options['order']) ) {
+            $sort_key = [$search_options['order'] => ($search_options['direction'] === 'asc')];
+        } else {
+            $sort_key = [];
+        }
+        
         // 保管品リストを取得する
         // sort_key:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
         $results = $this->InfoItem->getListWhere($sort_key, $where, $priorities);
-        $results = $this->InfoItem->editBySearchTerm($results, $params);
+        $results = $this->InfoItem->editBySearchTerm($results, $search_options);
 
         // 全体のアイテム数を取得
         $item_all_count = count($results);
         
+        // ページングライブラリを使う（CWS)
         App::uses('AppHelperHelper', 'View/Helper');
         $appHelper = new AppHelperHelper(new View());
 
         // 選択したアイテム(Cookie)が一ページの上限を超えた場合
         if ( count($priorities) > self::PER_PAGE ) {
+            // 読み込むページ数を計算する
             $num_loadpage = ceil(count($priorities)/self::PER_PAGE);
             
-            if ( $params['page'] > $num_loadpage ) {
-                // ページャー
-                if ($item_all_count > self::PER_PAGE) {
-                    $pager = $appHelper->getPagerInfo($params['page'], self::PER_PAGE, $item_all_count);
-                    
-                    if ( $pager['total_page'] >= $params['page'] ) {
-                        // 表示データ取得
-                        $list = array_slice($results, $pager["start_row"], $pager["view_count"]);
-                    }
-                } else {
-                    $list = $results;
+            // ロードするページより現在のページより大きい場合
+            //   選択したリスト以後の対応（通常ページと同様読み込む
+            if ( $page > $num_loadpage ) {
+                // ページ情報を取得する
+                $pager = $appHelper->getPagerInfo($page, self::PER_PAGE, $item_all_count);
+                
+                // 現在のページがtotal_pageの数より同様か小さい場合のみリストを出力する
+                if ( $pager['total_page'] >= $page ) {
+                    // 表示データ取得
+                    $list = array_slice($results, $pager["start_row"], $pager["view_count"]);
                 }
             } else {
-                // 表示データ取得
+                // 選択した画像は絶対トップに来るので0番レコードから、読み込みページ数分取得する
                 $list = array_merge($list,array_slice($results, 0, self::PER_PAGE*$num_loadpage));
-                $params['page'] = $num_loadpage;
-                $pager = $appHelper->getPagerInfo($params['page'], self::PER_PAGE, $item_all_count);
+
+                // 現在のページを読み込むページ数に設定する
+                $page = $num_loadpage;
+                
+                // ページ情報を取得
+                $pager = $appHelper->getPagerInfo($page, self::PER_PAGE, $item_all_count);
             }
         } else {
-            // ページャー
+            // 選択したアイテムがない場合の対応
+            // 全レコード数がページあたりのアイテム数より小さい場合
+            // それ以外はそのまま表示
             if ($item_all_count > self::PER_PAGE) {
-                $pager = $appHelper->getPagerInfo($params['page'], self::PER_PAGE, $item_all_count);
+                $pager = $appHelper->getPagerInfo($page, self::PER_PAGE, $item_all_count);
                 
-                if ( $pager['total_page'] >= $params['page'] ) {
+                if ( $pager['total_page'] >= $page ) {
                     // 表示データ取得
                     $list = array_slice($results, $pager["start_row"], $pager["view_count"]);
                 }
@@ -162,17 +178,14 @@ class CleaningController extends MinikuraController
         $this->set('itemList', $list);
         // 取得したリストをセット
         $this->set('item_all_count', $item_all_count);
+    
+        // 次のページのリンクを生成（infinitescroolのため)
+        $nexturl = Router::url(['action'=>'input', '?' => "page=".$pager['next_page']]);
 
-        $linkparams = $params;
-        $linkparams['page'] = $pager['next_page'];
-
-        $nexturl = Router::url(['action'=>'input', '?' => http_build_query($linkparams)]);
-        $query_params = $this->setQueryParameter();
-        
         // View用の変数をセット
-        $this->set('keyword', $query_params['keyword']);
-        $this->set('order', $query_params['order']);
-        $this->set('direction', $query_params['direction']);
+        $this->set('keyword', $search_options['keyword']);
+        $this->set('order', $search_options['order']);
+        $this->set('direction', $search_options['direction']);
         $this->set('selected_id', $selected_id);
         $this->set('pager', $pager);
         $this->set('nexturl', $nexturl);
@@ -338,7 +351,6 @@ class CleaningController extends MinikuraController
         }
     }
 
-
     private function _makeSelectSortUrl()
     {
         // 並び替え選択
@@ -357,15 +369,5 @@ class CleaningController extends MinikuraController
         }
 
         return $data;
-    }
-
-    private function _getRequestSortKey()
-    {
-        $order = $this->request->query('order');
-        $direction = $this->request->query('direction');
-        if (!empty($order)) {
-            return [$order => ($direction === 'asc')];
-        }
-        return [];
     }
 }

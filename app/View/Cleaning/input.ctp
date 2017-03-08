@@ -15,7 +15,7 @@
         <li><button type="submit" class="btn-next-full item_confirm">確認する <i class="fa fa-chevron-circle-right"></i></button></li>
       </ul>
     </div>
-    <form action="input" id="item-search" novalidate="novalidate" method="get" accept-charset="utf-8">
+    <form action="input" id="item-search" novalidate="novalidate" method="post" accept-charset="utf-8">
     <div class="item-search">
       <a class="btn-option"><i class="fa fa-cog"></i><span> OPTION</span></a>
         <input type="search" placeholder="&#xF002; SEARCH" id="ItemSearchKeyword" name="keyword" value="<?php echo $keyword;?>" />
@@ -36,6 +36,7 @@
     </div>
     </form>
     <div class="grid">
+      <?php if ( $item_all_count > 0 ) : ?>
       <form action="confirm" id="itemlist" method="post">
       <ul>
         <!--loop-->
@@ -69,12 +70,17 @@
         <!--loop end-->
       </ul>
       </form>
+      <?php else : ?>
+        <p class="form-control-static col-lg-12">対象のアイテムがみつかりませんでした。</p>
+      <?php endif ?>
     </div>
   </div>
-      <div class="pagination">
-        <a href="<?php echo $nexturl;?>" class="next"><?php echo $nexturl;?></a>
-      </div>
-
+  <?php if ( !is_null($pager) ) :?>
+  <div class="pagination">
+    <a href="<?php echo $nexturl;?>" class="next"><?php echo $nexturl;?></a>
+  </div>
+  <?php endif ?>
+  <input type="hidden" id="current_page" value="<?php echo $pager['current_page'];?>">
   <div id="sp-cleaning-wrapper">
     <div class="sp-nav-cleaning">
       <ul>

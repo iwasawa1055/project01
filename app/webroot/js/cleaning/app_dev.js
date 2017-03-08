@@ -61,6 +61,7 @@ var AppSelection = {
     // リストデータの更新(金額の計算、数の表示）
     AppSelection.updateList();
 
+    var current_page = $("#current_page").val();
     path=new Array();
     path.push(location.href+"?page=");
     path.push("");
@@ -73,9 +74,9 @@ var AppSelection = {
       itemSelector   : "#itemlist ul li",
       debug              : true,
       path                : path,
-    state: {
-      currPage: 2
-    }, 
+      state: {
+        currPage          : current_page,
+      }, 
       loading           : { 
         finishedMsg     : "",
         msgText           : "",
