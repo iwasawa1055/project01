@@ -6,7 +6,7 @@ $(function() {
 
   function getDatetime() {
     var elem_address = $('#OrderKitAddressId');
-    var elem_datetime = $('#OrderKitDatetimeCd');
+    var elem_datetime = $('#datetime_cd');
 
     // 未選択また「追加」を選択
     if (!elem_address.val() || elem_address.val() == -99) {
@@ -26,6 +26,9 @@ $(function() {
           $.each(data.result, function() {
               optionItems.push(new Option(this.text, this.datetime_cd));
           });
+          // 戻る対応でリストをpostする
+          $('#select_delivery').val(JSON.stringify(data.result));
+
           elem_datetime.append(optionItems);
         };
       },

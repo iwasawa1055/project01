@@ -1,4 +1,4 @@
-<?php $this->Html->script('minikura/input', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
     <div class="row">
       <div class="col-lg-12">
@@ -218,9 +218,11 @@
                 <select name="datetime_cd" id="datetime_cd" class="select-delivery focused">
                   <option value="">以下からお選びください</option>
                   <?php foreach ( CakeSession::read('Order.select_delivery_list') as $key => $value ) {?>
-                   <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                   <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Order.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
                   <?php } ?>
                 </select>
+              <input type="hidden" name="select_delivery" id="select_delivery" value="<?php if (!empty(CakeSession::read('Order.select_delivery'))) : ?><?php echo h(CakeSession::read('Address.select_delivery'))?><?php else : ?><?php endif; ?>">
+
             </div>
           <?php endif; ?>
             <span class="col-lg-12 col-md-12 col-xs-12">
