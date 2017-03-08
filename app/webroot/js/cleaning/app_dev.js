@@ -29,7 +29,9 @@ var AppCleaning = {
         if (!$("#flashMessage").length ) {
           var _msg = $('<p id="flashMessage" class="error-message message" style="display:none;">アイテムを選択してください。</p>');
             $(".page-header").before(_msg);
-            _msg.slideDown("fast");
+            _msg.slideDown("fast",function(){
+                scrollTo($("#flashMessage"),-200);
+            });
         }
       } else {
         $("#itemlist").submit();
