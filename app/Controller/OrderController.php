@@ -126,14 +126,36 @@ class OrderController extends MinikuraController
         $OrderKit['address_list'] = $set_address_list;
 
         // カード利用かどうか
-        // 法人口座未登録用遷移はbeforeFilterで判定済み
         CakeSession::write('isCredit', false);
-        if (!$this->Customer->isEntry() && !$this->Customer->isCustomerCreditCardUnregist() && !$this->Customer->isCorprateCreditCardUnregist()) {
+        //customer->getInfo()['account_situation']
+/*        if (!$this->Customer->isEntry() && !$this->Customer->isCustomerCreditCardUnregist() && !$this->Customer->isCorprateCreditCardUnregist()) {
             // カード情報取得
             if ($this->Customer->isPrivateCustomer() || !$this->Customer->getCorporatePayment()) {
                 // カード情報取得
                 $OrderKit['card_data'] = $this->Customer->getDefaultCard();
                 CakeSession::write('isCredit', true);
+            }
+        }
+*/
+
+        // クレジットカードかどうか
+        // 法人口座未登録用遷移はbeforeFilterで判定済み
+
+        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
+
+
+        if ($this->Customer->isPrivateCustomer()) {
+            // 個人
+            CakeSession::write('isCredit', true);
+            // カード情報取得
+            $OrderKit['card_data'] = $this->Customer->getDefaultCard();
+            $OrderKit['card_data'] = '';
+        } else {
+            // 個人
+            if ($this->Customer->getInfo()['account_situation'] === 'credit_card') {
+                CakeSession::write('isCredit', true);
+                // カード情報取得
+                $OrderKit['card_data'] = $this->Customer->getDefaultCard();
             }
         }
 
