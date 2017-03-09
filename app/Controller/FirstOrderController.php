@@ -5,6 +5,7 @@ App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
 App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
+App::uses('FirstKitPrice', 'Model');
 App::uses('AppCode', 'Lib');
 
 class FirstOrderController extends MinikuraController
@@ -191,10 +192,10 @@ class FirstOrderController extends MinikuraController
         $params = array();
         switch (true) {
             case $kit_select_type === 'all':
-                $Order = $this->_set_mono_order($Order);
-                $OrderTotal['mono_num'] = array_sum($Order['mono']);
                 $Order = $this->_set_hako_order($Order);
                 $OrderTotal['hako_num'] = array_sum($Order['hako']);
+                $Order = $this->_set_mono_order($Order);
+                $OrderTotal['mono_num'] = array_sum($Order['mono']);
                 $Order = $this->_set_cleaning_order($Order);
 
                 // 箱選択されているか
@@ -658,35 +659,73 @@ class FirstOrderController extends MinikuraController
 
         $FirstOrderList = array();
 
-        // キットコードと合計金額を返すAPI
-        $kitPrice = new CustomerKitPrice();
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
 
-        // 添字に対応するコードを取得
-        $kit_code = Configure::read('app.first_order.kit.none_starter');
+        // 添字に対応するコードを設定
+        $kit_code = array(
+            'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
+            'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
+            'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス'),
+            'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
+            'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
+            'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
+            'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
+        );
 
-        // スターターキット価格取得
-        if (key_exists('starter', $Order)) {
-            if ($Order['starter']['starter'] !== 0) {
-                $starterkit_code = Configure::read('app.first_order.starter_kit.code');
-                foreach ($starterkit_code as $param => $code) {
-                    $FirstOrderList[$param]['number'] = 1;
-                    $FirstOrderList[$param]['code'] = $code;
+        $kit_params = array();
+
+        // 表示名とAPI パラメータの生成コードごとに格納
+        foreach ($Order as $orders => $kit_order) {
+            foreach ($kit_order as $param => $value) {
+                if ($value > 0) {
+                    // スタータキットは構成が異なるため個別に記述
+                    if($param === 'starter') {
+                        // 先頭のコードのみ料金が返ってくる
+                        $code = KIT_CD_STARTER_MONO;
+                        $FirstOrderList[$code]['number']    = 1;
+                        $FirstOrderList[$code]['kit_name']  = 'mono スターターパック';
+                        $FirstOrderList[$code]['price'] = 0;
+                        $kit_params[] = KIT_CD_STARTER_MONO.':1';
+                    }
+
+                    // スタータキット以外まとめて処理
+                    if (array_key_exists ($param, $kit_code)) {
+                        //
+                        // $FirstOrderList[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
+                        $code = $kit_code[$param]['code'];
+                        $FirstOrderList[$code]['number']    = $value;
+                        $FirstOrderList[$code]['kit_name']  = $kit_code[$param]['name'];
+                        $FirstOrderList[$code]['price'] = 0;
+                        $kit_params[] = $code . ':' .$value;
+                    }
                 }
             }
         }
 
-        foreach ($Order as $orders => $kit_order) {
-            foreach ($kit_order as $param => $value) {
-                if ($value > 0) {
-                    // 対応するキットコードがあるか
-                    if (array_key_exists ($param, $kit_code)) {
-                        //
-                        $FirstOrderList[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
-                        $FirstOrderList[$param]['number']    = $value;
-                        $FirstOrderList[$param]['kit_name']  = $kit_code[$param]['name'];
-                        $FirstOrderList[$param]['code']      = $kit_code[$param]['code'];
-                    }
-                }
+        $set_kit_params = array();
+
+        // 紹介コードがある場合セット
+        $alliance_cd = CakeSession::read('Email.alliance_cd');
+        if (!is_null($alliance_cd)) {
+            $set_kit_params['alliance_cd'] = $alliance_cd;
+        }
+
+        // 文字列にしてカンマ区切りでリクエスト
+        $set_kit_params['kit'] = implode(',', $kit_params);
+
+        // キットコードと合計金額を返すAPI
+        $this->loadModel('KitPrice');
+
+        $res = $this->KitPrice->getKitPrice($set_kit_params);
+        if (!empty($res->error_message)) {
+            $this->Flash->validation('料金取得エラー', ['key' => 'kit_price']);
+        }
+
+        // コードから対象の配列に挿入
+        if (empty($res->error_message)) {
+            foreach ($res->results as $key => $value) {
+                $code = $value['kit_cd'];
+                $FirstOrderList[$code]['price'] = number_format($value['price'] * 1);
             }
         }
 

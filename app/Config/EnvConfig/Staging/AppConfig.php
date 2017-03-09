@@ -85,29 +85,6 @@ $config['app']['switch_redirect']['param'] = 'option';
  */
 $config['app']['first_order']['max_box'] = 20;
 
-/**
- * 静的ページからの最大注文箱数
- */
-$config['app']['first_order']['kit']['none_starter'] = array(
-    'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス',     'price' => 250),
-    'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス',      'price' => 250),
-    'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス',       'price' => 250),
-    'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス',     'price' => 200),
-    'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス',      'price' => 200),
-    'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス',       'price' => 200),
-    'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック',          'price' => 12000),
-);
-
-$config['app']['first_order']['starter_kit']['code'] = array(
-    'starter_mono'          => KIT_CD_STARTER_MONO,
-    'starter_mono_apparel'  => KIT_CD_STARTER_MONO_APPAREL,
-    'starter_mono_book'     => KIT_CD_STARTER_MONO_BOOK,
-);
-
-$config['app']['first_order']['starter_kit']['price'] = '250';
-$config['app']['first_order']['starter_kit']['name'] = 'minikura スターターパック';
-
-
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');
