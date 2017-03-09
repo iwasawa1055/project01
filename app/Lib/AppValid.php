@@ -536,6 +536,14 @@ class AppValid
 						$ret[$name] = '29文字以内で入力してください。';
 					}
 					break;
+				case $name === '$name':
+					if ($value == '') {
+						$ret[$name] = '名前を入力してください。';
+					}
+					if (50 < mb_strlen($value)){
+						$ret[$name] = '50文字以内で入力してください。';
+					}
+					break;
 				case $name === 'postal':
 					if (! self::isPostalCodeJp($value)) {
 						$ret[$name] = '郵便番号の入力をご確認ください。';
@@ -544,6 +552,14 @@ class AppValid
 				case $name === 'pref':
 					if (! in_array($value, self::$prefs, 'true')) {
 						$ret[$name] = '都道府県の入力をご確認ください。';
+					}
+					break;
+				case $name === 'address':
+					if ($value == '') {
+						$ret[$name] = '住所を入力してください。';
+					}
+					elseif (60 < mb_strlen($value)) {
+						$ret[$name] = '60文字以下で入力してください。';
 					}
 					break;
 				case $name === 'address1':

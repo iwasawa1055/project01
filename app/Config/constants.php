@@ -157,6 +157,16 @@ const KIT_NAME = [
     KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
 ];
 
+const KIT_CODE_DISP_NAME_ARRAY =[
+    'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
+    'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
+    'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス'),
+    'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
+    'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
+    'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
+    'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
+];
+
 const PRODUCT_NAME = [
     PRODUCT_CD_MONO => 'minikuraMONO',
     PRODUCT_CD_HAKO => 'minikuraHAKO',

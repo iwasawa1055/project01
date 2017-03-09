@@ -1076,7 +1076,7 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
-     * 全角半角変換　Mac全角ハイフン対応版
+     * ログインチェック
      *
      * @access    private
      * @param
