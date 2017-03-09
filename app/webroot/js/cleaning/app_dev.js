@@ -87,7 +87,6 @@ var AppSelection = {
       navSelector    : ".pagination",
       nextSelector   : ".pagination .next",
       itemSelector   : "#itemlist ul li",
-      debug              : true,
       path                : path,
       state: {
         currPage          : current_page,
