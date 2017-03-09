@@ -36,7 +36,7 @@
     <div class="sp-nav-cleaning">
       <ul>
         <li class="price"><i class="fa fa-calculator"></i><span><?php echo $selected_count;?></span>点<span><?php echo number_format($selected_total);?></span>円</li>
-        <li class="nextback"><a href="input?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+        <li class="nextback"><a href="input" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
         </li>
         <li class="nextback"><a href="complete" class="btn-next">申し込む <i class="fa fa-chevron-circle-right"></i></a>
         </li>
