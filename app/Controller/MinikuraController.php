@@ -190,6 +190,7 @@ class MinikuraController extends AppController
                 'shoes' => false,
                 'sneakers' => false,
             ],
+            'cleaning' => false,
             'travel' => false,
         ];
 
@@ -237,6 +238,8 @@ class MinikuraController extends AppController
             }
         }  elseif (preg_match('/\/travel/', $url)) {
             $active_status['travel'] = true;
+        }  elseif (preg_match('/\/cleaning/', $url)) {
+            $active_status['cleaning'] = true;
         }
         return $active_status;
     }

@@ -19,6 +19,7 @@ var AppCleaning = {
     // クリアーボタンが押された時の処理
     $("#ClearSelected").click(function() {
       $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked", false);
+      AppSelection.check();
       AppSelection.updateList();
     });
   },
@@ -65,7 +66,7 @@ var AppSelection = {
         itemId = $(this).data("itemid");
         
         // 選択リストにItemIDが存在する場合はチェックを入れる
-        if ($.inArray(itemId, listSelected) != -1) {
+        if ($.inArray(itemId, listSelected) !== -1) {
           $(this).prop("checked", true);
         }
       });

@@ -49,7 +49,8 @@
         </li>
         <?php endif; ?>
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
-	<li><a href="/cleaning/input"><i class="fa icon-cleaning fa-fw"></i> minikuraCLEANING</a></li>
+        <li<?php if($active_status['cleaning']):?> class="active"<?php endif;?>>
+	    <a href="/cleaning/input"<?php if($active_status['cleaning']):?> class="active"<?php endif;?>><i class="fa icon-cleaning fa-fw"></i> minikuraCLEANING</a>	</li>
         <li> <a class="animsition-link" href="/sale/index/"><i class="fa fa-exchange fa-fw"></i> minikuraTRADE</a></li>
         <li<?php if($active_status['travel']):?> class="active"<?php endif;?>>
             <a href="/travel/mono"<?php if($active_status['travel']):?> class="active"<?php endif;?>><i class="fa fa-suitcase fa-fw"></i> minikura teburaTRAVEL</a>

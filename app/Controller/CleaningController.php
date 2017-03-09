@@ -94,7 +94,7 @@ class CleaningController extends MinikuraController
         }
 
         // confirmからのバックの場合は選択を保持する
-        if (isset($_COOKIE['mn_cleaning_list']) &&  $_COOKIE['mn_cleaning_list'] !== "") {
+        if (isset($_COOKIE['mn_cleaning_list']) && $_COOKIE['mn_cleaning_list'] !== "") {
             // 選択されたアイテムを優先アイテムとして追加する
             foreach (explode(",", $_COOKIE['mn_cleaning_list']) as $tmp) {
                 array_push($priorities, ["item_id" => $tmp]);
@@ -293,7 +293,7 @@ class CleaningController extends MinikuraController
         // Item_Group_Idごとにデータを処理する
         $flg_complete = true;
         $complete_data = [];
-        $request_data  = [];
+        $request_data = [];
 
         // セッションデータかAPIにリクエストする
         foreach (CakeSession::read('app.data.session_cleaning') as $itemgroup_cd => $items) {
@@ -322,7 +322,7 @@ class CleaningController extends MinikuraController
                 if (!empty($res->error_message)) {
                     // 未処理のアイテムリストを収集する
                     $selected_items = [];
-                    foreach (CakeSession::read('app.data.session_cleaning')  as $itemgroup2) {
+                    foreach (CakeSession::read('app.data.session_cleaning') as $itemgroup2) {
                         foreach ($itemgroup2 as $items2) {
                             array_push($selected_items, $items2['item_id']);
                         }
