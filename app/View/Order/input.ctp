@@ -22,7 +22,7 @@
               <p class="box-caption">収納・片付けするならHAKOがオススメ！ボックスに詰めて送るだけでお手軽管理。
               </p>
               <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-              <div class="box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
+              <div class="box-hako"> <img src="/images/order/box_hako@1x.png" srcset="/images/order/box_hako@1x.png 1x, /images/order/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
               <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
               <div class="form">
                 <?php echo $this->Flash->render('select_oreder_hako'); ?>
@@ -38,7 +38,7 @@
               <p class="box-caption">便利な1点ごとのアイテム管理！アイテム毎の取り出しやオプション機能充実。
               </p>
               <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-              <div class="box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO">
+              <div class="box-mono"><img src="/images/order/box_mono@1x.png" srcset="/images/order/box_mono@1x.png 1x, /images/order/box_mono@2x.png 2x" alt="minikuraMONO">
               </div>
               <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
               <div class="form">
@@ -55,7 +55,7 @@
               <p class="box-caption">大切な衣類をしっかり保管したい方に！クリーニング付き衣類専用保管パック。
               </p>
               <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-              <div class="box-cleaning"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
+              <div class="box-cleaning"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
               <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
               <div class="form">
                 <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
@@ -133,7 +133,7 @@
     <!--MONO modal-->
     <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_regular@1x.png" srcset="/first_order_file/images/box_regular@1x.png 1x, /first_order_file/images/box_regular@2x.png 2x" alt="">
+        <div class="pict-box"><img src="/images/order/box_regular@1x.png" srcset="/images/order/box_regular@1x.png 1x, /images/order/box_regular@2x.png 2x" alt="">
         </div>
         <div class="select-box">
           <h3>レギュラーボックス</h3>
@@ -147,7 +147,7 @@
         <p class="caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
       </div>
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_apparel@1x.png" srcset="/first_order_file/images/box_apparel@1x.png 1x, /first_order_file/images/box_apparel@2x.png 2x" alt="">
+        <div class="pict-box"><img src="/images/order/box_apparel@1x.png" srcset="/images/order/box_apparel@1x.png 1x, /images/order/box_apparel@2x.png 2x" alt="">
         </div>
         <div class="select-box">
           <h3>アパレルボックス</h3>
@@ -161,7 +161,7 @@
         <p class="caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
       </div>
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_book@1x.png" srcset="/first_order_file/images/box_book@1x.png 1x, /first_order_file/images/box_book@2x.png 2x" alt="">
+        <div class="pict-box"><img src="/images/order/box_book@1x.png" srcset="/images/order/box_book@1x.png 1x, /images/order/box_book@2x.png 2x" alt="">
         </div>
         <div class="select-box">
           <h3>ブックボックス</h3>
@@ -180,7 +180,7 @@
     <!--HAKO modal-->
     <div class="remodal items" data-remodal-id="modal-hako" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_regular@1x.png" srcset="/first_order_file/images/box_regular@1x.png 1x, /first_order_file/images/box_regular@2x.png 2x" alt="">
+        <div class="pict-box"><img src="/images/order/box_regular@1x.png" srcset="/images/order/box_regular@1x.png 1x, /images/order/box_regular@2x.png 2x" alt="">
         </div>
         <div class="select-box">
           <h3>レギュラーボックス</h3>
@@ -194,7 +194,7 @@
         <p class="caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
       </div>
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_apparel@1x.png" srcset="/first_order_file/images/box_apparel@1x.png 1x, /first_order_file/images/box_apparel@2x.png 2x" alt="">
+        <div class="pict-box"><img src="/images/order/box_apparel@1x.png" srcset="/images/order/box_apparel@1x.png 1x, /images/order/box_apparel@2x.png 2x" alt="">
         </div>
         <div class="select-box">
           <h3>アパレルボックス</h3>
@@ -208,7 +208,7 @@
         <p class="caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
       </div>
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_book@1x.png" srcset="/first_order_file/images/box_book@1x.png 1x, /first_order_file/images/box_book@2x.png 2x" alt="">
+        <div class="pict-box"><img src="/images/order/box_book@1x.png" srcset="/images/order/box_book@1x.png 1x, /images/order/box_book@2x.png 2x" alt="">
         </div>
         <div class="select-box">
           <h3>ブックボックス</h3>
@@ -227,7 +227,7 @@
     <!--Cleaning modal-->
     <div class="remodal items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
       <div class="box">
-        <div class="pict-box"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="クリーニングパック">
+        <div class="pict-box"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="クリーニングパック">
         </div>
         <div class="select-box">
           <h3>クリーニングパック</h3>
