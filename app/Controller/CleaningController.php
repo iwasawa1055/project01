@@ -73,9 +73,9 @@ class CleaningController extends MinikuraController
         $search_options = CakeSession::read('app.data.session_cleaning_search');
         if (filter_input(INPUT_POST, "order")) {
             $search_options = [
-                "keyword"     => filter_input(INPUT_POST, "keyword"),
-                "order"        => filter_input(INPUT_POST, "order"),
-                "direction"  => filter_input(INPUT_POST, "direction"),
+                "keyword"    => filter_input(INPUT_POST, "keyword"),
+                "order"       => filter_input(INPUT_POST, "order"),
+                "direction" => filter_input(INPUT_POST, "direction"),
             ];
             CakeSession::write('app.data.session_cleaning_search', $search_options);
         }
@@ -96,7 +96,7 @@ class CleaningController extends MinikuraController
         // confirmからのバックの場合は選択を保持する
         if (isset($_COOKIE['mn_cleaning_list']) &&  $_COOKIE['mn_cleaning_list'] !== "") {
             // 選択されたアイテムを優先アイテムとして追加する
-            foreach ( explode(",", $_COOKIE['mn_cleaning_list']) as $tmp) {
+            foreach (explode(",", $_COOKIE['mn_cleaning_list']) as $tmp) {
                 array_push($priorities, ["item_id" => $tmp]);
             }
         }
@@ -109,7 +109,7 @@ class CleaningController extends MinikuraController
         $where = [];
         $where['product'] = null;
         // ItemStatusは70のみを表示
-        $where['item_status'] = array(70);
+        $where['item_status'] = array(BOXITEM_STATUS_INBOUND_DONE);
         // itemgroup_cdはConfig/EnvConfig/[Development]/AppConfig.phpを参照
         $where['item_group_cd'] = array_keys(Configure::read('app.kit.cleaning.item_group_cd'));
 
@@ -211,7 +211,7 @@ class CleaningController extends MinikuraController
         
         $flg_error = false;
         $params = [
-            "selected"          => filter_input(INPUT_POST, "selected", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+            "selected" => filter_input(INPUT_POST, "selected", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
         ];
 
         // 選択リストがない場合はエラー
@@ -246,7 +246,9 @@ class CleaningController extends MinikuraController
             $data['price']= Configure::read('app.kit.cleaning.item_group_cd')[$data['item_group_cd']];
             
             // item_group_cd配列がない場合は追加して初期化
-            if (!isset($session_data[$data['item_group_cd']])) $session_data[$data['item_group_cd']] = array();
+            if (!isset($session_data[$data['item_group_cd']])) {
+                $session_data[$data['item_group_cd']] = array();
+            }
             
             // itemgroup->itemの配列に処理したデータを収納
             array_push($session_data[$data['item_group_cd']], $data);
@@ -294,8 +296,7 @@ class CleaningController extends MinikuraController
         $request_data  = [];
 
         // セッションデータかAPIにリクエストする
-        $ct=0;
-        foreach ( CakeSession::read('app.data.session_cleaning') as $itemgroup_cd => $items) {
+        foreach (CakeSession::read('app.data.session_cleaning') as $itemgroup_cd => $items) {
             // APIリクエストのためのパラメータをセット
             //  Model/API/Cleaning
             $request_param = array(
@@ -321,8 +322,8 @@ class CleaningController extends MinikuraController
                 if (!empty($res->error_message)) {
                     // 未処理のアイテムリストを収集する
                     $selected_items = [];
-                    foreach ( CakeSession::read('app.data.session_cleaning')  as $itemgroup2) {
-                        foreach ( $itemgroup2 as $items2) {
+                    foreach (CakeSession::read('app.data.session_cleaning')  as $itemgroup2) {
+                        foreach ($itemgroup2 as $items2) {
                             array_push($selected_items, $items2['item_id']);
                         }
                     }
