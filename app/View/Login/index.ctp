@@ -8,7 +8,7 @@
             <div class="col-lg-12 col-md-12 none-title">
             <?php echo $this->Form->create('CustomerLogin', ['url' => '/login', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerLogin.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerLogin.email', ['type' => 'url', 'class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerLogin.email', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
