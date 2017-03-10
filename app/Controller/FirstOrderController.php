@@ -14,7 +14,7 @@ class FirstOrderController extends MinikuraController
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
-    
+
     /**
      * 制御前段処理.
      */
@@ -35,15 +35,14 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         // 遷移時にオプションが設定されている場合
-        CakeSession::delete(Configure::read('app.lp_option.param'));
+        CakeSession::delete('order_option');
         $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
         if (!is_null($option)) {
-            CakeSession::write(Configure::read('app.lp_option.param'), $option);
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'set option ' . $option);
+            CakeSession::write('order_option', $option);
         }
 
         // 紹介コードで遷移してきた場合
-        CakeSession::delete(Configure::read('app.lp_code.param'));
+        CakeSession::delete('order_code');
         CakeSession::delete('Email.alliance_cd');
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
@@ -51,14 +50,12 @@ class FirstOrderController extends MinikuraController
             if (strpos($code,'?' . Configure::read('app.lp_option.param')) !== false) {
                 list($code, $pram_option) = explode('?', $code);
                 list($label, $option) = explode('=', $pram_option);
-                CakeSession::write(Configure::read('app.lp_option.param'), $option);
-                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set option ' . $option);
+                CakeSession::write('order_option', $option);
             }
-            CakeSession::write(Configure::read('app.lp_code.param'), $code);
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is code set_code[ ' . $code . ' ]');
+            CakeSession::write('order_code', $code);
         }
 
-        // 初回購入フローに入らない場合の遷移先
+        // 初回購入フローに入らない場合の遷移先 オプション指定をそのまま引き継ぐ
         $none_first_redirect_param = array(
             'controller' => 'login',
             'action' => 'index',
@@ -72,8 +69,6 @@ class FirstOrderController extends MinikuraController
 
             // 取得した配列のカウントが2である
             if (count($login_params) === 2) {
-                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is auto login user' . $option);
-
                 // セッションクリーン
                 $this->_clean_first_order_session();
 
@@ -85,20 +80,16 @@ class FirstOrderController extends MinikuraController
         // set action ログインしている
         if ($this->Customer->isLogined()) {
 
-            // エントリーユーザでない
+            // 本登録ユーザの場合エントリーユーザでない
             if (!$this->Customer->isEntry()) {
-                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is none entry user' . $option);
-
                 // セッションクリーン
                 $this->_clean_first_order_session();
 
                 $this->redirect($none_first_redirect_param);
             }
 
-            // スニーカーユーザでない
+            // スニーカーユーザの場合
             if ($this->Customer->isSneaker()) {
-                // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is isSneaker' . $option);
-
                 // セッションクリーン
                 $this->_clean_first_order_session();
 
@@ -106,7 +97,6 @@ class FirstOrderController extends MinikuraController
             }
 
             // ログイン済みエントリーユーザ
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' is login entry user' . $option);
             $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
         }
 
@@ -129,24 +119,24 @@ class FirstOrderController extends MinikuraController
         $is_logined = $this->_check_login();
         $this->set('is_logined', $is_logined);
 
-        $lp_option = CakeSession::read(Configure::read('app.lp_option.param'));
+        $order_option = CakeSession::read('order_option');
         $kit_select_type = 'all';
         switch (true) {
-            case $lp_option === 'mono':
+            case $order_option === 'mono':
                 // 紹介コードが有る場合 mono のみ表示 そうでない場合、スターターキット
-                if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
+                if (!is_null(CakeSession::read('order_code'))) {
                     $kit_select_type = 'mono';
                 } else {
                     $kit_select_type = 'starter_kit';
                 }
                 break;
-            case $lp_option === 'hako':
+            case $order_option === 'hako':
                 $kit_select_type = 'hako';
                 break;
-            case $lp_option === 'cleaning':
+            case $order_option === 'cleaning':
                 $kit_select_type = 'cleaning';
                 break;
-            case $lp_option === 'all':
+            case $order_option === 'all':
                 $kit_select_type = 'all';
                 break;
             default:
@@ -492,7 +482,7 @@ class FirstOrderController extends MinikuraController
             }
 
             // 紹介コードを挿入
-            $code = CakeSession::read(Configure::read('app.lp_code.param'));
+            $code = CakeSession::read('order_code');
             if (!is_null($code)) {
                 $Email = CakeSession::read('Email');
                 $Email['alliance_cd'] = $code;
@@ -603,7 +593,7 @@ class FirstOrderController extends MinikuraController
                     // エラーか既存アドレスか判定
                     if ($result->http_code !== "400") {
                         $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
-                        $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read(Configure::read('app.lp_option.param'));
+                        $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
 
                         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
