@@ -56,12 +56,6 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('order_code', $code);
         }
 
-        // 初回購入フローに入らない場合の遷移先 オプション指定をそのまま引き継ぐ
-        $none_first_redirect_param = array(
-            'controller' => 'login',
-            'action' => 'index',
-            '?' => array(Configure::read('app.switch_redirect.param'), $option));
-
         // オートログイン確認
         // tokenが存在する
         if (!empty($_COOKIE['token'])) {
@@ -70,38 +64,31 @@ class FirstOrderController extends MinikuraController
 
             // 取得した配列のカウントが2である
             if (count($login_params) === 2) {
-                // セッションクリーン
-                $this->_cleanFirstOrderSession();
-
-                // オートログイン
-                $this->redirect($none_first_redirect_param);
+                // セッション削除しログイン画面へ遷移
+                $this->_redirectLogin();
             }
         }
 
-        // set action ログインしている
+        // ログインしている場合
         if ($this->Customer->isLogined()) {
 
             // 本登録ユーザの場合エントリーユーザでない
             if (!$this->Customer->isEntry()) {
-                // セッションクリーン
-                $this->_cleanFirstOrderSession();
-
-                $this->redirect($none_first_redirect_param);
+                // セッション削除しログイン画面へ遷移
+                $this->_redirectLogin();
             }
 
             // スニーカーユーザの場合
             if ($this->Customer->isSneaker()) {
-                // セッションクリーン
-                $this->_cleanFirstOrderSession();
-
-                $this->redirect($none_first_redirect_param);
+                // セッション削除しログイン画面へ遷移
+                $this->_redirectLogin();
             }
 
-            // ログイン済みエントリーユーザ
+            // ログイン済みエントリーユーザ 初回購入フローへ
             $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
         }
 
-        // スターターキット購入フロー
+        // 初回購入フロー
         $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
     }
 
@@ -1049,6 +1036,36 @@ class FirstOrderController extends MinikuraController
         $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(array('postal' => $postal));
 
         return $result;
+    }
+
+    /**
+     * オプションパラメータをセットし、ログイン画面にリダイレクト
+     */
+    private function _redirectLogin()
+    {
+        // セッションクリーン
+        $this->_cleanFirstOrderSession();
+
+        $set_param = array();
+        $code = CakeSession::read('order_code');
+        if (!empty($code)) {
+            $set_param[] = array(Configure::read('app.lp_code.param') =>  $code);
+        }
+
+        $option = CakeSession::read('order_option');
+        if (!empty($option)) {
+            $set_param[] = array(Configure::read('app.switch_redirect.param') =>  $option);
+        }
+
+        // 初回購入フローに入らない場合の遷移先 オプション指定をそのまま引き継ぐ
+        $redirect_param = array(
+            'controller' => 'login',
+            'action' => 'index',
+            '?' => $set_param
+        );
+
+        $this->redirect($redirect_param);
+        return ;
     }
 
     /**
