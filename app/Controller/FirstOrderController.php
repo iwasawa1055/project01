@@ -71,7 +71,7 @@ class FirstOrderController extends MinikuraController
             // 取得した配列のカウントが2である
             if (count($login_params) === 2) {
                 // セッションクリーン
-                $this->_clean_first_order_session();
+                $this->_cleanFirstOrderSession();
 
                 // オートログイン
                 $this->redirect($none_first_redirect_param);
@@ -84,7 +84,7 @@ class FirstOrderController extends MinikuraController
             // 本登録ユーザの場合エントリーユーザでない
             if (!$this->Customer->isEntry()) {
                 // セッションクリーン
-                $this->_clean_first_order_session();
+                $this->_cleanFirstOrderSession();
 
                 $this->redirect($none_first_redirect_param);
             }
@@ -92,7 +92,7 @@ class FirstOrderController extends MinikuraController
             // スニーカーユーザの場合
             if ($this->Customer->isSneaker()) {
                 // セッションクリーン
-                $this->_clean_first_order_session();
+                $this->_cleanFirstOrderSession();
 
                 $this->redirect($none_first_redirect_param);
             }
@@ -117,7 +117,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログインしているか
-        $is_logined = $this->_check_login();
+        $is_logined = $this->_checkLogin();
         $this->set('is_logined', $is_logined);
 
         $order_option = CakeSession::read('order_option');
@@ -182,11 +182,11 @@ class FirstOrderController extends MinikuraController
         $params = array();
         switch (true) {
             case $kit_select_type === 'all':
-                $Order = $this->_set_hako_order($Order);
+                $Order = $this->_setHakoOrder($Order);
                 $OrderTotal['hako_num'] = array_sum($Order['hako']);
-                $Order = $this->_set_mono_order($Order);
+                $Order = $this->_setMonoOrder($Order);
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
-                $Order = $this->_set_cleaning_order($Order);
+                $Order = $this->_setCleaningOrder($Order);
 
                 // 箱選択されているか
                 if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
@@ -198,21 +198,21 @@ class FirstOrderController extends MinikuraController
                 }
                 break;
             case $kit_select_type === 'mono':
-                $Order = $this->_set_mono_order($Order);
+                $Order = $this->_setMonoOrder($Order);
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
                 $params = array('select_oreder_mono' => $OrderTotal['mono_num']);
                 break;
             case $kit_select_type === 'hako':
-                $Order = $this->_set_hako_order($Order);
+                $Order = $this->_setHakoOrder($Order);
                 $OrderTotal['hako_num'] = array_sum($Order['hako']);
                 $params = array('select_oreder_hako' => $OrderTotal['hako_num']);
                 break;
             case $kit_select_type === 'cleaning':
-                $Order = $this->_set_cleaning_order($Order);
+                $Order = $this->_setCleaningOrder($Order);
                 $params = array('select_oreder_cleaning' => $Order['cleaning']['cleaning']);
                 break;
             case $kit_select_type === 'starter_kit':
-                $Order = $this->_set_starter_order($Order);
+                $Order = $this->_setStarterOrder($Order);
                 $params = array('select_starter_kit' => $Order['starter']['starter']);
                 break;
             default:
@@ -258,7 +258,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログインチェック
-        $this->_check_login();
+        $this->_checkLogin();
 
         $back  = filter_input(INPUT_GET, 'back');
         
@@ -303,7 +303,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログインチェック
-        $this->_check_login();
+        $this->_checkLogin();
 
         $params = [
             'firstname'         => filter_input(INPUT_POST, 'firstname'),
@@ -363,7 +363,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログインチェック
-        $this->_check_login();
+        $this->_checkLogin();
 
         $back  = filter_input(INPUT_GET, 'back');
         
@@ -436,9 +436,6 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // スターターキットの場合、紹介コードリセット
-        CakeSession::delete('code_and_starter_kit');
-
         // 既存登録ユーザ リセット
         CakeSession::delete('registered_user_login_url', null);
 
@@ -456,7 +453,7 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
-        $is_logined = $this->_check_login();
+        $is_logined = $this->_checkLogin();
         $this->set('is_logined', $is_logined);
 
         // 誕生日に関するコンフィグ
@@ -513,7 +510,7 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
-        $is_logined = $this->_check_login();
+        $is_logined = $this->_checkLogin();
 
         // バリデーションエラーフラグ
         $is_validation_error = false;
@@ -634,7 +631,6 @@ class FirstOrderController extends MinikuraController
 
         // 前処理の不要なセッションを削除
         CakeSession::delete('registered_user_login_url');
-        CakeSession::delete('code_and_starter_kit');
 
         // 確認画面でリダイレクトさせると本登録後にNGの場合リダイレクトしてしまう
         $is_logined = false;
@@ -653,15 +649,7 @@ class FirstOrderController extends MinikuraController
         // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
 
         // 添字に対応するコードを設定
-        $kit_code = array(
-            'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
-            'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
-            'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス'),
-            'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
-            'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
-            'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
-            'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
-        );
+        $kit_code = KIT_CODE_DISP_NAME_ARRAY;
 
         $kit_params = array();
 
@@ -738,7 +726,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // 購入前にログインし、エントリユーザでない場合のチェック
-        $is_logined = $this->_check_login();
+        $is_logined = $this->_checkLogin();
         $this->set('is_logined', $is_logined);
 
         // セッションが古い場合があるので再チェック
@@ -969,7 +957,7 @@ class FirstOrderController extends MinikuraController
         // 完了したページ情報を保存
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->_clean_first_order_session();
+        $this->_cleanFirstOrderSession();
 
         // 既にセッションスタートしてる事が条件
         // マイページ側セッションクローズ
@@ -1023,7 +1011,7 @@ class FirstOrderController extends MinikuraController
 
         $postal = filter_input(INPUT_POST, 'postal');
 
-        $result = $this->_get_address_datetime($postal);
+        $result = $this->_getAddressDatetime($postal);
 
         $status = !empty($result);
 
@@ -1046,7 +1034,7 @@ class FirstOrderController extends MinikuraController
     /**
      * 指定IDの配送日時情報取得
      */
-    private function _get_address_datetime($postal)
+    private function _getAddressDatetime($postal)
     {
         // ハイフンチェック
         if (mb_strlen($postal) > 7) {
@@ -1066,7 +1054,7 @@ class FirstOrderController extends MinikuraController
     /**
      * kit box mono 箱数をset
      */
-    private function _set_mono_order($Order)
+    private function _setMonoOrder($Order)
     {
         $params = array(
             'mono'          => filter_input(INPUT_POST, 'mono'),
@@ -1080,7 +1068,7 @@ class FirstOrderController extends MinikuraController
     /**
      * kit box hako 箱数をset
      */
-    private function _set_hako_order($Order)
+    private function _setHakoOrder($Order)
     {
         $params = array(
             'hako'          => (int)filter_input(INPUT_POST, 'hako'),
@@ -1094,7 +1082,7 @@ class FirstOrderController extends MinikuraController
     /**
      * kit box cleaning 箱数をset
      */
-    private function _set_cleaning_order($Order)
+    private function _setCleaningOrder($Order)
     {
         $Order['cleaning']['cleaning'] = (int)filter_input(INPUT_POST, 'cleaning');
         return $Order;
@@ -1103,7 +1091,7 @@ class FirstOrderController extends MinikuraController
     /**
      * kit box starter set
      */
-    private function _set_starter_order($Order)
+    private function _setStarterOrder($Order)
     {
         $Order['starter']['starter'] = (int)filter_input(INPUT_POST, 'starter');
         return $Order;
@@ -1116,14 +1104,14 @@ class FirstOrderController extends MinikuraController
      * @param
      * @return    ログイン済 true ,未ログイン false
      */
-    private function _check_login()
+    private function _checkLogin()
     {
         $is_logined = false;
         if ($this->Customer->isLogined()) {
             if (!$this->Customer->isEntry()) {
 
                 // セッションクリーン
-                $this->_clean_first_order_session();
+                $this->_cleanFirstOrderSession();
 
                 $this->redirect(array('controller' => 'login', 'action' => 'index'));
             }
@@ -1137,7 +1125,7 @@ class FirstOrderController extends MinikuraController
     /**
      * first orderで使用しているセッション類を削除
      */
-    private function _clean_first_order_session()
+    private function _cleanFirstOrderSession()
     {
         CakeSession::delete('kit_select_type');
         CakeSession::delete('Order');
