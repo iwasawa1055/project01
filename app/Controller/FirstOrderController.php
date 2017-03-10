@@ -718,7 +718,7 @@ class FirstOrderController extends MinikuraController
 
         // セッションが古い場合があるので再チェック
         // 発送日一覧のエラーチェック
-        $result = $this->_get_address_datetime(CakeSession::read('Address.postal'));
+        $result = $this->_getAddressDatetime(CakeSession::read('Address.postal'));
 
         $check_address_datetime_cd = false;
         $address_datetime = CakeSession::read('Address.datetime_cd');
