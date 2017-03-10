@@ -63,6 +63,10 @@ $config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pu
 $config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 
 /**
+ * 静的ページからの最大注文箱数
+ */
+$config['app']['first_order']['max_box'] = 20;
+/**
  * エラー表示
  */
 // CakePHP Debug Level

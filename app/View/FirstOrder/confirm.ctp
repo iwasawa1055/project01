@@ -23,7 +23,7 @@
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
-      <div class="form">
+      <div class="form" id="price_table">
         <label>ご注文内容</label>
         <table>
           <thead>
@@ -51,6 +51,7 @@
           <?php } ?>
           </tbody>
         </table>
+        <?php echo $this->Flash->render('kit_price');?>
       </div>
 
       <div class="divider"></div>
