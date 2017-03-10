@@ -62,6 +62,31 @@ $config['api.strage.ssh.username'] = 'minikura.com';
 $config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
 $config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
 
+// タイムアウト（秒）
+$config['api.timeout'] = 30;
+$config['api.connect_timeout'] = 30;
+$config['api.user_agent'] = 'minikura';
+/**
+ * 恒久ログインlogout パラメータ
+ */
+$config['app']['login_cookie']['cookie_period'] = 60 * 60 * 24 * 180;
+$config['app']['login_cookie']['param'] = 'logout';
+
+
+/**
+ * 会員登録用パラメタ―
+ */
+$config['app']['register']['birthyear']['birthyear_start'] = 1920;
+
+/**
+ * 静的ページからの遷移先変更
+ */
+$config['app']['lp_option']['param'] = 'option';
+$config['app']['lp_code']['param'] = 'code';
+
+$config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
+$config['app']['switch_redirect']['param'] = 'option';
+
 /**
  * 静的ページからの最大注文箱数
  */
