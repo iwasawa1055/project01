@@ -3,23 +3,6 @@
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
 
-<section id="pagenation">
-  <ul>
-    <li class="on"><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
-    </li>
-    <li><i class="fa fa-pencil-square-o"></i><span>お届け先<br>登録</span>
-    </li>
-    <li><i class="fa fa-credit-card"></i><span>カード<br>登録</span>
-    </li>
-    <li><i class="fa fa-envelope"></i><span>メール<br>登録</span>
-    </li>
-    <li><i class="fa fa-check"></i><span>確認</span>
-    </li>
-    <li><i class="fa fa-truck"></i><span>完了</span>
-    </li>
-  </ul>
-</section>
-
 <!-- LINEUP -->
 <?php $kit_select_type = CakeSession::read('kit_select_type'); ?>
 
