@@ -63,7 +63,7 @@ class OrderController extends MinikuraController
      */
     public function input()
     {
-        // 直にアクセスされた用 スニーカー判定
+        // スニーカー処理リダイレクト じかにアクセスされたとき用
         if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
             return $this->setAction('add_sneakers');
         }
@@ -73,6 +73,7 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        // 住所追加後リターン処理
         if (!empty(CakeSession::read('OrderKit.address_id'))) {
 
             $address_id = CakeSession::read('OrderKit.address_id');
@@ -80,17 +81,26 @@ class OrderController extends MinikuraController
             if ($address_id === AddressComponent::CREATE_NEW_ADDRESS_ID) {
 
                 $last_address = $this->Address->last();
+                // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' last_address ' . print_r($last_address, true));
 
-                CakeSession::write('OrderKit.address_id', $last_address['address_id']);
-                CakeSession::write('OrderKit.datetime_cd', '');
+                $OrderKit = CakeSession::read('OrderKit');
 
-                $select_delivery = $this->getDatetimeDeliveryKit($last_address['address_id']);
-                $select_delivery_list = json_decode(json_encode($select_delivery));
+                $OrderKit['address_id'] = $last_address['address_id'];
+                $OrderKit['datetime_cd'] = '';
 
-                CakeSession::write('OrderKit.select_delivery', $select_delivery);
-                CakeSession::write('OrderKit.select_delivery_list', $select_delivery_list);
+                $datetime_delivery_kit = $this->getDatetimeDeliveryKit($last_address['address_id']);
+                $select_delivery = json_encode($datetime_delivery_kit);
+                $select_delivery_list = json_decode($select_delivery);
+
+                $OrderKit['select_delivery'] = $select_delivery;
+                $OrderKit['select_delivery_list'] = $select_delivery_list;
+
+                CakeSession::write('OrderKit.', $OrderKit);
+
             }
         }
+
+        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
 
         // セッションリセット
         if (empty(CakeSession::read('OrderKit.address_id'))) {
@@ -103,18 +113,22 @@ class OrderController extends MinikuraController
                 'select_delivery_text' => "",
                 'select_delivery_list' => array(),
                 'card_data' => array(),
+                'card_no' => "",
+                'security_cd' => "",
+                'isCredit' => "",
                 'kit_params' => array(),
             );
 
             CakeSession::write('OrderKit', $OrderKit);
         }
 
-        // セッション情報格納
+        // セッション情報取得
+        $OrderKit = CakeSession::read('OrderKit');
+
         // 住所一覧を取得
-        $OrderKit = CakeSession::read(self::MODEL_NAME);
         $address_list = $this->Address->get();
 
-        // ヘルパー読み込めないため
+        // ヘルパー読み込めないためヘルパーでの処理を転記
         $set_address_list = array();
         if (is_array($address_list)) {
             foreach ($address_list as $address) {
@@ -125,39 +139,27 @@ class OrderController extends MinikuraController
 
         $OrderKit['address_list'] = $set_address_list;
 
-        // カード利用かどうか
-        CakeSession::write('isCredit', false);
-        //customer->getInfo()['account_situation']
-/*        if (!$this->Customer->isEntry() && !$this->Customer->isCustomerCreditCardUnregist() && !$this->Customer->isCorprateCreditCardUnregist()) {
-            // カード情報取得
-            if ($this->Customer->isPrivateCustomer() || !$this->Customer->getCorporatePayment()) {
-                // カード情報取得
-                $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-                CakeSession::write('isCredit', true);
-            }
-        }
-*/
+        // カード判定
+        $OrderKit['isCredit'] = false;
 
         // クレジットカードかどうか
         // 法人口座未登録用遷移はbeforeFilterで判定済み
-
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
-
-
         if ($this->Customer->isPrivateCustomer()) {
             // 個人
-            CakeSession::write('isCredit', true);
+            $OrderKit['isCredit'] = true;
+
             // カード情報取得
             $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-            $OrderKit['card_data'] = '';
         } else {
-            // 個人
-            if ($this->Customer->getInfo()['account_situation'] === 'credit_card') {
-                CakeSession::write('isCredit', true);
+            // 法人 法人カードの場合 account_situationは空白
+            if (empty($this->Customer->getInfo()['account_situation'])) {
+                $OrderKit['isCredit'] = true;
                 // カード情報取得
                 $OrderKit['card_data'] = $this->Customer->getDefaultCard();
             }
         }
+
+        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
 
         // セッション情報格納
         CakeSession::write('OrderKit', $OrderKit);
@@ -172,6 +174,7 @@ class OrderController extends MinikuraController
      */
     public function confirm()
     {
+        // スニーカー処理リダイレクト
         if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
             return $this->setAction('confirm_sneakers');
         }
@@ -223,31 +226,29 @@ class OrderController extends MinikuraController
         $OrderKit = CakeSession::read('OrderKit');
 
         // カード利用の場合
-        if (CakeSession::read('isCredit')) {
-            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'isCredit');
-
+        $is_register_credit = false;
+        if (CakeSession::read('OrderKit.isCredit')) {
+            // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'isCredit');
             // カード情報
-            $security_cd = filter_input(INPUT_POST, 'security_cd');
-            $params['security_cd'] = mb_convert_kana($security_cd, 'nhk', "utf-8");
-            $OrderKit['security_cd'] = $security_cd;
+            $OrderKit['security_cd'] = filter_input(INPUT_POST, 'security_cd');
+            $params['security_cd'] = mb_convert_kana($OrderKit['security_cd'], 'nhk', "utf-8");
         }
 
         // お届け先情報等
         $params['address_id'] = $address_id;
         $OrderKit['address_id'] = $address_id;
 
-        $params['datetime_cd'] = filter_input(INPUT_POST, 'datetime_cd');
-        $OrderKit['datetime_cd'] = $params['datetime_cd'];
+        $OrderKit['datetime_cd'] = filter_input(INPUT_POST, 'datetime_cd');
+        $params['datetime_cd'] = $OrderKit['datetime_cd'];
 
         CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'params' . print_r($params, true));
 
-        // パラメータチェック不要な要素
+        // パラメータチェック不要な要素はparamsにいれない
         // 表示用時間一覧
-        $select_delivery = filter_input(INPUT_POST, 'select_delivery');
-        $OrderKit['select_delivery'] = $select_delivery;
+        $OrderKit['select_delivery'] = filter_input(INPUT_POST, 'select_delivery');
         // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_delivery' . print_r($select_delivery, true));
 
-        $select_delivery_list = json_decode($select_delivery);
+        $select_delivery_list = json_decode($OrderKit['select_delivery']);
         $OrderKit['select_delivery_list'] = $select_delivery_list;
 
         // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_delivery_list' . print_r($OrderKit['select_delivery_list'], true));
@@ -274,26 +275,28 @@ class OrderController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // 添字に対応するコードを設定
+        // kitコード 表示kit名取得
         $kit_code = KIT_CODE_DISP_NAME_ARRAY;
 
-        // 金額集計
+        // 金額取得API
         $kitPrice = new CustomerKitPrice();
+
+        // 金額集計
         $OrderList = array();
 
         // 購入時用コード格納
         $kit_params = array();
+        // Order['MONO',[レギュラー=>0,アパレル=>0,ブック=>0]]
         foreach ($Order as $orders => $kit_order) {
-            foreach ($kit_order as $param => $value) {
+            foreach ($kit_order as $key => $value) {
 
-                // 選択されている場合
+                // BOX選択されている場合
                 if ($value != 0 ) {
-                    // スタータキット以外まとめて処理
-                    if (array_key_exists ($param, $kit_code)) {
-                        // $OrderList[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
-                        $code = $kit_code[$param]['code'];
+                    if (array_key_exists ($key, $kit_code)) {
+                        // $OrderList[$key]['price']     = number_format($kit_code[$key]['price'] * $value * 1);
+                        $code = $kit_code[$key]['code'];
                         $OrderList[$code]['number']    = $value;
-                        $OrderList[$code]['kit_name']  = $kit_code[$param]['name'];
+                        $OrderList[$code]['kit_name']  = $kit_code[$key]['name'];
                         $OrderList[$code]['price'] = 0;
                         $product = $code . ':' .$value;
                         $kit_params[] = $product;
@@ -313,43 +316,47 @@ class OrderController extends MinikuraController
         CakeSession::write('OrderList', $OrderList);
         CakeSession::write('OrderKit.kit_params', $kit_params);
 
-        // 住所パラメータチェック 入力されているわけでないので、選択した住所情報をチェックし共通のエラーを返す
-        // カード決済、口座振替でパラメータが異なる
-        // 住所idから住所取得
-        $address = $this->Address->find($params['address_id']);
+        // 住所指定されている場合
+        if (!empty($params['address_id'])) {
+            // 購入時用住所パラメータチェック POST値ではないため、選択した住所情報をチェックし共通のエラーを返す
+            // カード決済、口座振替でパラメータが異なる
+            // 住所idから住所取得
+            $address = $this->Address->find($params['address_id']);
 
-        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_delivery_list' . print_r($OrderKit['select_delivery_list'], true));
+            // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_delivery_list' . print_r($OrderKit['select_delivery_list'], true));
 
-        // 表示用に住所をセッションに保存
-        CakeSession::write('Address', $address);
+            // 表示用に住所をセッションに保存
+            CakeSession::write('Address', $address);
 
-        // 決済によって必要情報が異なる
-        $address_params = array();
-        if (CakeSession::read('isCredit')) {
-            // 口座決済
-            $address_params['name'] = $address['lastname'] . $address['firstname'];
-            $address_params['postal'] = $address['postal'];
-            $address_params['address'] = $address['pref'] . $address['address1'] . $address['address2'] . $address['address3'];
-            $address_params['tel1'] = $address['tel1'];
-        } else {
-            // カード決済
-            $address_params = $address;
-        }
-
-        // 住所パラメータチェック 住所エラーの場合表示場所が
-        $validation = AppValid::validate($address_params);
-        if ( !empty($validation)) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.$message . 'key '. $key);
+            // 決済によって必要情報が異なる
+            $address_params = array();
+            if (CakeSession::read('OrderKit.isCredit')) {
+                // カード決済
+                $address_params['name'] = $address['lastname'] . $address['firstname'];
+                $address_params['postal'] = $address['postal'];
+                $address_params['address'] = $address['pref'] . $address['address1'] . $address['address2'] . $address['address3'];
+                $address_params['tel1'] = $address['tel1'];
+            } else {
+                // 口座決済
+                $address_params = $address;
             }
 
-            $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
-                                        ,['key' => 'format_address']);
-            $is_validation_error = true;
+            // 住所パラメータチェック 住所エラーの場合表示場所は１箇所
+            $validation = AppValid::validate($address_params);
+            if (!empty($validation)) {
+                foreach ($validation as $key => $message) {
+                    $this->Flash->validation($message, ['key' => $key]);
+                    CakeLog::write(DEBUG_LOG, __METHOD__ . '(' . __LINE__ . ')' . $message . 'key ' . $key);
+                }
+
+                $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
+                    , ['key' => 'format_address']);
+                $is_validation_error = true;
+            }
         }
 
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'orderKit '. print_r(CakeSession::read('OrderKit'),true));
+        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' Session OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
+
         if ($is_validation_error === true) {
             $this->redirect('input');
             return;
@@ -365,6 +372,7 @@ class OrderController extends MinikuraController
      */
     public function complete()
     {
+        // スニーカー処理リダイレクト
         if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
             return $this->setAction('complete_sneakers');
         }
@@ -375,8 +383,8 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
-        // 決済方法によって実行するapiがことなる。
-        if (CakeSession::read('isCredit')) {
+        // 決済方法によって実行するapiが異なる
+        if (CakeSession::read('OrderKit.isCredit')) {
             // カード購入
             $this->loadModel('PaymentGMOKitCard');
             $gmo_kit_card = array();
@@ -724,7 +732,6 @@ class OrderController extends MinikuraController
         CakeSession::delete('OrderKit');
         CakeSession::delete('OrderList');
         CakeSession::delete('Address');
-        CakeSession::delete('isCredit');
     }
 
 }

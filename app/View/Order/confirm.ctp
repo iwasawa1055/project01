@@ -37,7 +37,6 @@
             <div class="divider"></div>
             <div class="form">
               <?php echo $this->Flash->render('customer_regist_info');?>
-              <?php echo $this->Flash->render('customer_card_info');?>
               <?php echo $this->Flash->render('customer_address_info');?>
               <?php echo $this->Flash->render('customer_kit_card_info');?>
               <label>お届け先住所</label>
