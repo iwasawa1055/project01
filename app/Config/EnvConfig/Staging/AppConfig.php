@@ -76,6 +76,7 @@ $config['app']['register']['birthyear']['birthyear_start'] = 1920;
  */
 $config['app']['lp_option']['param'] = 'option';
 $config['app']['lp_code']['param'] = 'code';
+$config['app']['sneaker_option']['param'] = 'key';
 
 $config['app']['switch_redirect']['session_name'] = 'switch_pedirect_option';
 $config['app']['switch_redirect']['param'] = 'option';

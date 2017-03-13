@@ -56,6 +56,15 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('order_code', $code);
         }
 
+        // スニーカー判定 keyがあれば空白なければnull
+        CakeSession::delete('order_sneaker');
+        if (filter_input(INPUT_GET, Configure::read('app.sneaker_option.param')) === '') {
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' key sneaker ');
+            CakeSession::write('order_sneaker', true);
+            CakeSession::write('order_option', 'sneaker');
+        }
+
+        /* 以下 初回購入フロー条件判定 */
         // オートログイン確認
         // tokenが存在する
         if (!empty($_COOKIE['token'])) {
@@ -78,18 +87,19 @@ class FirstOrderController extends MinikuraController
                 $this->_redirectLogin();
             }
 
-            // スニーカーユーザの場合
+            // ログインしており、本登録でない、スニーカーユーザの場合
             if ($this->Customer->isSneaker()) {
-                // セッション削除しログイン画面へ遷移
-                $this->_redirectLogin();
+                // スニーカー購入動線遷移
+                CakeSession::write('order_sneaker', true);
+                CakeSession::write('order_option', 'sneaker');
             }
 
             // ログイン済みエントリーユーザ 初回購入フローへ
-            $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
+            $this->_flowSwitch('add_order');
         }
 
         // 初回購入フロー
-        $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
+        $this->_flowSwitch('add_order');
     }
 
     /**
@@ -127,6 +137,9 @@ class FirstOrderController extends MinikuraController
             case $order_option === 'all':
                 $kit_select_type = 'all';
                 break;
+            case $order_option === 'sneaker':
+                $kit_select_type = 'sneaker';
+                break;
             default:
                 $kit_select_type = 'all';
                 break;
@@ -145,6 +158,17 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+    }
+
+    /**
+     * スニーカーview変更
+     * Boxの選択 静的ページからのオプション、ユーザ条件によって表示内容を変更
+     */
+    public function add_order_sneaker()
+    {
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('add_order');
+        return $this->render('add_order_sneaker');
     }
 
     /**
@@ -202,6 +226,12 @@ class FirstOrderController extends MinikuraController
                 $Order = $this->_setStarterOrder($Order);
                 $params = array('select_starter_kit' => $Order['starter']['starter']);
                 break;
+            case $kit_select_type === 'sneaker':
+                $Order = $this->_setSneakerOrder($Order);
+                $params = array('select_oreder_sneaker' => $Order['sneaker']['sneaker']);
+                break;
+
+
             default:
                 break;
         }
@@ -210,8 +240,8 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('Order', $Order);
         CakeSession::write('OrderTotal', $OrderTotal);
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set Order ' . print_r($Order, true));
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set OrderTotal ' . print_r($OrderTotal, true));
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set Order ' . print_r($Order, true));
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set OrderTotal ' . print_r($OrderTotal, true));
 
         //*  validation 基本は共通クラスのAppValidで行う
         $is_validation_error = false;
@@ -222,14 +252,14 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->redirect('add_order');
+            $this->_flowSwitch('add_order');
             return;
         }
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->redirect(['controller' => 'first_order', 'action' => 'add_address']);
+        $this->_flowSwitch('add_address');
 
     }
 
@@ -276,6 +306,17 @@ class FirstOrderController extends MinikuraController
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+    }
+
+    /**
+     * スニーカーview変更
+     * ユーザ名 住所の登録
+     */
+    public function add_address_sneaker()
+    {
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('add_address');
+        return $this->render('add_address_sneaker');
     }
 
     /**
@@ -328,14 +369,14 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->redirect('add_address');
+            $this->_flowSwitch('add_address');
             return;
         }
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
-        $this->redirect(['controller' => 'first_order', 'action' => 'add_credit']);
+        $this->_flowSwitch('add_credit');
     }
 
     /**
@@ -368,6 +409,17 @@ class FirstOrderController extends MinikuraController
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+    }
+
+    /**
+     * スニーカーview変更
+     * クレジットカード 登録
+     */
+    public function add_credit_sneaker()
+    {
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('add_credit');
+        return $this->render('add_credit_sneaker');
     }
 
     /**
@@ -406,7 +458,7 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->redirect('add_credit');
+            $this->_flowSwitch('add_credit');
             return;
         }
         
@@ -416,7 +468,7 @@ class FirstOrderController extends MinikuraController
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $this->redirect('add_credit');
+            $this->_flowSwitch('add_credit');
             return;
         }
 
@@ -426,7 +478,7 @@ class FirstOrderController extends MinikuraController
         // 既存登録ユーザ リセット
         CakeSession::delete('registered_user_login_url', null);
 
-        $this->redirect(['controller' => 'first_order', 'action' => 'add_email']);
+        $this->_flowSwitch('add_email');
     }
 
     /**
@@ -484,6 +536,17 @@ class FirstOrderController extends MinikuraController
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+    }
+
+    /**
+     * スニーカーview変更
+     * メールアドレス 登録
+     */
+    public function add_email_sneaker()
+    {
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('add_email');
+        return $this->render('add_email_sneaker');
     }
 
     /**
@@ -586,7 +649,7 @@ class FirstOrderController extends MinikuraController
 
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
 
-                        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
+                        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
 
                     }
                     $is_validation_error = true;
@@ -595,14 +658,14 @@ class FirstOrderController extends MinikuraController
         }
 
         if ($is_validation_error === true) {
-            $this->redirect('add_email');
+            $this->_flowSwitch('add_email');
             return;
         }
         
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
-        $this->redirect(['controller' => 'first_order', 'action' => 'confirm']);
+        $this->_flowSwitch('confirm');
     }
 
     /**
@@ -695,10 +758,21 @@ class FirstOrderController extends MinikuraController
             }
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
 
         CakeSession::write('FirstOrderList', $FirstOrderList);
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+    }
+
+    /**
+     * スニーカーview変更
+     * オーダー 会員登録
+     */
+    public function confirm_sneaker()
+    {
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('confirm');
+        return $this->render('confirm_sneaker');
     }
 
     /**
@@ -734,7 +808,7 @@ class FirstOrderController extends MinikuraController
             CakeLog::write(DEBUG_LOG,
                 $this->name . '::' . $this->action . ' check_address_datetime_cd error');
 
-            return $this->redirect('add_address');
+            return $this->_flowSwitch('add_address');
         }
 
         // カードの有効性をチェック
@@ -748,7 +822,7 @@ class FirstOrderController extends MinikuraController
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $this->redirect('add_credit');
+            $this->_flowSwitch('add_credit');
             return;
         }
 
@@ -776,12 +850,8 @@ class FirstOrderController extends MinikuraController
         //*  validation
         if (!$this->CustomerRegistInfo->validates()) {
             // 事前バリデーションチェック済
-            $this->Flash->validation('入力情報をご確認ください',
-                ['key' => 'customer_regist_info']);
-            CakeLog::write(DEBUG_LOG,
-                $this->name . '::' . $this->action . ' CustomerRegistInfo validationErrors ' .
-                print_r($this->CustomerRegistInfo->validationErrors, true));
-            return $this->redirect('confirm');
+            $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_regist_info']);
+            return $this->_flowSwitch('confirm');
         }
 
         if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
@@ -792,21 +862,28 @@ class FirstOrderController extends MinikuraController
         if ($is_logined) {
             $res = $this->CustomerRegistInfo->regist_no_oemkey();
         } else {
-            $res = $this->CustomerRegistInfo->regist();
+            // スニーカーユーザかどうか
+            if (!CakeSession::read('order_sneaker')) {
+                //スニーカーでない
+                $res = $this->CustomerRegistInfo->regist();
+            } else {
+                // スニーカーユーザかどうか
+                $res = $this->CustomerRegistInfo->regist_sneakers();
+            }
         }
 
         if (!empty($res->error_message)) {
             // 紹介コードエラーの場合 紹介コード入力に遷移
             if (strpos($res->message, 'alliance_cd') !== false) {
                 $this->Flash->validation($res->error_message, ['key' => 'alliance_cd']);
-                return $this->redirect('add_email');
+                return $this->_flowSwitch('add_email');
             }
             if (strpos($res->message, 'Allow Only Entry') !== false) {
                 $this->Flash->validation('登録済ユーザのため購入完了できませんでした。', ['key' => 'customer_regist_info']);
             } else {
                 $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
             }
-            return $this->redirect('confirm');
+            return $this->_flowSwitch('confirm');
         }
 
         // ログイン
@@ -825,7 +902,7 @@ class FirstOrderController extends MinikuraController
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
-            return $this->redirect('confirm');
+            return $this->_flowSwitch('confirm');
         }
 
         // カスタマー情報を取得しセッションに保存
@@ -857,13 +934,13 @@ class FirstOrderController extends MinikuraController
 
         if (!$this->PaymentGMOSecurityCard->validates()) {
             $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
-            return $this->redirect('confirm');
+            return $this->_flowSwitch('confirm');
         }
 
         $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
         if (!empty($result_security_card->error_message)) {
             $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
-            return $this->redirect('confirm');
+            return $this->_flowSwitch('confirm');
         }
 
         // 購入
@@ -875,6 +952,7 @@ class FirstOrderController extends MinikuraController
         $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
         $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
         $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
+        $gmo_kit_card['sneaker_num']   = CakeSession::read('Order.sneaker.sneaker');
         $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
@@ -904,6 +982,9 @@ class FirstOrderController extends MinikuraController
             PRODUCT_CD_CLEANING_PACK => [
                 'kitList' => [KIT_CD_CLEANING_PACK],
             ],
+            PRODUCT_CD_SHOES_PACK => [
+                'kitList' => [KIT_CD_SNEAKERS],
+            ],
         ];
 
         $dataKeyNum = [
@@ -917,6 +998,7 @@ class FirstOrderController extends MinikuraController
             KIT_CD_STARTER_MONO          => 'starter_mono_num',
             KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
             KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
+            KIT_CD_SNEAKERS      => 'sneaker_num',
         ];
         $kit_params = [];
         foreach ($productKitList as $product) {
@@ -938,7 +1020,7 @@ class FirstOrderController extends MinikuraController
             } else {
                 $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
             }
-            return $this->redirect('confirm');
+            return $this->_flowSwitch('confirm');
         }
 
         // 完了したページ情報を保存
@@ -982,6 +1064,20 @@ class FirstOrderController extends MinikuraController
         // マイページ側セッション再開
         session_start();
 
+    }
+
+    /**
+     * スニーカーview変更
+     * オーダー 会員登録
+     */
+    public function complete_sneaker()
+    {
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('complete');
+
+        // スニーカーセッション情報を削除
+        CakeSession::delete('order_sneaker');
+        return $this->render('complete_sneaker');
     }
 
     /**
@@ -1108,6 +1204,15 @@ class FirstOrderController extends MinikuraController
     /**
      * kit box starter set
      */
+    private function _setSneakerOrder($Order)
+    {
+        $Order['sneaker']['sneaker'] = (int)filter_input(INPUT_POST, 'sneaker');
+        return $Order;
+    }
+
+    /**
+     * kit box starter set
+     */
     private function _setStarterOrder($Order)
     {
         $Order['starter']['starter'] = (int)filter_input(INPUT_POST, 'starter');
@@ -1137,6 +1242,24 @@ class FirstOrderController extends MinikuraController
         }
 
         return $is_logined;
+    }
+
+    /**
+     * フローを変更スイッチ
+     * 遷移先メッソドを指定し、スニーカの場合_sneakerメソッドへ遷移させる
+     */
+    private function _flowSwitch($base_method)
+    {
+        $set_method = $base_method;
+
+        // スニーカー判定
+        if (CakeSession::read('order_sneaker')) {
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' sneaker ');
+            $set_method = $base_method . '_sneaker';
+        }
+
+        $this->redirect(['controller' => 'first_order', 'action' => $set_method]);
+
     }
 
     /**

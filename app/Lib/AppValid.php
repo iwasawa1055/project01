@@ -755,6 +755,11 @@ class AppValid
 						$ret[$name] = 'ボックスを選択してください。';
 					}
 					break;
+				case $name === 'select_oreder_sneaker':
+					if ($value === 0) {
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
 			}
 		}
 
