@@ -1,5 +1,5 @@
 		$(function () {
-			$("#header").load("elements/header.html");
+			/*$("#header").load("elements/header.html");*/
 		});
 		$(function () {
 			$('.nav-hamburger').click(function () {
