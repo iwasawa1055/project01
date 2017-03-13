@@ -1202,7 +1202,7 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
-     * kit box starter set
+     * kit box sneaker set
      */
     private function _setSneakerOrder($Order)
     {

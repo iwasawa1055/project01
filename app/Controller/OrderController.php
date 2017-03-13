@@ -52,7 +52,7 @@ class OrderController extends MinikuraController
     {
         // スニーカー判定
         if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
-            return $this->setAction('add_sneakers');
+            return $this->setAction('input_sneaker');
         }
 
         return $this->setAction('input');
@@ -63,10 +63,6 @@ class OrderController extends MinikuraController
      */
     public function input()
     {
-        // スニーカー処理リダイレクト じかにアクセスされたとき用
-        if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
-            return $this->setAction('add_sneakers');
-        }
 
         // エントリーユーザの場合初回購入動線へ移動
         if ($this->Customer->isEntry()) {
@@ -150,6 +146,8 @@ class OrderController extends MinikuraController
 
             // カード情報取得
             $OrderKit['card_data'] = $this->Customer->getDefaultCard();
+
+            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
         } else {
             // 法人 法人カードの場合 account_situationは空白
             if (empty($this->Customer->getInfo()['account_situation'])) {
@@ -159,7 +157,7 @@ class OrderController extends MinikuraController
             }
         }
 
-        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
+        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
 
         // セッション情報格納
         CakeSession::write('OrderKit', $OrderKit);
@@ -174,11 +172,6 @@ class OrderController extends MinikuraController
      */
     public function confirm()
     {
-        // スニーカー処理リダイレクト
-        if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
-            return $this->setAction('confirm_sneakers');
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['Order/input', 'Order/confirm', 'Order/complete'], true) === false) {
             //* NG redirect
@@ -358,7 +351,7 @@ class OrderController extends MinikuraController
         // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' Session OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
 
         if ($is_validation_error === true) {
-            $this->redirect('input');
+            $this->_flowSwitch('input');
             return;
         }
 
@@ -372,11 +365,6 @@ class OrderController extends MinikuraController
      */
     public function complete()
     {
-        // スニーカー処理リダイレクト
-        if($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
-            return $this->setAction('complete_sneakers');
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['Order/confirm', 'Order/complete'], true) === false) {
             //* NG redirect
@@ -409,7 +397,7 @@ class OrderController extends MinikuraController
                     $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
                 }
                 // 暫定
-                return $this->redirect('input');
+                return $this->_flowSwitch('input');
             }
 
         } else {
@@ -439,7 +427,7 @@ class OrderController extends MinikuraController
                     $this->Flash->validation($result_kit_payment_transfer->message, ['key' => 'customer_kit_card_info']);
                 }
                 // 暫定
-                return $this->redirect('input');
+                return $this->_flowSwitch('input');
             }
         }
 
@@ -449,189 +437,34 @@ class OrderController extends MinikuraController
         $this->_cleanKitOrderSession();
     }
 
-    public function add_sneakers()
+    public function input_sneaker()
     {
-        $isBack = Hash::get($this->request->query, 'back');
-        $res_datetime = [];
-        $data = CakeSession::read(self::MODEL_NAME);
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'.print_r($data, true));
-        if ($isBack && !empty($data)) {
-            if (!array_key_exists('address_id', $data)) {
-                $data['address_id'] = '';
-            }
-            // 前回追加選択は最後のお届け先を選択
-            if ($data['address_id'] === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-                $data['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
-                $data['datetime_cd'] = '';
-            }
-            $this->request->data[self::MODEL_NAME] = $data;
-            if (!empty($data['address_id'])) {
-                $res_datetime = $this->getDatetimeDeliveryKit($data['address_id']);
-            }
-        }
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('input');
 
-        $this->set('datetime', $res_datetime);
-
-        $this->render('add_sneakers');
-
-        CakeSession::delete(self::MODEL_NAME);
+        return $this->render('input_sneaker');
     }
 
-    public function confirm_sneakers()
+    public function confirm_sneaker()
     {
 
-        $data = Hash::get($this->request->data, self::MODEL_NAME);
-        if (empty($data)) {
-            return $this->render('add');
-        }
-        $model = $this->Order->model($data);
-        $paymentModelName = $model->getModelName();
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('confirm');
 
-        // 届け先追加を選択の場合は追加画面へ遷移
-        if (Hash::get($model->toArray(), 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-            CakeSession::write(self::MODEL_NAME, $model->toArray());
-            return $this->redirect([
-                'controller' => 'address', 'action' => 'add', 'customer' => true,
-                '?' => ['return' => 'order']
-            ]);
-        }
-
-        // キットPOSTデータキー
-        $dataKeyNum = [
-            KIT_CD_SNEAKERS => 'sneakers_num',
-        ];
-
-        // 料金（サービス（商品）ごと）集計
-        $kitPrice = new CustomerKitPrice();
-        $total = ['num' => 0, 'price' => 0];
-        $productKitList = [
-            PRODUCT_CD_SNEAKERS => [
-                'kitList' => [KIT_CD_SNEAKERS => 0],
-                'subtotal' => ['num' => 0, 'price' => 0]
-            ],
-        ];
-        foreach ($productKitList as $productCd => &$product) {
-            $product['pramaKit'] = [];
-
-            // 個数集計
-            foreach ($product['kitList'] as $kitCd => $d) {
-                $num = Hash::get($this->request->data, self::MODEL_NAME . '.' . $dataKeyNum[$kitCd]);
-                if (!empty($num)) {
-                    $product['kitList'][$kitCd] = $num;
-                    $product['subtotal']['num'] += $num;
-                    $total['num'] += $num;
-                    $product['pramaKit'][] = $kitCd . ':' . $num;
-                }
-            }
-            // 金額取得
-            if (!empty($product['pramaKit'])) {
-
-                $r = $kitPrice->apiGet([
-                    'kit' => implode(',', $product['pramaKit'])
-                ]);
-                if ($r->isSuccess()) {
-                    $price = $r->results[0]['total_price'] * 1;
-                    $product['subtotal']['price'] = $price;
-                    $total['price'] += $price;
-                }
-            }
-        }
-
-        $this->set('productKitList', $productKitList);
-        $this->set('total', $total);
-
-        // 仮登録ユーザーの場合 or カード登録なし本登録(個人)
-        if ($this->Customer->isEntry() || $this->Customer->isCustomerCreditCardUnregist()) {
-            if ($model->validates(['fieldList' => ['mono_num', 'hako_num', 'cleaning_num']])) {
-                CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
-                return $this->render('confirm');
-            } else {
-                $this->set('validErrors', $model->validationErrors);
-                return $this->render('add');
-            }
-        }
-        // 本登録ユーザーの場合
-        $address_id = $this->request->data[self::MODEL_NAME]['address_id'];
-        $address = $this->Address->find($address_id);
-
-        // お届け先情報
-        $model = $this->Order->setAddress($model->data[$paymentModelName], $address);
-        $model->data[$paymentModelName]['kit'] = implode(Hash::extract($productKitList, '{n}.pramaKit.{n}'), ',');
-
-        if ($model->validates()) {
-            if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
-                // カード
-                $default_payment = $this->Customer->getDefaultCard();
-                $this->set('default_payment_text', "{$default_payment['card_no']}　{$default_payment['holder_name']}");
-            }
-            // お届け先
-            $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
-            // お届け希望日時
-            $datetime = $this->getDatetime($address_id, $this->request->data[self::MODEL_NAME]['datetime_cd']);
-            $this->set('datetime', $datetime['text']);
-
-            $model->data[$paymentModelName]['view_data_productKitList'] = serialize($productKitList);
-            $model->data[$paymentModelName]['view_data_total'] = serialize($total);
-            CakeSession::write(self::MODEL_NAME, $model->data[$paymentModelName]);
-        } else {
-            $this->set('validErrors', $model->validationErrors);
-
-            // 配送日時
-            $res_datetime = [];
-            if (!empty($address_id)) {
-                $res_datetime = $this->getDatetimeDeliveryKit($address_id);
-            }
-            $this->set('datetime', $res_datetime);
-
-            return $this->render('add_sneakers');
-        }
-
-        return $this->render('confirm_sneakers');
+        return $this->render('confirm_sneaker');
     }
 
     /**
      *
      */
-    public function complete_sneakers()
+    public function complete_sneaker()
     {
-        $data = CakeSession::read(self::MODEL_NAME);
-        CakeSession::delete(self::MODEL_NAME);
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
-        }
-        $model = $this->Order->model($data);
+        // refererは基本の初回購入フローを使用する
+        $this->setAction('complete');
 
-        if ($model->validates()) {
-            // api
-            $res = $model->apiPost($model->toArray());
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'add']);
-            }
-
-            $address_id = $data['address_id'];
-            $address = $this->Address->find($address_id);
-            $this->set('data', $data);
-
-            if ($this->Customer->isPrivateCustomer() || empty($this->Customer->getCorporatePayment())) {
-                // カード
-                $default_payment = $this->Customer->getDefaultCard();
-                $this->set('default_payment_text', "{$default_payment['card_no']}　{$default_payment['holder_name']}");
-            }
-            // お届け先
-            $this->set('address_text', "〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
-            // お届け希望日時
-            $datetime = $this->getDatetime($address_id, $data['datetime_cd']);
-            $this->set('datetime', $datetime['text']);
-
-            // 料金
-            $this->set('productKitList', unserialize($data['view_data_productKitList']));
-            $this->set('total', unserialize($data['view_data_total']));
-        } else {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
-        }
+        // スニーカーセッション情報を削除
+        CakeSession::delete('order_sneaker');
+        return $this->render('complete_sneaker');
     }
 
     /**
@@ -720,6 +553,32 @@ class OrderController extends MinikuraController
     {
         $Order['cleaning']['cleaning'] = (int)filter_input(INPUT_POST, 'cleaning');
         return $Order;
+    }
+
+    /**
+     * kit box sneaker set
+     */
+    private function _setSneakerOrder($Order)
+    {
+        $Order['sneaker']['sneaker'] = (int)filter_input(INPUT_POST, 'sneaker');
+        return $Order;
+    }
+
+    /**
+     * フローを変更スイッチ
+     * 遷移先メッソドを指定し、スニーカの場合_sneakerメソッドへ遷移させる
+     */
+    private function _flowSwitch($base_method)
+    {
+        $set_method = $base_method;
+
+        // スニーカー判定
+        if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
+            $set_method = $base_method . '_sneaker';
+        }
+
+        $this->redirect(['controller' => 'order', 'action' => $set_method]);
+
     }
 
     /**
