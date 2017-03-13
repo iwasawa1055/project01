@@ -1,8 +1,8 @@
-<?php echo $this->element('FirstOrder/first'); ?>
+<?php echo $this->element('FirstOrder/first_sneaker'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>クレジットカード情報入力 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
-<?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/nav_sneaker'); ?>
 <?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
   <!-- ADRESS -->
   <form method="post" action="/first_order/confirm_credit" novalidate>
@@ -46,5 +46,5 @@
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
-<?php echo $this->element('FirstOrder/js'); ?>
+<?php echo $this->element('FirstOrder/js_sneaker'); ?>
 <?php echo $this->element('FirstOrder/last'); ?>

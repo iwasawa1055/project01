@@ -140,7 +140,7 @@
     <p class="caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-  <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 </div>
 <!--HAKO modal-->
 <div class="remodal items" data-remodal-id="modal-hako" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -187,7 +187,7 @@
     <p class="caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-  <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 </div>
 <!--Cleaning modal-->
 <div class="remodal items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -206,7 +206,7 @@
     <p class="caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-  <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 </div>
 
 <?php echo $this->element('FirstOrder/footer'); ?>

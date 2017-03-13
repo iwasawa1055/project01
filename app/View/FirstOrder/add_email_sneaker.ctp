@@ -1,8 +1,8 @@
-<?php echo $this->element('FirstOrder/first'); ?>
+<?php echo $this->element('FirstOrder/first_sneaker'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>メールアドレス・パスワード入力 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
-<?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/nav_sneaker'); ?>
 <?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
   <!-- ADRESS -->
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
@@ -109,6 +109,6 @@
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>
-<?php echo $this->element('FirstOrder/js'); ?>
+<?php echo $this->element('FirstOrder/js_sneaker'); ?>
 <script src="/first_order_file/js/first_order/add_email.js"></script>
 <?php echo $this->element('FirstOrder/last'); ?>

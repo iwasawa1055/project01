@@ -23,7 +23,7 @@ var AppAddOrder =
     },
 
     b: function () {
-        $('.btn-submit').on('click', function (e) {
+        $('.js-btn-submit').on('click', function (e) {
             $('form').submit();
         });
     },
