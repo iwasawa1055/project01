@@ -3,6 +3,7 @@
 <title>お届け先住所入力 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
   <!-- ADRESS -->
   <form method="post" action="/first_order/confirm_address" novalidate>
   <section id="adress">

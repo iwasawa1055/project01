@@ -2,6 +2,7 @@
 <title>ボックス選択 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
 
 <!-- LINEUP -->
 <?php $kit_select_type = CakeSession::read('kit_select_type'); ?>

@@ -3,6 +3,7 @@
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
 <!-- ADRESS -->
 <section id="adress" class="complete">
   <h2>注文が完了しました。</h2>

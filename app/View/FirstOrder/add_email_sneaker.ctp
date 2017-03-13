@@ -3,6 +3,7 @@
 <title>メールアドレス・パスワード入力 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
   <!-- ADRESS -->
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
     <section id="adress">

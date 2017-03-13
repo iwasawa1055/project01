@@ -3,6 +3,7 @@
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
+<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
   <form method="post" action="/first_order/complete" novalidate>
   <!-- ADRESS -->
   <section id="adress">
