@@ -466,6 +466,40 @@ class AppValid
 	}
 
 	/**
+	 * 全角スペース チェック
+	 *
+	 * @access      public
+	 * @param       バリデーション
+	 * @return      boolean
+	 */
+	public static function checkFullWordSpace($value)
+	{
+		// 全角スペースかどうか
+		if (preg_match('/^[　]{1,}$/', $value)) {
+			return false;
+		}
+		// すべて全角スペースではない
+		return true;
+	}
+
+	/**
+	 * 半角スペース チェック
+	 *
+	 * @access      public
+	 * @param       バリデーション
+	 * @return      boolean
+	 */
+	public static function checkHalfWordSpace($value)
+	{
+		// 半角スペースかどうか
+		if (preg_match('/^[ ]{1,}$/', $value)) {
+			return false;
+		}
+		// すべて半角スペースではない
+		return true;
+	}
+
+	/**
 	 * 共通 validation
 	 * $_requestsの内容をチェックする。フォーマットは
 	 * $_requests = [
@@ -495,7 +529,21 @@ class AppValid
 			switch (true) {
 				case $name === 'lastname':
 				case $name === 'firstname':
+					$check_space_error = false;
 					if ($value == '') {
+						$check_space_error = true;
+					}
+					// 全角スペースチェック
+					if (! self::checkFullWordSpace($value)) {
+						$check_space_error = true;
+					}
+					// 半角スペースチェック
+					if (! self::checkHalfWordSpace($value)) {
+						$check_space_error = true;
+					}
+
+					// 空白、スペースエラー
+					if ($check_space_error) {
 						$msg_add = '';
 						switch ($name) {
 							case 'lastname':
@@ -515,7 +563,21 @@ class AppValid
 					break;
 				case $name === 'lastname_kana':
 				case $name === 'firstname_kana':
+					$check_space_error = false;
 					if ($value == '') {
+						$check_space_error = true;
+					}
+					// 全角スペースチェック
+					if (! self::checkFullWordSpace($value)) {
+						$check_space_error = true;
+					}
+					// 半角スペースチェック
+					if (! self::checkHalfWordSpace($value)) {
+						$check_space_error = true;
+					}
+
+					// 空白、スペースエラー
+					if ($check_space_error) {
 						$msg_add = '';
 						switch ($name) {
 							case 'lastname_kana':
@@ -553,10 +615,13 @@ class AppValid
 					elseif (8 < mb_strlen($value)) {
 						$ret[$name] = '8文字以下で入力してください。';
 					}
-					break;
-				case $name === 'address3': // ※建物名はブランクOK
-					if (30 < mb_strlen($value)) {
-						$ret[$name] = '30文字以下で入力してください。';
+					// 全角スペースチェック
+					if (! self::checkFullWordSpace($value)) {
+						$ret[$name] = '住所を入力してください。';
+					}
+					// 半角スペースチェック
+					if (! self::checkHalfWordSpace($value)) {
+						$ret[$name] = '住所を入力してください。';
 					}
 					break;
 				case $name === 'address2':
@@ -565,6 +630,19 @@ class AppValid
 					}
 					elseif (18 < mb_strlen($value)) {
 						$ret[$name] = '18文字以下で入力してください。';
+					}
+					// 全角スペースチェック
+					if (! self::checkFullWordSpace($value)) {
+						$ret[$name] = '町村番地を入力してください。';
+					}
+					// 半角スペースチェック
+					if (! self::checkHalfWordSpace($value)) {
+						$ret[$name] = '住所を入力してください。';
+					}
+					break;
+				case $name === 'address3': // ※建物名はブランクOK
+					if (30 < mb_strlen($value)) {
+						$ret[$name] = '30文字以下で入力してください。';
 					}
 					break;
 				case $name === 'tel1':

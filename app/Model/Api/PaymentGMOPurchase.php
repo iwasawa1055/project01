@@ -53,6 +53,10 @@ class PaymentGMOPurchase extends ApiModel
                 'rule' => ['maxLength', 59],
                 'message' => ['maxLength', 'kit_address_name', 59]
             ],
+            'checkFullWordSpace' => [
+                'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'kit_address_name']
+            ],
         ],
         'tel1' => [
             'notBlank' => [
@@ -85,6 +89,10 @@ class PaymentGMOPurchase extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 60],
                 'message' => ['maxLength', 'kit_address', 60]
+            ],
+            'checkFullWordSpace' => [
+                'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'kit_address']
             ],
         ],
         'datetime_cd' => [
