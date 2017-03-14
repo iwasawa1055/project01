@@ -77,15 +77,17 @@ class CleaningController extends MinikuraController
                 "order"       => filter_input(INPUT_POST, "order"),
                 "direction" => filter_input(INPUT_POST, "direction"),
             ];
-            CakeSession::write('app.data.session_cleaning_search', $search_options);
+            //CakeSession::write('app.data.session_cleaning_search', $search_options);
         }
       
         // resetが設定されている場合はすべてリセットする
+        /*
         if (isset($_COOKIE['mn_cleaning_reset'])) {
             // 選択リストCookieを削除する
             setcookie("mn_cleaning_list", "", time() - 3600);
             setcookie("mn_cleaning_reset", "", time() - 3600);
         } 
+        */
 
         // 引数でidがリターンされた場合はすでにチェックを入れる
         if (!is_null($selected_id)) {
