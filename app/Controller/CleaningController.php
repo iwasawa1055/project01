@@ -330,7 +330,7 @@ class CleaningController extends MinikuraController
                     // Cookieを更新する(
                     setcookie("mn_cleaning_list", implode(",", $selected_items));
 
-                    #$this->Flash->set($res->error_message);
+                    //$this->Flash->set("");
                     $flg_complete = false;
                     break;
                 } else {
