@@ -307,6 +307,11 @@ const SORT_ORDER = [
         'item_id' => 'アイテムID順 で', 
         'item_name' => 'アイテム名順 で'
     ],
+    'item_grid' => [
+        'inbound_date' => 'お預かり日順', 
+        'item_id' => 'アイテムID順', 
+        'item_name' => 'アイテム名順'
+    ],
 ];
 
 const SORT_DIRECTION = [
