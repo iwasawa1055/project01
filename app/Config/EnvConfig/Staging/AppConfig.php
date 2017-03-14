@@ -108,8 +108,8 @@ $config['app']['first_order']['starter_kit']['price'] = '250';
 $config['app']['first_order']['starter_kit']['name'] = 'minikura スターターパック';
 
 // クリーニング費用設定
-$config['app']['kit']['cleaning']['item_group_cd']['010'] = 650;
-$config['app']['kit']['cleaning']['item_group_cd']['030'] = 3500;
+$config['app']['kit']['cleaning']['item_group_cd']['010'] = 700;
+$config['app']['kit']['cleaning']['item_group_cd']['030'] = 3800;
 
 $config['app']['kit']['cleaning']['work_type']['010'] = "030";
 $config['app']['kit']['cleaning']['work_type']['030'] = "032";
