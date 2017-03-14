@@ -22,7 +22,7 @@
     </div>
     <div class="item-sort">
       <select name="order" id="ItemSortOrder" class="data-sort">
-      <?php foreach (SORT_ORDER['item'] as $value => $name) : ?>
+      <?php foreach (SORT_ORDER['item_grid'] as $value => $name) : ?>
         <option value="<?php echo $value;?>"<?php if($order === $value) echo " selected"; ?>><?php echo $name;?></option>
       <?php endforeach ?>
       </select>
