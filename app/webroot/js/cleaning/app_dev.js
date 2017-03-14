@@ -61,7 +61,7 @@ var AppSelection = {
       if (list) {
         var listData = JSON.parse(list);
       } else {
-        var listData = new Object;
+        var listData = new Array;
       }
       var listSelected = new Array;
       
@@ -124,7 +124,7 @@ var AppSelection = {
     if (list) {
       var listData = JSON.parse(list);
     } else {
-      var listData = new Object;
+      var listData = new Array;
     }
     var flg_add = true;
     
@@ -204,13 +204,16 @@ var AppSelection = {
     // チェックされているアイテムがなければボタンを有効/無効にする
     // cookieから選択されているリストを取得する
     var list = docCookies.getItem("mn_cleaning_list");
-    var listData = JSON.parse(list);
-    if (listData.length < 1) {
-      $(".item_confirm").addClass("disabled");
-    } else {
-      $("#flashMessage").slideUp("fast");
-      $("#flashMessage").remove();
-     $(".item_confirm").removeClass("disabled");
+    
+    if ( list ) {
+      var listData = JSON.parse(list);
+      if (listData.length < 1) {
+        $(".item_confirm").addClass("disabled");
+      } else {
+        $("#flashMessage").slideUp("fast");
+        $("#flashMessage").remove();
+        $(".item_confirm").removeClass("disabled");
+      }
     }
   },
 };
