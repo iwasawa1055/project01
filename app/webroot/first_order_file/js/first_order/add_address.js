@@ -26,7 +26,6 @@ var AppAddAdress =
                     dataType: 'json',
                     type: 'POST'
                 }).done(function (data, textStatus, jqXHR) {
-                    console.log('done');
                     $('#datetime_cd > option').remove();
                     // 成功時 お届け日時セット
                     elem_datetime.append($('<option>').html('以下からお選びください').val(''));
@@ -37,7 +36,6 @@ var AppAddAdress =
                     $('#select_delivery').val(JSON.stringify(data.results));
                 }).fail(function (data, textStatus, errorThrown) {
                     // 失敗時 お届け日時リセット
-                    console.log('fail');
                     $('#datetime_cd > option').remove();
                     $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
                 }).always(function (data, textStatus, returnedObject) {
@@ -86,7 +84,6 @@ var AppAddAdress =
                     dataType: 'json',
                     type: 'POST'
                 }).done(function (data, textStatus, jqXHR) {
-                    console.log('done');
                     $('#datetime_cd > option').remove();
                     // 成功時 お届け日時セット
                     elem_datetime.append($('<option>').html('以下からお選びください').val(''));
@@ -97,7 +94,6 @@ var AppAddAdress =
                     $('#select_delivery').val(JSON.stringify(data.results));
                 }).fail(function (data, textStatus, errorThrown) {
                     // 失敗時 お届け日時リセット
-                    console.log('fail');
                     $('#datetime_cd > option').remove();
                     $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
                 }).always(function (data, textStatus, returnedObject) {

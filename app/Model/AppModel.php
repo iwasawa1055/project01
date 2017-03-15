@@ -156,15 +156,10 @@ class AppModel extends Model
         return AppValid::isLoginPassword($value);
     }
 
-    public function checkFullWordSpace($_check)
+    public function isNotOnlySpace($_check)
     {
         $value = current($_check);
-        return AppValid::checkFullWordSpace($value);
+        return AppValid::isNotOnlySpace($value);
     }
 
-    public function checkHalfWordSpace($_check)
-    {
-        $value = current($_check);
-        return AppValid::checkHalfWordSpace($value);
-    }
 }

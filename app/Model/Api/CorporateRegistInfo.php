@@ -34,12 +34,8 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'company_name', 29]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'company_name']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'company_name']
             ],
         ],
@@ -57,14 +53,6 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => 'isFwKana',
                 'message' => ['isFwKana', 'company_name_kana']
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'company_name_kana']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
-                'message' => ['notBlank', 'company_name_kana']
-            ],
         ],
         'staff_name' => [
             'notBlank' => [
@@ -76,12 +64,8 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'staff_name', 29]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'staff_name']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'staff_name']
             ],
         ],
@@ -98,14 +82,6 @@ class CorporateRegistInfo extends ApiModel
             'isFwKana' => [
                 'rule' => 'isFwKana',
                 'message' => ['isFwKana', 'staff_name_kana']
-            ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'staff_name_kana']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
-                'message' => ['notBlank', 'staff_name_kana']
             ],
         ],
         'tel1' => [
@@ -188,12 +164,8 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => ['maxLength', 8],
                 'message' => ['maxLength', 'address1', 8]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'address1']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'address1']
             ],
         ],
@@ -207,12 +179,8 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => ['maxLength', 18],
                 'message' => ['maxLength', 'address2', 18]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'address2']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'address2']
             ],
         ],

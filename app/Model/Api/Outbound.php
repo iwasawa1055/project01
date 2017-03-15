@@ -84,12 +84,8 @@ class Outbound extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'lastname', 29]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'lastname']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'lastname']
             ],
         ],
@@ -107,14 +103,6 @@ class Outbound extends ApiModel
                 'rule' => 'isFwKana',
                 'message' => ['isFwKana', 'lastname_kana']
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'lastname_kana']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
-                'message' => ['notBlank', 'lastname_kana']
-            ],
         ],
         'firstname' => [
             'notBlank' => [
@@ -126,12 +114,8 @@ class Outbound extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'firstname', 29]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'firstname']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'firstname']
             ],
         ],
@@ -148,14 +132,6 @@ class Outbound extends ApiModel
             'isFwKana' => [
                 'rule' => 'isFwKana',
                 'message' => ['isFwKana', 'firstname_kana']
-            ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'firstname_kana']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
-                'message' => ['notBlank', 'firstname_kana']
             ],
         ],
         'tel1' => [
@@ -201,12 +177,8 @@ class Outbound extends ApiModel
                 'rule' => ['maxLength', 8],
                 'message' => ['maxLength', 'address1', 8]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'address1']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'address1']
             ],
         ],
@@ -220,12 +192,8 @@ class Outbound extends ApiModel
                 'rule' => ['maxLength', 18],
                 'message' => ['maxLength', 'address2', 18]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'address2']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'address2']
             ],
         ],

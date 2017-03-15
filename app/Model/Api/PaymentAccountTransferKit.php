@@ -96,12 +96,8 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'kit_lastname', 29]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'kit_lastname']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'kit_lastname']
             ],
         ],
@@ -114,14 +110,6 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => 'isFwKana',
                 'message' => ['isFwKana', 'kit_lastname_kana']
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'kit_lastname_kana']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
-                'message' => ['notBlank', 'kit_lastname_kana']
-            ],
         ],
         'firstname' => [
             'notBlank' => [
@@ -133,12 +121,8 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'kit_firstname', 29]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'kit_firstname']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'kit_firstname']
             ],
         ],
@@ -150,14 +134,6 @@ class PaymentAccountTransferKit extends ApiModel
             'isFwKana' => [
                 'rule' => 'isFwKana',
                 'message' => ['isFwKana', 'kit_firstname_kana']
-            ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'kit_firstname_kana']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
-                'message' => ['notBlank', 'kit_firstname_kana']
             ],
         ],
         'tel1' => [
@@ -203,12 +179,8 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => ['maxLength', 8],
                 'message' => ['maxLength', 'kit_address1', 8]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'kit_address1']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'kit_address1']
             ],
         ],
@@ -222,12 +194,8 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => ['maxLength', 18],
                 'message' => ['maxLength', 'kit_address2', 18]
             ],
-            'checkFullWordSpace' => [
-                'rule' => 'checkFullWordSpace',
-                'message' => ['notBlank', 'kit_address2']
-            ],
-            'checkHalfWordSpace' => [
-                'rule' => 'checkHalfWordSpace',
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'kit_address2']
             ],
         ],
