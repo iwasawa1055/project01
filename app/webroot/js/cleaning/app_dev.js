@@ -23,6 +23,8 @@ var AppCleaning = {
   b : function() {
     // クリアーボタンが押された時の処理
     $("#ClearSelected").click(function() {
+      // すべてのクッキーを削除する
+      docCookies.removeItem("mn_cleaning_list");
       $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked", false);
       AppSelection.calcTotal();
       AppSelection.check();
@@ -214,6 +216,8 @@ var AppSelection = {
         $("#flashMessage").remove();
         $(".item_confirm").removeClass("disabled");
       }
+    } else {
+        $(".item_confirm").addClass("disabled");
     }
   },
 };
