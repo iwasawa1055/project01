@@ -69,12 +69,20 @@ var AppSelection = {
     // initialize : 起動時の初期処理
     // cookieから選択されているリストを取得する
     var list = docCookies.getItem("mn_cleaning_list");
+    var session_list = sessionStorage.getItem("mn_cleaning_list");
+    
+    if ( !list || !session_list ) {
+        list = "";
+        docCookies.removeItem("mn_cleaning_list");
+        sessionStorage.removeItem("mn_cleaning_list");
+    }
     
     // cookieに選択リストがある場合
     // SelectedID(GET)からのパラメタ―がある場合
     if (list || $("#selected_id").val()) {
       // リストは「コンマ」区切りでItemID保管されているので分解
       if (list) {
+      console.log(list);
         var listData = list.split(",");
       } else {
         var listData = new Array;
