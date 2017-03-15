@@ -69,6 +69,7 @@
         <?php endforeach; ?>
         <!--loop end-->
       </ul>
+      <input type="hidden" name="order" id="order_info" ?>
       </form>
       <?php else : ?>
         <p class="form-control-static col-lg-12">対象のアイテムがみつかりませんでした。</p>

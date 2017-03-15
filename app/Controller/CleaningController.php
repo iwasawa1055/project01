@@ -97,10 +97,12 @@ class CleaningController extends MinikuraController
 
         // confirmからのバックの場合は選択を保持する
         if (isset($_COOKIE['mn_cleaning_list']) && $_COOKIE['mn_cleaning_list'] !== "") {
-            $selected_list = json_decode($_COOKIE['mn_cleaning_list'],TRUE);
+            //$selected_list = json_decode($_COOKIE['mn_cleaning_list'],TRUE);
+            $selected_list = explode(",",$_COOKIE['mn_cleaning_list']);
+
             // 選択されたアイテムを優先アイテムとして追加する
             foreach ($selected_list as $tmp) {
-                array_push($priorities, ["item_id" => $tmp['item_id']]);
+                array_push($priorities, ["item_id" => $tmp]);
             }
         }
         // 現在のページ指定
@@ -213,13 +215,13 @@ class CleaningController extends MinikuraController
         }
         
         $flg_error = false;
-        /*
         $params = [
-            "selected" => filter_input(INPUT_POST, "selected", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+           "order"        => filter_input(INPUT_POST, "order"),
+           //"selected" => filter_input(INPUT_POST, "selected", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
         ];
-        */
-        if (isset($_COOKIE['mn_cleaning_list'])) {
-            $selected_list = json_decode($_COOKIE['mn_cleaning_list'], true);
+        
+        if (isset($params['order'])) {
+            $selected_list = json_decode($params['order'], true);
         } else {
             $selected_list = null;
         }

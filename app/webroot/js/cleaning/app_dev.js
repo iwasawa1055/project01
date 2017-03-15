@@ -26,6 +26,7 @@ var AppCleaning = {
     $("#ClearSelected").click(function() {
       // すべてのクッキーを削除する
       docCookies.removeItem("mn_cleaning_list");
+      sessionStorage.removeItem("mn_cleaning_list");
       $("#itemlist .item .item-select input[type=checkbox]:checked").prop("checked", false);
       AppSelection.calcTotal();
       AppSelection.check();
@@ -45,6 +46,8 @@ var AppCleaning = {
           scrollTo($("#flashMessage"), -200);
         }
       } else {
+        var session_list = sessionStorage.getItem("mn_cleaning_list");
+        $("#order_info").val(session_list);
         $("#itemlist").submit();
       }
     });
@@ -72,7 +75,7 @@ var AppSelection = {
     if (list || $("#selected_id").val()) {
       // リストは「コンマ」区切りでItemID保管されているので分解
       if (list) {
-        var listData = JSON.parse(list);
+        var listData = list.split(",");
       } else {
         var listData = new Array;
       }
@@ -80,14 +83,14 @@ var AppSelection = {
       
       for (i=0; i<listData.length; i++) {
         // チェックボックスを処理のため、リストを作成をする
-        listSelected.push(listData[i].item_id);
+        listSelected.push(listData[i]);
       }
 
      // Itemlist内のアイテムのループ処理
       $("#itemlist .item .item-select input[type=checkbox]").each(function() {
         // 要素からitemIdを取得
         itemId = $(this).data("itemid");
-        
+
         if ($("#selected_id").val() === itemId) {
             $(this).prop("checked", true);
             AppSelection.addList(itemId, $(this).data("price"), $(this).val());
@@ -99,6 +102,8 @@ var AppSelection = {
         }
       });
       AppSelection.calcTotal();
+    } else {
+      sessionStorage.removeItem("mn_cleaning_list");
     }
     
     // リストデータの更新(金額の計算、数の表示）
@@ -135,7 +140,7 @@ var AppSelection = {
     
     // 既存のリストを整理する
     if (list) {
-      var listData = JSON.parse(list);
+      var listData = list.split(",");
     } else {
       var listData = new Array;
     }
@@ -143,42 +148,60 @@ var AppSelection = {
     
     for (i=0; i<listData.length; i++) {
       // チェックボックスを処理のため、リストを作成をする
-      if (_id == listData[i].item_id) {
+      if (_id == listData[i]) {
         flg_add = false;
         break;
       }
     }
-    
+
     if (flg_add) {
+      // SessionStogaeからリストを取得
+      var session_list = sessionStorage.getItem("mn_cleaning_list");
+      if (list) {
+        var slistData = JSON.parse(session_list);
+      } else {
+        var slistData = new Array;
+      }
+
       var new_value = {
         item_id       : _id,
         price          : _price,
         data           : _data
       };
-      listData.push(new_value);
-
+      slistData.push(new_value);
+      listData.push(_id);
+      
       // Cookieに保存
-      docCookies.setItem("mn_cleaning_list", JSON.stringify(listData));
+      docCookies.setItem("mn_cleaning_list", listData.join(","));
+      
+      // SessionStorageに詳細情報を収納
+      sessionStorage.setItem("mn_cleaning_list", JSON.stringify(slistData));
     }
   },
   delList : function(_id) {
     // delList : Cookieにリストから削除する
     // cookieから選択されているリストを取得する
     var list = docCookies.getItem("mn_cleaning_list");
+    var session_list = sessionStorage.getItem("mn_cleaning_list");
     
     // 既存のリストを整理する
     if ( list ) {
-      var listData = JSON.parse(list);
+      var listData = list.split(",");
+      var slistData = JSON.parse(session_list);
       var new_list = new Array;
+      var new_slist = new Array;
+      
       for (i=0; i<listData.length; i++) {
         // チェックボックスを処理のため、リストを作成をする
-        if (_id !== listData[i].item_id) {
+        if (_id !== listData[i]) {
           // リスト配列に追加する
           new_list.push(listData[i]);
+          new_slist.push(slistData[i]);
         }
       }
       // Cookieに保存
-      docCookies.setItem("mn_cleaning_list", JSON.stringify(new_list));
+      docCookies.setItem("mn_cleaning_list",new_list.join(","));
+      sessionStorage.setItem("mn_cleaning_list", JSON.stringify(new_slist));
     }
   },
   calcTotal : function() {
@@ -188,7 +211,7 @@ var AppSelection = {
     var totalselected = 0;
 
     // cookieから選択されているリストを取得する
-    var list = docCookies.getItem("mn_cleaning_list");
+    var list = sessionStorage.getItem("mn_cleaning_list");
     
     // cookieに選択リストがある場合
     if (list) {
@@ -219,7 +242,7 @@ var AppSelection = {
     var list = docCookies.getItem("mn_cleaning_list");
     
     if ( list ) {
-      var listData = JSON.parse(list);
+      var listData = list.split(",");
       if (listData.length < 1) {
         $(".item_confirm").addClass("disabled");
       } else {
