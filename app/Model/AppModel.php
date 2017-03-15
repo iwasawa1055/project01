@@ -161,4 +161,10 @@ class AppModel extends Model
         $value = current($_check);
         return AppValid::checkFullWordSpace($value);
     }
+
+    public function checkHalfWordSpace($_check)
+    {
+        $value = current($_check);
+        return AppValid::checkHalfWordSpace($value);
+    }
 }

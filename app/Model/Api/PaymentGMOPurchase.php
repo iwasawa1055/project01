@@ -57,6 +57,10 @@ class PaymentGMOPurchase extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'kit_address_name']
             ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'kit_address_name']
+            ],
         ],
         'tel1' => [
             'notBlank' => [
@@ -92,6 +96,10 @@ class PaymentGMOPurchase extends ApiModel
             ],
             'checkFullWordSpace' => [
                 'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'kit_address']
+            ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
                 'message' => ['notBlank', 'kit_address']
             ],
         ],

@@ -86,6 +86,10 @@ class OutboundLimit extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'lastname']
             ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'lastname']
+            ],
         ],
         'lastname_kana' => [
             'notBlank' => [
@@ -105,6 +109,10 @@ class OutboundLimit extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'lastname_kana']
             ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'lastname_kana']
+            ],
         ],
         'firstname' => [
             'notBlank' => [
@@ -118,6 +126,10 @@ class OutboundLimit extends ApiModel
             ],
             'checkFullWordSpace' => [
                 'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'firstname']
+            ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
                 'message' => ['notBlank', 'firstname']
             ],
         ],
@@ -137,6 +149,10 @@ class OutboundLimit extends ApiModel
             ],
             'checkFullWordSpace' => [
                 'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'firstname_kana']
+            ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
                 'message' => ['notBlank', 'firstname_kana']
             ],
         ],
@@ -187,7 +203,10 @@ class OutboundLimit extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'address1']
             ],
-
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'address1']
+            ],
         ],
         'address2' => [
             'notBlank' => [
@@ -203,7 +222,10 @@ class OutboundLimit extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'address2']
             ],
-
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'address2']
+            ],
         ],
         'address3' => [
             'maxLength' => [

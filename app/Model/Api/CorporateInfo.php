@@ -36,6 +36,10 @@ class CorporateInfo extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'company_name']
             ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'company_name']
+            ],
         ],
         'company_name_kana' => [
             'notBlank' => [
@@ -55,6 +59,10 @@ class CorporateInfo extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'company_name_kana']
             ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'company_name_kana']
+            ],
         ],
         'staff_name' => [
             'notBlank' => [
@@ -68,6 +76,10 @@ class CorporateInfo extends ApiModel
             ],
             'checkFullWordSpace' => [
                 'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'staff_name']
+            ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
                 'message' => ['notBlank', 'staff_name']
             ],
         ],
@@ -87,6 +99,10 @@ class CorporateInfo extends ApiModel
             ],
             'checkFullWordSpace' => [
                 'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'staff_name_kana']
+            ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
                 'message' => ['notBlank', 'staff_name_kana']
             ],
         ],
@@ -137,6 +153,10 @@ class CorporateInfo extends ApiModel
                 'rule' => 'checkFullWordSpace',
                 'message' => ['notBlank', 'address1']
             ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
+                'message' => ['notBlank', 'address1']
+            ],
         ],
         'address2' => [
             'notBlank' => [
@@ -150,6 +170,10 @@ class CorporateInfo extends ApiModel
             ],
             'checkFullWordSpace' => [
                 'rule' => 'checkFullWordSpace',
+                'message' => ['notBlank', 'address2']
+            ],
+            'checkHalfWordSpace' => [
+                'rule' => 'checkHalfWordSpace',
                 'message' => ['notBlank', 'address2']
             ],
         ],
