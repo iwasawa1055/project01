@@ -72,8 +72,8 @@ input[type=search]:focus {
 }
 .data-sort,
 .az-sort {
-      font-size: 11px;
-      font-size: 1.1rem;
+	font-size: 11px;
+	font-size: 1.1rem;
 	appearance: none;
 	background: #eeeeee;
 	height: 4rem;
@@ -279,7 +279,7 @@ opacity: 0
 	content: "\f058";
 	font-size: 28px;
 	font-size: 2.8rem;
-	color: #eeeeee;
+	color: #ffdddd;
 }
 .grid .item-select .checkbox:checked + .check-icon:before {
 	content: "\f058";
