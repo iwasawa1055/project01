@@ -77,15 +77,17 @@ class CleaningController extends MinikuraController
                 "order"       => filter_input(INPUT_POST, "order"),
                 "direction" => filter_input(INPUT_POST, "direction"),
             ];
-            CakeSession::write('app.data.session_cleaning_search', $search_options);
+            //CakeSession::write('app.data.session_cleaning_search', $search_options);
         }
       
         // resetが設定されている場合はすべてリセットする
+        /*
         if (isset($_COOKIE['mn_cleaning_reset'])) {
             // 選択リストCookieを削除する
             setcookie("mn_cleaning_list", "", time() - 3600);
             setcookie("mn_cleaning_reset", "", time() - 3600);
         } 
+        */
 
         // 引数でidがリターンされた場合はすでにチェックを入れる
         if (!is_null($selected_id)) {
@@ -95,9 +97,10 @@ class CleaningController extends MinikuraController
 
         // confirmからのバックの場合は選択を保持する
         if (isset($_COOKIE['mn_cleaning_list']) && $_COOKIE['mn_cleaning_list'] !== "") {
+            $selected_list = json_decode($_COOKIE['mn_cleaning_list'],TRUE);
             // 選択されたアイテムを優先アイテムとして追加する
-            foreach (explode(",", $_COOKIE['mn_cleaning_list']) as $tmp) {
-                array_push($priorities, ["item_id" => $tmp]);
+            foreach ($selected_list as $tmp) {
+                array_push($priorities, ["item_id" => $tmp['item_id']]);
             }
         }
         // 現在のページ指定
@@ -210,16 +213,23 @@ class CleaningController extends MinikuraController
         }
         
         $flg_error = false;
+        /*
         $params = [
             "selected" => filter_input(INPUT_POST, "selected", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
         ];
-
+        */
+        if (isset($_COOKIE['mn_cleaning_list'])) {
+            $selected_list = json_decode($_COOKIE['mn_cleaning_list'], true);
+        } else {
+            $selected_list = null;
+        }
+        
         // 選択リストがない場合はエラー
-        if (is_null($params['selected'])) {
+        if (is_null($selected_list)) {
             $flg_error = true;
         } else {
             // 選択リストから数を確認する
-            if (count($params['selected']) < 1) {
+            if (count($selected_list) < 1) {
                 $flg_error = true;
             }
         }
@@ -235,11 +245,11 @@ class CleaningController extends MinikuraController
         $totalprice = 0;
 
         // 選択データを整理してセッション用データを作成する
-        foreach ($params['selected'] as $item) {
+        foreach ($selected_list as $item) {
             $data = array();
             
             // アイテムデータ文字列を分解する
-            list($data['item_id'], $data['item_group_cd'], $data['box_id'], $data['product_cd'], $data['image_url']) = explode(",", $item, 5);
+            list($data['item_id'], $data['item_group_cd'], $data['box_id'], $data['product_cd'], $data['image_url']) = explode(",", $item['data'], 5);
 
             // アイテムの価格を設定
             // 金額情報はConfig/EnvConfig/[Development]/AppConfig.phpを参照
