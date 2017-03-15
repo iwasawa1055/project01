@@ -4,6 +4,7 @@ $(function () {
   AppCleaning.a();
   AppCleaning.b();
   AppCleaning.c();
+  AppCleaning.d();
 });
 
 var AppCleaning = {
@@ -46,6 +47,16 @@ var AppCleaning = {
       }
     });
   },
+  d : function() {
+      $(function () {
+        $('#ItemSearchKeyword').focus(function () {
+          if ( !$('.btn-option').hasClass("active") ) {
+            $('.item-sort').toggle('fast');
+            $('.btn-option').toggleClass("active");
+          }
+        });
+      });
+  }
 }
 
 var AppSelection = {
