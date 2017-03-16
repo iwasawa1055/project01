@@ -13,6 +13,17 @@ class CleaningController extends MinikuraController
     const MODEL_NAME_ITEM = 'InfoItem';
     const PER_PAGE = 20;
 
+    const DEFAULTS_SORT_KEY = [
+        'box.product_cd' => true,
+        'box.kit_cd' => true,
+        'box.box_id' => true,
+        'box.box_name' => true,
+        'item_id' => true,
+        'item_name' => true,
+        'item_status' => true,
+        'item_group_cd' => true,
+    ];
+
     /**
      * 制御前段処理.
      */
@@ -98,7 +109,7 @@ class CleaningController extends MinikuraController
         // confirmからのバックの場合は選択を保持する
         if (isset($_COOKIE['mn_cleaning_list']) && $_COOKIE['mn_cleaning_list'] !== "") {
             //$selected_list = json_decode($_COOKIE['mn_cleaning_list'],TRUE);
-            $selected_list = explode(",",$_COOKIE['mn_cleaning_list']);
+            $selected_list = explode(",", $_COOKIE['mn_cleaning_list']);
 
             // 選択されたアイテムを優先アイテムとして追加する
             foreach ($selected_list as $tmp) {
@@ -126,8 +137,73 @@ class CleaningController extends MinikuraController
         }
         
         // 保管品リストを取得する
-        // sort_key:ソートキー、 where:リスティング条件、prioritiesは優先アイテム指定
-        $results = $this->InfoItem->getListWhere($sort_key, $where, $priorities);
+        //* アイテム取得、 中でアイテム画像とボックス情報取得
+        $list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $find_list = [];
+        // リストからクリーニングパックを除外する
+        foreach ($list as $item) {
+            $notTrade = true;
+            $notMatch = false;
+            $value = [PRODUCT_CD_CLEANING_PACK];
+            if (!in_array(Hash::get($item['box'], 0), $value, true)) {
+                $notMatch = true;
+            }
+            
+            if (!empty($item['sales'])) {
+                foreach($item['sales'] as $sales) {
+                    if($sales['sales_status'] >= SALES_STATUS_ON_SALE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED ) {
+                        $notTrade = false;
+                        break;
+                    }
+                }
+            }
+            if ($notMatch && $notTrade) {
+                array_push($find_list,$item);
+            }
+        }
+        $list = $find_list;
+
+        // sort
+        HashSorter::sort($list, ($sort_key + self::DEFAULTS_SORT_KEY));
+
+        //* 優先項目がある場合はトップに持ってくる
+        // 優先項目で指定されているキーを収取する
+        $indexKeys = [];
+        $indexes = [];
+        foreach ($priorities as $tmp) {
+            array_push($indexKeys, key($tmp));
+        }
+        $indexKeys = array_unique($indexKeys);
+        
+        // Indexキーをもとにリストからインデックスを生成する
+        foreach ($list as $itemNo=>$item) {
+            foreach ($indexKeys as $indexKey) {
+                if (isset($item[$indexKey])) {
+                    $indexes[$indexKey][$item[$indexKey]] = $itemNo;
+                }
+            }
+        }
+       
+        // 優先項目を取得する
+        $priorityList = [];
+        foreach ($priorities as $pItem) {
+            $searchKey = key($pItem);
+            if (isset($indexes[$searchKey][$pItem[$searchKey]])) {
+                $_indexNo = $indexes[$searchKey][$pItem[$searchKey]];
+
+                if (isset($list[$_indexNo])) {
+                    array_push($priorityList, $list[$_indexNo]);
+                    // 既存のリストから削除
+                    unset($list[$_indexNo]);
+                }
+            }
+        }
+        // リストを結合する
+        $results = array_merge($priorityList, $list);
+
+        // 空いている要素があるため、ソートする
+        ksort($results);
+
         $results = $this->InfoItem->editBySearchTerm($results, $search_options);
 
         // 全体のアイテム数を取得

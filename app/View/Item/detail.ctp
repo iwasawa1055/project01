@@ -58,7 +58,12 @@
                         <?php /*クリーニング*/ ?>
                         <?php if (!empty($linkToCleaning)): ?>
                         <span class="col-xs-12 col-lg-12">
+                        <?php if ($flg_cleaning) :?>
                             <a class="btn btn-info btn-md btn-block btn-detail btn-regist" href="<?php echo $linkToCleaning; ?>">クリーニングを申し込む</a>
+                        <?php else : ?>
+                            <a class="btn btn-info btn-md btn-block btn-detail btn-regist">クリーニングを申し込む</a>
+                            <p class="error-message">販売アイテムは選択できません。</p>
+                        <?php endif ?>
                         </span>
                         <?php endif; ?>
 
