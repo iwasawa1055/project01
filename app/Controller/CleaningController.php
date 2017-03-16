@@ -138,14 +138,15 @@ class CleaningController extends MinikuraController
         
         // 保管品リストを取得する
         //* アイテム取得、 中でアイテム画像とボックス情報取得
-        $list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $tmp_list = $this->InfoItem->apiGetResultsWhere([], $where);
         $find_list = [];
         // リストからクリーニングパックを除外する
-        foreach ($list as $item) {
+        foreach ($tmp_list as $item) {
             $notTrade = true;
             $notMatch = false;
             $value = [PRODUCT_CD_CLEANING_PACK];
-            if (!in_array(Hash::get($item['box'], 0), $value, true)) {
+            
+            if (!in_array($item['box']['product_cd'], $value, true)) {
                 $notMatch = true;
             }
             
@@ -161,10 +162,10 @@ class CleaningController extends MinikuraController
                 array_push($find_list,$item);
             }
         }
-        $list = $find_list;
+        $tmp_list = $find_list;
 
         // sort
-        HashSorter::sort($list, ($sort_key + self::DEFAULTS_SORT_KEY));
+        HashSorter::sort($tmp_list, ($sort_key + self::DEFAULTS_SORT_KEY));
 
         //* 優先項目がある場合はトップに持ってくる
         // 優先項目で指定されているキーを収取する
@@ -176,7 +177,7 @@ class CleaningController extends MinikuraController
         $indexKeys = array_unique($indexKeys);
         
         // Indexキーをもとにリストからインデックスを生成する
-        foreach ($list as $itemNo=>$item) {
+        foreach ($tmp_list as $itemNo=>$item) {
             foreach ($indexKeys as $indexKey) {
                 if (isset($item[$indexKey])) {
                     $indexes[$indexKey][$item[$indexKey]] = $itemNo;
@@ -191,15 +192,15 @@ class CleaningController extends MinikuraController
             if (isset($indexes[$searchKey][$pItem[$searchKey]])) {
                 $_indexNo = $indexes[$searchKey][$pItem[$searchKey]];
 
-                if (isset($list[$_indexNo])) {
-                    array_push($priorityList, $list[$_indexNo]);
+                if (isset($tmp_list[$_indexNo])) {
+                    array_push($priorityList, $tmp_list[$_indexNo]);
                     // 既存のリストから削除
-                    unset($list[$_indexNo]);
+                    unset($tmp_list[$_indexNo]);
                 }
             }
         }
         // リストを結合する
-        $results = array_merge($priorityList, $list);
+        $results = array_merge($priorityList, $tmp_list);
 
         // 空いている要素があるため、ソートする
         ksort($results);
