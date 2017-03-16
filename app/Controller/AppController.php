@@ -93,4 +93,180 @@ class AppController extends Controller
 
         return mb_convert_kana(str_replace($phyhen, '', $str), 'nhk', "utf-8");
     }
+
+    /**
+     * ログイン時、ログイン済 ユーザ状態によって遷移先を変更
+     *
+     * @access    public
+     * @param
+     * @return    遷移先へ遷移
+     */
+    public function _switchRedirct()
+    {
+        // 1 Sneaker
+        if ($this->Customer->isSneaker()) {
+
+            // エントリユーザかどうか
+            if ($this->Customer->isEntry()) {
+                CakeLog::write(DEBUG_LOG, '_switchRedirct isSneaker isEntry');
+                return $this->redirect(['controller' => 'order', 'action' => 'add']);
+            }
+
+            // Sneakerで預けているboxが存在するか
+            $summary = $this->InfoBox->getProductSummary(false);
+
+            // スニーカが収納されている場合
+            if (!empty($summary)) {
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker on item ');
+                return $this->redirect(['controller' => 'item', 'action' => 'index']);
+            }
+
+            // ボックスを持っている場合
+            $no_inbound_box = $this->InfoBox->getListForInbound();
+            if (!empty($no_inbound_box)) {
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker no_inbound_box');
+                return $this->redirect(['controller' => 'inbound', 'action' => 'box/add']);
+            }
+
+            // アイテムなし、ボックス未購入
+            // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl isSneaker order ');
+            return $this->redirect(['controller' => 'order', 'action' => 'add']);
+
+        }
+
+        // 直前のリファラーが初回購入動線の場合、購入ページに遷移
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index'], true)) {
+
+            $referer = $_SERVER['HTTP_REFERER'];
+            CakeLog::write(DEBUG_LOG, '_switchRedirctUrl'  . 'before FirstOrder referer [' . $referer . ']');
+
+            // リファラ確認スイッチフラグを立てて、リファラー遷移後の再リファラ処理を防ぐ
+            CakeSession::write('referer_switch_redirct_flg', true);
+
+            CakeSession::delete('app.data.session_referer');
+            return $this->redirect(['controller' => 'order', 'action' => 'add']);
+        }
+
+        // 遷移元がLPのラインナップ(購入動線の場合)で、購入へリダイレクト
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $referer = $_SERVER['HTTP_REFERER'];
+
+            // リファラ確認スイッチフラグを立てて、リファラー遷移後の再リファラ処理を防ぐ
+            CakeSession::write('referer_switch_redirct_flg', true);
+
+            // order判定 フラグ
+            $is_redirct = false;
+
+            // order判定 mono詳細
+            $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/mono.html';
+            if (strpos($referer, $static_content_url_trade) !== false) {
+                $is_redirct = true;
+            }
+
+            // order判定 mono詳細
+            $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/hako.html';
+            if (strpos($referer, $static_content_url_trade) !== false) {
+                $is_redirct = true;
+            }
+
+            // order判定 mono詳細
+            $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/cleaning.html';
+            if (strpos($referer, $static_content_url_trade) !== false) {
+                $is_redirct = true;
+            }
+
+            // order判定 フラグ有効の場合、画面遷移
+            if ($is_redirct) {
+                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono referer order ');
+                return $this->redirect(['controller' => 'order', 'action' => 'add']);
+            }
+        }
+
+        // 以下、ユーザ状態により遷移先を変更        // エントリーユーザ
+        if (!$this->Customer->isEntry()) {
+
+            // ボックスの状態を取得
+            $summary = $this->InfoBox->getProductSummary(false);
+
+            // 2 アイテム状態を確認
+            // 預けていない場合$summaryは空
+            if (empty($summary)) {
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl summary empty  ');
+                return $this->redirect(['controller' => 'order', 'action' => 'add']);
+            }
+
+            // 3 MONOを預けている 遷移元確認
+            // 4 入庫中アイテムあり
+            if (array_key_exists(PRODUCT_CD_MONO, $summary)) {
+                if (isset($_SERVER['HTTP_REFERER'])) {
+
+                    $referer = $_SERVER['HTTP_REFERER'];
+
+                    // trade判定 静的ページtradeから遷移した場合
+                    $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/sale.html';
+                    if (strpos($referer, $static_content_url_trade) !== false) {
+                        CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono referer trade ');
+                        return $this->redirect(['controller' => 'sale', 'action' => 'index']);
+                    }
+
+                    // travel判定 静的ページtravelから遷移した場合
+                    $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/travel.html';
+                    if (strpos($referer, $static_content_url_trade) !== false) {
+                        CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono  referer travel ');
+                        return $this->redirect(['controller' => 'travel', 'action' => 'mono']);
+                    }
+                }
+
+                // 遷移元がオプション静的ページでない場合 アイテム一覧に遷移
+                return $this->redirect(['controller' => 'item', 'action' => 'index']);
+            }
+
+            // monoがない場合 静的オプションから遷移してきた場合購入
+            if (isset($_SERVER['HTTP_REFERER'])) {
+
+                // order判定 フラグ
+                $is_order_redirct = false;
+
+                $referer = $_SERVER['HTTP_REFERER'];
+
+                // trade判定 静的ページtradeから遷移した場合
+                $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/sale.html';
+                if (strpos($referer, $static_content_url_trade) !== false) {
+                    $is_order_redirct = true;
+                }
+
+                // travel判定 静的ページtravelから遷移した場合
+                $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';
+                if (strpos($referer, $static_content_url_travel) !== false) {
+                    $is_order_redirct = true;
+                }
+
+                // monoがない場合でオプションページから遷移してきた場合、ボックス購入に遷移
+                if ($is_order_redirct) {
+                    CakeLog::write(DEBUG_LOG, '_switchRedirctUrl onne mono  referer option ');
+                    return $this->redirect(['controller' => 'order', 'action' => 'add']);
+                }
+            }
+
+            // 5 入庫中ボックスあり
+            if (!empty($summary)) {
+                // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on box');
+                return $this->redirect(['controller' => 'box', 'action' => 'index']);
+            }
+
+            // 6 未入庫ボックスあり
+            $no_inbound_box = $this->InfoBox->getListForInbound();
+            if (!empty($no_inbound_box)) {
+                CakeLog::write(DEBUG_LOG, '_switchRedirctUrl no_inbound_box');
+                return $this->redirect(['controller' => 'inbound', 'action' => 'box/add']);
+            }
+        }
+
+        // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl None-aggressive user');
+        return $this->redirect(['controller' => 'order', 'action' => 'add']);
+    }
+
+    private function _checkRefererOptionUrlsSwitchRedirct() {
+
+    }
 }

@@ -74,6 +74,30 @@ class MinikuraController extends AppController
                 return $this->redirect(['controller' => 'login', 'action' => 'index', 'customer' => false, '?' => $set_param]);
             }
 
+            // リファラ確認スイッチフラグが立っていないこと
+            if(is_null(CakeSession::read('referer_switch_redirct_flg'))) {
+
+                // リファラ確認
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    $referer = $_SERVER['HTTP_REFERER'];
+                    $static_content_url = Configure::read('site.static_content_url');
+                    CakeLog::write(DEBUG_LOG, 'MinikuraController'  . 'referer [' . $referer . '] static_content_url [' . $static_content_url . ']');
+
+                    if (strpos($referer, $static_content_url) !== false) {
+                        CakeLog::write(DEBUG_LOG, 'MinikuraController referer _switchRedirct ');
+
+                        // リファラ確認スイッチフラグを立てて、リファラー遷移後の再リファラ処理を防ぐ
+                        CakeSession::write('referer_switch_redirct_flg', true);
+
+                        // ユーザ状態によって遷移先を変更
+                        $this->_switchRedirct();
+                    }
+                }
+            } else {
+                // リファラ確認スイッチフラグを削除
+                CakeSession::delete('referer_switch_redirct_flg');
+            }
+
             // 負債ユーザ遷移制限
             if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
                 if ($this->Customer->hasCreditCard()) {
