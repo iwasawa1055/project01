@@ -54,7 +54,6 @@
                         </span>
                         <?php endif; ?>
 
-
                         <?php /*クリーニング*/ ?>
                         <?php if (!empty($linkToCleaning)): ?>
                         <span class="col-xs-12 col-lg-12">

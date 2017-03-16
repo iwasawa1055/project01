@@ -259,7 +259,7 @@ class ItemController extends MinikuraController
         // クリーニング可能フラグ
         $flgCleaning = true;
         if (!empty($sales)) {
-            if($sales['sales_status'] >= SALES_STATUS_ON_SALE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED ) {
+            if($sales['sales_status'] >= SALES_STATUS_ON_SALE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED) {
                 $flgCleaning = false;
             }
         }
