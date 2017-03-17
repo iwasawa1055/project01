@@ -43,7 +43,8 @@
       </div>
     </div>
     <?php endif; ?>
-    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_')) : ?>
+    <!-- RECOMMEND -->
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
     <div class="lineup-box">
       <div class="medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
       <h3>お片付けパック</h3>
@@ -55,7 +56,7 @@
         <p class="price">ボックス代金<span>500円/5箱</span>
         </p>
         <p class="box-caption">引っ越し、片付けに最適！お得な５枚パック！</p>
-        <p class="select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('OrderTotal.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <p class="select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
       <a href="#" class="btn-select" data-remodal-target="modal-recommend"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
       <div class="form">
@@ -253,7 +254,7 @@
       <h3>お片付けパック</h3>
       <select class="item-number js-item-number js-item-hako_limited_ver1" data-name="hako_limited_ver1" data-box_type="hako_limited_ver1">
         <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-        <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.cleaning.cleaning') == $i ? ' selected' : '' ;?>><?php echo h($i);?>パック</option>
+        <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') == $i ? ' selected' : '' ;?>><?php echo h($i);?>パック</option>
         <?php endfor;?>
       </select>
     </div>
@@ -261,7 +262,7 @@
     <p class="caption">引っ越し、片付けに最適！お得な５枚パック！</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-  <a class="btn-submit" href="adress.php">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 </div>
 
 <?php echo $this->element('FirstOrder/footer'); ?>

@@ -739,6 +739,12 @@ class AppValid
 						$ret[$name] = 'ボックスを選択してください。';
 					}
 					break;
+				// TODO wada 2017.3.17 ボックスバリデーションcaseをまとめるか検討
+				case $name === 'select_oreder_hako_limited_ver1':
+					if ($value === 0) {
+						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
 			}
 		}
 

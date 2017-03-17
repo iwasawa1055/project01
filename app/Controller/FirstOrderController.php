@@ -147,6 +147,9 @@ class FirstOrderController extends MinikuraController
             case $lp_option === 'cleaning':
                 $kit_select_type = 'cleaning';
                 break;
+            case $lp_option === 'hako_limited_ver1':
+                $kit_select_type = 'hako_limited_ver1';
+                break;
             case $lp_option === 'all':
                 $kit_select_type = 'all';
                 break;
@@ -197,13 +200,15 @@ class FirstOrderController extends MinikuraController
                 $Order = $this->_set_mono_order($Order);
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
                 $Order = $this->_set_cleaning_order($Order);
+                $Order = $this->_setHakoLimitedVer1Order($Order);
 
                 // 箱選択されているか
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['hako_limited_ver1']['hako_limited_ver1'])) === 0) {
                     $params = array(
                         'select_oreder_mono' => $OrderTotal['mono_num'],
                         'select_oreder_hako' => $OrderTotal['hako_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
+                        'select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1']
                     );
                 }
                 break;
@@ -225,6 +230,11 @@ class FirstOrderController extends MinikuraController
                 $Order = $this->_set_starter_order($Order);
                 $params = array('select_starter_kit' => $Order['starter']['starter']);
                 break;
+            case $kit_select_type === 'hako_limited_ver1':
+                $Order = $this->_setHakoLimitedVer1Order($Order);
+                $params = array('select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1']);
+                break;
+            //hako_limited_ver1
             default:
                 break;
         }
@@ -688,6 +698,16 @@ class FirstOrderController extends MinikuraController
                         $kit_params[] = KIT_CD_STARTER_MONO.':1';
                     }
 
+                    if($param === 'hako_limited_ver1') {
+                        // 先頭のコードのみ料金が返ってくる
+                        $code = KIT_CD_HAKO_LIMITED_VER1;
+                        $FirstOrderList[$code]['number']    = $value;
+                        $FirstOrderList[$code]['kit_name']  = 'お片付けパック';
+                        $FirstOrderList[$code]['price'] = 0;
+                        $hako_limited_ver1_num = $value * 5;
+                        $kit_params[] = KIT_CD_HAKO_LIMITED_VER1.':' . $hako_limited_ver1_num;
+                    }
+
                     // スタータキット以外まとめて処理
                     if (array_key_exists ($param, $kit_code)) {
                         //
@@ -912,6 +932,8 @@ class FirstOrderController extends MinikuraController
         $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
+        // HAKOお片付けキットは１パック 5箱
+        $gmo_kit_card['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
         $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
         $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('Credit.security_cd'));
         $gmo_kit_card['address_id']    = '';
@@ -929,7 +951,8 @@ class FirstOrderController extends MinikuraController
                     KIT_CD_MONO_BOOK,
                     KIT_CD_STARTER_MONO,
                     KIT_CD_STARTER_MONO_APPAREL,
-                    KIT_CD_STARTER_MONO_BOOK
+                    KIT_CD_STARTER_MONO_BOOK,
+                    KIT_CD_HAKO_LIMITED_VER1,
                 ],
             ],
             PRODUCT_CD_HAKO => [
@@ -951,6 +974,7 @@ class FirstOrderController extends MinikuraController
             KIT_CD_STARTER_MONO          => 'starter_mono_num',
             KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
             KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
+            KIT_CD_HAKO_LIMITED_VER1     => 'hako_limited_ver1_num',
         ];
         $kit_params = [];
         foreach ($productKitList as $product) {
@@ -1115,6 +1139,15 @@ class FirstOrderController extends MinikuraController
     private function _set_starter_order($Order)
     {
         $Order['starter']['starter'] = (int)filter_input(INPUT_POST, 'starter');
+        return $Order;
+    }
+
+    /**
+     * kit box starter set
+     */
+    private function _setHakoLimitedVer1Order($Order)
+    {
+        $Order['hako_limited_ver1']['hako_limited_ver1'] = (int)filter_input(INPUT_POST, 'hako_limited_ver1');
         return $Order;
     }
 
