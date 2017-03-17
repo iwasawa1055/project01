@@ -81,10 +81,10 @@ class MinikuraController extends AppController
                 if (isset($_SERVER['HTTP_REFERER'])) {
                     $referer = $_SERVER['HTTP_REFERER'];
                     $static_content_url = Configure::read('site.static_content_url');
-                    CakeLog::write(DEBUG_LOG, 'MinikuraController'  . 'referer [' . $referer . '] static_content_url [' . $static_content_url . ']');
+                    // CakeLog::write(DEBUG_LOG, 'MinikuraController'  . ' referer [' . $referer . '] static_content_url [' . $static_content_url . ']');
 
                     if (strpos($referer, $static_content_url) !== false) {
-                        CakeLog::write(DEBUG_LOG, 'MinikuraController referer _switchRedirct ');
+                        // CakeLog::write(DEBUG_LOG, 'MinikuraController referer _switchRedirct ');
 
                         // リファラ確認スイッチフラグを立てて、リファラー遷移後の再リファラ処理を防ぐ
                         CakeSession::write('referer_switch_redirct_flg', true);

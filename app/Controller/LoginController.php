@@ -55,6 +55,9 @@ class LoginController extends MinikuraController
                 return $this->render('index');
             }
         } else if ($this->Customer->isLogined()) {
+            // リファラ確認スイッチフラグを立てて、リファラー遷移後の再リファラ処理を防ぐ
+            CakeSession::write('referer_switch_redirct_flg', true);
+
             // ログイン済
             $this->_switchRedirct();
         } else {
