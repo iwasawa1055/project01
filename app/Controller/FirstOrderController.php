@@ -526,13 +526,6 @@ class FirstOrderController extends MinikuraController
             // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' display_alliance_cd is starter_kit');
         }
 
-        // 季節HAKOセットの場合 非表示
-        $Order = CakeSession::read('Order');
-        if ($Order['hako_limited_ver1']['hako_limited_ver1'] > 0) {
-            $display_alliance_cd = false;
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' display_alliance_cd is hako_limited_ver1');
-        }
-
         $this->set('display_alliance_cd', $display_alliance_cd);
 
         //* session referer set
