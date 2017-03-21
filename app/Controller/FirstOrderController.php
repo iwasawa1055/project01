@@ -132,7 +132,7 @@ class FirstOrderController extends MinikuraController
 
         $lp_option = CakeSession::read(Configure::read('app.lp_option.param'));
         $kit_select_type = 'all';
-/*        switch (true) {
+ /*       switch (true) {
             case $lp_option === 'mono':
                 // 紹介コードが有る場合 mono のみ表示 そうでない場合、スターターキット
                 if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
@@ -518,6 +518,23 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('Email', $Email);
         }
 
+        // 紹介コードを表示しないパターン
+        $display_alliance_cd = true;
+        // スターターキットの場合 非表示
+        if (CakeSession::read('kit_select_type') === 'starter_kit') {
+            $display_alliance_cd = false;
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' display_alliance_cd is starter_kit');
+        }
+
+        // 季節HAKOセットの場合 非表示
+        $Order = CakeSession::read('Order');
+        if ($Order['hako_limited_ver1']['hako_limited_ver1'] > 0) {
+            $display_alliance_cd = false;
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' display_alliance_cd is hako_limited_ver1');
+        }
+
+        $this->set('display_alliance_cd', $display_alliance_cd);
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
@@ -633,7 +650,6 @@ class FirstOrderController extends MinikuraController
             $this->redirect('add_email');
             return;
         }
-        
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
