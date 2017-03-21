@@ -120,7 +120,7 @@ class FirstOrderController extends MinikuraController
         $order_option = CakeSession::read('order_option');
         $kit_select_type = 'all';
         switch (true) {
-            case $order_option === 'mono':
+/*            case $order_option === 'mono':
                 // 紹介コードが有る場合 mono のみ表示 そうでない場合、スターターキット
                 if (!is_null(CakeSession::read('order_code'))) {
                     $kit_select_type = 'mono';
@@ -137,7 +137,7 @@ class FirstOrderController extends MinikuraController
             case $order_option === 'all':
                 $kit_select_type = 'all';
                 break;
-            case $order_option === 'sneaker':
+*/          case $order_option === 'sneaker':
                 $kit_select_type = 'sneaker';
                 break;
             default:
@@ -803,7 +803,7 @@ class FirstOrderController extends MinikuraController
         }
 
         if (!$check_address_datetime_cd) {
-            $this->Flash->validation('お届け希望日時を選択してください。',
+            $this->Flash->validation('お届け希望日時をご確認ください。',
                 ['key' => 'datetime_cd']);
             CakeLog::write(DEBUG_LOG,
                 $this->name . '::' . $this->action . ' check_address_datetime_cd error');
