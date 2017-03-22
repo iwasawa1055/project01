@@ -215,6 +215,14 @@ class LoginController extends MinikuraController
 
         }
 
+        // 直前のリファラーの状態で遷移先を変更する
+        // 直前のリファラーが購入動線の場合、購入ページに遷移
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index'], true)) {
+            CakeSession::delete('app.data.session_referer');
+            return $this->redirect(['controller' => 'order', 'action' => 'add']);
+        }
+
+        // 以下、ユーザ状態により遷移先を変更
         // エントリーユーザ
         if (!$this->Customer->isEntry()) {
 

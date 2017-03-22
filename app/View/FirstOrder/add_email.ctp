@@ -28,7 +28,7 @@
     </section>
   <?php endif; ?>
 
-  <form method="post" action="/first_order/confirm_email">
+  <form method="post" action="/first_order/confirm_email" novalidate>
   <section id="adress">
     <div class="wrapper">
       <?php if ($is_logined) : ?>
@@ -39,7 +39,7 @@
       <?php else : ?>
         <div class="form">
           <label>メールアドレス<span class="required">※</span><br><span>半角英数記号でご入力ください。</span></label>
-          <input type="email" class="mail focused" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>">
+          <input type="url" class="mail focused" placeholder="terrada@minikura.com" size="28" maxlength="50" name="email" value="<?php echo CakeSession::read('Email.email');?>" novalidate>
           <?php echo $this->Flash->render('email');?>
           <?php echo $this->Flash->render('check_email');?>
         </div>
@@ -95,16 +95,16 @@
           </select>
         </div>
 
-        <?php if (CakeSession::read('kit_select_type') !== 'starter_kit') : ?>
-          <div class="form form-line">
-            <label>紹介コード</label>
-            <input type="email" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
-            <br><?php echo $this->Flash->render('alliance_cd');?>
-          </div>
-        <?php endif; ?>
-
-        <div class="divider"></div>
       <?php endif; ?>
+      <?php if (CakeSession::read('kit_select_type') !== 'starter_kit') : ?>
+        <div class="form form-line">
+          <label>紹介コード</label>
+          <input type="url" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+          <br><?php echo $this->Flash->render('alliance_cd');?>
+        </div>
+      <?php endif; ?>
+
+      <div class="divider"></div>
 
       <div class="form">
         <label class="terms"><input type="checkbox" class="term agree-before-submit focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>

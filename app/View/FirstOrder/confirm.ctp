@@ -23,7 +23,7 @@
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
-      <div class="form">
+      <div class="form" id="price_table">
         <label>ご注文内容</label>
         <table>
           <thead>
@@ -34,13 +34,6 @@
             </tr>
           </thead>
           <tbody>
-          <?php if (key_exists('starter', CakeSession::read('Order'))) {?>
-            <tr>
-              <th><?php echo Configure::read('app.first_order.starter_kit.name') ?></th>
-              <td><div class="text-right">1</div></td>
-              <td><div class="text-right"><?php echo Configure::read('app.first_order.starter_kit.price') ?>円</div></td>
-            </tr>
-          <?php } else { ?>
             <?php foreach ( CakeSession::read('FirstOrderList') as $key => $value ) {?>
               <tr>
                 <th><?php echo $value['kit_name'] ?></th>
@@ -48,9 +41,9 @@
                 <td><div class="text-right"><?php echo $value['price'] ?>円</div></td>
               </tr>
             <?php } ?>
-          <?php } ?>
           </tbody>
         </table>
+        <?php echo $this->Flash->render('kit_price');?>
       </div>
 
       <div class="divider"></div>

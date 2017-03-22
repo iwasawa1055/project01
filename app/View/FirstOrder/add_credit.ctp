@@ -20,7 +20,7 @@
     </ul>
   </section>
   <!-- ADRESS -->
-  <form method="post" action="/first_order/confirm_credit">
+  <form method="post" action="/first_order/confirm_credit" novalidate>
   <section id="adress">
     <div class="wrapper">
       <div class="form">
@@ -51,7 +51,7 @@
       </div>
       <div class="form">
         <label>カード名義<span class="required">※</span></label>
-        <input type="email" class="adress2 holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>">
+        <input type="url" class="adress2 holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
         <?php echo $this->Flash->render('holder_name');?>
       </div>
     </div>
