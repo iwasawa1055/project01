@@ -155,4 +155,11 @@ class AppModel extends Model
         $value = current($_check);
         return AppValid::isLoginPassword($value);
     }
+
+    public function isNotOnlySpace($_check)
+    {
+        $value = current($_check);
+        return AppValid::isNotOnlySpace($value);
+    }
+
 }

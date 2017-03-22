@@ -34,6 +34,10 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'company_name', 29]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'company_name']
+            ],
         ],
         'company_name_kana' => [
             'notBlank' => [
@@ -59,6 +63,10 @@ class CorporateRegistInfo extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'staff_name', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'staff_name']
             ],
         ],
         'staff_name_kana' => [
@@ -156,6 +164,10 @@ class CorporateRegistInfo extends ApiModel
                 'rule' => ['maxLength', 8],
                 'message' => ['maxLength', 'address1', 8]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'address1']
+            ],
         ],
         'address2' => [
             'notBlank' => [
@@ -166,6 +178,10 @@ class CorporateRegistInfo extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 18],
                 'message' => ['maxLength', 'address2', 18]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'address2']
             ],
         ],
         'address3' => [
