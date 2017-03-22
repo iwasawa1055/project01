@@ -215,7 +215,7 @@ section#dsn-adress {
 	padding: 0 .5rem;
 }
 .dsn-complete {
-	height: 50vh;
+	height: 30vh;
 }
 section#dsn-delivery .dsn-wrapper {
 	display: block;
@@ -252,6 +252,17 @@ section#dsn-adress .dsn-form p {
 	font-size: 16px;
 	font-size: 1.6rem;
 }
+section#dsn-delivery table.accounting{
+	width: 100%;
+	margin: 0 0 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section#dsn-delivery table.accounting td{
+	color: #ff0000;
+	font-weight: bold;
+	text-align: right;
+}
 section#dsn-delivery .dsn-form label,
 section#dsn-adress .dsn-form label {
 	display: block;
@@ -272,11 +283,20 @@ section#dsn-delivery .dsn-form input {
 	border: .1rem solid #cccccc;
 	padding: 1rem;
 }
+section#dsn-delivery .dsn-input-security-code,
+section#dsn-delivery .dsn-input-change-card,
+section#dsn-delivery .dsn-input-new-card,
+section#dsn-delivery .dsn-input-new-adress{
+	display: none;
+}
+section#dsn-delivery .dsn-new-adress{
+	display: block;
+}
 section#dsn-delivery .dsn-form select[class^="dsn"] {
 	height: 4rem;
 	margin-bottom: 1rem;
-	font-size: 16px;
-	font-size: 1.6rem;
+	font-size: 14px;
+	font-size: 1.4rem;
 	line-height: 4rem;
 	vertical-align: middle;
 	appearance: none;
@@ -284,20 +304,31 @@ section#dsn-delivery .dsn-form select[class^="dsn"] {
 	border: 1px solid #CCC;
 	border-radius: 0;
 }
-section#dsn-delivery .dsn-form label.dsn-terms .dsn-term {
+/****/
+
+label.dsn-select-cards {
+	display: block;
+	margin:0 1.5rem 1.5rem 0;
+}
+
+label.dsn-select-cards .dsn-select-card,
+label.dsn-regist-adress .dsn-regist-adress {
 	margin-left: 2.5rem;
 	font-size: 16px;
 	font-size: 1.6rem;
 }
+section#dsn-delivery .dsn-form input[type=radio],
 section#dsn-delivery .dsn-form input[type=checkbox] {
 	display: none;
 }
+section#dsn-delivery .dsn-form input[type=radio] + .dsn-check-icon,
 section#dsn-delivery .dsn-form input[type=checkbox] + .dsn-check-icon {
 	position: absolute;
 	vertical-align: middle;
 	margin-right: 1rem;
 	line-height: 1;
 }
+section#dsn-delivery .dsn-form input[type=radio] + .dsn-check-icon:before,
 section#dsn-delivery .dsn-form input[type=checkbox] + .dsn-check-icon:before {
 	font-family: 'FontAwesome';
 	content: "\f096";
@@ -305,9 +336,17 @@ section#dsn-delivery .dsn-form input[type=checkbox] + .dsn-check-icon:before {
 	font-size: 2.4rem;
 	color: #999999;
 }
+section#dsn-delivery .dsn-form input[type=radio]:checked + .dsn-check-icon:before ,
 section#dsn-delivery .dsn-form input[type=checkbox]:checked + .dsn-check-icon:before {
 	content: "\f046";
 	color: #ff0000;
+}
+/****/
+section#dsn-delivery .dsn-form input[class^="dsn-name-"] {
+    display: inline-block;
+}
+section#dsn-delivery .dsn-form input[class^="dsn-name-first"] {
+    margin-left: 1rem;
 }
 section#dsn-delivery .dsn-form a.dsn-link-terms,
 section#dsn-delivery .dsn-form a.dsn-link-terms:focus,
@@ -316,6 +355,10 @@ section#dsn-delivery .dsn-form a.dsn-link-terms:active {
 	margin: 0 0 0 .5rem;
 	font-size: 14px;
 	font-size: 1.4rem;
+}
+section#dsn-delivery .dsn-form .dsn-select-month,
+section#dsn-delivery .dsn-form .dsn-select-year {
+    display: inline-block;
 }
 section#dsn-delivery .dsn-divider,
 section#dsn-adress .dsn-divider {
@@ -550,17 +593,24 @@ section#dsn-adress .dsn-form label {
 	font-size: 1.4rem;
 	font-weight: 600;
 }
+	label.dsn-select-cards .dsn-select-card {
+	    font-size: 13px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+	section#dsn-delivery table.accounting{
+	font-size: 14px;
+	font-size: 1.4rem;
+}
 section#dsn-delivery .dsn-form select[class^="dsn"] {
 	width: 100%;
-}
-section#dsn-delivery .dsn-form label.dsn-terms .dsn-term {
-	font-size: 13px;
-	font-size: 1.3rem;
-	font-weight: 600;
-}
-section#dsn-delivery .dsn-form a.dsn-link-terms {
 	font-size: 12px;
 	font-size: 1.2rem;
+}
+section#dsn-delivery .dsn-form select.dsn-select-month,
+section#dsn-delivery .dsn-form select.dsn-select-year {
+	width: auto;
+  display: inline-block;
 }
 section#dsn-adress .dsn-form table {
 	margin: 0;

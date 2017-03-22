@@ -39,6 +39,9 @@
         <input type="url" class="adress2 holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
         <?php echo $this->Flash->render('holder_name');?>
       </div>
+      <div class="form">
+        <a href="https://minikura.comhttps://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
+      </div>
     </div>
   </section>
   <section class="nextback"><a href="/first_order/add_address?back=true" class="btn-back">

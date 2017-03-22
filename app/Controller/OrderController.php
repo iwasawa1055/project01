@@ -105,13 +105,14 @@ class OrderController extends MinikuraController
                 'address_list' => array(),
                 'address_id' => "",
                 'address' => array(),
+                'is_add_address' => false,
                 'select_delivery' => "",
                 'select_delivery_text' => "",
                 'select_delivery_list' => array(),
                 'card_data' => array(),
                 'card_no' => "",
                 'security_cd' => "",
-                'isCredit' => "",
+                'is_credit' => "",
                 'kit_params' => array(),
             );
 
@@ -131,18 +132,17 @@ class OrderController extends MinikuraController
                 $set_address_list[$address['address_id']] = h("〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
             }
         }
-        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を追加する';
 
         $OrderKit['address_list'] = $set_address_list;
 
         // カード判定
-        $OrderKit['isCredit'] = false;
+        $OrderKit['is_credit'] = false;
 
         // クレジットカードかどうか
         // 法人口座未登録用遷移はbeforeFilterで判定済み
         if ($this->Customer->isPrivateCustomer()) {
             // 個人
-            $OrderKit['isCredit'] = true;
+            $OrderKit['is_credit'] = true;
 
             // カード情報取得
             $OrderKit['card_data'] = $this->Customer->getDefaultCard();
@@ -151,7 +151,7 @@ class OrderController extends MinikuraController
         } else {
             // 法人 法人カードの場合 account_situationは空白
             if (empty($this->Customer->getInfo()['account_situation'])) {
-                $OrderKit['isCredit'] = true;
+                $OrderKit['is_credit'] = true;
                 // カード情報取得
                 $OrderKit['card_data'] = $this->Customer->getDefaultCard();
             }
@@ -220,8 +220,8 @@ class OrderController extends MinikuraController
 
         // カード利用の場合
         $is_register_credit = false;
-        if (CakeSession::read('OrderKit.isCredit')) {
-            // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'isCredit');
+        if (CakeSession::read('OrderKit.is_credit')) {
+            // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'is_credit');
             // カード情報
             $OrderKit['security_cd'] = filter_input(INPUT_POST, 'security_cd');
             $params['security_cd'] = mb_convert_kana($OrderKit['security_cd'], 'nhk', "utf-8");
@@ -323,7 +323,7 @@ class OrderController extends MinikuraController
 
             // 決済によって必要情報が異なる
             $address_params = array();
-            if (CakeSession::read('OrderKit.isCredit')) {
+            if (CakeSession::read('OrderKit.is_credit')) {
                 // カード決済
                 $address_params['name'] = $address['lastname'] . $address['firstname'];
                 $address_params['postal'] = $address['postal'];
@@ -372,7 +372,7 @@ class OrderController extends MinikuraController
         }
 
         // 決済方法によって実行するapiが異なる
-        if (CakeSession::read('OrderKit.isCredit')) {
+        if (CakeSession::read('OrderKit.is_credit')) {
             // カード購入
             $this->loadModel('PaymentGMOKitCard');
             $gmo_kit_card = array();

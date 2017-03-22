@@ -65,7 +65,7 @@
         </section>
         <section id="adress">
           <div class="wrapper">
-            <?php if (CakeSession::read('OrderKit.isCredit')) { ?>
+            <?php if (CakeSession::read('OrderKit.is_credit')) { ?>
                 <!-- カード登録済み -->
                 <div class="form">
                   <label>クレジットカード番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
