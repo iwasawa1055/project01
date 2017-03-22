@@ -21,6 +21,10 @@ class EntryContactUs extends Inquiry
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'lastname', 29]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'lastname']
+            ],
         ],
         'lastname_kana' => [
             'notBlank' => [
@@ -46,6 +50,10 @@ class EntryContactUs extends Inquiry
             'maxLength' => [
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'firstname', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'firstname']
             ],
         ],
         'firstname_kana' => [

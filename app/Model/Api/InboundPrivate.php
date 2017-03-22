@@ -52,6 +52,10 @@ class InboundPrivate extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'lastname', 29]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'lastname']
+            ],
         ],
         'lastname_kana' => [
             'notBlank' => [
@@ -77,6 +81,10 @@ class InboundPrivate extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'firstname', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'firstname']
             ],
         ],
         'firstname_kana' => [
@@ -137,6 +145,10 @@ class InboundPrivate extends ApiModel
                 'rule' => ['maxLength', 8],
                 'message' => ['maxLength', 'address1', 8]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'address1']
+            ],
         ],
         'address2' => [
             'notBlank' => [
@@ -147,6 +159,10 @@ class InboundPrivate extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 18],
                 'message' => ['maxLength', 'address2', 18]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'address2']
             ],
         ],
         'address3' => [

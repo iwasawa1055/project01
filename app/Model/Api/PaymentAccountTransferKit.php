@@ -96,6 +96,10 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'kit_lastname', 29]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'kit_lastname']
+            ],
         ],
         'lastname_kana' => [
             'maxLength' => [
@@ -116,6 +120,10 @@ class PaymentAccountTransferKit extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'kit_firstname', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'kit_firstname']
             ],
         ],
         'firstname_kana' => [
@@ -171,6 +179,10 @@ class PaymentAccountTransferKit extends ApiModel
                 'rule' => ['maxLength', 8],
                 'message' => ['maxLength', 'kit_address1', 8]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'kit_address1']
+            ],
         ],
         'address2' => [
             'notBlank' => [
@@ -181,6 +193,10 @@ class PaymentAccountTransferKit extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 18],
                 'message' => ['maxLength', 'kit_address2', 18]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'kit_address2']
             ],
         ],
         'address3' => [
