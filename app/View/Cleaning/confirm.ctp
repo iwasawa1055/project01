@@ -2,8 +2,8 @@
 <?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
 
-  <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
-  <h2 class="page-caption">この内容でminikuraクリーニングオプションを申し込みます。</h2>
+  <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING＋</h1>
+  <h2 class="page-caption">この内容でminikuraCLEANING＋を申し込みます</h2>
   <div id="cleaning-wrapper">
     <div class="nav-cleaning">
       <ul>

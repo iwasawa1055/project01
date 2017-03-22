@@ -1,9 +1,9 @@
 <?php $this->Html->css('cleaning/app', ['block' => 'css']); ?>
 <?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
-  <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING</h1>
+  <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING＋</h1>
   <h2 class="page-caption">
-    以下の内容でクリーニングの申し込み手続きが完了しました。
+    以下の内容でminikuraCLEANING＋の申し込み手続きが完了しました。
     <?php if (!$flgComplete) : ?>
     <p style="color:#f00;">エラーが発生し、一部申し込みができませんでした。</p>
     <?php endif ?>
