@@ -20,6 +20,10 @@ class Inquiry extends ApiModel
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'lastname', 29]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'firstname']
+            ],
         ],
         'lastname_kana' => [
             'notBlank' => [
@@ -45,6 +49,10 @@ class Inquiry extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 29],
                 'message' => ['maxLength', 'firstname', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'firstname']
             ],
         ],
         'firstname_kana' => [

@@ -132,7 +132,7 @@ class FirstOrderController extends MinikuraController
 
         $lp_option = CakeSession::read(Configure::read('app.lp_option.param'));
         $kit_select_type = 'all';
-        switch (true) {
+/*        switch (true) {
             case $lp_option === 'mono':
                 // 紹介コードが有る場合 mono のみ表示 そうでない場合、スターターキット
                 if (!is_null(CakeSession::read(Configure::read('app.lp_code.param')))) {
@@ -154,7 +154,7 @@ class FirstOrderController extends MinikuraController
                 $kit_select_type = 'all';
                 break;
         }
-
+*/
         //* キットタイプが変わった場合、オーダーを削除
         $before_kit_select_type = CakeSession::read('kit_select_type', $kit_select_type );
         if($before_kit_select_type !== $kit_select_type) {
