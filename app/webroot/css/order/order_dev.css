@@ -106,8 +106,13 @@ section#dsn-delivery .dsn-form .validation {
 .dsn-select-month,
 .dsn-select-year,
 .dsn-new-adress,
+.dsn-select-card,
 .dsn-adress{
     cursor: pointer;
+}
+
+.dsn-new-adress{
+    color: #7F7F7F;
 }
 
 .form-line{
@@ -162,3 +167,11 @@ h4.dev-after-link {
     margin-left: 5px;
 }
 
+.search-address-error-message{
+
+}
+
+section#dsn-delivery .form label span.required{
+    color: silver;
+    opacity: 1.0;
+}

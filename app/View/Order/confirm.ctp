@@ -36,15 +36,12 @@
 
             <div class="divider"></div>
             <div class="form">
-              <?php echo $this->Flash->render('customer_regist_info');?>
-              <?php echo $this->Flash->render('customer_address_info');?>
-              <?php echo $this->Flash->render('customer_kit_card_info');?>
               <label>お届け先住所</label>
-              <p>〒<?php echo CakeSession::read('Address.postal');?></p>
-              <p><?php echo CakeSession::read('Address.pref');?><?php echo CakeSession::read('Address.address1');?><?php echo CakeSession::read('Address.address2');?> <?php echo CakeSession::read('Address.address3');?></p>
-              <p><?php echo CakeSession::read('Address.lastname');?>　<?php echo CakeSession::read('Address.firstname');?></p>
-              <p><?php echo CakeSession::read('Address.lastname_kana');?>　<?php echo CakeSession::read('Address.firstname_kana');?></p>
-              <p><?php echo CakeSession::read('Address.tel1');?></p>
+              <p>〒<?php echo CakeSession::read('DispAddress.postal');?></p>
+              <p><?php echo CakeSession::read('DispAddress.pref');?><?php echo CakeSession::read('DispAddress.address1');?><?php echo CakeSession::read('DispAddress.address2');?> <?php echo CakeSession::read('DispAddress.address3');?></p>
+              <p><?php echo CakeSession::read('DispAddress.lastname');?>　<?php echo CakeSession::read('DispAddress.firstname');?></p>
+              <p><?php echo CakeSession::read('DispAddress.lastname_kana');?>　<?php echo CakeSession::read('DispAddress.firstname_kana');?></p>
+              <p><?php echo CakeSession::read('DispAddress.tel1');?></p>
             </div>
             <div class="form">
               <label>お届け日時</label>
