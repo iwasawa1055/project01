@@ -1,27 +1,5 @@
 /** minikura ver2.5 REGISTRATION **/
 
-section#test {
-	/** layout **/
-	display: flex;
-	align-self: center;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	/** text **/
-	font-size: 10px;
-	font-size: 1rem;
-	color: #000000;
-	text-decoration: none;
-	line-height: 1.5;
-	text-align: center;
-	/** decoration **/
-	background-color: #ffffff;
-	border: .1rem solid #000000;
-	border-radius: .2rem;
-}
 section {
 	width: 100%;
 	max-width: 1170px;
@@ -92,7 +70,7 @@ section.nextback {
 	padding: 0;
 	text-align: center;
 }
-a[class^="btn-"] {
+a[class^="btn"] {
 	margin: 1.5rem 0 0 0;
 	padding: 1rem;
 	font-size: 18px;
@@ -157,11 +135,19 @@ a.btn-return {
 	border: 1px solid #666666;
 }
 section#lineup .lineup-box {
+	position: relative;
 	width: calc((100% / 4) - 1rem);
-	margin: 2rem .5rem 4rem;
+	margin: 2rem .5rem 1rem;
 	padding: 2rem 1.5rem 1.5rem 1.5rem;
 	border: .1rem solid #bbbbbb;
 	border-radius: .2rem;
+}
+section#lineup .medal {
+	position: absolute;
+	margin: -3.5rem 0 0 -3.5rem;
+}
+section#lineup .medal img {
+	width: 100%;
 }
 section#lineup .price {
 	margin: 0 0 .1rem;
@@ -172,17 +158,6 @@ section#lineup .price {
 section#lineup .price span {
 	margin-left: 1.5rem;
 	font-weight: bold;
-}
-section#lineup .price span s {
-	font-size: 14px;
-	font-size: 1.4rem;
-}
-section#lineup .price span.starter {
-	margin-left: .5rem;
-}
-section#lineup .price span.starter span {
-	color: #ff0000;
-	margin-left: .25rem;
 }
 section#lineup .box-caption {
 	margin: 1rem 0 0;
@@ -205,7 +180,14 @@ section#lineup .wrapper {
 	justify-content: center;
 	align-items: flex-start;
 	flex-wrap: wrap;
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
+}
+section#lineup div[class^="box"] {
+	margin: 0 0 1rem 0;
+	text-align: center;
+}
+section#lineup div[class^="box"] img {
+	width: 50%;
 }
 section#adress {
 	max-width: 768px;
@@ -213,7 +195,7 @@ section#adress {
 	padding: 0 .5rem;
 }
 section.complete {
-	height: 50vh;
+	height: 30vh;
 }
 section#adress .wrapper {
 	display: block;
@@ -261,13 +243,13 @@ section#adress .form input {
 	border: .1rem solid #cccccc;
 	padding: 1rem;
 }
-section#adress .form input[class^="name-"] {
+section#adress .form input[class^="name"] {
 	display: inline-block;
 }
 section#adress .form input[class^="name-first"] {
 	margin-left: 1rem;
 }
-section#adress .form select[class^="select-"] {
+section#adress .form select[class^="select"] {
 	height: 4rem;
 	margin-bottom: 1rem;
 	font-size: 16px;
@@ -438,6 +420,9 @@ section#lineup .box-cleaning img {
 section#lineup .lineup-box {
 	width: calc((100% / 4) - 1rem);
 }
+section#lineup .medal {
+	margin: -2.5rem 0 0 -2rem;
+}
 }
 
 @media screen and (max-width:1023px) {
@@ -445,8 +430,8 @@ section#lineup .lineup-box {
 	width: calc((100% / 2) - 1rem);
 	margin: .5rem .5rem 1rem;
 }
-section#lineup .box-starter {
-	margin: 4.35rem 0;
+section#lineup .medal {
+	margin: -2.5rem 0 0 -2rem;
 }
 }
 
@@ -454,10 +439,10 @@ section#lineup .box-starter {
 section#lineup .lineup-box {
 	width: calc((100% / 1) - 1rem);
 	margin: .5rem;
-	padding-top: 1rem;
+	padding: 1rem;
 }
 section#pagenation {
-	margin: 7rem 0 2rem;
+	margin: 7rem 0 1rem;
 }
 section#pagenation ul li {
 	margin: 0 1rem;
@@ -511,6 +496,7 @@ a.btn-submit,
 a.btn-return,
 a.btn-select,
 a.btn-starter {
+	margin: .75rem 0 0;
 	font-size: 14px;
 	font-size: 1.4rem;
 }
@@ -538,28 +524,56 @@ section h2 {
 }
 section h3 {
 	margin: 1rem 0;
-	font-size: 18px;
-	font-size: 1.8rem;
+	font-size: 16px;
+	font-size: 1.6rem;
 	font-weight: bold;
 }
 section#lineup .wrapper,
 section#adress .wrapper {
 	margin: 0;
 }
-section#lineup .price {
-	font-size: 14px;
-	font-size: 1.4rem;
+section#lineup .wrapper {
+	margin: .5rem 0 8rem;
 }
-section#lineup .box-starter {
+section#lineup div[class^="box"],
+section#lineup div[class^="caption"] {
+	display: table-cell;
+	vertical-align: top;
 	margin: 0;
+	padding: 0;
 }
-section#lineup .box-starter img {
+section#lineup div[class^="box"] {
+	width: 30%;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+section#lineup div[class^="caption"] {
+	width: 70%;
+	margin: 0;
+	padding: 0;
+}
+section#lineup div[class^="box"] img {
+	width: 80%;
+}
+section#lineup .medal {
+	margin: -1.5rem 0 0 -1.5rem;
+}
+section#lineup .medal img {
 	width: 75%;
 }
-section#lineup .box-mono img,
-section#lineup .box-hako img,
-section#lineup .box-cleaning img {
-	width: 50%;
+section#lineup .price,
+section#lineup .box-caption {
+	margin: 0;
+	font-size: 12px;
+	font-size: 1.2rem;
+	line-height: 2rem;
+}
+section#lineup .select-number {
+	font-size: 13px;
+	font-size: 1.3rem;
+	font-weight: bold;
+	margin: .5rem 0 0;
 }
 .remodal {
 	max-width: 37.5rem;
@@ -582,6 +596,9 @@ section#lineup .box-cleaning img {
 	font-size: 12px;
 	font-size: 1.2rem;
 	line-height: 1.2;
+}
+section#adress .form p {
+	margin: 0;
 }
 section#adress .form {
 	display: block;

@@ -86,6 +86,14 @@ $config['app']['switch_redirect']['param'] = 'option';
  */
 $config['app']['first_order']['max_box'] = 20;
 
+
+// クリーニング費用設定
+$config['app']['kit']['cleaning']['item_group_cd']['010'] = 700;
+$config['app']['kit']['cleaning']['item_group_cd']['030'] = 3800;
+
+$config['app']['kit']['cleaning']['work_type']['010'] = "030";
+$config['app']['kit']['cleaning']['work_type']['030'] = "032";
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');

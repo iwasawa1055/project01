@@ -771,26 +771,11 @@ class AppValid
 					}
 					break;
 				case $name === 'select_starter_kit':
-					if ($value === 0) {
-						$ret[$name] = 'ボックスを選択してください。';
-					}
-					break;
 				case $name === 'select_oreder_mono':
-					if ($value === 0) {
-						$ret[$name] = 'ボックスを選択してください。';
-					}
-					break;
 				case $name === 'select_oreder_hako':
-					if ($value === 0) {
-						$ret[$name] = 'ボックスを選択してください。';
-					}
-					break;
 				case $name === 'select_oreder_cleaning':
-					if ($value === 0) {
-						$ret[$name] = 'ボックスを選択してください。';
-					}
-					break;
 				case $name === 'select_oreder_sneaker':
+				case $name === 'select_oreder_hako_limited_ver1':
 					if ($value === 0) {
 						$ret[$name] = 'ボックスを選択してください。';
 					}

@@ -108,3 +108,15 @@ var Act =
         });
     },
 };
+
+/* 指定したターゲットまでスクロールする */
+function scrollTo(_target,_correction,_speed) {
+  if (!_speed) {
+    var _speed = 500;
+  }
+  if (!_correction) {
+    var _correction = 0;
+  }
+  var position = _target.offset().top + _correction;
+  $("html, body").animate({scrollTop:position}, _speed, "swing");
+}

@@ -75,6 +75,7 @@ const KIT_CD_SNEAKERS = '120';
 const KIT_CD_STARTER_MONO = '200';
 const KIT_CD_STARTER_MONO_APPAREL = '201';
 const KIT_CD_STARTER_MONO_BOOK = '202';
+const KIT_CD_HAKO_LIMITED_VER1 = '203';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -317,6 +318,11 @@ const SORT_ORDER = [
         'inbound_date' => 'お預かり日順 で', 
         'item_id' => 'アイテムID順 で', 
         'item_name' => 'アイテム名順 で'
+    ],
+    'item_grid' => [
+        'inbound_date' => 'お預かり日順', 
+        'item_id' => 'アイテムID順', 
+        'item_name' => 'アイテム名順'
     ],
 ];
 

@@ -17,7 +17,6 @@
               minikuraTRADE機能とは、「minikuraMONO」でお預かりただいている商品をFacebook、TwitterなどのSNSやブログなど、お好きなサイトで販売できる販売機能サービスです。商品が購入されると、minikuraから購入者へ商品を匿名で配送しますので、手間がかからないラクちんサービスです。
             </div>
             <span class="col-sm-12 col-xs-12">
-              <p><a class="sale-complete-text" href="https://minikura.com/lineup/sale.html" target="_blank">今ならオープニングキャンペーンにて販売手数料無料！</a></p>
               <a class="btn btn-danger btn-lg" href="https://minikura.com/lineup/sale.html" target="_blank">詳しくはこちら</a>
             </span>
             <span class="col-sm-12 col-xs-12">

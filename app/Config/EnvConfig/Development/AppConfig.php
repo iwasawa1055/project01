@@ -49,6 +49,12 @@ switch (true) {
         $config['site.trade.url'] = 'https://murai-contents.minikura.com/trade/';
 		$config['site.static_content_url'] = 'https://murai-contents.minikura.com';
         break;
+    case $_SERVER['HTTP_HOST'] === 'wada-contents.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 'wada-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://wada-mypage.minikura.com';
+        $config['site.trade.url'] = 'https://wada-contents.minikura.com/trade/';
+        $config['site.static_content_url'] = 'https://wada-contents.minikura.com';
+        break;
     default:
         $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
         $config['site.trade.url'] = 'https://b-www.minikura.com/trade/';
@@ -61,6 +67,13 @@ $config['api.strage.url'] = 'http://dev-image.minikura.com:10080/i/';
 $config['api.strage.ssh.username'] = 'minikura.com';
 $config['api.strage.ssh.rsa.id_rsa_public'] = '/home/minikura.com/.ssh/id_rsa.pub';
 $config['api.strage.ssh.rsa.id_rsa'] = '/home/minikura.com/.ssh/id_rsa';
+
+// クリーニング費用設定
+$config['app']['kit']['cleaning']['item_group_cd']['010'] = 700;
+$config['app']['kit']['cleaning']['item_group_cd']['030'] = 3800;
+
+$config['app']['kit']['cleaning']['work_type']['010'] = "030";
+$config['app']['kit']['cleaning']['work_type']['030'] = "032";
 
 // タイムアウト（秒）
 $config['api.timeout'] = 30;
@@ -92,6 +105,7 @@ $config['app']['switch_redirect']['param'] = 'option';
  * 静的ページからの最大注文箱数
  */
 $config['app']['first_order']['max_box'] = 20;
+
 /**
  * エラー表示
  */

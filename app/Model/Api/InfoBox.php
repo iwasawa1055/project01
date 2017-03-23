@@ -232,7 +232,7 @@ class InfoBox extends ApiCachedModel
 
         // sort
         if (!empty($params['order']) && !empty($params['direction'])) {
-            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];            
+            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];
             HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
         }
 
