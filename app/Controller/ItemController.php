@@ -148,6 +148,7 @@ class ItemController extends MinikuraController
         $outbounds = $this->InfoItem->getListForServiced($sortKey, $where, true, true);
         $item_all_count = count($outbounds) + count($inbounds);
 
+
         // paginate
         $list = $this->paginate(self::MODEL_NAME, $results);
         $this->set('itemList', $list);
@@ -214,12 +215,22 @@ class ItemController extends MinikuraController
 
         $box = $item['box'];
         $this->set('box', $box);
+        
+        // クリーニングリンク生成
+        $linkToCleaning = null;
+        $cleaningConfig = Configure::read('app.kit.cleaning.item_group_cd');
 
+        if (isset($cleaningConfig[$item['item_group_cd']]) && $item['item_status'] === 70 && $box['product_cd'] !== PRODUCT_CD_CLEANING_PACK ){
+            $linkToCleaning = "/cleaning/input?id=" . urlencode($item['item_id']);
+        }
+        $this->set('linkToCleaning', $linkToCleaning);
+        
         $linkToAuction = null;
         if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK], true)) {
             $linkToAuction = "/mini_auction/lite/item/${item['box_id']}/${item['item_id']}";
         }
         $this->set('linkToAuction', $linkToAuction);
+
 
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
@@ -243,15 +254,28 @@ class ItemController extends MinikuraController
             //* widget page url
             $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
         }
+        
+  
+        // クリーニング可能フラグ
+        $flgCleaning = true;
+        if (!empty($sales)) {
+            if($sales['sales_status'] >= SALES_STATUS_ON_SALE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED) {
+                $flgCleaning = false;
+            }
+        }
+
         //*  戻る用
         $session_sales = null;
         $session_sales = CakeSession::read(self::MODEL_NAME_SALES);
         $this->set('session_sales', $session_sales);
 
         $this->set('sales', $sales);
+        $this->set('flg_cleaning', $flgCleaning);
         $this->set('trade_url', $trade_url);
         $this->set('widget_url', $widget_url);
 
+        // Session Referer
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     
     }
 

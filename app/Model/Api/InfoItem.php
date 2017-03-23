@@ -49,6 +49,7 @@ class InfoItem extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_START * 1,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
+        
         if ($withOutboundDone) {
             // 出庫済みのみフラグが立っている場合、出庫済み以外をunsetする
             if (!empty($outboundOnly)) {
@@ -99,7 +100,80 @@ class InfoItem extends ApiCachedModel
         return $list;
     }
 
+    // 条件を指定してリストを取得する
+    public function getListWhere($sortKey = [], $where = [], $priorities = [])
+    {
+        
+        if (!isset($where['item_status'])) {
+            $where['item_status'] = [
+                BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
+                BOXITEM_STATUS_INBOUND_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_START * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_IN_PROGRESS * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_DONE * 1,
+                BOXITEM_STATUS_OUTBOUND_LIMIT_RETURN_IN_PROGRESS * 1,
+                BOXITEM_STATUS_OUTBOUND_START * 1,
+                BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
+            ];
+        }
+        //* アイテム取得、 中でアイテム画像とボックス情報取得
+        $list = $this->apiGetResultsWhere([], $where);
 
+        //* アイテム取得後にproduct_cdでリストを再生成する
+        if (!empty($productCd)) {
+            $productData['product_cd'] = $productCd;
+            $list = $this->_selectByProductCd($list, $productData);
+        }
+
+        // sort
+        HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
+        
+        //* 優先項目がある場合はトップに持ってくる
+        if (count($priorities) > 0) {
+            // 優先項目で指定されているキーを収取する
+            $indexKeys = [];
+            $indexes = [];
+            foreach ($priorities as $tmp) {
+                array_push($indexKeys, key($tmp));
+            }
+            
+            $indexKeys = array_unique($indexKeys);
+
+            // Indexキーをもとにリストからインデックスを生成する
+            foreach ($list as $itemNo=>$item) {
+                foreach ($indexKeys as $indexKey) {
+                    if (isset($item[$indexKey])) {
+                        $indexes[$indexKey][$item[$indexKey]] = $itemNo;
+                    }
+                }
+            }
+            
+            // 優先項目を取得する
+            $priorityList = [];
+
+            foreach ($priorities as $pItem) {
+                $searchKey = key($pItem);
+                if (isset($indexes[$searchKey][$pItem[$searchKey]])) {
+                    $_indexNo = $indexes[$searchKey][$pItem[$searchKey]];
+
+                    if (isset($list[$_indexNo])) {
+                        array_push($priorityList, $list[$_indexNo]);
+                        // 既存のリストから削除
+                        unset($list[$_indexNo]);
+                    }
+                }
+            }
+            
+            // リストを結合する
+            $list = array_merge($priorityList, $list);
+            
+            // 空いている要素があるため、ソートする
+            ksort($list);
+        }
+        
+        return $list;
+    }
+    
     public function apiGetResults($data = [])
     {
         $imageModel = new ImageItem();
@@ -159,7 +233,6 @@ class InfoItem extends ApiCachedModel
         return $list;
     }
 
-
     public function editBySearchTerm($results, $params)
     {
         if (empty($params['keyword'])) {
@@ -200,7 +273,7 @@ class InfoItem extends ApiCachedModel
 
         // sort
         if (!empty($params['order']) && !empty($params['direction'])) {
-            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];            
+            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];
             HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
         }
 

@@ -112,6 +112,10 @@ class PaymentGMOKitCard extends ApiModel
                 'rule' => ['maxLength', 59],
                 'message' => ['maxLength', 'kit_address_name', 59]
             ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'staff_name']
+            ],
         ],
         'tel1' => [
             'notBlank' => [
@@ -144,6 +148,10 @@ class PaymentGMOKitCard extends ApiModel
             'maxLength' => [
                 'rule' => ['maxLength', 60],
                 'message' => ['maxLength', 'kit_address', 60]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'staff_name']
             ],
         ],
         'datetime_cd' => [

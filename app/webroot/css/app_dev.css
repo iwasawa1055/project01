@@ -196,3 +196,7 @@ p.error-message a:hover,
   color: #666;
   display:block;
 }
+
+.grid .item-select .checkbox + .check-icon {
+  cursor: pointer;
+}
