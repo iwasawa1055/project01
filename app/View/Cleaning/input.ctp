@@ -7,7 +7,7 @@
 <?php $this->Html->script('cleaning/app', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('cleaning/app_dev', ['block' => 'scriptMinikura']); ?>
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING＋</h1>
-  <h2 class="page-caption"><a href="#">minikuraCLEANING＋ <i class="fa fa-external-link-square"></i></a> に申し込むアイテムを選択してください。</h2>
+  <h2 class="page-caption"><a href="<?php echo Configure::read('site.static_content_url');?>/lineup/cleaning-plus.html">minikuraCLEANING＋ <i class="fa fa-external-link-square"></i></a> に申し込むアイテムを選択してください。</h2>
   <div id="cleaning-wrapper">
     <div class="nav-cleaning">
       <ul>

@@ -37,3 +37,7 @@
 .disabled {
   opacity       : 0.5;
 }
+
+.cleaning-attention {
+  font-size: 1.0rem;
+}

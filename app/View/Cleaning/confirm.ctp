@@ -4,6 +4,11 @@
 
   <h1 class="page-header"><i class="fa icon-cleaning"></i> minikuraCLEANING＋</h1>
   <h2 class="page-caption">この内容でminikuraCLEANING＋を申し込みます。</h2>
+  <p class="alert alert-danger cleaning-attention">
+    ※ ご注文いただくアイテムによっては、個別見積りとなり料金が変わる可能性がございます。<br />
+    またアイテムの状態により、クリーニングをお断りさせていただく場合もございます。<br />
+    上記の場合は別途メールにてご連絡させていただきます。
+  </p>
   <div id="cleaning-wrapper">
     <div class="nav-cleaning">
       <ul>
