@@ -52,6 +52,7 @@ class OrderController extends MinikuraController
     {
         // スニーカー判定
         if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
+            CakeSession::write('order_sneaker', true);
             return $this->setAction('input_sneaker');
         }
 
@@ -159,22 +160,38 @@ class OrderController extends MinikuraController
         $Order = CakeSession::read('Order');
         $OrderTotal = CakeSession::read('OrderTotal');
 
-        // 箱情報の集計
-        $Order = $this->_setMonoOrder($Order);
-        $OrderTotal['mono_num'] = array_sum($Order['mono']);
-        $Order = $this->_setHakoOrder($Order);
-        $OrderTotal['hako_num'] = array_sum($Order['hako']);
-        $Order = $this->_setCleaningOrder($Order);
-
         // 箱選択されているか
         $vali_oreder_params = array();
-        if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
-            $vali_oreder_params = array(
-                'select_oreder_mono' => $OrderTotal['mono_num'],
-                'select_oreder_hako' => $OrderTotal['hako_num'],
-                'select_oreder_cleaning' => $Order['cleaning']['cleaning']
-            );
+
+        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' select_oreder_sneaker ' . print_r(CakeSession::read('order_sneaker'), true));
+
+        switch (true) {
+            case CakeSession::read('order_sneaker') === true:
+                $Order = $this->_setSneakerOrder($Order);
+                $vali_oreder_params = array(
+                    'select_oreder_sneaker' => $Order['sneaker']['sneaker']
+                );
+                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' select_oreder_sneaker ' . print_r($vali_oreder_params, true));
+
+                break;
+            default:
+                // 箱情報の集計
+                $Order = $this->_setMonoOrder($Order);
+                $OrderTotal['mono_num'] = array_sum($Order['mono']);
+                $Order = $this->_setHakoOrder($Order);
+                $OrderTotal['hako_num'] = array_sum($Order['hako']);
+                $Order = $this->_setCleaningOrder($Order);
+
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
+                    $vali_oreder_params = array(
+                        'select_oreder_mono' => $OrderTotal['mono_num'],
+                        'select_oreder_hako' => $OrderTotal['hako_num'],
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                    );
+                }
+                break;
         }
+
 
         //* Session write
         CakeSession::write('Order', $Order);
@@ -515,7 +532,6 @@ class OrderController extends MinikuraController
                 $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
                 return $this->_flowSwitch('input');
             }
-
         }
 
         // 住所のセット
