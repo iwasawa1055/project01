@@ -2,7 +2,6 @@
 
 App::uses('MinikuraController', 'Controller');
 App::uses('CustomerKitPrice', 'Model');
-App::uses('CustomerAddress', 'Model');
 
 class OrderController extends MinikuraController
 {
@@ -70,8 +69,6 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
-
         // セッションリセット
         //CakeSession::delete('OrderKit');
         if (empty(CakeSession::read('OrderKit.address_list'))) {
@@ -83,11 +80,9 @@ class OrderController extends MinikuraController
                 'insert_address_list', true,
                 'card_data' => array(),
                 'select_card' => "default",
-                'is_credit' => "",
+                'is_credit' => false,
                 'kit_params' => array(),
             );
-
-            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' OrderKit init');
 
             CakeSession::write('OrderKit', $OrderKit);
         }
@@ -98,8 +93,6 @@ class OrderController extends MinikuraController
             CakeSession::write('Address.lastname_kana', '　');
             CakeSession::write('Address.firstname_kana', '　');
             CakeSession::write('Address.select_delivery_list', array());
-
-            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' Address init');
         }
 
         // セッション情報取得
@@ -130,8 +123,6 @@ class OrderController extends MinikuraController
 
             // カード情報取得
             $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-
-            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
         } else {
             // 法人 法人カードの場合 account_situationは空白
             if (empty($this->Customer->getInfo()['account_situation'])) {
@@ -141,7 +132,7 @@ class OrderController extends MinikuraController
             }
         }
 
-        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' getInfo ' . print_r($this->Customer->getInfo(), true));
+        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
 
         // セッション情報格納
         CakeSession::write('OrderKit', $OrderKit);
@@ -189,8 +180,6 @@ class OrderController extends MinikuraController
         CakeSession::write('Order', $Order);
         CakeSession::write('OrderTotal', $OrderTotal);
 
-        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_delivery_list' . print_r($Order, true));
-
         // 逐次バリデーションをかける 最後にまとめてバリデーションエラーでリターン
         // バリデーションをかけない値もセッションには保存する。
         $is_validation_error = false;
@@ -230,15 +219,12 @@ class OrderController extends MinikuraController
 
             // 登録カードの変更の有無
             if ($select_card === 'default') {
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_card default');
                 // 登録カード変更なし
                 $vali_card_params['security_cd'] = $input_card_params['security_cd'];
             }
 
             // 登録カードの変更の有無
             if ($select_card === 'register') {
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'select_card register');
-
                 // 登録カード変更あり
                 // new_security_cdをsecurity_cdにいれバリデーションをかける
                 // new_security_cdとsecurity_cdが２つバリデーションにかけることはない
@@ -327,11 +313,12 @@ class OrderController extends MinikuraController
                     $input_address_params['select_delivery_text'] = $value->text;
                 }
             }
+
+            // お届け日のラベル
+            // 逐次セッションに保存
+            CakeSession::write('OrderKit.select_delivery_text', $input_address_params['select_delivery_text']);
         }
 
-        // お届け日のラベル
-        // 逐次セッションに保存
-        CakeSession::write('OrderKit.select_delivery_text', $input_address_params['select_delivery_text']);
 
         // 住所情報をセッションに保存
         CakeSession::write('Address', $input_address_params);
@@ -360,17 +347,19 @@ class OrderController extends MinikuraController
         }
         CakeSession::write('OrderKit.insert_address_list', $insert_address_list);
 
+        // お届けコードをキットセッションにも保存
+        CakeSession::write('OrderKit.datetime_cd', $input_address_params['datetime_cd']);
+
         // アドレス入力
         $set_address = array();
         if ($is_input_address) {
             // アドレス追加の場合
             $set_address = $input_address_params;
 
+            $set_address['tel1'] = self::_wrapConvertKana($set_address['tel1']);
             // 登録バリデーション
             $vail_address_params = $set_address;
-            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'is_input_address');
         } else {
-            CakeLog::write(DEBUG_LOG, __METHOD__ . '(' . __LINE__ . ')' . 'address default');
             // アドレスリスト使用の場合
             // 住所指定されている場合
 
@@ -425,6 +414,9 @@ class OrderController extends MinikuraController
 
         // 金額集計
         $OrderList = array();
+        $OrderTotalList = array();
+        $OrderTotalList['number'] = 0;
+        $OrderTotalList['price'] = 0;
 
         // 購入時用コード格納
         $kit_params = array();
@@ -440,6 +432,7 @@ class OrderController extends MinikuraController
                         $OrderList[$code]['number']    = $value;
                         $OrderList[$code]['kit_name']  = $kit_code[$key]['name'];
                         $OrderList[$code]['price'] = 0;
+                        $OrderTotalList['number'] += $value;
                         $product = $code . ':' .$value;
                         $kit_params[] = $product;
 
@@ -449,6 +442,7 @@ class OrderController extends MinikuraController
                         if ($r->isSuccess()) {
                             $price = $r->results[0]['total_price'] * 1;
                             $OrderList[$code]['price'] = number_format($price);
+                            $OrderTotalList['price'] += $price;
                         }
                     }
                 }
@@ -456,12 +450,10 @@ class OrderController extends MinikuraController
         }
 
         CakeSession::write('OrderList', $OrderList);
+        CakeSession::write('OrderTotalList', $OrderTotalList);
         CakeSession::write('OrderKit.kit_params', $kit_params);
 
-        // CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' Session OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
-
         if ($is_validation_error === true) {
-            CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. 'Address ' . print_r($input_address_params['select_delivery'], true));
             $this->_flowSwitch('input');
             return;
         }
@@ -483,31 +475,20 @@ class OrderController extends MinikuraController
         }
 
         // カード
-        if(CakeSession::read('OrderKit.is_input_address')) {
+        if(CakeSession::read('OrderKit.select_card') === 'register') {
 
-            // カード変更チェック
-            if (!$this->Customer->hasCreditCard()) {
-                // カード登録なし：変更不可
-                //return true;
-            }
-
-            if (!$this->Customer->isPaymentNG()) {
-                // 債務ランク以外
-                $this->Flash->validation('このカードは使用できません', ['key' => 'customer_kit_card_info']);
-
-                //return true;
-            }
-
-            if ($this->Customer->hasCreditCard()) {
-                // カード登録あり：登録不可
-                //return true;
-            }
-
+            // カード変更追加モデル
             $this->loadModel('PaymentGMOSecurityCard');
 
             $Credit = CakeSession::read('Credit');
+
             $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+            $Credit['security_cd'] = $Credit['new_security_cd'];
             $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+            $Credit['card_seq'] = '0';
+
+            // カード構造を更新する
+            CakeSession::write('Credit', $Credit);
 
             $credit_data['PaymentGMOSecurityCard'] = $Credit;
 
@@ -528,6 +509,7 @@ class OrderController extends MinikuraController
                 return $this->_flowSwitch('input');
             }
 
+            // カード更新
             $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
             if (!empty($result_security_card->error_message)) {
                 $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
@@ -545,16 +527,46 @@ class OrderController extends MinikuraController
             // 住所リスト追加
             if(CakeSession::read('OrderKit.insert_address_list')) {
 
+                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' insert_address_list ');
+
                 $set_address = CakeSession::read('Address');
+                unset($set_address['select_delivery']);
+                unset($set_address['select_delivery_list']);
+
+                $set_address['tel1'] = self::_wrapConvertKana($set_address['tel1']);
 
                 $this->loadModel('CustomerAddress');
+
                 $this->CustomerAddress->set($set_address);
                 if (!$this->CustomerAddress->validates()) {
+                    foreach ($this->CustomerAddress->validationErrors as $key => $message) {
+                        $this->Flash->validation($message[0], ['key' => $key]);
+                    }
+
                     return $this->_flowSwitch('input');
                 }
 
                 CakeSession::write('CustomerAddress', $this->CustomerAddress->toArray());
+
+                $ret = $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
+
+                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' ret ' . print_r($ret, true));
+
+                // 追加アドレスIDを取得
+                $address_id = Hash::get($this->Address->last(), 'address_id', '');
+
+                // 部分更新
+                CakeSession::write('OrderKit.address_id', $address_id);
+
+                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' address_id ' . print_r($address_id, true));
+            } else {
+
+                // リストに追加しない
+                $set_address = CakeSession::read('Address');
+                $set_address['tel1'] = self::_wrapConvertKana($set_address['tel1']);
+
             }
+
         } else {
             // リスト住所
             $address_id = CakeSession::read('OrderKit.address_id');
@@ -568,11 +580,11 @@ class OrderController extends MinikuraController
             $this->loadModel('PaymentGMOKitCard');
             $gmo_kit_card = array();
             $gmo_kit_card['card_seq']      = 0;
-            $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('OrderKit.security_cd'));
+            $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('Credit.security_cd'));
             $gmo_kit_card['address_id']    = CakeSession::read('OrderKit.address_id');
             $gmo_kit_card['datetime_cd']   = CakeSession::read('OrderKit.datetime_cd');
             $gmo_kit_card['name']          = $set_address['lastname'] . '　' . $set_address['firstname'];
-            $gmo_kit_card['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+            $gmo_kit_card['tel1']          = self::_wrapConvertKana($set_address['tel1']);
             $gmo_kit_card['postal']        = $set_address['postal'];
             $gmo_kit_card['address']       = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . '　' .  $set_address['address3'];
 
@@ -601,7 +613,7 @@ class OrderController extends MinikuraController
             $kit_payment_transfer['kit'] = implode(',', $kit_params);
             $kit_payment_transfer['lastname'] = $set_address['lastname'];
             $kit_payment_transfer['firstname'] = $set_address['firstname'];
-            $kit_payment_transfer['tel1'] = $set_address['tel1'];
+            $kit_payment_transfer['tel1'] = self::_wrapConvertKana($set_address['tel1']);
             $kit_payment_transfer['postal'] = $set_address['postal'];
             $kit_payment_transfer['pref'] = $set_address['pref'];
             $kit_payment_transfer['address1'] = $set_address['address1'];
@@ -835,6 +847,7 @@ class OrderController extends MinikuraController
         CakeSession::delete('OrderTotal');
         CakeSession::delete('OrderKit');
         CakeSession::delete('OrderList');
+        CakeSession::delete('OrderTotalList');
         CakeSession::delete('Address');
         CakeSession::delete('Credit');
     }

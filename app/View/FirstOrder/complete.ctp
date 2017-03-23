@@ -14,7 +14,7 @@
   </div>
   </div>
 </section>
-<section class="nextback fix"><a href="/index.php" class="btn-next-full" target="_blank">マイページトップへ進む <i class="fa fa-chevron-circle-right"></i></a>
+<section class="nextback fix"><a href="/" class="btn-next-full" target="_blank">マイページトップへ進む <i class="fa fa-chevron-circle-right"></i></a>
 </section>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>

@@ -129,12 +129,6 @@ section#dsn-delivery .dsn-form .validation {
     border-color: #d43f3a;
 }
 
-.search-address-error-message {
-    color: #ff6666;
-    margin: 0.5rem 0 0 !important;
-    padding: 0.5rem;
-}
-
 a.dsn-btn-starter {
     margin	: 0px
 }
@@ -151,7 +145,10 @@ section#adress .dsn-form label span{
     color: silver;
     opacity: 0.4;
 }
+section#adress .dsn-form label span.required{
 
+    color: #ff6666;
+}
 section#adress .dsn-form label span.required,
 section#adress .dsn-form label span.check-icon{
     opacity: 1.0;
@@ -167,11 +164,22 @@ h4.dev-after-link {
     margin-left: 5px;
 }
 
-.search-address-error-message{
-
+section#dsn-delivery .dsn-form p.search-address-error-message{
+    display: inline-block;
+    color: #ff6666;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
+    border: 0px;
+    background-color: transparent;
 }
 
-section#dsn-delivery .form label span.required{
+section#dsn-delivery .dsn-form p.search-address-error-message:before {
+    content:none;
+}
+
+section#dsn-delivery .dsn-form label span, section#dsn-adress .dsn-form label span
+{
     color: silver;
     opacity: 1.0;
 }

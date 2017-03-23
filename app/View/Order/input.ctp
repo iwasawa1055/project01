@@ -15,7 +15,6 @@
       <form method="post" class="select-add-address-form" action="/order/confirm" novalidate>
         <div class="col-lg-12">
           <div class="panel panel-default">
-            <!-- PAGENATION -->
             <?php echo $this->element('Order/breadcrumb_list'); ?>
 
             <!-- LINEUP -->
@@ -86,7 +85,6 @@
                 <?php if (CakeSession::read('OrderKit.is_credit')) { ?>
                   <h4 class="dev-after-link">クレジットカード情報の入力</h4><a href="https://minikura.comhttps://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
                   <div class="dsn-form">
-                    <?php echo $this->Flash->render('customer_address_info');?>
                     <?php echo $this->Flash->render('customer_kit_card_info');?>
                   </div>
                   <div class="dsn-form">
@@ -157,6 +155,7 @@
                         <?php } ?>
                       </select>
                   <?php echo $this->Flash->render('format_address');?>
+                  <?php echo $this->Flash->render('customer_address_info');?>
                 </div>
                 <div class="dsn-input-new-adress">
                   <div class="dsn-form">
@@ -204,7 +203,7 @@
                   <div class="dsn-divider"></div>
                   <div class="dsn-form">
                     <label class="dsn-regist-adress">
-                      <input type="checkbox" class="focused" id="regist-adress" name="insert-adress-list" <?php if (CakeSession::read('Address.insert_address_list'))  { ?>checked <?php } ?>>
+                      <input type="checkbox" class="focused" id="regist-adress" name="insert-adress-list" <?php if (CakeSession::read('OrderKit.insert_address_list'))  { ?>checked <?php } ?>>
                       <span class="dsn-check-icon"></span> <label for="regist-adress" class="dsn-regist-adress">入力した住所をお届け先リストに登録する</label></label>
                   </div>
                 </div>
