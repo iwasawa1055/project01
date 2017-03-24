@@ -54,6 +54,7 @@ class FirstOrderController extends MinikuraController
                 CakeSession::write('order_option', $option);
             }
             CakeSession::write('order_code', $code);
+            CakeSession::write('order_option', 'code');
         }
 
         // スニーカー判定 keyがあれば空白なければnull
@@ -122,6 +123,9 @@ class FirstOrderController extends MinikuraController
         switch (true) {
             case $order_option === 'all':
                 $kit_select_type = 'all';
+                break;
+            case $order_option === 'code':
+                $kit_select_type = 'code';
                 break;
             case $order_option === 'sneaker':
                 $kit_select_type = 'sneaker';
@@ -531,6 +535,10 @@ class FirstOrderController extends MinikuraController
         if (CakeSession::read('kit_select_type') === 'starter_kit') {
             $display_alliance_cd = false;
             // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' display_alliance_cd is starter_kit');
+        }
+        // hako5個パックが1個以上選択されている場合 非表示
+        if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) {
+            $display_alliance_cd = false;
         }
 
         $this->set('display_alliance_cd', $display_alliance_cd);

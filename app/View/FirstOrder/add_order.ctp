@@ -48,7 +48,7 @@
       </div>
     </div>
     <?php endif; ?>
-    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako')) : ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako') || ($kit_select_type === 'code')) : ?>
     <!-- HAKO -->
     <div class="lineup-box">
       <h3>minikuraHAKO</h3>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <?php endif; ?>
-    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono')) : ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono') || ($kit_select_type === 'code')) : ?>
       <!-- MONO -->
       <div class="lineup-box">
         <h3>minikuraMONO</h3>
@@ -84,7 +84,7 @@
         </div>
       </div>
     <?php endif; ?>
-    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'cleaning')) : ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'cleaning') || ($kit_select_type === 'code')) : ?>
       <!-- CLEANING -->
       <div class="lineup-box">
         <h3>クリーニングパック</h3>
@@ -246,7 +246,7 @@
     <p class="caption">引っ越し、片付けに最適！お得な５枚パック！</p>
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-  <a class="btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 </div>
 
 <?php echo $this->element('FirstOrder/footer'); ?>

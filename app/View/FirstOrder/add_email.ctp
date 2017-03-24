@@ -81,13 +81,13 @@
         </div>
 
       <?php endif; ?>
-      <?php if ($display_alliance_cd) { ?>
+      <?php if ($display_alliance_cd) : ?>
         <div class="form form-line">
           <label>紹介コード</label>
           <input type="url" class="referral focused" size="20" maxlength="20" name="alliance_cd" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
           <br><?php echo $this->Flash->render('alliance_cd');?>
         </div>
-      <?php } ?>
+      <?php endif; ?>
 
       <div class="divider"></div>
 
