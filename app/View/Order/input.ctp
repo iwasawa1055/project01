@@ -149,7 +149,7 @@
                 <div class="dsn-form">
                   <label>お届け先</label>
                       <select name="address_id" id="address_id" class="dsn-adress select-delivery focused">
-                        <option value="">以下からお選びください</option>
+                        <!--<option value="">以下からお選びください</option>-->
                         <?php foreach ( CakeSession::read('OrderKit.address_list') as $key => $value ) {?>
                         <option value="<?php echo $key;?>"<?php if ( $key === (int)CakeSession::read('OrderKit.address_id') ) echo " selected";?>><?php echo $value;?></option>
                         <?php } ?>
@@ -224,7 +224,7 @@
             </section>
           </div>
         </div>
-        <section class="dsn-nextback fix">
+        <section class="dsn-nextback fix dev-forefront">
           <button class="dsn-btn-next-full" type="submit" formnovalidate>確認へ <i class="fa fa-chevron-circle-right"></i></button>
         </section>
         </section>
@@ -353,3 +353,4 @@
         <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
         <a class="dsn-btn-submit" data-remodal-action="close">お届け先を指定 <i class="fa fa-chevron-circle-right"></i></a>
       </div>
+    </div>

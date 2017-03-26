@@ -200,9 +200,10 @@ class OrderController extends MinikuraController
         // 逐次バリデーションをかける 最後にまとめてバリデーションエラーでリターン
         // バリデーションをかけない値もセッションには保存する。
         $is_validation_error = false;
-
+        
         // 逐次バリデーション
         $validation = AppValid::validate($vali_oreder_params);
+
         //* 共通バリデーションでエラーあったらメッセージセット
         if (!empty($validation)) {
             foreach ($validation as $key => $message) {

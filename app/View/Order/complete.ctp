@@ -22,7 +22,7 @@
                     </div>
                 </section>
             </div>
-            <section class="dsn-nextback fix"><a href="/" class="dsn-btn-next-full">マイページトップへ進む <i class="fa fa-chevron-circle-right"></i></a>
+            <section class="dsn-nextback fix dev-forefront"><a href="/" class="dsn-btn-next-full">マイページトップへ進む <i class="fa fa-chevron-circle-right"></i></a>
             </section>
         </div>
     </div>

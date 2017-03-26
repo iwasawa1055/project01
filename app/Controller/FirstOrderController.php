@@ -64,6 +64,11 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('order_sneaker', true);
             CakeSession::write('order_option', 'sneaker');
         }
+        // 紹介コードが sneakers の場合
+        if ($code === Configure::read('api.sneakers.alliance_cd')) {
+            CakeSession::write('order_sneaker', true);
+            CakeSession::write('order_option', 'sneaker');
+        }
 
         /* 以下 初回購入フロー条件判定 */
         // オートログイン確認

@@ -18,21 +18,21 @@
             <?php echo $this->element('Order/breadcrumb_list'); ?>
 
             <!-- LINEUP -->
-            <section id="dsn-lineup">
+            <section id="dsn-lineup" class="fix">
               <div class="dsn-wrapper">
                 <!-- HAKO -->
                 <div class="dsn-lineup-box">
-                  <h3>クリーニングパック</h3>
-                  <p class="dsn-price">6ヶ月保管＋クリーニング料セット
+                  <h3>minikura sneakers</h3>
+                  <p class="dsn-price">月額保管料<span>800円</span>
                   </p>
-                  <p class="dsn-price">ボックス代金<span>12,000円</span>
+                  <p class="dsn-price">ボックス代金<span>800円</span>
                   </p>
-                  <p class="dsn-box-caption">大切な衣類をしっかり保管したい方に！クリーニング付き衣類専用保管パック。
+                  <p class="dsn-box-caption">「NIKE MY SNKRS」専用の スニーカー保管サービス。あなたのスニーカーを大切に保管します。
                   </p>
                   <p class="dsn-select-number" id="select_sneaker"><?php if (CakeSession::read('Order.sneaker.sneaker') > 0) : ?><span><?php echo h(CakeSession::read('Order.sneaker.sneaker')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-                  <div class="dsn-box-sneaker"><img src="/images/box_sneaker@1x.png" srcset="/images/box_sneaker@1x.png 1x, /images/box_sneaker@2x.png 2x" alt="minikuraクリーニングパック"> </div>
+                  <div class="dsn-box-sneaker"><img src="/images/box_sneaker@1x.png" srcset="/images/box_sneaker@1x.png 1x, /images/box_sneaker@2x.png 2x" alt="minikura sneakers"> </div>
                   <a href="#" class="dsn-btn-select" data-remodal-target="modal-sneaker"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
-                  <div class="form">
+                  <div class="dsn-form">
                     <?php echo $this->Flash->render('select_oreder_sneaker'); ?>
                   </div>
                 </div>
@@ -114,7 +114,7 @@
                 <div class="dsn-form">
                   <label>お届け先</label>
                       <select name="address_id" id="address_id" class="dsn-adress select-delivery focused">
-                        <option value="">以下からお選びください</option>
+                        <!--<option value="">以下からお選びください</option>-->
                         <?php foreach ( CakeSession::read('OrderKit.address_list') as $key => $value ) {?>
                         <option value="<?php echo $key;?>"<?php if ( $key === (int)CakeSession::read('OrderKit.address_id') ) echo " selected";?>><?php echo $value;?></option>
                         <?php } ?>
@@ -189,7 +189,7 @@
             </section>
           </div>
         </div>
-        <section class="dsn-nextback fix">
+        <section class="dsn-nextback fix dev-forefront">
           <button class="dsn-btn-next-full" type="submit" formnovalidate>確認へ <i class="fa fa-chevron-circle-right"></i></button>
         </section>
         </section>
@@ -266,3 +266,4 @@
         <a class="dsn-btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
         <a class="dsn-btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
       </div>
+    </div>

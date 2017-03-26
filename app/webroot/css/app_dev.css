@@ -81,6 +81,10 @@ p.error-message a:hover,
   color: #aaa;
 }
 
+.dev-forefront {
+  z-index: 99999;
+}
+
 /* app.cssのbox-item-nameと同じ効果、
 実装タイミングの要因でこちらを利用する */
 .boxitem-name {
