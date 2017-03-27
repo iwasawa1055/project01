@@ -66,7 +66,7 @@
       </div>
     </div>
     <section class="dsn-nextback dev-forefront">
-      <a href="/order/input" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+      <a href="/order/input_sneaker" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
       <button type="submit" class="dsn-btn-next">購入する <i class="fa fa-chevron-circle-right"></i></button>
     </section>
     </form>
