@@ -335,10 +335,10 @@
       <!--Cleaning modal-->
       <div class="remodal dsn-items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
         <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="クリーニングパック">
+          <div class="dsn-pict-box"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikura sneakers">
           </div>
           <div class="dsn-select-box">
-            <h3>クリーニングパック</h3>
+            <h3>minikura sneakers</h3>
             <select class="dsn-item-number js-item-number js-item-cleaning" data-name="cleaning" data-box_type="cleaning">
               <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
               <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.cleaning.cleaning') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>

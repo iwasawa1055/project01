@@ -21,7 +21,7 @@
         <p class="dsn-box-caption">「NIKE MY SNKRS」専用の スニーカー保管サービス。あなたのスニーカーを大切に保管します。
         </p>
         <p class="dsn-select-number" id="select_sneaker"><?php if (CakeSession::read('Order.sneaker.sneaker') > 0) : ?><span><?php echo h(CakeSession::read('Order.sneaker.sneaker')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-        <div class="dsn-box-sneaker"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="minikuraクリーニングパック"> </div>
+        <div class="dsn-box-sneaker"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="minikura sneakers"> </div>
         <a href="#" class="dsn-btn-select" data-remodal-target="modal-sneaker"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <div class="form">
           <?php echo $this->Flash->render('select_oreder_sneaker'); ?>
@@ -38,7 +38,7 @@
 <!--sneaker modal-->
 <div class="remodal dsn-items" data-remodal-id="modal-sneaker" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
   <div class="dsn-box">
-    <div class="dsn-pict-box"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="クリーニングパック">
+    <div class="dsn-pict-box"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="minikura sneakers">
     </div>
     <div class="dsn-select-box">
       <h3>minikura sneakers</h3>
