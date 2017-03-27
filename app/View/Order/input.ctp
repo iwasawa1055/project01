@@ -83,7 +83,7 @@
                 </table>
                 <div class="dsn-divider"></div>
                 <?php if (CakeSession::read('OrderKit.is_credit')) { ?>
-                  <h4 class="dev-after-link">クレジットカード情報の入力</h4><a href="https://minikura.comhttps://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
+                  <h4 class="dev-after-link">クレジットカード情報の入力</h4><a href="https://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
                   <div class="dsn-form">
                     <?php echo $this->Flash->render('customer_kit_card_info');?>
                   </div>

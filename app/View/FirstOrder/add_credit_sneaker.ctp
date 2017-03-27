@@ -40,7 +40,7 @@
         <?php echo $this->Flash->render('holder_name');?>
       </div>
       <div class="form">
-        <a href="https://minikura.comhttps://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
+        <a href="https://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
       </div>
     </div>
   </section>
