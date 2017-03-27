@@ -34,10 +34,17 @@ var AppInputOrder =
 
   f: function () {
     $('#postal').change(function() {
-console.log('post');
       AppInputOrder.getDatetimePostal();
     });
   },
+  g: function()
+  {
+    // validation メッセージが表示される時に、ページ上部に表示する
+    if ($('span').hasClass('validation')) {
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dsn-wrapper');
+    }
+  },
+
   init_disp1: function () {
     // 合計点数の初期化
     var total_number = Number(0);
@@ -87,6 +94,7 @@ console.log('post');
       $('option:first', elem_datetime).prop('selected', true);
       elem_datetime.attr("disabled", "disabled");
 
+      console.log("kita");
       $.post('/order/getAddressDatetime',
         { address_id: elem_address.val() },
         function(data){
@@ -106,6 +114,22 @@ console.log('post');
       ).always(function() {
         elem_datetime.removeAttr("disabled");
       });
+    }
+  },
+  init_disp5: function() {
+
+    // 住所追加の場合
+    if($('#address_id').val() == -99 ){
+
+      // 郵便番号入力済
+      if ($("#postal").val() !== '') {
+
+        // お届け先希望未指定
+        if ($("#datetime_cd").val() === null) {
+          // お届け先を追加
+          AppInputOrder.getDatetimePostal();
+        }
+      }
     }
   },
 
@@ -249,10 +273,12 @@ $(function()
   AppInputOrder.d();
   AppInputOrder.e();
   AppInputOrder.f();
+  AppInputOrder.g();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppInputOrder.init_disp3();
   AppInputOrder.init_disp4();
+  AppInputOrder.init_disp5();
   AppAddOrder.a();
   AppAddOrder.b();
 });

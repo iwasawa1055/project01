@@ -183,3 +183,7 @@ section#dsn-delivery .dsn-form label span, section#dsn-adress .dsn-form label sp
     color: silver;
     opacity: 1.0;
 }
+
+.dsn-form .alert-danger {
+    font-size: 1.6rem;
+}

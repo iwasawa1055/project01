@@ -77,8 +77,8 @@ class OrderController extends MinikuraController
             $OrderKit = array(
                 'address_list' => array(),
                 'address_id' => "",
-                'is_add_address' => false,
-                'insert_address_list', true,
+                'is_input_address' => false,
+                'insert_address_list' =>  true,
                 'card_data' => array(),
                 'select_card' => "default",
                 'is_credit' => false,
@@ -133,8 +133,6 @@ class OrderController extends MinikuraController
             }
         }
 
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' OrderKit ' . print_r(CakeSession::read('OrderKit'), true));
-
         // セッション情報格納
         CakeSession::write('OrderKit', $OrderKit);
 
@@ -163,15 +161,12 @@ class OrderController extends MinikuraController
         // 箱選択されているか
         $vali_oreder_params = array();
 
-        CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' select_oreder_sneaker ' . print_r(CakeSession::read('order_sneaker'), true));
-
         switch (true) {
             case CakeSession::read('order_sneaker') === true:
                 $Order = $this->_setSneakerOrder($Order);
                 $vali_oreder_params = array(
                     'select_oreder_sneaker' => $Order['sneaker']['sneaker']
                 );
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' select_oreder_sneaker ' . print_r($vali_oreder_params, true));
 
                 break;
             default:
@@ -334,7 +329,9 @@ class OrderController extends MinikuraController
 
             // お届け日のラベル
             // 逐次セッションに保存
-            CakeSession::write('OrderKit.select_delivery_text', $input_address_params['select_delivery_text']);
+            if (in_array('select_delivery_text', $input_address_params)) {
+                CakeSession::write('OrderKit.select_delivery_text', $input_address_params['select_delivery_text']);
+            }
         }
 
 
@@ -544,8 +541,6 @@ class OrderController extends MinikuraController
             // 住所リスト追加
             if(CakeSession::read('OrderKit.insert_address_list')) {
 
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' insert_address_list ');
-
                 $set_address = CakeSession::read('Address');
                 unset($set_address['select_delivery']);
                 unset($set_address['select_delivery_list']);
@@ -567,15 +562,11 @@ class OrderController extends MinikuraController
 
                 $ret = $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
 
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' ret ' . print_r($ret, true));
-
                 // 追加アドレスIDを取得
                 $address_id = Hash::get($this->Address->last(), 'address_id', '');
 
                 // 部分更新
                 CakeSession::write('OrderKit.address_id', $address_id);
-
-                CakeLog::write(DEBUG_LOG, __METHOD__.'('.__LINE__.')'. ' address_id ' . print_r($address_id, true));
             } else {
 
                 // リストに追加しない
