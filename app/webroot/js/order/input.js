@@ -94,7 +94,6 @@ var AppInputOrder =
       $('option:first', elem_datetime).prop('selected', true);
       elem_datetime.attr("disabled", "disabled");
 
-      console.log("kita");
       $.post('/order/getAddressDatetime',
         { address_id: elem_address.val() },
         function(data){

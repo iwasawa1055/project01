@@ -155,11 +155,11 @@ section#adress .dsn-form label span.check-icon{
 }
 
 h4.dev-after-link {
-    display:inline;
+/*    display:inline;*/
 }
 
 #dsn-delivery .link-terms {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 300;
     margin-left: 5px;
 }
