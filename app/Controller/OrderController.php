@@ -423,6 +423,9 @@ class OrderController extends MinikuraController
                 } else {
                     // 口座決済
                     $vail_address_params = $set_address;
+
+                    // 日付選択
+                    $vail_address_params['datetime_cd'] = $input_address_params['datetime_cd'];
                 }
             }
         }
@@ -431,13 +434,21 @@ class OrderController extends MinikuraController
         $validation = AppValid::validate($vail_address_params);
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
+            // アドレスリストの内容がエラーかチェックする。
+            $address_list_error = false;
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
+                // お届け先日時選択エラーの場合はお届け先形式エラーにしない。
+                if ($key !== 'datetime_cd') {
+                    $address_list_error = true;
+                }
             }
             // アドレスリストの内容がエラーだった場合
             if (!$is_input_address) {
-                $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
-                    , ['key' => 'format_address']);
+                if($address_list_error) {
+                    $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
+                        , ['key' => 'format_address']);
+                }
             }
             $is_validation_error = true;
         }
