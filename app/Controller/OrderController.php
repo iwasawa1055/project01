@@ -339,7 +339,7 @@ class OrderController extends MinikuraController
 
             // お届け日のラベル
             // 逐次セッションに保存
-            if (in_array('select_delivery_text', $input_address_params)) {
+            if (array_key_exists('select_delivery_text', $input_address_params)) {
                 CakeSession::write('OrderKit.select_delivery_text', $input_address_params['select_delivery_text']);
             }
         }
