@@ -101,7 +101,7 @@
                     <h4>セキュリティコードをご入力ください。</h4>
                     <div class="dsn-form">
                       <label>セキュリティコード<sup><span class="required">※</span></sup></label>
-                      <input class="dsn-security-code" name="security_cd" placeholder="0123" size="6" maxlength="6">
+                      <input type="tel" class="dsn-security-code" name="security_cd" placeholder="0123" size="6" maxlength="6">
                       <div class="dsn-form">
                         <?php echo $this->Flash->render('security_cd');?>
                       </div>
@@ -224,10 +224,10 @@
             </section>
           </div>
         </div>
-        <section class="dsn-nextback fix dev-forefront">
-          <button class="dsn-btn-next-full" type="submit" formnovalidate>確認へ <i class="fa fa-chevron-circle-right"></i></button>
+        <section class="nextback">
+          <button type="submit" class="btn-next">確認へ <i class="fa fa-chevron-circle-right"></i></button>
         </section>
-        </section>
+        </section>        
 
         <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
         <input type="hidden" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
@@ -285,7 +285,6 @@
           <p class="dsn-caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
         </div>
         <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-        <a class="dsn-btn-submit" data-remodal-action="close">お届け先を指定 <i class="fa fa-chevron-circle-right"></i></a>
       </div>
       <!--HAKO modal-->
       <div class="remodal dsn-items" data-remodal-id="modal-hako" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -332,7 +331,6 @@
           <p class="dsn-caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
         </div>
         <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-        <a class="dsn-btn-submit" data-remodal-action="close">お届け先を指定 <i class="fa fa-chevron-circle-right"></i></a>
       </div>
       <!--Cleaning modal-->
       <div class="remodal dsn-items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -351,6 +349,5 @@
           <p class="dsn-caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
         </div>
         <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-        <a class="dsn-btn-submit" data-remodal-action="close">お届け先を指定 <i class="fa fa-chevron-circle-right"></i></a>
       </div>
     </div>

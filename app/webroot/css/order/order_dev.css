@@ -183,3 +183,48 @@ section#dsn-delivery .dsn-form label span, section#dsn-adress .dsn-form label sp
     color: silver;
     opacity: 1.0;
 }
+
+/* button */
+
+button[class^="btn-"] {
+    margin: 1.5rem 0 0 0;
+    padding: 1rem;
+    font-size: 1.8rem;
+    color: #ffffff;
+    text-align: center;
+    border-radius: .2rem;
+    width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+    button.btn-next {
+        display: inline-block;
+        width: calc(100% - 1rem);
+        margin: .5rem;
+        font-size: 1.3rem;
+    }
+}
+section.nextback {
+    display: block;
+    width: calc(72% - 1rem);
+    margin-bottom: 0;
+    padding: 1rem;
+    bottom: 0;
+    text-align: center;
+    margin: 0 auto 3rem;
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+button.btn-next {
+    background: #ff0000;
+    border: .1rem solid #ff0000;
+    color: #ffffff;
+    text-align: center;
+    border-radius: .2rem;
+    font-family: inherit;
+    line-height: inherit;
+    -webkit-appearance: button;
+    cursor: pointer;
+    text-transform: none;
+}
