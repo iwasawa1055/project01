@@ -247,8 +247,19 @@ class OrderController extends MinikuraController
             }
 
             // 登録カードの変更の有無
-            if ($select_card === 'register') {
-                // 登録カード変更あり
+            $is_card_insert = false;
+
+            // カード変更
+            if($select_card === 'register') {
+                $is_card_insert = true;
+            }
+
+            // カード追加
+            if (is_null(CakeSession::read('OrderKit.card_data'))) {
+                $is_card_insert = true;
+            }
+
+            if($is_card_insert) {
                 // new_security_cdをsecurity_cdにいれバリデーションをかける
                 // new_security_cdとsecurity_cdが２つバリデーションにかけることはない
                 $input_card_params['security_cd'] = $input_card_params['new_security_cd'];
@@ -499,9 +510,20 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
-        // カード
-        if(CakeSession::read('OrderKit.select_card') === 'register') {
+        // カード情報編集
+        $is_card_insert = false;
 
+        // カード変更
+        if(CakeSession::read('OrderKit.select_card') === 'register') {
+            $is_card_insert = true;
+        }
+
+        // カード追加
+        if (is_null(CakeSession::read('OrderKit.card_data'))) {
+            $is_card_insert = true;
+        }
+
+        if($is_card_insert) {
             // カード変更追加モデル
             $this->loadModel('PaymentGMOSecurityCard');
 
@@ -534,8 +556,13 @@ class OrderController extends MinikuraController
                 return $this->_flowSwitch('input');
             }
 
-            // カード更新
-            $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+            if (is_null(CakeSession::read('OrderKit.card_data'))) {
+                // カード更新
+                $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+            } else {
+                // カード更新
+                $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+            }
             if (!empty($result_security_card->error_message)) {
                 $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
                 return $this->_flowSwitch('input');
