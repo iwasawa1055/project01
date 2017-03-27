@@ -1310,6 +1310,8 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('Credit');
         CakeSession::delete('Email');
         CakeSession::delete('FirstOrderList');
+        CakeSession::delete('order_sneaker');
+
     }
 
 

@@ -56,6 +56,7 @@ class OrderController extends MinikuraController
             return $this->setAction('input_sneaker');
         }
 
+        CakeSession::write('order_sneaker', false);
         return $this->setAction('input');
     }
 
@@ -68,6 +69,15 @@ class OrderController extends MinikuraController
         // エントリーユーザの場合初回購入動線へ移動
         if ($this->Customer->isEntry()) {
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // スニーカーセッションを制御
+        if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
+            // スニーカー
+            CakeSession::write('order_sneaker', true);
+        } else {
+            // スニーカーではない
+            CakeSession::write('order_sneaker', false);
         }
 
         // セッションリセット
@@ -858,6 +868,7 @@ class OrderController extends MinikuraController
         CakeSession::delete('OrderTotalList');
         CakeSession::delete('Address');
         CakeSession::delete('Credit');
+        CakeSession::delete('order_sneaker');
     }
 
 }
