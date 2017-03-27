@@ -15,13 +15,13 @@
     <div class="lineup-box">
       <h3>MONOスターターキット</h3>
       <div class="box-starter"> <img src="/first_order_file/images/box_starter@1x.png" srcset="/first_order_file/images/box_starter@1x.png 1x, /first_order_file/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
-      <p class="price">月額保管料<span>250円</span>（1箱につき）
-      <p class="price">スターターキット(3箱)<span class="starter">250円</span>
-      </p>
-      <p class="box-caption">初回限定！MONOボックス3種類がセットになったお得なキット。
-      </p>
-      <p class="select-number js-select-starter"><span>1セット選択済み</span></p>
-      <input id="select_starter_kit" name="starter" type="hidden" value="1"/>
+      <div class="caption">      
+        <p class="price">月額保管料<span>250円</span>（1箱につき）</p>
+        <p class="price">スターターキット(3箱)<span class="starter">250円</span></p>
+        <p class="box-caption">初回限定！MONOボックス3種類がセットになったお得なキット。</p>
+        <p class="select-number js-select-starter"><span>1セット選択済み</span></p>
+        <input id="select_starter_kit" name="starter" type="hidden" value="1"/>
+      </div>
       <div class="form">
         <?php echo $this->Flash->render('select_starter_kit'); ?>
       </div>
@@ -35,10 +35,8 @@
       <div class="box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
       <div class="caption">
-        <p class="price">月額保管料<span>200円/箱</span>
-        </p>
-        <p class="price">ボックス代金<span>500円/5箱</span>
-        </p>
+        <p class="price">月額保管料<span>200円/箱</span></p>
+        <p class="price">ボックス代金<span>500円/5箱</span></p>
         <p class="box-caption">引っ越し、片付けに最適！お得な５枚パック！</p>
         <p class="select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
@@ -53,13 +51,12 @@
     <div class="lineup-box">
       <h3>minikuraHAKO</h3>
       <div class="box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
-      <p class="price">月額保管料<span>200円</span>
-      </p>
-      <p class="price">ボックス代金<span>200円</span>
-      </p>
-      <p class="box-caption">保管するならHAKOがオススメ！
-      </p>
-      <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+      <div class="caption">
+        <p class="price">月額保管料<span>200円</span></p>
+        <p class="price">ボックス代金<span>200円</span></p>
+        <p class="box-caption">保管するならHAKOがオススメ！</p>
+        <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+      </div>
       <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
       <div class="form">
         <?php echo $this->Flash->render('select_oreder_hako'); ?>
@@ -71,13 +68,12 @@
       <div class="lineup-box">
         <h3>minikuraMONO</h3>
         <div class="box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO"></div>
-        <p class="price">月額保管料<span>250円</span>
-        </p>
-        <p class="price">ボックス代金<span>250円</span>
-        </p>
-        <p class="box-caption">1点毎のアイテム管理でオプション充実！
-        </p>
-        <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <div class="caption">
+          <p class="price">月額保管料<span>250円</span></p>
+          <p class="price">ボックス代金<span>250円</span></p>
+          <p class="box-caption">1点毎のアイテム管理でオプション充実！</p>
+          <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <div class="form">
           <?php echo $this->Flash->render('select_oreder_mono'); ?>
@@ -89,13 +85,12 @@
       <div class="lineup-box">
         <h3>クリーニングパック</h3>
         <div class="box-cleaning"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
-        <p class="price">6ヶ月保管＋クリーニング料セット
-        </p>
-        <p class="price">ボックス代金<span>12,000円</span>
-        </p>
-        <p class="box-caption">大切な衣類を綺麗に保管！
-        </p>
-        <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <div class="caption">
+          <p class="price">6ヶ月保管＋クリーニング料セット</p>
+          <p class="price">ボックス代金<span>12,000円</span></p>
+          <p class="box-caption">大切な衣類を綺麗に保管！</p>
+          <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        </div>
         <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <div class="form">
           <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
