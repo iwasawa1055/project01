@@ -13,12 +13,12 @@
     <?php if ($kit_select_type === 'sneaker') : ?>
       <!-- sneaker -->
       <div class="dsn-lineup-box">
-        <h3>クリーニングパック</h3>
-        <p class="dsn-price">6ヶ月保管＋クリーニング料セット
+        <h3>minikura sneakers</h3>
+        <p class="dsn-price">月額保管料<span>800円</span>
         </p>
-        <p class="dsn-price">ボックス代金<span>12,000円</span>
+        <p class="dsn-price">ボックス代金<span>800円</span>
         </p>
-        <p class="dsn-box-caption">大切な衣類をしっかり保管したい方に！クリーニング付き衣類専用保管パック。
+        <p class="dsn-box-caption">「NIKE MY SNKRS」専用の スニーカー保管サービス。あなたのスニーカーを大切に保管します。
         </p>
         <p class="dsn-select-number" id="select_sneaker"><?php if (CakeSession::read('Order.sneaker.sneaker') > 0) : ?><span><?php echo h(CakeSession::read('Order.sneaker.sneaker')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         <div class="dsn-box-sneaker"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="minikuraクリーニングパック"> </div>
@@ -41,15 +41,16 @@
     <div class="dsn-pict-box"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="クリーニングパック">
     </div>
     <div class="dsn-select-box">
-      <h3>クリーニングパック</h3>
+      <h3>minikura sneakers</h3>
       <select class="dsn-item-number js-item-number js-item-sneaker" data-name="sneaker" data-box_type="sneaker">
         <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.sneaker.sneaker') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
         <?php endfor;?>
       </select>
     </div>
-    <p class="dsn-size">W40cm×H40cm×D40cm</p>
-    <p class="dsn-caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
+    <p class="dsn-size">W62cm×H44cm×D44cm</p>
+    <p class="dsn-caption">二重構造の頑丈な段ボール「ダブルカートンボックス」を採用。<br>
+      1ボックスにつき8足までお預かりできます。</p>
   </div>
   <a class="dsn-btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="dsn-btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>

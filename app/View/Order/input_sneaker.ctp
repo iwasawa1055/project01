@@ -20,7 +20,7 @@
             <!-- LINEUP -->
             <section id="dsn-lineup" class="fix">
               <div class="dsn-wrapper">
-                <!-- HAKO -->
+                <!-- sneakers -->
                 <div class="dsn-lineup-box">
                   <h3>minikura sneakers</h3>
                   <p class="dsn-price">月額保管料<span>800円</span>
@@ -196,56 +196,6 @@
 
         <input type="hidden" name="sneaker"      value="<?php echo h(CakeSession::read('Order.sneaker.sneaker')); ?>" />
       </form>
-      <!--MONO modal-->
-      <div class="remodal dsn-items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
-        <div class="dsn-box">
-          <div class="dsn-pict-box">
-            <img src="/images/order/box_regular@1x.png" srcset="/images/order/box_regular@1x.png 1x, /images/order/box_regular@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>レギュラーボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-mono" data-name="mono" data-box_type="mono">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++) : ?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W38cm×H38cm×D38cm</p>
-          <p class="dsn-caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
-        </div>
-        <div class="dsn-box">
-          <div class="dsn-pict-box">
-            <img src="/images/order/box_apparel@1x.png" srcset="/images/order/box_apparel@1x.png 1x, /images/order/box_apparel@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>アパレルボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-mono" data-name="mono_apparel" data-box_type="mono">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono_apparel') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W60cm×H20cm×D38cm</p>
-          <p class="dsn-caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
-        </div>
-        <div class="dsn-box">
-          <div class="dsn-pict-box">
-            <img src="/images/order/box_book@1x.png" srcset="/images/order/box_book@1x.png 1x, /images/order/box_book@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>ブックボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-mono" data-name="mono_book" data-box_type="mono">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono_book') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W42cm×H29cm×D33cm</p>
-          <p class="dsn-caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
-        </div>
-        <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-        <a class="dsn-btn-submit" data-remodal-action="close">お届け先を指定 <i class="fa fa-chevron-circle-right"></i></a>
-      </div>
 
       <!--sneaker modal-->
       <div class="remodal dsn-items" data-remodal-id="modal-sneaker" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -260,10 +210,10 @@
               <?php endfor;?>
             </select>
           </div>
-          <p class="dsn-size">W40cm×H40cm×D40cm</p>
-          <p class="dsn-caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
+          <p class="dsn-size">W62cm×H44cm×D44cm</p>
+          <p class="dsn-caption">二重構造の頑丈な段ボール「ダブルカートンボックス」を採用。<br>
+            1ボックスにつき8足までお預かりできます。</p>
         </div>
         <a class="dsn-btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-        <a class="dsn-btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
       </div>
     </div>

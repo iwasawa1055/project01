@@ -25,7 +25,11 @@
                     <a href="https://minikura.com/contents/sneakers/help.html" target="_blank">注意事項</a>
                 </li>
                 <li class="login">
-                    <a href="/login" target="_blank">ログイン</a>
+                    <?php if (!empty($customer) && $customer->isLogined()) : ?>
+                        <a class="login" href="/login/logout" target="_blank">ログアウト</a>
+                    <?php else: ?>
+                        <a href="/login" target="_blank">ログイン</a>
+                    <?php endif; ?>
                 </li>
             </ul>
         </div>
