@@ -98,7 +98,18 @@ class FirstOrderController extends MinikuraController
                 // スニーカー購入動線遷移
                 CakeSession::write('order_sneaker', true);
                 CakeSession::write('order_option', 'sneaker');
+            } else {
+                // スニーカでないエントリユーザの場合コードがあってもスニーカではない
+                CakeSession::write('order_sneaker', false);
+
+                // スニーカコードの場合 コードオプションを削除する
+                if ($code === Configure::read('api.sneakers.alliance_cd')) {
+                    CakeSession::delete('order_option');
+                    CakeSession::delete('order_code');
+                }
             }
+
+
 
             // ログイン済みエントリーユーザ 初回購入フローへ
             $this->_flowSwitch('add_order');
