@@ -75,9 +75,23 @@ class OrderController extends MinikuraController
         if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
             // スニーカー
             CakeSession::write('order_sneaker', true);
+
+            // スニーカー以外のオーダ情報を削除
+            $order_sneaker = CakeSession::read('Order.sneaker');
+            CakeSession::delete('Order');
+            CakeSession::write('Order.sneaker', $order_sneaker);
         } else {
             // スニーカーではない
             CakeSession::write('order_sneaker', false);
+
+            // 通所購入以外のオーダ情報を削除
+            $order_hako = CakeSession::read('Order.hako');
+            $order_mono = CakeSession::read('Order.mono');
+            $order_cleaning = CakeSession::read('Order.cleaning');
+            CakeSession::delete('Order');
+            CakeSession::write('Order.hako', $order_hako);
+            CakeSession::write('Order.mono', $order_mono);
+            CakeSession::write('Order.cleaning', $order_cleaning);
         }
 
         // セッションリセット
