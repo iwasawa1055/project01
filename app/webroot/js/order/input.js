@@ -41,7 +41,7 @@ var AppInputOrder =
   {
     // validation メッセージが表示される時に、ページ上部に表示する
     if ($('span').hasClass('validation')) {
-      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dsn-wrapper');
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
     }
   },
 

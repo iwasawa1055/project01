@@ -19,7 +19,7 @@
 
             <!-- LINEUP -->
             <section id="dsn-lineup" class="fix">
-              <div class="dsn-wrapper">
+              <div class="dsn-wrapper dev-wrapper">
                 <!-- sneakers -->
                 <div class="dsn-lineup-box">
                   <h3>minikura sneakers</h3>

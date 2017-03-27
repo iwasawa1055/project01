@@ -19,7 +19,7 @@
 
             <!-- LINEUP -->
             <section id="dsn-lineup">
-              <div class="dsn-wrapper">
+              <div class="dsn-wrapper dev-wrapper">
                 <!-- HAKO -->
                 <div class="dsn-lineup-box">
                   <h3>minikuraHAKO</h3>
