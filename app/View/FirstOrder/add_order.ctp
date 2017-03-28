@@ -31,13 +31,13 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
     <div class="lineup-box">
       <div class="medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
-      <h3>お片付けパック</h3>
+      <h3>HAKOお片付けパック</h3>
       <div class="box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
       <div class="caption">
-        <p class="price">月額保管料<span>200円/箱</span></p>
+        <p class="price">月額保管料<span>200円/1箱</span></p>
         <p class="price">ボックス代金<span>500円/5箱</span></p>
-        <p class="box-caption">引っ越し、片付けに最適！お得な５枚パック！</p>
+        <p class="box-caption">HAKOレギュラー５箱がセットになった大変お得な限定パック！</p>
         <p class="select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
       <a href="#" class="btn-select" data-remodal-target="modal-recommend"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -227,10 +227,10 @@
 <!--Recommend modal-->
 <div class="remodal items" data-remodal-id="modal-recommend" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
   <div class="box">
-    <div class="pict-box"><img src="/first_order_file/images/box_regular5@1x.png" srcset="/first_order_file/images/box_regular5@1x.png 1x, /first_order_file/images/box_regular5@2x.png 2x" alt="お片付けパック">
+    <div class="pict-box"><img src="/first_order_file/images/box_regular5@1x.png" srcset="/first_order_file/images/box_regular5@1x.png 1x, /first_order_file/images/box_regular5@2x.png 2x" alt="HAKOお片付けパック">
     </div>
     <div class="select-box">
-      <h3>お片付けパック</h3>
+      <h3>HAKOお片付けパック</h3>
       <select class="item-number js-item-number js-item-hako_limited_ver1" data-name="hako_limited_ver1" data-box_type="hako_limited_ver1">
         <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') == $i ? ' selected' : '' ;?>><?php echo h($i);?>パック</option>

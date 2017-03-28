@@ -262,3 +262,7 @@ section#adress .form label span.check-icon{
 section#lineup .form{
     font-size: 1.6rem;
 }
+
+section#lineup .medal img {
+    width: 90%;
+}

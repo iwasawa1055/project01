@@ -761,7 +761,7 @@ class FirstOrderController extends MinikuraController
                         // 先頭のコードのみ料金が返ってくる
                         $code = KIT_CD_HAKO_LIMITED_VER1;
                         $FirstOrderList[$code]['number']    = $value;
-                        $FirstOrderList[$code]['kit_name']  = 'お片付けパック';
+                        $FirstOrderList[$code]['kit_name']  = 'HAKOお片付けパック';
                         $FirstOrderList[$code]['price'] = 0;
                         $hako_limited_ver1_num = $value * 5;
                         $kit_params[] = KIT_CD_HAKO_LIMITED_VER1.':' . $hako_limited_ver1_num;
