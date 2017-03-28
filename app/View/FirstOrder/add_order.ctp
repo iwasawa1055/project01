@@ -35,9 +35,9 @@
       <div class="box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
       <div class="caption">
-        <p class="price">月額保管料<span>200円/箱</span></p>
+        <p class="price">月額保管料<span>200円/1箱</span></p>
         <p class="price">ボックス代金<span>500円/5箱</span></p>
-        <p class="box-caption">引っ越し、片付けに最適！お得な５枚パック！</p>
+        <p class="box-caption">HAKOレギュラー５箱がセットになった大変お得な限定パック！</p>
         <p class="select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
       <a href="#" class="btn-select" data-remodal-target="modal-recommend"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
