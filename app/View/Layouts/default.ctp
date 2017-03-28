@@ -16,6 +16,7 @@
 <meta property="og:url" content="<?php echo Configure::read('site.static_content_url');?>" />
 <meta property="og:description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！" />
 <meta name="twitter:card" content="summary" />
+<meta name="format-detection" content="telephone=no">
 
 <title><?php $this->Title->p(); ?></title>
 <?php

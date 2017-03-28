@@ -216,6 +216,22 @@ class FirstOrderController extends MinikuraController
                     );
                 }
                 break;
+            case $kit_select_type === 'code':
+                $Order = $this->_setHakoOrder($Order);
+                $OrderTotal['hako_num'] = array_sum($Order['hako']);
+                $Order = $this->_setMonoOrder($Order);
+                $OrderTotal['mono_num'] = array_sum($Order['mono']);
+                $Order = $this->_setCleaningOrder($Order);
+
+                // 箱選択されているか
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
+                    $params = array(
+                        'select_oreder_mono' => $OrderTotal['mono_num'],
+                        'select_oreder_hako' => $OrderTotal['hako_num'],
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                    );
+                }
+                break;
             case $kit_select_type === 'mono':
                 $Order = $this->_setMonoOrder($Order);
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
