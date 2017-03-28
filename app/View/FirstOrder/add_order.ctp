@@ -31,7 +31,7 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
     <div class="lineup-box">
       <div class="medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
-      <h3>お片付けパック</h3>
+      <h3>HAKOお片付けパック</h3>
       <div class="box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
       <div class="caption">
@@ -227,10 +227,10 @@
 <!--Recommend modal-->
 <div class="remodal items" data-remodal-id="modal-recommend" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
   <div class="box">
-    <div class="pict-box"><img src="/first_order_file/images/box_regular5@1x.png" srcset="/first_order_file/images/box_regular5@1x.png 1x, /first_order_file/images/box_regular5@2x.png 2x" alt="お片付けパック">
+    <div class="pict-box"><img src="/first_order_file/images/box_regular5@1x.png" srcset="/first_order_file/images/box_regular5@1x.png 1x, /first_order_file/images/box_regular5@2x.png 2x" alt="HAKOお片付けパック">
     </div>
     <div class="select-box">
-      <h3>お片付けパック</h3>
+      <h3>HAKOお片付けパック</h3>
       <select class="item-number js-item-number js-item-hako_limited_ver1" data-name="hako_limited_ver1" data-box_type="hako_limited_ver1">
         <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
         <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') == $i ? ' selected' : '' ;?>><?php echo h($i);?>パック</option>
