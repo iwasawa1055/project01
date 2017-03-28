@@ -231,3 +231,7 @@ button.btn-next {
     cursor: pointer;
     text-transform: none;
 }
+
+.dev-text-decoration-none{
+    text-decoration: none;
+}
