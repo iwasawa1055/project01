@@ -320,4 +320,12 @@ class CustomerComponent extends Component
     {
         return $this->data->getCustomerBankAccount();
     }
+
+    public function getCustomerAllianceCd()
+    {
+        if ($this->isLogined()) {
+            return $this->data->getCustomerAllianceCd();
+        }
+        return '';
+    }
 }

@@ -193,4 +193,19 @@ class CustomerData
         }
         return null;
     }
+
+    /**
+     * ユーザ登録時の紹介コードを取得する
+     * @return string|null 紹介コード
+     */
+    public function getCustomerAllianceCd()
+    {
+        $info = $this->getInfo();
+        if (array_key_exists('alliance_cd', $info)) {
+            return $info['alliance_cd'];
+        }
+        return '';
+    }
+
+
 }
