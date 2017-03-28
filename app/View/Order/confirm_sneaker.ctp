@@ -47,7 +47,7 @@
               <p>〒<?php echo CakeSession::read('DispAddress.postal');?></p>
               <p><?php echo CakeSession::read('DispAddress.pref');?><?php echo CakeSession::read('DispAddress.address1');?><?php echo CakeSession::read('DispAddress.address2');?> <?php echo CakeSession::read('DispAddress.address3');?></p>
               <p><?php echo CakeSession::read('DispAddress.lastname');?>　<?php echo CakeSession::read('DispAddress.firstname');?></p>
-              <p class="dev-text-decoration-none"><?php echo CakeSession::read('DispAddress.tel1');?></p>
+              <p><?php echo CakeSession::read('DispAddress.tel1');?></p>
             </div>
             <div class="dsn-form">
               <label>お届け日時</label>
