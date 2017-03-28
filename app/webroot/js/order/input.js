@@ -86,34 +86,14 @@ var AppInputOrder =
   },
 
   init_disp4: function() {
-    if ($("#select_delivery").val() === '') {
-      // アドレス入力を非表示
-      $('.dsn-input-new-adress').hide('slow');
-
-      var elem_address = $('#address_id');
-      var elem_datetime = $('#datetime_cd');
-      $('option:first', elem_datetime).prop('selected', true);
-      elem_datetime.attr("disabled", "disabled");
-
-      $.post('/order/getAddressDatetime',
-        { address_id: elem_address.val() },
-        function(data){
-          if (data.result) {
-            elem_datetime.empty();
-            var optionItems = new Array();
-            $.each(data.result, function() {
-                optionItems.push(new Option(this.text, this.datetime_cd));
-            });
-            // 戻る対応でリストをpostする
-            $('#select_delivery').val(JSON.stringify(data.result));
-
-            elem_datetime.append(optionItems);
-          };
-        },
-        'json'
-      ).always(function() {
-        elem_datetime.removeAttr("disabled");
-      });
+    // 住所デフォルトでお届け先が非表示になる場合
+    // 住所追加ではない場合
+    if($('#address_id').val() != -99 ){
+      // お届先が未選択状態
+      if ($("#datetime_cd").val() === null) {
+        // お届け希望リスト生成
+        AppInputOrder.getDatetime();
+      }
     }
   },
   init_disp5: function() {
@@ -129,18 +109,6 @@ var AppInputOrder =
           // お届け先を追加
           AppInputOrder.getDatetimePostal();
         }
-      }
-    }
-  },
-  init_disp6: function() {
-
-    // 住所デフォルトでお届け先が非表示になる場合
-    // 住所追加ではない場合
-    if($('#address_id').val() != -99 ){
-      // お届先が未選択状態
-      if ($("#datetime_cd").val() === null) {
-        // お届け希望リスト生成
-        AppInputOrder.getDatetime();
       }
     }
   },
@@ -291,7 +259,6 @@ $(function()
   AppInputOrder.init_disp3();
   AppInputOrder.init_disp4();
   AppInputOrder.init_disp5();
-  AppInputOrder.init_disp6();
   AppAddOrder.a();
   AppAddOrder.b();
 });
