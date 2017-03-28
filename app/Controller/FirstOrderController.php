@@ -626,6 +626,7 @@ class FirstOrderController extends MinikuraController
                 'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
                 'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
                 'gender'           => filter_input(INPUT_POST, 'gender'),
+                'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
                 'remember'         => filter_input(INPUT_POST, 'remember'),
             ];
 
@@ -657,6 +658,7 @@ class FirstOrderController extends MinikuraController
 
         //* Session write
         CakeSession::write('Email', $params);
+
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
