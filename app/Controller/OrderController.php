@@ -133,7 +133,7 @@ class OrderController extends MinikuraController
                 $set_address_list[$address['address_id']] = h("〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
             }
         }
-        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を追加する';
+        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を入力する';
 
         $OrderKit['address_list'] = $set_address_list;
 
@@ -535,62 +535,67 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
-        // カード情報編集
-        $is_card_insert = false;
+        // カード決済の場合
+        if (CakeSession::read('OrderKit.is_credit')) {
 
-        // カード変更
-        if(CakeSession::read('OrderKit.select_card') === 'register') {
-            $is_card_insert = true;
-        }
+            // カード情報編集
+            $is_card_insert = false;
 
-        // カード追加
-        if (is_null(CakeSession::read('OrderKit.card_data'))) {
-            $is_card_insert = true;
-        }
-
-        if($is_card_insert) {
-            // カード変更追加モデル
-            $this->loadModel('PaymentGMOSecurityCard');
-
-            $Credit = CakeSession::read('Credit');
-
-            $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-            $Credit['security_cd'] = $Credit['new_security_cd'];
-            $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
-            $Credit['card_seq'] = '0';
-
-            // カード構造を更新する
-            CakeSession::write('Credit', $Credit);
-
-            $credit_data['PaymentGMOSecurityCard'] = $Credit;
-
-            $this->PaymentGMOSecurityCard->set($credit_data);
-
-            // Expire
-            $this->PaymentGMOSecurityCard->setExpire($credit_data);
-
-            // ハイフン削除
-            $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
-
-            // validates
-            // card_seq 除外
-            $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-
-            if (!$this->PaymentGMOSecurityCard->validates()) {
-                $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
-                return $this->_flowSwitch('input');
+            // カード変更
+            if (CakeSession::read('OrderKit.select_card') === 'register') {
+                $is_card_insert = true;
             }
 
+            // カード追加
             if (is_null(CakeSession::read('OrderKit.card_data'))) {
-                // カード更新
-                $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
-            } else {
-                // カード更新
-                $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+                $is_card_insert = true;
             }
-            if (!empty($result_security_card->error_message)) {
-                $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
-                return $this->_flowSwitch('input');
+
+            if ($is_card_insert) {
+                // カード変更追加モデル
+                $this->loadModel('PaymentGMOSecurityCard');
+
+                $Credit = CakeSession::read('Credit');
+
+                $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+                $Credit['security_cd'] = $Credit['new_security_cd'];
+                $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+                $Credit['card_seq'] = '0';
+
+                // カード構造を更新する
+                CakeSession::write('Credit', $Credit);
+
+                $credit_data['PaymentGMOSecurityCard'] = $Credit;
+
+                $this->PaymentGMOSecurityCard->set($credit_data);
+
+                // Expire
+                $this->PaymentGMOSecurityCard->setExpire($credit_data);
+
+                // ハイフン削除
+                $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
+
+                // validates
+                // card_seq 除外
+                $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+
+                if (!$this->PaymentGMOSecurityCard->validates()) {
+                    $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors,
+                        ['key' => 'customer_card_info']);
+                    return $this->_flowSwitch('input');
+                }
+
+                if (is_null(CakeSession::read('OrderKit.card_data'))) {
+                    // カード更新
+                    $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+                } else {
+                    // カード更新
+                    $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+                }
+                if (!empty($result_security_card->error_message)) {
+                    $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
+                    return $this->_flowSwitch('input');
+                }
             }
         }
 

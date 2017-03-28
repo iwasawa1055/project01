@@ -63,6 +63,7 @@ var AppInputOrder =
     }
   },
   init_disp2: function () {
+    // 住所入力の場合
     if ($('#address_id').val() == -99)
     {
       $('.dsn-input-new-adress').show('slow');
@@ -128,6 +129,18 @@ var AppInputOrder =
           // お届け先を追加
           AppInputOrder.getDatetimePostal();
         }
+      }
+    }
+  },
+  init_disp6: function() {
+
+    // 住所デフォルトでお届け先が非表示になる場合
+    // 住所追加ではない場合
+    if($('#address_id').val() != -99 ){
+      // お届先が未選択状態
+      if ($("#datetime_cd").val() === null) {
+        // お届け希望リスト生成
+        AppInputOrder.getDatetime();
       }
     }
   },
@@ -278,6 +291,7 @@ $(function()
   AppInputOrder.init_disp3();
   AppInputOrder.init_disp4();
   AppInputOrder.init_disp5();
+  AppInputOrder.init_disp6();
   AppAddOrder.a();
   AppAddOrder.b();
 });
