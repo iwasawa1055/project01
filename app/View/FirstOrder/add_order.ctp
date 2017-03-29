@@ -31,7 +31,7 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
     <div class="lineup-box">
       <div class="medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
-      <h3>HAKOお片付けパック</h3>
+      <h3 class="dev-medal-margin">HAKOお片付けパック</h3>
       <div class="box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
       <div class="caption">
