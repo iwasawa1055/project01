@@ -156,6 +156,7 @@ const KIT_NAME = [
     KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
     KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
     KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
+    KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック'
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
