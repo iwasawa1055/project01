@@ -165,6 +165,9 @@ class InfoBox extends ApiCachedModel
             case KIT_CD_SNEAKERS:
                 $productCd = PRODUCT_CD_SNEAKERS;
                 break;
+            case KIT_CD_HAKO_LIMITED_VER1:
+                $productCd = PRODUCT_CD_HAKO;
+                break;
             default:
                 break;
         }
