@@ -21,16 +21,20 @@ class CustomerLogin extends ApiModel
 			//* Login Flag Set For contents.minikura.com Session
 			//** Session Switch To contents.minikura.com
             session_write_close();
+			ini_set('session.cookie_domain', '.minikura.com');
 			$session_name = 'WWWMINIKURACOM';
             session_name($session_name);
-            session_id($_COOKIE[$session_name]);
-            session_start();
+			if (! empty($_COOKIE[$session_name])) {
+				session_id($_COOKIE[$session_name]);
+			}
+			session_start();
 			
 			//** Login Flag Set
             $_SESSION['api.token'] = true;
 
-			//** Session Switch To mypage.minikuracom
+			//** Session Switch To mypage.minikura.com
             session_write_close();
+			ini_set('session.cookie_domain', 'mypage.minikura.com');
 			$session_name = 'MINIKURACOM';
             session_name($session_name);
             session_id($_COOKIE[$session_name]);
