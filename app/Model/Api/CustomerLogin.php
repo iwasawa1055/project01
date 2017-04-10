@@ -34,7 +34,7 @@ class CustomerLogin extends ApiModel
 
 			//** Session Switch To mypage.minikura.com
             session_write_close();
-			ini_set('session.cookie_domain', 'mypage.minikura.com');
+			Configure::write('session.cookie_domain', '.mypage.minikura.com');
 			$session_name = 'MINIKURACOM';
             session_name($session_name);
             session_id($_COOKIE[$session_name]);
