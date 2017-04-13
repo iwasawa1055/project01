@@ -84,8 +84,8 @@ class InfoBox extends ApiCachedModel
         //* 預け入れ[入庫]ページ, ソート条件 #8697
         foreach ($list as $k => $v){
             $list[$k]['product_cd'] = $this->kitCd2ProductCd($v['kit_cd']);	
-            $list[$k]['product_name'] = KIT_NAME[$v['kit_cd']];	
-        } 
+            $list[$k]['product_name'] = KIT_NAME[$v['kit_cd']];
+        }
 
 		//* 預け入れ[入庫]ページ, ソート条件 #8697
         HashSorter::sort($list, self::INBOUND_OUTBOUND_SORT_KEY);

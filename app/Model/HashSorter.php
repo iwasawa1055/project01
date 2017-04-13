@@ -22,6 +22,10 @@ class HashSorter
           KIT_CD_WINE_HAKO,
           KIT_CD_WINE_MONO,
           KIT_CD_CLEANING_PACK,
+          KIT_CD_STARTER_MONO,
+          KIT_CD_STARTER_MONO_APPAREL,
+          KIT_CD_STARTER_MONO_BOOK,
+          KIT_CD_HAKO_LIMITED_VER1,
         ];
         $cmpProductCd = [
           PRODUCT_CD_MONO,

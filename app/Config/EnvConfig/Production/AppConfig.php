@@ -80,6 +80,7 @@ $config['app']['switch_redirect']['param'] = 'option';
  * 静的ページからの最大注文箱数
  */
 $config['app']['first_order']['max_box'] = 20;
+$config['app']['first_order']['direct_inbound']['max_box'] = 20;
 
 
 // クリーニング費用設定

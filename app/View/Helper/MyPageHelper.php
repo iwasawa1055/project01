@@ -11,6 +11,10 @@ class MyPageHelper extends AppHelper {
         KIT_CD_WINE_HAKO => 'hako-box',
         KIT_CD_WINE_MONO => 'mono-box',
         KIT_CD_MONO_BOOK => 'mono-box',
+        KIT_CD_STARTER_MONO => 'mono-box',
+        KIT_CD_STARTER_MONO_APPAREL => 'mono-box',
+        KIT_CD_STARTER_MONO_BOOK => 'mono-box',
+        KIT_CD_HAKO_LIMITED_VER1 => 'hako-box',
 
         KIT_CD_CLEANING_PACK => 'cleaning-box',
     ];

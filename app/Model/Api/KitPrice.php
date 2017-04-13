@@ -11,7 +11,7 @@ class KitPrice extends ApiModel
     }
 
     /**
-     * クレジットカードの与信チェック
+     * 初回購入時のキット価格取得
      *
      * @return type
      */

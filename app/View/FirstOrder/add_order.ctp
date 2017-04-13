@@ -1,5 +1,6 @@
 <?php echo $this->element('FirstOrder/first'); ?>
 <title>ボックス選択 - minikura</title>
+<link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
 <?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
@@ -8,14 +9,14 @@
 <?php $kit_select_type = CakeSession::read('kit_select_type'); ?>
 
 <form method="post" action="/first_order/confirm_order" novalidate>
-<section id="lineup" class="fix">
-  <div class="wrapper">
+<section id="dsn-lineup">
+  <div class="dsn-wrapper">
     <?php if ($kit_select_type === 'starter_kit') : ?>
     <!-- STARTER -->
     <div class="lineup-box">
       <h3>MONOスターターキット</h3>
       <div class="box-starter"> <img src="/first_order_file/images/box_starter@1x.png" srcset="/first_order_file/images/box_starter@1x.png 1x, /first_order_file/images/box_starter@2x.png 2x" alt="minikuraスターターキット"> </div>
-      <div class="caption">      
+      <div class="caption">
         <p class="price">月額保管料<span>250円</span>（1箱につき）</p>
         <p class="price">スターターキット(3箱)<span class="starter">250円</span></p>
         <p class="box-caption">初回限定！MONOボックス3種類がセットになったお得なキット。</p>
@@ -29,18 +30,18 @@
     <?php endif; ?>
     <!-- RECOMMEND -->
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
-    <div class="lineup-box">
-      <div class="medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
+    <div id="dsn-recommend" class="dsn-lineup-box">
+      <div class="dsn-medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
       <h3 class="dev-medal-margin">HAKOお片付けパック</h3>
-      <div class="box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
+      <div class="dsn-box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
-      <div class="caption">
-        <p class="price">月額保管料<span>200円/1箱</span></p>
-        <p class="price">ボックス代金<span>500円/5箱</span></p>
-        <p class="box-caption">HAKOレギュラー５箱がセットになった大変お得な限定パック！</p>
-        <p class="select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+      <div class="dsn-caption">
+        <p class="dsn-price">月額保管料<span>200円/1箱</span></p>
+        <p class="dsn-price">ボックス代金<span>500円/5箱</span></p>
+        <p class="dsn-box-caption">HAKOレギュラー５箱がセットになった大変お得な限定パック！</p>
+        <p class="dsn-select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
-      <a href="#" class="btn-select" data-remodal-target="modal-recommend"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
+      <a href="#" class="dsn-btn-select" data-remodal-target="modal-recommend"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
       <div class="form">
         <?php echo $this->Flash->render('select_oreder_hako_limited_ver1'); ?>
       </div>
@@ -48,16 +49,16 @@
     <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako') || ($kit_select_type === 'code')) : ?>
     <!-- HAKO -->
-    <div class="lineup-box">
+    <div id="dsn-hako" class="dsn-lineup-box">
       <h3>minikuraHAKO</h3>
-      <div class="box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
-      <div class="caption">
-        <p class="price">月額保管料<span>200円</span></p>
-        <p class="price">ボックス代金<span>200円</span></p>
-        <p class="box-caption">保管するならHAKOがオススメ！</p>
-        <p class="select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+      <div class="dsn-box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
+      <div class="dsn-caption">
+        <p class="dsn-price">月額保管料<span>200円</span></p>
+        <p class="dsn-price">ボックス代金<span>200円</span></p>
+        <p class="dsn-box-caption">保管するならHAKOがオススメ！</p>
+        <p class="dsn-select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
-      <a href="#" class="btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
+      <a href="#" class="dsn-btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
       <div class="form">
         <?php echo $this->Flash->render('select_oreder_hako'); ?>
       </div>
@@ -65,14 +66,14 @@
     <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono') || ($kit_select_type === 'code')) : ?>
       <!-- MONO -->
-      <div class="lineup-box">
+    <div id="dsn-mono" class="dsn-lineup-box">
         <h3>minikuraMONO</h3>
-        <div class="box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO"></div>
-        <div class="caption">
-          <p class="price">月額保管料<span>250円</span></p>
-          <p class="price">ボックス代金<span>250円</span></p>
-          <p class="box-caption">1点毎のアイテム管理でオプション充実！</p>
-          <p class="select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <div class="dsn-box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO"></div>
+        <div class="dsn-caption">
+          <p class="dsn-price">月額保管料<span>250円</span></p>
+          <p class="dsn-price">ボックス代金<span>250円</span></p>
+          <p class="dsn-box-caption">1点毎のアイテム管理でオプション充実！</p>
+          <p class="dsn-select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <div class="form">
@@ -82,20 +83,33 @@
     <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'cleaning') || ($kit_select_type === 'code')) : ?>
       <!-- CLEANING -->
-      <div class="lineup-box">
+      <div id="dsn-cleaning" class="dsn-lineup-box">
         <h3>クリーニングパック</h3>
-        <div class="box-cleaning"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
-        <div class="caption">
-          <p class="price">6ヶ月保管＋クリーニング料セット</p>
-          <p class="price">ボックス代金<span>12,000円</span></p>
-          <p class="box-caption">大切な衣類を綺麗に保管！</p>
-          <p class="select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
+        <div class="dsn-caption">
+          <p class="dsn-price">6ヶ月保管＋クリーニング料セット</p>
+          <p class="dsn-price">ボックス代金<span>12,000円</span></p>
+          <p class="dsn-box-caption">大切な衣類を綺麗に保管！</p>
+          <p class="dsn-select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         </div>
-        <a href="#" class="btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
+        <a href="#" class="dsn-btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
         <div class="form">
           <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
         </div>
       </div>
+    <?php endif; ?>
+    <?php if ($kit_select_type === 'all') : ?>
+    <!-- minikuraマイボックス -->
+    <div id="dsn-mybox" class="dsn-lineup-box">
+      <h3>minikuraマイボックス</h3>
+      <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_mybox@1x.png" srcset="/first_order_file/images/box_mybox@1x.png 1x, /first_order_file/images/box_mybox@2x.png 2x" alt="minikuraマイボックス"> </div>
+      <div class="dsn-caption">
+        <p class="dsn-price">月額保管料<span>250円/1箱</p>
+        </p>
+        <p class="dsn-box-caption">お手持ちの箱にもの入れて、倉庫で保管。預けられる箱の条件をご確認ください</p>
+      </div>
+      <a href="/first_order_direct_inbound/add_address" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
+    </div>
     <?php endif; ?>
   </div>
 </section>

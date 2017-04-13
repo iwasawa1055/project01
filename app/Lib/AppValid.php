@@ -776,8 +776,14 @@ class AppValid
 				case $name === 'select_oreder_cleaning':
 				case $name === 'select_oreder_sneaker':
 				case $name === 'select_oreder_hako_limited_ver1':
+				case $name === 'select_direct_inbound':
 					if ($value === 0) {
 						$ret[$name] = 'ボックスを選択してください。';
+					}
+					break;
+				case $name === 'direct_inbound':
+					if ($value === 0) {
+						$ret[$name] = '個数を選択してください。';
 					}
 					break;
 			}
