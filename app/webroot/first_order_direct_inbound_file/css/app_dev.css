@@ -280,3 +280,7 @@ section#dns-lineup .medal img {
 #dsn-adress .alert-danger {
     font-size: 1.6rem;
 }
+
+.dev-holder_name{
+    text-transform: uppercase;
+}

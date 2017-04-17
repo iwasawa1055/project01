@@ -1,3 +1,5 @@
+<?php $this->Html->script('direct_inbound/input_credit.js', ['block' => 'scriptMinikura']); ?>
+
 <?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/direct_inbound/dsn-boxless.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/direct_inbound/direct_inbound_dev.css', ['block' => 'css']); ?>
@@ -9,7 +11,7 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-default dev-panel-default">
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
@@ -59,7 +61,7 @@
                   <?php echo $this->Flash->render('expire');?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <input type="url" class="form-control" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
+                  <input type="url" class="form-control dev-holder_name" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
                   <?php echo $this->Flash->render('holder_name');?>
                   <p class="help-block">（※半角大文字英数字、半角スペース）</p>
                 </div>

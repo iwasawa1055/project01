@@ -37,7 +37,7 @@
       </div>
       <div class="dsn-form">
         <label>カード名義<span class="dsn-required">※</span></label>
-        <input type="url" class="dsn-adress2 holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
+        <input type="url" class="dsn-adress2 dev-holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
         <?php echo $this->Flash->render('holder_name');?>
       </div>
       <div class="dsn-form">

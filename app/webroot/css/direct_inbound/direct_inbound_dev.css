@@ -78,3 +78,7 @@ span.validation {
     background-color: #d9534f;
     border-color: #d43f3a;
 }
+
+.dev-holder_name{
+    text-transform: uppercase;
+}
