@@ -73,8 +73,8 @@
                   <div class="form-group col-lg-12">
                     <label>集荷の時間</label>
                     <select name="time_cd" id="InboundTimeCd" class="form-controlr dev-input-form">
-                      <?php foreach ( CakeSession::read('SelectTime.select_delivery_day_list') as $key => $value ) {?>
-                      <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->time_cd === CakeSession::read('SelectTime.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                      <?php foreach ( CakeSession::read('SelectTime.select_delivery_time_list') as $key => $value ) {?>
+                      <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('SelectTime.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
                       <?php } ?>
                     </select>
                     <?php echo $this->Flash->render('time_cd');?>
