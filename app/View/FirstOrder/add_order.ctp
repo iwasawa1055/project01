@@ -99,14 +99,15 @@
       </div>
     <?php endif; ?>
     <?php if ($kit_select_type === 'all') : ?>
-    <!-- minikuraマイボックス -->
+    <!-- minikuraダイレクト -->
     <div id="dsn-mybox" class="dsn-lineup-box">
-      <h3>minikuraマイボックス</h3>
-      <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_mybox@1x.png" srcset="/first_order_file/images/box_mybox@1x.png 1x, /first_order_file/images/box_mybox@2x.png 2x" alt="minikuraマイボックス"> </div>
+      <h3>minikuraダイレクト</h3>
+      <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_mybox@1x.png" srcset="/first_order_file/images/box_mybox@1x.png 1x, /first_order_file/images/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
       <div class="dsn-caption">
-        <p class="dsn-price">月額保管料<span>250円/1箱</p>
+        <p class="dsn-price">月額保管料<span>250円</p>
+        <p class="dsn-price">ボックス代金<span>0円</span>
         </p>
-        <p class="dsn-box-caption">お手持ちの箱にもの入れて、倉庫で保管。預けられる箱の条件をご確認ください</p>
+        <p class="dsn-box-caption">お手持ちのボックスで今すぐ送れる！</p>
       </div>
       <a href="/first_order_direct_inbound/add_address" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
     </div>

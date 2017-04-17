@@ -1,7 +1,3 @@
-<?php $this->Html->script('direct_inbound/input.js', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
-<!-- 暫定的にFirstOrderのcssを読み込み -->
 <?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/direct_inbound/dsn-boxless.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/direct_inbound/direct_inbound_dev.css', ['block' => 'css']); ?>
