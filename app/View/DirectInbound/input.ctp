@@ -22,8 +22,8 @@
                 <p>minikura専用キットを購入する事なく、お手持ちの段ボールやケースをそのままminikuraへ預けていただけるサービスです。<br> ご自宅にある荷物を梱包して、ヤマト運輸へ集荷を依頼するかお客さま自身で着払いにてminikuraまでお送りください。
                 </p>
                 <p>制限サイズ：120サイズ（3辺の合計が120cm以内）重さ15kgまで
-                  <br> 幅上限サイズ：60cm
-                  <br> 高さ上限サイズ：38cm
+                  <br> 幅上限サイズ：59cm
+                  <br> 高さ上限サイズ：37cm
                 </p>
                 <label>ご注意</label>
                 <ul class="dsn-caution">
@@ -46,7 +46,7 @@
 
               <div class="form-group col-lg-12">
                 <h3>預け入れ方法</h3>
-                <p class="dsn-select-cargo"><label><input type="radio" name="cargo" value="ヤマト運輸" id="yamato"  <?php if ( CakeSession::read('OrderKit.cargo') === "ヤマト運輸" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸の集荷申込み</label>
+                <p class="dsn-select-cargo"><label><input type="radio" name="cargo" value="ヤマト運輸" id="yamato"  <?php if ( CakeSession::read('OrderKit.cargo') === "ヤマト運輸" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸に取りに来てもらう</label>
                 </p>
                 <div class="dsn-yamato">
                   <div class="form-group col-lg-12">
@@ -81,7 +81,7 @@
                     <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php if (!empty(CakeSession::read('SelectTime.select_delivery_time'))) : ?><?php echo h(CakeSession::read('SelectTime.select_delivery_time'))?><?php else : ?><?php endif; ?>">
                   </div>
                 </div>
-                <p class="dsn-select-cargo"><label><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('OrderKit.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 着払い（持ち込み）</label>
+                <p class="dsn-select-cargo"><label><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('OrderKit.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label>
                 </p>
                 <p class="dsn-arrival">着払いをご選択の場合はminikura運営事務局よりご連絡を差し上げます。<br> ※注意事項
                   <br> ご連絡時のメールに記載する住所へ、ヤマト運輸の着払いでお送りください。

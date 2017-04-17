@@ -71,15 +71,15 @@
                     <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
                   </div>
                 </div>
-                <!-- minikuraマイボックス -->
+                <!-- minikuraダイレクト -->
                 <div id="dsn-mybox" class="dsn-lineup-box">
-                  <h3>minikuraマイボックス</h3>
-                  <div class="dsn-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraマイボックス"> </div>
+                  <h3>minikuraダイレクト</h3>
+                  <div class="dsn-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
                   <div class="dsn-caption">
-                    <p class="dsn-price">月額保管料<span>200円</span></p>
-                    <p class="dsn-price">ボックス代金<span>200円</span>
+                    <p class="dsn-price">月額保管料<span>250円</p>
+                    <p class="dsn-price">ボックス代金<span>0円</span>
                     </p>
-                    <p class="dsn-box-caption">大切な衣類を綺麗に保管！</p>
+                    <p class="dsn-box-caption">お手持ちのボックスで今すぐ送れる！</p>
                   </div>
                   <a href="/direct_inbound/input" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
                 </div>

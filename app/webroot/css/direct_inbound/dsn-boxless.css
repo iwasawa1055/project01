@@ -1,5 +1,9 @@
 /** minikura ver2.5 boxless **/
 
+a,
+a:hover{
+	color: #ff0000;
+}
 p.dsn-select-cargo{
 	margin: 2rem 0 1rem;
 	font-size: 16px;
@@ -11,4 +15,7 @@ p.dsn-arrival {
 	padding: 1rem;
 	color: #ff0000;
 	border: 1px solid #ff0000;
+}
+ul.dsn-caution{
+	padding-left: 1rem;
 }

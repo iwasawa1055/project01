@@ -582,7 +582,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 添字に対応するコードを設定
         //
         $FirstOrderList['direct_inbound']['number']    = $Order['direct_inbound']['direct_inbound'];
-        $FirstOrderList['direct_inbound']['kit_name']  = 'minikuraマイボックス';
+        $FirstOrderList['direct_inbound']['kit_name']  = 'minikuraダイレクト';
         $FirstOrderList['direct_inbound']['price'] = 0;
         $FirstOrderList['storage_fee']['number']    = $Order['direct_inbound']['direct_inbound'];
         $FirstOrderList['storage_fee']['kit_name']  = '月額保管料（250円）';
