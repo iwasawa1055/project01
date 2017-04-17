@@ -34,6 +34,7 @@ class HashSorter
           PRODUCT_CD_CARGO_HITOMAKASE,
           PRODUCT_CD_CLEANING_PACK,
           PRODUCT_CD_SHOES_PACK,
+          PRODUCT_CD_DIRECT_INBOUND,
         ];
 
         $keys = array_keys($sortKey);

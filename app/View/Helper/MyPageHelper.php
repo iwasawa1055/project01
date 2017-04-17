@@ -25,6 +25,7 @@ class MyPageHelper extends AppHelper {
         PRODUCT_CD_CARGO_HITOMAKASE => '',
         PRODUCT_CD_CLEANING_PACK => 'cleaning-box',
         PRODUCT_CD_SHOES_PACK => '',
+        PRODUCT_CD_DIRECT_INBOUND => 'mono-box',
     ];
 
     public function boxClassName($box) {

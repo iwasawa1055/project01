@@ -72,7 +72,7 @@ class InfoItem extends ApiCachedModel
 			if ($product === 'hako') {
 				$productCd = [PRODUCT_CD_HAKO];
 			} elseif ($product === 'mono') {
-				$productCd = [PRODUCT_CD_MONO];
+				$productCd = [PRODUCT_CD_MONO,PRODUCT_CD_DIRECT_INBOUND];
 			} elseif ($product === 'cleaning') {
 				$productCd = [PRODUCT_CD_CLEANING_PACK];
 			} elseif ($product === 'shoes') {
