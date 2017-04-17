@@ -276,3 +276,7 @@ section#dns-lineup .medal img {
         margin-left: 1rem;
     }
 }
+
+#dsn-adress .alert-danger {
+    font-size: 1.6rem;
+}
