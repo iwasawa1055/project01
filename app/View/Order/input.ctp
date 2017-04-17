@@ -23,7 +23,7 @@
                 <!-- HAKO -->
                 <div id="dsn-hako" class="dsn-lineup-box">
                   <h3>minikuraHAKO</h3>
-                  <div class="dsn-box-hako"> <img src="/images/order/box_hako@1x.png" srcset="/images/order/box_hako@1x.png 1x, /images/order/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
+                  <div class="dsn-box-hako dev-box-hako"> <img src="/images/order/box_hako@1x.png" srcset="/images/order/box_hako@1x.png 1x, /images/order/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>200円</span>
                     </p>
@@ -40,7 +40,7 @@
                 <!-- MONO -->
                 <div id="dsn-mono" class="dsn-lineup-box">
                   <h3>minikuraMONO</h3>
-                  <div class="dsn-box-mono"><img src="/images/order/box_mono@1x.png" srcset="/images/order/box_mono@1x.png 1x, /images/order/box_mono@2x.png 2x" alt="minikuraMONO">
+                  <div class="dsn-box-mono dev-box-mono"><img src="/images/order/box_mono@1x.png" srcset="/images/order/box_mono@1x.png 1x, /images/order/box_mono@2x.png 2x" alt="minikuraMONO">
                   </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>250円</span>
@@ -58,7 +58,7 @@
                 <!-- CLEANING -->
                 <div id="dsn-cleaning" class="dsn-lineup-box">
                   <h3>クリーニングパック</h3>
-                  <div class="dsn-box-cleaning"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
+                  <div class="dsn-box-cleaning dev-box-cleaning"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">6ヶ月保管＋クリーニング料セット</p>
                     <p class="dsn-price">ボックス代金<span>12,000円</span>
@@ -74,7 +74,7 @@
                 <!-- minikuraダイレクト -->
                 <div id="dsn-mybox" class="dsn-lineup-box">
                   <h3>minikuraダイレクト</h3>
-                  <div class="dsn-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
+                  <div class="dsn-box-cleaning dev-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>250円</p>
                     <p class="dsn-price">ボックス代金<span>0円</span>

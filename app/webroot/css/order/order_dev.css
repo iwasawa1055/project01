@@ -231,3 +231,7 @@ button.btn-next {
     cursor: pointer;
     text-transform: none;
 }
+
+.dev-box-mono, .dev-box-hako, .dev-box-cleaning {
+    overflow: auto;
+}
