@@ -10,7 +10,9 @@
       <div class="dsn-wrapper">
         <div class="dsn-form">
           <label class="dsn-title">minikuraダイレクトとは？</label>
-          <p class="dsn-direct">minikura専用キットを購入する事なく、お手持ちの段ボールやケースをそのままminikuraへ預けていただけるサービスです。<br> ご自宅にある荷物を梱包して、ヤマト運輸へ集荷を依頼するかお客さま自身で着払いにてminikuraまでお送りください。
+          <p>minikura専用キットを購入する事なく、お手持ちの段ボールやケースをそのままminikuraへ預けていただけるサービスです。
+            <br>保管方法はminikuraHAKOと同じ、ボックス単位での保管となります。
+            <br>ご自宅にある荷物を梱包して、ヤマト運輸へ集荷を依頼するかお客さま自身で着払いにてminikuraまでお送りください。
           </p>
           <p class="dsn-size">制限サイズ：120サイズ（3辺の合計が120cm以内）重さ15kgまで<br> 幅上限サイズ：59cm
             <br> 高さ上限サイズ：37cm
