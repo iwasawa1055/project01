@@ -44,9 +44,9 @@ section a,
 section a:hover {
 	color: #ff0000;
 }
-.panel{
+.panel {
 	border: 0;
-	box-shadow:none;
+	box-shadow: none;
 }
 section#dsn-pagenation {
 	margin: 3rem auto 2rem;
@@ -132,13 +132,18 @@ a.dsn-btn-back {
 	border: 1px solid #666666;
 }
 a.dsn-btn-starter,
-a.dsn-btn-select {
+a.dsn-btn-select,
+a.dsn-btn-mybox {
 	display: block;
 }
 a.dsn-btn-starter,
 a.dsn-btn-select {
 	background: #0971b2;
 	border: .1rem solid #0971b2;
+}
+a.dsn-btn-mybox {
+	background: #ff0000;
+	border: .1rem solid #ff0000;
 }
 a.dsn-btn-starter.active {
 	color: #0971b2;
@@ -161,8 +166,26 @@ a.dsn-btn-return {
 	background: #666666;
 	border: 1px solid #666666;
 }
+section#dsn-lineup #dsn-mono {
+	order: 5;
+}
+section#dsn-lineup #dsn-hako {
+	order: 1;
+}
+section#dsn-lineup #dsn-cleaning {
+	order: 2;
+}
+section#dsn-lineup #dsn-recommend {
+	order: 4;
+}
+section#dsn-lineup #dsn-mybox {
+	order: 3;
+}
 section#dsn-lineup .dsn-lineup-box {
-	width: calc((100% / 3) - 1rem);
+	display: flex;
+	flex-direction:column;
+	justify-content:space-between;
+	width: calc((100% / 4) - 1rem);
 	margin: 2rem .5rem 1rem;
 	padding: 2rem 1.5rem 1.5rem 1.5rem;
 	border: .1rem solid #bbbbbb;
@@ -197,7 +220,7 @@ section#dsn-lineup .dsn-wrapper {
 	display: flex;
 	align-self: center;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: stretch;
 	flex-wrap: wrap;
 	margin-bottom: 1rem;
 }
@@ -206,7 +229,7 @@ section#dsn-lineup div[class^="dsn-box"] {
 	text-align: center;
 }
 section#dsn-lineup div[class^="dsn-box"] img {
-	width: 50%;
+	width: 75%;
 }
 section#dsn-delivery,
 section#dsn-adress {
@@ -252,13 +275,13 @@ section#dsn-adress .dsn-form p {
 	font-size: 16px;
 	font-size: 1.6rem;
 }
-section#dsn-delivery table.accounting{
+section#dsn-delivery table.accounting {
 	width: 100%;
 	margin: 0 0 1rem;
 	font-size: 16px;
 	font-size: 1.6rem;
 }
-section#dsn-delivery table.accounting td{
+section#dsn-delivery table.accounting td {
 	color: #ff0000;
 	font-weight: bold;
 	text-align: right;
@@ -286,10 +309,10 @@ section#dsn-delivery .dsn-form input {
 section#dsn-delivery .dsn-input-security-code,
 section#dsn-delivery .dsn-input-change-card,
 section#dsn-delivery .dsn-input-new-card,
-section#dsn-delivery .dsn-input-new-adress{
+section#dsn-delivery .dsn-input-new-adress {
 	display: none;
 }
-section#dsn-delivery .dsn-new-adress{
+section#dsn-delivery .dsn-new-adress {
 	display: block;
 }
 section#dsn-delivery .dsn-form select[class^="dsn"] {
@@ -308,9 +331,8 @@ section#dsn-delivery .dsn-form select[class^="dsn"] {
 
 label.dsn-select-cards {
 	display: block;
-	margin:0 1.5rem 1.5rem 0;
+	margin: 0 1.5rem 1.5rem 0;
 }
-
 label.dsn-select-cards .dsn-select-card,
 label.dsn-regist-adress .dsn-regist-adress {
 	margin-left: 2.5rem;
@@ -336,17 +358,17 @@ section#dsn-delivery .dsn-form input[type=checkbox] + .dsn-check-icon:before {
 	font-size: 2.4rem;
 	color: #999999;
 }
-section#dsn-delivery .dsn-form input[type=radio]:checked + .dsn-check-icon:before ,
+section#dsn-delivery .dsn-form input[type=radio]:checked + .dsn-check-icon:before,
 section#dsn-delivery .dsn-form input[type=checkbox]:checked + .dsn-check-icon:before {
 	content: "\f046";
 	color: #ff0000;
 }
 /****/
 section#dsn-delivery .dsn-form input[class^="dsn-name-"] {
-    display: inline-block;
+	display: inline-block;
 }
 section#dsn-delivery .dsn-form input[class^="dsn-name-first"] {
-    margin-left: 1rem;
+	margin-left: 1rem;
 }
 section#dsn-delivery .dsn-form a.dsn-link-terms,
 section#dsn-delivery .dsn-form a.dsn-link-terms:focus,
@@ -358,7 +380,7 @@ section#dsn-delivery .dsn-form a.dsn-link-terms:active {
 }
 section#dsn-delivery .dsn-form .dsn-select-month,
 section#dsn-delivery .dsn-form .dsn-select-year {
-    display: inline-block;
+	display: inline-block;
 }
 section#dsn-delivery .dsn-divider,
 section#dsn-adress .dsn-divider {
@@ -523,7 +545,7 @@ section#dsn-adress {
 	padding: 0 1rem 0;
 }
 h1.page-header {
-    margin: 20px 0 10px;
+	margin: 20px 0 10px;
 }
 section h2 {
 	margin-bottom: 1rem;
@@ -545,6 +567,9 @@ section#dsn-delivery .dsn-wrapper {
 }
 section#dsn-adress .dsn-wrapper {
 	margin: .5rem 0;
+}
+section#dsn-lineup .dsn-lineup-box {
+	display: block;
 }
 section#dsn-lineup div[class^="dsn-box"],
 section#dsn-lineup div[class^="dsn-caption"] {
@@ -593,12 +618,12 @@ section#dsn-adress .dsn-form label {
 	font-size: 1.4rem;
 	font-weight: 600;
 }
-	label.dsn-select-cards .dsn-select-card {
-	    font-size: 13px;
-    font-size: 1.3rem;
-    font-weight: 600;
+label.dsn-select-cards .dsn-select-card {
+	font-size: 13px;
+	font-size: 1.3rem;
+	font-weight: 600;
 }
-	section#dsn-delivery table.accounting{
+section#dsn-delivery table.accounting {
 	font-size: 14px;
 	font-size: 1.4rem;
 }
@@ -610,7 +635,7 @@ section#dsn-delivery .dsn-form select[class^="dsn"] {
 section#dsn-delivery .dsn-form select.dsn-select-month,
 section#dsn-delivery .dsn-form select.dsn-select-year {
 	width: auto;
-  display: inline-block;
+	display: inline-block;
 }
 section#dsn-adress .dsn-form table {
 	margin: 0;

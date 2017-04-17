@@ -1,111 +1,67 @@
 var AppAddAdress =
 {
-    a: function () {
-        // お届け日の指定
-        $('#postal').change(function() {
-            getDatetime();
+    DELIVERY_ID_PICKUP : '6',
+    DELIVERY_ID_MANUAL : '7',
+
+    a: function(){
+
+        var elem_day = $('#InboundDayCd');
+        var elem_time = $('#InboundTimeCd');
+
+        $('option:first', elem_day).prop('selected', true);
+        elem_day.attr("disabled", "disabled");
+        elem_day.empty();
+        $('option:first', elem_time).prop('selected', true);
+        elem_time.attr("disabled", "disabled");
+        elem_time.empty();
+
+        $.post('/FirstOrderDirectInbound/as_getInboundDatetime', {
+                Inbound: {delivery_carrier: '6_1'}
+            },
+            function(data) {
+                var pNotFound = '<p class="error-message search-address-error-message">集荷時間取得エラー。</p>';
+
+                if (data.result.date) {
+
+                    var optionItems = new Array();
+                    if(data.status){
+                        $.each(data.result.date, function() {
+                            optionItems.push(new Option(this.text, this.date_cd));
+                        });
+                        elem_day.append(optionItems);
+
+                        $('#select_delivery_day').val(JSON.stringify(data.result.date));
+                    } else {
+                        elem_day.after(pNotFound);
+                    }
+                };
+                if (data.result.time) {
+                    var optionItems = new Array();
+                    if(data.status) {
+                        $.each(data.result.time, function () {
+                            optionItems.push(new Option(this.text, this.time_cd));
+                        });
+                        elem_time.append(optionItems);
+
+                        $('#select_delivery_time').val(JSON.stringify(data.result.time));
+                    } else {
+                        // dayで表示済
+                        //elem_day.after(pNotFound);
+                    }
+                };
+            },
+            'json'
+        ).always(function() {
+            elem_day.removeAttr("disabled");
+            elem_time.removeAttr("disabled");
         });
-
-        function getDatetime() {
-            var elem_postal = $('#postal');
-            var elem_datetime = $('#datetime_cd');
-
-            $('option:first', elem_datetime).prop('selected', true);
-            elem_datetime.attr("disabled", "disabled");
-
-            // 引数取得
-            var params = {};
-            params.postal = elem_postal.val();
-
-            // API実行
-            if (params.postal != '') {
-                $.ajax({
-                    url: '/FirstOrder/as_get_address_datetime',
-                    cache: false,
-                    data: params,
-                    dataType: 'json',
-                    type: 'POST'
-                }).done(function (data, textStatus, jqXHR) {
-                    $('#datetime_cd > option').remove();
-                    // 成功時 お届け日時セット
-                    elem_datetime.append($('<option>').html('以下からお選びください').val(''));
-                    $.each(data.results, function (index, datatime) {
-                        elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
-                    });
-                    // 戻る対応でリストをpostする
-                    $('#select_delivery').val(JSON.stringify(data.results));
-                }).fail(function (data, textStatus, errorThrown) {
-                    // 失敗時 お届け日時リセット
-                    $('#datetime_cd > option').remove();
-                    $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
-                }).always(function (data, textStatus, returnedObject) {
-                    elem_datetime.removeAttr("disabled");
-                    //  $('body').airLoader().end();
-                });
-            } else {
-                // お届け日時リセット
-                $('#datetime_cd > option').remove();
-                $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
-                elem_datetime.removeAttr("disabled");
-            }
-        }
     },
-    b: function () {
-        if ( $("#postal").val() && !$('#datetime_cd').val() ) {
-            getDatetime();
-            
-            // format
-            postal = $("#postal").val();
-            postal = postal.replace(/^(\d{3})(\d{4})$/, "$1-$2");
-            $("#postal").val(postal);
-            
-            if ( $('.address_address2').val() == "" ) {
-                $('.address_pref').val('');
-                $('.address_address1').val('');
-                $('.address_address2').val('');
-                searchAddress(postal);
-            }
-        }
 
-        function getDatetime() {
-            var elem_postal = $('#postal');
-            var elem_datetime = $('#datetime_cd');
-
-            // 引数取得
-            var params = {};
-            params.postal = elem_postal.val();
-
-            // API実行
-            if (params.postal != '') {
-                $.ajax({
-                    url: '/FirstOrder/as_get_address_datetime',
-                    cache: false,
-                    data: params,
-                    dataType: 'json',
-                    type: 'POST'
-                }).done(function (data, textStatus, jqXHR) {
-                    $('#datetime_cd > option').remove();
-                    // 成功時 お届け日時セット
-                    elem_datetime.append($('<option>').html('以下からお選びください').val(''));
-                    $.each(data.results, function (index, datatime) {
-                        elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
-                    });
-                    // 戻る対応でリストをpostする
-                    $('#select_delivery').val(JSON.stringify(data.results));
-                }).fail(function (data, textStatus, errorThrown) {
-                    // 失敗時 お届け日時リセット
-                    $('#datetime_cd > option').remove();
-                    $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
-                }).always(function (data, textStatus, returnedObject) {
-                    elem_datetime.removeAttr("disabled");
-                    //  $('body').airLoader().end();
-                });
-            } else {
-                // お届け日時リセット
-                $('#datetime_cd > option').remove();
-                $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
-                elem_datetime.removeAttr("disabled");
-            }
+    b: function()
+    {
+        // validation メッセージが表示される時に、ページ上部に表示する
+        if ($('span').hasClass('validation')) {
+            $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
         }
     },
     c: function () {
@@ -122,16 +78,6 @@ var AppAddAdress =
                 katakana: true
             });
     },
-    d: function () {
-        if($('#arrival').is(':checked')) {
-            $('.dsn-arrival').show('fast');
-            $('.dsn-yamato').hide('fast');
-
-        } else {
-            $('.dsn-arrival').hide('fast');
-            $('.dsn-yamato').show('fast');
-        }
-    },
 }
 
 /*
@@ -142,5 +88,4 @@ $(function()
     AppAddAdress.a();
     AppAddAdress.b();
     AppAddAdress.c();
-    AppAddAdress.d();
 });

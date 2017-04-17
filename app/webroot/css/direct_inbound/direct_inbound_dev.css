@@ -1,0 +1,80 @@
+
+.dev-input-form{
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    border-radius: 0;
+    width: 100%;
+}
+
+/* button */
+button[class^="btn-"] {
+    margin: 1.5rem 0 0 0;
+    padding: 1rem;
+    font-size: 1.8rem;
+    color: #ffffff;
+    text-align: center;
+    border-radius: .2rem;
+    width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+    button.btn-next {
+        display: inline-block;
+        width: calc(100% - 1rem);
+        margin: .5rem;
+        font-size: 1.3rem;
+    }
+}
+
+section.nextback {
+    display: block;
+    width: calc(72% - 1rem);
+    margin-bottom: 0;
+    padding: 1rem;
+    bottom: 0;
+    text-align: center;
+    margin: 0 auto 3rem;
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+button.btn-next {
+    background: #ff0000;
+    border: .1rem solid #ff0000;
+    color: #ffffff;
+    text-align: center;
+    border-radius: .2rem;
+    font-family: inherit;
+    line-height: inherit;
+    -webkit-appearance: button;
+    cursor: pointer;
+    text-transform: none;
+}
+
+span.validation {
+    display	: inline-block;
+    color: #ff6666;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
+}
+
+.btn-next[disabled],
+.btn-next.active[disabled],
+.btn-next.focus[disabled],
+.btn-next[disabled]:active,
+.btn-next[disabled]:focus,
+.btn-next[disabled]:hover{
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}

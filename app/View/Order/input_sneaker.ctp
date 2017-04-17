@@ -1,7 +1,7 @@
 <?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
-<!-- 暫定的にFirstOrderのcssを読み込み -->
+
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>

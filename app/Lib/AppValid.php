@@ -465,6 +465,36 @@ class AppValid
 		return true;
 	}
 
+	/// ＡＰＩ用の日付コードかどうかチェック
+	/// 【例】2012-09-25（2012/09/25 (火) 午前中）
+	public static function isDateCd($_value)
+	{
+		$params = explode('-', $_value);
+		if (count($params) == 3) {  // YYYY-MM-DD
+			// 年月日チェック
+			if (!checkdate($params[1], $params[2], $params[0])) {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+
+		return true;
+	}
+
+	/// ＡＰＩ用の時間コードかどうかチェック
+	/// 【例】2012-09-25（2012/09/25 (火) 午前中）
+	public static function isTimeCd($_value)
+	{
+		// 時間帯コードチェック
+		if (!(1 <= $_value and $_value <= 6)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * 全角半角スペース チェック
 	 *
@@ -765,9 +795,31 @@ class AppValid
 						$ret[$name] = 'お届け希望日時をご確認ください。';
 					}
 					break;
+				case $name === 'date_cd':
+					if ($value == '') {
+						$ret[$name] = '集荷の日程を選択してください。';
+					}
+					elseif (!self::isDateCd($value)) {
+						$ret[$name] = '集荷の日程をご確認ください。';
+					}
+					break;
+				case $name === 'time_cd':
+					if ($value == '') {
+						$ret[$name] = '集荷の時間を選択してください。';
+					}
+					elseif (!self::isTimeCd($value)) {
+						$ret[$name] = '集荷の時間をご確認ください。';
+					}
+					break;
 				case $name === 'payment_method':
 					if (! preg_match('/^[01]{1}$/', $value)) {
 						$ret[$name] = 'お支払い方法をご確認ください。';
+					}
+					break;
+				case $name === 'check_weight':
+				case $name === 'check_hazardous_material':
+					if ($value != 'Remember Me') {
+						$ret[$name] = 'チェックは必須です';
 					}
 					break;
 				case $name === 'select_starter_kit':

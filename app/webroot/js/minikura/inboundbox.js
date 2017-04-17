@@ -2,9 +2,7 @@ var DELIVERY_ID_PICKUP = '6';
 var DELIVERY_ID_MANUAL = '7';
 $(function() {
 
-    console.log("aaa");
     $('#InboundDeliveryCarrier').change(function() {
-        console.log("ddd");
         getDatetime();
         review();
     });

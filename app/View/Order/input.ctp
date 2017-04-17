@@ -1,7 +1,7 @@
 <?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
-<!-- 暫定的にFirstOrderのcssを読み込み -->
+
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
@@ -21,7 +21,7 @@
             <section id="dsn-lineup">
               <div class="dsn-wrapper dev-wrapper">
                 <!-- HAKO -->
-                <div class="dsn-lineup-box">
+                <div id="dsn-hako" class="dsn-lineup-box">
                   <h3>minikuraHAKO</h3>
                   <div class="dsn-box-hako"> <img src="/images/order/box_hako@1x.png" srcset="/images/order/box_hako@1x.png 1x, /images/order/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
                   <div class="dsn-caption">
@@ -38,7 +38,7 @@
                   </div>
                 </div>
                 <!-- MONO -->
-                <div class="dsn-lineup-box">
+                <div id="dsn-mono" class="dsn-lineup-box">
                   <h3>minikuraMONO</h3>
                   <div class="dsn-box-mono"><img src="/images/order/box_mono@1x.png" srcset="/images/order/box_mono@1x.png 1x, /images/order/box_mono@2x.png 2x" alt="minikuraMONO">
                   </div>
@@ -56,7 +56,7 @@
                   </div>
                 </div>
                 <!-- CLEANING -->
-                <div class="dsn-lineup-box">
+                <div id="dsn-cleaning" class="dsn-lineup-box">
                   <h3>クリーニングパック</h3>
                   <div class="dsn-box-cleaning"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
                   <div class="dsn-caption">
@@ -70,6 +70,18 @@
                   <div class="dsn-form">
                     <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
                   </div>
+                </div>
+                <!-- minikuraマイボックス -->
+                <div id="dsn-mybox" class="dsn-lineup-box">
+                  <h3>minikuraマイボックス</h3>
+                  <div class="dsn-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraマイボックス"> </div>
+                  <div class="dsn-caption">
+                    <p class="dsn-price">月額保管料<span>200円</span></p>
+                    <p class="dsn-price">ボックス代金<span>200円</span>
+                    </p>
+                    <p class="dsn-box-caption">大切な衣類を綺麗に保管！</p>
+                  </div>
+                  <a href="/direct_inbound/input" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
                 </div>
               </div>
             </section>

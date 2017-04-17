@@ -39,7 +39,7 @@
         <?php echo $this->Flash->render('inbound_direct');?>
 
         <?php if (CakeSession::read('Address.cargo') !== "着払い") : ?>
-          <label>お届け先住所</label>
+          <label>集荷先住所</label>
         <?php else: ?>
           <label>ご登録住所</label>
         <?php endif; ?>
@@ -53,7 +53,7 @@
 
       <?php if (CakeSession::read('Address.cargo') !== "着払い") : ?>
         <div class="form">
-          <label>お届け日時</label>
+          <label>集荷日時</label>
           <p><?php echo CakeSession::read('Address.select_delivery_text') ?></p>
         </div>
       <?php else: ?>

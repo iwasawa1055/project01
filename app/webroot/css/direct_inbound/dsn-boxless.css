@@ -1,0 +1,14 @@
+/** minikura ver2.5 boxless **/
+
+p.dsn-select-cargo{
+	margin: 2rem 0 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
+	
+}
+p.dsn-arrival {
+	display: none;
+	padding: 1rem;
+	color: #ff0000;
+	border: 1px solid #ff0000;
+}

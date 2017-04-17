@@ -5,8 +5,9 @@ App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
 App::uses('InboundDirect', 'Model');
-App::uses('InboundDirectArrival', 'Model');
 App::uses('AppCode', 'Lib');
+App::uses('PickupDate', 'Model');
+App::uses('PickupTime', 'Model');
 
 class FirstOrderDirectInboundController extends MinikuraController
 {
@@ -35,16 +36,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 遷移時にオプションが設定されている場合
-        CakeSession::delete('order_option');
-        $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
-        if (!is_null($option)) {
-            CakeSession::write('order_option', $option);
-        }
-
         // 紹介コードで遷移してきた場合
-        CakeSession::delete('order_code');
-        CakeSession::delete('Email.alliance_cd');
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
             // オプションコードが含まれるか?
@@ -53,27 +45,19 @@ class FirstOrderDirectInboundController extends MinikuraController
                 list($label, $option) = explode('=', $pram_option);
                 CakeSession::write('order_option', $option);
             }
-            CakeSession::write('order_code', $code);
-            CakeSession::write('order_option', 'code');
-
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' code ' . $code);
 
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
         // スニーカー判定 keyがあれば空白なければnull
-        CakeSession::delete('order_sneaker');
         if (filter_input(INPUT_GET, Configure::read('app.sneaker_option.param')) === '') {
             // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' key sneaker ');
-            CakeSession::write('order_sneaker', true);
-            CakeSession::write('order_option', 'sneaker');
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
 
         }
         // 紹介コードが sneakers の場合
         if ($code === Configure::read('api.sneakers.alliance_cd')) {
-            CakeSession::write('order_sneaker', true);
-            CakeSession::write('order_option', 'sneaker');
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
@@ -102,16 +86,10 @@ class FirstOrderDirectInboundController extends MinikuraController
 
             // ログインしており、本登録でない、スニーカーユーザの場合
             if ($this->Customer->isSneaker()) {
-                // スニーカー購入動線遷移
-                CakeSession::write('order_sneaker', true);
-                CakeSession::write('order_option', 'sneaker');
 
                 // ログイン済みスニーカーユーザ エントリーユーザ 初回購入フローへ
                 $this->redirect(['controller' => 'first_order', 'action' => 'index']);
             }
-
-            // スニーカでないエントリユーザの場合コードがあってもスニーカではない
-            CakeSession::write('order_sneaker', false);
 
             // スニーカコードの場合 コードオプションを削除する
             if ($code === Configure::read('api.sneakers.alliance_cd')) {
@@ -125,8 +103,6 @@ class FirstOrderDirectInboundController extends MinikuraController
 
             // 紹介コードが空でない場合、紹介コードを上書き
             if (!empty($entry_user_alliance_cd)) {
-                CakeSession::write('order_code', $entry_user_alliance_cd);
-                CakeSession::write('order_option', 'code');
                 $this->redirect(['controller' => 'first_order', 'action' => 'index']);
             }
 
@@ -136,166 +112,6 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // 初回購入フロー
         $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
-    }
-
-    /**
-     * Boxの選択 静的ページからのオプション、ユーザ条件によって表示内容を変更
-     */
-    public function add_order()
-    {
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_order', 'FirstOrderDirectInbound/confirm_order', 'FirstOrderDirectInbound/add_address'], true) === false) {
-            //* NG redirect
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-        }
-
-        // ログインしているか
-        $is_logined = $this->_checkLogin();
-        $this->set('is_logined', $is_logined);
-
-        $order_option = CakeSession::read('order_option');
-        $kit_select_type = 'all';
-        switch (true) {
-            case $order_option === 'all':
-                $kit_select_type = 'all';
-                break;
-            case $order_option === 'code':
-                $kit_select_type = 'code';
-                break;
-            case $order_option === 'sneaker':
-                $kit_select_type = 'sneaker';
-                break;
-            default:
-                $kit_select_type = 'all';
-                break;
-        }
-
-        //* キットタイプが変わった場合、オーダーを削除
-        $before_kit_select_type = CakeSession::read('kit_select_type', $kit_select_type );
-        if($before_kit_select_type !== $kit_select_type) {
-            CakeSession::delete('Order');
-            CakeSession::delete('OrderTotal');
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Session Order delete');
-        }
-        CakeSession::write('kit_select_type', $kit_select_type );
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
-
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
-    }
-
-    /**
-     * Boxの選択 確認
-     */
-    public function confirm_order()
-    {
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_order', 'FirstOrderDirectInbound/add_address'], true) === false) {
-            //* NG redirect
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-        }
-
-        $kit_select_type = CakeSession::read('kit_select_type');
-
-        // order情報取得
-        $Order = CakeSession::read('Order');
-        $OrderTotal = CakeSession::read('OrderTotal');
-
-        //* post parameter
-        // 購入情報によって分岐
-        $params = array();
-        switch (true) {
-            case $kit_select_type === 'all':
-                $Order = $this->_setHakoOrder($Order);
-                $OrderTotal['hako_num'] = array_sum($Order['hako']);
-                $Order = $this->_setMonoOrder($Order);
-                $OrderTotal['mono_num'] = array_sum($Order['mono']);
-                $Order = $this->_setCleaningOrder($Order);
-                $Order = $this->_setHakoLimitedVer1Order($Order);
-
-                // 箱選択されているか
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['hako_limited_ver1']['hako_limited_ver1'])) === 0) {
-                    $params = array(
-                        'select_oreder_mono' => $OrderTotal['mono_num'],
-                        'select_oreder_hako' => $OrderTotal['hako_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
-                        'select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1']
-                    );
-                }
-                break;
-            case $kit_select_type === 'code':
-                $Order = $this->_setHakoOrder($Order);
-                $OrderTotal['hako_num'] = array_sum($Order['hako']);
-                $Order = $this->_setMonoOrder($Order);
-                $OrderTotal['mono_num'] = array_sum($Order['mono']);
-                $Order = $this->_setCleaningOrder($Order);
-
-                // 箱選択されているか
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
-                    $params = array(
-                        'select_oreder_mono' => $OrderTotal['mono_num'],
-                        'select_oreder_hako' => $OrderTotal['hako_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
-                    );
-                }
-                break;
-            case $kit_select_type === 'mono':
-                $Order = $this->_setMonoOrder($Order);
-                $OrderTotal['mono_num'] = array_sum($Order['mono']);
-                $params = array('select_oreder_mono' => $OrderTotal['mono_num']);
-                break;
-            case $kit_select_type === 'hako':
-                $Order = $this->_setHakoOrder($Order);
-                $OrderTotal['hako_num'] = array_sum($Order['hako']);
-                $params = array('select_oreder_hako' => $OrderTotal['hako_num']);
-                break;
-            case $kit_select_type === 'cleaning':
-                $Order = $this->_setCleaningOrder($Order);
-                $params = array('select_oreder_cleaning' => $Order['cleaning']['cleaning']);
-                break;
-            case $kit_select_type === 'starter_kit':
-                $Order = $this->_setStarterOrder($Order);
-                $params = array('select_starter_kit' => $Order['starter']['starter']);
-                break;
-            case $kit_select_type === 'sneaker':
-                $Order = $this->_setSneakerOrder($Order);
-                $params = array('select_oreder_sneaker' => $Order['sneaker']['sneaker']);
-                break;
-            case $kit_select_type === 'hako_limited_ver1':
-                $Order = $this->_setHakoLimitedVer1Order($Order);
-                $params = array('select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1']);
-                break;
-            //hako_limited_ver1
-            default:
-                break;
-        }
-
-        //* Session write
-        CakeSession::write('Order', $Order);
-        CakeSession::write('OrderTotal', $OrderTotal);
-
-        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set Order ' . print_r($Order, true));
-        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set OrderTotal ' . print_r($OrderTotal, true));
-
-        //*  validation 基本は共通クラスのAppValidで行う
-        $is_validation_error = false;
-        $validation = AppValid::validate($params);
-
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation)) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-            }
-            $this->redirect('add_order');
-            return;
-        }
-
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->redirect('add_address');
-
     }
 
     /**
@@ -316,7 +132,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         
         if (!$back) {
             // Addressリセット
-            if (is_null(CakeSession::read('Address'))) {
+            if (empty(CakeSession::read('Address.cargo'))) {
 
                 $Address = array(
                     'firstname'      => "",
@@ -329,9 +145,13 @@ class FirstOrderDirectInboundController extends MinikuraController
                     'address1'       => "",
                     'address2'       => "",
                     'address3'       => "",
-                    'select_delivery' => "",
-                    'select_delivery_text' => "",
-                    'select_delivery_list' => array(),
+                    'day_cd'         => "",
+                    'time_cd'        => "",
+                    'select_delivery_day'   => "",
+                    'select_delivery_time'  => "",
+                    'select_delivery_text'  => "",
+                    'select_delivery_day_list'      => array(),
+                    'select_delivery_time_list'     => array(),
                     'cargo'       => "ヤマト運輸",
                 );
 
@@ -385,26 +205,44 @@ class FirstOrderDirectInboundController extends MinikuraController
             'address1'          => filter_input(INPUT_POST, 'address1'),
             'address2'          => filter_input(INPUT_POST, 'address2'),
             'address3'          => filter_input(INPUT_POST, 'address3'),
-            'datetime_cd'       => filter_input(INPUT_POST, 'datetime_cd'),
-            'select_delivery'   => filter_input(INPUT_POST, 'select_delivery'),
+            'date_cd'            => filter_input(INPUT_POST, 'date_cd'),
+            'time_cd'           => filter_input(INPUT_POST, 'time_cd'),
+            'select_delivery_day'   => filter_input(INPUT_POST, 'select_delivery_day'),
+            'select_delivery_time'   => filter_input(INPUT_POST, 'select_delivery_time'),
             'cargo'             => filter_input(INPUT_POST, 'cargo'),
         ];
 
         //* Session write select_delivery_text
-        $params['select_delivery_list'] = json_decode($params['select_delivery']);
+        $params['select_delivery_day_list'] = json_decode($params['select_delivery_day']);
 
-        foreach ($params['select_delivery_list'] as  $key => $value) {
-            if ($value->datetime_cd === $params['datetime_cd']) {
-                $params['select_delivery_text'] = $value->text;
+        $params['select_delivery_text'] = "";
+        if(!empty($params['select_delivery_day_list'])) {
+            foreach ($params['select_delivery_day_list'] as $key => $value) {
+                if ($value->date_cd === $params['date_cd']) {
+                    $params['select_delivery_text'] = $value->text;
+                }
+            }
+        }
+
+        $params['select_delivery_time_list'] = json_decode($params['select_delivery_time']);
+
+        $params['select_delivery_text'] = "";
+        if(!empty($params['select_delivery_time_list'])) {
+            foreach ($params['select_delivery_time_list'] as  $key => $value) {
+                if ($value->time_cd === $params['time_cd']) {
+                    $params['select_delivery_text'] .= ' ' . $value->text;
+                }
             }
         }
 
         CakeSession::write('Address', $params);
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Address ' . print_r($params, true));
 
         $params['tel1'] = self::_wrapConvertKana($params['tel1']);
 
         if ($params['cargo'] === "着払い") {
-            unset($params['datetime_cd']);
+            unset($params['date_cd']);
+            unset($params['time_cd']);
         }
 
         $validation_params = array_merge($order_params,$params);
@@ -780,22 +618,47 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 発送日一覧のエラーチェック
         // 着払いでない場合
         if (CakeSession::read('Address.cargo') !== "着払い") {
-            $result = $this->_getAddressDatetime(CakeSession::read('Address.postal'));
 
             $check_address_datetime_cd = false;
-            $address_datetime = CakeSession::read('Address.datetime_cd');
-            foreach ($result->results as $key => $value) {
-                if ($value['datetime_cd'] === $address_datetime) {
+            $date_cd = CakeSession::read('Address.date_cd');
+
+            // 日付リストの確認
+            $date_list = $this->_getInboundDate();
+            foreach ($date_list->results as $key => $value) {
+                if ($value['date_cd'] === $date_cd) {
                     $check_address_datetime_cd = true;
                 }
             }
 
             if (!$check_address_datetime_cd) {
-                $this->Flash->validation('お届け希望日時をご確認ください。',
-                    ['key' => 'datetime_cd']);
+                $this->Flash->validation('集荷希望日をご確認ください。',
+                    ['key' => 'date_cd']);
+
+                CakeSession::delete('Address.date_cd');
+                CakeSession::delete('Address.select_delivery_day');
+                CakeLog::write(DEBUG_LOG,
+                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
+                return $this->redirect('add_address');
+            }
+
+            $time_cd = CakeSession::read('Address.time_cd');
+
+            // 時間リストの確認
+            $time_list = $this->_getInboundTime();
+            foreach ($time_list->results as $key => $value) {
+                if ($value['time_cd'] === $time_cd) {
+                    $check_address_datetime_cd = true;
+                }
+            }
+
+            if (!$check_address_datetime_cd) {
+                $this->Flash->validation('集荷希望時間をご確認ください。',
+                    ['key' => 'time_cd']);
+                CakeSession::delete('Address.time_cd');
+                CakeSession::delete('Address.select_delivery_time');
+
                 CakeLog::write(DEBUG_LOG,
                     $this->name . '::' . $this->action . ' check_address_datetime_cd error');
-
                 return $this->redirect('add_address');
             }
         }
@@ -817,8 +680,11 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         //* 会員登録
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
-        unset($data['select_delivery']);
-        unset($data['select_delivery_list']);
+        unset($data['select_delivery_day']);
+        unset($data['select_delivery_time']);
+        unset($data['select_delivery_day_list']);
+        unset($data['select_delivery_time_list']);
+
 
         $this->loadModel(self::MODEL_NAME_REGIST);
 
@@ -937,58 +803,40 @@ class FirstOrderDirectInboundController extends MinikuraController
         for($i = 0;$i < CakeSession::read('Order.direct_inbound.direct_inbound'); $i++) {
             $number = $i + 1;
             if(empty($box)) {
-                //$box .= PRODUCT_CD_DIRECT_INBOUND.':'.'ボックス' . $number . ':';
-                $box .= PRODUCT_CD_MONO . ':' . 'ボックス' . $number . ':';
+                $box .= PRODUCT_CD_DIRECT_INBOUND.':'.'minikuraダイレクト' . ':';
             } else {
-                //$box .= ',' . PRODUCT_CD_DIRECT_INBOUND.':'.'ボックス' . $number . ':';
-                $box .= ',' . PRODUCT_CD_MONO . ':' . 'ボックス' . $number . ':';
+                $box .= ',' . PRODUCT_CD_DIRECT_INBOUND.':'.'minikuraダイレクト' . ':';
             }
         }
 
         // 入庫
+        $this->InboundDirect = new InboundDirect();
+
+        $inbound_direct = array();
+        $inbound_direct['box']          = $box;
+
         if (CakeSession::read('Address.cargo') !== "着払い") {
-
-            $this->InboundDirect = new InboundDirect();
-
-            $inbound_direct = array();
-            $inbound_direct['box']          = $box;
-            $inbound_direct['lastname']     = CakeSession::read('Address.lastname');
-            $inbound_direct['firstname']    = CakeSession::read('Address.firstname');
-            $inbound_direct['tel1']         = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
-            $inbound_direct['postal']       = CakeSession::read('Address.postal');
-            $inbound_direct['pref']         = CakeSession::read('Address.pref');
-            $inbound_direct['address1']     = CakeSession::read('Address.address1');
-            $inbound_direct['address2']     = CakeSession::read('Address.address2');
-            $inbound_direct['address3']     = CakeSession::read('Address.address3');
-            $datetime_cd                    = array();
-            if(!empty(CakeSession::read('Address.datetime_cd'))) {
-                $datetime_cd                = explode('-',CakeSession::read('Address.datetime_cd'));
-                if(count($datetime_cd) > 1) {
-                    $inbound_direct['day_cd'] = $datetime_cd[0] . '-' . $datetime_cd[1] . '-' . $datetime_cd[2];
-
-                    // 時間帯がない場合
-                    if(count($datetime_cd) > 2) {
-                        $inbound_direct['time_cd'] = $datetime_cd[3];
-                    }
-                }
-            }
-
-            $res = $this->InboundDirect->postInboundDirect($inbound_direct);
-            if (!empty($res->message)) {
-                $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
-                return $this->redirect('confirm');
-            }
+            // 集荷
+            $inbound_direct['direct_type'] = "0";
+            $inbound_direct['lastname'] = CakeSession::read('Address.lastname');
+            $inbound_direct['firstname'] = CakeSession::read('Address.firstname');
+            $inbound_direct['tel1'] = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+            $inbound_direct['postal'] = CakeSession::read('Address.postal');
+            $inbound_direct['pref'] = CakeSession::read('Address.pref');
+            $inbound_direct['address1'] = CakeSession::read('Address.address1');
+            $inbound_direct['address2'] = CakeSession::read('Address.address2');
+            $inbound_direct['address3'] = CakeSession::read('Address.address3');
+            $inbound_direct['day_cd'] = CakeSession::read('Address.date_cd');
+            $inbound_direct['time_cd'] = CakeSession::read('Address.time_cd');
         } else {
-            $this->InboundDirectArrival = new InboundDirectArrival();
+            // 着払い
+            $inbound_direct['direct_type']          = "1";
+        }
 
-            $inbound_direct = array();
-            $inbound_direct['box']          = $box;
-
-            $res = $this->InboundDirectArrival->postInboundDirectArrival($inbound_direct);
-            if (!empty($res->message)) {
-                $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
-                return $this->redirect('confirm');
-            }
+        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
+        if (!empty($res->message)) {
+            $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
+            return $this->redirect('confirm');
         }
 
         // 完了したページ情報を保存
@@ -1035,55 +883,82 @@ class FirstOrderDirectInboundController extends MinikuraController
     }
 
     /**
-     * ajax 指定IDの配送日時情報取得
+     *
      */
-    public function as_get_address_datetime()
+    public function as_getInboundDatetime()
     {
+        $this->autoRender = false;
         if (!$this->request->is('ajax')) {
             return false;
         }
 
-        // 画面描画しない
-        $this->autoRender = false;
+        $ret_status = true;
+        $result = array();
 
-        $postal = filter_input(INPUT_POST, 'postal');
+        // 集荷日未ログイン取得 text項目がないため生成
+        $result_date = $this->_getInboundDate();
+        if ($result_date->status === "1") {
+            $week = array("日", "月", "火", "水", "木", "金", "土");
+            foreach($result_date->results as $key => $value) {
+                $datetime = new DateTime($value['date_cd']);
+                $w = (int)$datetime->format('w');
 
-        $result = $this->_getAddressDatetime($postal);
+                $result_date->results[$key]['text'] = $datetime->format('Y年m月d日 (' . $week[$w] .')');;
 
-        $status = !empty($result);
+            }
+            $result['date'] = $result_date->results;
 
-        // コードを表示用文字列に変換
-        App::uses('AppHelper', 'View/Helper');
-        $appHelper = new AppHelper(new View());
-
-        $results = [];
-        $i = 0;
-        foreach ($result->results as $datetime) {
-            $datetime_cd = $datetime['datetime_cd'];
-            $results[$i]["datetime_cd"] = $datetime_cd;
-            $results[$i]["text"] = $appHelper->convDatetimeCode($datetime_cd);
-            $i++;
+        } else {
+            $ret_status = false;
         }
 
-        return json_encode(compact('status', 'results'));
+        // 集荷時間未ログイン取得 text項目がないため生成
+        $result_time = $this->_getInboundTime();
+        if ($result_time->status === "1") {
+
+            $time_text = array('','希望なし','午前中','12～14時','14～16時','16～18時','18～21時');
+
+            foreach ($result_time->results as $key => $value) {
+
+                $result_time->results[$key]['text'] = $time_text[$value['time_cd']];
+            }
+
+            $result['time'] = $result_time->results;
+
+        } else {
+            $ret_status = false;
+        }
+
+
+        $status = $ret_status;
+        return json_encode(compact('status', 'result'));
+    }
+
+
+    /**
+     * ヤマト運輸の配送日情報取得
+     */
+    private function _getInboundDate()
+    {
+        $result = array();
+
+        $this->PickupDateModel = new PickupDate();
+
+        $result = $this->PickupDateModel->getPickupDate();
+
+        return $result;
     }
 
     /**
-     * 指定IDの配送日時情報取得
+     * ヤマト運輸の配送時間情報取得
      */
-    private function _getAddressDatetime($postal)
+    private function _getInboundTime()
     {
-        // ハイフンチェック
-        if (mb_strlen($postal) > 7) {
-            // ハイフン部分を削除 macの場合全角ハイフンの文字コードが異なるため単純な全角半角変換ができない
-            $postal = mb_substr($postal,0, 3) . mb_substr($postal, 4, 4);
-        }
-        $postal = mb_convert_kana($postal, 'nhk', "utf-8");
+        $result = array();
 
-        // 配送日時情報取得
-        $this->loadModel('KitDeliveryDatetime');
+        $PickupTimeModel = new PickupTime();
 
-        $result = $this->KitDeliveryDatetime->getKitDeliveryDatetime(array('postal' => $postal));
+        $result = $PickupTimeModel->getPickupTime();
 
         return $result;
     }
@@ -1120,7 +995,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
 
     /**
-     * kit box starter set
+     * Direct Inbound set
      */
     private function _setDirectInbound($Order)
     {
