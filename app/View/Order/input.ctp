@@ -76,7 +76,7 @@
                   <div class="dsn-medal">
                     <picture>
                       <source srcset="/images/order/md-caption@1x.png 1x, /images/order/md-caption@2x.png 2x">
-                      <img src="/images/order/medal_silver_sp@1x.png" alt="すぐに送れる！">
+                      <img src="/images/order/md-caption@1x.png" alt="すぐに送れる！">
                     </picture>
                   </div>
                   <h3>minikura<br>ダイレクト</h3>
