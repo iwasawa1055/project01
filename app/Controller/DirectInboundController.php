@@ -161,6 +161,7 @@ class DirectInboundController extends MinikuraController
                 // 最後のアドレスid 追加したアドレスidを取得
                 $last_address_id = Hash::get($this->Address->last(), 'address_id', '');
                 $OrderKit['address_id'] = $last_address_id;
+                $OrderKit['cargo'] = "ヤマト運輸";
             }
         }
 
