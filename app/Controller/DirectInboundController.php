@@ -161,7 +161,6 @@ class DirectInboundController extends MinikuraController
                 // 最後のアドレスid 追加したアドレスidを取得
                 $last_address_id = Hash::get($this->Address->last(), 'address_id', '');
                 $OrderKit['address_id'] = $last_address_id;
-                $OrderKit['cargo'] = "ヤマト運輸";
             }
         }
 
@@ -225,6 +224,13 @@ class DirectInboundController extends MinikuraController
         // 逐次セッションに保存
         CakeSession::write('OrderKit.address_id', $address_id);
 
+        // 預け入れ方法保存
+        // 既存のアドレス選択処理は OrderKitに含める
+        $cargo = filter_input(INPUT_POST, 'cargo');
+
+        // 逐次セッションに保存
+        CakeSession::write('OrderKit.cargo', $cargo);
+
         // 住所追加
         if ($address_id === AddressComponent::CREATE_NEW_ADDRESS_ID) {
             return $this->redirect([
@@ -247,14 +253,6 @@ class DirectInboundController extends MinikuraController
             }
             $is_validation_error = true;
         }
-
-        // 預け入れ方法保存
-        // 既存のアドレス選択処理は OrderKitに含める
-        $cargo = filter_input(INPUT_POST, 'cargo');
-
-        // 逐次セッションに保存
-        CakeSession::write('OrderKit.cargo', $cargo);
-
 
         if (CakeSession::read('OrderKit.cargo') !== "着払い") {
             /* 住所処理 */
