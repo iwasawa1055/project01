@@ -105,6 +105,11 @@ class AddressController extends MinikuraController
                         'controller' => 'purchase', 'action' => 'input', 'customer' => false
                         , 'id' => $sales_id, '?' => ['back' => 'true']
                     ]);
+                } else if ($returnTo === 'direct_inbound') {
+                    return $this->redirect([
+                        'controller' => 'direct_inbound', 'action' => 'input', 'customer' => false,
+                        '?' => ['back' => 'true']
+                    ]);
                 }
 
 

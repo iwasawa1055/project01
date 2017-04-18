@@ -53,7 +53,7 @@
                 <div class="dsn-yamato">
                   <div class="form-group col-lg-12">
                     <label>集荷の住所</label>
-                    <select name="address_id" id="address_id" class="form-controlr dev-input-form">
+                    <select name="address_id" id="address_id" class="form-controlr dev-input-form select-add-address">
                       <!--<option value="">以下からお選びください</option>-->
                       <?php foreach ( CakeSession::read('OrderKit.address_list') as $key => $value ) {?>
                       <option value="<?php echo $key;?>"<?php if ( $key === (int)CakeSession::read('OrderKit.address_id') ) echo " selected";?>><?php echo $value;?></option>

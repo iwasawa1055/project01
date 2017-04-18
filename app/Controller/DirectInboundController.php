@@ -148,7 +148,18 @@ class DirectInboundController extends MinikuraController
             }
         }
 
+        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を入力する';
         $OrderKit['address_list'] = $set_address_list;
+
+        // 追加画面から遷移しているかチェック
+        if(!is_null(CakeSession::read('OrderKit.address_id'))){
+            $check_address_id = CakeSession::read('OrderKit.address_id');
+            if($check_address_id === AddressComponent::CREATE_NEW_ADDRESS_ID ) {
+                // 最後のアドレスid 追加したアドレスidを取得
+                $last_address_id = Hash::get($this->Address->last(), 'address_id', '');
+                $OrderKit['address_id'] = $last_address_id;
+            }
+        }
 
         // カード判定
         $OrderKit['is_credit'] = false;
@@ -198,6 +209,20 @@ class DirectInboundController extends MinikuraController
         // FirstOrderと階層を合わせる
         CakeSession::write('Order', $set_order_params);
 
+
+        // 既存のアドレス選択処理は OrderKitに含める
+        $address_id = filter_input(INPUT_POST, 'address_id');
+
+        // 逐次セッションに保存
+        CakeSession::write('OrderKit.address_id', $address_id);
+
+        // 住所追加
+        if ($address_id === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+            return $this->redirect([
+                'controller' => 'address', 'action' => 'add', 'customer' => true,
+                '?' => ['return' => 'direct_inbound']
+            ]);
+        }
 
         // 逐次バリデーションをかける 最後にまとめてバリデーションエラーでリターン
         // バリデーションをかけない値もセッションには保存する。
@@ -275,11 +300,6 @@ class DirectInboundController extends MinikuraController
             }
         }
 
-        // 既存のアドレス選択処理は OrderKitに含める
-        $address_id = filter_input(INPUT_POST, 'address_id');
-
-        // 逐次セッションに保存
-        CakeSession::write('OrderKit.address_id', $address_id);
 
         // アドレスリスト使用の場合
         // 住所指定されている場合
