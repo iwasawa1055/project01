@@ -288,54 +288,57 @@ class DirectInboundController extends MinikuraController
         $vail_address_params['address_id'] = $address_id;
 
         CakeSession::delete('DispAddress');
-        if (!empty($address_id)) {
-            // 購入時用住所パラメータチェック POST値ではないため、選択した住所情報をチェックし共通のエラーを返す
-            // カード決済、口座振替でパラメータが異なる
-            // 住所idから住所取得
-            $set_address = $this->Address->find($address_id);
+        if (CakeSession::read('OrderKit.cargo') !== "着払い") {
 
-            // 住所保管
-            CakeSession::write('Address', $set_address);
+            if (!empty($address_id)) {
+                // 購入時用住所パラメータチェック POST値ではないため、選択した住所情報をチェックし共通のエラーを返す
+                // カード決済、口座振替でパラメータが異なる
+                // 住所idから住所取得
+                $set_address = $this->Address->find($address_id);
 
-            // 表示用住所データ
-            CakeSession::write('DispAddress', $set_address);
+                // 住所保管
+                CakeSession::write('Address', $set_address);
 
-            // アドレスリストバリデーション
-            // 決済によって必要情報が異なる
-            if (CakeSession::read('OrderKit.is_credit')) {
-                // カード決済
-                $vail_address_params['name'] = $set_address['lastname'] . $set_address['firstname'];
-                $vail_address_params['postal'] = $set_address['postal'];
-                $vail_address_params['address'] = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . $set_address['address3'];
-                $vail_address_params['tel1'] = $set_address['tel1'];
-            } else {
-                // 口座決済
-                $vail_address_params = $set_address;
-            }
-        }
+                // 表示用住所データ
+                CakeSession::write('DispAddress', $set_address);
 
-        //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($vail_address_params);
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation)) {
-            // アドレスリストの内容がエラーかチェックする。
-            $address_list_error = false;
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-                // お届け先日時選択エラーの場合はお届け先形式エラーにしない。
-                if ($key !== 'date_cd') {
-                    $address_list_error = true;
-                }
-                if ($key !== 'time_cd') {
-                    $address_list_error = true;
+                // アドレスリストバリデーション
+                // 決済によって必要情報が異なる
+                if (CakeSession::read('OrderKit.is_credit')) {
+                    // カード決済
+                    $vail_address_params['name'] = $set_address['lastname'] . $set_address['firstname'];
+                    $vail_address_params['postal'] = $set_address['postal'];
+                    $vail_address_params['address'] = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . $set_address['address3'];
+                    $vail_address_params['tel1'] = $set_address['tel1'];
+                } else {
+                    // 口座決済
+                    $vail_address_params = $set_address;
                 }
             }
-            // アドレスリストの内容がエラーだった場合
-            if($address_list_error) {
-                $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
-                    , ['key' => 'format_address']);
+
+            //*  validation 基本は共通クラスのAppValidで行う
+            $validation = AppValid::validate($vail_address_params);
+            //* 共通バリデーションでエラーあったらメッセージセット
+            if ( !empty($validation)) {
+                // アドレスリストの内容がエラーかチェックする。
+                $address_list_error = false;
+                foreach ($validation as $key => $message) {
+                    $this->Flash->validation($message, ['key' => $key]);
+                    // お届け先日時選択エラーの場合はお届け先形式エラーにしない。
+                    if ($key !== 'date_cd') {
+                        $address_list_error = true;
+                    }
+                    if ($key !== 'time_cd') {
+                        $address_list_error = true;
+                    }
+                }
+                // アドレスリストの内容がエラーだった場合
+                if($address_list_error) {
+                    $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
+                        , ['key' => 'format_address']);
+                }
+                $is_validation_error = true;
             }
-            $is_validation_error = true;
         }
 
         if ($is_validation_error === true) {

@@ -45,7 +45,7 @@
                 </div>
               </div>
 
-              <?php if (CakeSession::read('Address.cargo') !== "着払い") : ?>
+              <?php if (CakeSession::read('OrderKit.cargo') !== "着払い") : ?>
                 <div class="form-group col-lg-12">
                   <label>預け入れ方法</label>
                   <p class="form-control-static">ヤマト運輸</p>
