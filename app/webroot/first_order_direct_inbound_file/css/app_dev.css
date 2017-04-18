@@ -230,7 +230,7 @@ section#already-login {
     .submit_disabled_wrapper_parent {
         width : calc(72% - 1rem);
     }
-    .submit_disabled_wrapper_parent button.btn-next{
+    .submit_disabled_wrapper_parent button.dsn-btn-next{
         width: 100%;
     }
     .submit_disabled_wrapper.active {
