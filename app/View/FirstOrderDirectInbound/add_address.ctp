@@ -89,7 +89,7 @@
         <div class="dsn-yamato">
           <div class="dsn-form">
             <label>集荷希望日</label>
-            <select name="date_cd" id="InboundDayCd" class="form-controlr dev-input-form">
+            <select name="date_cd" id="InboundDayCd" class="dsn-select-delivery focused dev-input-form">
               <?php foreach ( CakeSession::read('Address.select_delivery_day_list') as $key => $value ) {?>
               <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
               <?php } ?>
@@ -100,7 +100,7 @@
           </div>
           <div class="dsn-form">
             <label>集荷希望時間</label>
-            <select name="time_cd" id="InboundTimeCd" class="form-controlr dev-input-form">
+            <select name="time_cd" id="InboundTimeCd" class="dsn-select-delivery focused dev-input-form">
               <?php foreach ( CakeSession::read('Address.select_delivery_time_list') as $key => $value ) {?>
               <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
               <?php } ?>
