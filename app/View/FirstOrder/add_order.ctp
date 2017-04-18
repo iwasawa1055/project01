@@ -31,7 +31,12 @@
     <!-- RECOMMEND -->
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
     <div id="dsn-recommend" class="dsn-lineup-box">
-      <div class="dsn-medal"> <img src="/first_order_file/images/medal@1x.png" srcset="/first_order_file/images/medal@1x.png 1x, /first_order_file/images/medal@2x.png 2x" alt="LIMITED"></div>
+      <div class="dsn-medal">
+        <picture>
+          <source srcset="/first_order_file/images/h5-caption@1x.png 1x, /first_order_file/images/h5-caption@2x.png 2x">
+          <img src="/first_order_file/images/medal_silver_sp@1x.png" alt="限定">
+        </picture>
+      </div>
       <h3 class="dev-medal-margin">HAKOお片付けパック</h3>
       <div class="dsn-box-recommend"> <img src="/first_order_file/images/box_hako5@1x.png" srcset="/first_order_file/images/box_hako5@1x.png 1x, /first_order_file/images/box_hako5@2x.png 2x" alt="minikuraHAKO">
       </div>
@@ -101,6 +106,12 @@
     <?php if ($kit_select_type === 'all') : ?>
     <!-- minikuraダイレクト -->
     <div id="dsn-mybox" class="dsn-lineup-box">
+      <div class="dsn-medal">
+        <picture>
+          <source srcset="/first_order_file/images/md-caption@1x.png 1x, /first_order_file/images/md-caption@2x.png 2x">
+          <img src="/first_order_file/images/medal_silver_sp@1x.png" alt="すぐに送れる！">
+        </picture>
+      </div>
       <h3>minikuraダイレクト</h3>
       <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_mybox@1x.png" srcset="/first_order_file/images/box_mybox@1x.png 1x, /first_order_file/images/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
       <div class="dsn-caption">

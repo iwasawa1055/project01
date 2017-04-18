@@ -39,6 +39,7 @@ section h3 {
 	font-size: 18px;
 	font-size: 1.8rem;
 	text-align: center;
+	z-index: 100;
 }
 section a,
 section a:hover {
@@ -180,6 +181,13 @@ section#dsn-lineup #dsn-recommend {
 }
 section#dsn-lineup #dsn-mybox {
 	order: 3;
+}
+section#dsn-lineup .dsn-medal {
+	position: absolute;
+	margin: -3rem 0 0 -2.5rem;
+}
+section#dsn-lineup .dsn-medal img {
+	width: 80px;
 }
 section#dsn-lineup .dsn-lineup-box {
 	display: flex;
@@ -485,6 +493,9 @@ section#dsn-lineup .dsn-box-starter {
 }
 
 @media screen and (max-width:767px) {
+section h3 br{
+		display: none;
+	}
 section#dsn-lineup .dsn-lineup-box {
 	width: calc((100% / 1) - 1rem);
 	margin: .5rem;
@@ -527,7 +538,8 @@ a.dsn-btn-back {
 a.dsn-btn-submit,
 a.dsn-btn-return,
 a.dsn-btn-select,
-a.dsn-btn-recommend {
+a.dsn-btn-recommend,
+a.dsn-btn-mybox{
 	margin: .75rem 0 0;
 	font-size: 14px;
 	font-size: 1.4rem;
@@ -579,13 +591,13 @@ section#dsn-lineup div[class^="dsn-caption"] {
 	padding: 0;
 }
 section#dsn-lineup div[class^="dsn-box"] {
-	width: 30%;
+	width: 35%;
 	margin: 0;
 	padding: 0;
 	text-align: center;
 }
 section#dsn-lineup div[class^="dsn-caption"] {
-	width: 70%;
+	width: 65%;
 	margin: 0;
 	padding: 0;
 }
@@ -646,6 +658,12 @@ section#dsn-adress .dsn-form th,
 section#dsn-adress .dsn-form td {
 	margin-right: 1rem;
 	padding: .5rem 1rem .5rem 0;
+}
+	section#dsn-lineup .dsn-medal {
+	margin: -1rem 0 0 -1rem;
+}
+section#dsn-lineup .dsn-medal img {
+	width: 60px;
 }
 .remodal {
 	max-width: 37.5rem;

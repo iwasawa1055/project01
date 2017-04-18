@@ -247,7 +247,6 @@ class DirectInboundController extends MinikuraController
 
             $input_address_params['select_delivery_time_list'] = json_decode($input_address_params['select_delivery_time']);
 
-            $input_address_params['select_delivery_text'] = "";
             if(!empty($input_address_params['select_delivery_time_list'])) {
                 foreach ($input_address_params['select_delivery_time_list'] as $key => $value) {
                     if ($value->time_cd === $input_address_params['time_cd']) {

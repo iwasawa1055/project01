@@ -226,7 +226,6 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         $params['select_delivery_time_list'] = json_decode($params['select_delivery_time']);
 
-        $params['select_delivery_text'] = "";
         if(!empty($params['select_delivery_time_list'])) {
             foreach ($params['select_delivery_time_list'] as  $key => $value) {
                 if ($value->time_cd === $params['time_cd']) {

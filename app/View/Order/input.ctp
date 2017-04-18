@@ -73,7 +73,13 @@
                 </div>
                 <!-- minikuraダイレクト -->
                 <div id="dsn-mybox" class="dsn-lineup-box">
-                  <h3>minikuraダイレクト</h3>
+                  <div class="dsn-medal">
+                    <picture>
+                      <source srcset="/images/order/md-caption@1x.png 1x, /images/order/md-caption@2x.png 2x">
+                      <img src="/images/order/medal_silver_sp@1x.png" alt="すぐに送れる！">
+                    </picture>
+                  </div>
+                  <h3>minikura<br>ダイレクト</h3>
                   <div class="dsn-box-cleaning dev-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>250円</p>

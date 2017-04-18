@@ -267,12 +267,3 @@ section#lineup .medal img {
     width: 90%;
 }
 
-@media screen and (min-width: 1023px) and (max-width: 1200px) {
-    section#lineup .medal img {
-        width: 80%;
-    }
-
-    .dev-medal-margin{
-        margin-left: 1rem;
-    }
-}

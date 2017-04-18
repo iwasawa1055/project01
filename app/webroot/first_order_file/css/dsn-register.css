@@ -17,6 +17,7 @@ section h3 {
 	font-size: 18px;
 	font-size: 1.8rem;
 	text-align: center;
+		z-index: 100;
 }
 section a,
 section a:hover {
@@ -166,10 +167,10 @@ section#dsn-lineup #dsn-mybox {
 }
 section#dsn-lineup .dsn-medal {
 	position: absolute;
-	margin: -3.5rem 0 0 -3.5rem;
+	margin: -3rem 0 0 -2.5rem;
 }
 section#dsn-lineup .dsn-medal img {
-	width: 90%;
+	width: 100px;
 }
 section#dsn-lineup .dsn-price {
 	margin: 0 0 .1rem;
@@ -583,10 +584,10 @@ section#dsn-lineup div[class^="dsn-box"] img {
 	width: 80%;
 }
 section#dsn-lineup .dsn-medal {
-	margin: -1.5rem 0 0 -1.5rem;
+	margin: -1rem 0 0 -1rem;
 }
 section#dsn-lineup .dsn-medal img {
-	width: 75%;
+	width: 60px;
 }
 section#dsn-lineup .dsn-price,
 section#dsn-lineup .dsn-box-caption {

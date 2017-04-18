@@ -65,10 +65,12 @@
                   <?php echo $this->Flash->render('holder_name');?>
                   <p class="help-block">（※半角大文字英数字、半角スペース）</p>
                 </div>
-                <span class="col-lg-12 col-md-12 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
+               <span class="col-lg-6 col-md-6 col-xs-12">
+                  <a class="btn btn-primary btn-lg btn-block" href="/direct_inbound/input">戻る</a>
                 </span>
-              <?php echo $this->Form->end(); ?>
+                <span class="col-lg-6 col-md-6 col-xs-12">
+                   <button type="submit" class="btn btn-danger btn-lg btn-block">次へ</button>
+                </span>
               </div>
             </div>
           </div>
