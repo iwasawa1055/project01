@@ -1,14 +1,14 @@
-<?php echo $this->element('FirstOrder/first'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>注文内容確認 - minikura</title>
-<?php echo $this->element('FirstOrder/header'); ?>
-<?php echo $this->element('FirstOrder/nav'); ?>
-<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/header'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/nav'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/breadcrumb_list'); ?>
   <form method="post" action="/first_order_direct_inbound/complete" novalidate>
   <!-- ADRESS -->
-  <section id="adress">
-    <div class="wrapper">
-      <div class="form" id="price_table">
+  <section id="dsn-adress">
+    <div class="dsn-wrapper">
+      <div class="dsn-form" id="price_table">
         <label>ご注文内容</label>
         <table>
           <thead>
@@ -31,8 +31,8 @@
         <?php echo $this->Flash->render('kit_price');?>
       </div>
 
-      <div class="divider"></div>
-      <div class="form">
+      <div class="dsn-divider"></div>
+      <div class="dsn-form">
         <?php echo $this->Flash->render('customer_regist_info');?>
         <?php echo $this->Flash->render('customer_card_info');?>
         <?php echo $this->Flash->render('customer_address_info');?>
@@ -52,23 +52,23 @@
       </div>
 
       <?php if (CakeSession::read('Address.cargo') !== "着払い") : ?>
-        <div class="form">
+        <div class="dsn-form">
           <label>集荷日時</label>
           <p><?php echo CakeSession::read('Address.select_delivery_text') ?></p>
         </div>
       <?php else: ?>
-        <div class="form">
+        <div class="dsn-form">
           <label>預け入れ方法</label>
           <p>着払い</p>
         </div>
       <?php endif; ?>
-      <div class="divider"></div>
-      <div class="form">
+      <div class="dsn-divider"></div>
+      <div class="dsn-form">
         <label>メールアドレス</label>
         <p><?php echo CakeSession::read('Email.email');?></p>
       </div>
       <?php if (!$is_logined) : ?>
-        <div class="form">
+        <div class="dsn-form">
           <label>お知らせメール</label>
           <p>
             <?php if ( CakeSession::read('Email.newsletter') === "1" ) : ?>
@@ -81,10 +81,10 @@
       <?php endif; ?>
     </div>
   </section>
-  <section class="nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
-<?php echo $this->element('FirstOrder/footer'); ?>
-<?php echo $this->element('FirstOrder/js'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/js'); ?>
 <script src="/first_order_file/js/first_order/confirm.js"></script>
-<?php echo $this->element('FirstOrder/last'); ?>
+<?php echo $this->element('FirstOrderDirectInbound/last'); ?>
