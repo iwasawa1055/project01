@@ -72,6 +72,7 @@
                   </div>
                 </div>
                 <!-- minikuraダイレクト -->
+                <?php if (empty($customer->getInfo()['alliance_cd'])) :?>
                 <div id="dsn-mybox" class="dsn-lineup-box">
                   <div class="dsn-medal">
                     <picture>
@@ -89,6 +90,7 @@
                   </div>
                   <a href="/direct_inbound/input" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
                 </div>
+                <?php endif;?>
               </div>
             </section>
             <section id="dsn-delivery">
