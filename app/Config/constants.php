@@ -179,6 +179,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_CARGO_JIBUN => 'minikura CARGO じぶんで',
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
+    PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -243,6 +244,12 @@ const IN_USE_SERVICE = [
             'name' => 'minikuraHAKO',
             'product_cd' => PRODUCT_CD_HAKO,
             'name_mobile' => 'minikura<br />HAKO',
+        ],
+        [
+            'product' => 'mono_direct',
+            'name' => 'minikuraダイレクト',
+            'product_cd' => PRODUCT_CD_DIRECT_INBOUND,
+            'name_mobile' => 'minikura<br />ダイレクト',
         ],
         [
             'product' => 'cargo01',
