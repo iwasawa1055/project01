@@ -231,12 +231,14 @@ class DirectInboundController extends MinikuraController
         // 逐次セッションに保存
         CakeSession::write('OrderKit.cargo', $cargo);
 
-        // 住所追加
-        if ($address_id === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-            return $this->redirect([
-                'controller' => 'address', 'action' => 'add', 'customer' => true,
-                '?' => ['return' => 'direct_inbound']
-            ]);
+        // 住所追加確認 集荷の場合
+        if (CakeSession::read('OrderKit.cargo') !== "着払い") {
+            if ($address_id === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+                return $this->redirect([
+                    'controller' => 'address', 'action' => 'add', 'customer' => true,
+                    '?' => ['return' => 'direct_inbound']
+                ]);
+            }
         }
 
         // 逐次バリデーションをかける 最後にまとめてバリデーションエラーでリターン

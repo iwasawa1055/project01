@@ -61,7 +61,7 @@
               <?php else: ?>
                 <div class="form-group col-lg-12">
                   <label>預け入れ方法</label>
-                  <p class="form-control-static">着払い</p>
+                  <p class="form-control-static">自分で送る（持ち込みで着払い）</p>
                 </div>
               <?php endif; ?>
 
@@ -100,7 +100,7 @@
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
               <button class="btn-next page-transition-link" type="submit" disabled="disabled">
-                この内容でボックスを預け入れ
+                この内容で申し込みをする
                 <i class="fa fa-chevron-circle-right"></i>
               </button>
             </span>

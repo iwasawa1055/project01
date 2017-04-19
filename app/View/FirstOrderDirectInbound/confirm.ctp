@@ -59,7 +59,7 @@
       <?php else: ?>
         <div class="dsn-form">
           <label>預け入れ方法</label>
-          <p>着払い</p>
+          <p>自分で送る（持ち込みで着払い）</p>
         </div>
       <?php endif; ?>
       <div class="dsn-divider"></div>
@@ -81,7 +81,7 @@
       <?php endif; ?>
     </div>
   </section>
-  <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容で申し込みをする <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
