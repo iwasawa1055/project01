@@ -85,7 +85,7 @@
                 </div>
                 <p class="dsn-select-cargo"><label><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('OrderKit.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label>
                 </p>
-                <p class="dsn-arrival">着払いをご選択の場合はminikura運営事務局よりご連絡を差し上げます。<br> ※注意事項
+                <p class="dsn-arrival">自分で送るをご選択の場合はminikura運営事務局よりご連絡を差し上げます。<br> ※注意事項
                   <br> ご連絡時のメールに記載する住所へ、ヤマト運輸の着払いでお送りください。
                   <br> コンビニやヤマト営業所への持ち込みとなります。</p>
               </div>
