@@ -107,6 +107,23 @@ class AppController extends Controller
     }
 
     /**
+     * 非表示にする文字を含んでいるかチェック
+     *
+     * @access    public
+     * @param     全角文字列
+     * @return    boolean
+     */
+    /// 全角変換
+    public static function _isNoDispAnnouncement($str)
+    {
+        // クラウド部室に関するお知らせ
+        if (strpos($str,NEWS_NO_DISP_CHECK_WORD_CLUB) !== false) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * ログイン時、ログイン済 ユーザ状態によって遷移先を変更
      *
      * @access    public
