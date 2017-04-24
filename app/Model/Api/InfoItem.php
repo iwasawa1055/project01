@@ -89,6 +89,13 @@ class InfoItem extends ApiCachedModel
 		//* アイテム取得、 中でアイテム画像とボックス情報取得
         $list = $this->apiGetResultsWhere([], $where);
 
+        // 除外BOX プロダクト名が定義されていないプロダクトは表示BOXから除外
+        foreach($list as $key => $value) {
+            if(!array_key_exists($value['box']['product_cd'], PRODUCT_NAME)){
+                unset($list[$key]);
+            }
+        }
+
 		//* アイテム取得後にproduct_cdでリストを再生成する
 		if (! empty($productCd)) {
 		    $productData['product_cd'] = $productCd;

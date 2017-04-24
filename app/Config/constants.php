@@ -179,6 +179,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_CARGO_JIBUN => 'minikura CARGO じぶんで',
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
+    PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
