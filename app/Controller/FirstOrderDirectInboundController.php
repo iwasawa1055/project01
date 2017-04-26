@@ -94,14 +94,6 @@ class FirstOrderDirectInboundController extends MinikuraController
                 $this->redirect(['controller' => 'first_order', 'action' => 'index']);
             }
 
-            // エントリユーザの紹介コードの確認
-            $entry_user_alliance_cd = $this->Customer->getCustomerAllianceCd();
-
-            // 紹介コードが空でない場合、紹介コードを上書き
-            if (!empty($entry_user_alliance_cd)) {
-                $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-            }
-
             // ログイン済みエントリーユーザ 初回購入フローへ
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
         }
