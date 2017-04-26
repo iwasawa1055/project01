@@ -24,14 +24,8 @@
               <li> <a class="animsition-link<?php if($active_status['box']['all']):?> active<?php endif;?>" href="/box?product="><i class="fa fa-cube fa-fw"></i> すべてのボックス（<?php echo array_sum($product_summary); ?>箱）</a> </li>
             <?php endif;?>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
-              <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : 
-                // todo: 時間ないので暫定処置
-                $box_num = hash::get($product_summary, $v['product_cd'], '0');
-                if ($v['product_cd'] === PRODUCT_CD_MONO) :
-                  $box_num = hash::get($product_summary, $v['product_cd'], '0') + hash::get($product_summary, PRODUCT_CD_DIRECT_INBOUND, '0');
-                endif;
-              ?>
-                <li> <a class="animsition-link<?php if($active_status['box'][$v['product']]):?> active<?php endif;?>" href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo $box_num; ?>箱）</a> </li>
+              <?php if(hash::get($summary_all, $v['product_cd'], '0') > 0) : ?>
+                <li> <a class="animsition-link<?php if($active_status['box'][$v['product']]):?> active<?php endif;?>" href="/box?product=<?php echo $v['product'];?>"><i class="fa fa-cube fa-fw"></i> <?php echo $v['name'];?>（<?php echo hash::get($product_summary, $v['product_cd'], '0'); ?>箱）</a> </li>
               <?php endif;?>
             <?php endforeach;?>
           </ul>

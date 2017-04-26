@@ -238,6 +238,12 @@ class ItemController extends MinikuraController
         
         //* 販売機能
         $customer_sales = $this->Customer->isCustomerSales();
+
+        // 販売機能無効
+        if (in_array($box['product_cd'], [PRODUCT_CD_DIRECT_INBOUND], true)) {
+            $customer_sales = false;
+        }
+
         $this->set('customer_sales', $customer_sales);
         //* 販売情報 
         $sales = null;

@@ -197,6 +197,7 @@ class MinikuraController extends AppController
                 'toggle' => false,
                 'all' => false,
                 'mono' => false,
+                'mono_direct' => false,
                 'cargo01' => false,
                 'cargo02' => false,
                 'cleaning' => false,
@@ -208,6 +209,7 @@ class MinikuraController extends AppController
                 'all' => false,
                 'mono' => false,
                 'hako' => false,
+                'mono_direct' => false,
                 'cargo01' => false,
                 'cargo02' => false,
                 'cleaning' => false,
@@ -235,6 +237,9 @@ class MinikuraController extends AppController
                     break;
                 case $this->request->query['product'] === 'hako':
                     $active_status_tmp['hako'] = true;
+                    break;
+                case $this->request->query['product'] === 'mono_direct':
+                    $active_status_tmp['mono_direct'] = true;
                     break;
                 case $this->request->query['product'] === 'cargo01':
                     $active_status_tmp['cargo01'] = true;
