@@ -81,6 +81,15 @@ class InfoBox extends ApiCachedModel
         ];
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
+
+        // キットコードが定義されていない場合、除外する。
+        foreach ($list as $k => $v){
+            $list[$k]['product_cd'] = $this->kitCd2ProductCd($v['kit_cd']);
+            if(is_null($list[$k]['product_cd'])) {
+                unset($list[$k]);
+            }
+        }
+
         //* 預け入れ[入庫]ページ, ソート条件 #8697
         foreach ($list as $k => $v){
             $list[$k]['product_cd'] = $this->kitCd2ProductCd($v['kit_cd']);	
@@ -135,6 +144,14 @@ class InfoBox extends ApiCachedModel
         }
 
         $list = $this->apiGetResultsWhere([], $where);
+
+        // 除外BOX プロダクト名が定義されていないプロダクトは表示BOXから除外
+        foreach($list as $key => $value) {
+            if(!array_key_exists($value['product_cd'], PRODUCT_NAME)){
+                unset($list[$key]);
+            }
+        }
+
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
@@ -142,11 +159,14 @@ class InfoBox extends ApiCachedModel
 
     /**
      * kit_cdからproduct_cdに変換
+     * kit_cdがない場合、nullを返す
      * @param  [type] $kitCd [description]
      * @return [type]        [description]
      */
     public static function kitCd2ProductCd($kitCd)
     {
+        $productCd = null;
+
         switch ($kitCd) {
             case KIT_CD_MONO:
             case KIT_CD_MONO_BOOK:

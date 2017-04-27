@@ -356,6 +356,9 @@ const RANK_RATE = [
 // 1:稼働中 0:停止中 
 const NEWS_ACTIVE_FLAG = 1;
 
+// お知らせで表示しないメッセージに含まれる文字
+const NEWS_NO_DISP_CHECK_WORD_CLUB = 'クラウド部室';
+
 //* 販売機能 振り込み用口座管理
 const BANK_ACCOUNT_TYPE = [
     '1' => '普通',

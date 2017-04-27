@@ -21,8 +21,29 @@ class MyPageController extends MinikuraController
         $this->set('newsList', $newsList);
 
         $announcement = new AnnouncementNoCache();
-        $res = $announcement->apiGet(['limit' => 5]);
-        $this->set('notice_announcements', $res->results);
+
+        $res = $announcement->apiGet();
+
+        $count = 0;
+        $ret = array();
+        foreach ($res->results as $key => $value) {
+
+            // 特定文字の含まれるメッセージは非表示
+            if($this->_isNoDispAnnouncement($value['text'])) {
+                unset($res->results[$key]);
+            } else {
+                $count++;
+                $ret[] = $res->results[$key];
+            }
+
+            // マイページでの表示件数は５
+            if($count > 4) {
+                break;
+            }
+
+        }
+
+        $this->set('notice_announcements', $ret);
 
     }
 }
