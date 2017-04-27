@@ -74,9 +74,9 @@
                     <p>
                       <label>
                         <input type="checkbox" name="check_weight" value="Remember Me" class="agree-before-submit">
-                        重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。</label>
+                        重量は15kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。</label>
                     </p>
-                    <p>※明らかに20kgを超えた場合は保管料を別途頂戴することがございます。あらかじめご了承ください。</p>
+                    <p>※明らかに15kgを超えた場合は保管料を別途頂戴することがございます。あらかじめご了承ください。</p>
                     <?php echo $this->Flash->render('check_weight');?>
                     <p>
                       <label>
