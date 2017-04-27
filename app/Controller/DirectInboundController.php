@@ -73,10 +73,6 @@ class DirectInboundController extends MinikuraController
         if ($this->Customer->isEntry()) {
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
-        // 紹介コード付きで登録したユーザーは購入できない
-        if (!empty($this->Customer->getInfo()['alliance_cd'])) {
-            $this->redirect(['controller' => 'order', 'action' => 'input']);
-        }
 
         // スニーカーセッションを制御
         if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
@@ -203,11 +199,6 @@ class DirectInboundController extends MinikuraController
         ) {
             //* NG redirect
             $this->redirect(['controller' => 'direct_inbound', 'action' => 'input']);
-        }
-
-        // 紹介コード付きで登録したユーザーは購入できない
-        if (!empty($this->Customer->getInfo()['alliance_cd'])) {
-            $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
         $set_order_params = array();
@@ -397,11 +388,6 @@ class DirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'direct_inbound', 'action' => 'input']);
         }
 
-        // 紹介コード付きで登録したユーザーは購入できない
-        if (!empty($this->Customer->getInfo()['alliance_cd'])) {
-            $this->redirect(['controller' => 'order', 'action' => 'input']);
-        }
-
         if (is_null(CakeSession::read('Credit'))) {
             $Credit = array(
                 'card_no'       => "",
@@ -426,11 +412,6 @@ class DirectInboundController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'direct_inbound', 'action' => 'input']);
         }
-
-        // 紹介コード付きで登録したユーザーは購入できない
-        if (!empty($this->Customer->getInfo()['alliance_cd'])) {
-            $this->redirect(['controller' => 'order', 'action' => 'input']);
-        }        
 
         $input_card_params = array(
             'card_no'           => filter_input(INPUT_POST, 'card_no'),
@@ -486,11 +467,6 @@ class DirectInboundController extends MinikuraController
         ) {
             //* NG redirect
             $this->redirect(['controller' => 'direct_inbound', 'action' => 'input']);
-        }
-
-        // 紹介コード付きで登録したユーザーは購入できない
-        if (!empty($this->Customer->getInfo()['alliance_cd'])) {
-            $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
         // カード未登録の場合
@@ -574,11 +550,6 @@ class DirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'direct_inbound', 'action' => 'input']);
         }
         
-        // 紹介コード付きで登録したユーザーは購入できない
-        if (!empty($this->Customer->getInfo()['alliance_cd'])) {
-            $this->redirect(['controller' => 'order', 'action' => 'input']);
-        }
-
         // チェックボックス
         $params = [
             'check_weight'              => filter_input(INPUT_POST, 'check_weight'),

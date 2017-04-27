@@ -32,14 +32,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function index()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
@@ -52,9 +44,6 @@ class FirstOrderDirectInboundController extends MinikuraController
                 list($label, $option) = explode('=', $pram_option);
                 CakeSession::write('order_option', $option);
             }
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' code ' . $code);
-
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
         // スニーカー判定 keyがあれば空白なければnull
@@ -105,14 +94,6 @@ class FirstOrderDirectInboundController extends MinikuraController
                 $this->redirect(['controller' => 'first_order', 'action' => 'index']);
             }
 
-            // エントリユーザの紹介コードの確認
-            $entry_user_alliance_cd = $this->Customer->getCustomerAllianceCd();
-
-            // 紹介コードが空でない場合、紹介コードを上書き
-            if (!empty($entry_user_alliance_cd)) {
-                $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-            }
-
             // ログイン済みエントリーユーザ 初回購入フローへ
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
         }
@@ -126,14 +107,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function add_address()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
@@ -193,14 +166,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function confirm_address()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_credit'], true) === false) {
             //* NG redirect
@@ -294,14 +259,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function add_credit()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_address', 'FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
@@ -334,14 +291,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function confirm_credit()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/add_email'], true) === false) {
             //* NG redirect
@@ -401,14 +350,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function add_email()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_credit', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
@@ -459,9 +400,9 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // 紹介コードを表示しないパターン
         // 直接預入の場合紹介コードを表示しない
-/*
+
         $display_alliance_cd = true;
-        // スターターキットの場合 非表示
+/*        // スターターキットの場合 非表示
         if (CakeSession::read('kit_select_type') === 'starter_kit') {
             $display_alliance_cd = false;
             // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' display_alliance_cd is starter_kit');
@@ -470,9 +411,9 @@ class FirstOrderDirectInboundController extends MinikuraController
         if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) {
             $display_alliance_cd = false;
         }
-
-        $this->set('display_alliance_cd', $display_alliance_cd);
 */
+        $this->set('display_alliance_cd', $display_alliance_cd);
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
@@ -483,14 +424,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function confirm_email()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
@@ -611,14 +544,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function confirm()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
@@ -666,14 +591,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function complete()
     {
-        // 紹介コード付きの場合はリダイレクト
-        if (!empty(CakeSession::read('order_code'))) {
-            $this->redirect([
-                'controller' => 'first_order', 
-                'action' => 'index?code=' . CakeSession::read('order_code')
-            ]);
-        }
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect

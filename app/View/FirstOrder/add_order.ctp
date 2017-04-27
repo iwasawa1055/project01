@@ -103,7 +103,7 @@
         </div>
       </div>
     <?php endif; ?>
-    <?php if ($kit_select_type === 'all') : ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'code')) : ?>
     <!-- minikuraダイレクト -->
     <div id="dsn-mybox" class="dsn-lineup-box">
       <div class="dsn-medal">
