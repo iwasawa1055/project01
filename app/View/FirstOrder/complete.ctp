@@ -18,4 +18,7 @@
 </section>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
+<?php # Affiliate Tag ?>
+<img src="https://is.accesstrade.net/cgi-bin/isatV2/minikura/isatWeaselV2.cgi?result_id=100&verify=<?php echo $customer_id; ?>" width="1" height="1">
+<img src="https://is.accesstrade.net/cgi-bin/isatV2/minikurap/isatWeaselV2.cgi?result_id=100&verify=<?php echo $customer_id; ?>" width="1" height="1">
 <?php echo $this->element('FirstOrder/last'); ?>

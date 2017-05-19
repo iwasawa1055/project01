@@ -829,6 +829,9 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 完了したページ情報を保存
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+		// アフィリエイトタグ出力用
+		$this->set('customer_id', $this->Customer->data->info['customer_id']);
+
         $this->_cleanFirstOrderSession();
 
         // 既にセッションスタートしてる事が条件
