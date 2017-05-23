@@ -24,8 +24,8 @@ class InboundSelectedBox extends AppModel
                 'message' => ['notBlank', 'box_name'],
             ],
             'maxLength' => [
-                'rule' => ['maxLength', 400],
-                'message' => ['maxLength', 'box_name', 400],
+                'rule' => ['maxLength', 200],
+                'message' => ['maxLength', 'box_name', 200],
             ],
         ],
         'option' => [
