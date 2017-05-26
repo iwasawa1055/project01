@@ -37,6 +37,7 @@
         <li> <a href="#"><i class="fa fa-arrow-circle-o-up fa-fw"></i> 預け入れ<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/inbound/box/add"><i class="fa fa-arrow-circle-o-up fa-fw"></i> ボックス預け入れ</a> </li>
+            <li> <a class="animsition-link" href="/direct_inbound/input"><i class="fa fa-arrow-circle-o-up fa-fw"></i> minikuraダイレクト</a> </li>
           </ul>
         </li>
         <?php endif; ?>
