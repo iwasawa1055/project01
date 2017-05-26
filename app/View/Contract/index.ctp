@@ -19,6 +19,10 @@
               <?php if ($customer->isPrivateCustomer()) : ?>
               <?php // 個人 ?>
                 <div class="form-group col-lg-12">
+                  <label>お客様ID</label>
+                  <p><?php echo $data['customer_cd']; ?></p>
+                </div>
+                <div class="form-group col-lg-12">
                   <label>郵便番号</label>
                   <p><?php echo $data['postal']; ?></p>
                 </div>
@@ -40,6 +44,10 @@
                 </div>
               <?php else : ?>
               <?php // 法人 ?>
+                <div class="form-group col-lg-12">
+                  <label>お客様ID</label>
+                  <p><?php echo $data['customer_cd']; ?></p>
+                </div>
                 <div class="form-group col-lg-12">
                   <label>郵便番号</label>
                   <p><?php echo $data['postal']; ?></p>
