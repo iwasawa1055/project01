@@ -1097,6 +1097,7 @@ class FirstOrderController extends MinikuraController
 		// アフィリエイトタグ出力用
 		$this->set('customer_id', $this->Customer->data->info['customer_id']);
 
+		/* いったん無効化
         // 既にセッションスタートしてる事が条件
         // マイページ側セッションクローズ
         $before_session_id = session_id();
@@ -1132,7 +1133,7 @@ class FirstOrderController extends MinikuraController
 
         // マイページ側セッション再開
         session_start();
-
+		*/
     }
 
     /**

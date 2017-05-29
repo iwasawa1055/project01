@@ -834,6 +834,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         $this->_cleanFirstOrderSession();
 
+		/* いったん無効化
         // 既にセッションスタートしてる事が条件
         // マイページ側セッションクローズ
         $before_session_id = session_id();
@@ -869,6 +870,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // マイページ側セッション再開
         session_start();
+		*/
 
     }
 
