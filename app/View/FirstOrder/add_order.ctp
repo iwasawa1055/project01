@@ -29,7 +29,7 @@
     </div>
     <?php endif; ?>
 	<?php // HAKO 5 パック 有効期限 ?>
-	<?php if ('2017053118' > date('YmdH')): ?>
+	<?php if ('2017053119' > date('YmdH')): ?>
     <!-- RECOMMEND -->
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako_limited_ver1')) : ?>
     <div id="dsn-recommend" class="dsn-lineup-box">
