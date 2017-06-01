@@ -21,7 +21,7 @@ App::uses('CustomerData', 'Model');
 
 class CustomerComponent extends Component
 {
-    private $data = null;
+    public $data = null;
 
     public function __construct()
     {
