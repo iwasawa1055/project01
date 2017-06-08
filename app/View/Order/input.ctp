@@ -85,7 +85,7 @@
                     <p class="dsn-price">月額保管料<span>250円</p>
                     <p class="dsn-price">ボックス代金<span>0円</span>
                     </p>
-                    <p class="dsn-box-caption">お手持ちのボックスで今すぐ送れる！</p>
+                    <p class="dsn-box-caption">お手持ちの段ボールやケースでお申し込みができる minikuraHAKO です！</p>
                   </div>
                   <a href="/direct_inbound/input" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
                 </div>

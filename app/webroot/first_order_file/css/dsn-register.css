@@ -17,7 +17,7 @@ section h3 {
 	font-size: 18px;
 	font-size: 1.8rem;
 	text-align: center;
-		z-index: 100;
+	z-index: 100;
 }
 section a,
 section a:hover {
@@ -88,7 +88,7 @@ a.dsn-btn-next,
 a.dsn-btn-next-full,
 a.dsn-btn-submit,
 a.dsn-btn-return,
-a.dsn-btn-starter{
+a.dsn-btn-starter {
 	margin-left: .5rem;
 	background: #ff0000;
 	border: .1rem solid #ff0000;
@@ -115,7 +115,7 @@ a.dsn-btn-select {
 	background: #0971b2;
 	border: .1rem solid #0971b2;
 }
-a.dsn-btn-mybox{
+a.dsn-btn-mybox {
 	background: #ff0000;
 	border: .1rem solid #ff0000;
 }
@@ -142,8 +142,8 @@ a.dsn-btn-return {
 }
 section#dsn-lineup .dsn-lineup-box {
 	display: flex;
-	flex-direction:column;
-	justify-content:space-between;
+	flex-direction: column;
+	justify-content: space-between;
 	width: calc((100% / 3) - 1rem);
 	margin: 2rem .5rem 1rem;
 	padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -182,12 +182,22 @@ section#dsn-lineup .dsn-price span {
 	margin-left: 1.5rem;
 	font-weight: bold;
 }
-section#dsn-lineup .dsn-box-caption {
+section#dsn-lineup h3 {
+	font-weight: bold;
+}
+section#dsn-lineup h3 span {
+	display: block;
+	margin: auto auto 1rem;
+	font-size: 14px;
+	font-size: 1.4rem;
+	font-weight: normal;
+}
+/**section#dsn-lineup .dsn-box-caption {
 	margin: 1rem 0 0;
 	font-size: 14px;
 	font-size: 1.4rem;
 	line-height: 2rem;
-}
+}**/
 section#dsn-lineup .dsn-select-number {
 	font-size: 16px;
 	font-size: 1.6rem;
@@ -529,7 +539,7 @@ section {
 	margin: 0 auto 3rem;
 	padding: 0;
 }
-	section#dsn-lineup .dsn-lineup-box {
+section#dsn-lineup .dsn-lineup-box {
 	display: block;
 }
 section#dsn-lineup.fix {

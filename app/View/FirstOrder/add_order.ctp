@@ -59,12 +59,12 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'hako') || ($kit_select_type === 'code')) : ?>
     <!-- HAKO -->
     <div id="dsn-hako" class="dsn-lineup-box">
-      <h3>minikuraHAKO</h3>
+      <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
       <div class="dsn-box-hako"> <img src="/first_order_file/images/box_hako@1x.png" srcset="/first_order_file/images/box_hako@1x.png 1x, /first_order_file/images/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
       <div class="dsn-caption">
         <p class="dsn-price">月額保管料<span>200円</span></p>
         <p class="dsn-price">ボックス代金<span>200円</span></p>
-        <p class="dsn-box-caption">保管するならHAKOがオススメ！</p>
+        <?php //<p class="dsn-box-caption">保管するならHAKOがオススメ！</p> ?>
         <p class="dsn-select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
       <a href="#" class="dsn-btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -76,12 +76,11 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono') || ($kit_select_type === 'code')) : ?>
       <!-- MONO -->
     <div id="dsn-mono" class="dsn-lineup-box">
-        <h3>minikuraMONO</h3>
+        <h3><span>1 点ごとのアイテム管理</span>minikuraMONO</h3>
         <div class="dsn-box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO"></div>
         <div class="dsn-caption">
           <p class="dsn-price">月額保管料<span>250円</span></p>
           <p class="dsn-price">ボックス代金<span>250円</span></p>
-          <p class="dsn-box-caption">1点毎のアイテム管理でオプション充実！</p>
           <p class="dsn-select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -93,12 +92,11 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'cleaning') || ($kit_select_type === 'code')) : ?>
       <!-- CLEANING -->
       <div id="dsn-cleaning" class="dsn-lineup-box">
-        <h3>クリーニングパック</h3>
+        <h3><span>衣類 10 点</span>クリーニングパック</h3>
         <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_cleaning@1x.png" srcset="/first_order_file/images/box_cleaning@1x.png 1x, /first_order_file/images/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
         <div class="dsn-caption">
           <p class="dsn-price">6ヶ月保管＋クリーニング料セット</p>
           <p class="dsn-price">ボックス代金<span>12,000円</span></p>
-          <p class="dsn-box-caption">大切な衣類を綺麗に保管！</p>
           <p class="dsn-select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         </div>
         <a href="#" class="dsn-btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
@@ -116,13 +114,12 @@
           <img src="/first_order_file/images/md-caption@1x.png" alt="すぐに送れる！">
         </picture>
       </div>
-      <h3>minikuraダイレクト</h3>
+      <h3><span>片付けたらそのまま</span>minikuraダイレクト</h3>
       <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_mybox@1x.png" srcset="/first_order_file/images/box_mybox@1x.png 1x, /first_order_file/images/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
       <div class="dsn-caption">
         <p class="dsn-price">月額保管料<span>250円</p>
         <p class="dsn-price">ボックス代金<span>0円</span>
         </p>
-        <p class="dsn-box-caption">お手持ちのボックスで今すぐ送れる！</p>
       </div>
       <a href="/first_order_direct_inbound/add_address" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
     </div>
