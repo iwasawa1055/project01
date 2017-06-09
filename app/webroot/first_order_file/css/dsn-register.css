@@ -151,19 +151,19 @@ section#dsn-lineup .dsn-lineup-box {
 	border-radius: .2rem;
 }
 section#dsn-lineup #dsn-mono {
-	order: 5;
+	order: 3;
 }
 section#dsn-lineup #dsn-hako {
-	order: 4;
-}
-section#dsn-lineup #dsn-cleaning {
-	order: 2;
-}
-section#dsn-lineup #dsn-recommend {
 	order: 1;
 }
+section#dsn-lineup #dsn-cleaning {
+	order: 4;
+}
+section#dsn-lineup #dsn-recommend {
+	order: 999;
+}
 section#dsn-lineup #dsn-mybox {
-	order: 3;
+	order: 2;
 }
 section#dsn-lineup .dsn-medal {
 	position: absolute;

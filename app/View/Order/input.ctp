@@ -22,14 +22,13 @@
               <div class="dsn-wrapper dev-wrapper">
                 <!-- HAKO -->
                 <div id="dsn-hako" class="dsn-lineup-box">
-                  <h3>minikuraHAKO</h3>
+                  <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
                   <div class="dsn-box-hako dev-box-hako"> <img src="/images/order/box_hako@1x.png" srcset="/images/order/box_hako@1x.png 1x, /images/order/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>200円</span>
                     </p>
                     <p class="dsn-price">ボックス代金<span>200円</span>
                     </p>
-                    <p class="dsn-box-caption">保管するならHAKOがオススメ！</p>
                     <p class="dsn-select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
                   </div>
                   <a href="#" class="dsn-btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -39,7 +38,7 @@
                 </div>
                 <!-- MONO -->
                 <div id="dsn-mono" class="dsn-lineup-box">
-                  <h3>minikuraMONO</h3>
+                  <h3><span>1 点ごとのアイテム管理</span>minikuraMONO</h3>
                   <div class="dsn-box-mono dev-box-mono"><img src="/images/order/box_mono@1x.png" srcset="/images/order/box_mono@1x.png 1x, /images/order/box_mono@2x.png 2x" alt="minikuraMONO">
                   </div>
                   <div class="dsn-caption">
@@ -47,7 +46,6 @@
                     </p>
                     <p class="dsn-price">ボックス代金<span>250円</span>
                     </p>
-                    <p class="dsn-box-caption">1点毎のアイテム管理でオプション充実！</p>
                     <p class="dsn-select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
                   </div>
                   <a href="#" class="dsn-btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
@@ -57,13 +55,12 @@
                 </div>
                 <!-- CLEANING -->
                 <div id="dsn-cleaning" class="dsn-lineup-box">
-                  <h3>クリーニングパック</h3>
+                  <h3><span>衣類 10 点</span>クリーニングパック</h3>
                   <div class="dsn-box-cleaning dev-box-cleaning"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">6ヶ月保管＋クリーニング料セット</p>
                     <p class="dsn-price">ボックス代金<span>12,000円</span>
                     </p>
-                    <p class="dsn-box-caption">大切な衣類を綺麗に保管！</p>
                     <p class="dsn-select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
                   </div>
                   <a href="#" class="dsn-btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
@@ -79,13 +76,12 @@
                       <img src="/images/order/md-caption@1x.png" alt="すぐに送れる！">
                     </picture>
                   </div>
-                  <h3>minikura<br>ダイレクト</h3>
+                  <h3><span>片付けたらそのまま</span>minikura<br>ダイレクト</h3>
                   <div class="dsn-box-cleaning dev-box-cleaning"><img src="/images/order/box_mybox@1x.png" srcset="/images/order/box_mybox@1x.png 1x, /images/order/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>250円</p>
                     <p class="dsn-price">ボックス代金<span>0円</span>
                     </p>
-                    <p class="dsn-box-caption">お手持ちの段ボールやケースでお申し込みができる minikuraHAKO です！</p>
                   </div>
                   <a href="/direct_inbound/input" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
                 </div>

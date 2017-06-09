@@ -74,7 +74,7 @@
     </div>
     <?php endif; ?>
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono') || ($kit_select_type === 'code')) : ?>
-      <!-- MONO -->
+    <!-- MONO -->
     <div id="dsn-mono" class="dsn-lineup-box">
         <h3><span>1 点ごとのアイテム管理</span>minikuraMONO</h3>
         <div class="dsn-box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO"></div>
