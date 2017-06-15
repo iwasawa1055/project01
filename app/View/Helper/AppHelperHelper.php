@@ -87,7 +87,7 @@ class AppHelperHelper extends Helper
 			6 => '18～20時',
 			// 2017/06/15 modified by osada@terrada
 			// refs #13317 ヤマト配送時間変更
-			7 => '18～21時',
+			7 => '19～21時',
 			//7 => '19～21時',
 		);
 
