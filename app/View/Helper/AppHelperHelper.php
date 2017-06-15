@@ -76,12 +76,20 @@ class AppHelperHelper extends Helper
     // 日付CD変換
     public function convDatetimeCode ( $data_code ){
         // 時間CODE変換表
-        $timeList = array( 2 => '午前中',
-                           3 => '12～14時',
-                           4 => '14～16時',
-                           5 => '16～18時',
-                           6 => '18～20時',
-                           7 => '20～21時' );
+        $timeList = array(
+			2 => '午前中',
+			// 2017/06/15 modified by osada@terrada
+			// refs #13317 ヤマト配送時間変更
+			3 => '14～16時',
+			//3 => '12～14時',
+			4 => '14～16時',
+			5 => '16～18時',
+			6 => '18～20時',
+			// 2017/06/15 modified by osada@terrada
+			// refs #13317 ヤマト配送時間変更
+			7 => '18～21時',
+			//7 => '19～21時',
+		);
 
         // 日付
         $date = substr( $data_code, 0, 10 );
