@@ -90,6 +90,22 @@ $config['app']['kit']['cleaning']['item_group_cd']['030'] = 3800;
 $config['app']['kit']['cleaning']['work_type']['010'] = "030";
 $config['app']['kit']['cleaning']['work_type']['030'] = "032";
 
+/**
+ * Amazon Pay 環境変更
+ */
+$config['app']['amazon_pay']['Widgets_url'] = 'https://static-fe.payments-amazon.com/OffAmazonPayments/jp/lpa/js/Widgets.js';
+$config['app']['amazon_pay']['Amazon_MWS_EP'] = 'https://mws.amazonservices.jp/OffAmazonPayments/2013-01-01/';
+$config['app']['amazon_pay']['profile_API_EP'] = 'https://api.amazon.co.jp/user/profile';
+
+/**
+ * Amazon Pay 設定値
+ */
+$config['app']['amazon_pay']['merchant_id'] = 'A1MBRBB8GPQFL9'; // 出品者ID
+$config['app']['amazon_pay']['access_key'] = 'AKIAIZZ2IUFQHH5JOZEQ';
+$config['app']['amazon_pay']['secret_key'] = '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';
+$config['app']['amazon_pay']['client_id'] = 'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e';
+$config['app']['amazon_pay']['region'] = 'jp';
+$config['app']['amazon_pay']['sandbox'] = 'false';
 
 //*** Log
 // 不要なログはDropします。

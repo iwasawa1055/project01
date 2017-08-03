@@ -6,6 +6,7 @@ App::uses('EmailModel', 'Model');
 App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
 App::uses('FirstKitPrice', 'Model');
+App::uses('AmazonPayModel', 'Model');
 App::uses('AppCode', 'Lib');
 
 class FirstOrderController extends MinikuraController
@@ -166,10 +167,10 @@ class FirstOrderController extends MinikuraController
         if($before_kit_select_type !== $kit_select_type) {
             CakeSession::delete('Order');
             CakeSession::delete('OrderTotal');
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Session Order delete');
+            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Session Order delete');
         }
         CakeSession::write('kit_select_type', $kit_select_type );
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' kit_select_type ' . $kit_select_type);
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -355,6 +356,53 @@ class FirstOrderController extends MinikuraController
         $this->setAction('add_address');
         return $this->render('add_address_sneaker');
     }
+
+
+    /**
+     * アマゾンペイメント widgetで遷移先を指定
+     * アマゾンペイメントでアカウント情報を取得
+     */
+    public function input_amazon_profile()
+    {
+
+        //* session referer check
+
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_order'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // アクセストークンを取得
+        $access_token = filter_input(INPUT_GET, 'access_token');
+        if($access_token === null) {
+
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'access_token ' . print_r($access_token, true));
+
+        $this->loadModel('AmazonPayModel');
+        $res = $this->AmazonPayModel->getUserInfo($access_token);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'AmazonPayModel  res ' . print_r($res, true));
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'REQUEST_URI ' . print_r($_SERVER["REQUEST_URI"], true));
+
+        // パラメータを引き継ぐ
+        $set_url = str_replace('input_amazon_profile', 'input_amazon_payment', $_SERVER["REQUEST_URI"]);
+
+
+        $this->redirect($set_url);
+    }
+
+    /**
+     * アマゾンペイメント widgetで遷移先を指定
+     * アマゾンペイメントで
+     */
+    public function input_amazon_payment()
+    {
+
+    }
+
 
     /**
      * ユーザ名 住所 確認

@@ -1,0 +1,61 @@
+/** minikura ver2.5 amazon pay **/
+
+#dsn-amazon-pay {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+#dsn-amazon-pay img,
+#dsn-payment img {
+	width: 100%;
+}
+#dsn-amazon-pay .dsn-address,
+#dsn-amazon-pay .dsn-credit {
+	width: calc(50% - 1rem);
+}
+#dsn-payment {
+	width: 100%;
+	margin: 0 0 2rem;
+}
+.dsn-amazon-login h3 {
+	margin: 0 0 1rem;
+	font-size: 16px;
+}
+.dsn-amazon-login p {
+	margin: 0 0 2rem;
+	font-size: 12px;
+}
+.dsn-amazon-login a {
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+}
+.dsn-amazon-login img {
+	width: 200px;
+}
+#dsn-amazon-input {
+	margin: 3rem;
+	text-align: center;
+}
+#dsn-amazon-input img {
+	width: 100%;
+	max-width: 750px;
+	border: 1px solid #999999;
+}
+
+@media screen and (max-width: 991px) {
+#dsn-amazon-pay {
+	display: block;
+}
+#dsn-amazon-pay .dsn-address,
+#dsn-amazon-pay .dsn-credit {
+	width: 100%;
+	margin-bottom: 2rem;
+}
+.dsn-amazon-login h3 {
+	font-size: 14px;
+}
+.dsn-amazon-login img {
+	width: 300px;
+}
+}
