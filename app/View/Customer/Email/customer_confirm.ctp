@@ -12,7 +12,7 @@
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>古いメールアドレス</label>
-                  <p class="form-control-static"><?php echo $current_email ?>m</p>
+                  <p class="form-control-static"><?php echo $current_email ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>新しいメールアドレス</label>
