@@ -401,10 +401,11 @@ class FirstOrderController extends MinikuraController
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/input_amazon_payment'], true) === false) {
             //* NG redirect
-            // $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
     }
 
@@ -417,19 +418,28 @@ class FirstOrderController extends MinikuraController
 
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
+
             //* NG redirect
-            // $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
-        $access_token = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
+        $amazon_billing_agreement_id = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . print_r($amazon_billing_agreement_id, true));
 
         if($access_token === null) {
 
         }
+
+        if($amazon_billing_agreement_id === null) {
+
+        }
+
         $this->loadModel('AmazonPayModel');
-        $res = $this->AmazonPayModel->GetOrderReferenceDetails($access_token, null);
+        $res = $this->AmazonPayModel->GetOrderReferenceDetails($access_token, $amazon_billing_agreement_id);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
 
@@ -806,7 +816,7 @@ class FirstOrderController extends MinikuraController
     public function confirm()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email', 'FirstOrder/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email', 'FirstOrder/confirm', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }

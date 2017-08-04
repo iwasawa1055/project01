@@ -61,6 +61,7 @@ var AppAmazonPaymentLogin =
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
             showButton();
+            showButtonDirect();
         };
     },
     b: function () {

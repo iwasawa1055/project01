@@ -123,6 +123,9 @@
         </p>
       </div>
       <a href="/first_order_direct_inbound/add_address" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
+      <div id="AmazonPayButtonDirect">
+      </div>
+
     </div>
     <?php endif; ?>
   </div>
@@ -300,6 +303,20 @@
       }
     });
   }
+  function showButtonDirect() {
+    var authRequest;
+    var host = location.protocol + '//' + location.hostname;
+    OffAmazonPayments.Button("AmazonPayButtonDirect", AppAmazonPaymentLogin.SELLER_ID, {
+      type: "PwA",
+      color: "Gold",
+      size: "medium",
+      authorization: function () {
+        loginOptions = {scope: "profile payments:widget", popup: "true"};
+        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/input_amazon_profile");
+      }
+    });
+  }
+
 </script>
 
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
