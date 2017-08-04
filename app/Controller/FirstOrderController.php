@@ -388,7 +388,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         //$this->redirect($set_url);
-        $this->redirect('/first_order/nv_confirm_amazon_payment');
+        $this->redirect('/first_order/input_amazon_payment');
     }
 
     /**
