@@ -35,11 +35,8 @@
           </div>
         </div>
         <div id="dsn-payment" class="form-group col-lg-12">
-          <picture>
-            <source media="(min-width: 991px)" srcset="/first_order_file/images/payment_pc.png">
-            <source media="(max-width: 991px)" srcset="/first_order_file/images/payment_sp.png">
-            <img src="/first_order_file/images/payment_sp.png" alt="継続課金">
-          </picture>
+            <div id="consentWidgetDiv">
+            </div>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
