@@ -7,7 +7,6 @@
 /app/tmp/sneakers
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
-/vendors
 /build
 /dist
 /tags
