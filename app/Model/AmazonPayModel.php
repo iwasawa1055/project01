@@ -11,11 +11,11 @@ App::import('Vendor', 'amazon_pay_sdk', array('file' => 'amazon_pay_sdk/amazon_p
 class AmazonPayModel extends AppModel
 {
     protected $client;
+    const AMAZON_ORDER_REFERENCE_ID = 'AKIAIZZ2IUFQHH5JOZEQ';
 
     public function __construct()
     {
         parent::__construct('AmazonPayModel');
-        /*
         // amazon pay 設定
         $config = array(
             'merchant_id'   => Configure::read('app.amazon_pay.merchant_id'),
@@ -23,12 +23,12 @@ class AmazonPayModel extends AppModel
             'secret_key'    => Configure::read('app.amazon_pay.secret_key'),
             'client_id'     => Configure::read('app.amazon_pay.client_id'),
             'region'        => Configure::read('app.amazon_pay.region'));
-*/
 
+/*
         $config = array(
             'client_id'     => Configure::read('app.amazon_pay.client_id'),
             'region'        => Configure::read('app.amazon_pay.region'));
-
+*/
         // テスト環境かどうか
         if(Configure::read('app.amazon_pay.sandbox')){
             $config['sandbox']  = true;
@@ -48,6 +48,37 @@ class AmazonPayModel extends AppModel
         //* Return
         return $userInfo;
     }
+
+    /**
+     * ユーザ情報取得
+     */
+    public function GetOrderReferenceDetails($_access_token, $_set_param)
+    {
+        $requestParameters = array();
+
+        // Create the parameters array to set the order
+        $requestParameters['amazon_order_reference_id'] = self::AMAZON_ORDER_REFERENCE_ID;
+        $requestParameters['amount']            = '175';
+        $requestParameters['currency_code']     = 'JPY';
+        $requestParameters['seller_note']   = 'Love this sample';
+        $requestParameters['seller_order_id']   = '123456-TestOrder-123456';
+        $requestParameters['store_name']        = 'Saurons collectibles in Mordor';
+
+        if($this->client->success)
+        {
+            $requestParameters['address_consent_token'] = null;
+            $response = $this->client->GetOrderReferenceDetails($requestParameters);
+        }
+
+        // Pretty print the Json and then echo it for the Ajax success to take in
+ //       $json = json_decode($response->toJson());
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));
+
+        //* Return
+//        return json_encode($json, JSON_PRETTY_PRINT);
+        return true;
+    }
+
     /**
      * ファイル削除
      */

@@ -366,7 +366,6 @@ class FirstOrderController extends MinikuraController
     {
 
         //* session referer check
-
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_order'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
@@ -378,20 +377,18 @@ class FirstOrderController extends MinikuraController
 
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'access_token ' . print_r($access_token, true));
-
         $this->loadModel('AmazonPayModel');
         $res = $this->AmazonPayModel->getUserInfo($access_token);
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'AmazonPayModel  res ' . print_r($res, true));
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . 'REQUEST_URI ' . print_r($_SERVER["REQUEST_URI"], true));
 
         // パラメータを引き継ぐ
         $set_url = str_replace('input_amazon_profile', 'input_amazon_payment', $_SERVER["REQUEST_URI"]);
 
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->redirect($set_url);
+        //$this->redirect($set_url);
+        $this->redirect('/first_order/nv_confirm_amazon_payment');
     }
 
     /**
@@ -401,8 +398,43 @@ class FirstOrderController extends MinikuraController
     public function input_amazon_payment()
     {
 
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/input_amazon_payment'], true) === false) {
+            //* NG redirect
+            // $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
+
     }
 
+    /**
+     * アマゾンペイメント widgetで遷移先を指定
+     * アマゾンペイメントで
+     */
+    public function nv_confirm_amazon_payment()
+    {
+
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
+            //* NG redirect
+            // $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // アクセストークンを取得
+        $access_token = filter_input(INPUT_GET, 'access_token');
+        $access_token = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
+
+        if($access_token === null) {
+
+        }
+        $this->loadModel('AmazonPayModel');
+        $res = $this->AmazonPayModel->GetOrderReferenceDetails($access_token, null);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
+
+        $this->redirect('/first_order/confirm');
+    }
 
     /**
      * ユーザ名 住所 確認
