@@ -6,46 +6,37 @@ var AppAmazonPaymentWallet =
 
     a: function () {
         window.onAmazonLoginReady = function() {
-            // amazon.Login.setClientId(AppAmazonPaymentWallet.ClientId);
-        };
-    },
-    b: function () {
+            amazon.Login.setClientId(AppAmazonPaymentWallet.ClientId);
 
-        $(window).load(function () {
             new OffAmazonPayments.Widgets.AddressBook({
-                    sellerId: AppAmazonPaymentWallet.SELLER_ID,
-                    agreementType: 'BillingAgreement',
-                onReady: function(billingAgreement) {
-                    var billingAgreementId = billingAgreement.getAmazonBillingAgreementId();
+                sellerId: AppAmazonPaymentWallet.SELLER_ID,
+                onOrderReferenceCreate: function (orderReference) {
+                    orderReferenceId = orderReference.getAmazonOrderReferenceId();
                 },
-                onAddressSelect: function(billingAgreement) {
+                onAddressSelect: function () {
+                    // do stuff here like recalculate tax and/or shipping
                 },
                 design: {
                     designMode: 'responsive'
                 },
-                onError: function(error) {
-                } // your error handling code
+                onError: function (error) {
+                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                }
+            }).bind("addressBookWidgetDiv");
 
-                }).bind("addressBookWidgetDiv");
-        });
-
-    },
-    c: function () {
-
-        $(window).load(function () {
             new OffAmazonPayments.Widgets.Wallet({
                 sellerId: AppAmazonPaymentWallet.SELLER_ID,
-                // amazonBillingAgreementId obtained from the AddressBook widget amazonBillingAgreementId: amazonBillingAgreementId, onPaymentSelect: function(billingAgreement) {
-                // Replace this code with the action that you want to perform },// after the payment method is selected.
+                onPaymentSelect: function () {
+                },
                 design: {
                     designMode: 'responsive'
                 },
-                onError: function(error) {
+                onError: function (error) {
                     console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                } // your error handling code
+                }
             }).bind("walletWidgetDiv");
-        });
-    }
+        };
+    },
 }
 
 /*
@@ -54,6 +45,5 @@ var AppAmazonPaymentWallet =
 $(function()
 {
     AppAmazonPaymentWallet.a();
-    AppAmazonPaymentWallet.b();
-    AppAmazonPaymentWallet.c();
+//    AppAmazonPaymentWallet.b();
 });

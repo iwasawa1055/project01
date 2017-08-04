@@ -293,7 +293,7 @@
       color: "Gold",
       size: "medium",
       authorization: function () {
-        loginOptions = {scope: "profile", popup: "true"};
+        loginOptions = {scope: "profile payments:widget", popup: "true"};
         authRequest = amazon.Login.authorize(loginOptions, host + "/first_order/input_amazon_profile");
       }
     });
