@@ -1,3 +1,14 @@
+var AppAmazonPayment =
+{
+
+    a: function () {
+        $('.js-btn-submit').on('click', function (e) {
+            $('form').submit();
+        });
+    },
+}
+
+
 var AppAmazonPaymentWallet =
 {
 
@@ -44,6 +55,7 @@ var AppAmazonPaymentWallet =
  * */
 $(function()
 {
+    AppAmazonPayment.a();
     AppAmazonPaymentWallet.a();
 //    AppAmazonPaymentWallet.b();
 });

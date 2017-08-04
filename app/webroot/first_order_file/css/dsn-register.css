@@ -77,8 +77,7 @@ display: flex;
 	justify-content: center;
 	margin-top: 3rem;
 }
-section.select-login .login-minikura,
-section.select-login .login-amazon{
+section.select-login .login-minikura{
 	margin:0 2rem 2rem;
 	padding: 0;
 	font-size: 14px;
@@ -240,8 +239,7 @@ section#dsn-lineup div[class^="dsn-box"] {
 section#dsn-lineup div[class^="dsn-box"] img {
 	width: 75%;
 }
-section#dsn-adress,
-section#dsn-amazon{
+section#dsn-adress{
 	max-width: 768px;
 	margin: 0 auto 3rem;
 	padding: 0 .5rem;
@@ -390,17 +388,8 @@ section#dsn-adress .dsn-form thead td,
 section#dsn-adress .dsn-form tbody td {
 	text-align: center;
 }
-section#dsn-amazon {
-    text-align: center;
-}
-section#dsn-amazon img{
-	width: 100%;
-	border: .1rem solid #cccccc;
-}
-section#dsn-amazon p{
-	font-size: 16px;
-	font-size: 1.6rem;
-}
+
+
 .dsn-items .dsn-item-number {
 	display: inline-block;
 	width: 15rem;

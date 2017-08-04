@@ -277,8 +277,10 @@
     <p class="size">W38cm×H38cm×D38cm</p>
     <p class="caption">引っ越し、片付けに最適！お得な５枚パック！</p>
   </div>
+
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+
 </div>
 
 <?php echo $this->element('FirstOrder/footer'); ?>

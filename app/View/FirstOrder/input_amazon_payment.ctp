@@ -20,14 +20,22 @@
     </li>
   </ul>
 </section>
+<div id="full" class="dsn-wrapper">
 
-<section id="dsn-amazon">
-  <div id="addressBookWidgetDiv">
-  </div>
-  <div id="walletWidgetDiv">
-  </div>
-</section>
+  <form method="post" action="/first_order/nv_confirm_amazon_payment" novalidate>
+  <section id="dsn-amazon">
+    <div id="addressBookWidgetDiv">
+    </div>
+    <div id="walletWidgetDiv">
+    </div>
+  </section>
 
+  <section class="dsn-nextback">
+    <a href="/first_order/add_order" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+    <a href="#" class="dsn-btn-next js-btn-submit">確認へ  <i class="fa fa-chevron-circle-right"></i></a>
+  </section>
+</form>>
+</div>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
