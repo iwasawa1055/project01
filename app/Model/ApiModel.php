@@ -138,8 +138,8 @@ class ApiModel extends AppModel
             $method = $params['request_method'];
         }
         $d .= ' bigen -> ' . $method . ': ' . $url;
-        CakeLog::write(DEBUG_LOG, $d, ['bench']);
-        CakeLog::write(DEBUG_LOG, print_r($params, true));
+        //CakeLog::write(DEBUG_LOG, $d, ['bench']);
+        //CakeLog::write(DEBUG_LOG, print_r($params, true));
     }
 
     /**

@@ -426,24 +426,24 @@ class FirstOrderController extends MinikuraController
 
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
-        $amazon_billing_agreement_id = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . print_r($amazon_billing_agreement_id, true));
-
-        if($access_token === null) {
+        $order_reference_id = filter_input(INPUT_POST, 'order_reference_id');
+        if($order_reference_id === null) {
 
         }
 
-        if($amazon_billing_agreement_id === null) {
-
-        }
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_reference_id ' . print_r($order_reference_id, true));
 
         $this->loadModel('AmazonPayModel');
-        $res = $this->AmazonPayModel->GetOrderReferenceDetails($access_token, $amazon_billing_agreement_id);
+        $set_param = array();
+        $set_param['amazon_order_reference_id'] = $order_reference_id;
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        if($res['ResponseStatus'] != '200') {
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
+        }
 
-        $this->redirect('/first_order/confirm');
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+
+        $this->redirect('/first_order/input_amazon_payment');
     }
 
     /**

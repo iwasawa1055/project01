@@ -20,6 +20,9 @@
     </li>
   </ul>
 </section>
+<?php
+// <div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>
+?>
 <div id="full" class="dsn-wrapper">
   <form method="post" action="/first_order/nv_confirm_amazon_payment" novalidate>
     <section id="dsn-adress">
@@ -76,11 +79,11 @@
         </div>
       </div>
   </section>
-</form>
   <section class="dsn-nextback">
     <a href="/first_order/add_order" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
     <a href="#" class="dsn-btn-next js-btn-submit">確認へ  <i class="fa fa-chevron-circle-right"></i></a>
   </section>
+  </form>
 </div>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>

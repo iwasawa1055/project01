@@ -129,7 +129,7 @@ class ApiCachedModel extends ApiModel
      * イベント：キャッシュ利用しない
      */
     protected function triggerNotUsingCache() {
-        CakeLog::write(DEBUG_LOG, 'NotUsingCache: ' . get_class($this));
+        //CakeLog::write(DEBUG_LOG, 'NotUsingCache: ' . get_class($this));
     }
     /**
      * キャッシュ復元

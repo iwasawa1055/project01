@@ -17,6 +17,7 @@ class AmazonPayModel extends AppModel
     {
         parent::__construct('AmazonPayModel');
         // amazon pay 設定
+
         $config = array(
             'merchant_id'   => Configure::read('app.amazon_pay.merchant_id'),
             'access_key'    => Configure::read('app.amazon_pay.access_key'),
@@ -52,31 +53,34 @@ class AmazonPayModel extends AppModel
     /**
      * ユーザ情報取得
      */
-    public function GetOrderReferenceDetails($_access_token, $_set_param)
+    public function getOrderReferenceDetails($_set_param)
     {
         $requestParameters = array();
 
         // Create the parameters array to set the order
-        $requestParameters['amazon_order_reference_id'] = self::AMAZON_ORDER_REFERENCE_ID;
-        $requestParameters['amount']            = '175';
-        $requestParameters['currency_code']     = 'JPY';
-        $requestParameters['seller_note']   = 'Love this sample';
-        $requestParameters['seller_order_id']   = '123456-TestOrder-123456';
-        $requestParameters['store_name']        = 'Saurons collectibles in Mordor';
+        $requestParameters['amazon_order_reference_id'] = $_set_param['amazon_order_reference_id'];
 
-        if($this->client->success)
-        {
-            $requestParameters['address_consent_token'] = null;
-            $response = $this->client->GetOrderReferenceDetails($requestParameters);
-        }
-
-        // Pretty print the Json and then echo it for the Ajax success to take in
- //       $json = json_decode($response->toJson());
+        $response = $this->client->getOrderReferenceDetails($requestParameters);
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));
 
         //* Return
-//        return json_encode($json, JSON_PRETTY_PRINT);
-        return true;
+        return $response->toArray();
+    }
+
+    //
+    public function setOrderReferenceDetails($_set_param)
+    {
+        $requestParameters = array();
+
+        // Create the parameters array to set the order
+        $requestParameters['amazon_order_reference_id'] = $_set_param['amazon_order_reference_id'];
+        $requestParameters['merchant_id']               = Configure::read('app.amazon_pay.merchant_id');
+
+        $response = $this->client->setOrderReferenceDetails($requestParameters);
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));
+
+        //* Return
+        return $response;
     }
 
     /**

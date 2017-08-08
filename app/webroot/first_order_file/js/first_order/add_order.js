@@ -39,15 +39,6 @@ var AppAddOrder =
             $('form').submit();
         });
     },
-    c: function () {
-        $('#js-btn-amazon_payment_submit').on('click', function (e) {
-            var self = $(this);
-            var add  = $('<input type="hidden" name="amazon_payment">');
-            add.val(true);
-            add.insertAfter(self);
-            $(this).closest("form").submit();
-        });
-    }
 }
 
 var AppAmazonPaymentLogin =
@@ -79,7 +70,6 @@ $(function()
 {
     AppAddOrder.a();
     AppAddOrder.b();
-    AppAddOrder.c();
     AppAmazonPaymentLogin.a();
     AppAmazonPaymentLogin.b();
 });
