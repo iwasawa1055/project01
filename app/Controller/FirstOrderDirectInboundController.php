@@ -170,7 +170,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_order'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_order', 'FirstOrderDirectInbound/add_address'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'index']);
         }

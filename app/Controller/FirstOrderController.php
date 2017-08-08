@@ -424,6 +424,57 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        // バリデーションエラーフラグ
+        $is_validation_error = false;
+
+        // ログインしていない場合
+        $params = [
+            'password'         => filter_input(INPUT_POST, 'password'),
+            'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
+//            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
+//            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+//            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+//            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+//            'gender'           => filter_input(INPUT_POST, 'gender'),
+//            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+//            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+//            'remember'         => filter_input(INPUT_POST, 'remember'),
+        ];
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
+
+        // 確認用パスワード一致チェック
+        if ($params['password'] !== $params['password_confirm']) {
+            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
+            $is_validation_error = true;
+        }
+
+        //* Session write
+        CakeSession::write('Email', $params);
+
+        //*  validation 基本は共通クラスのAppValidで行う
+        $validation = AppValid::validate($params);
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        // 規約同意を確認する
+        $validation = AppValid::validateTermsAgree($params['remember']);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation) ) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        // amazon pay 情報取得
+
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
         $order_reference_id = filter_input(INPUT_POST, 'order_reference_id');
@@ -451,6 +502,14 @@ class FirstOrderController extends MinikuraController
         }
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+
+        if ($is_validation_error === true) {
+            $this->redirect('/first_order/input_amazon_payment');
+            return;
+        }
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
 
         $this->redirect('/first_order/input_amazon_payment');
     }
