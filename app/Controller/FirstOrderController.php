@@ -377,6 +377,8 @@ class FirstOrderController extends MinikuraController
 
         }
 
+        CakeSession::write('FirstOrder.amazon_pay.access_token', $access_token);
+
         $this->loadModel('AmazonPayModel');
         $res = $this->AmazonPayModel->getUserInfo($access_token);
 
@@ -493,6 +495,7 @@ class FirstOrderController extends MinikuraController
         $set_param = array();
         $set_param['amazon_order_reference_id'] = $order_reference_id;
         $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+        $set_param['address_consent_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');
 
 //        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
         $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
