@@ -1,6 +1,7 @@
 <?php echo $this->element('FirstOrderDirectInbound/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>お届け先住所入力 - minikura</title>
+<link href="/first_order_direct_inbound_file/css/first_order_direct_inbound/input_amazon_payment_dev.css" rel="stylesheet">
 <?php echo $this->element('FirstOrderDirectInbound/header'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/nav'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/breadcrumb_list'); ?>
@@ -33,6 +34,16 @@
           <br>
           <?php echo $this->Flash->render('direct_inbound');?>
         </div>
+
+        <section id="dsn-signin-btns">
+          <a class="dsn-btn dsn-btn-signin">minikuraで会員登録する <i class="fa fa-chevron-circle-right"></i></a>
+          <a class="dsn-btn dsn-btn-amazon">
+            <a id="AmazonPayButtonDirect">
+            </a>
+            <a id="Logout" >Logout</a>
+          </a>
+        </section>
+
         <div class="dsn-divider"></div>
         <div class="dsn-form">
         <label>お名前<span class="dsn-required">※</span></label>
@@ -130,5 +141,25 @@
 <script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_direct_inbound_file/js/dsn-mybox.js"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_address.js"></script>
+
+<script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/input_amazon_payment.js"></script>
+<script type="text/javascript">
+  function showButtonDirect() {
+    var authRequest;
+    var host = location.protocol + '//' + location.hostname;
+    OffAmazonPayments.Button("AmazonPayButtonDirect", AppAmazonPaymentLogin.SELLER_ID, {
+      type: "PwA",
+      color: "Gold",
+      size: "medium",
+      authorization: function () {
+        loginOptions = {scope: "profile payments:widget", popup: "true"};
+        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/input_amazon_profile");
+      }
+    });
+  }
+
+</script>
+
+<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>

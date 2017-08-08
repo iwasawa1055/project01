@@ -86,6 +86,27 @@ var AppAddAdress =
     },
 }
 
+var AppAmazonPaymentLogin =
+{
+    SELLER_ID:"A1MBRBB8GPQFL9",
+    ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
+    a: function () {
+        window.onAmazonLoginReady = function(){
+            amazon.Login.setClientId(AppAmazonPaymentLogin.ClientId);
+        };
+        window.onAmazonPaymentsReady = function() {
+            // Render the button here.
+            showButtonDirect();
+        };
+    },
+    b: function () {
+        document.getElementById('Logout').onclick = function() {
+            console.log('logout');
+            amazon.Login.logout();
+        };
+    }
+}
+
 /*
  * document ready
  * */
@@ -94,4 +115,6 @@ $(function()
     AppAddAdress.a();
     AppAddAdress.b();
     AppAddAdress.c();
+    AppAmazonPaymentLogin.a();
+    AppAmazonPaymentLogin.b();
 });

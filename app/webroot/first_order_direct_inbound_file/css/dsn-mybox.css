@@ -1,5 +1,5 @@
 /** minikura ver2.5 mybox **/
-
+@import url("/css/dsn-amazon-pay.css");
 section {
 	width: 100%;
 	max-width: 1170px;
@@ -18,8 +18,9 @@ section h3 {
 	font-size: 1.8rem;
 	text-align: center;
 }
-section a, section a:hover {
-	color: #ff0000;
+section a,
+section a:hover {
+	color: #ffffff;
 }
 section#dsn-pagenation {
 	margin: 9rem auto 4rem;
@@ -82,12 +83,19 @@ a[class^="dsn-btn-"]:hover {
 	color: #ffffff;
 	text-decoration: none;
 }
-a.dsn-btn-next, a.dsn-btn-next-full, a.dsn-btn-submit, a.dsn-btn-return, a.dsn-btn-starter {
+a.dsn-btn-next,
+a.dsn-btn-next-full,
+a.dsn-btn-submit,
+a.dsn-btn-return,
+a.dsn-btn-starter,
+a.dsn-btn-signin {
 	margin-left: .5rem;
 	background: #ff0000;
 	border: .1rem solid #ff0000;
 }
-a.dsn-btn-next, a.dsn-btn-next-full {
+a.dsn-btn-next,
+a.dsn-btn-next-full,
+a.dsn-btn-signin {
 	display: inline-block;
 	width: 30rem;
 	margin-left: 1rem;
@@ -98,10 +106,13 @@ a.dsn-btn-back {
 	background: #666666;
 	border: 1px solid #666666;
 }
-a.dsn-btn-starter, a.dsn-btn-select, a.dsn-btn-mybox {
+a.dsn-btn-starter,
+a.dsn-btn-select,
+a.dsn-btn-mybox {
 	display: block;
 }
-a.dsn-btn-starter, a.dsn-btn-select {
+a.dsn-btn-starter,
+a.dsn-btn-select {
 	background: #0971b2;
 	border: .1rem solid #0971b2;
 }
@@ -114,13 +125,15 @@ a.dsn-btn-starter.active {
 	background: #ffffff;
 	border: .1rem solid #0971b2;
 }
-a.dsn-btn-submit, a.dsn-btn-return {
+a.dsn-btn-submit,
+a.dsn-btn-return {
 	display: inline-block;
 	margin: .5rem 0;
 	font-size: 16px;
 	font-size: 1.6rem;
 }
-a.dsn-btn-submit, a.dsn-btn-return {
+a.dsn-btn-submit,
+a.dsn-btn-return {
 	width: calc(60% - 1rem);
 }
 a.dsn-btn-return {
@@ -138,7 +151,7 @@ section.dsn-complete {
 }
 section#dsn-adress .dsn-wrapper {
 	display: block;
-	margin: 4rem 0 6rem;
+	margin: 0;
 }
 section#dsn-adress .dsn-form {
 	display: block;
@@ -214,38 +227,47 @@ section#dsn-adress .dsn-form label.dsn-genders {
 section#dsn-adress .dsn-form label.dsn-terms {
 	display: block;
 }
-section#dsn-adress .dsn-form label.dsn-genders .dsn-gender, section#dsn-adress .dsn-form label.dsn-cargo-selected .dsn-cargo-select, section#dsn-adress .dsn-form label.dsn-terms .dsn-term {
+section#dsn-adress .dsn-form label.dsn-genders .dsn-gender,
+section#dsn-adress .dsn-form label.dsn-cargo-selected .dsn-cargo-select,
+section#dsn-adress .dsn-form label.dsn-terms .dsn-term {
 	margin-left: 2.5rem;
 	font-size: 16px;
 	font-size: 1.6rem;
 }
-section#dsn-adress .dsn-form input[type=radio], section#dsn-adress .dsn-form input[type=checkbox] {
+section#dsn-adress .dsn-form input[type=radio],
+section#dsn-adress .dsn-form input[type=checkbox] {
 	display: none;
 }
-section#dsn-adress .dsn-form input[type=radio] + .check-icon, section#dsn-adress .dsn-form input[type=checkbox] + .check-icon {
+section#dsn-adress .dsn-form input[type=radio] + .check-icon,
+section#dsn-adress .dsn-form input[type=checkbox] + .check-icon {
 	position: absolute;
 	vertical-align: middle;
 	margin-right: 1rem;
 	line-height: 1;
 }
-section#dsn-adress .dsn-form input[type=radio] + .check-icon:before, section#dsn-adress .dsn-form input[type=checkbox] + .check-icon:before {
+section#dsn-adress .dsn-form input[type=radio] + .check-icon:before,
+section#dsn-adress .dsn-form input[type=checkbox] + .check-icon:before {
 	font-family: 'FontAwesome';
 	content: "\f096";
 	font-size: 24px;
 	font-size: 2.4rem;
 	color: #999999;
 }
-section#dsn-adress .dsn-form input[type=radio]:checked + .check-icon:before, section#dsn-adress .dsn-form input[type=checkbox]:checked + .check-icon:before {
+section#dsn-adress .dsn-form input[type=radio]:checked + .check-icon:before,
+section#dsn-adress .dsn-form input[type=checkbox]:checked + .check-icon:before {
 	content: "\f046";
 	color: #ff0000;
 }
 section#dsn-adress .dsn-form .dsn-select-delivery {
 	display: block;
 }
-section#dsn-adress .dsn-form .dsn-select-month, section#dsn-adress .dsn-form .dsn-select-year {
+section#dsn-adress .dsn-form .dsn-select-month,
+section#dsn-adress .dsn-form .dsn-select-year {
 	display: inline-block;
 }
-section#dsn-adress .dsn-form a.dsn-link-terms, section#dsn-adress .dsn-form a.dsn-link-terms:focus, section#dsn-adress .dsn-form a.dsn-link-terms:active {
+section#dsn-adress .dsn-form a.dsn-link-terms,
+section#dsn-adress .dsn-form a.dsn-link-terms:focus,
+section#dsn-adress .dsn-form a.dsn-link-terms:active {
 	display: inline-block;
 	margin: 0 0 0 .5rem;
 	font-size: 14px;
@@ -261,13 +283,15 @@ section#dsn-adress .dsn-form table {
 	font-size: 16px;
 	font-size: 1.6rem;
 }
-section#dsn-adress .dsn-form th, section#dsn-adress .dsn-form td {
+section#dsn-adress .dsn-form th,
+section#dsn-adress .dsn-form td {
 	margin-right: 3rem;
 	padding: 1rem 3rem 1rem 0;
 	font-weight: normal;
 	border-bottom: .1rem solid #cccccc;
 }
-section#dsn-adress .dsn-form thead td, section#dsn-adress .dsn-form tbody td {
+section#dsn-adress .dsn-form thead td,
+section#dsn-adress .dsn-form tbody td {
 	text-align: center;
 }
 p.dsn-cargo-selected {
@@ -300,6 +324,14 @@ ul.dsn-caution li {
 	color: #ff6666;
 	list-style: disc;
 }
+ul.dsn-caution a,
+ul.dsn-caution a:hover {
+	color: #ff0000;
+}
+{
+ margin-bottom: 2rem;
+ padding-left: 1rem;
+}
 .dsn-yamato {
 	margin-top: 2rem;
 }
@@ -308,6 +340,23 @@ ul.dsn-caution li {
 	padding: 1rem;
 	color: #ff0000;
 	border: 1px solid #ff0000;
+}
+#dsn-signin-btns {
+	text-align: center;
+}
+#dsn-signin-btns .dsn-btn {
+	margin: 0 .5rem;
+	text-decoration: none;
+	cursor: pointer;
+}
+#dsn-signin-btns .dsn-disable {
+	opacity: .5;
+	cursor: not-allowed;
+	transition: all .5s;
+}
+.dsn-select-signin #dsn-amazon,
+.dsn-select-signin #dsn-signin {
+	display: none;
 }
 
 @media screen and (max-width: 1024px) {
@@ -368,7 +417,10 @@ a.dsn-btn-back {
 	font-size: 13px;
 	font-size: 1.3rem;
 }
-a.dsn-btn-submit, a.dsn-btn-return, a.dsn-btn-select, a.dsn-btn-starter {
+a.dsn-btn-submit,
+a.dsn-btn-return,
+a.dsn-btn-select,
+a.dsn-btn-starter {
 	margin: .75rem 0 0;
 	font-size: 14px;
 	font-size: 1.4rem;
@@ -384,7 +436,8 @@ section#dsn-adress {
 section#dsn-adress {
 	padding: 0 1rem 0;
 }
-section h2, section h2 {
+section h2,
+section h2 {
 	margin-bottom: 1rem;
 	font-size: 16px;
 	font-size: 1.6rem;
@@ -412,7 +465,9 @@ section#dsn-adress .dsn-form-line {
 	display: inline-block;
 	margin-right: .5rem;
 }
-section#dsn-adress .dsn-form label.dsn-genders .dsn-gender, section#dsn-adress .dsn-form label.dsn-cargo-selected .dsn-cargo-select, section#dsn-adress .dsn-form label.dsn-terms .dsn-term {
+section#dsn-adress .dsn-form label.dsn-genders .dsn-gender,
+section#dsn-adress .dsn-form label.dsn-cargo-selected .dsn-cargo-select,
+section#dsn-adress .dsn-form label.dsn-terms .dsn-term {
 	font-size: 13px;
 	font-size: 1.3rem;
 	font-weight: 600;
@@ -426,7 +481,8 @@ section#dsn-adress .dsn-form table {
 	font-size: 13px;
 	font-size: 1.3rem;
 }
-section#dsn-adress .dsn-form th, section#dsn-adress .dsn-form td {
+section#dsn-adress .dsn-form th,
+section#dsn-adress .dsn-form td {
 	margin-right: 1rem;
 	padding: .5rem 1rem .5rem 0;
 }
@@ -435,7 +491,8 @@ section#dsn-adress .dsn-form label {
 	font-size: 1.4rem;
 	font-weight: 600;
 }
-section#dsn-adress .dsn-form .dsn-direct,  section#dsn-adress .dsn-form .dsn-size {
+section#dsn-adress .dsn-form .dsn-direct,
+section#dsn-adress .dsn-form .dsn-size {
 	font-size: 12px;
 	font-size: 1.2rem;
 }
