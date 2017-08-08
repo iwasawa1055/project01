@@ -67,6 +67,24 @@ class AmazonPayModel extends AppModel
         return $response->toArray();
     }
 
+    /**
+     * ユーザ情報取得
+     */
+    public function getBillingAgreementDetails($_set_param)
+    {
+        $requestParameters = array();
+
+        // Create the parameters array to set the order
+        $requestParameters['amazon_billing_agreement_id'] = $_set_param['amazon_billing_agreement_id'];
+
+        $response = $this->client->getBillingAgreementDetails($requestParameters);
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));
+
+        //* Return
+        return $response->toArray();
+    }
+
+
     //
     public function setOrderReferenceDetails($_set_param)
     {

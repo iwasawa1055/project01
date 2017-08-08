@@ -431,12 +431,21 @@ class FirstOrderController extends MinikuraController
 
         }
 
+        $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+        if($amazon_billing_agreement_id === null) {
+
+        }
+
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_reference_id ' . print_r($order_reference_id, true));
 
         $this->loadModel('AmazonPayModel');
         $set_param = array();
         $set_param['amazon_order_reference_id'] = $order_reference_id;
-        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+
+//        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+        // GetBillingAgreementDetails
         if($res['ResponseStatus'] != '200') {
 
         }
