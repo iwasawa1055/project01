@@ -1,6 +1,7 @@
 <?php echo $this->element('FirstOrderDirectInbound/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link href="/first_order_direct_inbound_file/css/dsn-mybox.css" rel="stylesheet">
+<link href="/css/dsn-amazon-pay.css" rel="stylesheet">
 <link href="/first_order_direct_inbound_file/css/first_order_direct_inbound/input_amazon_payment_dev.css" rel="stylesheet">
 <title>Amazonアカウントでお支払い - minikura</title>
 
@@ -25,6 +26,8 @@
     <form method="post" action="/first_order_direct_inbound/nv_confirm_amazon_payment" novalidate>
       <section id="dsn-adress">
         <div class="dsn-wrapper">
+          <div class="dsn-divider"></div>
+
           <div id="dsn-amazon-pay" class="form-group col-lg-12">
             <div class="dsn-address">
               <div id="addressBookWidgetDiv">
@@ -36,9 +39,10 @@
             </div>
           </div>
           <div id="dsn-payment" class="form-group col-lg-12">
-              <div id="consentWidgetDiv">
-              </div>
+            <div id="consentWidgetDiv">
+            </div>
           </div>
+
           <div class="dsn-divider"></div>
           <div class="dsn-form">
             <label>パスワード<span class="dsn-required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
