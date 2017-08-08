@@ -20,13 +20,12 @@
     </li>
   </ul>
 </section>
-<?php
-// <div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>
-?>
+
 <div id="full" class="dsn-wrapper">
   <form method="post" action="/first_order/nv_confirm_amazon_payment" novalidate>
     <section id="dsn-adress">
       <div class="dsn-wrapper">
+        <div class="dsn-form"><div class="alert alert-danger" role="alert" id="error_alert"><i class="fa fa-exclamation-triangle"></i> </div></div>
         <div id="dsn-amazon-pay" class="form-group col-lg-12">
           <div class="dsn-address">
             <div id="addressBookWidgetDiv">
@@ -40,6 +39,7 @@
         <div id="dsn-payment" class="form-group col-lg-12">
             <div id="consentWidgetDiv">
             </div>
+          <span class="validation" id="payment_consent_alert">お支払方法の設定は必須です。</span>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">

@@ -12,6 +12,13 @@ var AppAmazonPayment =
             add_billing.val(AppAmazonPaymentWallet.AmazonBillingAgreementId);
             add_billing.insertAfter(self);
 
+            // サブミット前チェック確認
+            // 定期購入未チェックでエラー
+            if(AppAmazonPaymentWallet.buyerBillingAgreementConsentStatus == 'false') {
+                $('#payment_consent_alert').show();
+                return;
+            }
+
             $(this).closest("form").submit();
         });
     },
@@ -69,48 +76,73 @@ var AppAmazonPaymentWallet =
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
     orderReferenceId: '',
+    buyerBillingAgreementConsentStatus: false,
 
     a: function () {
+        // amazon Widget Ready
         window.onAmazonLoginReady = function() {
             amazon.Login.setClientId(AppAmazonPaymentWallet.ClientId);
 
+            // アドレスWidgetを表示
             new OffAmazonPayments.Widgets.AddressBook({
                 sellerId: AppAmazonPaymentWallet.SELLER_ID,
                 agreementType: 'BillingAgreement',
+
+                // Widgets起動状態
                 onReady: function(billingAgreement) {
                     AppAmazonPaymentWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
                     AppAmazonPaymentWallet.orderReferenceId = billingAgreement.getAmazonBillingAgreementId();
 
-                    console.log(AppAmazonPaymentWallet.AmazonBillingAgreementId);
-
                     // お届希望日を取得
                     AppAmazonPayment.ajax_dateime(AppAmazonPaymentWallet.AmazonBillingAgreementId);
 
-                    new OffAmazonPayments.Widgets.Consent({
+                    // カード選択 Widgetを表示
+                    new OffAmazonPayments.Widgets.Wallet({
                         sellerId: AppAmazonPaymentWallet.SELLER_ID,
                         amazonBillingAgreementId: AppAmazonPaymentWallet.AmazonBillingAgreementId,
-                        // amazonBillingAgreementId obtained from the Amazon Address Book widget. amazonBillingAgreementId: amazonBillingAgreementId,
                         design: {
                             designMode: 'responsive'
                         },
-                        onReady: function(billingAgreementConsentStatus){
-                            // Called after widget renders
-                            //buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
-                            // true – checkbox is selected
-                        },// false – checkbox is unselected - default
-                        onConsent: function(billingAgreementConsentStatus) {
-                            buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
-                            // getConsentStatus returns true or false
-                            // true – checkbox is selected – buyer has consented
-                            // false – checkbox is unselected – buyer has not consented
-                            // Replace this code with the action that you want to perform
-                            // after the consent checkbox is selected/unselected.
+                        onReady: function() {
+                            // 定期購入チェックを確認
+                            new OffAmazonPayments.Widgets.Consent({
+                                sellerId: AppAmazonPaymentWallet.SELLER_ID,
+                                amazonBillingAgreementId: AppAmazonPaymentWallet.AmazonBillingAgreementId,
+
+                                // amazonBillingAgreementId obtained from the Amazon Address Book widget.
+                                design: {
+                                    designMode: 'responsive'
+                                },
+                                onReady: function(billingAgreementConsentStatus){
+
+                                    // Called after widget renders
+                                    AppAmazonPaymentWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    // true – checkbox is selected
+                                    // false – checkbox is unselected - default
+                                },
+                                onConsent: function(billingAgreementConsentStatus) {
+                                    AppAmazonPaymentWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
+                                    // getConsentStatus returns true or false
+                                    // true – checkbox is selected – buyer has consented
+                                    // false – checkbox is unselected – buyer has not consented
+                                    // Replace this code with the action that you want to perform
+                                    // after the consent checkbox is selected/unselected.
+                                },
+                                onError: function(error) {
+                                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                                }
+                            }).bind("consentWidgetDiv ");
                         },
-                        onError: function(error) {
+                    // カード選択変更時
+                        onPaymentSelect: function () {
+                        },
+                        onError: function (error) {
                             console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                        }// your error handling code
-                    }).bind("consentWidgetDiv ");
+                        }
+                    }).bind("walletWidgetDiv");
+
                 },
+                // 住所選択変更時
                 onAddressSelect: function () {
                     // do stuff here like recalculate tax and/or shipping
                     // お届希望日を取得
@@ -125,17 +157,6 @@ var AppAmazonPaymentWallet =
                 }
             }).bind("addressBookWidgetDiv");
 
-            new OffAmazonPayments.Widgets.Wallet({
-                sellerId: AppAmazonPaymentWallet.SELLER_ID,
-                onPaymentSelect: function () {
-                },
-                design: {
-                    designMode: 'responsive'
-                },
-                onError: function (error) {
-                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                }
-            }).bind("walletWidgetDiv");
 
         };
     }

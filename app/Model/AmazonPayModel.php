@@ -78,7 +78,7 @@ class AmazonPayModel extends AppModel
         $requestParameters['amazon_billing_agreement_id'] = $_set_param['amazon_billing_agreement_id'];
 
         $response = $this->client->getBillingAgreementDetails($requestParameters);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));
 
         //* Return
         return $response->toArray();

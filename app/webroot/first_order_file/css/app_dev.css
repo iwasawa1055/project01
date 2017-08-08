@@ -267,3 +267,11 @@ section#lineup .medal img {
     width: 90%;
 }
 
+
+#error_alert {
+    display: none;
+}
+
+#payment_consent_alert {
+    display: none;
+}
