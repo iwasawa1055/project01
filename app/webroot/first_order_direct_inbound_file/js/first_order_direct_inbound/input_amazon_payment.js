@@ -1,9 +1,27 @@
 var AppAmazonPayment =
 {
-
+/*
     a: function () {
         $('.js-btn-submit').on('click', function (e) {
             $('form').submit();
+        });
+    },
+*/
+    a: function () {
+        $('.js-btn-submit').on('click', function (e) {
+            /*
+            var self = $(this);
+            var add_reference  = $('<input type="hidden" name="order_reference_id">');
+            add_reference.val(AppAmazonPaymentWallet.orderReferenceId);
+            add_reference.insertAfter(self);
+
+            var add_billing  = $('<input type="hidden" name="amazon_billing_agreement_id">');
+            add_billing.val(AppAmazonPaymentWallet.AmazonBillingAgreementId);
+            add_billing.insertAfter(self);
+            */
+            console.log("test"); 
+
+            $(this).closest("form").submit();
         });
     },
 }
@@ -57,9 +75,10 @@ var AppAmazonPaymentWallet =
                 design: {
                     designMode: 'responsive'
                 },
+
                 onReady: function(billingAgreementConsentStatus){
                     // Called after widget renders buyerBillingAgreementConsentStatus =
-                    billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+//                    billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
                     // true – checkbox is selected
                 },// false – checkbox is unselected - default
                 onConsent: function(billingAgreementConsentStatus) {
