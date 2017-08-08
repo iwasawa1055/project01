@@ -55,7 +55,7 @@
         <div class="dsn-divider"></div>
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>
-          <select class="dsn-select-delivery focused">
+          <select class="dsn-select-delivery focused" id="datetime_cd">
             <option value="">0000年00月00日 午前中</option>
             <option value="">0000年00月00日 12時〜</option>
             <option value="">0000年00月00日 14時〜</option>

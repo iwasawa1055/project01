@@ -15,6 +15,50 @@ var AppAmazonPayment =
             $(this).closest("form").submit();
         });
     },
+    ajax_dateime: function (amazon_billing_agreement_id) {
+        var elem_datetime = $('#datetime_cd');
+
+        $('option:first', elem_datetime).prop('selected', true);
+        elem_datetime.attr("disabled", "disabled");
+
+        // 引数取得
+        var params = {};
+        params.amazon_billing_agreement_id = amazon_billing_agreement_id;
+
+        // API実行
+        if (params.postal != '') {
+            $.ajax({
+                url: '/FirstOrder/as_get_address_datetime_by_amazon',
+                cache: false,
+                data: params,
+                dataType: 'json',
+                type: 'POST'
+            }).done(function (data, textStatus, jqXHR) {
+                $('#datetime_cd > option').remove();
+                // 成功時 お届け日時セット
+                elem_datetime.append($('<option>').html('以下からお選びください').val(''));
+                $.each(data.results, function (index, datatime) {
+                    elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
+                });
+                // 戻る対応でリストをpostする
+                $('#select_delivery').val(JSON.stringify(data.results));
+            }).fail(function (data, textStatus, errorThrown) {
+                // 失敗時 お届け日時リセット
+                $('#datetime_cd > option').remove();
+                $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
+            }).always(function (data, textStatus, returnedObject) {
+                elem_datetime.removeAttr("disabled");
+                //  $('body').airLoader().end();
+            });
+        } else {
+            // お届け日時リセット
+            $('#datetime_cd > option').remove();
+            $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
+            elem_datetime.removeAttr("disabled");
+        }
+
+
+    }
 }
 
 
@@ -38,6 +82,9 @@ var AppAmazonPaymentWallet =
                     AppAmazonPaymentWallet.orderReferenceId = billingAgreement.getAmazonBillingAgreementId();
 
                     console.log(AppAmazonPaymentWallet.AmazonBillingAgreementId);
+
+                    // お届希望日を取得
+                    AppAmazonPayment.ajax_dateime(AppAmazonPaymentWallet.AmazonBillingAgreementId);
 
                     new OffAmazonPayments.Widgets.Consent({
                         sellerId: AppAmazonPaymentWallet.SELLER_ID,
@@ -66,6 +113,8 @@ var AppAmazonPaymentWallet =
                 },
                 onAddressSelect: function () {
                     // do stuff here like recalculate tax and/or shipping
+                    // お届希望日を取得
+                    AppAmazonPayment.ajax_dateime(AppAmazonPaymentWallet.AmazonBillingAgreementId);
 
                 },
                 design: {
