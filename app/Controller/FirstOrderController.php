@@ -1343,6 +1343,62 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
+     * ajax 指定IDの配送日時情報取得 amazon pay
+     */
+    public function as_get_address_datetime_by_amazon()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        // 画面描画しない
+        $this->autoRender = false;
+
+        $postal = "";
+
+        $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+        if($amazon_billing_agreement_id === null) {
+            return json_encode(['status' => false]);
+        }
+
+        // モデルロード
+        $this->loadModel('AmazonPayModel');
+
+        $set_param = array();
+        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+            return json_encode(['status' => false]);
+        }
+
+        if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination']['PostalCode'])) {
+            return json_encode(['status' => false]);
+        }
+
+        $postal = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination']['PostalCode'];
+
+        $result = $this->_getAddressDatetime($postal);
+
+        $status = !empty($result);
+
+        // コードを表示用文字列に変換
+        App::uses('AppHelper', 'View/Helper');
+        $appHelper = new AppHelper(new View());
+
+        $results = [];
+        $i = 0;
+        foreach ($result->results as $datetime) {
+            $datetime_cd = $datetime['datetime_cd'];
+            $results[$i]["datetime_cd"] = $datetime_cd;
+            $results[$i]["text"] = $appHelper->convDatetimeCode($datetime_cd);
+            $i++;
+        }
+
+        return json_encode(compact('status', 'results'));
+    }
+
+    /**
      * 指定IDの配送日時情報取得
      */
     private function _getAddressDatetime($postal)
