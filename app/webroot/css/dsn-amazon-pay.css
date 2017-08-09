@@ -42,6 +42,38 @@
 	max-width: 750px;
 	border: 1px solid #999999;
 }
+section#dsn-amazon {
+	max-width: 768px;
+	margin: 0 auto 3rem;
+	padding: 0 .5rem;
+	text-align: center;
+}
+section#dsn-amazon img {
+	width: 100%;
+	border: .1rem solid #cccccc;
+}
+section#dsn-amazon p {
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+section.select-login .login-amazon {
+	margin: 0 2rem 2rem;
+	padding: 0;
+	font-size: 14px;
+	font-size: 1.4rem;
+	text-align: center;
+}
+.dsn-modal-login-amazon {
+	margin-top: 1.5rem;
+	padding-bottom: 1rem;
+	border-top: .1rem solid #cccccc;
+}
+.dsn-modal-login-amazon p {
+	margin: 1rem 0;
+}
+.dsn-modal-login-amazon img {
+	width: 200px;
+}
 
 @media screen and (max-width: 991px) {
 #dsn-amazon-pay {
@@ -57,5 +89,15 @@
 }
 .dsn-amazon-login img {
 	width: 300px;
+}
+.dsn-modal-login-amazon {
+	margin-top: 1.5rem;
+	padding-bottom: .5rem;
+	border-top: .1rem solid #cccccc;
+}
+.dsn-modal-login-amazon p {
+	font-size: 12px;
+	font-size: 1.2rem;
+	line-height: 1.2;
 }
 }

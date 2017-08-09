@@ -539,8 +539,7 @@ class FirstOrderController extends MinikuraController
      * アマゾンペイメントで
      */
     public function input_amazon_payment()
-    {
-
+    {   
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/input_amazon_payment'], true) === false) {
             //* NG redirect
@@ -550,6 +549,9 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // 誕生日に関するコンフィグ
+        $birthyear_configure = Configure::read('app.register.birthyear');
+        $this->set('birthyear_configure', $birthyear_configure);
     }
 
     /**
@@ -1044,13 +1046,14 @@ class FirstOrderController extends MinikuraController
         $params = [
             'password'         => filter_input(INPUT_POST, 'password'),
             'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
-//            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
-//            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
-//            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
-//            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
-//            'gender'           => filter_input(INPUT_POST, 'gender'),
-//            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
-//            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
+            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+            'gender'           => filter_input(INPUT_POST, 'gender'),
+            'datetime_cd'      => filter_input(INPUT_POST, 'datetime_cd'),
+            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
             'remember'         => filter_input(INPUT_POST, 'remember'),
         ];
 

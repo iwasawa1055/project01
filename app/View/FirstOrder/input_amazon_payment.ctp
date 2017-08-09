@@ -53,27 +53,56 @@
           <?php echo $this->Flash->render('password_confirm');?>
         </div>
         <div class="dsn-divider"></div>
+        <div class="dsn-form form-line">
+          <label>生年月日<span class="dsn-required">※</span></label>
+          <select class="dsn-select-birth-year focused" name="birth_year">
+            <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
+              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
+            <?php endfor;?>
+          </select>
+          <select class="dsn-select-birth-month focused" name="birth_month">
+            <?php for ($i = 1; $i <= 12; $i++) :?>
+              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_month') ) echo " SELECTED";?>><?php echo $i;?>月</option>
+            <?php endfor;?>
+          </select>
+          <select class="dsn-select-birth-day focused" name="birth_day">
+            <?php for ($i = 1; $i <= 31; $i++) :?>
+              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
+            <?php endfor;?>
+          </select>
+        </div>
+        <?php echo $this->Flash->render('birth');?>
+        <div class="dsn-form dsn-form-line">
+          <label>性別<span class="dsn-required">※</span></label>
+          <label class="dsn-genders"><input type="radio" name="gender" value="man" id="man"><span class="check-icon"></span> <label for="man" class="dsn-gender">男</label></label>
+          <label class="dsn-genders"><input type="radio" name="gender" value="woman" id="woman"><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+        </div>
+        <?php echo $this->Flash->render('gender');?>
+        <div class="dsn-divider"></div>
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>
-          <select class="dsn-select-delivery focused" id="datetime_cd">
+          <select class="dsn-select-delivery focused" id="datetime_cd" name="datetime_cd">
             <option value="">0000年00月00日 午前中</option>
             <option value="">0000年00月00日 12時〜</option>
             <option value="">0000年00月00日 14時〜</option>
             <option value="">0000年00月00日 16時〜</option>
             <option value="">0000年00月00日 18時〜</option>
           </select>
+          <?php echo $this->Flash->render('datetime_cd');?>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form dsn-form-line">
           <label>お知らせメール</label>
-          <select class="dsn-select-info focused">
-            <option value="">受信する</option>
-            <option value="">受信しない</option>
+          <select class="dsn-select-info focused" name="newsletter">
+            <option value="1">受信する</option>
+            <option value="0">受信しない</option>
           </select>
+          <?php echo $this->Flash->render('newsletter');?>
         </div>
         <div class="dsn-form dsn-form-line">
           <label>紹介コード</label>
-          <input class="dsn-referral focused" type="text" size="20" maxlength="20">
+          <input class="dsn-referral focused" type="text" size="20" maxlength="20" name="alliance_cd">
+          <?php echo $this->Flash->render('alliance_cd');?>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
