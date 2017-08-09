@@ -539,8 +539,7 @@ class FirstOrderController extends MinikuraController
      * アマゾンペイメントで
      */
     public function input_amazon_payment()
-    {
-
+    {   
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/input_amazon_payment'], true) === false) {
             //* NG redirect
@@ -550,6 +549,9 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // 誕生日に関するコンフィグ
+        $birthyear_configure = Configure::read('app.register.birthyear');
+        $this->set('birthyear_configure', $birthyear_configure);
     }
 
     /**

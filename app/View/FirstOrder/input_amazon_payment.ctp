@@ -56,59 +56,19 @@
         <div class="dsn-form form-line">
           <label>生年月日<span class="dsn-required">※</span></label>
           <select class="dsn-select-birth-year focused" name="birth_year">
-            <option value="1985">1985年</option>
-            <option value="1986">1986年</option>
-            <option value="1987">1987年</option>
-            <option value="1988">1988年</option>
-            <option value="1989">1989年</option>
-            <option value="1990">1990年</option>
+            <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
+              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
+            <?php endfor;?>
           </select>
           <select class="dsn-select-birth-month focused" name="birth_month">
-            <option value="1">1月</option>
-            <option value="2">2月</option>
-            <option value="3">3月</option>
-            <option value="4">4月</option>
-            <option value="5">5月</option>
-            <option value="6">6月</option>
-            <option value="7">7月</option>
-            <option value="8">8月</option>
-            <option value="9">9月</option>
-            <option value="10">10月</option>
-            <option value="11">11月</option>
-            <option value="12">12月</option>
+            <?php for ($i = 1; $i <= 12; $i++) :?>
+              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_month') ) echo " SELECTED";?>><?php echo $i;?>月</option>
+            <?php endfor;?>
           </select>
           <select class="dsn-select-birth-day focused" name="birth_day">
-            <option value="1">1日</option>
-            <option value="2">2日</option>
-            <option value="3">3日</option>
-            <option value="4">4日</option>
-            <option value="5">5日</option>
-            <option value="6">6日</option>
-            <option value="7">7日</option>
-            <option value="8">8日</option>
-            <option value="9">9日</option>
-            <option value="10">10日</option>
-            <option value="11">11日</option>
-            <option value="12">12日</option>
-            <option value="13">13日</option>
-            <option value="14">14日</option>
-            <option value="15">15日</option>
-            <option value="16">16日</option>
-            <option value="17">17日</option>
-            <option value="18">18日</option>
-            <option value="19">19日</option>
-            <option value="20">20日</option>
-            <option value="21">21日</option>
-            <option value="22">22日</option>
-            <option value="23">23日</option>
-            <option value="24">24日</option>
-            <option value="25">25日</option>
-            <option value="26">26日</option>
-            <option value="27">27日</option>
-            <option value="28">28日</option>
-            <option value="29">29日</option>
-            <option value="30">30日</option>
-            <option value="31">31日</option>
+            <?php for ($i = 1; $i <= 31; $i++) :?>
+              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
+            <?php endfor;?>
           </select>
         </div>
         <?php echo $this->Flash->render('birth');?>
@@ -134,8 +94,8 @@
         <div class="dsn-form dsn-form-line">
           <label>お知らせメール</label>
           <select class="dsn-select-info focused" name="newsletter">
-            <option value="yes">受信する</option>
-            <option value="no">受信しない</option>
+            <option value="1">受信する</option>
+            <option value="0">受信しない</option>
           </select>
           <?php echo $this->Flash->render('newsletter');?>
         </div>
