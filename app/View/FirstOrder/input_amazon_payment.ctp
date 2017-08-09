@@ -77,13 +77,22 @@
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
-          <label class="dsn-terms"><input type="checkbox" class="dsn-term focused" id="term"><span class="check-icon"></span> <label for="term" class="dsn-term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="dsn-link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label></label>
+          <label class="dsn-terms">
+            <input type="checkbox" class="dsn-term agree-before-submit focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>
+              <label for="term" class="dsn-term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="dsn-link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a>
+              </label>
+            </label>
+          <?php echo $this->Flash->render('remember');?>
+          <span id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
         </div>
       </div>
   </section>
   <section class="dsn-nextback">
     <a href="/first_order/add_order" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
-    <a href="#" class="dsn-btn-next js-btn-submit">確認へ  <i class="fa fa-chevron-circle-right"></i></a>
+    <div class="submit_disabled_wrapper_parent">
+      <button type="submit" class="btn-next agree-submit" formnovalidate>確認へ <i class="fa fa-chevron-circle-right"></i></button>
+      <div id="js-submit_disabled_wrapper" class="submit_disabled_wrapper active"></div>
+    </div>
   </section>
   </form>
 </div>

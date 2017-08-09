@@ -1051,7 +1051,7 @@ class FirstOrderController extends MinikuraController
 //            'gender'           => filter_input(INPUT_POST, 'gender'),
 //            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
 //            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
-//            'remember'         => filter_input(INPUT_POST, 'remember'),
+            'remember'         => filter_input(INPUT_POST, 'remember'),
         ];
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
@@ -1121,6 +1121,7 @@ class FirstOrderController extends MinikuraController
             $this->redirect('/first_order/input_amazon_payment');
             return;
         }
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
