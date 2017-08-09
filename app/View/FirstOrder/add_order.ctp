@@ -11,8 +11,10 @@
 
 <form method="post" action="/first_order/confirm_order" novalidate>
 <section id="dsn-lineup">
+  <? php //amazonpay 関連エラー表示 ?>
+  <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
+
   <div class="dsn-wrapper">
-    <span class="validation" id="set_num_alert">箱の設定は必須です。</span>
     <?php if ($kit_select_type === 'starter_kit') : ?>
     <!-- STARTER -->
     <div class="lineup-box">
@@ -301,6 +303,7 @@
       authorization: function () {
         parem = AppAmazonPaymentLogin.aa();
         loginOptions = {scope: "profile payments:widget", popup: "true"};
+        set_parem='';
         if(parem != ''){
           set_parem = '?' + parem;
         }
@@ -318,6 +321,7 @@
       authorization: function () {
         parem = AppAmazonPaymentLogin.aa();
         loginOptions = {scope: "profile payments:widget", popup: "true"};
+        set_parem='';
         if(parem != ''){
 
           set_parem = '?' + parem;

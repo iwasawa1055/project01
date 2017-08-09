@@ -374,7 +374,8 @@ class FirstOrderController extends MinikuraController
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
         if($access_token === null) {
-
+            $this->Flash->validation('Amazonアカウントでお支払い ログインエラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
         }
 
         CakeSession::write('FirstOrder.amazon_pay.access_token', $access_token);
@@ -394,6 +395,7 @@ class FirstOrderController extends MinikuraController
             'mono_book'     => (int)filter_input(INPUT_GET, 'mono_book'),
         );
         $Order['mono'] = $params;
+        $OrderTotal['mono_num'] = array_sum($Order['mono']);
 
         $params = array(
             'hako'          => (int)filter_input(INPUT_GET, 'hako'),
@@ -401,14 +403,37 @@ class FirstOrderController extends MinikuraController
             'hako_book'     => (int)filter_input(INPUT_GET, 'hako_book'),
         );
         $Order['hako'] = $params;
+        $OrderTotal['hako_num'] = array_sum($Order['hako']);
 
         $Order['cleaning']['cleaning'] = (int)filter_input(INPUT_GET, 'cleaning');
         $Order['hako_limited_ver1']['hako_limited_ver1'] = (int)filter_input(INPUT_GET, 'hako_limited_ver1');
 
+        CakeSession::write('Order', $Order);
+        CakeSession::write('OrderTotal', $OrderTotal);
+
+        // 箱選択バリデーション
+        $params = array(
+            'select_oreder_mono' =>  $OrderTotal['mono_num'],
+            'select_oreder_hako' =>  $OrderTotal['hako_num'],
+            'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
+            'select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1']
+        );
+
+        // バリデーション
+        $validation = AppValid::validate($params);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
+        }
+
+
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
 //        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set_url ' . print_r($set_url, true));
 
-        CakeSession::write('Order', $Order);
 
 
         //* session referer set
