@@ -1205,8 +1205,6 @@ class FirstOrderController extends MinikuraController
         // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
 
         CakeSession::write('FirstOrderList', $FirstOrderList);
-
-        $this->redirect('/first_order/input_amazon_payment');
     }
 
     /**

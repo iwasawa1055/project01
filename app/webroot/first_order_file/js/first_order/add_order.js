@@ -51,12 +51,12 @@ var AppAmazonPaymentLogin =
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
-            AppAmazonPaymentLogin.c("AmazonPayButton", "/first_order/input_amazon_profile");
-            AppAmazonPaymentLogin.c("AmazonPayButtonDirect", "/first_order_direct_inbound/input_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButton", "/first_order/input_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButtonDirect", "/first_order_direct_inbound/input_amazon_profile");
 
         };
     },
-    aa: function () {
+    b: function () {
         str = '';
         $('.js-set_num').each(function(i, elem) {
 
@@ -73,21 +73,21 @@ var AppAmazonPaymentLogin =
         //console.log(str);
         return str;
     },
-    b: function () {
-        document.getElementById('Logout').onclick = function() {
-            console.log('logout');
+    c: function () {
+        document.getElementById('Logout').onclick = function () {
             amazon.Login.logout();
         };
+    },
+    d: function () {
         $('.js-amazon_pay_logout').on('click', function (e) {
             $('form').submit();
-            console.log('logout');
             amazon.Login.logout();
             link = $(this).data('href');
 
             window.location.href = link;
         });
     },
-    c: function (button_name, path) {
+    e: function (button_name, path) {
         var authRequest;
         var host = location.protocol + '//' + location.hostname;
 
@@ -96,7 +96,7 @@ var AppAmazonPaymentLogin =
           color: "Gold",
           size: "medium",
           authorization: function () {
-            parem = AppAmazonPaymentLogin.aa();
+            parem = AppAmazonPaymentLogin.b();
             loginOptions = {scope: "profile payments:widget", popup: "true"};
             set_parem='';
             if(parem != ''){
@@ -116,5 +116,6 @@ $(function()
     AppAddOrder.a();
     AppAddOrder.b();
     AppAmazonPaymentLogin.a();
-    AppAmazonPaymentLogin.b();
+    AppAmazonPaymentLogin.c();
+    AppAmazonPaymentLogin.d();
 });
