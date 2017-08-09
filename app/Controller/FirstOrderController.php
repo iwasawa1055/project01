@@ -1202,7 +1202,7 @@ class FirstOrderController extends MinikuraController
             }
         }
 
-        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
 
         CakeSession::write('FirstOrderList', $FirstOrderList);
     }
