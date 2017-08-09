@@ -1044,13 +1044,14 @@ class FirstOrderController extends MinikuraController
         $params = [
             'password'         => filter_input(INPUT_POST, 'password'),
             'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
-//            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
-//            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
-//            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
-//            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
-//            'gender'           => filter_input(INPUT_POST, 'gender'),
-//            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
-//            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
+            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+            'gender'           => filter_input(INPUT_POST, 'gender'),
+            'datetime_cd'      => filter_input(INPUT_POST, 'datetime_cd'),
+            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
             'remember'         => filter_input(INPUT_POST, 'remember'),
         ];
 

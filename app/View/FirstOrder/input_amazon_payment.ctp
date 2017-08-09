@@ -53,27 +53,96 @@
           <?php echo $this->Flash->render('password_confirm');?>
         </div>
         <div class="dsn-divider"></div>
+        <div class="dsn-form form-line">
+          <label>生年月日<span class="dsn-required">※</span></label>
+          <select class="dsn-select-birth-year focused" name="birth_year">
+            <option value="1985">1985年</option>
+            <option value="1986">1986年</option>
+            <option value="1987">1987年</option>
+            <option value="1988">1988年</option>
+            <option value="1989">1989年</option>
+            <option value="1990">1990年</option>
+          </select>
+          <select class="dsn-select-birth-month focused" name="birth_month">
+            <option value="1">1月</option>
+            <option value="2">2月</option>
+            <option value="3">3月</option>
+            <option value="4">4月</option>
+            <option value="5">5月</option>
+            <option value="6">6月</option>
+            <option value="7">7月</option>
+            <option value="8">8月</option>
+            <option value="9">9月</option>
+            <option value="10">10月</option>
+            <option value="11">11月</option>
+            <option value="12">12月</option>
+          </select>
+          <select class="dsn-select-birth-day focused" name="birth_day">
+            <option value="1">1日</option>
+            <option value="2">2日</option>
+            <option value="3">3日</option>
+            <option value="4">4日</option>
+            <option value="5">5日</option>
+            <option value="6">6日</option>
+            <option value="7">7日</option>
+            <option value="8">8日</option>
+            <option value="9">9日</option>
+            <option value="10">10日</option>
+            <option value="11">11日</option>
+            <option value="12">12日</option>
+            <option value="13">13日</option>
+            <option value="14">14日</option>
+            <option value="15">15日</option>
+            <option value="16">16日</option>
+            <option value="17">17日</option>
+            <option value="18">18日</option>
+            <option value="19">19日</option>
+            <option value="20">20日</option>
+            <option value="21">21日</option>
+            <option value="22">22日</option>
+            <option value="23">23日</option>
+            <option value="24">24日</option>
+            <option value="25">25日</option>
+            <option value="26">26日</option>
+            <option value="27">27日</option>
+            <option value="28">28日</option>
+            <option value="29">29日</option>
+            <option value="30">30日</option>
+            <option value="31">31日</option>
+          </select>
+        </div>
+        <?php echo $this->Flash->render('birth');?>
+        <div class="dsn-form dsn-form-line">
+          <label>性別<span class="dsn-required">※</span></label>
+          <label class="dsn-genders"><input type="radio" name="gender" value="man" id="man"><span class="check-icon"></span> <label for="man" class="dsn-gender">男</label></label>
+          <label class="dsn-genders"><input type="radio" name="gender" value="woman" id="woman"><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+        </div>
+        <?php echo $this->Flash->render('gender');?>
+        <div class="dsn-divider"></div>
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>
-          <select class="dsn-select-delivery focused" id="datetime_cd">
+          <select class="dsn-select-delivery focused" id="datetime_cd" name="datetime_cd">
             <option value="">0000年00月00日 午前中</option>
             <option value="">0000年00月00日 12時〜</option>
             <option value="">0000年00月00日 14時〜</option>
             <option value="">0000年00月00日 16時〜</option>
             <option value="">0000年00月00日 18時〜</option>
           </select>
+          <?php echo $this->Flash->render('datetime_cd');?>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form dsn-form-line">
           <label>お知らせメール</label>
-          <select class="dsn-select-info focused">
-            <option value="">受信する</option>
-            <option value="">受信しない</option>
+          <select class="dsn-select-info focused" name="newsletter">
+            <option value="yes">受信する</option>
+            <option value="no">受信しない</option>
           </select>
+          <?php echo $this->Flash->render('newsletter');?>
         </div>
         <div class="dsn-form dsn-form-line">
           <label>紹介コード</label>
-          <input class="dsn-referral focused" type="text" size="20" maxlength="20">
+          <input class="dsn-referral focused" type="text" size="20" maxlength="20" name="alliance_cd">
+          <?php echo $this->Flash->render('alliance_cd');?>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
