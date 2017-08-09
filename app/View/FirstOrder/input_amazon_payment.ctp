@@ -22,7 +22,7 @@
 </section>
 
 <div id="full" class="dsn-wrapper">
-  <form method="post" action="/first_order/nv_confirm_amazon_payment" novalidate>
+  <form method="post" action="/first_order/confirm_amazon_pay" novalidate>
     <section id="dsn-adress">
       <div class="dsn-wrapper">
         <div class="dsn-form"><div class="alert alert-danger" role="alert" id="error_alert"><i class="fa fa-exclamation-triangle"></i> </div></div>

@@ -553,112 +553,6 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
-     * アマゾンペイメント widgetで遷移先を指定
-     * アマゾンペイメントで
-     */
-    public function nv_confirm_amazon_payment()
-    {
-
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
-
-            //* NG redirect
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-        }
-
-        // バリデーションエラーフラグ
-        $is_validation_error = false;
-
-        // ログインしていない場合
-        $params = [
-            'password'         => filter_input(INPUT_POST, 'password'),
-            'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
-//            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
-//            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
-//            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
-//            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
-//            'gender'           => filter_input(INPUT_POST, 'gender'),
-//            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
-//            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
-//            'remember'         => filter_input(INPUT_POST, 'remember'),
-        ];
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
-
-        // 確認用パスワード一致チェック
-        if ($params['password'] !== $params['password_confirm']) {
-            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
-            $is_validation_error = true;
-        }
-
-        //* Session write
-        CakeSession::write('Email', $params);
-
-        //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($params);
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation)) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-            }
-            $is_validation_error = true;
-        }
-
-        // 規約同意を確認する
-        $validation = AppValid::validateTermsAgree($params['remember']);
-
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation) ) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-            }
-            $is_validation_error = true;
-        }
-
-        // amazon pay 情報取得
-
-        // アクセストークンを取得
-        $access_token = filter_input(INPUT_GET, 'access_token');
-        $order_reference_id = filter_input(INPUT_POST, 'order_reference_id');
-        if($order_reference_id === null) {
-
-        }
-
-        $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
-        if($amazon_billing_agreement_id === null) {
-
-        }
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_reference_id ' . print_r($order_reference_id, true));
-
-        $this->loadModel('AmazonPayModel');
-        $set_param = array();
-        $set_param['amazon_order_reference_id'] = $order_reference_id;
-        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
-        $set_param['address_consent_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');
-
-//        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
-        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
-        // GetBillingAgreementDetails
-        if($res['ResponseStatus'] != '200') {
-
-        }
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
-
-        if ($is_validation_error === true) {
-            $this->redirect('/first_order/input_amazon_payment');
-            return;
-        }
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
-
-        $this->redirect('/first_order/input_amazon_payment');
-    }
-
-    /**
      * ユーザ名 住所 確認
      */
     public function confirm_address()
@@ -1129,6 +1023,193 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
+     * アマゾンペイメント widgetで遷移先を指定
+     * アマゾンペイメントで
+     */
+    public function confirm_amazon_pay()
+    {
+
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
+
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // バリデーションエラーフラグ
+        $is_validation_error = false;
+
+        // ログインしていない場合
+        $params = [
+            'password'         => filter_input(INPUT_POST, 'password'),
+            'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
+//            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
+//            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+//            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+//            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+//            'gender'           => filter_input(INPUT_POST, 'gender'),
+//            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+//            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+//            'remember'         => filter_input(INPUT_POST, 'remember'),
+        ];
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
+
+        // 確認用パスワード一致チェック
+        if ($params['password'] !== $params['password_confirm']) {
+            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
+            $is_validation_error = true;
+        }
+
+        //* Session write
+        CakeSession::write('Email', $params);
+
+        //*  validation 基本は共通クラスのAppValidで行う
+        $validation = AppValid::validate($params);
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        // 規約同意を確認する
+        $validation = AppValid::validateTermsAgree($params['remember']);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation) ) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        // amazon pay 情報取得
+
+        // アクセストークンを取得
+        $access_token = filter_input(INPUT_GET, 'access_token');
+        $order_reference_id = filter_input(INPUT_POST, 'order_reference_id');
+        if($order_reference_id === null) {
+
+        }
+
+        $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+        if($amazon_billing_agreement_id === null) {
+
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_reference_id ' . print_r($order_reference_id, true));
+
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_order_reference_id'] = $order_reference_id;
+        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+        $set_param['address_consent_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');
+
+//        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+
+        if ($is_validation_error === true) {
+            $this->redirect('/first_order/input_amazon_payment');
+            return;
+        }
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // オーダー種類を集計
+        // order情報
+        $Order = CakeSession::read('Order');
+
+        $FirstOrderList = array();
+
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
+
+        // 添字に対応するコードを設定
+        $kit_code = KIT_CODE_DISP_NAME_ARRAY;
+
+        $kit_params = array();
+
+        // 表示名とAPI パラメータの生成コードごとに格納
+        foreach ($Order as $orders => $kit_order) {
+            foreach ($kit_order as $param => $value) {
+                if ($value > 0) {
+                    // スタータキットは構成が異なるため個別に記述
+                    if($param === 'starter') {
+                        // 先頭のコードのみ料金が返ってくる
+                        $code = KIT_CD_STARTER_MONO;
+                        $FirstOrderList[$code]['number']    = 1;
+                        $FirstOrderList[$code]['kit_name']  = 'mono スターターパック';
+                        $FirstOrderList[$code]['price'] = 0;
+                        $kit_params[] = KIT_CD_STARTER_MONO.':1';
+                    }
+
+                    if($param === 'hako_limited_ver1') {
+                        // 先頭のコードのみ料金が返ってくる
+                        $code = KIT_CD_HAKO_LIMITED_VER1;
+                        $FirstOrderList[$code]['number']    = $value;
+                        $FirstOrderList[$code]['kit_name']  = 'HAKOお片付けパック';
+                        $FirstOrderList[$code]['price'] = 0;
+                        $hako_limited_ver1_num = $value * 5;
+                        $kit_params[] = KIT_CD_HAKO_LIMITED_VER1.':' . $hako_limited_ver1_num;
+                    }
+
+                    // スタータキット以外まとめて処理
+                    if (array_key_exists ($param, $kit_code)) {
+                        //
+                        // $FirstOrderList[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
+                        $code = $kit_code[$param]['code'];
+                        $FirstOrderList[$code]['number']    = $value;
+                        $FirstOrderList[$code]['kit_name']  = $kit_code[$param]['name'];
+                        $FirstOrderList[$code]['price'] = 0;
+                        $kit_params[] = $code . ':' .$value;
+                    }
+                }
+            }
+        }
+
+        $set_kit_params = array();
+
+        // 紹介コードがある場合セット
+        $alliance_cd = CakeSession::read('Email.alliance_cd');
+        if (!is_null($alliance_cd)) {
+            $set_kit_params['alliance_cd'] = $alliance_cd;
+        }
+
+        // 文字列にしてカンマ区切りでリクエスト
+        $set_kit_params['kit'] = implode(',', $kit_params);
+
+        // キットコードと合計金額を返すAPI
+        $this->loadModel('KitPrice');
+
+        $res = $this->KitPrice->getKitPrice($set_kit_params);
+        if (!empty($res->error_message)) {
+            $this->Flash->validation('料金取得エラー', ['key' => 'kit_price']);
+        }
+
+        // コードから対象の配列に挿入
+        if (empty($res->error_message)) {
+            foreach ($res->results as $key => $value) {
+                $code = $value['kit_cd'];
+                $FirstOrderList[$code]['price'] = number_format($value['price'] * 1);
+            }
+        }
+
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
+
+        CakeSession::write('FirstOrderList', $FirstOrderList);
+
+        $this->redirect('/first_order/input_amazon_payment');
+    }
+
+    /**
      * スニーカーview変更
      * オーダー 会員登録
      */
@@ -1450,6 +1531,305 @@ class FirstOrderController extends MinikuraController
         // スニーカーセッション情報を削除
         CakeSession::delete('order_sneaker');
         return $this->render('complete_sneaker');
+    }
+
+    /**
+     * オーダー 完了
+     */
+    public function complete_amazon_pay()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // 購入前にログインし、エントリユーザでない場合のチェック
+        $is_logined = $this->_checkLogin();
+        $this->set('is_logined', $is_logined);
+
+        // セッションが古い場合があるので再チェック
+        // 発送日一覧のエラーチェック
+        $result = $this->_getAddressDatetime(CakeSession::read('Address.postal'));
+
+        $check_address_datetime_cd = false;
+        $address_datetime = CakeSession::read('Address.datetime_cd');
+        foreach ($result->results as $key => $value) {
+            if ($value['datetime_cd'] === $address_datetime) {
+                $check_address_datetime_cd = true;
+            }
+        }
+
+        if (!$check_address_datetime_cd) {
+            $this->Flash->validation('お届け希望日時をご確認ください。',
+                ['key' => 'datetime_cd']);
+            CakeLog::write(DEBUG_LOG,
+                $this->name . '::' . $this->action . ' check_address_datetime_cd error');
+
+            return $this->_flowSwitch('add_address');
+        }
+
+        // カードの有効性をチェック
+        //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
+        $this->loadModel('CardCheck');
+        $Credit = CakeSession::read('Credit');
+        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+
+        $res = $this->CardCheck->getCardCheck($Credit);
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
+            $this->_flowSwitch('add_credit');
+            return;
+        }
+
+        //* 会員登録
+        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
+        unset($data['select_delivery']);
+        unset($data['select_delivery_list']);
+
+        $this->loadModel(self::MODEL_NAME_REGIST);
+
+        if ($is_logined) {
+            $data['token'] = CakeSession::read(ApiModel::SESSION_API_TOKEN);
+            $data['password'] = $this->Customer->getPassword();
+
+            // バリデーションルールを変更
+            $this->CustomerRegistInfo->validator()->remove('password_confirm');
+
+        }
+
+        $data['tel1'] = self::_wrapConvertKana($data['tel1']);
+
+        // post値をセット
+        $this->CustomerRegistInfo->set($data);
+
+        //*  validation
+        if (!$this->CustomerRegistInfo->validates()) {
+            // 事前バリデーションチェック済
+            $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_regist_info']);
+            return $this->_flowSwitch('confirm');
+        }
+
+        if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
+            unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
+        }
+
+        // 本登録
+        if ($is_logined) {
+            $res = $this->CustomerRegistInfo->regist_no_oemkey();
+        } else {
+            // スニーカーユーザかどうか
+            if (!CakeSession::read('order_sneaker')) {
+                //スニーカーでない
+                $res = $this->CustomerRegistInfo->regist();
+            } else {
+                // スニーカーユーザかどうか
+                $res = $this->CustomerRegistInfo->regist_sneakers();
+            }
+        }
+
+        if (!empty($res->error_message)) {
+            // 紹介コードエラーの場合 紹介コード入力に遷移
+            if (strpos($res->message, 'alliance_cd') !== false) {
+                $this->Flash->validation($res->error_message, ['key' => 'alliance_cd']);
+                return $this->_flowSwitch('add_email');
+            }
+            if (strpos($res->message, 'Allow Only Entry') !== false) {
+                $this->Flash->validation('登録済ユーザのため購入完了できませんでした。', ['key' => 'customer_regist_info']);
+            } else {
+                $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            }
+            return $this->_flowSwitch('confirm');
+        }
+
+        // ログイン
+        $this->loadModel('CustomerLogin');
+
+        $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
+
+        $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
+
+        if ($is_logined) {
+            // エントリユーザ切り替え再度ログイン
+            $this->Customer->switchEntryToCustomer();
+        }
+
+        $res = $this->CustomerLogin->login();
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            return $this->_flowSwitch('confirm');
+        }
+
+        // カスタマー情報を取得しセッションに保存
+        $this->Customer->setTokenAndSave($res->results[0]);
+        $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+
+        $this->Customer->getInfo();
+
+        //* クレジットカード登録
+        $this->loadModel(self::MODEL_NAME_SECURITY);
+
+        $Credit = CakeSession::read('Credit');
+        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+
+        $credit_data[self::MODEL_NAME_SECURITY] = $Credit;
+
+        $this->PaymentGMOSecurityCard->set($credit_data);
+
+        // Expire
+        $this->PaymentGMOSecurityCard->setExpire($credit_data);
+
+        // ハイフン削除
+        $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
+
+        // validates
+        // card_seq 除外
+        $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+
+        if (!$this->PaymentGMOSecurityCard->validates()) {
+            $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
+            return $this->_flowSwitch('confirm');
+        }
+
+        $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+        if (!empty($result_security_card->error_message)) {
+            $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
+            return $this->_flowSwitch('confirm');
+        }
+
+        // 購入
+        $this->loadModel('PaymentGMOKitCard');
+        $gmo_kit_card['mono_num']      = CakeSession::read('Order.mono.mono');
+        $gmo_kit_card['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
+        $gmo_kit_card['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
+        $gmo_kit_card['hako_num']      = CakeSession::read('Order.hako.hako');
+        $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
+        $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
+        $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
+        $gmo_kit_card['sneaker_num']   = CakeSession::read('Order.sneaker.sneaker');
+        $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
+        $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
+        $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
+        // HAKOお片付けキットは１パック 5箱
+        $gmo_kit_card['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
+        $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
+        $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('Credit.security_cd'));
+        $gmo_kit_card['address_id']    = '';
+        $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
+        $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
+        $gmo_kit_card['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+        $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
+        $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+
+        $productKitList = [
+            PRODUCT_CD_MONO => [
+                'kitList' => [
+                    KIT_CD_MONO,
+                    KIT_CD_MONO_APPAREL,
+                    KIT_CD_MONO_BOOK,
+                    KIT_CD_STARTER_MONO,
+                    KIT_CD_STARTER_MONO_APPAREL,
+                    KIT_CD_STARTER_MONO_BOOK,
+                    KIT_CD_HAKO_LIMITED_VER1,
+                ],
+            ],
+            PRODUCT_CD_HAKO => [
+                'kitList' => [KIT_CD_HAKO, KIT_CD_HAKO_APPAREL, KIT_CD_HAKO_BOOK],
+            ],
+            PRODUCT_CD_CLEANING_PACK => [
+                'kitList' => [KIT_CD_CLEANING_PACK],
+            ],
+            PRODUCT_CD_SHOES_PACK => [
+                'kitList' => [KIT_CD_SNEAKERS],
+            ],
+        ];
+
+        $dataKeyNum = [
+            KIT_CD_MONO          => 'mono_num',
+            KIT_CD_MONO_APPAREL  => 'mono_appa_num',
+            KIT_CD_MONO_BOOK     => 'mono_book_num',
+            KIT_CD_HAKO          => 'hako_num',
+            KIT_CD_HAKO_APPAREL  => 'hako_appa_num',
+            KIT_CD_HAKO_BOOK     => 'hako_book_num',
+            KIT_CD_CLEANING_PACK => 'cleaning_num',
+            KIT_CD_STARTER_MONO          => 'starter_mono_num',
+            KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
+            KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
+            KIT_CD_SNEAKERS      => 'sneaker_num',
+            KIT_CD_HAKO_LIMITED_VER1     => 'hako_limited_ver1_num',
+        ];
+        $kit_params = [];
+        foreach ($productKitList as $product) {
+            // 個数集計
+            foreach ($product['kitList'] as $kitCd) {
+                $num = $gmo_kit_card[$dataKeyNum[$kitCd]];
+                if (!empty($num)) {
+                    $kit_params[] = $kitCd . ':' . $num;
+                }
+            }
+        }
+        $gmo_kit_card['kit'] = implode(',', $kit_params);
+
+        $this->PaymentGMOKitCard->set($gmo_kit_card);
+        $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+        if ($result_kit_card->status !== '1') {
+            if ($result_kit_card->http_code === 400) {
+                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+            } else {
+                $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
+            }
+            return $this->_flowSwitch('confirm');
+        }
+
+        // 完了したページ情報を保存
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->_cleanFirstOrderSession();
+
+        // アフィリエイトタグ出力用
+        $this->set('customer_id', $this->Customer->data->info['customer_id']);
+
+        /* いったん無効化
+        // 既にセッションスタートしてる事が条件
+        // マイページ側セッションクローズ
+        $before_session_id = session_id();
+        session_write_close();
+
+        // コンテンツ側のセッション名に変更
+        $SESS_ID = '';
+        if(isset($_COOKIE['WWWMINIKURACOM'])) {
+            $SESS_ID = $_COOKIE['WWWMINIKURACOM'];
+        }
+
+        if( !empty($SESS_ID)) {
+            // セッション再開
+            session_id($SESS_ID);
+            session_start();
+
+            // 紹介コード削除処理
+            if (!empty($_SESSION['ref_code'])) {
+                unset($_SESSION['ref_code']);
+                CakeLog::write(DEBUG_LOG, 'ref_code is unset SESS_ID ' . print_r($SESS_ID, true));
+            }
+
+            // コンテンツ側セッションクローズ
+            session_write_close();
+        }
+
+        // マイページ側セッション名に変更
+        session_name('MINIKURACOM');
+
+        if (!empty($before_session_id)) {
+            session_id($before_session_id);
+        }
+
+        // マイページ側セッション再開
+        session_start();
+        */
     }
 
     /**
