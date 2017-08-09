@@ -52,8 +52,10 @@ var AppAmazonPaymentLogin =
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
             AppAmazonPaymentLogin.c("AmazonPayButton", "/first_order/input_amazon_profile");
-            AppAmazonPaymentLogin.c("AmazonPayButtonDirect", "/first_order_direct_inbound/input_amazon_profile");
-
+            AppAmazonPaymentLogin.c("AmazonPayButtonMono", "/first_order/input_amazon_profile");
+            AppAmazonPaymentLogin.c("AmazonPayButtonHako", "/first_order/input_amazon_profile");
+            AppAmazonPaymentLogin.c("AmazonPayButtonCleaning", "/first_order/input_amazon_profile");
+            AppAmazonPaymentLogin.c("AmazonPayButtonHakoLimitedVer1", "/first_order/input_amazon_profile");
         };
     },
     aa: function () {

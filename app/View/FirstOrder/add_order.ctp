@@ -126,9 +126,6 @@
         </p>
       </div>
       <a href="/first_order_direct_inbound/add_address" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
-      <div id="AmazonPayButtonDirect">
-      </div>
-
     </div>
     <?php endif; ?>
   </div>
@@ -200,6 +197,11 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <div class="dsn-modal-login-amazon">
+    <p>お持ちのAmazonアカウントで支払うことができます。</p>
+    <div id="AmazonPayButtonMono">
+    </div>
+  </div>
 </div>
 <!--HAKO modal-->
 <div class="remodal items" data-remodal-id="modal-hako" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -247,6 +249,11 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+　<div class="dsn-modal-login-amazon">
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
+    <div id="AmazonPayButtonHako">
+    </div>
+  </div>
 </div>
 <!--Cleaning modal-->
 <div class="remodal items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -266,6 +273,11 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+　<div class="dsn-modal-login-amazon">
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
+    <div id="AmazonPayButtonCleaning">
+    </div>
+  </div>  
 </div>
 <!--Recommend modal-->
 <div class="remodal items" data-remodal-id="modal-recommend" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -286,7 +298,11 @@
 
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
-
+　<div class="dsn-modal-login-amazon">
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
+    <div id="AmazonPayButtonHakoLimitedVer1">
+    </div>
+  </div>  
 </div>
 
 <?php echo $this->element('FirstOrder/footer'); ?>
