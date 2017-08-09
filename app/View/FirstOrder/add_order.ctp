@@ -13,6 +13,13 @@
 <section id="dsn-lineup">
   <? php //amazonpay 関連エラー表示 ?>
   <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
+  <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
+  <section id="adress">
+    <div class="form">
+      <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このアマゾンペイメントアカウントで利用しているメールアドレスはご利用できません。すでにアカウントをお持ちの方は<a class="login js-amazon_pay_logout" href="#" data-href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインしてください。</div>
+    </div>
+  </section>
+  <?php endif; ?>
 
   <div class="dsn-wrapper">
     <?php if ($kit_select_type === 'starter_kit') : ?>
