@@ -85,6 +85,7 @@ var AppAmazonPaymentLogin =
             link = $(this).data('href');
 
             window.location.href = link;
+        });
     },
     c: function (button_name, path) {
         var authRequest;
