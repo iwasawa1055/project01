@@ -299,46 +299,6 @@
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script src="/first_order_file/js/first_order/add_order.js"></script>
-<script type="text/javascript">
-  function showButton() {
-    var authRequest;
-    var host = location.protocol + '//' + location.hostname;
-    OffAmazonPayments.Button("AmazonPayButton", AppAmazonPaymentLogin.SELLER_ID, {
-      type: "PwA",
-      color: "Gold",
-      size: "medium",
-      authorization: function () {
-        parem = AppAmazonPaymentLogin.aa();
-        loginOptions = {scope: "profile payments:widget", popup: "true"};
-        set_parem='';
-        if(parem != ''){
-          set_parem = '?' + parem;
-        }
-        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order/input_amazon_profile" + set_parem);
-      }
-    });
-  }
-  function showButtonDirect() {
-    var authRequest;
-    var host = location.protocol + '//' + location.hostname;
-    OffAmazonPayments.Button("AmazonPayButtonDirect", AppAmazonPaymentLogin.SELLER_ID, {
-      type: "PwA",
-      color: "Gold",
-      size: "medium",
-      authorization: function () {
-        parem = AppAmazonPaymentLogin.aa();
-        loginOptions = {scope: "profile payments:widget", popup: "true"};
-        set_parem='';
-        if(parem != ''){
-
-          set_parem = '?' + parem;
-        }
-        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/input_amazon_profile" + set_parem);
-      }
-    });
-  }
-
-</script>
 
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
 <?php echo $this->element('FirstOrder/last'); ?>

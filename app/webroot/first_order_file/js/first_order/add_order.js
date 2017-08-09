@@ -51,8 +51,9 @@ var AppAmazonPaymentLogin =
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
-            showButton();
-            showButtonDirect();
+            AppAmazonPaymentLogin.c("AmazonPayButton", "/first_order/input_amazon_profile");
+            AppAmazonPaymentLogin.c("AmazonPayButtonDirect", "/first_order_direct_inbound/input_amazon_profile");
+
         };
     },
     aa: function () {
@@ -84,6 +85,24 @@ var AppAmazonPaymentLogin =
             link = $(this).data('href');
 
             window.location.href = link;
+    },
+    c: function (button_name, path) {
+        var authRequest;
+        var host = location.protocol + '//' + location.hostname;
+
+        OffAmazonPayments.Button(button_name, AppAmazonPaymentLogin.SELLER_ID, {
+          type: "PwA",
+          color: "Gold",
+          size: "medium",
+          authorization: function () {
+            parem = AppAmazonPaymentLogin.aa();
+            loginOptions = {scope: "profile payments:widget", popup: "true"};
+            set_parem='';
+            if(parem != ''){
+              set_parem = '?' + parem;
+            }
+            authRequest = amazon.Login.authorize(loginOptions, host + path + set_parem);
+          }
         });
     }
 }
