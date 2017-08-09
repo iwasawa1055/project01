@@ -2,6 +2,7 @@
 <title>ボックス選択 - minikura</title>
 <link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
 <link href="/css/dsn-amazon-pay.css" rel="stylesheet">
+<link href="/first_order_file/css/first_order/dsn-amazon-pay_dev.css" rel="stylesheet">
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
 <?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
