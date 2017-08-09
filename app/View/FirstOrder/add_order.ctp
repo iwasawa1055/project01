@@ -12,6 +12,7 @@
 <form method="post" action="/first_order/confirm_order" novalidate>
 <section id="dsn-lineup">
   <div class="dsn-wrapper">
+    <span class="validation" id="set_num_alert">箱の設定は必須です。</span>
     <?php if ($kit_select_type === 'starter_kit') : ?>
     <!-- STARTER -->
     <div class="lineup-box">
@@ -142,14 +143,14 @@
     <a id="Logout" >Logout</a>
   </div>
 </section>
-<input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
-<input type="hidden" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
-<input type="hidden" name="mono_book"     value="<?php echo h(CakeSession::read('Order.mono.mono_book')); ?>" />
-<input type="hidden" name="hako"          value="<?php echo h(CakeSession::read('Order.hako.hako')); ?>" />
-<input type="hidden" name="hako_apparel"  value="<?php echo h(CakeSession::read('Order.hako.hako_apparel')); ?>" />
-<input type="hidden" name="hako_book"     value="<?php echo h(CakeSession::read('Order.hako.hako_book')); ?>" />
-<input type="hidden" name="cleaning"      value="<?php echo h(CakeSession::read('Order.cleaning.cleaning')); ?>" />
-<input type="hidden" name="hako_limited_ver1"      value="<?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')); ?>" />
+<input type="hidden" class="js-set_num" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
+<input type="hidden" class="js-set_num" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
+<input type="hidden" class="js-set_num" name="mono_book"     value="<?php echo h(CakeSession::read('Order.mono.mono_book')); ?>" />
+<input type="hidden" class="js-set_num" name="hako"          value="<?php echo h(CakeSession::read('Order.hako.hako')); ?>" />
+<input type="hidden" class="js-set_num" name="hako_apparel"  value="<?php echo h(CakeSession::read('Order.hako.hako_apparel')); ?>" />
+<input type="hidden" class="js-set_num" name="hako_book"     value="<?php echo h(CakeSession::read('Order.hako.hako_book')); ?>" />
+<input type="hidden" class="js-set_num" name="cleaning"      value="<?php echo h(CakeSession::read('Order.cleaning.cleaning')); ?>" />
+<input type="hidden" class="js-set_num" name="hako_limited_ver1"      value="<?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')); ?>" />
 </form>
 <!--MONO modal-->
 <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -298,8 +299,12 @@
       color: "Gold",
       size: "medium",
       authorization: function () {
+        parem = AppAmazonPaymentLogin.aa();
         loginOptions = {scope: "profile payments:widget", popup: "true"};
-        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order/input_amazon_profile");
+        if(parem != ''){
+          set_parem = '?' + parem;
+        }
+        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order/input_amazon_profile" + set_parem);
       }
     });
   }
@@ -311,8 +316,13 @@
       color: "Gold",
       size: "medium",
       authorization: function () {
+        parem = AppAmazonPaymentLogin.aa();
         loginOptions = {scope: "profile payments:widget", popup: "true"};
-        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/input_amazon_profile");
+        if(parem != ''){
+
+          set_parem = '?' + parem;
+        }
+        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/input_amazon_profile" + set_parem);
       }
     });
   }

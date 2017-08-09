@@ -275,3 +275,7 @@ section#lineup .medal img {
 #payment_consent_alert {
     display: none;
 }
+
+#set_num_alert {
+    display: none;
+}

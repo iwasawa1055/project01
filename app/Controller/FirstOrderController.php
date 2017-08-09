@@ -386,6 +386,31 @@ class FirstOrderController extends MinikuraController
         // パラメータを引き継ぐ
         $set_url = str_replace('input_amazon_profile', 'input_amazon_payment', $_SERVER["REQUEST_URI"]);
 
+        // オーダー情報取得
+        $Order = array();
+        $params = array(
+            'mono'          => (int)filter_input(INPUT_GET, 'mono'),
+            'mono_apparel'  => (int)filter_input(INPUT_GET, 'mono_apparel'),
+            'mono_book'     => (int)filter_input(INPUT_GET, 'mono_book'),
+        );
+        $Order['mono'] = $params;
+
+        $params = array(
+            'hako'          => (int)filter_input(INPUT_GET, 'hako'),
+            'hako_apparel'  => (int)filter_input(INPUT_GET, 'hako_apparel'),
+            'hako_book'     => (int)filter_input(INPUT_GET, 'hako_book'),
+        );
+        $Order['hako'] = $params;
+
+        $Order['cleaning']['cleaning'] = (int)filter_input(INPUT_GET, 'cleaning');
+        $Order['hako_limited_ver1']['hako_limited_ver1'] = (int)filter_input(INPUT_GET, 'hako_limited_ver1');
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
+//        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set_url ' . print_r($set_url, true));
+
+        CakeSession::write('Order', $Order);
+
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 

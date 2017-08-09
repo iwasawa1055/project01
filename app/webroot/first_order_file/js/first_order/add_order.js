@@ -55,10 +55,28 @@ var AppAmazonPaymentLogin =
             showButtonDirect();
         };
     },
+    aa: function () {
+        str = '';
+        $('.js-set_num').each(function(i, elem) {
+
+            //console.log($(this).val());
+            if($(this).val() != '' && $(this).val() != '0') {
+                console.log($(this).attr("name"));
+                if(str != ''){
+                    str += '&';
+                }
+                str += $(this).attr("name") + '=' +$(this).val();
+            }
+        });
+
+        //console.log(str);
+        return str;
+    },
     b: function () {
         document.getElementById('Logout').onclick = function() {
             console.log('logout');
             amazon.Login.logout();
+            AppAmazonPaymentLogin.aa();
         };
     }
 }
