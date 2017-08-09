@@ -922,7 +922,7 @@ class FirstOrderController extends MinikuraController
     public function confirm()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email', 'FirstOrder/confirm', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email', 'FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1030,7 +1030,7 @@ class FirstOrderController extends MinikuraController
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/nv_confirm_amazon_payment'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/confirm_amazon_payment'], true) === false) {
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
 
             //* NG redirect

@@ -59,21 +59,23 @@ var AppAmazonPaymentLogin =
         };
     },
     b: function () {
-        str = '';
+        param = '';
+
+        // 箱の数量を取得しパラメータを生成
         $('.js-set_num').each(function(i, elem) {
 
             //console.log($(this).val());
             if($(this).val() != '' && $(this).val() != '0') {
                 console.log($(this).attr("name"));
-                if(str != ''){
-                    str += '&';
+                if(param != ''){
+                    param += '&';
                 }
-                str += $(this).attr("name") + '=' +$(this).val();
+                param += $(this).attr("name") + '=' +$(this).val();
             }
         });
 
         //console.log(str);
-        return str;
+        return param;
     },
     c: function () {
         document.getElementById('Logout').onclick = function () {
