@@ -61,22 +61,18 @@
             <div class="dsn-yamato">
               <div class="dsn-form">
                 <label>集荷希望日<span class="dsn-required">※</span></label>
-                <select class="dsn-select-delivery focused">
-                  <option value="">0000年00月00日</option>
-                  <option value="">0000年00月00日</option>
-                  <option value="">0000年00月00日</option>
-                  <option value="">0000年00月00日</option>
-                  <option value="">0000年00月00日</option>
+                <select class="dsn-select-delivery focused" name="date_cd" id="InboundDayCd">
+                  <?php foreach ( CakeSession::read('Address.select_delivery_day_list') as $key => $value ) {?>
+                  <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                  <?php } ?>
                 </select>
               </div>
               <div class="dsn-form">
                 <label>集荷希望時間<span class="dsn-required">※</span></label>
-                <select class="dsn-select-delivery focused">
-                  <option value="">午前中</option>
-                  <option value="">12時〜</option>
-                  <option value="">14時〜</option>
-                  <option value="">16時〜</option>
-                  <option value="">18時〜</option>
+                <select class="dsn-select-delivery focused" name="time_cd" id="InboundTimeCd">
+                  <?php foreach ( CakeSession::read('Address.select_delivery_time_list') as $key => $value ) {?>
+                  <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                  <?php } ?>
                 </select>
               </div>
             </div>
@@ -105,6 +101,7 @@
               <?php endfor;?>
             </select>
           </div>
+
           <div class="dsn-form dsn-form-line">
             <label>性別<span class="dsn-required">※</span></label>
             <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>

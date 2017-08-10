@@ -232,7 +232,6 @@ class FirstOrderDirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'index']);
         }
 
-
         // バリデーションエラーフラグ
         $is_validation_error = false;
 
@@ -283,7 +282,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             }
             $is_validation_error = true;
         }
-/*
+
         // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
         CakeSession::delete('registered_user_login_url');
         if (!$is_logined) {
@@ -312,7 +311,6 @@ class FirstOrderDirectInboundController extends MinikuraController
             }
         }
 
-*/
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
         $amazon_billing_agreement_id = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
