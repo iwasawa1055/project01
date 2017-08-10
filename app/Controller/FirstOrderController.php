@@ -1059,14 +1059,19 @@ class FirstOrderController extends MinikuraController
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
 
+        //* Session write
+        CakeSession::write('Email', $params);
+
+        // メールアドレスセット
+        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+        //* Session write
+        CakeSession::write('Email.email', $amazon_pay_user_info['email']));
+
         // 確認用パスワード一致チェック
         if ($params['password'] !== $params['password_confirm']) {
             $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
             $is_validation_error = true;
         }
-
-        //* Session write
-        CakeSession::write('Email', $params);
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
