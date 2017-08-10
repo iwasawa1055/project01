@@ -74,8 +74,9 @@
         <?php echo $this->Flash->render('birth');?>
         <div class="dsn-form dsn-form-line">
           <label>性別<span class="dsn-required">※</span></label>
-          <label class="dsn-genders"><input type="radio" name="gender" value="man" id="man"><span class="check-icon"></span> <label for="man" class="dsn-gender">男</label></label>
-          <label class="dsn-genders"><input type="radio" name="gender" value="woman" id="woman"><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+          <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>
+          <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+
         </div>
         <?php echo $this->Flash->render('gender');?>
         <div class="dsn-divider"></div>
