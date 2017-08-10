@@ -57,7 +57,7 @@
           <div class="dsn-divider"></div>
           <div class="dsn-form">
             <label>預け入れ方法<span class="dsn-required">※</span></label>
-            <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="ヤマト運輸" id="yamato" checked><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸に取りに来てもらう</label></label>
+              <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="ヤマト運輸" id="yamato"  <?php if ( CakeSession::read('Address.cargo') === "ヤマト運輸" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸に取りに来てもらう</label></label>
             <div class="dsn-yamato">
               <div class="dsn-form">
                 <label>集荷希望日<span class="dsn-required">※</span></label>
@@ -80,7 +80,7 @@
                 </select>
               </div>
             </div>
-            <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival"><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>
+            <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('Address.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>
             <p class="dsn-arrival">着払いをご選択の場合はminikura運営事務局よりご連絡を差し上げます。<br> ※注意事項
               <br> ご連絡時のメールに記載する住所へ、ヤマト運輸の着払いでお送りください。
               <br> コンビニやヤマト営業所への持ち込みとなります。
@@ -90,60 +90,25 @@
           <div class="dsn-form form-line">
             <label>生年月日<span class="dsn-required">※</span></label>
             <select class="dsn-select-birth-year focused">
-              <option value="">1985年</option>
-              <option value="">1986年</option>
-              <option value="">1987年</option>
-              <option value="">1988年</option>
-              <option value="">1989年</option>
-              <option value="">1990年</option>
+              <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
+                <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
+              <?php endfor;?>
             </select>
             <select class="dsn-select-birth-month focused">
-              <option value="">1月</option>
-              <option value="">2月</option>
-              <option value="">3月</option>
-              <option value="">4月</option>
-              <option value="">5月</option>
-              <option value="">6月</option>
-              <option value="">7月</option>
-              <option value="">8月</option>
-              <option value="">9月</option>
-              <option value="">10月</option>
-              <option value="">11月</option>
-              <option value="">12月</option>
+              <?php for ($i = 1; $i <= 12; $i++) :?>
+                <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_month') ) echo " SELECTED";?>><?php echo $i;?>月</option>
+              <?php endfor;?>
             </select>
             <select class="dsn-select-birth-day focused">
-              <option value="">1日</option>
-              <option value="">2日</option>
-              <option value="">3日</option>
-              <option value="">4日</option>
-              <option value="">5日</option>
-              <option value="">6日</option>
-              <option value="">7日</option>
-              <option value="">8日</option>
-              <option value="">9日</option>
-              <option value="">10日</option>
-              <option value="">11日</option>
-              <option value="">12日</option>
-              <option value="">13日</option>
-              <option value="">14日</option>
-              <option value="">15日</option>
-              <option value="">16日</option>
-              <option value="">17日</option>
-              <option value="">18日</option>
-              <option value="">19日</option>
-              <option value="">20日</option>
-              <option value="">21日</option>
-              <option value="">22日</option>
-              <option value="">23日</option>
-              <option value="">24日</option>
-              <option value="">25日</option>
-              <option value="">26日</option>
-              <option value="">27日</option>
-              <option value="">28日</option>
-              <option value="">29日</option>
-              <option value="">30日</option>
-              <option value="">31日</option>
+              <?php for ($i = 1; $i <= 31; $i++) :?>
+                <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
+              <?php endfor;?>
             </select>
+          </div>
+          <div class="dsn-form dsn-form-line">
+            <label>性別<span class="dsn-required">※</span></label>
+            <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>
+            <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
           </div>
           <div class="dsn-divider"></div>
           <div class="dsn-form dsn-form-line">

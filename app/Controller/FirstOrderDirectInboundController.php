@@ -211,6 +211,10 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // 誕生日に関するコンフィグ
+        $birthyear_configure = Configure::read('app.register.birthyear');
+        $this->set('birthyear_configure', $birthyear_configure);
+
     }
 
     /**
