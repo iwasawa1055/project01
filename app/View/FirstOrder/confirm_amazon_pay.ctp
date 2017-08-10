@@ -53,18 +53,16 @@
         <label>メールアドレス</label>
         <p><?php echo CakeSession::read('Email.email');?></p>
       </div>
-      <?php if (!$is_logined) : ?>
-        <div class="form">
-          <label>お知らせメール</label>
-          <p>
-            <?php if ( CakeSession::read('Email.newsletter') === "1" ) : ?>
-              希望する
-            <?php else: ?>
-              希望しない
-            <?php endif ?>
-          </p>
-        </div>
-      <?php endif; ?>
+      <div class="form">
+        <label>お知らせメール</label>
+        <p>
+          <?php if ( CakeSession::read('Email.newsletter') === "1" ) : ?>
+            希望する
+          <?php else: ?>
+            希望しない
+          <?php endif ?>
+        </p>
+      </div>
     </div>
   </section>
   <section class="nextback"><a href="/first_order/input_amazon_payment?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>

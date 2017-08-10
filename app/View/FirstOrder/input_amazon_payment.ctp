@@ -119,7 +119,7 @@
   <section class="dsn-nextback">
     <a href="/first_order/add_order" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
     <div class="submit_disabled_wrapper_parent">
-      <button type="submit" class="btn-next agree-submit" formnovalidate>確認へ <i class="fa fa-chevron-circle-right"></i></button>
+      <a type="submit" class="btn-next agree-submit js-btn-submit" formnovalidate>確認へ <i class="fa fa-chevron-circle-right"></i></a>
       <div id="js-submit_disabled_wrapper" class="submit_disabled_wrapper active"></div>
     </div>
   </section>

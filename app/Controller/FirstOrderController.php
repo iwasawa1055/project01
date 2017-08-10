@@ -541,7 +541,7 @@ class FirstOrderController extends MinikuraController
     public function input_amazon_payment()
     {   
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/input_amazon_payment'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/input_amazon_payment', 'FirstOrder/confirm_amazon_pay'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1032,7 +1032,7 @@ class FirstOrderController extends MinikuraController
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/confirm_amazon_payment'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_payment', 'FirstOrder/confirm_amazon_pay'], true) === false) {
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
 
             //* NG redirect
@@ -1065,7 +1065,27 @@ class FirstOrderController extends MinikuraController
         // メールアドレスセット
         $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
         //* Session write
-        CakeSession::write('Email.email', $amazon_pay_user_info['email']));
+        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
+
+        // 住所に関する情報保存
+        $name = $amazon_pay_user_info['name'];
+        $name = mb_convert_kana($name, "s");
+
+        // 空白で苗字名前がわかれているか？
+        $set_name = array();
+        if(strpos($name,' ') !== false){
+            $set_name = explode(" ",$name);
+        } else {
+            // スペースで区切られていない
+            $set_name[0] = $name;
+            $set_name[1] = '＿';
+        }
+
+        CakeSession::write('Address.lastname',      $set_name[0]);
+        CakeSession::write('Address.firstname',     $set_name[1]);
+
+        CakeSession::write('Address.datetime_cd',           $params['datetime_cd']);
+        CakeSession::write('Address.select_delivery_text',  $this->_convDatetimeCode($params['datetime_cd']));
 
         // 確認用パスワード一致チェック
         if ($params['password'] !== $params['password_confirm']) {
@@ -1122,6 +1142,19 @@ class FirstOrderController extends MinikuraController
         if($res['ResponseStatus'] != '200') {
 
         }
+
+        //
+        CakeSession::write('FirstOrder.amazon_pay.billing_details', $res);
+
+        if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
+
+        }
+
+        $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+
+        CakeSession::write('Address.postal', $physicaldestination['PostalCode']);
+        CakeSession::write('Address.pref', $physicaldestination['StateOrRegion']);
+        CakeSession::write('Address.address1', $physicaldestination['City']);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
 
@@ -2141,6 +2174,31 @@ class FirstOrderController extends MinikuraController
 
     }
 
+    // 日付CD変換
+    private function _convDatetimeCode ( $data_code ){
+
+        // 時間CODE変換表
+        $timeList = array( 2 => '午前中',
+            //3 => '12～14時',
+            4 => '14～16時',
+            5 => '16～18時',
+            6 => '18～20時',
+            7 => '19～21時' );
+
+
+        // 日付
+        $date = substr( $data_code, 0, 10 );
+
+        // 時間
+        $time = substr( $data_code, 11, 1 );
+
+        // 戻り値
+        $datetime = date( "Y年m月d日", strtotime( $date ) );
+
+        if( isset( $timeList[$time] )  ) $datetime .= ' '.$timeList[$time];
+        return $datetime;
+    }
+
     /**
      * first orderで使用しているセッション類を削除
      */
@@ -2154,6 +2212,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::delete('Email');
         CakeSession::delete('FirstOrderList');
         CakeSession::delete('order_sneaker');
+        CakeSession::delete('FirstOrder');
 
     }
 
