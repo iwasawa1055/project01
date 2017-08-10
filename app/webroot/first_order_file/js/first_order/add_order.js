@@ -51,11 +51,11 @@ var AppAmazonPaymentLogin =
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
-            AppAmazonPaymentLogin.e("AmazonPayButton", "/first_order/input_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonMono", "/first_order/input_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonHako", "/first_order/input_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonCleaning", "/first_order/input_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonHakoLimitedVer1", "/first_order/input_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButton", "/first_order/add_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButtonMono", "/first_order/add_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButtonHako", "/first_order/add_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButtonCleaning", "/first_order/add_amazon_profile");
+            AppAmazonPaymentLogin.e("AmazonPayButtonHakoLimitedVer1", "/first_order/add_amazon_profile");
         };
     },
     b: function () {

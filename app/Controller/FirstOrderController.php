@@ -362,7 +362,7 @@ class FirstOrderController extends MinikuraController
      * アマゾンペイメント widgetで遷移先を指定
      * アマゾンペイメントでアカウント情報を取得
      */
-    public function input_amazon_profile()
+    public function add_amazon_profile()
     {
 
         //* session referer check
@@ -541,7 +541,7 @@ class FirstOrderController extends MinikuraController
     public function add_amazon_payment()
     {   
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/input_amazon_profile', 'FirstOrder/add_amazon_payment', 'FirstOrder/confirm_amazon_pay'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_profile', 'FirstOrder/add_amazon_payment', 'FirstOrder/confirm_amazon_pay'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
