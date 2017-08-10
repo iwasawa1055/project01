@@ -153,7 +153,7 @@
       size: "medium",
       authorization: function () {
         loginOptions = {scope: "profile payments:widget", popup: "true"};
-        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/input_amazon_profile");
+        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/add_amazon_profile");
       }
     });
   }

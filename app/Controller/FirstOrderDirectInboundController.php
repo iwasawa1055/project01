@@ -166,7 +166,7 @@ class FirstOrderDirectInboundController extends MinikuraController
      * アマゾンペイメント widgetで遷移先を指定
      * アマゾンペイメントでアカウント情報を取得
      */
-    public function input_amazon_profile()
+    public function add_amazon_profile()
     {
 
         //* session referer check
@@ -186,7 +186,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
 
         // パラメータを引き継ぐ
-        $set_url = str_replace('input_amazon_profile', 'add_amazon_payment', $_SERVER["REQUEST_URI"]);
+        $set_url = str_replace('add_amazon_profile', 'add_amazon_payment', $_SERVER["REQUEST_URI"]);
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -203,7 +203,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/input_amazon_profile', 'FirstOrderDirectInbound/add_amazon_payment'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_profile', 'FirstOrderDirectInbound/add_amazon_payment'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'index']);
         }
