@@ -23,7 +23,7 @@
   </section>
   <!-- ADRESS -->
   <div id="full" class="dsn-wrapper">
-    <form method="post" action="/first_order_direct_inbound/nv_confirm_amazon_payment" novalidate>
+    <form method="post" action="/first_order_direct_inbound/confirm_amazon_pay" novalidate>
       <section id="dsn-adress">
         <div class="dsn-wrapper">
           <div class="dsn-divider"></div>
@@ -66,6 +66,9 @@
                   <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
                   <?php } ?>
                 </select>
+                <br>
+                <?php echo $this->Flash->render('date_cd');?>
+                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('Address.select_delivery_day'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_day'))?><?php else : ?><?php endif; ?>">
               </div>
               <div class="dsn-form">
                 <label>集荷希望時間<span class="dsn-required">※</span></label>
@@ -74,6 +77,9 @@
                   <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
                   <?php } ?>
                 </select>
+                <br>
+                <?php echo $this->Flash->render('time_cd');?>
+                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php if (!empty(CakeSession::read('Address.select_delivery_time'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_time'))?><?php else : ?><?php endif; ?>">
               </div>
             </div>
             <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('Address.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>
@@ -85,47 +91,57 @@
           <div class="dsn-divider"></div>
           <div class="dsn-form form-line">
             <label>生年月日<span class="dsn-required">※</span></label>
-            <select class="dsn-select-birth-year focused">
+            <select class="dsn-select-birth-year focused" name="birth_year">
               <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
                 <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
               <?php endfor;?>
             </select>
-            <select class="dsn-select-birth-month focused">
+            <select class="dsn-select-birth-month focused" name="birth_month">
               <?php for ($i = 1; $i <= 12; $i++) :?>
                 <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_month') ) echo " SELECTED";?>><?php echo $i;?>月</option>
               <?php endfor;?>
             </select>
-            <select class="dsn-select-birth-day focused">
+            <select class="dsn-select-birth-day focused" name="birth_day">
               <?php for ($i = 1; $i <= 31; $i++) :?>
                 <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
               <?php endfor;?>
             </select>
+            <br>
+            <?php echo $this->Flash->render('birth');?>
           </div>
-
           <div class="dsn-form dsn-form-line">
             <label>性別<span class="dsn-required">※</span></label>
             <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>
             <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+            <br>
+            <?php echo $this->Flash->render('gender');?>
           </div>
           <div class="dsn-divider"></div>
           <div class="dsn-form dsn-form-line">
             <label>お知らせメール</label>
-            <select class="dsn-select-info focused">
-              <option value="">受信する</option>
-              <option value="">受信しない</option>
+            <select class="dsn-select-info focused" name="newsletter">
+              <option value="1"<?php if ( CakeSession::read('Email.newsletter') === "1" ) echo " SELECTED";?>>受信する</option>
+              <option value="0"<?php if ( CakeSession::read('Email.newsletter') === "0" ) echo " SELECTED";?>>受信しない</option>
             </select>
           </div>
           <div class="dsn-form dsn-form-line">
             <label>紹介コード</label>
-            <input class="dsn-referral focused" type="text" size="20" maxlength="20">
+            <input class="dsn-referral focused" type="text" size="20" name="alliance_cd" maxlength="20" value="<?php echo CakeSession::read('Email.alliance_cd');?>">
+            <br>
+            <?php echo $this->Flash->render('alliance_cd');?>
           </div>
           <div class="dsn-divider"></div>
           <div class="dsn-form">
-            <label class="dsn-terms"><input type="checkbox" class="dsn-term focused" id="term"><span class="check-icon"></span> <label for="term" class="dsn-term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="dsn-link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label></label>
+            <label class="dsn-terms"><input type="checkbox" class="dsn-term focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> 
+              <label for="term" class="dsn-term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="dsn-link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
+            </label>
+            <?php echo $this->Flash->render('remember');?>
+            <span id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
           </div>
         </div>
       </section>
-      <section class="dsn-nextback"><a href="#" class="dsn-btn-next js-btn-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></a>
+      <section class="dsn-nextback">
+        <button href="#" class="dsn-btn-next js-btn-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
       </section>
     </form>
   </div>

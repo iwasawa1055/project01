@@ -221,11 +221,11 @@ class FirstOrderDirectInboundController extends MinikuraController
      * アマゾンペイメント widgetで遷移先を指定
      * アマゾンペイメントで
      */
-    public function nv_confirm_amazon_payment()
+    public function confirm_amazon_pay()
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_payment', 'FirstOrderDirectInbound/nv_confirm_amazon_payment'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_payment', 'FirstOrderDirectInbound/confirm_amazon_pay'], true) === false) {
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
 
             //* NG redirect
@@ -238,18 +238,26 @@ class FirstOrderDirectInboundController extends MinikuraController
         $password = filter_input(INPUT_POST, 'password');
         $password_confirm = filter_input(INPUT_POST, 'password_confirm');
 
-        $params = [
-//            'email'            => filter_input(INPUT_POST, 'email'),
+        $params_email = [
             'password'         => $password,
             'password_confirm' => $password_confirm,
-//            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
-//           'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
-//            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
-//            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
-//            'gender'           => filter_input(INPUT_POST, 'gender'),
-//            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
-//            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
-//            'remember'         => filter_input(INPUT_POST, 'remember'),
+            'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
+            'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
+            'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
+            'birth_day'        => filter_input(INPUT_POST, 'birth_day'),
+            'gender'           => filter_input(INPUT_POST, 'gender'),
+            'newsletter'       => filter_input(INPUT_POST, 'newsletter'),
+            'alliance_cd'      => filter_input(INPUT_POST, 'alliance_cd'),
+            'remember'         => filter_input(INPUT_POST, 'remember'),
+        ];
+
+
+        $params_address = [
+            'date_cd'               => filter_input(INPUT_POST, 'date_cd'),
+            'time_cd'               => filter_input(INPUT_POST, 'time_cd'),
+            'select_delivery_day'   => filter_input(INPUT_POST, 'select_delivery_day'),
+            'select_delivery_time'  => filter_input(INPUT_POST, 'select_delivery_time'),
+            'cargo'                 => filter_input(INPUT_POST, 'cargo'),
         ];
 
         // 確認用パスワード一致チェック
@@ -258,11 +266,68 @@ class FirstOrderDirectInboundController extends MinikuraController
             $is_validation_error = true;
         }
 
+        //* Session write select_delivery_text
+        $params_address['select_delivery_day_list'] = json_decode($params_address['select_delivery_day']);
+
+        $params_address['select_delivery_text'] = "";
+        if(!empty($params_address['select_delivery_day_list'])) {
+            foreach ($params_address['select_delivery_day_list'] as $key => $value) {
+                if ($value->date_cd === $params_address['date_cd']) {
+                    $params_address['select_delivery_text'] = $value->text;
+                }
+            }
+        }
+
+        $params_address['select_delivery_time_list'] = json_decode($params_address['select_delivery_time']);
+
+        if(!empty($params_address['select_delivery_time_list'])) {
+            foreach ($params_address['select_delivery_time_list'] as  $key => $value) {
+                if ($value->time_cd === $params_address['time_cd']) {
+                    $params_address['select_delivery_text'] .= ' ' . $value->text;
+                }
+            }
+        }
+
         //* Session write
-        CakeSession::write('Email', $params);
+        CakeSession::write('Email', $params_email);
+        CakeSession::write('Address', $params_address);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Address ' . print_r($params_address, true));
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Email ' . print_r($params_email, true));
+
+
+/* ********************** */
+        // メールアドレスセット
+        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+        //* Session write
+        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
+
+        // 住所に関する情報保存
+        $name = $amazon_pay_user_info['name'];
+        $name = mb_convert_kana($name, "s");
+
+        // 空白で苗字名前がわかれているか？
+        $set_name = array();
+        if(strpos($name,' ') !== false){
+            $set_name = explode(" ",$name);
+        } else {
+            // スペースで区切られていない
+            $set_name[0] = $name;
+            $set_name[1] = '＿';
+        }
+
+        CakeSession::write('Address.lastname',      $set_name[0]);
+        CakeSession::write('Address.firstname',     $set_name[1]);
+
+/* ********************** */
+
+
 
         //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($params);
+        $validation_email = AppValid::validate($params_email);
+        $validation_address = AppValid::validate($params_address);
+
+        $validation = array_merge($validation_email, $validation_address);
 
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
@@ -273,7 +338,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         }
 
         // 規約同意を確認する
-        $validation = AppValid::validateTermsAgree($params['remember']);
+        $validation = AppValid::validateTermsAgree($params_email['remember']);
 
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation) ) {
@@ -283,13 +348,14 @@ class FirstOrderDirectInboundController extends MinikuraController
             $is_validation_error = true;
         }
 
+/*
         // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
         CakeSession::delete('registered_user_login_url');
         if (!$is_logined) {
             if ($is_validation_error !== true) {
                 // 既存ユーザか確認する
                 $this->loadModel('Email');
-                $result = $this->Email->getEmail(array('email' => $params['email']));
+                $result = $this->Email->getEmail(array('email' => $params_email['email']));
 
                 if ($result->status === "0") {
                     // エラーか既存アドレスか判定
@@ -311,6 +377,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             }
         }
 
+*/
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
         $amazon_billing_agreement_id = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
@@ -330,7 +397,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         if ($is_validation_error === true) {
             $this->redirect('/first_order_direct_inbound/add_amazon_payment');
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Params ' . print_r($params, true));
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Params_email ' . print_r($params_email, true));
             return;
         }
 
@@ -339,7 +406,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->redirect('/first_order_direct_inbound/confirm');
+//        $this->redirect('/first_order_direct_inbound/confirm');
     }
 
 
