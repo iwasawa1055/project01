@@ -82,11 +82,7 @@
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>
           <select class="dsn-select-delivery focused" id="datetime_cd" name="datetime_cd">
-            <option value="">0000年00月00日 午前中</option>
-            <option value="">0000年00月00日 12時〜</option>
-            <option value="">0000年00月00日 14時〜</option>
-            <option value="">0000年00月00日 16時〜</option>
-            <option value="">0000年00月00日 18時〜</option>
+            <option value="">以下からお選びください</option>
           </select>
           <?php echo $this->Flash->render('datetime_cd');?>
         </div>

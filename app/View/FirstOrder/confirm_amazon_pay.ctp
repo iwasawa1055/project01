@@ -1,10 +1,25 @@
 <?php echo $this->element('FirstOrder/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
+<link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
+<link href="/first_order_file/css/first_order/add_amazon_payment_dev.css" rel="stylesheet">
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
-<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
-  <form method="post" action="/first_order/complete" novalidate>
+
+<!-- PAGENATION -->
+<section id="dsn-pagenation">
+  <ul>
+    <li><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
+    </li>
+    <li><i class="fa fa-amazon"></i><span>Amazon<br>アカウントで<br>お支払い</span>
+    </li>
+    <li class="dsn-on"><i class="fa fa-check"></i><span>確認</span>
+    </li>
+    <li><i class="fa fa-truck"></i><span>完了</span>
+    </li>
+  </ul>
+</section>
+<form method="post" action="/first_order/complete" novalidate>
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
@@ -67,7 +82,7 @@
   </section>
   <section class="nextback"><a href="/first_order/add_amazon_payment?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
   </section>
-  </form>
+</form>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script src="/first_order_file/js/first_order/confirm.js"></script>
