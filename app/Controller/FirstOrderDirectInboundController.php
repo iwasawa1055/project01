@@ -178,15 +178,73 @@ class FirstOrderDirectInboundController extends MinikuraController
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
         if($access_token === null) {
-
+            $this->Flash->validation('Amazonアカウントでお支払い ログインエラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_order']);
         }
+
+        CakeSession::write('FirstOrderDirectInbound.amazon_pay.access_token', $access_token);
 
         $this->loadModel('AmazonPayModel');
         $res = $this->AmazonPayModel->getUserInfo($access_token);
 
+        // 情報が取得できているか確認
+        if(!isset($res['name']) || !isset($res['user_id']) || !isset($res['email'])) {
+            $this->Flash->validation('Amazonアカウントでお支払い アカウント情報エラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_order']);
+        }
+
+        if(($res['name'] === '') || ($res['user_id'] === '') || ($res['email'] === '')) {
+            $this->Flash->validation('Amazonアカウントでお支払い アカウント情報エラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_order']);
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+
+        CakeSession::write('FirstOrderDirectInbound.amazon_pay.user_info', $res);
+
+        $is_validation_error = false;
+
+        //*  validation 基本は共通クラスのAppValidで行う
+        //$validation = AppValid::validate($direct_inbound);
+
+        // email確認
+        // アマゾンペイメントメールエラー処理
+        CakeSession::delete('registered_user_login_url');
+
+        if ($is_validation_error !== true) {
+            // amazonユーザ情報取得
+            $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
+
+            // 既存ユーザか確認する
+            $this->loadModel('Email');
+            $result = $this->Email->getEmail(array('email' => $amazon_pay_user_info['email']));
+
+            if ($result->status === "0") {
+                // エラーか既存アドレスか判定
+                if ($result->http_code !== "400") {
+                    $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
+                    $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
+                    if (!is_null(CakeSession::read('order_code'))) {
+                        $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_code.param') . '=' . CakeSession::read('order_code')
+                            . '?' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
+                    }
+
+                    CakeSession::write('registered_user_login_url', $registered_user_login_url);
+
+                    // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
+
+                }
+                $is_validation_error = true;
+            }
+        }
+
+        if ($is_validation_error === true) {
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
+            return;
+        }
 
         // パラメータを引き継ぐ
-        $set_url = str_replace('add_amazon_profile', 'add_amazon_payment', $_SERVER["REQUEST_URI"]);
+        //$set_url = str_replace('add_amazon_profile', 'add_amazon_payment', $_SERVER["REQUEST_URI"]);
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
@@ -292,13 +350,8 @@ class FirstOrderDirectInboundController extends MinikuraController
         CakeSession::write('Email', $params_email);
         CakeSession::write('Address', $params_address);
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Address ' . print_r($params_address, true));
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Email ' . print_r($params_email, true));
-
-
-/* ********************** */
         // メールアドレスセット
-        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+        $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
         //* Session write
         CakeSession::write('Email.email', $amazon_pay_user_info['email']);
 
@@ -319,9 +372,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         CakeSession::write('Address.lastname',      $set_name[0]);
         CakeSession::write('Address.firstname',     $set_name[1]);
 
-/* ********************** */
-
-
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Amazon_Pay_User_Info ' . print_r($amazon_pay_user_info, true));
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation_email = AppValid::validate($params_email);
@@ -348,36 +399,6 @@ class FirstOrderDirectInboundController extends MinikuraController
             $is_validation_error = true;
         }
 
-/*
-        // ログインしていないくて、ここまでバリデーションエラーがない場合apiでメール既存チェック
-        CakeSession::delete('registered_user_login_url');
-        if (!$is_logined) {
-            if ($is_validation_error !== true) {
-                // 既存ユーザか確認する
-                $this->loadModel('Email');
-                $result = $this->Email->getEmail(array('email' => $params_email['email']));
-
-                if ($result->status === "0") {
-                    // エラーか既存アドレスか判定
-                    if ($result->http_code !== "400") {
-                        $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
-                        $registered_user_login_url = '/login?c=FirstOrderDirectInbound&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
-                        if (!is_null(CakeSession::read('order_code'))) {
-                            $registered_user_login_url = '/login?c=FirstOrderDirectInbound&a=index&p=' . Configure::read('app.lp_code.param') . '=' . CakeSession::read('order_code')
-                                                                                           . '?' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
-                        }
-
-                        CakeSession::write('registered_user_login_url', $registered_user_login_url);
-
-                        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
-
-                    }
-                    $is_validation_error = true;
-                }
-            }
-        }
-
-*/
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
         $amazon_billing_agreement_id = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
@@ -397,10 +418,9 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         if ($is_validation_error === true) {
             $this->redirect('/first_order_direct_inbound/add_amazon_payment');
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Params_email ' . print_r($params_email, true));
+            
             return;
         }
-
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
 
         //* session referer set
