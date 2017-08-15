@@ -1,9 +1,25 @@
 <?php echo $this->element('FirstOrderDirectInbound/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
+<link href="/first_order_direct_inbound_file/css/dsn-mybox.css" rel="stylesheet">
+<link href="/css/dsn-amazon-pay.css" rel="stylesheet">
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrderDirectInbound/header'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/nav'); ?>
-<?php echo $this->element('FirstOrderDirectInbound/breadcrumb_list'); ?>
+
+<!-- PAGENATION -->
+  <section id="dsn-pagenation">
+    <ul>
+      <li><i class="fa fa-pencil-square-o"></i><span>集荷内容<br>登録</span>
+      </li>
+      <li><i class="fa fa-amazon"></i><span>Amazon<br>アカウントで<br>お支払い</span>
+      </li>
+      <li class="dsn-on"><i class="fa fa-check"></i><span>確認</span>
+      </li>
+      <li><i class="fa fa-truck"></i><span>完了</span>
+      </li>
+    </ul>
+  </section>
+  
   <form method="post" action="/first_order_direct_inbound/complete" novalidate>
   <!-- ADRESS -->
   <section id="dsn-adress">
