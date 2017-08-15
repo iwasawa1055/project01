@@ -20,7 +20,7 @@
     </ul>
   </section>
   
-  <form method="post" action="/first_order_direct_inbound/complete" novalidate>
+  <form method="post" action="/first_order_direct_inbound/complete_amazon_pay" novalidate>
   <!-- ADRESS -->
   <section id="dsn-adress">
     <div class="dsn-wrapper">
@@ -95,7 +95,7 @@
       </div>
     </div>
   </section>
-  <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容で申し込みをする <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_amazon_payment?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容で申し込みをする <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
