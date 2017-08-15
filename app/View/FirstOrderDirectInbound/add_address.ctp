@@ -147,25 +147,7 @@
 <script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_direct_inbound_file/js/dsn-mybox.js"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_address.js"></script>
-
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_payment.js"></script>
-<script type="text/javascript">
-  function showButtonDirect() {
-    var authRequest;
-    var host = location.protocol + '//' + location.hostname;
-    OffAmazonPayments.Button("AmazonPayButtonDirect", AppAmazonPaymentLogin.SELLER_ID, {
-      type: "PwA",
-      color: "Gold",
-      size: "medium",
-      authorization: function () {
-        loginOptions = {scope: "profile payments:widget", popup: "true"};
-        authRequest = amazon.Login.authorize(loginOptions, host + "/first_order_direct_inbound/add_amazon_profile");
-      }
-    });
-  }
-
-</script>
-
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>
