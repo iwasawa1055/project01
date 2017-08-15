@@ -25,7 +25,7 @@
             <li>制限サイズより大きいサイズを預け入れした場合、ボックス料金が追加でかかりますので、ご注意ください。</li>
             <li>お送りいただいたボックスが保管が難しい場合は別途300円追加の上、弊社指定のボックスに入れ替え保管させていただきます。</li>
             <li>お送りいただいたボックスが取り出し時、配送に耐えられないと弊社が判断した場合は別途300円追加の上、弊社指定のボックスに入れ替え保管させていただきます。</li>
-            <li>お預かり申し込みできないものを <a href="https://minikura.com/use_agreement/index.html#attachment1" target="_blank">minikrua利用規約 <i class="fa fa-external-link-square"></i></a> でご確認いただき申し込みください。</li>
+            <li>お預かり申し込みできないものを <a href="https://minikura.com/use_agreement/index.html#attachment1" target="_blank">minikura利用規約 <i class="fa fa-external-link-square"></i></a> でご確認いただき申し込みください。</li>
           </ul>
           <label>預け入れ個数<span class="dsn-required">※</span></label>
           <select class="dsn-select-number" name="direct_inbound">

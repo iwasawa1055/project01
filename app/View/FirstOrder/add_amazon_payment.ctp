@@ -2,6 +2,8 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
 <link href="/first_order_file/css/first_order/add_amazon_payment_dev.css" rel="stylesheet">
+<link href="/css/dsn-amazon-pay.css" rel="stylesheet">
+<link href="/first_order_file/css/first_order/dsn-amazon-pay_dev.css" rel="stylesheet">
 <title>Amazonアカウントでお支払い - minikura</title>
 
 <?php echo $this->element('FirstOrder/header'); ?>
