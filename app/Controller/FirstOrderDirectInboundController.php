@@ -426,7 +426,31 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-//        $this->redirect('/first_order_direct_inbound/confirm');
+
+        // 前処理の不要なセッションを削除
+        CakeSession::delete('registered_user_login_url');
+
+        // オーダー種類を集計
+        // order情報
+        $Order = CakeSession::read('Order');
+
+        $FirstOrderList = array();
+        // 添字に対応するコードを設定
+        //
+        $FirstOrderList['direct_inbound']['number']    = $Order['direct_inbound']['direct_inbound'];
+        $FirstOrderList['direct_inbound']['kit_name']  = 'minikuraダイレクト';
+        $FirstOrderList['direct_inbound']['price'] = 0;
+        $FirstOrderList['storage_fee']['number']    = $Order['direct_inbound']['direct_inbound'];
+        $FirstOrderList['storage_fee']['kit_name']  = '月額保管料（250円）';
+        $FirstOrderList['storage_fee']['price'] = $Order['direct_inbound']['direct_inbound'] * 250;
+        $FirstOrderList['shipping_fee']['number']    = '';
+        $FirstOrderList['shipping_fee']['kit_name']  = '預け入れ送料';
+        $FirstOrderList['shipping_fee']['price'] = 0;
+
+
+        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
+
+        CakeSession::write('FirstOrderList', $FirstOrderList);
     }
 
 
