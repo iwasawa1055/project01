@@ -1,4 +1,4 @@
-var AppAmazonPaymentLogin =
+var AppAmazonPayLogin =
 {
 
     SELLER_ID:"A1MBRBB8GPQFL9",
@@ -19,6 +19,6 @@ var AppAmazonPaymentLogin =
  * */
 $(function()
 {
-    AppAmazonPaymentLogin.a();
+    AppAmazonPayLogin.a();
 });
 

@@ -41,21 +41,21 @@ var AppAddOrder =
     },
 }
 
-var AppAmazonPaymentLogin =
+var AppAmazonPayLogin =
 {
     SELLER_ID:"A1MBRBB8GPQFL9",
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     a: function () {
         window.onAmazonLoginReady = function(){
-            amazon.Login.setClientId(AppAmazonPaymentLogin.ClientId);
+            amazon.Login.setClientId(AppAmazonPayLogin.ClientId);
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
-            AppAmazonPaymentLogin.e("AmazonPayButton", "/first_order/add_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonMono", "/first_order/add_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonHako", "/first_order/add_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonCleaning", "/first_order/add_amazon_profile");
-            AppAmazonPaymentLogin.e("AmazonPayButtonHakoLimitedVer1", "/first_order/add_amazon_profile");
+            AppAmazonPayLogin.e("AmazonPayButton", "/first_order/add_amazon_profile");
+            AppAmazonPayLogin.e("AmazonPayButtonMono", "/first_order/add_amazon_profile");
+            AppAmazonPayLogin.e("AmazonPayButtonHako", "/first_order/add_amazon_profile");
+            AppAmazonPayLogin.e("AmazonPayButtonCleaning", "/first_order/add_amazon_profile");
+            AppAmazonPayLogin.e("AmazonPayButtonHakoLimitedVer1", "/first_order/add_amazon_profile");
         };
     },
     b: function () {
@@ -95,12 +95,12 @@ var AppAmazonPaymentLogin =
         var authRequest;
         var host = location.protocol + '//' + location.hostname;
 
-        OffAmazonPayments.Button(button_name, AppAmazonPaymentLogin.SELLER_ID, {
+        OffAmazonPayments.Button(button_name, AppAmazonPayLogin.SELLER_ID, {
           type: "PwA",
           color: "Gold",
           size: "medium",
           authorization: function () {
-            parem = AppAmazonPaymentLogin.b();
+            parem = AppAmazonPayLogin.b();
             loginOptions = {scope: "profile payments:widget", popup: "true"};
             set_parem='';
             if(parem != ''){
@@ -119,7 +119,7 @@ $(function()
 {
     AppAddOrder.a();
     AppAddOrder.b();
-    AppAmazonPaymentLogin.a();
-    AppAmazonPaymentLogin.c();
-    AppAmazonPaymentLogin.d();
+    AppAmazonPayLogin.a();
+    AppAmazonPayLogin.c();
+    AppAmazonPayLogin.d();
 });
