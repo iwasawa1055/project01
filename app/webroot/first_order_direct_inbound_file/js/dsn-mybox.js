@@ -1,11 +1,7 @@
-		
 		$(function () {
-			/*
-			$("#header").load("/elements/header.html");
-			*/
+			/*$("#header").load("/elements/header.html");*/
 			/**$("#footer").load("/elements/footer.html");**/
 		});
-
 		$("#arrival").click(function () {
 			$('.dsn-arrival').show('fast');
 			$('.dsn-yamato').hide('fast');
