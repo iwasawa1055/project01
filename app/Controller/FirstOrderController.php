@@ -531,17 +531,17 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         //$this->redirect($set_url);
-        $this->redirect('/first_order/add_amazon_payment');
+        $this->redirect('/first_order/add_amazon_pay');
     }
 
     /**
      * アマゾンペイメント widgetで遷移先を指定
      * アマゾンペイメントで
      */
-    public function add_amazon_payment()
+    public function add_amazon_pay()
     {   
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_profile', 'FirstOrder/add_amazon_payment', 'FirstOrder/confirm_amazon_pay'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_profile', 'FirstOrder/add_amazon_pay', 'FirstOrder/confirm_amazon_pay'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1032,7 +1032,7 @@ class FirstOrderController extends MinikuraController
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_payment', 'FirstOrder/confirm_amazon_pay'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_pay', 'FirstOrder/confirm_amazon_pay'], true) === false) {
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
 
             //* NG redirect
@@ -1159,7 +1159,7 @@ class FirstOrderController extends MinikuraController
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
 
         if ($is_validation_error === true) {
-            $this->redirect('/first_order/add_amazon_payment');
+            $this->redirect('/first_order/add_amazon_pay');
             return;
         }
 
