@@ -1,7 +1,7 @@
 <?php echo $this->element('FirstOrderDirectInbound/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>お届け先住所入力 - minikura</title>
-<link href="/first_order_direct_inbound_file/css/first_order_direct_inbound/add_amazon_payment_dev.css" rel="stylesheet">
+<link href="/first_order_direct_inbound_file/css/first_order_direct_inbound/add_amazon_pay_dev.css" rel="stylesheet">
 <?php echo $this->element('FirstOrderDirectInbound/header'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/nav'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/breadcrumb_list'); ?>
@@ -147,7 +147,7 @@
 <script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_direct_inbound_file/js/dsn-mybox.js"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_address.js"></script>
-<script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_payment.js"></script>
+<script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_pay.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>

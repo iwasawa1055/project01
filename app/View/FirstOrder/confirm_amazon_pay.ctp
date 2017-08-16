@@ -1,7 +1,7 @@
 <?php echo $this->element('FirstOrder/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
-<link href="/first_order_file/css/first_order/add_amazon_payment_dev.css" rel="stylesheet">
+<link href="/first_order_file/css/first_order/add_amazon_pay_dev.css" rel="stylesheet">
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
