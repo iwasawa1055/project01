@@ -1,9 +1,11 @@
-<?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('order/input_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/order/input_amazon_pay_dev.css', ['block' => 'css']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
 
     <div class="row">
@@ -12,10 +14,22 @@
       </div>
     </div>
     <div class="row">
-      <form method="post" class="select-add-address-form" action="/order/confirm" novalidate>
+      <form method="post" class="select-add-address-form" action="/order/confirm_amazon_pay" novalidate>
         <div class="col-lg-12">
           <div class="panel panel-default">
-            <?php echo $this->element('Order/breadcrumb_list'); ?>
+            <section id="dsn-pagenation">
+                <ul>
+                    <li class="dsn-on">
+                        <i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-check"></i><span>確認</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-truck"></i><span>完了</span>
+                    </li>
+                </ul>
+            </section>
 
             <!-- LINEUP -->
             <section id="dsn-lineup">
@@ -95,131 +109,23 @@
                   </tr>
                 </table>
                 <div class="dsn-divider"></div>
-                <?php if (CakeSession::read('OrderKit.is_credit')) { ?>
-                  <h4 class="dev-after-link">クレジットカード情報の入力</h4><a href="https://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
-                  <div class="dsn-form">
-                    <?php echo $this->Flash->render('customer_kit_card_info');?>
-                  </div>
-                  <div class="dsn-form">
-                    <?php if (!is_null(CakeSession::read('OrderKit.card_data'))) { ?>
-                      <div class="dsn-form">
-                        <?php echo $this->Flash->render('card_no');?>
+                
+                    <!-- AmazonPayment wedget表示処理 -->
+                  <div id="dsn-amazon-pay" class="form-group col-lg-12">
+                    <div class="dsn-address">
+                      <div id="addressBookWidgetDiv">
                       </div>
-                      <label class="dsn-select-cards"><input type="radio" name="select-card" id="as-card"     value="default"  <?php if((string)CakeSession::read('OrderKit.select_card') === "default") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="as-card" class="dsn-select-card"><?php echo h(CakeSession::read('OrderKit.card_data.card_no')) ?></label></label>
-                      <label class="dsn-select-cards"><input type="radio" name="select-card" id="change-card" value="register" <?php if((string)CakeSession::read('OrderKit.select_card') === "register") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="change-card" class="dsn-select-card">登録したカードを変更する</label></label>
-                    <?php } ?>
-                  </div>
-                  <div class="dsn-input-security-code">
-                    <div class="dsn-divider"></div>
-                    <h4>セキュリティコードをご入力ください。</h4>
-                    <div class="dsn-form">
-                      <label>セキュリティコード<sup><span class="required">※</span></sup></label>
-                      <input type="tel" class="dsn-security-code" name="security_cd" placeholder="0123" size="6" maxlength="6">
-                      <div class="dsn-form">
-                        <?php echo $this->Flash->render('security_cd');?>
+                    </div>
+                    <div class="dsn-credit">
+                      <div id="walletWidgetDiv">
                       </div>
                     </div>
                   </div>
-                  <div class="dsn-input-change-card">
-                    <div class="dsn-divider"></div>
-                    <h4>利用するカード情報をご入力ください。</h4>
-                    <div class="dsn-form">
-                      <label>クレジットカード番号<sup><span class="required">※</span></sup><br><span class="required">全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-                      <input type="tel" class="name focused" name="card_no" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo CakeSession::read('Credit.card_no');?>">
-                      <div class="dsn-form">
-                        <?php echo $this->Flash->render('new_card_no');?>
-                      </div>
-                    </div>
-                    <div class="dsn-form">
-                      <label>セキュリティコード<sup><span class="required">※</span></sup></label>
-                      <input type="tel" class="dsn-security-code focused" name="new_security_cd" placeholder="0123" size="6" maxlength="6" value="">
-                      <?php echo $this->Flash->render('new_security_cd');?>
-                    </div>
-                    <div class="dsn-form">
-                      <label>カード有効期限<sup><span class="required">※</span></sup></label>
-                      <select class="dsn-select-month focused" name="expire_month">
-                        <?php foreach ( $this->Html->creditcardExpireMonth() as $value => $string ) :?>
-                        <option value="<?php echo $value;?>"<?php if ( $value === substr(CakeSession::read('Credit.expire'),0,2) ) echo " SELECTED";?>><?php echo $string;?></option>
-                        <?php endforeach ?>
-                      </select>
-                      /
-                      <select class="dsn-select-year focused" name="expire_year">
-                        <?php foreach ( $this->Html->creditcardExpireYear() as $value => $string ) :?>
-                        <option value="<?php echo $value;?>"<?php if ( (string) $value === substr(CakeSession::read('Credit.expire'),2,2) ) echo " SELECTED";?>><?php echo $string;?></option>
-                        <?php endforeach ?>
-                      </select>
-                      <br>
-                      <?php echo $this->Flash->render('expire');?>
-                    </div>
-                    <div class="dsn-form">
-                      <label>カード名義<sup><span class="required">※</span></sup></label>
-                      <input type="url" class="dsn-name holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
-                      <?php echo $this->Flash->render('holder_name');?>
+                  <div id="dsn-payment" class="form-group col-lg-12"> 
+                    <div id="consentWidgetDiv">
                     </div>
                   </div>
-                  <div class="dsn-divider"></div>
-                  <?php } ?>
-                <div class="dsn-form">
-                  <label>お届け先</label>
-                    <select name="address_id" id="address_id" class="dsn-adress select-delivery focused">
-                      <!--<option value="">以下からお選びください</option>-->
-                      <?php foreach ( CakeSession::read('OrderKit.address_list') as $key => $value ) {?>
-                      <option value="<?php echo $key;?>"<?php if ( $key === (int)CakeSession::read('OrderKit.address_id') ) echo " selected";?>><?php echo $value;?></option>
-                      <?php } ?>
-                    </select>
-                  <?php echo $this->Flash->render('format_address');?>
-                  <?php echo $this->Flash->render('customer_address_info');?>
-                </div>
-                <div class="dsn-input-new-adress">
-                  <div class="dsn-form">
-                    <label>お名前<sup><span class="required">※</span></sup></label>
-                    <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
-                    <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
-                    <br>
-                    <?php echo $this->Flash->render('lastname'); ?>
-                    <?php echo $this->Flash->render('firstname'); ?>
-                    <input type="hidden" name="lastname_kana" value="<?php echo CakeSession::read('Address.lastname_kana');?>">
-                    <input type="hidden" name="firstname_kana" value="<?php echo CakeSession::read('Address.firstname_kana');?>">
-                  </div>
-                  <div class="dsn-divider"></div>
-                  <div class="dsn-form">
-                    <label>郵便番号<sup><span class="required">※</span></sup><br><span class="required">ハイフンありなし、どちらでもご入力いただけます。<br>入力すると以下の住所が自動で入力されます。</span></label>
-                    <input type="tel" name="postal" id="postal" class="dsn-postal search_address_postal focused" placeholder="0123456" size="8" maxlength="8" value="<?php echo CakeSession::read('Address.postal');?>">
-                    <?php echo $this->Flash->render('postal');?>
-                  </div>
-                  <div class="dsn-form">
-                    <label>都道府県<span class="required">※</span></label>
-                    <input type="text" name="pref" class="dsn-adress address_pref focused" placeholder="東京都" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.pref');?>">
-                    <?php echo $this->Flash->render('pref');?>
-                  </div>
-                  <div class="dsn-form">
-                    <label>住所<span class="required">※</span></label>
-                    <input type="text" name="address1" class="dsn-adress address_address1 focused" placeholder="品川区" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address1');?>">
-                    <?php echo $this->Flash->render('address1');?>
-                  </div>
-                  <div class="dsn-form">
-                    <label>番地<span class="required">※</span></label>
-                    <input type="text" name="address2" class="dsn-adress address_address2 focused" placeholder="東品川2-2-28" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address2');?>">
-                    <?php echo $this->Flash->render('address2');?>
-                  </div>
-                  <div class="dsn-form">
-                    <label>建物名</label>
-                    <input type="text" name="address3" class="dsn-adress focused" placeholder="Tビル" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address3');?>">
-                    <?php echo $this->Flash->render('address3');?>
-                  </div>
-                  <div class="dsn-divider"></div>
-                  <div class="dsn-form">
-                    <label>電話番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-                    <input type="tel" name="tel1" class="dsn-tel focused" placeholder="01234567890" size="15" maxlength="15" value="<?php echo CakeSession::read('Address.tel1');?>">
-                    <?php echo $this->Flash->render('tel1');?>
-                  </div>
-                  <div class="dsn-divider"></div>
-                  <div class="dsn-form">
-                    <label class="dsn-regist-adress">
-                      <input type="checkbox" class="focused" id="regist-adress" name="insert-adress-list" <?php if (CakeSession::read('OrderKit.insert_address_list'))  { ?>checked <?php } ?>>
-                      <span class="dsn-check-icon"></span> <label for="regist-adress" class="dsn-regist-adress">入力した住所をお届け先リストに登録する</label></label>
-                  </div>
-                </div>
+
                 <div class="dsn-divider"></div>
                 <div class="dsn-form">
                   <label>お届け希望日時</label>
@@ -239,9 +145,6 @@
         </div>
         <section class="dsn-nextback">
           <button type="submit" class="dsn-btn-next-full">確認へ <i class="fa fa-chevron-circle-right"></i></button>
-        </section>
-        <section class="dsn-nextback">
-          <a href="/order/input_amazon_profile" class="dsn-btn-next-full">Amazon Payの場合</a>
         </section>      
 
         <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
@@ -366,3 +269,6 @@
         <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
       </div>
     </div>
+
+<!-- 非同期にするため　ここでWidget読み込み -->
+<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
