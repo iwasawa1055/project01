@@ -159,6 +159,14 @@ class CustomerComponent extends Component
         return true;
     }
 
+    public function isAmazonPay()
+    {
+        if (empty(CakeSession::read(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY))) {
+            return false;
+        }
+        return true;
+    }
+
     public function getName()
     {
         if ($this->isLogined()) {

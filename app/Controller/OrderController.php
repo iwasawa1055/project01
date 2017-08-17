@@ -56,6 +56,11 @@ class OrderController extends MinikuraController
             return $this->setAction('input_sneaker');
         }
 
+        // アマゾンペイメント対応
+        if ($this->Customer->isAmazonPay()) {
+            $this->redirect('/order/input_amazon_profile');
+        }
+
         CakeSession::write('order_sneaker', false);
         return $this->setAction('input');
     }

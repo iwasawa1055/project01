@@ -39,6 +39,7 @@ class ApiModel extends AppModel
     // セッション値のキー
     const SESSION_API_TOKEN = 'api.token';
     const SESSION_API_DIVISION = 'api.division';
+    const SESSION_AMAZON_PAY_ACCESS_KEY = 'amazon_pay.access_key';
 
     protected $oem_key = null;
     protected $access_point = null;
