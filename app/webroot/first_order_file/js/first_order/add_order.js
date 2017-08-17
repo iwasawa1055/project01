@@ -100,13 +100,13 @@ var AppAmazonPayLogin =
           color: "Gold",
           size: "medium",
           authorization: function () {
-            parem = AppAmazonPayLogin.b();
-            loginOptions = {scope: "profile payments:widget", popup: "true"};
-            set_parem='';
-            if(parem != ''){
-              set_parem = '?' + parem;
+            param = AppAmazonPayLogin.b();
+            loginOptions = {scope: "profile payments:widget payments:shipping_address", popup: "true"};
+            set_param='';
+            if(param != ''){
+              set_param = '?' + param;
             }
-            authRequest = amazon.Login.authorize(loginOptions, host + path + set_parem);
+            authRequest = amazon.Login.authorize(loginOptions, host + path + set_param);
           }
         });
     }

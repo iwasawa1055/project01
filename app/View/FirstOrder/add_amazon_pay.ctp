@@ -42,6 +42,19 @@
             </div>
           </div>
         </div>
+        <div class="dsn-form">
+          <?php // アマゾンから取得した情報をバリデーション ?>
+          <?php echo $this->Flash->render('lastname'); ?>
+          <?php echo $this->Flash->render('firstname'); ?>
+          <?php echo $this->Flash->render('lastname_kana'); ?>
+          <?php echo $this->Flash->render('firstname_kana'); ?>
+          <?php echo $this->Flash->render('postal');?>
+          <?php echo $this->Flash->render('pref');?>
+          <?php echo $this->Flash->render('address1');?>
+          <?php echo $this->Flash->render('address2');?>
+          <?php echo $this->Flash->render('tel1');?>
+        </div>
+
         <div id="dsn-payment" class="form-group col-lg-12">
             <div id="consentWidgetDiv">
             </div>
