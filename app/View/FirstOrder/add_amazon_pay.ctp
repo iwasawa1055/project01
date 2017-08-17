@@ -26,6 +26,10 @@
 <div id="full" class="dsn-wrapper">
   <form method="post" action="/first_order/confirm_amazon_pay" novalidate>
     <section id="dsn-adress">
+      <?php echo $this->Flash->render('customer_regist_info');?>
+      <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+      <?php echo $this->Flash->render('customer_address_info');?>
+      <?php echo $this->Flash->render('customer_kit_info');?>
       <div class="dsn-wrapper">
         <div class="dsn-form"><div class="alert alert-danger" role="alert" id="error_alert"><i class="fa fa-exclamation-triangle"></i> </div></div>
         <div id="dsn-amazon-pay" class="form-group col-lg-12">

@@ -19,7 +19,7 @@
     </li>
   </ul>
 </section>
-<form method="post" action="/first_order/complete" novalidate>
+<form method="post" action="/first_order/complete_amazon_pay" novalidate>
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
@@ -48,10 +48,6 @@
 
       <div class="divider"></div>
       <div class="form">
-        <?php echo $this->Flash->render('customer_regist_info');?>
-        <?php echo $this->Flash->render('customer_card_info');?>
-        <?php echo $this->Flash->render('customer_address_info');?>
-        <?php echo $this->Flash->render('customer_kit_card_info');?>
         <label>お届け先住所</label>
         <p>〒<?php echo CakeSession::read('Address.postal');?></p>
         <p><?php echo CakeSession::read('Address.pref');?><?php echo CakeSession::read('Address.address1');?><?php echo CakeSession::read('Address.address2');?> <?php echo CakeSession::read('Address.address3');?></p>

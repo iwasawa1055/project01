@@ -25,6 +25,7 @@ $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
 $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
 $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+$config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
 
 /**
  * nike_snkrs用

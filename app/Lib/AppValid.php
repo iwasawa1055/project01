@@ -513,6 +513,25 @@ class AppValid
 	}
 
 	/**
+	 * アマゾンペイメントIDチェック
+	 * 桁数等、厳密な仕様がないため、最低限のバリデーション
+	 * exp:C03-4304289-5841639、amzn1.account.AHHYVXZ6ALUZFSEWZJ75RFLDQZUQ
+	 *
+	 * @access      public
+	 * @param       バリデーション
+	 * @return      boolean
+	 */
+	public static function isAmazonPayId($value)
+	{
+		// 半角英数字ハイフン,ドットを許容
+		if (! preg_match('/^[a-zA-Z0-9-.]+$/', $value)) {
+			return false;
+		}
+		// マッチを確認
+		return true;
+	}
+
+	/**
 	 * 共通 validation
 	 * $_requestsの内容をチェックする。フォーマットは
 	 * $_requests = [

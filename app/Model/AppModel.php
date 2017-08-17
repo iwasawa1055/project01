@@ -162,4 +162,9 @@ class AppModel extends Model
         return AppValid::isNotOnlySpace($value);
     }
 
+    public function isAmazonPayId($_check)
+    {
+        $value = current($_check);
+        return AppValid::isAmazonPayId($value);
+    }
 }

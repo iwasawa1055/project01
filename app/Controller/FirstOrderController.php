@@ -7,6 +7,8 @@ App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
 App::uses('FirstKitPrice', 'Model');
 App::uses('AmazonPayModel', 'Model');
+App::uses('PaymentAmazonPay', 'Model');
+App::uses('PaymentAmazonKitAmazonPay', 'Model');
 App::uses('AppCode', 'Lib');
 
 class FirstOrderController extends MinikuraController
@@ -1033,8 +1035,6 @@ class FirstOrderController extends MinikuraController
 
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_pay', 'FirstOrder/confirm_amazon_pay'], true) === false) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
-
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1057,10 +1057,9 @@ class FirstOrderController extends MinikuraController
             'remember'         => filter_input(INPUT_POST, 'remember'),
         ];
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
-
         //* Session write
         CakeSession::write('Email', $params);
+        CakeSession::delete('Email.datetime_cd');
 
         // メールアドレスセット
         $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
@@ -1069,7 +1068,8 @@ class FirstOrderController extends MinikuraController
 
         // 住所に関する情報保存
         $name = $amazon_pay_user_info['name'];
-        $name = mb_convert_kana($name, "s");
+        $name = html_entity_decode($name);
+        $name = mb_convert_kana($name, "s", "utf-8");
 
         // 空白で苗字名前がわかれているか？
         $set_name = array();
@@ -1082,7 +1082,9 @@ class FirstOrderController extends MinikuraController
         }
 
         CakeSession::write('Address.lastname',      $set_name[0]);
+        CakeSession::write('Address.lastname_kana',      '　');
         CakeSession::write('Address.firstname',     $set_name[1]);
+        CakeSession::write('Address.firstname_kana',      '　');
 
         CakeSession::write('Address.datetime_cd',           $params['datetime_cd']);
         CakeSession::write('Address.select_delivery_text',  $this->_convDatetimeCode($params['datetime_cd']));
@@ -1123,12 +1125,13 @@ class FirstOrderController extends MinikuraController
 
         }
 
-        $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+        $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
         if($amazon_billing_agreement_id === null) {
-
+            // 初回かリターン確認
+            if(CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id') != null) {
+                $amazon_billing_agreement_id = CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+            }
         }
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_reference_id ' . print_r($order_reference_id, true));
 
         $this->loadModel('AmazonPayModel');
         $set_param = array();
@@ -1145,6 +1148,7 @@ class FirstOrderController extends MinikuraController
 
         //
         CakeSession::write('FirstOrder.amazon_pay.billing_details', $res);
+        CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
 
         if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
 
@@ -1152,9 +1156,14 @@ class FirstOrderController extends MinikuraController
 
         $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
 
-        CakeSession::write('Address.postal', $physicaldestination['PostalCode']);
+        $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+        CakeSession::write('Address.postal', $PostalCode);
         CakeSession::write('Address.pref', $physicaldestination['StateOrRegion']);
         CakeSession::write('Address.address1', $physicaldestination['City']);
+
+        // address2 tel スタブ
+        CakeSession::write('Address.address2', 'スタブ');
+        CakeSession::write('Address.tel1', '090-1234-1234');
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
 
@@ -1171,8 +1180,6 @@ class FirstOrderController extends MinikuraController
         $Order = CakeSession::read('Order');
 
         $FirstOrderList = array();
-
-        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Order ' . print_r($Order, true));
 
         // 添字に対応するコードを設定
         $kit_code = KIT_CODE_DISP_NAME_ARRAY;
@@ -1244,9 +1251,8 @@ class FirstOrderController extends MinikuraController
             }
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
-
         CakeSession::write('FirstOrderList', $FirstOrderList);
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
 
     /**
@@ -1401,7 +1407,7 @@ class FirstOrderController extends MinikuraController
 
         $Credit = CakeSession::read('Credit');
         $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");
 
         $credit_data[self::MODEL_NAME_SECURITY] = $Credit;
 
@@ -1579,7 +1585,8 @@ class FirstOrderController extends MinikuraController
     public function complete_amazon_pay()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_amazon_pay'], true) === false) {
+
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1603,28 +1610,11 @@ class FirstOrderController extends MinikuraController
         if (!$check_address_datetime_cd) {
             $this->Flash->validation('お届け希望日時をご確認ください。',
                 ['key' => 'datetime_cd']);
-            CakeLog::write(DEBUG_LOG,
-                $this->name . '::' . $this->action . ' check_address_datetime_cd error');
-
-            return $this->_flowSwitch('add_address');
-        }
-
-        // カードの有効性をチェック
-        //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
-        $this->loadModel('CardCheck');
-        $Credit = CakeSession::read('Credit');
-        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
-
-        $res = $this->CardCheck->getCardCheck($Credit);
-
-        if (!empty($res->error_message)) {
-            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $this->_flowSwitch('add_credit');
-            return;
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
         //* 会員登録
+//        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
         unset($data['select_delivery_list']);
@@ -1649,7 +1639,7 @@ class FirstOrderController extends MinikuraController
         if (!$this->CustomerRegistInfo->validates()) {
             // 事前バリデーションチェック済
             $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_regist_info']);
-            return $this->_flowSwitch('confirm');
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
         if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
@@ -1674,14 +1664,14 @@ class FirstOrderController extends MinikuraController
             // 紹介コードエラーの場合 紹介コード入力に遷移
             if (strpos($res->message, 'alliance_cd') !== false) {
                 $this->Flash->validation($res->error_message, ['key' => 'alliance_cd']);
-                return $this->_flowSwitch('add_email');
+                $this->redirect('/first_order/add_amazon_pay');
             }
             if (strpos($res->message, 'Allow Only Entry') !== false) {
                 $this->Flash->validation('登録済ユーザのため購入完了できませんでした。', ['key' => 'customer_regist_info']);
             } else {
                 $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
             }
-            return $this->_flowSwitch('confirm');
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
         // ログイン
@@ -1696,11 +1686,12 @@ class FirstOrderController extends MinikuraController
             $this->Customer->switchEntryToCustomer();
         }
 
+        // ログイン処理
         $res = $this->CustomerLogin->login();
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
-            return $this->_flowSwitch('confirm');
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
         // カスタマー情報を取得しセッションに保存
@@ -1709,61 +1700,56 @@ class FirstOrderController extends MinikuraController
 
         $this->Customer->getInfo();
 
-        //* クレジットカード登録
-        $this->loadModel(self::MODEL_NAME_SECURITY);
+        //* アマゾンペイメント登録
+        $this->loadModel('PaymentAmazonPay');
 
-        $Credit = CakeSession::read('Credit');
-        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+        $AmazonPay = array();
 
-        $credit_data[self::MODEL_NAME_SECURITY] = $Credit;
+        $AmazonPay['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
 
-        $this->PaymentGMOSecurityCard->set($credit_data);
+        $amazon_pay_data['PaymentAmazonPay'] = $AmazonPay;
 
-        // Expire
-        $this->PaymentGMOSecurityCard->setExpire($credit_data);
+        $this->PaymentAmazonPay->set($amazon_pay_data);
 
-        // ハイフン削除
-        $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
-
-        // validates
-        // card_seq 除外
-        $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-
-        if (!$this->PaymentGMOSecurityCard->validates()) {
-            $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
-            return $this->_flowSwitch('confirm');
+        if (!$this->PaymentAmazonPay->validates()) {
+            $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
-        $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+/*
+  * 仮実装
+        $result_security_card = $this->PaymentAmazonPay->apiPost($this->PaymentAmazonPay->toArray());
         if (!empty($result_security_card->error_message)) {
-            $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
-            return $this->_flowSwitch('confirm');
+            $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_info']);
+            $this->redirect('/first_order/add_amazon_pay');
         }
+*/
 
         // 購入
-        $this->loadModel('PaymentGMOKitCard');
-        $gmo_kit_card['mono_num']      = CakeSession::read('Order.mono.mono');
-        $gmo_kit_card['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
-        $gmo_kit_card['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
-        $gmo_kit_card['hako_num']      = CakeSession::read('Order.hako.hako');
-        $gmo_kit_card['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
-        $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
-        $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
-        $gmo_kit_card['sneaker_num']   = CakeSession::read('Order.sneaker.sneaker');
-        $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
-        $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
-        $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
+        $this->loadModel('PaymentAmazonKitAmazonPay');
+        $amazon_kit_pay = array();
+        $amazon_kit_pay['mono_num']      = CakeSession::read('Order.mono.mono');
+        $amazon_kit_pay['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
+        $amazon_kit_pay['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
+        $amazon_kit_pay['hako_num']      = CakeSession::read('Order.hako.hako');
+        $amazon_kit_pay['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
+        $amazon_kit_pay['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
+        $amazon_kit_pay['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
+        $amazon_kit_pay['sneaker_num']   = CakeSession::read('Order.sneaker.sneaker');
+        $amazon_kit_pay['starter_mono_num']      = CakeSession::read('Order.starter.starter');
+        $amazon_kit_pay['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
+        $amazon_kit_pay['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
         // HAKOお片付けキットは１パック 5箱
-        $gmo_kit_card['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
-        $gmo_kit_card['card_seq']      = $result_security_card->results['card_seq'];
-        $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('Credit.security_cd'));
-        $gmo_kit_card['address_id']    = '';
-        $gmo_kit_card['datetime_cd']   = CakeSession::read('Address.datetime_cd');
-        $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
-        $gmo_kit_card['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
-        $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
-        $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+        $amazon_kit_pay['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
+
+        $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+
+        $amazon_kit_pay['address_id']    = '';
+        $amazon_kit_pay['datetime_cd']   = CakeSession::read('Address.datetime_cd');
+        $amazon_kit_pay['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
+        $amazon_kit_pay['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+        $amazon_kit_pay['postal']        = CakeSession::read('Address.postal');
+        $amazon_kit_pay['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
 
         $productKitList = [
             PRODUCT_CD_MONO => [
@@ -1806,24 +1792,28 @@ class FirstOrderController extends MinikuraController
         foreach ($productKitList as $product) {
             // 個数集計
             foreach ($product['kitList'] as $kitCd) {
-                $num = $gmo_kit_card[$dataKeyNum[$kitCd]];
+                $num = $amazon_kit_pay[$dataKeyNum[$kitCd]];
                 if (!empty($num)) {
                     $kit_params[] = $kitCd . ':' . $num;
                 }
             }
         }
-        $gmo_kit_card['kit'] = implode(',', $kit_params);
 
-        $this->PaymentGMOKitCard->set($gmo_kit_card);
-        $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+        $amazon_kit_pay['kit'] = implode(',', $kit_params);
+
+        $this->PaymentAmazonKitAmazonPay->set($amazon_kit_pay);
+/*
+ * 仮実装
+        $result_kit_card = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
         if ($result_kit_card->status !== '1') {
             if ($result_kit_card->http_code === 400) {
-                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_info']);
             } else {
-                $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
+                $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_info']);
             }
-            return $this->_flowSwitch('confirm');
+            $this->redirect('/first_order/add_amazon_pay');
         }
+*/
 
         // 完了したページ情報を保存
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);

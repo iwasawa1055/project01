@@ -123,6 +123,19 @@ class AppController extends Controller
         return false;
     }
 
+    /*
+     * Asteriaに郵便番号形式を合わせる
+     * @param string $_postal 郵便番号
+     * @return string $_postal 郵便番号 d{3}-d{4}
+     */
+    public function _editPostalFormat($_postal)
+    {
+        if (preg_match('/^\d{7}$/', $_postal)) {
+            $_postal = substr($_postal, 0, 3) . '-' . substr($_postal, 3);
+        }
+        return $_postal;
+    }
+
     /**
      * ログイン時、ログイン済 ユーザ状態によって遷移先を変更
      *

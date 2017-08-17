@@ -141,7 +141,7 @@ var AppAmazonPayWallet =
                     AppAmazonPayWallet.orderReferenceId = billingAgreement.getAmazonBillingAgreementId();
 
                     // お届希望日を取得
-                    AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
+                    // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 
                     // カード選択 Widgetを表示
                     new OffAmazonPayments.Widgets.Wallet({

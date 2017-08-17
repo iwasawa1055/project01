@@ -278,3 +278,6 @@ msgstr "%sは%s以上%s以下を入力してください"
 
 msgid "inList"
 msgstr "%sは%dから%dを入力してください"
+
+msgid "amazon_pay_id"
+msgstr "アマゾンペイメントID"
