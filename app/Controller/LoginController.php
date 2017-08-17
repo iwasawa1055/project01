@@ -72,6 +72,95 @@ class LoginController extends MinikuraController
 		}
     }
 
+    public function index_amazon_profile()
+    {
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_through');
+
+/*
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Login/index'], true) === false) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_referer_check');
+            //* NG redirect
+            $this->redirect(['controller' => 'login', 'action' => 'index']);
+        }
+*/
+        // アクセストークンを取得
+        $access_token = filter_input(INPUT_GET, 'access_token');
+        if($access_token === null) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_access_token_null');
+            $this->Flash->validation('Amazonアカウントでお支払い ログインエラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'login', 'action' => 'index']);
+        }
+
+        CakeSession::write('Login.amazon_pay.access_token', $access_token);
+
+        $this->loadModel('AmazonPayModel');
+        $res = $this->AmazonPayModel->getUserInfo($access_token);
+
+        // 情報が取得できているか確認
+        if(!isset($res['name']) || !isset($res['user_id']) || !isset($res['email'])) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_data_null');
+            $this->Flash->validation('Amazonアカウントでお支払い アカウント情報エラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'login', 'action' => 'index']);
+        }
+
+        if(($res['name'] === '') || ($res['user_id'] === '') || ($res['email'] === '')) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_data_blank');
+            $this->Flash->validation('Amazonアカウントでお支払い アカウント情報エラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'login', 'action' => 'index']);
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+
+        CakeSession::write('login.amazon_pay.user_info', $res);
+
+/*
+        // email確認
+        // アマゾンペイメントメールエラー処理
+        CakeSession::delete('registered_user_login_url');
+
+        if ($is_validation_error !== true) {
+            // amazonユーザ情報取得
+            $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+
+            // 既存ユーザか確認する
+            $this->loadModel('Email');
+            $result = $this->Email->getEmail(array('email' => $amazon_pay_user_info['email']));
+
+            if ($result->status === "0") {
+                // エラーか既存アドレスか判定
+                if ($result->http_code !== "400") {
+                    $this->Flash->validation('登録済メールアドレス', ['key' => 'check_email']);
+                    $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
+                    if (!is_null(CakeSession::read('order_code'))) {
+                        $registered_user_login_url = '/login?c=first_order&a=index&p=' . Configure::read('app.lp_code.param') . '=' . CakeSession::read('order_code')
+                            . '?' . Configure::read('app.lp_option.param') . '=' . CakeSession::read('order_option');
+                    }
+
+                    CakeSession::write('registered_user_login_url', $registered_user_login_url);
+
+                    // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
+
+                }
+                $is_validation_error = true;
+            }
+        }
+
+        if ($is_validation_error === true) {
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
+            return;
+        }
+*/
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_finish');
+
+        //$this->redirect($set_url);
+        $this->redirect(['controller' => 'login', 'action' => 'index']);
+
+    }
+
     public function logout()
     {
         $this->loadModel('CustomerLogin');
