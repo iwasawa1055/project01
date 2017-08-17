@@ -1119,23 +1119,21 @@ class FirstOrderController extends MinikuraController
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
         $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
         // GetBillingAgreementDetails
         if($res['ResponseStatus'] != '200') {
 
         }
 
-        //
-        CakeSession::write('FirstOrder.amazon_pay.billing_details', $res);
+        // 有効な定期購入IDを設定
         CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
 
         if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
 
         }
 
+        // 住所に関する箇所を取得
         $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' physicaldestination ' . print_r($physicaldestination, true));
         $get_address = CakeSession::read('Address');
 
         // 住所情報セット
