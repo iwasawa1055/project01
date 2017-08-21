@@ -807,7 +807,7 @@ class OrderController extends MinikuraController
         $this->loadModel('AmazonPayModel');
         $set_param = array();
         $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
-        $set_param['address_consent_token'] = CakeSession::read('Order.amazon_pay.access_token');
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
         $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);

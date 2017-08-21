@@ -162,10 +162,6 @@ var AppAmazonPay =
     a: function () {
         $('.js-btn-submit').on('click', function (e) {
             var self = $(this);
-            var add_reference  = $('<input type="hidden" name="order_reference_id">');
-            add_reference.val(AppAmazonPayWallet.orderReferenceId);
-            add_reference.insertAfter(self);
-
             var add_billing  = $('<input type="hidden" name="amazon_billing_agreement_id">');
             add_billing.val(AppAmazonPayWallet.AmazonBillingAgreementId);
             add_billing.insertAfter(self);
@@ -279,7 +275,6 @@ var AppAmazonPayWallet =
     SELLER_ID:"A1MBRBB8GPQFL9",
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
-    orderReferenceId: '',
     buyerBillingAgreementConsentStatus: false,
 
     a: function () {
@@ -295,7 +290,6 @@ var AppAmazonPayWallet =
                 // Widgets起動状態
                 onReady: function(billingAgreement) {
                     AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
-                    AppAmazonPayWallet.orderReferenceId = billingAgreement.getAmazonBillingAgreementId();
 
                     // お届希望日を取得
                     // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
