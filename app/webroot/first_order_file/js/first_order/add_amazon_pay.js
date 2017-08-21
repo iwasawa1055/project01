@@ -120,6 +120,7 @@ var AppAmazonPayWallet =
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
     buyerBillingAgreementConsentStatus: false,
+    ErrorMessage: '一時的に Amazon Pay がご利用いただけません。しばらくたってからお試し頂くか、何度もこのメッセージが表示される場合はクレジットカードでご購入ください。',
 
     a: function () {
         // amazon Widget Ready
@@ -156,7 +157,6 @@ var AppAmazonPayWallet =
                                     designMode: 'responsive'
                                 },
                                 onReady: function(billingAgreementConsentStatus){
-
                                     // Called after widget renders
                                     // AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
                                     // true – checkbox is selected
@@ -171,7 +171,10 @@ var AppAmazonPayWallet =
                                     // after the consent checkbox is selected/unselected.
                                 },
                                 onError: function(error) {
-                                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                                    $('#error_alert').append(AppAmazonPayWallet.ErrorMessage);
+                                    $('#error_alert').show();
+                                    $('#dsn-amazon-pay').hide();
+                                    $('#dsn-payment').hide();
                                 }
                             }).bind("consentWidgetDiv ");
                         },
@@ -179,7 +182,10 @@ var AppAmazonPayWallet =
                         onPaymentSelect: function () {
                         },
                         onError: function (error) {
-                            console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                            $('#error_alert').append(AppAmazonPayWallet.ErrorMessage);
+                            $('#error_alert').show();
+                            $('#dsn-amazon-pay').hide();
+                            $('#dsn-payment').hide();
                         }
                     }).bind("walletWidgetDiv");
 
@@ -195,7 +201,10 @@ var AppAmazonPayWallet =
                     designMode: 'responsive'
                 },
                 onError: function (error) {
-                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                    $('#error_alert').append(AppAmazonPayWallet.ErrorMessage);
+                    $('#error_alert').show();
+                    $('#dsn-amazon-pay').hide();
+                    $('#dsn-payment').hide();
                 }
             }).bind("addressBookWidgetDiv");
 
