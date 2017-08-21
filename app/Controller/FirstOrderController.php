@@ -1121,16 +1121,15 @@ class FirstOrderController extends MinikuraController
         $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
         // GetBillingAgreementDetails
         if($res['ResponseStatus'] != '200') {
-
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
         // 有効な定期購入IDを設定
         CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
-
-        if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
-
-        }
-
+        $amazon_pay_current_remaining_balance_amount = intval($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['BillingAgreementLimits']['CurrentRemainingBalance']['Amount']);
         // 住所に関する箇所を取得
         $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
 
@@ -1258,10 +1257,17 @@ class FirstOrderController extends MinikuraController
 
         // コードから対象の配列に挿入
         if (empty($res->error_message)) {
+            $total_kit_price = 0;
             foreach ($res->results as $key => $value) {
                 $code = $value['kit_cd'];
                 $FirstOrderList[$code]['price'] = number_format($value['price'] * 1);
+                $total_kit_price = $total_kit_price + $value['price'];
             }
+            if ($amazon_pay_current_remaining_balance_amount < $total_kit_price) {
+                $this->Flash->validation('Amazon Pay の当月限度額を超えています。', ['key' => 'customer_amazon_pay_info']);
+                $this->redirect('/first_order/add_amazon_pay');
+            }
+
         }
 
         CakeSession::write('FirstOrderList', $FirstOrderList);

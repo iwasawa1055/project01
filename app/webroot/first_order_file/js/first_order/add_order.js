@@ -107,6 +107,8 @@ var AppAmazonPayLogin =
               set_param = '?' + param;
             }
             authRequest = amazon.Login.authorize(loginOptions, host + path + set_param);
+          },
+          onError: function(error) {
           }
         });
     }
