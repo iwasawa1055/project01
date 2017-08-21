@@ -83,6 +83,11 @@ class LoginController extends MinikuraController
         }
 
         CakeSession::write('Login.amazon_pay.access_token', $access_token);
+
+        $test_access_token = array();
+        $test_access_token = CakeSession::read('Login.amazon_pay.access_token');
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' test_access_token ' . $test_access_token);
+
         CakeSession::write(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY, $access_token);
 
         $this->loadModel('AmazonPayModel');
