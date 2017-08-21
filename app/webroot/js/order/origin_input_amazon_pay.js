@@ -158,73 +158,8 @@ var AppAmazonPay =
 {
     DELIVERY_ID_PICKUP : '6',
     DELIVERY_ID_MANUAL : '7',
-
-    a: function () {
-        $('.js-btn-submit').on('click', function (e) {
-            var self = $(this);
-            var add_billing  = $('<input type="hidden" name="amazon_billing_agreement_id">');
-            add_billing.val(AppAmazonPayWallet.AmazonBillingAgreementId);
-            add_billing.insertAfter(self);
-
-            // サブミット前チェック確認
-            // 定期購入未チェックでエラー
-            if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
-                $('#payment_consent_alert').show();
-                return;
-            }
-
-            $(this).closest("form").submit();
-
-            console.log("AppAmazonPay : a");
-        });
-    },
-    b: function () {
-
-        $('.agree-before-submit[type="checkbox"]').click(checkAgreeBeforeSubmit);
-
-        checkAgreeBeforeSubmit();
-
-        // 利用規約チェック 複数で使用する場合first_order/app_devに移動
-        function checkAgreeBeforeSubmit() {
-            var count = $('.agree-before-submit[type="checkbox"]').length;
-            if (0 < count) {
-                // disabled
-                $('#js-agreement_on_page button[type=submit]').attr('disabled', 'true');
-                $(".agree-submit").css('opacity', '0.5');
-
-                // disabled状態のボタンにクリック要素をラップ
-                $('#js-submit_disabled_wrapper').removeClass('disabled');
-                $('#js-submit_disabled_wrapper').addClass('active');
-                if (count === $('.agree-before-submit[type="checkbox"]:checked').length) {
-                    // abled
-                    $('#js-agreement_on_page button[type=submit]').attr('disabled', null);
-                    $(".agree-submit").css('opacity', '1.0');
-
-                    // disabled状態のボタンにクリック要素をラップ
-                    $('#js-submit_disabled_wrapper').removeClass('active');
-                    $('#js-submit_disabled_wrapper').addClass('disabled');
-
-                    // チェックバリデーション非表示
-                    // バリデーションクラスを足し引きしないとページ内エラーとして検知されてしまう
-                    $('#js-remember_validation').removeClass('validation');
-                    $('#js-remember_validation').hide();
-                }
-            }
-        }
-    },
-    c: function () {
-        $(function(){$('#js-submit_disabled_wrapper').click(function (evt) {
-
-            // チェック状態を確認
-            var count = $('.agree-before-submit[type="checkbox"]:checked').length;
-            if (1 > count) {
-                // チェックされていない チェックバリデーション表示
-                // バリデーションクラスを足し引きしないとページ内エラーとして検知されてしまう
-                $('#js-remember_validation').addClass('validation');
-                $('#js-remember_validation').show();
-            }
-        });})
-    },
+    
+    
     ajax_dateime: function (amazon_billing_agreement_id) {
         var elem_datetime = $('#datetime_cd');
 
@@ -238,7 +173,7 @@ var AppAmazonPay =
         // API実行
         if (params.postal != '') {
             $.ajax({
-                url: '/Order/as_get_address_datetime_by_amazon',
+                url: '/order/as_get_address_datetime_by_amazon',
                 cache: false,
                 data: params,
                 dataType: 'json',
@@ -275,6 +210,7 @@ var AppAmazonPayWallet =
     SELLER_ID:"A1MBRBB8GPQFL9",
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
+    orderReferenceId: '',
     buyerBillingAgreementConsentStatus: false,
 
     a: function () {
@@ -290,6 +226,7 @@ var AppAmazonPayWallet =
                 // Widgets起動状態
                 onReady: function(billingAgreement) {
                     AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
+                    AppAmazonPayWallet.orderReferenceId = billingAgreement.getAmazonBillingAgreementId();
 
                     // お届希望日を取得
                     // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
@@ -367,8 +304,5 @@ $(function()
   AppInputOrder.init_disp1();
   AppAddOrder.a();
   AppAddOrder.b();
-  AppAmazonPay.a();
-  AppAmazonPay.b();
-  AppAmazonPay.c();
   AppAmazonPayWallet.a();
 });

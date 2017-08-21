@@ -265,6 +265,13 @@ class CustomerComponent extends Component
     {
         return $this->data->token;
     }
+    public function getAmazonPayAccessKey()
+    {
+        if (!empty(CakeSession::read(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY))) {
+            return CakeSession::read(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY);
+        }
+        return null;
+    }
     public function setPassword($data)
     {
         return $this->data->setPassword($data);

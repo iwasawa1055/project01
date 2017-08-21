@@ -113,7 +113,7 @@ var AppAmazonPayLogin =
           color: "Gold",
           size: "medium",
           authorization: function () {
-            loginOptions = {scope: "profile payments:widget", popup: "true"};
+            loginOptions = {scope: "profile payments:widget payments:shipping_address", popup: "true"};
             authRequest = amazon.Login.authorize(loginOptions, host + path);
           }
         });

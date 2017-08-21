@@ -1,4 +1,4 @@
-<?php $this->Html->script('order/input_amazon_pay', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('/js/order/input_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
@@ -144,7 +144,7 @@
           </div>
         </div>
         <section class="dsn-nextback">
-          <button type="submit" class="dsn-btn-next-full">確認へ <i class="fa fa-chevron-circle-right"></i></button>
+          <button type="submit" class="dsn-btn-next-full js-btn-submit">確認へ <i class="fa fa-chevron-circle-right"></i></button>
         </section>      
 
         <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
