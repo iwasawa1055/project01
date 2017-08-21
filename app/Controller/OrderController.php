@@ -551,6 +551,8 @@ class OrderController extends MinikuraController
         CakeSession::write('OrderTotalList', $OrderTotalList);
         CakeSession::write('OrderKit.kit_params', $kit_params);
 
+
+
         if ($is_validation_error === true) {
             $this->_flowSwitch('input');
             return;
@@ -576,7 +578,7 @@ class OrderController extends MinikuraController
         }
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' referer_check_through ');
-/*
+
         // order情報取得
         $Order = CakeSession::read('Order');
         $OrderTotal = CakeSession::read('OrderTotal');
@@ -629,108 +631,6 @@ class OrderController extends MinikuraController
             }
             $is_validation_error = true;
         }
-
-        // カード処理 
-        // カード利用の場合
-        // カード利用しない場合はセッション保存も不要
-        if (CakeSession::read('OrderKit.is_credit')) {
-            // カードの入力情報
-            $input_card_params = array(
-                'card_no' => filter_input(INPUT_POST, 'card_no'),
-                'security_cd' => filter_input(INPUT_POST, 'security_cd'),
-                'new_security_cd' => filter_input(INPUT_POST, 'new_security_cd'),
-                'expire_month' => filter_input(INPUT_POST, 'expire_month'),
-                'expire_year' => filter_input(INPUT_POST, 'expire_year'),
-                'expire' => filter_input(INPUT_POST, 'expire_month') . filter_input(INPUT_POST, 'expire_year'),
-                'holder_name' => strtoupper(filter_input(INPUT_POST, 'holder_name')),
-            );
-
-            // カード情報をセッションに保存
-            CakeSession::write('Credit', $input_card_params);
-
-            // 登録カードの変更の有無
-            $select_card = filter_input(INPUT_POST, 'select-card');
-
-            $vali_card_params= array();
-
-            // 登録カードの変更の有無
-            if ($select_card === 'default') {
-                // 登録カード変更なし
-                $vali_card_params['security_cd'] = $input_card_params['security_cd'];
-            }
-
-            // 登録カードの変更の有無
-            $is_card_insert = false;
-
-            // カード変更
-            if($select_card === 'register') {
-                $is_card_insert = true;
-            }
-
-            // カード追加
-            if (is_null(CakeSession::read('OrderKit.card_data'))) {
-                $is_card_insert = true;
-            }
-
-            if($is_card_insert) {
-                // new_security_cdをsecurity_cdにいれバリデーションをかける
-                // new_security_cdとsecurity_cdが２つバリデーションにかけることはない
-                $input_card_params['security_cd'] = $input_card_params['new_security_cd'];
-                $vali_card_params = $input_card_params;
-
-                // カードno バリデーション前処理
-                $vali_card_params['card_no'] = self::_wrapConvertKana($vali_card_params['card_no']);
-            }
-
-            // 逐次セッション保存
-            CakeSession::write('OrderKit.select_card', $select_card);
-
-            // ハイフン削除はバリデーション前に実施
-            $vali_card_params['security_cd'] = mb_convert_kana($vali_card_params['security_cd'], 'nhk', "utf-8");;
-
-            // 逐次バリデーション
-            $validation = AppValid::validate($vali_card_params);
-            //* 共通バリデーションでエラーあったらメッセージセット
-            if (!empty($validation)) {
-                foreach ($validation as $key => $message) {
-                    // カード変更の場合 バリデーションエラーキーを再設定
-                    if ($select_card === 'register') {
-                        switch (true) {
-                            case $key === 'card_no':
-                                $this->Flash->validation($message, ['key' => 'new_card_no']);
-                                break;
-                            case $key === 'security_cd':
-                                $this->Flash->validation($message, ['key' => 'new_security_cd']);
-                                break;
-                            default:
-                                $this->Flash->validation($message, ['key' => $key]);
-                                break;
-                        }
-                    } else {
-                        $this->Flash->validation($message, ['key' => $key]);
-                    }
-                }
-                $is_validation_error = true;
-            }
-
-            // バリデーションエラーない場合
-            if (!$is_validation_error) {
-                // 登録カードの変更の有無
-                if ($select_card === 'register') {
-                    // 利用可能カードか確認
-                    //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
-                    $this->loadModel('CardCheck');
-                    $res = $this->CardCheck->getCardCheck($vali_card_params);
-
-                    if (!empty($res->error_message)) {
-                        $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-                        $is_validation_error = true;
-                    }
-                }
-            }
-
-        }
-*/
 
         $params = [
             'datetime_cd'       => filter_input(INPUT_POST, 'datetime_cd'),
@@ -853,13 +753,19 @@ class OrderController extends MinikuraController
         $get_address['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
 
 
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' get_address ' . print_r($get_address, true));
+
         // 住所情報更新
         CakeSession::write('Address',   $get_address);
+        CakeSession::write('DispAddress', $get_address);
 
         unset($get_address['datetime_cd']);
+
+
         $params = array_merge_recursive($params, $get_address);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
+
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
@@ -869,192 +775,13 @@ class OrderController extends MinikuraController
                 $this->Flash->validation($message, ['key' => $key]);
             }
             $is_validation_error = true;
-        }
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' message ' . print_r($message, true));
 
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation) ) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-            }
-            $is_validation_error = true;
         }
 
         if ($is_validation_error === true) {
             $this->redirect('/order/input_amazon_pay');
             return;
-        }
-
-
-        // オーダー種類を集計
-        // order情報
-        $Order = CakeSession::read('Order');
-
-        $OrderList = array();
-
-        // 添字に対応するコードを設定
-        $kit_code = KIT_CODE_DISP_NAME_ARRAY;
-
-        $kit_params = array();
-
-        // 表示名とAPI パラメータの生成コードごとに格納
-        foreach ($Order as $orders => $kit_order) {
-            foreach ($kit_order as $params => $value) {
-                if ($value > 0) {
-                    // スタータキットは構成が異なるため個別に記述
-                    if($params === 'starter') {
-                        // 先頭のコードのみ料金が返ってくる
-                        $code = KIT_CD_STARTER_MONO;
-                        $OrderList[$code]['number']    = 1;
-                        $OrderList[$code]['kit_name']  = 'mono スターターパック';
-                        $OrderList[$code]['price'] = 0;
-                        $kit_params[] = KIT_CD_STARTER_MONO.':1';
-                    }
-
-                    if($params === 'hako_limited_ver1') {
-                        // 先頭のコードのみ料金が返ってくる
-                        $code = KIT_CD_HAKO_LIMITED_VER1;
-                        $OrderList[$code]['number']    = $value;
-                        $OrderList[$code]['kit_name']  = 'HAKOお片付けパック';
-                        $OrderList[$code]['price'] = 0;
-                        $hako_limited_ver1_num = $value * 5;
-                        $kit_params[] = KIT_CD_HAKO_LIMITED_VER1.':' . $hako_limited_ver1_num;
-                    }
-
-                    // スタータキット以外まとめて処理
-                    if (array_key_exists ($params, $kit_code)) {
-                        //
-                        // $OrderList[$params]['price']     = number_format($kit_code[$params]['price'] * $value * 1);
-                        $code = $kit_code[$params]['code'];
-                        $OrderList[$code]['number']    = $value;
-                        $OrderList[$code]['kit_name']  = $kit_code[$params]['name'];
-                        $OrderList[$code]['price'] = 0;
-                        $kit_params[] = $code . ':' .$value;
-                    }
-                }
-            }
-        }
-
-        $set_kit_params = array();
-
-        // 文字列にしてカンマ区切りでリクエスト
-        $set_kit_params['kit'] = implode(',', $kit_params);
-
-        // キットコードと合計金額を返すAPI
-        $this->loadModel('KitPrice');
-
-        $res = $this->KitPrice->getKitPrice($set_kit_params);
-        if (!empty($res->error_message)) {
-            $this->Flash->validation('料金取得エラー', ['key' => 'kit_price']);
-        }
-
-        // コードから対象の配列に挿入
-        if (empty($res->error_message)) {
-            foreach ($res->results as $key => $value) {
-                $code = $value['kit_cd'];
-                $OrderList[$code]['price'] = number_format($value['price'] * 1);
-            }
-        }
-
-        CakeSession::write('OrderList', $OrderList);
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
-
-/*
-        // 住所情報をセッションに保存
-        CakeSession::write('Address', $params);
-        CakeSession::write('DispAddress', $params);
-
-        // 既存のアドレス選択処理は OrderKitに含める
-        $address_id = filter_input(INPUT_POST, 'address_id');
-
-        // 逐次セッションに保存
-        CakeSession::write('OrderKit.address_id', $address_id);
-
-        // 入力アドレス
-        $is_input_address = false;
-        if ($address_id === AddressComponent::CREATE_NEW_ADDRESS_ID ) {
-            $is_input_address = true;
-        }
-
-        // 逐次セッションに保存
-        CakeSession::write('OrderKit.is_input_address', $is_input_address);
-
-        // アドレスリスト追加
-        // 逐次セッションに保存
-        $insert_address_list = true;
-        if (empty($params['insert_address_list'])) {
-            $insert_address_list = false;
-        }
-        CakeSession::write('OrderKit.insert_address_list', $insert_address_list);
-
-        // お届けコードをキットセッションにも保存
-        CakeSession::write('OrderKit.datetime_cd', $params['datetime_cd']);
-
-        // アドレス入力
-        $set_address = array();
-        if ($is_input_address) {
-            // アドレス追加の場合
-            $set_address = $params;
-
-            $set_address['tel1'] = self::_wrapConvertKana($set_address['tel1']);
-            // 登録バリデーション
-            $vail_address_params = $set_address;
-        } else {
-            // アドレスリスト使用の場合
-            // 住所指定されている場合
-
-            // アドレスIDチェック
-            $vail_address_params['address_id'] = $address_id;
-            $vail_address_params['datetime_cd'] = $params['datetime_cd'];
-
-            if (!empty($address_id)) {
-                // 購入時用住所パラメータチェック POST値ではないため、選択した住所情報をチェックし共通のエラーを返す
-                // カード決済、口座振替でパラメータが異なる
-                // 住所idから住所取得
-                $set_address = $this->Address->find($address_id);
-
-                // 表示用住所データ
-                CakeSession::write('DispAddress', $set_address);
-
-                // アドレスリストバリデーション
-                // 決済によって必要情報が異なる
-                if (CakeSession::read('OrderKit.is_credit')) {
-                    // カード決済
-                    $vail_address_params['name'] = $set_address['lastname'] . $set_address['firstname'];
-                    $vail_address_params['postal'] = $set_address['postal'];
-                    $vail_address_params['address'] = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . $set_address['address3'];
-                    $vail_address_params['tel1'] = $set_address['tel1'];
-                } else {
-                    // 口座決済
-                    $vail_address_params = $set_address;
-
-                    // 日付選択
-                    $vail_address_params['datetime_cd'] = $params['datetime_cd'];
-                }
-            }
-        }
-
-        //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($vail_address_params);
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if ( !empty($validation)) {
-            // アドレスリストの内容がエラーかチェックする。
-            $address_list_error = false;
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-                // お届け先日時選択エラーの場合はお届け先形式エラーにしない。
-                if ($key !== 'datetime_cd') {
-                    $address_list_error = true;
-                }
-            }
-            // アドレスリストの内容がエラーだった場合
-            if (!$is_input_address) {
-                if($address_list_error) {
-                    $this->Flash->validation('お届け先の形式が正しくありません。会員情報またはお届け先変更にてご確認ください。'
-                        , ['key' => 'format_address']);
-                }
-            }
-            $is_validation_error = true;
         }
 
         // kitコード 表示kit名取得
@@ -1104,14 +831,15 @@ class OrderController extends MinikuraController
         CakeSession::write('OrderTotalList', $OrderTotalList);
         CakeSession::write('OrderKit.kit_params', $kit_params);
 
+        // AmazonPaymentはクレジットカード支払い
+        CakeSession::write('OrderKit.is_credit', true);
+
         if ($is_validation_error === true) {
             $this->_flowSwitch('input');
             return;
         }
 
-        //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-*/
     }
 
     /**

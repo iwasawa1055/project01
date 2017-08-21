@@ -10,7 +10,19 @@
     <form method="post" action="/order/complete_amazon_pay" novalidate>
     <div class="col-lg-12">
       <div class="panel panel-default">
-        <?php echo $this->element('Order/breadcrumb_list'); ?>
+          <section id="dsn-pagenation">
+              <ul>
+                  <li>
+                      <i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
+                  </li>
+                  <li class="dsn-on">
+                      <i class="fa fa-check"></i><span>確認</span>
+                  </li>
+                  <li>
+                      <i class="fa fa-truck"></i><span>完了</span>
+                  </li>
+              </ul>
+          </section>
 
         <!-- ADRESS -->
         <section id="dsn-adress">
@@ -66,7 +78,7 @@
       </div>
     </div>
     <section class="dsn-nextback dev-forefront">
-      <a href="/order/input" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+      <a href="/order/input_amazon_pay" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
       <button type="submit" class="dsn-btn-next">購入する <i class="fa fa-chevron-circle-right"></i></button>
     </section>
     </form>
