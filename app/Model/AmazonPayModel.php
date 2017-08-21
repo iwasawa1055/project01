@@ -102,43 +102,4 @@ class AmazonPayModel extends AppModel
         //* Return
         return $response;
     }
-
-    /**
-     * ファイル削除
-     */
-    public function deleteObjects($params)
-    {
-        /*
-        $required_keys = ['Bucket', 'Delete'];
-        foreach ($required_keys as $key) {
-            if (!isset($params[$key])) {
-                new AppInternalCritical(AppE::PARAMETER_INVALID . var_export($params, true), 500);
-            }
-        }
-        try {
-            $response = $this->s3->deleteObjects([
-                'Bucket' => $params['Bucket'],
-                'Delete' => $params['Delete'],
-            ]);
-        } catch (\Aws\Exception\AwsException $e) {
-            $error_str = '';
-            $error_str .= sprintf("StatusCode:%s", $e->getStatusCode());
-            $error_str .= sprintf("Result:%s", $e->getResult());
-            $error_str .= sprintf("AwsErrorType:%s", $e->getAwsErrorType());
-            $error_str .= sprintf("AwsErrorCode:%s", $e->getAwsErrorCode());
-            $error_str .= sprintf("Code:%s", $e->getCode());
-            new AppExternalCritical(AppE::EXTERNAL_SERVER_ERROR . 'putObject failed.' . $error_str, 500);
-        }
-        
-        // APIのレスポンスっぽく整形
-        $result = [
-            'status' => '1',
-            'message' => '',
-            'results' => $response,
-        ];
-
-        //* Return
-        return $result;
-        */
-    }
 }
