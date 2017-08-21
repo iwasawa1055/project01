@@ -1413,7 +1413,7 @@ class OrderController extends MinikuraController
         $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!amazon_billing_agreement_id!!! ' . print_r($set_param['amazon_billing_agreement_id'], true));
 
-        $set_param['address_consent_token'] = CakeSession::read('Order.amazon_pay.access_token');
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!order_amazonpay_access_token!!! ' . print_r($set_param['address_consent_token'], true));
 
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');

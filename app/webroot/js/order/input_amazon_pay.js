@@ -238,7 +238,7 @@ var AppAmazonPay =
         // API実行
         if (params.postal != '') {
             $.ajax({
-                url: '/FirstOrder/as_get_address_datetime_by_amazon',
+                url: '/Order/as_get_address_datetime_by_amazon',
                 cache: false,
                 data: params,
                 dataType: 'json',
