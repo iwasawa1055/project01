@@ -6,6 +6,9 @@ App::uses('InboundDirect', 'Model');
 App::uses('InboundDirectArrival', 'Model');
 App::uses('DatePickup', 'Model');
 App::uses('TimePickup', 'Model');
+App::uses('AmazonPayModel', 'Model');
+App::uses('PaymentAmazonPay', 'Model');
+App::uses('PaymentAmazonKitAmazonPay', 'Model');
 
 class DirectInboundController extends MinikuraController
 {
@@ -94,6 +97,11 @@ class DirectInboundController extends MinikuraController
             $order_direct_inbound = CakeSession::read('Order.direct_inbound');
             CakeSession::delete('Order');
             CakeSession::write('Order.direct_inbound', $order_direct_inbound);
+        }
+
+        // アマゾンペイメント対応
+        if ($this->Customer->isAmazonPay()) {
+            $this->redirect('/direct_inbound/input_amazon_pay');
         }
 
         // セッションリセット
@@ -185,6 +193,102 @@ class DirectInboundController extends MinikuraController
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+    }
+
+    public function input_amazon_pay()
+    {
+        // セッションリセット
+        //CakeSession::delete('OrderKit');
+        if (empty(CakeSession::read('OrderKit.cargo'))) {
+
+            $OrderKit = array(
+                'address_list' => array(),
+                'address_id' => "",
+                'is_input_address' => false,
+                'is_credit' => false,
+                'card_data' => array(),
+                'cargo'       => "ヤマト運輸",
+            );
+
+            CakeSession::write('OrderKit', $OrderKit);
+        }
+
+        if(is_null((CakeSession::read('SelectTime')))){
+
+            $SelectTime = array(
+                    'day_cd'         => "",
+                    'time_cd'        => "",
+                    'select_delivery_day'   => "",
+                    'select_delivery_time'  => "",
+                    'select_delivery_text'  => "",
+                    'select_delivery_day_list'      => array(),
+                    'select_delivery_time_list'     => array(),
+            );
+
+            CakeSession::write('SelectTime', $SelectTime);
+
+        }
+
+        // 初期化チェック
+        if(CakeSession::read('Address.lastname_kana') !== '　') {
+            CakeSession::write('Address.select_delivery_list', array());
+        }
+
+        // セッション情報取得
+        $OrderKit = CakeSession::read('OrderKit');
+/*
+        // 住所一覧を取得
+        $address_list = $this->Address->get();
+
+        // ヘルパー読み込めないためヘルパーでの処理を転記
+        $set_address_list = array();
+        if (is_array($address_list)) {
+            foreach ($address_list as $address) {
+                $set_address_list[$address['address_id']] = h("〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
+            }
+        }
+
+        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を入力する';
+        $OrderKit['address_list'] = $set_address_list;
+
+        // 追加画面から遷移しているかチェック
+        if(!is_null(CakeSession::read('OrderKit.address_id'))){
+            $check_address_id = CakeSession::read('OrderKit.address_id');
+            if($check_address_id === AddressComponent::CREATE_NEW_ADDRESS_ID ) {
+                // 最後のアドレスid 追加したアドレスidを取得
+                $last_address_id = Hash::get($this->Address->last(), 'address_id', '');
+                $OrderKit['address_id'] = $last_address_id;
+            }
+        }
+
+        // カード判定
+        $OrderKit['is_credit'] = false;
+
+        // クレジットカードかどうか
+        // 法人口座未登録用遷移はbeforeFilterで判定済み
+        if ($this->Customer->isPrivateCustomer()) {
+            // 個人
+            $OrderKit['is_credit'] = true;
+
+            // カード情報取得
+            $OrderKit['card_data'] = $this->Customer->getDefaultCard();
+        } else {
+            // 法人 法人カードの場合 account_situationは空白
+            if (empty($this->Customer->getInfo()['account_situation'])) {
+                $OrderKit['is_credit'] = true;
+                // カード情報取得
+                $OrderKit['card_data'] = $this->Customer->getDefaultCard();
+            }
+        }
+*/
+        
+        // セッション情報格納
+        CakeSession::write('OrderKit', $OrderKit);
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
 
     }
 
@@ -539,6 +643,227 @@ class DirectInboundController extends MinikuraController
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
     }
+
+
+    public function confirm_amazon_pay()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['DirectInbound/input_amazon_pay', 'DirectInbound/confirm_amazon_pay', 'DirectInbound/complete_amazon_pay'],
+                true) === false
+        ) {
+            //* NG redirect
+            $this->redirect(['controller' => 'direct_inbound', 'action' => 'input_amazon_pay']);
+        }
+
+
+
+        $set_order_params = array();
+        $set_order_params = $this->_setDirectInbound($set_order_params);
+        $order_params = $set_order_params['direct_inbound'];
+
+        // FirstOrderと階層を合わせる
+        CakeSession::write('DirectInbound', $set_order_params);
+
+        // 預け入れ方法保存
+        // 既存のアドレス選択処理は OrderKitに含める
+        $cargo = filter_input(INPUT_POST, 'cargo');
+
+        // 逐次セッションに保存
+        CakeSession::write('OrderKit.cargo', $cargo);
+
+        // 逐次バリデーションをかける 最後にまとめてバリデーションエラーでリターン
+        // バリデーションをかけない値もセッションには保存する。
+        $is_validation_error = false;
+
+        // 逐次バリデーション
+        $validation = AppValid::validate($order_params);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_params ' . print_r($order_params, true));
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if (!empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $is_validation_error = true;
+        }
+
+        if (CakeSession::read('OrderKit.cargo') !== "着払い") {
+
+            // 住所処理 
+            // 住所の入力情報
+            // お届け先追加か判定
+            $set_order_params = [
+                'date_cd' => filter_input(INPUT_POST, 'date_cd'),
+                'time_cd' => filter_input(INPUT_POST, 'time_cd'),
+                'select_delivery_day' => filter_input(INPUT_POST, 'select_delivery_day'),
+                'select_delivery_time' => filter_input(INPUT_POST, 'select_delivery_time'),
+                'cargo'=> $cargo,
+            ];
+
+                        //* Session write select_delivery_text
+            $set_order_params['select_delivery_day_list'] = json_decode($set_order_params['select_delivery_day']);
+
+            $set_order_params['select_delivery_text'] = "";
+            if(!empty($set_order_params['select_delivery_day_list'])) {
+                foreach ($set_order_params['select_delivery_day_list'] as $key => $value) {
+                    if ($value->date_cd === $set_order_params['date_cd']) {
+                        $set_order_params['select_delivery_text'] = $value->text;
+                    }
+                }
+            }
+
+            $set_order_params['select_delivery_time_list'] = json_decode($set_order_params['select_delivery_time']);
+
+            if(!empty($set_order_params['select_delivery_time_list'])) {
+                foreach ($set_order_params['select_delivery_time_list'] as  $key => $value) {
+                    if ($value->time_cd === $set_order_params['time_cd']) {
+                        $set_order_params['select_delivery_text'] .= ' ' . $value->text;
+                    }
+                }
+            }
+
+            CakeSession::write('SelectTime', $set_order_params);
+
+            // お届け日のラベル
+            // 逐次セッションに保存
+            if (array_key_exists('select_delivery_text', $set_order_params)) {
+                CakeSession::write('OrderKit.select_delivery_text', $set_order_params['select_delivery_text']);
+            }
+
+            // 逐次バリデーション
+            $validation = AppValid::validate($set_order_params);
+
+            //* 共通バリデーションでエラーあったらメッセージセット
+            if (!empty($validation)) {
+                foreach ($validation as $key => $message) {
+                    $this->Flash->validation($message, ['key' => $key]);
+                }
+                $is_validation_error = true;
+            }
+
+            //ログイン時に取得したユーザ情報
+            $amazon_pay_user_info = CakeSession::read('login.amazon_pay.user_info');
+
+            //* Session write
+            CakeSession::write('Email.email', $amazon_pay_user_info['email']);
+
+            // 住所に関する情報保存
+            $name = $amazon_pay_user_info['name'];
+            $name = html_entity_decode($name);
+            $name = mb_convert_kana($name, "s", "utf-8");
+
+            // 空白で苗字名前がわかれているか？
+            $set_name = array();
+            if(strpos($name,' ') !== false){
+                $set_name = explode(" ",$name);
+            } else {
+                // スペースで区切られていない
+                $set_name[0] = $name;
+                $set_name[1] = '＿';
+            }
+
+            $get_address = array();
+
+            $get_address['lastname']        = $set_name[0];
+            $get_address['lastname_kana']   = '　';
+            $get_address['firstname']       = $set_name[1];
+            $get_address['firstname_kana']  = '　';
+
+            CakeSession::write('Address',   $get_address);
+
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' address ' . print_r($get_address, true));
+
+
+            // amazon pay 情報取得
+            // 定期購入ID取得
+            $amazon_billing_agreement_id = "";
+            $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . $amazon_billing_agreement_id);
+
+            if($amazon_billing_agreement_id === null) {
+                // 初回かリターン確認
+                if(CakeSession::read('DirectInbound.amazon_pay.amazon_billing_agreement_id') != null) {
+                    CakeSession::write('DirectInbound.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+                }
+            }
+
+            // 住所情報等を取得
+            $this->loadModel('AmazonPayModel');
+            $set_param = array();
+            $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+            $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+            $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+            $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!res!!! ' . print_r($res, true));
+
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_access_token ' . print_r($set_param['address_consent_token'], true));
+
+            // GetBillingAgreementDetails
+            if($res['ResponseStatus'] != '200') {
+
+            }
+
+            // 有効な定期購入IDを設定
+            CakeSession::write('DirectInbound.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+
+            if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
+
+            }
+
+            // 住所に関する箇所を取得
+            $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+
+            $get_address = CakeSession::read('Address');
+
+            // 住所情報セット
+            $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+            $get_address['postal']      = $PostalCode;
+            $get_address['pref']        = $physicaldestination['StateOrRegion'];
+
+            // city設定有無確認
+            if(isset($physicaldestination['City'])) {
+                $get_address['address1'] = $physicaldestination['City'];
+                $get_address['address2'] = $physicaldestination['AddressLine1'];
+                $get_address['address3'] = $physicaldestination['AddressLine2'];
+            } else {
+                $get_address['address1'] = $physicaldestination['AddressLine1'];
+                $get_address['address2'] = $physicaldestination['AddressLine2'];
+            }
+
+            $get_address['tel1']        = $physicaldestination['Phone'];
+
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' get_address ' . print_r($get_address, true));
+
+            // 住所情報更新
+            CakeSession::write('Address',   $get_address);
+            CakeSession::write('DispAddress', $get_address);
+
+            //*  validation 基本は共通クラスのAppValidで行う
+            $validation = AppValid::validate($get_address);
+            //* 共通バリデーションでエラーあったらメッセージセット
+            if ( !empty($validation)) {
+                foreach ($validation as $key => $message) {
+                    $this->Flash->validation($message, ['key' => $key]);
+                }
+                $is_validation_error = true;
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' message ' . print_r($message, true));
+            }
+        }
+
+        if ($is_validation_error === true) {
+            $this->redirect('input_amazon_pay');
+            return;
+        }
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+    }
+
     /**
      *
      */
@@ -688,19 +1013,68 @@ class DirectInboundController extends MinikuraController
     }
 
     /**
-     * ヤマト運輸の配送日にち情報取得
+     *
+     */
+    public function as_getInboundDatetime()
+    {
+        $this->autoRender = false;
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $ret_status = true;
+        $result = array();
+
+        // 集荷日未ログイン取得 text項目がないため生成
+        $result_date = $this->_getInboundDate();
+        if ($result_date->status === "1") {
+            $week = array("日", "月", "火", "水", "木", "金", "土");
+            foreach($result_date->results as $key => $value) {
+                $datetime = new DateTime($value['date_cd']);
+                $w = (int)$datetime->format('w');
+
+                $result_date->results[$key]['text'] = $datetime->format('Y年m月d日 (' . $week[$w] .')');;
+
+            }
+            $result['date'] = $result_date->results;
+
+        } else {
+            $ret_status = false;
+        }
+
+        // 集荷時間未ログイン取得 text項目がないため生成
+        $result_time = $this->_getInboundTime();
+        if ($result_time->status === "1") {
+
+            $time_text = array('','希望なし','午前中','12～14時','14～16時','16～18時','18～21時');
+
+            foreach ($result_time->results as $key => $value) {
+
+                $result_time->results[$key]['text'] = $time_text[$value['time_cd']];
+            }
+
+            $result['time'] = $result_time->results;
+
+        } else {
+            $ret_status = false;
+        }
+
+
+        $status = $ret_status;
+        return json_encode(compact('status', 'result'));
+    }
+
+
+    /**
+     * ヤマト運輸の配送日情報取得
      */
     private function _getInboundDate()
     {
         $result = array();
 
-        $DatePickupModel = new DatePickup();
+        $this->PickupDateModel = new PickupDate();
 
-        $result = $DatePickupModel->apiGetResults();
-
-        CakeLog::write(DEBUG_LOG,
-            $this->name . '::' . $this->action . ' result ' . print_r($result, true));
-
+        $result = $this->PickupDateModel->getPickupDate();
 
         return $result;
     }
@@ -712,12 +1086,9 @@ class DirectInboundController extends MinikuraController
     {
         $result = array();
 
-        $TimePickupModel = new TimePickup();
+        $PickupTimeModel = new PickupTime();
 
-        $result = $TimePickupModel->apiGetResults();
-
-        CakeLog::write(DEBUG_LOG,
-            $this->name . '::' . $this->action . ' result ' . print_r($result, true));
+        $result = $PickupTimeModel->getPickupTime();
 
         return $result;
     }
@@ -730,6 +1101,32 @@ class DirectInboundController extends MinikuraController
         $Order['direct_inbound']['direct_inbound'] = (int)filter_input(INPUT_POST, 'direct_inbound');
         return $Order;
     }
+
+    // 日付CD変換
+    private function _convDatetimeCode ( $data_code ){
+
+        // 時間CODE変換表
+        $timeList = array( 2 => '午前中',
+            //3 => '12～14時',
+            4 => '14～16時',
+            5 => '16～18時',
+            6 => '18～20時',
+            7 => '19～21時' );
+
+
+        // 日付
+        $date = substr( $data_code, 0, 10 );
+
+        // 時間
+        $time = substr( $data_code, 11, 1 );
+
+        // 戻り値
+        $datetime = date( "Y年m月d日", strtotime( $date ) );
+
+        if( isset( $timeList[$time] )  ) $datetime .= ' '.$timeList[$time];
+        return $datetime;
+    }
+
 
     /**
      * first orderで使用しているセッション類を削除
