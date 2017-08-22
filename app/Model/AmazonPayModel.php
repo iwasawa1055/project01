@@ -102,4 +102,86 @@ class AmazonPayModel extends AppModel
         //* Return
         return $response;
     }
+
+
+    public function wrapPhysicalDestination(Array $physicaldestination)
+    {
+        // see : Amazon Payデータタイプ - Address <https://pay.amazon.com/jp/developer/documentation/apireference/201752430>
+        $ret = [
+            'Name' => '',
+            'AddressLine1' => '',
+            'AddressLine2' => '',
+            'AddressLine3' => '',
+            'City' => '',
+            'Country' => '',
+            'District' => '',
+            'StateOrRegion' => '',
+            'PostalCode' => '',
+            'CountryCode' => '',
+            'Phone' => '',
+        ];
+
+        $ret['Name'] = $physicaldestination['Name'];
+
+        $tmp_address_parts = [];
+        if (isset($physicaldestination['AddressLine1'])) {
+            $tmp_address_parts[] = $physicaldestination['AddressLine1'];
+        }
+        if (isset($physicaldestination['AddressLine2'])) {
+            $tmp_address_parts[] = $physicaldestination['AddressLine2'];
+        }
+        if (isset($physicaldestination['AddressLine3'])) {
+            $tmp_address_parts[] = $physicaldestination['AddressLine3'];
+        }
+        $tmp_address = implode(' ', $tmp_address_parts);
+        $ret['AddressLine1'] = mb_substr($tmp_address, 0, 8);
+        $ret['AddressLine2'] = mb_substr($tmp_address, 8, 18);
+        $ret['AddressLine3'] = mb_substr($tmp_address, 26, 30);
+
+        if (isset($physicaldestination['City'])) {
+            $ret['City'] = $physicaldestination['City'];
+        }
+
+        if (isset($physicaldestination['Country'])) {
+            $ret['Country'] = $physicaldestination['Country'];
+        }
+
+        if (isset($physicaldestination['District'])) {
+            $ret['District'] = $physicaldestination['District'];
+        }
+
+        $pref_name = $physicaldestination['StateOrRegion'];
+
+        $pref_master_list = AppValid::$prefs;
+        if (in_array($pref_name . '都', $pref_master_list)) {
+            $pref_name = $pref_name . '都';
+        } elseif (in_array($pref_name . '道', $pref_master_list)) {
+            $pref_name = $pref_name . '道';
+        } elseif (in_array($pref_name . '府', $pref_master_list)) {
+            $pref_name = $pref_name . '府';
+        } elseif (in_array($pref_name . '県', $pref_master_list)) {
+            $pref_name = $pref_name . '県';
+        } elseif (!in_array($pref_name, $pref_master_list)) {
+            $pref_name = '東京都';
+        }
+        $ret['StateOrRegion'] = $pref_name;
+
+        $postal_code = $physicaldestination['PostalCode'];
+        $postal_code = mb_convert_kana($postal_code, "n");
+        $postal_code = preg_replace('/[^0-9]/', '', $postal_code);
+        $postal_code = substr($postal_code, 0, 7);
+        $postal_code = str_pad($postal_code, 7, '0', STR_PAD_RIGHT);
+        $ret['PostalCode'] = $postal_code;
+
+        $ret['CountryCode'] = $physicaldestination['CountryCode'];
+
+        if (isset($physicaldestination['Phone'])) {
+            $phone = $physicaldestination['Phone'];
+            $phone = mb_convert_kana($phone, "n");
+            $phone = preg_replace('/[^0-9]/', '', $phone);
+            $ret['Phone'] = $phone;
+        }
+
+        return $ret;
+    }
 }

@@ -1132,6 +1132,7 @@ class FirstOrderController extends MinikuraController
         $amazon_pay_current_remaining_balance_amount = intval($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['BillingAgreementLimits']['CurrentRemainingBalance']['Amount']);
         // 住所に関する箇所を取得
         $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+        $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
 
         $get_address = CakeSession::read('Address');
 
@@ -1140,15 +1141,9 @@ class FirstOrderController extends MinikuraController
         $get_address['postal']      = $PostalCode;
         $get_address['pref']        = $physicaldestination['StateOrRegion'];
 
-        // city設定有無確認
-        if(isset($physicaldestination['City'])) {
-            $get_address['address1'] = $physicaldestination['City'];
-            $get_address['address2'] = $physicaldestination['AddressLine1'];
-            $get_address['address3'] = $physicaldestination['AddressLine2'];
-        } else {
-            $get_address['address1'] = $physicaldestination['AddressLine1'];
-            $get_address['address2'] = $physicaldestination['AddressLine2'];
-        }
+        $get_address['address1'] = $physicaldestination['AddressLine1'];
+        $get_address['address2'] = $physicaldestination['AddressLine2'];
+        $get_address['address3'] = $physicaldestination['AddressLine3'];
         $get_address['tel1']        = $physicaldestination['Phone'];
         $get_address['datetime_cd'] = $params['datetime_cd'];
         $get_address['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
