@@ -13,7 +13,7 @@
       <?php // 本登録アカウントかつクレジットカード登録なし(個人、法人)のみ表示 ?>
       <li><a class="animsition-link" href="/customer/credit_card/add"><i class="fa fa-credit-card fa-fw"></i> クレジットカード登録</a> </li>
     <?php endif; ?>
-    <?php if (!empty($customer) && !$customer->isEntry()) : ?>
+    <?php if (!empty($customer) && !$customer->isEntry() && !$customer->isAmazonPay()) : ?>
       <li><a class="animsition-link" href="/customer/address/"><i class="fa fa-truck fa-fw"></i> お届け先変更</a> </li>
     <?php endif; ?>
       <li><a href="/customer/password/edit"><i class="fa fa-lock fa-fw"></i> パスワード変更</a> </li>

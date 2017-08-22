@@ -22,6 +22,9 @@ class AddressController extends MinikuraController
             // 個人(仮登録)：アクセス不可
             return true;
         }
+        if ($this->Customer->isAmazonPay()) {
+            return true;
+        }
         return false;
     }
 

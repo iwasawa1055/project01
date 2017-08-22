@@ -40,6 +40,9 @@ class TravelController extends MinikuraController
      */
     protected function isAccessDeny()
     {
+        if ($this->Customer->isAmazonPay()) {
+            return true;
+        }
         return !$this->Customer->canOutbound();
     }
 
