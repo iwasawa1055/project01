@@ -175,6 +175,7 @@ var AppAmazonPayWallet =
                                     $('#error_alert').show();
                                     $('#dsn-amazon-pay').hide();
                                     $('#dsn-payment').hide();
+                                    amazon.Login.logout();
                                 }
                             }).bind("consentWidgetDiv ");
                         },
@@ -186,6 +187,7 @@ var AppAmazonPayWallet =
                             $('#error_alert').show();
                             $('#dsn-amazon-pay').hide();
                             $('#dsn-payment').hide();
+                            amazon.Login.logout();
                         }
                     }).bind("walletWidgetDiv");
 
@@ -205,6 +207,7 @@ var AppAmazonPayWallet =
                     $('#error_alert').show();
                     $('#dsn-amazon-pay').hide();
                     $('#dsn-payment').hide();
+                    amazon.Login.logout();
                 }
             }).bind("addressBookWidgetDiv");
 
