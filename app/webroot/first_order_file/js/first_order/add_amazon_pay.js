@@ -120,7 +120,7 @@ var AppAmazonPayWallet =
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
     buyerBillingAgreementConsentStatus: false,
-    ErrorMessage: '一時的に Amazon Pay がご利用いただけません。しばらくたってからお試し頂くか、何度もこのメッセージが表示される場合はクレジットカードでご購入ください。',
+    ErrorMessage: '一時的に Amazon Pay がご利用いただけません。「戻る」ボタンより前の画面へ戻り、再度お試しください。何度もこのメッセージが表示される場合はクレジットカードでご購入ください。',
 
     a: function () {
         // amazon Widget Ready
