@@ -132,7 +132,7 @@
           </div>
           <div class="dsn-divider"></div>
           <div class="dsn-form">
-            <label class="dsn-terms"><input type="checkbox" class="dsn-term focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span> 
+            <label class="dsn-terms"><input type="checkbox" class="dsn-term agree-before-submit focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>
               <label for="term" class="dsn-term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="dsn-link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a></label>
             </label>
             <?php echo $this->Flash->render('remember');?>
@@ -141,7 +141,7 @@
         </div>
       </section>
       <section class="dsn-nextback">
-        <button href="#" class="dsn-btn-next js-btn-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+        <button href="#" class="dsn-btn-next agree-submit js-btn-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
       </section>
     </form>
   </div>
