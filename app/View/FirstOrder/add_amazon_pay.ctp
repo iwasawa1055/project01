@@ -3,7 +3,6 @@
 <link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
 <link href="/first_order_file/css/first_order/add_amazon_pay_dev.css" rel="stylesheet">
 <link href="/css/dsn-amazon-pay.css" rel="stylesheet">
-<link href="/first_order_file/css/first_order/dsn-amazon-pay_dev.css" rel="stylesheet">
 <title>Amazonアカウントでお支払い - minikura</title>
 
 <?php echo $this->element('FirstOrder/header'); ?>
@@ -44,10 +43,6 @@
         </div>
         <div class="dsn-form">
           <?php // アマゾンから取得した情報をバリデーション ?>
-          <?php echo $this->Flash->render('lastname'); ?>
-          <?php echo $this->Flash->render('firstname'); ?>
-          <?php echo $this->Flash->render('lastname_kana'); ?>
-          <?php echo $this->Flash->render('firstname_kana'); ?>
           <?php echo $this->Flash->render('postal');?>
           <?php echo $this->Flash->render('pref');?>
           <?php echo $this->Flash->render('address1');?>
@@ -72,6 +67,23 @@
           <?php echo $this->Flash->render('password_confirm');?>
         </div>
         <div class="dsn-divider"></div>
+        <div class="dsn-form">
+          <label>お名前<span class="required">※</span></label>
+          <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
+          <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
+          <br>
+          <?php echo $this->Flash->render('lastname'); ?>
+          <?php echo $this->Flash->render('firstname'); ?>
+        </div>
+        <div class="dsn-form">
+          <label>フリガナ<span class="required">※</span></label>
+          <input type="text" name="lastname_kana" class="dsn-name-last-kana lastname_kana focused" placeholder="テラダ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname_kana');?>">
+          <input type="text" name="firstname_kana" class="dsn-name-first-kana firstname_kana focused" placeholder="タロウ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname_kana');?>">
+          <br>
+          <?php echo $this->Flash->render('lastname_kana'); ?>
+          <?php echo $this->Flash->render('firstname_kana'); ?>
+        </div>
+        <div class="divider"></div>
         <div class="dsn-form form-line">
           <label>生年月日<span class="dsn-required">※</span></label>
           <select class="dsn-select-birth-year focused" name="birth_year">
@@ -89,14 +101,14 @@
               <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
             <?php endfor;?>
           </select>
+          <?php echo $this->Flash->render('birth');?>
         </div>
-        <?php echo $this->Flash->render('birth');?>
         <div class="dsn-form dsn-form-line">
           <label>性別<span class="dsn-required">※</span></label>
           <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>
           <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+          <?php echo $this->Flash->render('gender');?>
         </div>
-        <?php echo $this->Flash->render('gender');?>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>
@@ -130,7 +142,7 @@
           <span id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
         </div>
       </div>
-  </section>
+    </section>
   <section class="dsn-nextback">
     <a href="/first_order/add_order" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
     <div class="submit_disabled_wrapper_parent">
@@ -143,6 +155,7 @@
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+<script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_file/js/first_order/add_amazon_pay.js"></script>
 
 <?php echo $this->element('FirstOrder/last'); ?>

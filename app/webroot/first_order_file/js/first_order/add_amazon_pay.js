@@ -66,6 +66,20 @@ var AppAmazonPay =
             }
         });})
     },
+    d: function () {
+        //** Auto Kana
+        $('input.lastname').airAutoKana(
+        {
+            dest: 'input.lastname_kana',
+            katakana: true
+        });
+
+        $('input.firstname').airAutoKana(
+            {
+                dest: 'input.firstname_kana',
+                katakana: true
+            });
+    },
     ajax_dateime: function (amazon_billing_agreement_id) {
         var elem_datetime = $('#datetime_cd');
 
@@ -224,5 +238,6 @@ $(function()
     AppAmazonPay.a();
     AppAmazonPay.b();
     AppAmazonPay.c();
+    AppAmazonPay.d();
     AppAmazonPayWallet.a();
 });

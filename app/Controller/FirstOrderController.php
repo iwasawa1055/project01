@@ -1043,7 +1043,7 @@ class FirstOrderController extends MinikuraController
         $is_validation_error = false;
 
         // ログインしていない場合
-        $params = [
+        $get_email = [
             'password'         => filter_input(INPUT_POST, 'password'),
             'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
             'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
@@ -1058,7 +1058,7 @@ class FirstOrderController extends MinikuraController
         ];
 
         //* Session write
-        CakeSession::write('Email', $params);
+        CakeSession::write('Email', $get_email);
 
         // 重複値を削除
         CakeSession::delete('Email.datetime_cd');
@@ -1070,7 +1070,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::write('Email.email', $amazon_pay_user_info['email']);
 
         // 確認用パスワード一致チェック
-        if ($params['password'] !== $params['password_confirm']) {
+        if ($get_email['password'] !== $get_email['password_confirm']) {
             $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
             $is_validation_error = true;
         }
@@ -1080,26 +1080,8 @@ class FirstOrderController extends MinikuraController
         $name = html_entity_decode($name);
         $name = mb_convert_kana($name, "s", "utf-8");
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' get_email ' . print_r($get_email, true));
 
-        // 空白で苗字名前がわかれているか？
-        $set_name = array();
-        if(strpos($name,' ') !== false){
-            $set_name = explode(" ",$name);
-        } else {
-            // スペースで区切られていない
-            $set_name[0] = $name;
-            $set_name[1] = '＿';
-        }
-
-        $get_address = array();
-
-        $get_address['lastname']        = $set_name[0];
-        $get_address['lastname_kana']   = '　';
-        $get_address['firstname']       = $set_name[1];
-        $get_address['firstname_kana']  = '　';
-
-        CakeSession::write('Address',   $get_address);
 
         // amazon pay 情報取得
         // 定期購入ID取得
@@ -1134,7 +1116,18 @@ class FirstOrderController extends MinikuraController
         $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
         $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
 
+
+        //Address情報を格納する配列
+        $get_address = array();
+
         $get_address = CakeSession::read('Address');
+
+        $get_address = [
+            'firstname'         => filter_input(INPUT_POST, 'firstname'),
+            'firstname_kana'    => filter_input(INPUT_POST, 'firstname_kana'),
+            'lastname'          => filter_input(INPUT_POST, 'lastname'),
+            'lastname_kana'     => filter_input(INPUT_POST, 'lastname_kana'),
+        ];
 
         // 住所情報セット
         $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
@@ -1145,14 +1138,13 @@ class FirstOrderController extends MinikuraController
         $get_address['address2'] = $physicaldestination['AddressLine2'];
         $get_address['address3'] = $physicaldestination['AddressLine3'];
         $get_address['tel1']        = $physicaldestination['Phone'];
-        $get_address['datetime_cd'] = $params['datetime_cd'];
-        $get_address['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
+//        $get_address['datetime_cd'] = $get_email['datetime_cd'];
+        $get_address['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
 
         // 住所情報更新
         CakeSession::write('Address',   $get_address);
 
-        unset($get_address['datetime_cd']);
-        $params = array_merge_recursive($params, $get_address);
+        $params = array_merge_recursive($get_email, $get_address);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
 
