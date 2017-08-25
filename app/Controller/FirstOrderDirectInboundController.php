@@ -9,6 +9,8 @@ App::uses('AmazonPayModel', 'Model');
 App::uses('AppCode', 'Lib');
 App::uses('PickupDate', 'Model');
 App::uses('PickupTime', 'Model');
+App::uses('PaymentAmazonKitAmazonPay', 'Model');
+App::uses('PaymentAmazonPay', 'Model');
 
 class FirstOrderDirectInboundController extends MinikuraController
 {
@@ -309,8 +311,81 @@ class FirstOrderDirectInboundController extends MinikuraController
             'remember'         => filter_input(INPUT_POST, 'remember'),
         ];
 
+        //* Session write
+        CakeSession::write('Email', $params_email);
+
+        // メールアドレスセット
+        $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
+        //* Session write
+        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
+
+        // 確認用パスワード一致チェック
+        if ($password !== $password_confirm) {
+            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
+            $is_validation_error = true;
+        }
+
+
+        // amazon pay 情報取得
+        // 定期購入ID取得
+        $amazon_billing_agreement_id = "";
+        $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . $amazon_billing_agreement_id);
+
+        if($amazon_billing_agreement_id === null) {
+            // 初回かリターン確認
+            if(CakeSession::read('FirstOrderDirectInbound.amazon_pay.amazon_billing_agreement_id') != null) {
+                CakeSession::write('FirstOrderDirectInbound.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+            }
+        }
+
+        // アクセストークンを取得
+        //$access_token = filter_input(INPUT_GET, 'access_token');
+        $access_token = CakeSession::read('FirstOrderDirectInbound.amazon_pay.access_token');
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' access_token ' . print_r($access_token, true));
+
+        if($access_token === null) {
+
+        }
+
+
+        // 住所情報等を取得
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+        $set_param['address_consent_token'] = $access_token;
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set_param ' . print_r($set_param, true));
+
+        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+        }
+
+        // 有効な定期購入IDを設定
+        CakeSession::write('FirstOrderDirectInbound.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+        $amazon_pay_current_remaining_balance_amount = intval($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['BillingAgreementLimits']['CurrentRemainingBalance']['Amount']);
+        // 住所に関する箇所を取得
+        $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+        $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
+
+
+        $get_address = array();
+
+        $get_address = CakeSession::read('Address');
 
         $params_address = [
+            'firstname'             => filter_input(INPUT_POST, 'firstname'),
+            'firstname_kana'        => filter_input(INPUT_POST, 'firstname_kana'),
+            'lastname'              => filter_input(INPUT_POST, 'lastname'),
+            'lastname_kana'         => filter_input(INPUT_POST, 'lastname_kana'),
             'date_cd'               => filter_input(INPUT_POST, 'date_cd'),
             'time_cd'               => filter_input(INPUT_POST, 'time_cd'),
             'select_delivery_day'   => filter_input(INPUT_POST, 'select_delivery_day'),
@@ -318,11 +393,15 @@ class FirstOrderDirectInboundController extends MinikuraController
             'cargo'                 => filter_input(INPUT_POST, 'cargo'),
         ];
 
-        // 確認用パスワード一致チェック
-        if ($password !== $password_confirm) {
-            $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
-            $is_validation_error = true;
-        }
+        // 住所情報セット
+        $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+        $params_address['postal']      = $PostalCode;
+        $params_address['pref']        = $physicaldestination['StateOrRegion'];
+
+        $params_address['address1'] = $physicaldestination['AddressLine1'];
+        $params_address['address2'] = $physicaldestination['AddressLine2'];
+        $params_address['address3'] = $physicaldestination['AddressLine3'];
+        $params_address['tel1']     = $physicaldestination['Phone'];
 
         //* Session write select_delivery_text
         $params_address['select_delivery_day_list'] = json_decode($params_address['select_delivery_day']);
@@ -346,33 +425,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             }
         }
 
-        //* Session write
-        CakeSession::write('Email', $params_email);
         CakeSession::write('Address', $params_address);
-
-        // メールアドレスセット
-        $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
-        //* Session write
-        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
-
-        // 住所に関する情報保存
-        $name = $amazon_pay_user_info['name'];
-        $name = mb_convert_kana($name, "s");
-
-        // 空白で苗字名前がわかれているか？
-        $set_name = array();
-        if(strpos($name,' ') !== false){
-            $set_name = explode(" ",$name);
-        } else {
-            // スペースで区切られていない
-            $set_name[0] = $name;
-            $set_name[1] = '＿';
-        }
-
-        CakeSession::write('Address.lastname',      $set_name[0]);
-        CakeSession::write('Address.firstname',     $set_name[1]);
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Amazon_Pay_User_Info ' . print_r($amazon_pay_user_info, true));
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation_email = AppValid::validate($params_email);
@@ -399,33 +452,10 @@ class FirstOrderDirectInboundController extends MinikuraController
             $is_validation_error = true;
         }
 
-        // アクセストークンを取得
-        $access_token = filter_input(INPUT_GET, 'access_token');
-        $amazon_billing_agreement_id = filter_input(INPUT_GET, 'AmazonBillingAgreementId');
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . print_r($amazon_billing_agreement_id, true));
-
-        if($access_token === null) {
-
-        }
-
-        if($amazon_billing_agreement_id === null) {
-
-        }
-
-        $this->loadModel('AmazonPayModel');
-        $res = $this->AmazonPayModel->GetOrderReferenceDetails($access_token, $amazon_billing_agreement_id);
-
         if ($is_validation_error === true) {
             $this->redirect('/first_order_direct_inbound/add_amazon_pay');
-            
             return;
         }
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res Order ' . print_r($res, true));
-
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
 
         // 前処理の不要なセッションを削除
         CakeSession::delete('registered_user_login_url');
@@ -447,9 +477,10 @@ class FirstOrderDirectInboundController extends MinikuraController
         $FirstOrderList['shipping_fee']['kit_name']  = '預け入れ送料';
         $FirstOrderList['shipping_fee']['price'] = 0;
 
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
         // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
-
         CakeSession::write('FirstOrderList', $FirstOrderList);
     }
 

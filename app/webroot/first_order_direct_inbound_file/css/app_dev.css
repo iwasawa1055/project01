@@ -284,3 +284,8 @@ section#dns-lineup .medal img {
 .dev-holder_name{
     text-transform: uppercase;
 }
+
+section a.dsn-link-terms,
+section a.dsn-link-terms:hover {
+  color: #ff0000;
+}

@@ -26,7 +26,6 @@
     <form method="post" action="/first_order_direct_inbound/confirm_amazon_pay" novalidate>
       <section id="dsn-adress">
         <div class="dsn-wrapper">
-          <div class="dsn-divider"></div>
 
           <div id="dsn-amazon-pay" class="form-group col-lg-12">
             <div class="dsn-address">
@@ -53,7 +52,7 @@
             <label>パスワード（確認用）<span class="dsn-required">※</span></label>
             <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password_confirm">
             <?php echo $this->Flash->render('password_confirm');?>
-          </div>
+          </div> 
           <div class="dsn-divider"></div>
           <div class="dsn-form">
             <label>預け入れ方法<span class="dsn-required">※</span></label>
@@ -89,6 +88,22 @@
             </p>
           </div>
           <div class="dsn-divider"></div>
+          <div class="dsn-form">
+            <label>お名前<span class="required">※</span></label>
+            <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
+            <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
+            <br>
+            <?php echo $this->Flash->render('lastname'); ?>
+            <?php echo $this->Flash->render('firstname'); ?>
+          </div>
+          <div class="dsn-form">
+            <label>フリガナ<span class="required">※</span></label>
+            <input type="text" name="lastname_kana" class="dsn-name-last-kana lastname_kana focused" placeholder="テラダ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname_kana');?>">
+            <input type="text" name="firstname_kana" class="dsn-name-first-kana firstname_kana focused" placeholder="タロウ" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname_kana');?>">
+            <br>
+            <?php echo $this->Flash->render('lastname_kana'); ?>
+            <?php echo $this->Flash->render('firstname_kana'); ?>
+          </div>
           <div class="dsn-form form-line">
             <label>生年月日<span class="dsn-required">※</span></label>
             <select class="dsn-select-birth-year focused" name="birth_year">
@@ -141,7 +156,7 @@
         </div>
       </section>
       <section class="dsn-nextback">
-        <button href="#" class="dsn-btn-next agree-submit js-btn-submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+        <button class="dsn-btn-next agree-submit js-btn-submit" type="submit">最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
       </section>
     </form>
   </div>
@@ -152,5 +167,6 @@
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_pay.js"></script>
 <script src="/first_order_direct_inbound_file/js/dsn-mybox.js"></script>
+<script src="/js/jquery.airAutoKana.js"></script>
 
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>
