@@ -108,7 +108,6 @@
                     <td id="js-item-total">0点</td>
                   </tr>
                 </table>
-                <div class="dsn-divider"></div>
                 
                     <!-- AmazonPayment wedget表示処理 -->
                   <div id="dsn-amazon-pay" class="form-group col-lg-12">
