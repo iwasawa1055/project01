@@ -6,6 +6,7 @@ if (!empty($validErrors)) {
 <?php $this->Html->script('minikura/inboundbox', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/app_dev.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']); ?>
     <div class="row">
@@ -105,6 +106,18 @@ if (!empty($validErrors)) {
                   </div>
 
             </div>
+
+            <div class="form-group col-lg-12 inbound_pickup_only">
+              <div class="dsn-form">
+                <label>お名前<span class="required"></span></label>
+                <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
+                <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
+                <br>
+                <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
+                <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
+              </div>
+            </div>
+
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の日程</label>
               <?php echo $this->Form->select("Inbound.day_cd", $this->Order->setOption($dateList, 'date_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
