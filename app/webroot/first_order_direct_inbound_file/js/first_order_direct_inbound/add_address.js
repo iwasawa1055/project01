@@ -96,7 +96,7 @@ var AppAmazonPayLogin =
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
-            AppAmazonPayLogin.c("AmazonPayButtonDirect","/first_order_direct_inbound/add_amazon_profile");
+            AppAmazonPayLogin.e("AmazonPayButtonDirect","/first_order_direct_inbound/add_amazon_profile");
         };
     },
     b: function () {
@@ -105,7 +105,16 @@ var AppAmazonPayLogin =
             amazon.Login.logout();
         };
     },
-    c: function (button_name, path) {
+    d: function () {
+        var param = '';
+
+        if($('[name=direct_inbound]').val() != '0') {
+            param = 'direct_inbound' + '=' + $('[name=direct_inbound]').val();
+        }
+
+        return param;
+    },
+    e: function (button_name, path) {
         var authRequest;
         var host = location.protocol + '//' + location.hostname;
         OffAmazonPayments.Button(button_name, AppAmazonPayLogin.SELLER_ID, {
@@ -113,8 +122,13 @@ var AppAmazonPayLogin =
           color: "Gold",
           size: "medium",
           authorization: function () {
+            param = AppAmazonPayLogin.d();
             loginOptions = {scope: "profile payments:widget payments:shipping_address", popup: "true"};
-            authRequest = amazon.Login.authorize(loginOptions, host + path);
+            set_param='';
+            if(param != ''){
+              set_param = '?' + param;
+            }
+            authRequest = amazon.Login.authorize(loginOptions, host + path + set_param);
           }
         });
     }
