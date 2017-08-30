@@ -1089,8 +1089,13 @@ class FirstOrderController extends MinikuraController
         if($amazon_billing_agreement_id === null) {
             // 初回かリターン確認
             if(CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id') != null) {
-                $amazon_billing_agreement_id = CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+                $amazon_billing_agreement_id = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
             }
+        }
+
+        // 定期購入IDが確定の場合
+        if(CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement')){
+            $amazon_billing_agreement_id = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
         }
 
         // 住所情報等を取得
@@ -1138,11 +1143,14 @@ class FirstOrderController extends MinikuraController
         $get_address['address2'] = $physicaldestination['AddressLine2'];
         $get_address['address3'] = $physicaldestination['AddressLine3'];
         $get_address['tel1']        = $physicaldestination['Phone'];
-//        $get_address['datetime_cd'] = $get_email['datetime_cd'];
+        $get_address['datetime_cd'] = $get_email['datetime_cd'];
         $get_address['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
 
         // 住所情報更新
         CakeSession::write('Address',   $get_address);
+
+        // 重複値を削除
+        unset($get_email['datetime_cd']);
 
         $params = array_merge_recursive($get_email, $get_address);
 
@@ -1618,6 +1626,27 @@ class FirstOrderController extends MinikuraController
                 ['key' => 'datetime_cd']);
             $this->redirect('/first_order/add_amazon_pay');
         }
+
+        // AmazonPay 定期購入確定処理
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['merchant_id'] = Configure::read('app.amazon_pay.merchant_id');
+        $set_param['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+            // カードの問題エラー CODE BillingAgreementConstraintsExist constraints PaymentMethodNotAllowed and cannot be confirmed.
+            // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
+        }
+
+        // 定期購入ID確定
+        CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
 
         //* 会員登録
 //        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
