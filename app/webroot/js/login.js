@@ -29,6 +29,7 @@ var AppAmazonPayLogin =
             authRequest = amazon.Login.authorize(loginOptions, host + path);
           }
         });
+        amazon.Login.logout();
     }
 }
 
