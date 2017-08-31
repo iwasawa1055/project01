@@ -2,6 +2,8 @@
 <?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
+<?php $this->Html->script(Configure::read('app.amazon_pay.Widgets_url'), ['block' => 'scriptMinikuraHeader', 'async' => 'async']); ?>
+
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
@@ -269,5 +271,3 @@
       </div>
     </div>
 
-<!-- 非同期にするため　ここでWidget読み込み -->
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
