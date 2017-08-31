@@ -6,7 +6,7 @@ class CustomerLoginAmazonPay extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('CustomerLoginAmazonPay', '/login', 'amazon_pay_v3');
+        parent::__construct('CustomerLoginAmazonPay', '/login', 'amazon_pay_v5');
     }
 
     public function login()
@@ -15,8 +15,8 @@ class CustomerLoginAmazonPay extends ApiModel
         $responses = $this->request('/login', $this->data[$this->model_name], 'GET');
         // api error
         if (empty($responses->error_message)) {
-            CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
-            CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
+            CakeSession::write(self::SESSION_API_TOKEN, $responses->results['token']);
+            CakeSession::write(self::SESSION_API_DIVISION, $responses->results['division']);
 
             //* Login Flag Set For contents.minikura.com Session
             //** Session Switch To contents.minikura.com

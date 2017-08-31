@@ -113,7 +113,7 @@ class LoginController extends MinikuraController
 
         $this->loadModel('CustomerLoginAmazonPay');
         $this->CustomerLoginAmazonPay->set([
-            //'amazon_user_id' => $res['user_id'],
+            'amazon_user_id' => $res['user_id'],
             'access_token' => $access_token,
         ]);
 

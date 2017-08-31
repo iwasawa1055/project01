@@ -1745,7 +1745,6 @@ class FirstOrderController extends MinikuraController
         $this->PaymentAmazonPay->set($amazon_pay_data);
 
         if (!$this->PaymentAmazonPay->validates()) {
-            echo '<pre>';var_dump($this->PaymentAmazonPay);echo '</pre>';exit;
             $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_amazon_pay_info']);
             $this->redirect('/first_order/add_amazon_pay');
         }
