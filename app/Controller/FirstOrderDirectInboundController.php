@@ -184,6 +184,15 @@ class FirstOrderDirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_order']);
         }
 
+        //預け入れ個数取得
+        $set_direct_inbound = array();
+        $set_direct_inbound['direct_inbound']['direct_inbound'] = (int)filter_input(INPUT_GET, 'direct_inbound');
+        $direct_inbound = $set_direct_inbound['direct_inbound'];
+
+        // FirstOrderと階層を合わせる
+        CakeSession::write('Order', $set_direct_inbound);
+
+
         CakeSession::write('FirstOrderDirectInbound.amazon_pay.access_token', $access_token);
 
         $this->loadModel('AmazonPayModel');
@@ -204,10 +213,20 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         CakeSession::write('FirstOrderDirectInbound.amazon_pay.user_info', $res);
 
+
         $is_validation_error = false;
 
         //*  validation 基本は共通クラスのAppValidで行う
-        //$validation = AppValid::validate($direct_inbound);
+        $validation = AppValid::validate($direct_inbound);
+
+                //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
+            return;
+        }
 
         // email確認
         // アマゾンペイメントメールエラー処理

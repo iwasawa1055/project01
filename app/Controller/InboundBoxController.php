@@ -216,36 +216,20 @@ class InboundBoxController extends MinikuraController
         }
         $data['box'] = implode(',', $selectedList);
 
-        $amazon_pay_user_info = CakeSession::read('login.amazon_pay.user_info');
-
-        // 住所に関する情報保存
-        $name = $amazon_pay_user_info['name'];
-        $name = html_entity_decode($name);
-        $name = mb_convert_kana($name, "s", "utf-8");
-
-        // 空白で苗字名前がわかれているか？
-        $set_name = array();
-        if(strpos($name,' ') !== false){
-            $set_name = explode(" ",$name);
-        } else {
-            // スペースで区切られていない
-            $set_name[0] = $name;
-            $set_name[1] = '＿';
-        }
-
+        //Address情報を格納する配列
         $get_address = array();
 
-        $get_address['lastname']        = $set_name[0];
-        $get_address['lastname_kana']   = '　';
-        $get_address['firstname']       = $set_name[1];
-        $get_address['firstname_kana']  = '　';
+        $get_address = [
+            'firstname'         => filter_input(INPUT_POST, 'firstname'),
+            'firstname_kana'    => '　',
+            'lastname'          => filter_input(INPUT_POST, 'lastname'),
+            'lastname_kana'     => '　',   
+        ];
 
         // amazon pay 情報取得
         // 定期購入ID取得
         $amazon_billing_agreement_id = "";
         $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!amazon_billing_agreement_id!!! ' . $amazon_billing_agreement_id);
 
         if($amazon_billing_agreement_id === null) {
             // 初回かリターン確認
@@ -330,7 +314,7 @@ class InboundBoxController extends MinikuraController
                 $validErrors['Inbound'] = $model->validationErrors;
             }
         }
-
+        
         if (!empty($validErrors)) {
             $this->set('validErrors', $validErrors);
             return $this->render('add_amazon_pay');

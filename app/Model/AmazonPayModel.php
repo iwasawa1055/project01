@@ -86,6 +86,23 @@ class AmazonPayModel extends AppModel
         return $response->toArray();
     }
 
+    /**
+     * ユーザ情報取得
+     */
+    public function setConfirmBillingAgreement($_set_param)
+    {
+        $requestParameters = array();
+
+        // Create the parameters array to set the order
+        $requestParameters['merchant_id'] = $_set_param['merchant_id'];
+        $requestParameters['amazon_billing_agreement_id'] = $_set_param['amazon_billing_agreement_id'];
+        $requestParameters['mws_auth_token'] = $_set_param['mws_auth_token'];
+
+        $response = $this->client->ConfirmBillingAgreement($requestParameters);
+
+        //* Return
+        return $response->toArray();
+    }
 
     //
     public function setOrderReferenceDetails($_set_param)

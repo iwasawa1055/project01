@@ -56,7 +56,7 @@
         <div class="form-group col-lg-12">
           <label>集荷の住所</label>
           <p class="form-control-static">
-            〒<?php echo CakeSession::read('InboundAddress.postal');?> <?php echo CakeSession::read('InboundAddress.pref');?><?php echo CakeSession::read('InboundAddress.address1');?><?php echo CakeSession::read('InboundAddress.address2');?> <?php echo CakeSession::read('InboundAddress.address3');?>
+            〒<?php echo CakeSession::read('InboundAddress.postal');?>&emsp;<?php echo CakeSession::read('InboundAddress.pref');?><?php echo CakeSession::read('InboundAddress.address1');?><?php echo CakeSession::read('InboundAddress.address2');?>&nbsp;<?php echo CakeSession::read('InboundAddress.address3');?>&emsp;<?php echo CakeSession::read('InboundAddress.lastname');?>&nbsp;<?php echo CakeSession::read('InboundAddress.firstname');?>
           </p>
         </div>
         <div class="form-group col-lg-12">
