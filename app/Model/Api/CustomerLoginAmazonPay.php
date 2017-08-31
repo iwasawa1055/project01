@@ -15,8 +15,8 @@ class CustomerLoginAmazonPay extends ApiModel
         $responses = $this->request('/login', $this->data[$this->model_name], 'GET');
         // api error
         if (empty($responses->error_message)) {
-            CakeSession::write(self::SESSION_API_TOKEN, $responses->results['token']);
-            CakeSession::write(self::SESSION_API_DIVISION, $responses->results['division']);
+            CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
+            CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
 
             //* Login Flag Set For contents.minikura.com Session
             //** Session Switch To contents.minikura.com
