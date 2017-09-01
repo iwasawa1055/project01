@@ -48,7 +48,9 @@
               <h3>Amazonアカウントで会員登録された方はこちらからログインできます。</h3>
               <a id="AmazonPayButtonLogin">
               </a>
-          </div>
+              <?php //amazonpay 関連エラー表示 ?>
+              <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
+            </div>
         </div>
       </div>
     </div>

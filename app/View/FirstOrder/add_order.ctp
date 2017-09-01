@@ -12,7 +12,7 @@
 
 <form method="post" action="/first_order/confirm_order" novalidate>
 <section id="dsn-lineup">
-  <? php //amazonpay 関連エラー表示 ?>
+  <?php //amazonpay 関連エラー表示 ?>
   <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
   <section id="adress">

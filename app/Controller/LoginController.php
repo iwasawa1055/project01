@@ -121,8 +121,11 @@ class LoginController extends MinikuraController
 
             $res = $this->CustomerLoginAmazonPay->login();
             if (!empty($res->error_message)) {
-                $this->Flash->validation($res->error_message, ['key' => 'amazon_pay_access_token']);
-                $this->redirect(['controller' => 'login', 'action' => 'index']);
+                // パスワード不正など
+                $this->request->data['CustomerLogin']['password'] = '';
+                $this->Flash->set($res->error_message);
+                $this->Flash->validation('※Amazonアカウントで会員登録された方のみご利用可能です。', ['key' => 'amazon_pay_access_token']);
+                return $this->render('index');
             }
 
             // ログイン処理
