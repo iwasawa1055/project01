@@ -4,7 +4,7 @@ if (!empty($validErrors)) {
 }
 ?>
 <?php $this->Html->script('minikura/inboundbox', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('minikura/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('minikura/inbound_box/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/app_dev.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
@@ -89,22 +89,32 @@ if (!empty($validErrors)) {
             </div>
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>集荷の住所</label>
-              
-                  <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                    <div class="dsn-address">
-                      <div id="addressBookWidgetDiv">
-                      </div>
-                    </div>
-                    <div class="dsn-credit">
-                      <div id="walletWidgetDiv">
-                      </div>
-                    </div>
-                  </div>
-                  <div id="dsn-payment" class="form-group col-lg-12">
-                    <div id="consentWidgetDiv">
-                    </div>
-                  </div>
 
+              <div id="dsn-amazon-pay" class="form-group col-lg-12">
+                <div class="dsn-address">
+                  <div id="addressBookWidgetDiv">
+                  </div>
+                </div>
+                <div class="dsn-credit">
+                  <div id="walletWidgetDiv">
+                  </div>
+                </div>
+              </div>
+              <div id="dsn-payment" class="form-group col-lg-12">
+                <div id="consentWidgetDiv">
+                </div>
+              </div>
+
+              <?php echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
             </div>
 
             <div class="form-group col-lg-12 inbound_pickup_only">

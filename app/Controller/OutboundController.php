@@ -5,6 +5,9 @@ App::uses('OutboundList', 'Model');
 App::uses('Outbound', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
+App::uses('AmazonPayModel', 'Model');
+App::uses('PaymentAmazonPay', 'Model');
+App::uses('PaymentAmazonKitAmazonPay', 'Model');
 
 class OutboundController extends MinikuraController
 {
@@ -54,6 +57,41 @@ class OutboundController extends MinikuraController
         $this->autoRender = false;
         $addressId = $this->request->data['address_id'];
         $address = $this->Address->find($addressId);
+        $result = $this->getDatetime($address['postal']);
+        $status = !empty($result);
+        $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
+        return json_encode(compact('status', 'result', 'isIsolateIsland'));
+    }
+
+    /**
+     *
+     */
+    public function getAddressDatetimeByAmazon()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $amazon_pay_data = $this->request->data['amazon_pay_data'];
+
+        $amazon_billing_agreement_id = $amazon_pay_data['amazon_billing_agreement_id'];
+
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+        // 住所に関する箇所を取得
+        $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+
+        $address = array();
+        $address['postal']      = $this->_editPostalFormat($physicaldestination['PostalCode']);
+        $address['pref']        = $physicaldestination['StateOrRegion'];
+
         $result = $this->getDatetime($address['postal']);
         $status = !empty($result);
         $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
@@ -232,6 +270,11 @@ class OutboundController extends MinikuraController
      */
     public function index()
     {
+        // アマゾンペイメント対応
+        if ($this->Customer->isAmazonPay()) {
+            $this->redirect(['controller' => 'outbound', 'action'=>'index_amazon_pay']);
+        }
+
         $boxList = $this->outboundList->getBoxList();
         HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
@@ -278,6 +321,56 @@ class OutboundController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME . 'FORM');
         CakeSession::delete(self::MODEL_NAME_POINT_USE);
     }
+
+    public function index_amazon_pay()
+    {
+        $boxList = $this->outboundList->getBoxList();
+        HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
+        $this->set('boxList', $boxList);
+
+        $itemList = $this->outboundList->getItemList();
+        HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
+        $this->set('itemList', $itemList);
+
+        // ポイント取得
+        $pointBalance = [];
+        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+        $res = $this->PointBalance->apiGet();
+        if (!empty($res->error_message)) {
+            $this->Flash->set($res->error_message);
+        } else {
+            $pointBalance = $res->results[0];
+        }
+        $this->set('pointBalance', $pointBalance);
+
+        $dateItemList = [];
+        $isIsolateIsland = '';
+
+        $isBack = Hash::get($this->request->query, 'back');
+        $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+        if ($isBack && !empty($data)) {
+            // 前回追加選択は最後のお届け先を選択
+            if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
+                $data[self::MODEL_NAME]['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
+                $data[self::MODEL_NAME]['datetime_cd'] = '';
+            }
+            $this->request->data = $data;
+            $addressId = $this->request->data['Outbound']['address_id'];
+            $address = $this->Address->find($addressId);
+            $postal = $address['postal'];
+            // お届け希望日と時間
+            $dateItemList = $this->getDatetime($postal);
+            // 利用ポイント
+            $this->request->data[self::MODEL_NAME_POINT_USE] = $pointUse[self::MODEL_NAME_POINT_USE];
+            $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
+        }
+        $this->set('dateItemList', $dateItemList);
+        $this->set('isolateIsland', $isIsolateIsland);
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
+        CakeSession::delete(self::MODEL_NAME_POINT_USE);
+    }
+
 
     /**
      *
