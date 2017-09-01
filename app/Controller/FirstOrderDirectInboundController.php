@@ -9,8 +9,6 @@ App::uses('AmazonPayModel', 'Model');
 App::uses('AppCode', 'Lib');
 App::uses('PickupDate', 'Model');
 App::uses('PickupTime', 'Model');
-App::uses('PaymentAmazonKitAmazonPay', 'Model');
-App::uses('PaymentAmazonPay', 'Model');
 
 class FirstOrderDirectInboundController extends MinikuraController
 {

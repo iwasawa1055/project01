@@ -7,8 +7,6 @@ App::uses('InboundDirectArrival', 'Model');
 App::uses('DatePickup', 'Model');
 App::uses('TimePickup', 'Model');
 App::uses('AmazonPayModel', 'Model');
-App::uses('PaymentAmazonPay', 'Model');
-App::uses('PaymentAmazonKitAmazonPay', 'Model');
 
 class DirectInboundController extends MinikuraController
 {

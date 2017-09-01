@@ -7,7 +7,6 @@ App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
 App::uses('FirstKitPrice', 'Model');
 App::uses('AmazonPayModel', 'Model');
-App::uses('PaymentAmazonPay', 'Model');
 App::uses('PaymentAmazonKitAmazonPay', 'Model');
 App::uses('AppCode', 'Lib');
 
@@ -1732,31 +1731,6 @@ class FirstOrderController extends MinikuraController
         $this->Customer->setPassword($this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['password']);
 
         $this->Customer->getInfo();
-
-        //* アマゾンペイメント登録
-        $this->loadModel('PaymentAmazonPay');
-
-        $AmazonPay = array();
-
-        $AmazonPay['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
-
-        $amazon_pay_data['PaymentAmazonPay'] = $AmazonPay;
-
-        $this->PaymentAmazonPay->set($amazon_pay_data);
-
-        if (!$this->PaymentAmazonPay->validates()) {
-            $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_amazon_pay_info']);
-            $this->redirect('/first_order/add_amazon_pay');
-        }
-
-/*
-  * 仮実装
-        $result_security_card = $this->PaymentAmazonPay->apiPost($this->PaymentAmazonPay->toArray());
-        if (!empty($result_security_card->error_message)) {
-            $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_info']);
-            $this->redirect('/first_order/add_amazon_pay');
-        }
-*/
 
         // 購入
         $this->loadModel('PaymentAmazonKitAmazonPay');

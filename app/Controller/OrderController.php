@@ -4,7 +4,6 @@ App::uses('MinikuraController', 'Controller');
 App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
 App::uses('AmazonPayModel', 'Model');
-App::uses('PaymentAmazonPay', 'Model');
 App::uses('PaymentAmazonKitAmazonPay', 'Model');
 
 

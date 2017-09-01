@@ -5,8 +5,6 @@ App::uses('DatePrivate', 'Model');
 App::uses('TimePrivate', 'Model');
 App::uses('InboundSelectedBox', 'Model');
 App::uses('AmazonPayModel', 'Model');
-App::uses('PaymentAmazonPay', 'Model');
-App::uses('PaymentAmazonKitAmazonPay', 'Model');
 
 class InboundBoxController extends MinikuraController
 {
