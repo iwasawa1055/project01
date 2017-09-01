@@ -54,6 +54,34 @@ switch (true) {
         $config['site.mypage.url'] = 'https://wada-mypage.minikura.com';
         $config['site.trade.url'] = 'https://wada-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://wada-contents.minikura.com';
+
+        $url = 'https://wada-user-api.minikura.com';
+        $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+        $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
+        $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
+        $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
+        $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+        $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
+        $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+        $config['api.minikura.access_point.amazon_pay_v3'] = $url . '/v3/payment/amazon_pay';
+        $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
+        break;
+    case $_SERVER['HTTP_HOST'] === 'izumi-contents.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 'izumi-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://izumi-mypage.minikura.com';
+        $config['site.trade.url'] = 'https://izumi-contents.minikura.com/trade/';
+        $config['site.static_content_url'] = 'https://izumi-contents.minikura.com';
+
+        $url = 'https://wada-user-api.minikura.com';
+        $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+        $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
+        $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
+        $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
+        $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+        $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
+        $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+        $config['api.minikura.access_point.amazon_pay_v3'] = $url . '/v3/payment/amazon_pay';
+        $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
         break;
     case $_SERVER['HTTP_HOST'] === 'yamamjoto-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yamamoto-mypage.minikura.com':
