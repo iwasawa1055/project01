@@ -1622,27 +1622,6 @@ class FirstOrderController extends MinikuraController
             $this->redirect('/first_order/add_amazon_pay');
         }
 
-        // AmazonPay 定期購入確定処理
-        $this->loadModel('AmazonPayModel');
-        $set_param = array();
-        $set_param['merchant_id'] = Configure::read('app.amazon_pay.merchant_id');
-        $set_param['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
-        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
-
-        $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
-        // GetBillingAgreementDetails
-        if($res['ResponseStatus'] != '200') {
-            // カードの問題エラー CODE BillingAgreementConstraintsExist constraints PaymentMethodNotAllowed and cannot be confirmed.
-            // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
-            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
-            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
-            $this->redirect('/first_order/add_amazon_pay');
-        }
-
-        // 定期購入ID確定
-        CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
-
         //* 会員登録
         $data = array_merge(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
@@ -1731,6 +1710,27 @@ class FirstOrderController extends MinikuraController
         $this->Customer->setPassword($this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['password']);
 
         $this->Customer->getInfo();
+
+        // AmazonPay 定期購入確定処理 会員登録で確定時にBAIDを確定させる
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['merchant_id'] = Configure::read('app.amazon_pay.merchant_id');
+        $set_param['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+            // カードの問題エラー CODE BillingAgreementConstraintsExist constraints PaymentMethodNotAllowed and cannot be confirmed.
+            // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
+        }
+
+        // 定期購入ID確定
+        CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
 
         // 購入
         $this->loadModel('PaymentAmazonKitAmazonPay');
