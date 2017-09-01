@@ -21,6 +21,7 @@
 <title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->fetch('meta');
+  echo $this->fetch('scriptMinikuraHeader');
 
   $this->Html->css('bootstrap.min', ['inline' => false]);
   $this->Html->css('font-awesome.min', ['inline' => false]);

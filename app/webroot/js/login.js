@@ -8,7 +8,7 @@ var AppAmazonPayLogin =
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
-            AppAmazonPayLogin.c("AmazonPayButtonLogin","/login/index_amazon_profile");
+            AppAmazonPayLogin.c("AmazonPayButtonLogin","/login/login_by_amazon_pay");
         };
     },
     b: function () {
@@ -29,6 +29,7 @@ var AppAmazonPayLogin =
             authRequest = amazon.Login.authorize(loginOptions, host + path);
           }
         });
+        amazon.Login.logout();
     }
 }
 

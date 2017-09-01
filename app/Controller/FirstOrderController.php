@@ -11,11 +11,16 @@ App::uses('PaymentAmazonPay', 'Model');
 App::uses('PaymentAmazonKitAmazonPay', 'Model');
 App::uses('AppCode', 'Lib');
 
+/**
+ * @property CustomerRegistInfoAmazonPay $CustomerRegistInfoAmazonPay
+ * @property CustomerLoginAmazonPay $CustomerLoginAmazonPay
+ */
 class FirstOrderController extends MinikuraController
 {
     // アクセス許可
     protected $checkLogined = false;
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
+    const MODEL_NAME_REGIST_AMAZON_PAY = 'CustomerRegistInfoAmazonPay';
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
 
@@ -1089,13 +1094,8 @@ class FirstOrderController extends MinikuraController
         if($amazon_billing_agreement_id === null) {
             // 初回かリターン確認
             if(CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id') != null) {
-                $amazon_billing_agreement_id = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+                $amazon_billing_agreement_id = CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id');
             }
-        }
-
-        // 定期購入IDが確定の場合
-        if(CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement')){
-            $amazon_billing_agreement_id = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
         }
 
         // 住所情報等を取得
@@ -1148,11 +1148,7 @@ class FirstOrderController extends MinikuraController
 
         // 住所情報更新
         CakeSession::write('Address',   $get_address);
-
-        // 重複値を削除
-        unset($get_email['datetime_cd']);
-
-        $params = array_merge_recursive($get_email, $get_address);
+        $params = array_merge($get_email, $get_address);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
 
@@ -1649,49 +1645,51 @@ class FirstOrderController extends MinikuraController
         CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
 
         //* 会員登録
-//        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
-        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
+        $data = array_merge(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
         unset($data['select_delivery_list']);
+        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+        $data['amazon_user_id'] = $amazon_pay_user_info['user_id'];
+        $data['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
 
-        $this->loadModel(self::MODEL_NAME_REGIST);
+        $this->loadModel(self::MODEL_NAME_REGIST_AMAZON_PAY);
 
         if ($is_logined) {
             $data['token'] = CakeSession::read(ApiModel::SESSION_API_TOKEN);
             $data['password'] = $this->Customer->getPassword();
 
             // バリデーションルールを変更
-            $this->CustomerRegistInfo->validator()->remove('password_confirm');
+            $this->CustomerRegistInfoAmazonPay->validator()->remove('password_confirm');
 
         }
 
         $data['tel1'] = self::_wrapConvertKana($data['tel1']);
 
         // post値をセット
-        $this->CustomerRegistInfo->set($data);
+        $this->CustomerRegistInfoAmazonPay->set($data);
 
         //*  validation
-        if (!$this->CustomerRegistInfo->validates()) {
+        if (!$this->CustomerRegistInfoAmazonPay->validates()) {
             // 事前バリデーションチェック済
             $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_regist_info']);
             $this->redirect('/first_order/add_amazon_pay');
         }
 
-        if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
-            unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
+        if (empty($this->CustomerRegistInfoAmazonPay->data[self::MODEL_NAME_REGIST_AMAZON_PAY]['alliance_cd'])) {
+            unset($this->CustomerRegistInfoAmazonPay->data[self::MODEL_NAME_REGIST_AMAZON_PAY]['alliance_cd']);
         }
 
         // 本登録
         if ($is_logined) {
-            $res = $this->CustomerRegistInfo->regist_no_oemkey();
+            $res = $this->CustomerRegistInfoAmazonPay->regist_no_oemkey();
         } else {
             // スニーカーユーザかどうか
             if (!CakeSession::read('order_sneaker')) {
                 //スニーカーでない
-                $res = $this->CustomerRegistInfo->regist();
+                $res = $this->CustomerRegistInfoAmazonPay->regist();
             } else {
                 // スニーカーユーザかどうか
-                $res = $this->CustomerRegistInfo->regist_sneakers();
+                $res = $this->CustomerRegistInfoAmazonPay->regist_sneakers();
             }
         }
 
@@ -1710,11 +1708,11 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログイン
-        $this->loadModel('CustomerLogin');
+        $this->loadModel('CustomerLoginAmazonPay');
 
-        $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
-
-        $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
+        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['amazon_user_id'] = $amazon_pay_user_info['user_id'];
+        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['access_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');;
 
         if ($is_logined) {
             // エントリユーザ切り替え再度ログイン
@@ -1722,7 +1720,7 @@ class FirstOrderController extends MinikuraController
         }
 
         // ログイン処理
-        $res = $this->CustomerLogin->login();
+        $res = $this->CustomerLoginAmazonPay->login();
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
@@ -1731,7 +1729,7 @@ class FirstOrderController extends MinikuraController
 
         // カスタマー情報を取得しセッションに保存
         $this->Customer->setTokenAndSave($res->results[0]);
-        $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+        $this->Customer->setPassword($this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['password']);
 
         $this->Customer->getInfo();
 

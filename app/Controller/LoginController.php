@@ -6,6 +6,9 @@ App::uses('OutboundList', 'Model');
 App::uses('CustomerEnvAuthed', 'Model');
 App::uses('AppCode', 'Lib');
 
+/**
+ * @property CustomerLoginAmazonPay $CustomerLoginAmazonPay
+ */
 class LoginController extends MinikuraController
 {
     // ログイン不要なページ
@@ -72,7 +75,7 @@ class LoginController extends MinikuraController
 		}
     }
 
-    public function index_amazon_profile()
+    public function login_by_amazon_pay()
     {
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
@@ -108,6 +111,35 @@ class LoginController extends MinikuraController
 
         CakeSession::write('login.amazon_pay.user_info', $res);
 
+        $this->loadModel('CustomerLoginAmazonPay');
+        $this->CustomerLoginAmazonPay->set([
+            'amazon_user_id' => $res['user_id'],
+            'access_token' => $access_token,
+        ]);
+
+        if ($this->CustomerLoginAmazonPay->validates()) {
+
+            $res = $this->CustomerLoginAmazonPay->login();
+            if (!empty($res->error_message)) {
+                $this->Flash->validation($res->error_message, ['key' => 'amazon_pay_access_token']);
+                $this->redirect(['controller' => 'login', 'action' => 'index']);
+            }
+
+            // ログイン処理
+            $this->request->data['CustomerLogin']['password'] = '';
+            $cookie_enable = false;
+            $this->_execLogin($res, $cookie_enable);
+
+            // ユーザー環境値登録
+            $this->Customer->postEnvAuthed();
+
+            // ログイン前のページに戻る
+            $this->_endJunction();
+
+        } else {
+            $this->Flash->validation('Amazonアカウントでお支払い ログインエラー', ['key' => 'amazon_pay_access_token']);
+            $this->redirect(['controller' => 'login', 'action' => 'index']);
+        }
 
         //$this->redirect($set_url);
         $this->redirect(['controller' => 'login', 'action' => 'index']);
