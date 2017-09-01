@@ -1,5 +1,3 @@
-
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 <?php $this->Html->script('minikura/outbound', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/outbound/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
@@ -62,7 +60,7 @@
         </div>
       </div>
     </div>
-    <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
+    <?php echo $this->Form->create('Outbound', ['url' => '/outbound/confirm_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
     <?php if(!$customer->isSneaker()) : ?>
     <div class="panel panel-default">
       <div class="panel-body">
@@ -120,6 +118,17 @@
           <?php echo $this->Form->error('Outbound.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
         </div>
 
+        <div class="form-group col-lg-12">
+          <label>お名前</label>
+          <div class="dsn-form">
+            <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
+            <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
+            <br>
+            <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
+          </div>
+        </div>
+
         <!-- 発送先が沖縄の場合、ここから表示 -->
         <div id="collapseOne" class="form-group col-lg-12 panel-collapse collapse in isolate_island_select">
           <div class="panel panel-red dispatch-okinawa">
@@ -171,7 +180,7 @@
           <a class="btn btn-primary btn-lg btn-block" href="/outbound/box">ボックスを選択に戻る</a>
         </span>
         <span class="col-lg-12 col-md-12 col-xs-12">
-          <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で確認する</button>
+          <button type="submit" class="btn btn-danger btn-lg btn-block js-btn-submit">この内容で確認する</button>
         </span>
         <input type="hidden" id="isolateIsland" value="<?php echo $isolateIsland; ?>">
       </div>
@@ -195,3 +204,5 @@
   <?php endif; ?>
   </div>
 </div>
+
+<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>

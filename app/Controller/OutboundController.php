@@ -469,6 +469,155 @@ class OutboundController extends MinikuraController
     /**
      *
      */
+    public function confirm_amazon_pay()
+    {
+        $boxList = $this->outboundList->getBoxList();
+        HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
+        $this->set('boxList', $boxList);
+
+        $itemList = $this->outboundList->getItemList();
+        HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
+        $this->set('itemList', $itemList);
+
+        $dateItemList = [];
+
+        if ($this->request->is('post')) {
+            $data = $this->request->data;
+
+            // product
+            $data['Outbound']['product'] = $this->Outbound->buildParamProduct($boxList, $itemList);
+
+            // お届け先
+            $get_address = array();
+
+            $get_address = [
+                'firstname'         => filter_input(INPUT_POST, 'firstname'),
+                'firstname_kana'    => '　',
+                'lastname'          => filter_input(INPUT_POST, 'lastname'),
+                'lastname_kana'     => '　',   
+            ];
+
+            // amazon pay 情報取得
+            // 定期購入ID取得
+            $amazon_billing_agreement_id = "";
+            $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+
+            if($amazon_billing_agreement_id === null) {
+                // 初回かリターン確認
+                if(CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id') != null) {
+                    CakeSession::write('Order.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+                }
+            }
+
+            // 住所情報等を取得
+            $this->loadModel('AmazonPayModel');
+            $set_param = array();
+            $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+            $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+            $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+            $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+
+            // GetBillingAgreementDetails
+            if($res['ResponseStatus'] != '200') {
+
+            }
+
+            // 有効な定期購入IDを設定
+            CakeSession::write('Order.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+
+            if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
+
+            }
+
+            // 住所に関する箇所を取得
+            $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+
+            // 住所情報セット
+            $postal = $this->_editPostalFormat($physicaldestination['PostalCode']);
+            $get_address['postal']      = $postal;
+            $get_address['pref']        = $physicaldestination['StateOrRegion'];
+
+            // city設定有無確認
+            if(isset($physicaldestination['City'])) {
+                $get_address['address1'] = $physicaldestination['City'];
+                $get_address['address2'] = $physicaldestination['AddressLine1'];
+                $get_address['address3'] = $physicaldestination['AddressLine2'];
+            } else {
+                $get_address['address1'] = $physicaldestination['AddressLine1'];
+                $get_address['address2'] = $physicaldestination['AddressLine2'];
+            }
+            $get_address['tel1']        = $physicaldestination['Phone'];
+            //$data['datetime_cd'] = $params['datetime_cd'];
+            //$data['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
+
+            CakeSession::write('OutboundAddress', $get_address);
+
+            $data['Outbound'] = array_merge_recursive($data['Outbound'], $get_address);
+            //$data['Outbound'] = $get_address;
+            $data['Outbound']['address_id'] = AddressComponent::CREATE_NEW_ADDRESS_ID;
+
+            // ポイント取得
+            $pointBalance = [];
+            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+            $res = $this->PointBalance->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+            } else {
+                $pointBalance = $res->results[0];
+            }
+            $this->set('pointBalance', $pointBalance);
+
+            // 利用ポイント
+            $this->PointUse->set($data);
+            // ポイント残高
+            $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $pointBalance['point_balance'];
+
+            $this->Outbound->set($data);
+
+            $isIsolateIsland = false;
+            if (!empty($this->Outbound->data['Outbound']['pref'])) {
+                $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+            }
+
+            // 離島 and 航空搭載不可あり
+            if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
+                $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+                $this->Outbound->validator()->remove('datetime_cd');
+            }
+
+            $validOutbound = $this->Outbound->validates();
+            $validPointUse = $this->PointUse->validates();
+
+            if ($validOutbound && $validPointUse) {
+                // 表示ラベル
+                //$address = $this->Address->find($addressId);
+                $this->set('address_text', "〒{$get_address['postal']} {$get_address['pref']}{$get_address['address1']}{$get_address['address2']}{$get_address['address3']}　{$get_address['lastname']}　{$get_address['firstname']}");
+                $datetime = $this->getDatetimeOne($get_address['postal'], $data['Outbound']['datetime_cd']);
+                $this->set('datetime_text', $datetime['text']);
+                $this->set('isolateIsland', $isIsolateIsland);
+                CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
+                CakeSession::write(self::MODEL_NAME, $this->Outbound->data);
+                CakeSession::write(self::MODEL_NAME_POINT_USE, $this->PointUse->data);
+                $this->set('pointUse', $this->PointUse->data[self::MODEL_NAME_POINT_USE]);
+            } else {
+
+                // お届け希望日と時間
+                $dateItemList = [];
+                if (!empty($postal)) {
+                    $dateItemList = $this->getDatetime($postal);
+                }
+                $this->set('dateItemList', $dateItemList);
+                $this->set('isolateIsland', $isIsolateIsland);
+                return $this->render('index_amazon_pay');
+            }
+        }
+
+    }
+
+    /**
+     *
+     */
     public function complete()
     {
         $data = CakeSession::read(self::MODEL_NAME);

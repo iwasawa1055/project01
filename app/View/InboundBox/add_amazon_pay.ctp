@@ -95,16 +95,8 @@ if (!empty($validErrors)) {
                   <div id="addressBookWidgetDiv">
                   </div>
                 </div>
-                <div class="dsn-credit">
-                  <div id="walletWidgetDiv">
-                  </div>
-                </div>
               </div>
-              <div id="dsn-payment" class="form-group col-lg-12">
-                <div id="consentWidgetDiv">
-                </div>
-              </div>
-
+              
               <?php echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('Inbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
@@ -118,8 +110,8 @@ if (!empty($validErrors)) {
             </div>
 
             <div class="form-group col-lg-12 inbound_pickup_only">
+              <label>お名前</label>
               <div class="dsn-form">
-                <label>お名前<span class="required"></span></label>
                 <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
                 <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
                 <br>
