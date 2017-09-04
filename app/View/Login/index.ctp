@@ -56,5 +56,5 @@
     </div>
   </div>
 
-<script src="/js/login.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
+<script src="/js/login.js"></script>

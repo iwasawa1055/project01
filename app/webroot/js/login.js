@@ -7,6 +7,9 @@ var AppAmazonPayLogin =
             amazon.Login.setClientId(AppAmazonPayLogin.ClientId);
         };
         window.onAmazonPaymentsReady = function() {
+            // onAmazonLoginReadyに来ない場合がある
+            amazon.Login.setClientId(AppAmazonPayLogin.ClientId);
+
             // Render the button here.
             AppAmazonPayLogin.c("AmazonPayButtonLogin","/login/login_by_amazon_pay");
         };

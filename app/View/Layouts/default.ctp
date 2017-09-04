@@ -162,6 +162,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     s.parentNode.insertBefore(tagjs, s);
   }());
 </script>
+<?php // アマゾンペイメント対応 ?>
+<?php if (!empty($customer) && $customer->isLogined()) : ?>
+  <?php if ($customer->isAmazonPay()):?>
+  <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+  <?php endif; ?>
+<?php endif; ?>
+
 <noscript>
   <iframe src="//b.yjtag.jp/iframe?c=yCeb9Et" width="1" height="1" title="iframe"></iframe>
 </noscript>

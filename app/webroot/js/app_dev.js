@@ -2,6 +2,7 @@
 $(function() {
   Act._();
   Act.a();
+  Act.b();
 
   $('a[href^="/"]a[target!="_blank"]').addClass('animsition-link');
   $('button[type=submit]').addClass('page-transition-link');
@@ -107,6 +108,16 @@ var Act =
             $('.airloader-overlay').show();
         });
     },
+    b: function()
+    {
+        window.onAmazonLoginReady = function(){
+            if ($('#Logout')[0]) {
+                $('#Logout').on('click', function (e) {
+                    amazon.Login.logout();
+                });
+            }
+        };
+    }
 };
 
 /* 指定したターゲットまでスクロールする */

@@ -13,7 +13,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <?php if (!empty($customer) && $customer->isLogined()) : ?>
                     <li>
-                        <a class="login" href="/login/logout" target="_blank"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>
+                        <a id="Logout" class="login" href="/login/logout" target="_blank"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>
                     </li>
                     <?php else : ?>
                     <li class="hidden">
