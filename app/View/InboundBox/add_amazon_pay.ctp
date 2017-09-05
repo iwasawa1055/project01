@@ -4,7 +4,7 @@ if (!empty($validErrors)) {
 }
 ?>
 <?php $this->Html->script('minikura/inboundbox', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('minikura/inbound_box/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('inbound_box/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/app_dev.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>

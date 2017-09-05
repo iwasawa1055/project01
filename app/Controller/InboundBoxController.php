@@ -82,24 +82,12 @@ class InboundBoxController extends MinikuraController
      */
     public function add_amazon_pay()
     {
-        $isBack = Hash::get($this->request->query, 'back');
-        $data = CakeSession::read(self::MODEL_NAME . 'FORM');
-        if ($isBack && !empty($data)) {
-            // 前回追加選択は最後のお届け先を選択
-            if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-                $data[self::MODEL_NAME]['address_id'] = Hash::get($this->Address->last(), 'address_id', '');
-            }
-            $this->request->data = $data;
-            $this->Inbound->init(Hash::get($this->request->data, self::MODEL_NAME));
-            $this->set('dateList', $this->Inbound->date());
-            $this->set('timeList', $this->Inbound->time());
-        }
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
     /**
-     *
+     *add_amazon_pay.js
      */
     public function confirm()
     {
