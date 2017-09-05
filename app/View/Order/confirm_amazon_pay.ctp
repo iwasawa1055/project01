@@ -67,11 +67,7 @@
             </div>
             <div class="dsn-form">
               <label>お支払い方法</label>
-              <?php if(CakeSession::read('OrderKit.is_credit')) {?>
-                <p>クレジットカード</p>
-              <?php } else { ?>
-                <p>口座振替</p>
-              <?php } ?>
+                <p>Amazon Pay</p>
             </div>
           </div>
         </section>

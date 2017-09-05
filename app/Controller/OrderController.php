@@ -791,7 +791,7 @@ class OrderController extends MinikuraController
         CakeSession::write('OrderKit.is_credit', true);
 
         if ($is_validation_error === true) {
-            $this->_flowSwitch('input');
+            $this->redirect('/order/input_amazon_pay');
             return;
         }
 
@@ -1014,12 +1014,14 @@ class OrderController extends MinikuraController
 
         $amazon_pay_user_info = CakeSession::read('login.amazon_pay.user_info');
 
+        // CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3')
         $amazon_kit_pay['access_token']     = $this->Customer->getAmazonPayAccessKey();
         $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
         $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id');
         $amazon_kit_pay['name']             = $set_address['name'];
         $amazon_kit_pay['tel1']             = self::_wrapConvertKana($set_address['tel1']);
         $amazon_kit_pay['postal']           = $set_address['postal'];
+        $amazon_kit_pay['address']          = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . '　' . $set_address['address2'];
         $amazon_kit_pay['datetime_cd']      = CakeSession::read('OrderKit.datetime_cd');
 
         $kit_params = CakeSession::read('OrderKit.kit_params');
@@ -1033,8 +1035,7 @@ class OrderController extends MinikuraController
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_card_info']);
             }
-            // 暫定
-            return $this->_flowSwitch('input_amazon_pay');
+            $this->redirect('/order/input_amazon_pay');
         }
 
         // 完了したページ情報を保存
