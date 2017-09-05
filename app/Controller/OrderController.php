@@ -1032,6 +1032,60 @@ class OrderController extends MinikuraController
         $this->_cleanKitOrderSession();
     }
 
+
+    /**
+     *
+     */
+    public function complete_amazon_pay()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Order/confirm_amazon_pay', 'Order/complete_amazon_pay'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'order', 'action' => 'input_amazon_pay']);
+        }
+
+        // 住所のセット
+        $set_address = array();
+
+        // 入力住所
+        $set_address = CakeSession::read('Address');
+
+        // 住所リスト追加
+        // カード購入
+        $this->loadModel('PaymentAmazonKitAmazonPay');
+        $amazon_kit_pay = array();
+
+        $amazon_pay_user_info = CakeSession::read('login.amazon_pay.user_info');
+
+        $amazon_kit_pay['access_token']     = $this->Customer->getAmazonPayAccessKey();
+        $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
+        $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id');
+        $amazon_kit_pay['name']             = $set_address['lastname'] . '　' . $set_address['firstname'];
+        $amazon_kit_pay['tel1']             = self::_wrapConvertKana($set_address['tel1']);
+        $amazon_kit_pay['postal']           = $set_address['postal'];
+        $amazon_kit_pay['datetime_cd']      = CakeSession::read('OrderKit.datetime_cd');
+
+        $kit_params = CakeSession::read('OrderKit.kit_params');
+        $amazon_kit_pay['kit'] = implode(',', $kit_params);
+
+        $this->PaymentAmazonKitAmazonPay->set($amazon_kit_pay);
+        $result_kit_amazon_pay = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
+        if ($result_kit_amazon_pay->status !== '1') {
+            if ($result_kit_amazon_pay->http_code === 400) {
+                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+            } else {
+                $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_card_info']);
+            }
+            // 暫定
+            return $this->_flowSwitch('input_amazon_pay');
+        }
+
+        // 完了したページ情報を保存
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->_cleanKitOrderSession();
+    }
+
     public function input_sneaker()
     {
         // refererは基本の初回購入フローを使用する
