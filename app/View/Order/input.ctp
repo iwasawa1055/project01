@@ -240,9 +240,6 @@
         <section class="dsn-nextback">
           <button type="submit" class="dsn-btn-next-full">確認へ <i class="fa fa-chevron-circle-right"></i></button>
         </section>
-        <section class="dsn-nextback">
-          <a href="/order/input_amazon_profile" class="dsn-btn-next-full">Amazon Payの場合</a>
-        </section>      
 
         <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
         <input type="hidden" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />

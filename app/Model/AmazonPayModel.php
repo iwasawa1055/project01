@@ -59,6 +59,8 @@ class AmazonPayModel extends AppModel
 
         // Create the parameters array to set the order
         $requestParameters['amazon_order_reference_id'] = $_set_param['amazon_order_reference_id'];
+        $requestParameters['address_consent_token'] = $_set_param['address_consent_token'];
+        $requestParameters['mws_auth_token'] = $_set_param['mws_auth_token'];
 
         $response = $this->client->getOrderReferenceDetails($requestParameters);
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' response ' . print_r($response, true));

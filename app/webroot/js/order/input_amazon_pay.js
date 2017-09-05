@@ -82,8 +82,8 @@ var AppAmazonPay =
     a: function () {
         $('.js-btn-submit').on('click', function (e) {
             var self = $(this);
-            var add_billing  = $('<input type="hidden" name="amazon_billing_agreement_id">');
-            add_billing.val(AppAmazonPayWallet.AmazonBillingAgreementId);
+            var add_billing  = $('<input type="hidden" name="amazon_order_reference_id">');
+            add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
             add_billing.insertAfter(self);
 
             // サブミット前チェック確認
@@ -145,7 +145,7 @@ var AppAmazonPay =
             }
         });})
     },
-    ajax_dateime: function (amazon_billing_agreement_id) {
+    ajax_dateime: function () {
         var elem_datetime = $('#datetime_cd');
 
         $('option:first', elem_datetime).prop('selected', true);
@@ -244,7 +244,10 @@ var AppAmazonPayWallet =
                     designMode: 'responsive'
                 },
                 onError: function (error) {
-                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                    if(error.getErrorCode() == 'BuyerSessionExpired') {
+                        amazon.Login.logout();
+                        location.href = '/login/logout';
+                    }
                 }
             }).bind("addressBookWidgetDiv");
         };

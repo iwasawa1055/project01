@@ -95,6 +95,11 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        // アマゾンペイメント対応
+        if ($this->Customer->isAmazonPay()) {
+            $this->redirect('/order/input_amazon_pay');
+        }
+
         // スニーカーセッションを制御
         if ($this->Customer->getInfo()['oem_cd'] === OEM_CD_LIST['sneakers']) {
             // スニーカー
@@ -655,104 +660,58 @@ class OrderController extends MinikuraController
             }
         }
 
-        $amazon_pay_user_info = CakeSession::read('login.amazon_pay.user_info');
-
-        //* Session write
-        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
-
-        // 住所に関する情報保存
-        $name = $amazon_pay_user_info['name'];
-        $name = html_entity_decode($name);
-        $name = mb_convert_kana($name, "s", "utf-8");
-
-        // 空白で苗字名前がわかれているか？
-        $set_name = array();
-        if(strpos($name,' ') !== false){
-            $set_name = explode(" ",$name);
-        } else {
-            // スペースで区切られていない
-            $set_name[0] = $name;
-            $set_name[1] = '＿';
-        }
-
-        $get_address = array();
-
-        $get_address['lastname']        = $set_name[0];
-        $get_address['lastname_kana']   = '　';
-        $get_address['firstname']       = $set_name[1];
-        $get_address['firstname_kana']  = '　';
-
-        CakeSession::write('Address',   $get_address);
-
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' address ' . print_r($get_address, true));
-
-
         // amazon pay 情報取得
-        // 定期購入ID取得
-        $amazon_billing_agreement_id = "";
-        $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . $amazon_billing_agreement_id);
-
-        if($amazon_billing_agreement_id === null) {
+        // アマゾンウィジェットID取得
+        $amazon_order_reference_id = filter_input(INPUT_POST, 'amazon_order_reference_id');
+        if($amazon_order_reference_id === null) {
             // 初回かリターン確認
-            if(CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id') != null) {
-                CakeSession::write('Order.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+            if(CakeSession::read('Order.amazon_pay.amazon_order_reference_id') != null) {
+                $amazon_order_reference_id = CakeSession::write('Order.amazon_pay.amazon_order_reference_id');
             }
         }
 
         // 住所情報等を取得
         $this->loadModel('AmazonPayModel');
         $set_param = array();
-        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
-        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+        $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
+        $set_param['address_consent_token'] = CakeSession::read('Login.amazon_pay.access_token');
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
-        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!res!!! ' . print_r($res, true));
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_access_token ' . print_r($set_param['address_consent_token'], true));
-
-
-        // GetBillingAgreementDetails
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        // GetOrderReferenceDetails
         if($res['ResponseStatus'] != '200') {
-
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
         }
 
-        // 有効な定期購入IDを設定
-        CakeSession::write('Order.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
-
-        if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
-
-        }
-
+        // 有効なアマゾンウィジェットIDを設定
+        CakeSession::write('Order.amazon_pay.amazon_order_reference_id', $amazon_order_reference_id);
         // 住所に関する箇所を取得
-        $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+        $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+        $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
+
+        //Address情報を格納する配列
+        $get_address = array();
 
         $get_address = CakeSession::read('Address');
 
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' physicaldestination ' . print_r($physicaldestination, true));
+
         // 住所情報セット
+        $get_address['name']      = $physicaldestination['Name'];
+
         $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
         $get_address['postal']      = $PostalCode;
         $get_address['pref']        = $physicaldestination['StateOrRegion'];
 
-        // city設定有無確認
-        if(isset($physicaldestination['City'])) {
-            $get_address['address1'] = $physicaldestination['City'];
-            $get_address['address2'] = $physicaldestination['AddressLine1'];
-            $get_address['address3'] = $physicaldestination['AddressLine2'];
-        } else {
-            $get_address['address1'] = $physicaldestination['AddressLine1'];
-            $get_address['address2'] = $physicaldestination['AddressLine2'];
-        }
+        $get_address['address1'] = $physicaldestination['AddressLine1'];
+        $get_address['address2'] = $physicaldestination['AddressLine2'];
+        $get_address['address3'] = $physicaldestination['AddressLine3'];
         $get_address['tel1']        = $physicaldestination['Phone'];
         $get_address['datetime_cd'] = $params['datetime_cd'];
         $get_address['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
-
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' get_address ' . print_r($get_address, true));
 
         // 住所情報更新
         CakeSession::write('Address',   $get_address);
@@ -760,11 +719,9 @@ class OrderController extends MinikuraController
 
         unset($get_address['datetime_cd']);
 
-
         $params = array_merge_recursive($params, $get_address);
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
-
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
@@ -1149,7 +1106,7 @@ class OrderController extends MinikuraController
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!res!!! ' . print_r($res, true));
 
 
-        // GetBillingAgreementDetails
+        // GetOrderReferenceDetails
         if($res['ResponseStatus'] != '200') {
             return json_encode(['status' => false]);
         }

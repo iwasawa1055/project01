@@ -1067,17 +1067,17 @@ class FirstOrderController extends MinikuraController
         // 重複値を削除
         CakeSession::delete('Email.datetime_cd');
 
-        // メールアドレスセット
-        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
-
-        //* Session write
-        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
-
         // 確認用パスワード一致チェック
         if ($get_email['password'] !== $get_email['password_confirm']) {
             $this->Flash->validation('パスワードが一致していません。ご確認ください。', ['key' => 'password_confirm']);
             $is_validation_error = true;
         }
+
+        // メールアドレスセット
+        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+
+        //* Session write
+        CakeSession::write('Email.email', $amazon_pay_user_info['email']);
 
         // 住所に関する情報保存
         $name = $amazon_pay_user_info['name'];
@@ -1707,7 +1707,7 @@ class FirstOrderController extends MinikuraController
 
         // カスタマー情報を取得しセッションに保存
         $this->Customer->setTokenAndSave($res->results[0]);
-        $this->Customer->setPassword($this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['password']);
+        $this->Customer->setPassword();
 
         $this->Customer->getInfo();
 
