@@ -1,9 +1,23 @@
 <?php echo $this->element('FirstOrder/first'); ?>
 <meta name="robots" content="noindex,nofollow,noarchive">
+<link href="/first_order_file/css/dsn-register.css" rel="stylesheet">
 <title>注文内容確認 - minikura</title>
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav'); ?>
-<?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
+
+<!-- PAGENATION -->
+<section id="dsn-pagenation">
+  <ul>
+    <li><i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
+    </li>
+    <li><i class="fa fa-amazon"></i><span>Amazon<br>アカウントで<br>お支払い</span>
+    </li>
+    <li><i class="fa fa-check"></i><span>確認</span>
+    </li>
+    <li class="dsn-on"><i class="fa fa-truck"></i><span>完了</span>
+    </li>
+  </ul>
+</section>
 <!-- ADRESS -->
 <section id="adress" class="complete">
   <h2>注文が完了しました。</h2>

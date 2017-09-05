@@ -1017,7 +1017,7 @@ class OrderController extends MinikuraController
         $amazon_kit_pay['access_token']     = $this->Customer->getAmazonPayAccessKey();
         $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
         $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id');
-        $amazon_kit_pay['name']             = $set_address['lastname'] . '　' . $set_address['firstname'];
+        $amazon_kit_pay['name']             = $set_address['name'];
         $amazon_kit_pay['tel1']             = self::_wrapConvertKana($set_address['tel1']);
         $amazon_kit_pay['postal']           = $set_address['postal'];
         $amazon_kit_pay['datetime_cd']      = CakeSession::read('OrderKit.datetime_cd');

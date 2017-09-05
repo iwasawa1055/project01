@@ -8,7 +8,7 @@ class PaymentAmazonKitAmazonPay extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentAmazonKitAmazonPay', '/payment_amazon_kit_amazon_pay', 'amazon_pay_v5');
+        parent::__construct('PaymentAmazonKitAmazonPay', '/kit_amazon_pay', 'amazon_pay_v4');
     }
 
     protected function triggerDataChanged()
@@ -72,7 +72,20 @@ class PaymentAmazonKitAmazonPay extends ApiModel
                 'message' => ['format', 'kit_cleaning_num'],
             ],
         ],
-
+        'access_token' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'access_token'],
+            ],
+        ],
+        'amazon_user_id' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'amazon_user_id'],
+            ],
+        ],
         'amazon_billing_agreement_id' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
@@ -152,13 +165,6 @@ class PaymentAmazonKitAmazonPay extends ApiModel
             'isDatetimeDelivery' => [
                 'rule' => 'isDatetimeDelivery',
                 'message' => ['format', 'kit_datetime']
-            ],
-        ],
-        'address_id' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'kit_address_name']
             ],
         ],
     ];
