@@ -400,8 +400,6 @@ class FirstOrderController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'add_order']);
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
-
         CakeSession::write('FirstOrder.amazon_pay.user_info', $res);
 
 
@@ -1084,9 +1082,6 @@ class FirstOrderController extends MinikuraController
         $name = html_entity_decode($name);
         $name = mb_convert_kana($name, "s", "utf-8");
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' get_email ' . print_r($get_email, true));
-
-
         // amazon pay 情報取得
         // 定期購入ID取得
         $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
@@ -1148,8 +1143,6 @@ class FirstOrderController extends MinikuraController
         // 住所情報更新
         CakeSession::write('Address',   $get_address);
         $params = array_merge($get_email, $get_address);
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
@@ -1602,6 +1595,7 @@ class FirstOrderController extends MinikuraController
 
         // 購入前にログインし、エントリユーザでない場合のチェック
         $is_logined = $this->_checkLogin();
+
         $this->set('is_logined', $is_logined);
 
         // セッションが古い場合があるので再チェック
@@ -1638,7 +1632,6 @@ class FirstOrderController extends MinikuraController
 
             // バリデーションルールを変更
             $this->CustomerRegistInfoAmazonPay->validator()->remove('password_confirm');
-
         }
 
         $data['tel1'] = self::_wrapConvertKana($data['tel1']);
@@ -1648,6 +1641,7 @@ class FirstOrderController extends MinikuraController
 
         //*  validation
         if (!$this->CustomerRegistInfoAmazonPay->validates()) {
+
             // 事前バリデーションチェック済
             $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_regist_info']);
             $this->redirect('/first_order/add_amazon_pay');
@@ -1690,7 +1684,7 @@ class FirstOrderController extends MinikuraController
 
         $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
         $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['amazon_user_id'] = $amazon_pay_user_info['user_id'];
-        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['access_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');;
+        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['access_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');
 
         if ($is_logined) {
             // エントリユーザ切り替え再度ログイン
@@ -1707,7 +1701,7 @@ class FirstOrderController extends MinikuraController
 
         // カスタマー情報を取得しセッションに保存
         $this->Customer->setTokenAndSave($res->results[0]);
-        $this->Customer->setPassword($this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['password']);
+        $this->Customer->setPassword(CakeSession::read('Email.password'));
 
         $this->Customer->getInfo();
 
@@ -1748,15 +1742,15 @@ class FirstOrderController extends MinikuraController
         $amazon_kit_pay['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
         // HAKOお片付けキットは１パック 5箱
         $amazon_kit_pay['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
-
-        $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
-
-        $amazon_kit_pay['address_id']    = '';
-        $amazon_kit_pay['datetime_cd']   = CakeSession::read('Address.datetime_cd');
-        $amazon_kit_pay['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
-        $amazon_kit_pay['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
-        $amazon_kit_pay['postal']        = CakeSession::read('Address.postal');
         $amazon_kit_pay['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+
+        $amazon_kit_pay['access_token']     = CakeSession::read('FirstOrder.amazon_pay.access_token');
+        $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
+        $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+        $amazon_kit_pay['name']             = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
+        $amazon_kit_pay['tel1']             = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+        $amazon_kit_pay['postal']           = CakeSession::read('Address.postal');
+        $amazon_kit_pay['datetime_cd']      = CakeSession::read('Address.datetime_cd');
 
         $productKitList = [
             PRODUCT_CD_MONO => [
@@ -1809,18 +1803,17 @@ class FirstOrderController extends MinikuraController
         $amazon_kit_pay['kit'] = implode(',', $kit_params);
 
         $this->PaymentAmazonKitAmazonPay->set($amazon_kit_pay);
-/*
- * 仮実装
-        $result_kit_card = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
-        if ($result_kit_card->status !== '1') {
-            if ($result_kit_card->http_code === 400) {
+
+        $result_kit_amazon_pay = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
+
+        if ($result_kit_amazon_pay->status !== '1') {
+            if ($result_kit_amazon_pay->http_code === 400) {
                 $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_info']);
             } else {
-                $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_info']);
+                $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }
-            $this->redirect('/first_order/add_amazon_pay');
+            return $this->_flowSwitch('confirm_amazon_pay');
         }
-*/
 
         // 完了したページ情報を保存
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
