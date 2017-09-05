@@ -1128,8 +1128,8 @@ class OrderController extends MinikuraController
 
         $postal = "";
 
-        $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
-        if($amazon_billing_agreement_id === null) {
+        $amazon_order_reference_id  = filter_input(INPUT_POST, 'amazon_order_reference_id');
+        if($amazon_order_reference_id === null) {
             return json_encode(['status' => false]);
         }
 
@@ -1137,15 +1137,15 @@ class OrderController extends MinikuraController
         $this->loadModel('AmazonPayModel');
 
         $set_param = array();
-        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!amazon_billing_agreement_id!!! ' . print_r($set_param['amazon_billing_agreement_id'], true));
+        $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!amazon_order_reference_id!!! ' . print_r($set_param['amazon_order_reference_id'], true));
 
         $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!order_amazonpay_access_token!!! ' . print_r($set_param['address_consent_token'], true));
 
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
-        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!res!!! ' . print_r($res, true));
 
 
@@ -1154,11 +1154,11 @@ class OrderController extends MinikuraController
             return json_encode(['status' => false]);
         }
 
-        if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination']['PostalCode'])) {
+        if(!isset($res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination']['PostalCode'])) {
             return json_encode(['status' => false]);
         }
 
-        $postal = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination']['PostalCode'];
+        $postal = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination']['PostalCode'];
 
         $result = $this->_getAddressDatetime($postal);
 
