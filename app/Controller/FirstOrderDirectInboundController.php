@@ -15,6 +15,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     // アクセス許可
     protected $checkLogined = false;
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
+    const MODEL_NAME_REGIST_AMAZON_PAY = 'CustomerRegistInfoAmazonPay';
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
 
@@ -1170,12 +1171,12 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 完了したページ情報を保存
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-		// アフィリエイトタグ出力用
-		$this->set('customer_id', $this->Customer->data->info['customer_id']);
+        // アフィリエイトタグ出力用
+        $this->set('customer_id', $this->Customer->data->info['customer_id']);
 
         $this->_cleanFirstOrderSession();
 
-		/* いったん無効化
+        /* いったん無効化
         // 既にセッションスタートしてる事が条件
         // マイページ側セッションクローズ
         $before_session_id = session_id();
@@ -1211,7 +1212,273 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // マイページ側セッション再開
         session_start();
-		*/
+        */
+    }
+
+    /**
+     * オーダー 完了
+     */
+    public function complete_amazon_pay()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_amazon_pay'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // 購入前にログインし、エントリユーザでない場合のチェック
+        $is_logined = $this->_checkLogin();
+        $this->set('is_logined', $is_logined);
+
+        // セッションが古い場合があるので再チェック
+        // 発送日一覧のエラーチェック
+        // 着払いでない場合
+        if (CakeSession::read('Address.cargo') !== "着払い") {
+
+            $check_address_datetime_cd = false;
+            $date_cd = CakeSession::read('Address.date_cd');
+
+            // 日付リストの確認
+            $date_list = $this->_getInboundDate();
+            foreach ($date_list->results as $key => $value) {
+                if ($value['date_cd'] === $date_cd) {
+                    $check_address_datetime_cd = true;
+                }
+            }
+
+            if (!$check_address_datetime_cd) {
+                $this->Flash->validation('集荷希望日をご確認ください。',
+                    ['key' => 'date_cd']);
+
+                CakeSession::delete('Address.date_cd');
+                CakeSession::delete('Address.select_delivery_day');
+                CakeLog::write(DEBUG_LOG,
+                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
+                return $this->redirect('add_address');
+            }
+
+            $time_cd = CakeSession::read('Address.time_cd');
+
+            // 時間リストの確認
+            $time_list = $this->_getInboundTime();
+            foreach ($time_list->results as $key => $value) {
+                if ($value['time_cd'] === $time_cd) {
+                    $check_address_datetime_cd = true;
+                }
+            }
+
+            if (!$check_address_datetime_cd) {
+                $this->Flash->validation('集荷希望時間をご確認ください。',
+                    ['key' => 'time_cd']);
+                CakeSession::delete('Address.time_cd');
+                CakeSession::delete('Address.select_delivery_time');
+
+                CakeLog::write(DEBUG_LOG,
+                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
+                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+            }
+        }
+
+        //* 会員登録
+        $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
+        unset($data['select_delivery_day']);
+        unset($data['select_delivery_time']);
+        unset($data['select_delivery_day_list']);
+        unset($data['select_delivery_time_list']);
+        $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
+        $data['amazon_user_id'] = $amazon_pay_user_info['user_id'];
+        $data['amazon_billing_agreement_id'] = CakeSession::read('FirstOrderDirectInbound.amazon_pay.amazon_billing_agreement_id');
+
+
+        $this->loadModel(self::MODEL_NAME_REGIST_AMAZON_PAY);
+
+        if ($is_logined) {
+            $data['token'] = CakeSession::read(ApiModel::SESSION_API_TOKEN);
+            $data['password'] = $this->Customer->getPassword();
+
+            // バリデーションルールを変更
+            $this->CustomerRegistInfoAmazonPay->validator()->remove('password_confirm');
+        }
+
+        $data['tel1'] = self::_wrapConvertKana($data['tel1']);
+
+        // post値をセット
+        $this->CustomerRegistInfoAmazonPay->set($data);
+
+        //*  validation
+        if (!$this->CustomerRegistInfoAmazonPay->validates()) {
+
+            // 事前バリデーションチェック済
+            $this->Flash->validation('入力情報をご確認ください', ['key' => 'customer_regist_info']);
+            return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+        }
+
+        if (empty($this->CustomerRegistInfoAmazonPay->data[self::MODEL_NAME_REGIST_AMAZON_PAY]['alliance_cd'])) {
+            unset($this->CustomerRegistInfoAmazonPay->data[self::MODEL_NAME_REGIST_AMAZON_PAY]['alliance_cd']);
+        }
+
+        // 本登録
+        if ($is_logined) {
+            $res = $this->CustomerRegistInfoAmazonPay->regist_no_oemkey();
+        } else {
+            // スニーカーユーザかどうか
+            if (!CakeSession::read('order_sneaker')) {
+                //スニーカーでない
+                $res = $this->CustomerRegistInfoAmazonPay->regist();
+            } else {
+                // スニーカーユーザかどうか
+                $res = $this->CustomerRegistInfoAmazonPay->regist_sneakers();
+            }
+        }
+
+        if (!empty($res->error_message)) {
+            // 紹介コードエラーの場合 紹介コード入力に遷移
+            if (strpos($res->message, 'alliance_cd') !== false) {
+                $this->Flash->validation($res->error_message, ['key' => 'alliance_cd']);
+                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+            }
+            if (strpos($res->message, 'Allow Only Entry') !== false) {
+                $this->Flash->validation('登録済ユーザのため購入完了できませんでした。', ['key' => 'customer_regist_info']);
+            } else {
+                $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            }
+            return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+        }
+
+        // ログイン
+        $this->loadModel('CustomerLoginAmazonPay');
+
+        $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
+        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['amazon_user_id'] = $amazon_pay_user_info['user_id'];
+        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['access_token'] = CakeSession::read('FirstOrderDirectInbound.amazon_pay.access_token');
+
+        if ($is_logined) {
+            // エントリユーザ切り替え再度ログイン
+            $this->Customer->switchEntryToCustomer();
+        }
+
+        // ログイン処理
+        $res = $this->CustomerLoginAmazonPay->login();
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'customer_regist_info']);
+            return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+        }
+
+        // カスタマー情報を取得しセッションに保存
+        $this->Customer->setTokenAndSave($res->results[0]);
+        $this->Customer->setPassword(CakeSession::read('Email.password'));
+
+        $this->Customer->getInfo();
+
+        // AmazonPay 定期購入確定処理 会員登録で確定時にBAIDを確定させる
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['merchant_id'] = Configure::read('app.amazon_pay.merchant_id');
+        $set_param['amazon_billing_agreement_id'] = CakeSession::read('FirstOrderDirectInbound.amazon_pay.amazon_billing_agreement_id');
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+            // カードの問題エラー CODE BillingAgreementConstraintsExist constraints PaymentMethodNotAllowed and cannot be confirmed.
+            // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+        }
+
+        // 定期購入ID確定
+        CakeSession::read('FirstOrderDirectInbound.amazon_pay.confirm_billing_agreement', true);
+
+        // ボックス情報の生成
+        $box = "";
+        for($i = 0;$i < CakeSession::read('Order.direct_inbound.direct_inbound'); $i++) {
+            $number = $i + 1;
+            if(empty($box)) {
+                $box .= PRODUCT_CD_DIRECT_INBOUND.':'.'minikuraダイレクト' . ':';
+            } else {
+                $box .= ',' . PRODUCT_CD_DIRECT_INBOUND.':'.'minikuraダイレクト' . ':';
+            }
+        }
+
+        // 入庫
+        $this->InboundDirect = new InboundDirect();
+
+        $inbound_direct = array();
+        $inbound_direct['box']          = $box;
+
+        if (CakeSession::read('Address.cargo') !== "着払い") {
+            // 集荷
+            $inbound_direct['direct_type'] = "0";
+            $inbound_direct['lastname'] = CakeSession::read('Address.lastname');
+            $inbound_direct['firstname'] = CakeSession::read('Address.firstname');
+            $inbound_direct['tel1'] = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+            $inbound_direct['postal'] = CakeSession::read('Address.postal');
+            $inbound_direct['pref'] = CakeSession::read('Address.pref');
+            $inbound_direct['address1'] = CakeSession::read('Address.address1');
+            $inbound_direct['address2'] = CakeSession::read('Address.address2');
+            $inbound_direct['address3'] = CakeSession::read('Address.address3');
+            $inbound_direct['day_cd'] = CakeSession::read('Address.date_cd');
+            $inbound_direct['time_cd'] = CakeSession::read('Address.time_cd');
+        } else {
+            // 着払い
+            $inbound_direct['direct_type']          = "1";
+        }
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' inbound_direct ' . print_r($inbound_direct, true));
+        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
+        if (!empty($res->message)) {
+            $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
+            return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+        }
+
+        // 完了したページ情報を保存
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // アフィリエイトタグ出力用
+        $this->set('customer_id', $this->Customer->data->info['customer_id']);
+
+        $this->_cleanFirstOrderSession();
+
+        /* いったん無効化
+        // 既にセッションスタートしてる事が条件
+        // マイページ側セッションクローズ
+        $before_session_id = session_id();
+        session_write_close();
+
+        // コンテンツ側のセッション名に変更
+        $SESS_ID = '';
+        if(isset($_COOKIE['WWWMINIKURACOM'])) {
+            $SESS_ID = $_COOKIE['WWWMINIKURACOM'];
+        }
+
+        if( !empty($SESS_ID)) {
+            // セッション再開
+            session_id($SESS_ID);
+            session_start();
+
+            // 紹介コード削除処理
+            if (!empty($_SESSION['ref_code'])) {
+                unset($_SESSION['ref_code']);
+                CakeLog::write(DEBUG_LOG, 'ref_code is unset SESS_ID ' . print_r($SESS_ID, true));
+            }
+
+            // コンテンツ側セッションクローズ
+            session_write_close();
+        }
+
+        // マイページ側セッション名に変更
+        session_name('MINIKURACOM');
+
+        if (!empty($before_session_id)) {
+            session_id($before_session_id);
+        }
+
+        // マイページ側セッション再開
+        session_start();
+        */
 
     }
 

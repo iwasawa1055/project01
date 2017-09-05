@@ -1812,7 +1812,7 @@ class FirstOrderController extends MinikuraController
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }
-            return $this->_flowSwitch('confirm_amazon_pay');
+            $this->redirect(['controller' => 'first_order', 'action' => 'confirm_amazon_pay']);
         }
 
         // 完了したページ情報を保存
