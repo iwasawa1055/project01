@@ -77,11 +77,6 @@ var AppAmazonPayLogin =
         //console.log(str);
         return param;
     },
-    c: function () {
-        document.getElementById('Logout').onclick = function () {
-            amazon.Login.logout();
-        };
-    },
     d: function () {
         $('.js-amazon_pay_logout').on('click', function (e) {
             $('form').submit();
@@ -122,6 +117,5 @@ $(function()
     AppAddOrder.a();
     AppAddOrder.b();
     AppAmazonPayLogin.a();
-    AppAmazonPayLogin.c();
     AppAmazonPayLogin.d();
 });

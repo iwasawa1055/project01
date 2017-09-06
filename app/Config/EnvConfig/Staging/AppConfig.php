@@ -37,7 +37,7 @@ error_reporting(E_ALL);
 //* 通常は b-api 参照
 $config['api.minikura.oem_key'] = '_QfNQL67x7RiIUbzn_1hkAEGKmlLO04we5rizUemfoWVLOjcEpIDDQ--';
 $config['api.sneakers.oem_key'] = 'mIAy.vWMJewpodApFPeOp47LvITDqYFYJfnym4F.MLY8Q3qgxpBrjL749K1EuljzMVE9GMRAeiM-'; 
-$url = 'https://b-api.minikura.com';
+$url = 'https://stag-api.minikura.com';
 
 //* 開発結合テスト用 a-api 参照
 //$config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
