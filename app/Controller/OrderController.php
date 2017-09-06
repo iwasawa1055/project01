@@ -507,6 +507,8 @@ class OrderController extends MinikuraController
 
         // 購入時用コード格納
         $kit_params = array();
+        // direct_inboundは項目上不要
+        unset($Order['direct_inbound']);
         // Order['MONO',[レギュラー=>0,アパレル=>0,ブック=>0]]
         foreach ($Order as $orders => $kit_order) {
             foreach ($kit_order as $key => $value) {
@@ -657,7 +659,7 @@ class OrderController extends MinikuraController
         $this->loadModel('AmazonPayModel');
         $set_param = array();
         $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
-        $set_param['address_consent_token'] = CakeSession::read('Login.amazon_pay.access_token');
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
         $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
@@ -732,6 +734,9 @@ class OrderController extends MinikuraController
 
         // 購入時用コード格納
         $kit_params = array();
+
+        // direct_inboundは項目上不要
+        unset($Order['direct_inbound']);
         // Order['MONO',[レギュラー=>0,アパレル=>0,ブック=>0]]
         foreach ($Order as $orders => $kit_order) {
             foreach ($kit_order as $key => $value) {
@@ -764,14 +769,6 @@ class OrderController extends MinikuraController
         CakeSession::write('OrderList', $OrderList);
         CakeSession::write('OrderTotalList', $OrderTotalList);
         CakeSession::write('OrderKit.kit_params', $kit_params);
-
-        // AmazonPaymentはクレジットカード支払い
-        CakeSession::write('OrderKit.is_credit', true);
-
-        if ($is_validation_error === true) {
-            $this->redirect('/order/input_amazon_pay');
-            return;
-        }
 
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
