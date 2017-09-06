@@ -272,7 +272,7 @@ class OutboundController extends MinikuraController
     {
         // アマゾンペイメント対応
         if ($this->Customer->isAmazonPay()) {
-            $this->redirect(['controller' => 'outbound', 'action'=>'index_amazon_pay']);
+            $this->redirect(['controller' => 'outbound', 'action'=>'add_amazon_pay']);
         }
 
         $boxList = $this->outboundList->getBoxList();
@@ -322,7 +322,7 @@ class OutboundController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME_POINT_USE);
     }
 
-    public function index_amazon_pay()
+    public function add_amazon_pay()
     {
         $boxList = $this->outboundList->getBoxList();
         HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
@@ -609,7 +609,7 @@ class OutboundController extends MinikuraController
                 }
                 $this->set('dateItemList', $dateItemList);
                 $this->set('isolateIsland', $isIsolateIsland);
-                return $this->render('index_amazon_pay');
+                return $this->render('add_amazon_pay');
             }
         }
 
@@ -671,6 +671,80 @@ class OutboundController extends MinikuraController
                 if (!empty($res->error_message)) {
                     $this->Flash->set($res->error_message);
                     return $this->redirect(['action' => 'index']);
+                }
+            }
+
+            // 取り出しリストクリア
+            OutboundList::delete();
+            (new InfoBox())->deleteCache();
+            (new InfoItem())->deleteCache();
+            (new Announcement())->deleteCache();
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'add']);
+        }
+    }
+
+
+    /**
+     *
+     */
+    public function complete_amazon_pay()
+    {
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+        CakeSession::delete(self::MODEL_NAME_POINT_USE);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' data ' . print_r($data, true));
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' pointUse ' . print_r($pointUse, true));
+
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'add']);
+        }
+
+        $this->Outbound->set($data);
+        // 利用ポイント
+        $this->PointUse->set($pointUse);
+
+        $isIsolateIsland = false;
+        if (!empty($this->Outbound->data['Outbound']['pref'])) {
+            $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
+        }
+
+        $existHazmat = false;
+        // 離島 and 航空搭載不可あり
+        if (!empty($this->Outbound->data['Outbound']['pref']) && $isIsolateIsland &&
+            $this->Outbound->data['Outbound']['aircontent_select'] === OUTBOUND_HAZMAT_EXIST) {
+            $this->Outbound->validator()->remove('datetime_cd');
+            $existHazmat = true;
+        }
+
+        $validOutbound = $this->Outbound->validates();
+        $validPointUse = $this->PointUse->validates();
+        // if ($this->Outbound->validates()) {
+        if ($validOutbound && $validPointUse) {
+            // api
+            if ($existHazmat) {
+                $this->loadModel('ContactAny');
+                $res = $this->ContactAny->apiPostIsolateIsland($this->Outbound->data['Outbound']);
+            } else {
+                $res = $this->Outbound->apiPost($this->Outbound->toArray());
+            }
+
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'add_amazon_pay']);
+            }
+
+            if ($this->PointUse->verifyCallPointUse()) {
+                // ポイント消費
+                $res = $this->PointUse->apiPost($this->PointUse->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'add_amazon_pay']);
                 }
             }
 
