@@ -106,10 +106,6 @@
               </div>
             </div>
           </div>
-          <?php echo $this->Form->error('Outbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
           <?php echo $this->Form->error('Outbound.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
           <?php echo $this->Form->error('Outbound.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
           <?php echo $this->Form->error('Outbound.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
@@ -124,8 +120,8 @@
             <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
             <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
             <br>
-            <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
-            <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
           </div>
         </div>
 
@@ -205,4 +201,3 @@
   </div>
 </div>
 
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
