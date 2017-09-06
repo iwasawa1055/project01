@@ -37,6 +37,7 @@ const PAYMENT_METHOD = [
 // 支払い口座登録状況
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';
+const ACCOUNT_SITUATION_AMAZON_PAY = 'AmazonPay';
 
 // 法人用支払い状況
 const CORPORATE_PAYMENT_METHOD = [

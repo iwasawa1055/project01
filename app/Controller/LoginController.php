@@ -85,12 +85,6 @@ class LoginController extends MinikuraController
             $this->redirect(['controller' => 'login', 'action' => 'index']);
         }
 
-        CakeSession::write('Login.amazon_pay.access_token', $access_token);
-
-        $test_access_token = array();
-        $test_access_token = CakeSession::read('Login.amazon_pay.access_token');
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' test_access_token ' . $test_access_token);
-
         CakeSession::write(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY, $access_token);
 
         $this->loadModel('AmazonPayModel');
@@ -179,7 +173,19 @@ class LoginController extends MinikuraController
         // カスタマー情報を取得しセッションに保存
         $this->Customer->setTokenAndSave($_res->results[0]);
         $this->Customer->setPassword($this->request->data['CustomerLogin']['password']);
-        $this->Customer->getInfo();
+        $usr_info = $this->Customer->getInfo();
+
+        // AmazonPayユーザ確認
+        if (!$this->Customer->isAmazonPay()) {
+
+            // AmazonPayログインしていないが、支払いがamazonpay の場合
+            if (isset($usr_info['account_situation'])) {
+                if ($usr_info['account_situation'] === ACCOUNT_SITUATION_AMAZON_PAY) {
+                    $this->Flash->set('Amazon Loginボタンよりログインしてください。 Amazon アカウント利用を停止する場合はお問い合わせください');
+                    $this->redirect(['controller' => 'login', 'action' => 'logout']);
+                }
+            }
+        }
 
         // ログイン情報を暗号化してクッキーへ保存
         if ( $_usecookie !== false ) {
