@@ -79,6 +79,17 @@
                     </div>
                   </div>
 
+                  <div class="form-group col-lg-12 inbound_pickup_only">
+                    <label>お名前</label>
+                    <div class="dsn-form">
+                      <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
+                      <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
+                      <br>
+                      <?php echo $this->Flash->render('firstname');?>
+                      <?php echo $this->Flash->render('lastname');?>
+                    </div>
+                  </div>
+
                   <div class="form-group col-lg-12">
                     <label>集荷の日程</label>
                       <select name="date_cd" id="InboundDayCd" class="form-controlr dev-input-form">

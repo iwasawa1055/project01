@@ -791,6 +791,8 @@ class DirectInboundController extends MinikuraController
             $get_address['address2'] = $physicaldestination['AddressLine2'];
             $get_address['address3'] = $physicaldestination['AddressLine3'];
             $get_address['tel1']        = $physicaldestination['Phone'];
+            $get_address['lastname']    = filter_input(INPUT_POST, 'lastname');
+            $get_address['firstname']   = filter_input(INPUT_POST, 'firstname');
 
             // 住所情報更新
             CakeSession::write('Address',   $get_address);
