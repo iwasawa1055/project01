@@ -153,9 +153,19 @@ class AmazonPayModel extends AppModel
             $tmp_address_parts[] = $physicaldestination['AddressLine3'];
         }
         $tmp_address = implode(' ', $tmp_address_parts);
-        $ret['AddressLine1'] = mb_substr($tmp_address, 0, 8);
-        $ret['AddressLine2'] = mb_substr($tmp_address, 8, 18);
-        $ret['AddressLine3'] = mb_substr($tmp_address, 26, 30);
+
+        if ( mb_strlen($tmp_address) > 8) {
+            $ret['AddressLine1'] = mb_substr($tmp_address, 0, 8);
+            $ret['AddressLine2'] = mb_substr($tmp_address, 8, 18);
+            $ret['AddressLine3'] = mb_substr($tmp_address, 26, 30);
+        } else {
+            // 一定長さ以下
+            $ret['AddressLine1'] = $tmp_address_parts[0];
+            $ret['AddressLine2'] = $tmp_address_parts[1];
+            if (isset($tmp_address_parts[2])) {
+                $ret['AddressLine3'] = $tmp_address_parts[2];
+            }
+        }
 
         if (isset($physicaldestination['City'])) {
             $ret['City'] = $physicaldestination['City'];
