@@ -528,29 +528,20 @@ class OutboundController extends MinikuraController
             $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
             $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
 
-            // 住所情報セット
-            $postal = $this->_editPostalFormat($physicaldestination['PostalCode']);
-            $get_address['postal']      = $postal;
+            $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+            $get_address['postal']      = $PostalCode;
             $get_address['pref']        = $physicaldestination['StateOrRegion'];
 
-            // city設定有無確認
-            if(isset($physicaldestination['City'])) {
-                $get_address['address1'] = $physicaldestination['City'];
-                $get_address['address2'] = $physicaldestination['AddressLine1'];
-                $get_address['address3'] = $physicaldestination['AddressLine2'];
-            } else {
-                $get_address['address1'] = $physicaldestination['AddressLine1'];
-                $get_address['address2'] = $physicaldestination['AddressLine2'];
-            }
+            $get_address['address1'] = $physicaldestination['AddressLine1'];
+            $get_address['address2'] = $physicaldestination['AddressLine2'];
+            $get_address['address3'] = $physicaldestination['AddressLine3'];
             $get_address['tel1']        = $physicaldestination['Phone'];
-            //$data['datetime_cd'] = $params['datetime_cd'];
-            //$data['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
 
             CakeSession::write('OutboundAddress', $get_address);
 
             $data['Outbound'] = array_merge_recursive($data['Outbound'], $get_address);
             //$data['Outbound'] = $get_address;
-            $data['Outbound']['address_id'] = AddressComponent::CREATE_NEW_ADDRESS_ID;
+            $data['Outbound']['address_id'] = '-10';
 
             // ポイント取得
             $pointBalance = [];
@@ -571,6 +562,7 @@ class OutboundController extends MinikuraController
             $this->Outbound->set($data);
 
             $isIsolateIsland = false;
+
             if (!empty($this->Outbound->data['Outbound']['pref'])) {
                 $isIsolateIsland = in_array($this->Outbound->data['Outbound']['pref'], ISOLATE_ISLANDS);
             }
