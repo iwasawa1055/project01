@@ -82,12 +82,22 @@ class InboundBoxController extends MinikuraController
      */
     public function add_amazon_pay()
     {
+        $isBack = Hash::get($this->request->query, 'back');
+        $data = CakeSession::read(self::MODEL_NAME . 'FORM');
+
+        if ($isBack && !empty($data)) {
+            $this->request->data = $data;
+            $this->Inbound->init(Hash::get($this->request->data, self::MODEL_NAME));
+
+            $this->set('dateList', $this->Inbound->date());
+            $this->set('timeList', $this->Inbound->time());
+        }
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
     }
 
     /**
-     *add_amazon_pay.js
+     *
      */
     public function confirm()
     {
@@ -170,15 +180,6 @@ class InboundBoxController extends MinikuraController
             return $this->render('add_amazon_pay');
         }
 
-        // 届け先追加を選択の場合は追加画面へ遷移
-        if (Hash::get($data, 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-            CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
-            return $this->redirect([
-                'controller' => 'address', 'action' => 'add', 'customer' => true,
-                '?' => ['return' => 'inboundbox']
-            ]);
-        }
-
         $dataBoxList = $data['box_list'];
         unset($data['box_list']);
 
@@ -202,75 +203,6 @@ class InboundBoxController extends MinikuraController
         }
         $data['box'] = implode(',', $selectedList);
 
-        //Address情報を格納する配列
-        $get_address = array();
-
-        $get_address = [
-            'firstname'         => filter_input(INPUT_POST, 'firstname'),
-            'firstname_kana'    => '　',
-            'lastname'          => filter_input(INPUT_POST, 'lastname'),
-            'lastname_kana'     => '　',   
-        ];
-
-        // amazon pay 情報取得
-        // 定期購入ID取得
-        $amazon_billing_agreement_id = "";
-        $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
-
-        if($amazon_billing_agreement_id === null) {
-            // 初回かリターン確認
-            if(CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id') != null) {
-                CakeSession::write('Order.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
-            }
-        }
-
-        // 住所情報等を取得
-        $this->loadModel('AmazonPayModel');
-        $set_param = array();
-        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
-        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
-        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
-
-        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
-
-        // GetBillingAgreementDetails
-        if($res['ResponseStatus'] != '200') {
-
-        }
-
-        // 有効な定期購入IDを設定
-        CakeSession::write('Order.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
-
-        if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'])) {
-
-        }
-
-        // 住所に関する箇所を取得
-        $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
-
-        //$get_address = CakeSession::read('Address');
-
-        // 住所情報セット
-        $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
-        $get_address['postal']      = $PostalCode;
-        $get_address['pref']        = $physicaldestination['StateOrRegion'];
-
-        // city設定有無確認
-        if(isset($physicaldestination['City'])) {
-            $get_address['address1'] = $physicaldestination['City'];
-            $get_address['address2'] = $physicaldestination['AddressLine1'];
-            $get_address['address3'] = $physicaldestination['AddressLine2'];
-        } else {
-            $get_address['address1'] = $physicaldestination['AddressLine1'];
-            $get_address['address2'] = $physicaldestination['AddressLine2'];
-        }
-        $get_address['tel1']        = $physicaldestination['Phone'];
-        //$data['datetime_cd'] = $params['datetime_cd'];
-        //$data['select_delivery_text'] = $this->_convDatetimeCode($params['datetime_cd']);
-
-
-        CakeSession::write('InboundAddress', $get_address);
-
         // 預け入れ方法入力チェック
         if (empty($data['delivery_carrier'])) {
             $validErrors['Inbound']['delivery_carrier'] = __d('validation', 'notBlank', __d('validation', 'inbound_delivery_carrier'));
@@ -280,17 +212,62 @@ class InboundBoxController extends MinikuraController
             $this->set('dateList', $this->Inbound->date());
             $this->set('timeList', $this->Inbound->time());
 
+            // デフォルト値
+            $data['address_id'] = '-10';
 
             // モデル取得
-            //暫定バリデーションNG回避対応
-            $data['address_id'] = AddressComponent::CREATE_NEW_ADDRESS_ID;
+            $data = $this->Address->merge($data['address_id'], $data);
 
-            $data = array_merge_recursive($data, $get_address);
+            // amazonpay データ取得
+            $params = [
+                'lastname'                  => filter_input(INPUT_POST, 'lastname'),
+                'firstname'                 => filter_input(INPUT_POST, 'firstname'),
+                'amazon_order_reference_id' => filter_input(INPUT_POST, 'amazon_order_reference_id'),
+            ];
+
+            // 住所情報等を取得
+            $this->loadModel('AmazonPayModel');
+            $set_param = array();
+            $set_param['amazon_order_reference_id'] = $params['amazon_order_reference_id'];
+            $set_param['address_consent_token'] = CakeSession::read(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY);
+            $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+            $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+            // GetOrderReferenceDetails
+            if($res['ResponseStatus'] != '200') {
+                // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+                return $this->redirect(['action' => 'add_amazon_pay']);
+            }
+
+            $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+            $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
+
+            $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+            $data['postal']      = $PostalCode;
+            $data['pref']        = $physicaldestination['StateOrRegion'];
+
+            $data['address1'] = $physicaldestination['AddressLine1'];
+            $data['address2'] = $physicaldestination['AddressLine2'];
+            $data['address3'] = $physicaldestination['AddressLine3'];
+            $data['tel1']        = $physicaldestination['Phone'];
+
+            // 名前上書き
+            $data['lastname']   = $params['lastname'];
+            $data['firstname']  = $params['firstname'];
+
+            // カナ一時的に全角空白で対応
+            $data['lastname_kana'] = '　';
+            $data['firstname_kana'] = '　';
+
+            // 一時セッション保持
+            CakeSession::write('InboundAddress', $data);
 
             $model = $this->Inbound->model($data);
             if (empty($model)) {
                 $this->Flash->set(__('empty_session_data'));
-                //return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'add_amazon_pay']);
             }
 
             if ($model->validates()) {
@@ -300,7 +277,7 @@ class InboundBoxController extends MinikuraController
                 $validErrors['Inbound'] = $model->validationErrors;
             }
         }
-        
+
         if (!empty($validErrors)) {
             $this->set('validErrors', $validErrors);
             return $this->render('add_amazon_pay');
@@ -338,6 +315,37 @@ class InboundBoxController extends MinikuraController
         }
     }
 
+    /**
+     *
+     */
+    public function complete_amazon_pay()
+    {
+        $data = CakeSession::read(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME . 'FORM');
+        CakeSession::delete('InboundAddress');
+
+        if (empty($data)) {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'add_amazon_pay']);
+        }
+
+        $data = current($data);
+
+        $this->Inbound->init($data);
+        $model = $this->Inbound->model($data);
+        if (!empty($model) && $model->validates()) {
+            // api
+            $res = $model->apiPost($model->toArray());
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'add']);
+            }
+        } else {
+            $this->Flash->set(__('empty_session_data'));
+            return $this->redirect(['action' => 'add']);
+        }
+    }
 
     /**
      *

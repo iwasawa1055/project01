@@ -96,7 +96,10 @@ if (!empty($validErrors)) {
                   </div>
                 </div>
               </div>
-              
+            </div>
+            <div class="form-group col-lg-12 inbound_pickup_only">
+              <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+              <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('Inbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
               <?php echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
@@ -112,8 +115,8 @@ if (!empty($validErrors)) {
             <div class="form-group col-lg-12 inbound_pickup_only">
               <label>お名前</label>
               <div class="dsn-form">
-                <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
-                <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
+                <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('InboundAddress.lastname');?>">
+                <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('InboundAddress.firstname');?>">
                 <br>
                 <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
                 <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
@@ -140,4 +143,3 @@ if (!empty($validErrors)) {
       </div>
     </div>
 
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
