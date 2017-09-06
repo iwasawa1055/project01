@@ -66,8 +66,16 @@
                       </div>
                     </div>
                   </div>
-                  <div id="dsn-payment" class="form-group col-lg-12">
-                    <div id="consentWidgetDiv">
+
+                  <div class="dsn-form">
+                    <div class="dsn-form">
+                      <?php // アマゾンから取得した情報をバリデーション ?>
+                      <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+                      <?php echo $this->Flash->render('postal');?>
+                      <?php echo $this->Flash->render('pref');?>
+                      <?php echo $this->Flash->render('address1');?>
+                      <?php echo $this->Flash->render('address2');?>
+                      <?php echo $this->Flash->render('tel1');?>
                     </div>
                   </div>
 
@@ -110,5 +118,3 @@
           </div>
       </div>
     </div>
-
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
