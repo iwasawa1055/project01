@@ -66,19 +66,10 @@ class OrderController extends MinikuraController
             return $this->setAction('input_sneaker');
         }
 
-        $access_token = CakeSession::read('Login.amazon_pay.access_token');
-        CakeSession::write('Order.amazon_pay.access_token', $access_token);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_access_token ' . print_r($access_token, true));
-
         // アマゾンペイメント対応
         if ($this->Customer->isAmazonPay()) {
             $this->redirect('/order/input_amazon_pay');
         }
-
-        $access_token = CakeSession::read('Login.amazon_pay.access_token');
-        CakeSession::write('Order.amazon_pay.access_token', $access_token);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_access_token ' . print_r($access_token, true));
-
 
         CakeSession::write('order_sneaker', false);
         return $this->setAction('input');
@@ -195,13 +186,7 @@ class OrderController extends MinikuraController
     }
 
     public function input_amazon_pay()
-    {   
-
-
-        $access_token = CakeSession::read('Order.amazon_pay.access_token');
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_access_token ' . print_r($access_token, true));
-
-
+    {
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);        
     }
@@ -581,8 +566,6 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' referer_check_through ');
-
         // order情報取得
         $Order = CakeSession::read('Order');
         $OrderTotal = CakeSession::read('OrderTotal');
@@ -683,7 +666,7 @@ class OrderController extends MinikuraController
             // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
             $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
-            $this->redirect('/first_order/add_amazon_pay');
+            $this->redirect('/order/input_amazon_pay');
         }
 
         // 有効なアマゾンウィジェットIDを設定
@@ -696,8 +679,6 @@ class OrderController extends MinikuraController
         $get_address = array();
 
         $get_address = CakeSession::read('Address');
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' physicaldestination ' . print_r($physicaldestination, true));
 
         // 住所情報セット
         $get_address['name']      = $physicaldestination['Name'];
@@ -721,8 +702,6 @@ class OrderController extends MinikuraController
 
         $params = array_merge_recursive($params, $get_address);
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' params ' . print_r($params, true));
-
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($params);
         //* 共通バリデーションでエラーあったらメッセージセット
@@ -731,7 +710,6 @@ class OrderController extends MinikuraController
                 $this->Flash->validation($message, ['key' => $key]);
             }
             $is_validation_error = true;
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' message ' . print_r($message, true));
 
         }
 
@@ -1150,16 +1128,12 @@ class OrderController extends MinikuraController
 
         $set_param = array();
         $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!amazon_order_reference_id!!! ' . print_r($set_param['amazon_order_reference_id'], true));
 
         $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!order_amazonpay_access_token!!! ' . print_r($set_param['address_consent_token'], true));
 
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
         $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' !!!res!!! ' . print_r($res, true));
-
 
         // GetOrderReferenceDetails
         if($res['ResponseStatus'] != '200') {
