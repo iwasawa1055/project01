@@ -208,8 +208,6 @@ class FirstOrderDirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_order']);
         }
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
-
         CakeSession::write('FirstOrderDirectInbound.amazon_pay.user_info', $res);
 
 
@@ -304,7 +302,6 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_pay', 'FirstOrderDirectInbound/confirm_amazon_pay'], true) === false) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' session_referer ' . print_r(CakeSession::read('app.data.session_referer'), true));
 
             //* NG redirect
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'index']);
@@ -349,8 +346,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         $amazon_billing_agreement_id = "";
         $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_billing_agreement_id ' . $amazon_billing_agreement_id);
-
         if($amazon_billing_agreement_id === null) {
             // 初回かリターン確認
             if(CakeSession::read('FirstOrderDirectInbound.amazon_pay.amazon_billing_agreement_id') != null) {
@@ -361,12 +356,9 @@ class FirstOrderDirectInboundController extends MinikuraController
         // アクセストークンを取得
         //$access_token = filter_input(INPUT_GET, 'access_token');
         $access_token = CakeSession::read('FirstOrderDirectInbound.amazon_pay.access_token');
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' access_token ' . print_r($access_token, true));
-
         if($access_token === null) {
 
         }
-
 
         // 住所情報等を取得
         $this->loadModel('AmazonPayModel');
@@ -374,8 +366,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
         $set_param['address_consent_token'] = $access_token;
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
-
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' set_param ' . print_r($set_param, true));
 
         $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
 
@@ -498,7 +488,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
         CakeSession::write('FirstOrderList', $FirstOrderList);
     }
 
@@ -565,7 +554,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         }
 
         CakeSession::write('Address', $params);
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' Address ' . print_r($params, true));
 
         $params['tel1'] = self::_wrapConvertKana($params['tel1']);
 
@@ -575,8 +563,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         }
 
         $validation_params = array_merge($order_params,$params);
-
-//        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' validation_params ' . print_r($validation_params, true));
 
         //*  validation 基本は共通クラスのAppValidで行う
         $validation = AppValid::validate($validation_params);
@@ -862,9 +848,6 @@ class FirstOrderDirectInboundController extends MinikuraController
                         }
 
                         CakeSession::write('registered_user_login_url', $registered_user_login_url);
-
-                        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' registered_user_login_url ' . print_r($registered_user_login_url, true));
-
                     }
                     $is_validation_error = true;
                 }
@@ -920,9 +903,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         $FirstOrderList['shipping_fee']['kit_name']  = '預け入れ送料';
         $FirstOrderList['shipping_fee']['price'] = 0;
 
-
-        // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' FirstOrderList ' . print_r($FirstOrderList, true));
-
         CakeSession::write('FirstOrderList', $FirstOrderList);
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
@@ -965,8 +945,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
                 CakeSession::delete('Address.date_cd');
                 CakeSession::delete('Address.select_delivery_day');
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
+
                 return $this->redirect('add_address');
             }
 
@@ -986,8 +965,6 @@ class FirstOrderDirectInboundController extends MinikuraController
                 CakeSession::delete('Address.time_cd');
                 CakeSession::delete('Address.select_delivery_time');
 
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
                 return $this->redirect('add_address');
             }
         }
