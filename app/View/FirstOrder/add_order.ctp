@@ -147,7 +147,6 @@
     <p>お持ちのAmazonアカウントで<br>支払うことができます。</p>
     <div id="AmazonPayButton">
     </div>
-    <a id="Logout" >Logout</a>
   </div>
 </section>
 <input type="hidden" class="js-set_num" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
