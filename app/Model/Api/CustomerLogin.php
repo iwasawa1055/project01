@@ -47,6 +47,7 @@ class CustomerLogin extends ApiModel
     {
         CakeSession::delete(self::SESSION_API_TOKEN);
         CakeSession::delete(self::SESSION_API_DIVISION);
+        CakeSession::delete(self::SESSION_AMAZON_PAY_ACCESS_KEY);
     }
 
     public $validate = [
