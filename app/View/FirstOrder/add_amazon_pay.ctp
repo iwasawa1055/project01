@@ -112,6 +112,7 @@
         <div class="dsn-divider"></div>
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>
+          <input type="hidden" id="js-datetime_cd" value="<?php echo CakeSession::read('Address.datetime_cd');?>">
           <select class="dsn-select-delivery focused" id="datetime_cd" name="datetime_cd">
             <option value="">以下からお選びください</option>
           </select>

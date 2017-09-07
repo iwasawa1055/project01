@@ -105,6 +105,12 @@ var AppAmazonPay =
                 $.each(data.results, function (index, datatime) {
                     elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
                 });
+
+                // 選択済保持
+                if ($('#js-datetime_cd').val() != '') {
+                    $("#datetime_cd").val($('#js-datetime_cd').val());
+                }
+
                 // 戻る対応でリストをpostする
                 $('#select_delivery').val(JSON.stringify(data.results));
             }).fail(function (data, textStatus, errorThrown) {
