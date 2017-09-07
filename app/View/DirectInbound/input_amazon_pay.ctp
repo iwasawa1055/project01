@@ -92,11 +92,11 @@
 
                   <div class="form-group col-lg-12">
                     <label>集荷の日程</label>
-                      <select name="date_cd" id="InboundDayCd" class="form-controlr dev-input-form">
-                        <?php foreach ( CakeSession::read('SelectTime.select_delivery_day_list') as $key => $value ) {?>
-                        <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('SelectTime.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                        <?php } ?>
-                      </select>
+                    <select name="date_cd" id="InboundDayCd" class="form-controlr dev-input-form">
+                      <?php foreach ( CakeSession::read('SelectTime.select_delivery_day_list') as $key => $value ) {?>
+                      <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('SelectTime.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                      <?php } ?>
+                    </select>
                     <?php echo $this->Flash->render('date_cd');?>
                     <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('SelectTime.select_delivery_day'))) : ?><?php echo h(CakeSession::read('SelectTime.select_delivery_day'))?><?php else : ?><?php endif; ?>">
                   </div>

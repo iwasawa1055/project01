@@ -134,6 +134,7 @@
                 </div>
                 <div class="dsn-form">
                   <label>お届け希望日時</label>
+                  <input type="hidden" id="js-datetime_cd" value="<?php echo CakeSession::read('Address.datetime_cd');?>">
                   <select name="datetime_cd" id="datetime_cd" class="dsn-delivery focused">
                     <?php foreach ( CakeSession::read('Address.select_delivery_list') as $key => $value ) {?>
                       <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
