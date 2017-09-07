@@ -1094,8 +1094,6 @@ class DirectInboundController extends MinikuraController
 
         $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
-            CakeLog::write(DEBUG_LOG,
-                $this->name . '::' . $this->action . ' error_message'. print_r($res->message, true));
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('confirm_amazon_pay');
         }
