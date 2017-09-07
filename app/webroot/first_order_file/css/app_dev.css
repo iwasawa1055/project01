@@ -271,3 +271,12 @@ section#lineup .medal img {
 #set_num_alert {
     display: none;
 }
+
+
+.dsn-wrapper .dsn-form .validation {
+    display : inline-block;
+    color: #ff6666;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
+}

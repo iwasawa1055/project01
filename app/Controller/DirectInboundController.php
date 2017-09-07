@@ -674,8 +674,6 @@ class DirectInboundController extends MinikuraController
         // 逐次バリデーション
         $validation = AppValid::validate($order_params);
 
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' order_params ' . print_r($order_params, true));
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if (!empty($validation)) {
             foreach ($validation as $key => $message) {
@@ -742,8 +740,6 @@ class DirectInboundController extends MinikuraController
             // アマゾンウィジェットID取得
             $amazon_order_reference_id = filter_input(INPUT_POST, 'amazon_order_reference_id');
 
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' amazon_order_reference_id ' . $amazon_order_reference_id);
-
             if($amazon_order_reference_id === null) {
                 // 初回かリターン確認
                 if(CakeSession::read('DirectInbound.amazon_pay.amazon_order_reference_id') != null) {
@@ -806,7 +802,6 @@ class DirectInboundController extends MinikuraController
                     $this->Flash->validation($message, ['key' => $key]);
                 }
                 $is_validation_error = true;
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' message ' . print_r($message, true));
             }
         }
 
@@ -873,8 +868,6 @@ class DirectInboundController extends MinikuraController
 
             // 日付リストの確認
             $date_list = $this->_getInboundDate();
-            CakeLog::write(DEBUG_LOG,
-                $this->name . '::' . $this->action . ' date_list ' . print_r($date_list, true));
 
             foreach ($date_list as $key => $value) {
                 if ($value['date_cd'] === $date_cd) {
@@ -887,8 +880,6 @@ class DirectInboundController extends MinikuraController
                     ['key' => 'date_cd']);
                 CakeSession::write('SelectTime.date_cd', '');
 
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
                 return $this->redirect('input');
             }
 
@@ -907,8 +898,6 @@ class DirectInboundController extends MinikuraController
                     ['key' => 'time_cd']);
                 CakeSession::write('SelectTime.time_cd', '');
 
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
                 return $this->redirect('input');
             }
         }
@@ -1014,8 +1003,6 @@ class DirectInboundController extends MinikuraController
 
             // 日付リストの確認
             $date_list = $this->_getInboundDate();
-            CakeLog::write(DEBUG_LOG,
-                $this->name . '::' . $this->action . ' date_list ' . print_r($date_list, true));
 
             foreach ($date_list as $key => $value) {
                 if ($value['date_cd'] === $date_cd) {
@@ -1028,8 +1015,6 @@ class DirectInboundController extends MinikuraController
                     ['key' => 'date_cd']);
                 CakeSession::write('SelectTime.date_cd', '');
 
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
                 return $this->redirect('input_amazon_pay');
             }
 
@@ -1048,8 +1033,6 @@ class DirectInboundController extends MinikuraController
                     ['key' => 'time_cd']);
                 CakeSession::write('SelectTime.time_cd', '');
 
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
                 return $this->redirect('input_amazon_pay');
             }
         }
@@ -1089,13 +1072,9 @@ class DirectInboundController extends MinikuraController
             // 着払い
             $inbound_direct['direct_type']          = "1";
         }
-        CakeLog::write(DEBUG_LOG,
-            $this->name . '::' . $this->action . ' inbound_direct'. print_r($inbound_direct, true));
 
         $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
-            CakeLog::write(DEBUG_LOG,
-                $this->name . '::' . $this->action . ' error_message'. print_r($res->message, true));
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('confirm_amazon_pay');
         }

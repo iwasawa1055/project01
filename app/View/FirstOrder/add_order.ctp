@@ -16,7 +16,7 @@
   <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
   <section id="adress">
-    <div class="form">
+    <div class="dsn-form">
       <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このアマゾンペイメントアカウントで利用しているメールアドレスはご利用できません。すでにアカウントをお持ちの方は<a class="login js-amazon_pay_logout" href="#" data-href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインしてください。</div>
     </div>
   </section>
@@ -35,7 +35,7 @@
         <p class="select-number js-select-starter"><span>1セット選択済み</span></p>
         <input id="select_starter_kit" name="starter" type="hidden" value="1"/>
       </div>
-      <div class="form">
+      <div class="dsn-form">
         <?php echo $this->Flash->render('select_starter_kit'); ?>
       </div>
     </div>
@@ -61,7 +61,7 @@
         <p class="dsn-select-number" id="select_hako_limited_ver1"><?php if (CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') > 0) : ?><span><?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')) ?>パック選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
       <a href="#" class="dsn-btn-select" data-remodal-target="modal-recommend"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-      <div class="form">
+      <div class="dsn-form">
         <?php echo $this->Flash->render('select_oreder_hako_limited_ver1'); ?>
       </div>
     </div>
@@ -80,7 +80,7 @@
         <p class="dsn-select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
       </div>
       <a href="#" class="dsn-btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-      <div class="form">
+      <div class="dsn-form">
         <?php echo $this->Flash->render('select_oreder_hako'); ?>
       </div>
     </div>
@@ -96,7 +96,7 @@
           <p class="dsn-select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         </div>
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-        <div class="form">
+        <div class="dsn-form">
           <?php echo $this->Flash->render('select_oreder_mono'); ?>
         </div>
       </div>
@@ -112,7 +112,7 @@
           <p class="dsn-select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
         </div>
         <a href="#" class="dsn-btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
-        <div class="form">
+        <div class="dsn-form">
           <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
         </div>
       </div>
