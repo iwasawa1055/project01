@@ -16,7 +16,7 @@
   <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
   <?php if (!is_null(CakeSession::read('registered_user_login_url'))) : ?>
   <section id="adress">
-    <div class="dsn-form">
+    <div class="form">
       <div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> このアマゾンペイメントアカウントで利用しているメールアドレスはご利用できません。すでにアカウントをお持ちの方は<a class="login js-amazon_pay_logout" href="#" data-href="<?php echo CakeSession::read('registered_user_login_url') ?>">ログインページ</a>よりログインしてください。</div>
     </div>
   </section>

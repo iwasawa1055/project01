@@ -111,7 +111,7 @@
                 
                     <!-- AmazonPayment wedget表示処理 -->
                 <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                  <div class="dsn-address">
+                  <div class="dsn-adress">
                     <div id="addressBookWidgetDiv">
                     </div>
                   </div>
@@ -120,6 +120,7 @@
                     </div>
                   </div>
                 </div>
+                <div class="dsn-divider"></div>
                 <div class="dsn-form">
                   <div class="dsn-form">
                     <?php // アマゾンから取得した情報をバリデーション ?>
@@ -131,8 +132,6 @@
                     <?php echo $this->Flash->render('tel1');?>
                   </div>
                 </div>
-
-                <div class="dsn-divider"></div>
                 <div class="dsn-form">
                   <label>お届け希望日時</label>
                   <select name="datetime_cd" id="datetime_cd" class="dsn-delivery focused">
