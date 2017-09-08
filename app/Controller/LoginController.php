@@ -85,8 +85,6 @@ class LoginController extends MinikuraController
             $this->redirect(['controller' => 'login', 'action' => 'index']);
         }
 
-        CakeSession::write(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY, $access_token);
-
         $this->loadModel('AmazonPayModel');
         $res = $this->AmazonPayModel->getUserInfo($access_token);
 
