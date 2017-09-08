@@ -58,7 +58,7 @@
 
         <div class="dsn-divider dev-divider"></div>
         <div class="dsn-form">
-          <label>パスワード<span class="dsn-required">※</span><br><span>minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
+          <label>パスワード<span class="dsn-required">※</span><br><span>minikuraに会員登録するためのパスワードになります。<br>半角英数記号6文字以上でご入力ください。</span></label>
           <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password">
           <?php echo $this->Flash->render('password');?>
         </div>
