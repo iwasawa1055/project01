@@ -11,12 +11,15 @@ var AppAmazonPay =
 
             // サブミット前チェック確認
             // 定期購入未チェックでエラー
-            if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
-                $('#payment_consent_alert').show();
+            $('#payment_consent_alert').hide();
+            if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus != 'false') {
+                $(this).closest("form").submit();
                 return;
             }
 
-            $(this).closest("form").submit();
+            alert('Amazon Pay をお支払方法に設定する 同意は必須です。');
+            $('#payment_consent_alert').show();
+            return false;
         });
     },
     b: function () {
@@ -178,7 +181,7 @@ var AppAmazonPayWallet =
                                 },
                                 onReady: function(billingAgreementConsentStatus){
                                     // Called after widget renders
-                                    // AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
                                     // true – checkbox is selected
                                     // false – checkbox is unselected - default
                                 },

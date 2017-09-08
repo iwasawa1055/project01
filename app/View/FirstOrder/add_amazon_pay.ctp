@@ -53,7 +53,9 @@
         <div id="dsn-payment" class="form-group col-lg-12">
             <div id="consentWidgetDiv">
             </div>
+          <div class="dsn-form">
           <span class="validation" id="payment_consent_alert">お支払方法の設定は必須です。</span>
+          </div>
         </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
