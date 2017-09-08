@@ -340,6 +340,18 @@ class FirstOrderDirectInboundController extends MinikuraController
             $is_validation_error = true;
         }
 
+        //*  validation 基本は共通クラスのAppValidで行う
+        $validation = AppValid::validate($params_email);
+
+        //* バリデーションでエラーあったらメッセージセット
+        // 入力内容確認
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $is_validation_error = true;
+        }
 
         // amazon pay 情報取得
         // 定期購入ID取得
@@ -385,11 +397,13 @@ class FirstOrderDirectInboundController extends MinikuraController
         $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
 
 
-        $get_address = array();
+        $params_address = array();
+        $params_address_form = array();
+        $params_address_amazon_pay = array();
 
-        $get_address = CakeSession::read('Address');
+        $params_address = CakeSession::read('Address');
 
-        $params_address = [
+        $params_address_form = [
             'firstname'             => filter_input(INPUT_POST, 'firstname'),
             'firstname_kana'        => filter_input(INPUT_POST, 'firstname_kana'),
             'lastname'              => filter_input(INPUT_POST, 'lastname'),
@@ -403,49 +417,71 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // 住所情報セット
         $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
-        $params_address['postal']      = $PostalCode;
-        $params_address['pref']        = $physicaldestination['StateOrRegion'];
+        $params_address_amazon_pay['postal']      = $PostalCode;
+        $params_address_amazon_pay['pref']        = $physicaldestination['StateOrRegion'];
 
-        $params_address['address1'] = $physicaldestination['AddressLine1'];
-        $params_address['address2'] = $physicaldestination['AddressLine2'];
-        $params_address['address3'] = $physicaldestination['AddressLine3'];
-        $params_address['tel1']     = $physicaldestination['Phone'];
+        $params_address_amazon_pay['address1'] = $physicaldestination['AddressLine1'];
+        $params_address_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
+        $params_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
+        $params_address_amazon_pay['tel1']     = $physicaldestination['Phone'];
 
         //* Session write select_delivery_text
-        $params_address['select_delivery_day_list'] = json_decode($params_address['select_delivery_day']);
+        $params_address_form['select_delivery_day_list'] = json_decode($params_address_form['select_delivery_day']);
 
-        $params_address['select_delivery_text'] = "";
-        if(!empty($params_address['select_delivery_day_list'])) {
-            foreach ($params_address['select_delivery_day_list'] as $key => $value) {
-                if ($value->date_cd === $params_address['date_cd']) {
-                    $params_address['select_delivery_text'] = $value->text;
+        $params_address_form ['select_delivery_text'] = "";
+        if(!empty($params_address_form ['select_delivery_day_list'])) {
+            foreach ($params_address_form ['select_delivery_day_list'] as $key => $value) {
+                if ($value->date_cd === $params_address_form['date_cd']) {
+                    $params_address_form['select_delivery_text'] = $value->text;
                 }
             }
         }
 
-        $params_address['select_delivery_time_list'] = json_decode($params_address['select_delivery_time']);
+        $params_address_form['select_delivery_time_list'] = json_decode($params_address_form['select_delivery_time']);
 
-        if(!empty($params_address['select_delivery_time_list'])) {
-            foreach ($params_address['select_delivery_time_list'] as  $key => $value) {
-                if ($value->time_cd === $params_address['time_cd']) {
-                    $params_address['select_delivery_text'] .= ' ' . $value->text;
+        if(!empty($params_address_form['select_delivery_time_list'])) {
+            foreach ($params_address_form['select_delivery_time_list'] as  $key => $value) {
+                if ($value->time_cd === $params_address_form['time_cd']) {
+                    $params_address_form['select_delivery_text'] .= ' ' . $value->text;
                 }
             }
+        }
+
+        $params_address_tmp = array_merge($params_address_form, $params_address_amazon_pay);
+        if (!empty($params_address))
+        {
+            $params_address = array_merge($params_address, $params_address_tmp);
+        } else {
+            $params_address = $params_address_tmp;
         }
 
         CakeSession::write('Address', $params_address);
-
+        
         //*  validation 基本は共通クラスのAppValidで行う
-        $validation_email = AppValid::validate($params_email);
-        $validation_address = AppValid::validate($params_address);
-
-        $validation = array_merge($validation_email, $validation_address);
+        //　入力情報の確認
+        $validation = AppValid::validate($params_address_form);
 
         //* 共通バリデーションでエラーあったらメッセージセット
+        //amazon pay から取ってきた情報の確認
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $is_validation_error = true;
+        }
+
+        //*  validation 基本は共通クラスのAppValidで行う
+        //　入力情報の確認
+        $validation = AppValid::validate($params_address_amazon_pay);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        //amazon pay から取ってきた情報の確認
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
             $is_validation_error = true;
         }
 
@@ -457,6 +493,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 

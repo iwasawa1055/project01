@@ -1079,11 +1079,20 @@ class FirstOrderController extends MinikuraController
 
         //* Session write
         CakeSession::write('Email.email', $amazon_pay_user_info['email']);
+        //バリデーション確認用に変数へ格納
+        $get_email['email'] = $amazon_pay_user_info['email'];
 
-        // 住所に関する情報保存
-        $name = $amazon_pay_user_info['name'];
-        $name = html_entity_decode($name);
-        $name = mb_convert_kana($name, "s", "utf-8");
+        //*  Amazon Payから取得した住所情報の確認
+        $validation = AppValid::validate($get_email);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $is_validation_error = true;
+        }
 
         // amazon pay 情報取得
         // 定期購入ID取得
@@ -1121,10 +1130,12 @@ class FirstOrderController extends MinikuraController
 
         //Address情報を格納する配列
         $get_address = array();
+        $get_address_form = array();
+        $get_address_amazon_pay = array();
 
         $get_address = CakeSession::read('Address');
 
-        $get_address = [
+        $get_address_form = [
             'firstname'         => filter_input(INPUT_POST, 'firstname'),
             'firstname_kana'    => filter_input(INPUT_POST, 'firstname_kana'),
             'lastname'          => filter_input(INPUT_POST, 'lastname'),
@@ -1133,38 +1144,61 @@ class FirstOrderController extends MinikuraController
 
         // 住所情報セット
         $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
-        $get_address['postal']      = $PostalCode;
-        $get_address['pref']        = $physicaldestination['StateOrRegion'];
+        $get_address_amazon_pay['postal']      = $PostalCode;
+        $get_address_amazon_pay['pref']        = $physicaldestination['StateOrRegion'];
 
-        $get_address['address1'] = $physicaldestination['AddressLine1'];
-        $get_address['address2'] = $physicaldestination['AddressLine2'];
-        $get_address['address3'] = $physicaldestination['AddressLine3'];
-        $get_address['tel1']        = $physicaldestination['Phone'];
-        $get_address['datetime_cd'] = $get_email['datetime_cd'];
-        $get_address['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
+        $get_address_amazon_pay['address1'] = $physicaldestination['AddressLine1'];
+        $get_address_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
+        $get_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
+        $get_address_amazon_pay['tel1']        = $physicaldestination['Phone'];
+        $get_address_amazon_pay['datetime_cd'] = $get_email['datetime_cd'];
+        $get_address_amazon_pay['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
+
+
+        $get_address_tmp = array_merge($get_address_form, $get_address_amazon_pay);
+        if (!empty($get_address))
+        {
+            $get_address = array_merge($get_address, $get_address_tmp);
+        } else {
+            $get_address = $get_address_tmp;
+        }
 
         // 住所情報更新
-        CakeSession::write('Address',   $get_address);
-        $params = array_merge($get_email, $get_address);
+        CakeSession::write('Address', $get_address);
 
-        //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($params);
+        //*  Amazon Payから取得した住所情報の確認
+        $validation = AppValid::validate($get_address_amazon_pay);
+
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+            $is_validation_error = true;
+        }
+
+        //*  formから取得した住所情報の確認
+        $validation = AppValid::validate($get_address_form);
+
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
         // 規約同意を確認する
-        $validation = AppValid::validateTermsAgree($params['remember']);
+        $validation = AppValid::validateTermsAgree($get_email['remember']);
 
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation) ) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 

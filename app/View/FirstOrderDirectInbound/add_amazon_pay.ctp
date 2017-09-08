@@ -25,7 +25,12 @@
   <div id="full" class="dsn-wrapper">
     <form method="post" action="/first_order_direct_inbound/confirm_amazon_pay" novalidate>
       <section id="dsn-adress">
-        <div class="dsn-wrapper">
+        <div class="dsn-wrapper dev-wrapper">
+
+          <div class='dsn-form'>
+            <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+            <?php echo $this->Flash->render('customer_address_info');?>
+          </div>
 
           <div id="dsn-amazon-pay" class="form-group col-lg-12">
             <div class="dsn-address">
