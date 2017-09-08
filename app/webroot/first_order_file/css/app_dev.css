@@ -22,6 +22,11 @@ button[class^="btn-"] {
 	text-align: center;
 	border-radius: .2rem;
 }
+
+section.select-login button[class^="btn-"]{
+    margin: 0;
+}
+
 button[class^="btn-"]:hover {
 	color: #ffffff;
 	text-decoration: none;
