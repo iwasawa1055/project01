@@ -12,7 +12,8 @@ var AppAmazonPay =
             // サブミット前チェック確認
             // 定期購入未チェックでエラー
             if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
-                $('#payment_consent_alert').show();
+                $('<span class="validation">お支払方法の設定は必須です。</span>').insertBefore('div.dev-devider');
+
                 return;
             }
 
@@ -236,6 +237,17 @@ var AppAmazonPayWallet =
     }
 }
 
+var AppInputOrder =
+{
+  g: function()
+  {
+    // validation メッセージが表示される時に、ページ上部に表示する
+    if ($('span').hasClass('validation')) {
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
+    }
+  },
+}
+
 /*
  * document ready
  * */
@@ -246,4 +258,5 @@ $(function()
     AppAmazonPay.c();
     AppAmazonPay.d();
     AppAmazonPayWallet.a();
+    AppInputOrder.g();
 });
