@@ -42,6 +42,16 @@
                   <label>お名前（カナ）</label>
                   <p><?php echo h($data['lastname_kana'] . '　' . $data['firstname_kana']); ?></p>
                 </div>
+                <div class="form-group col-lg-12">
+                  <label>お支払い方法</label>
+                  <p>
+                    <?php if ($customer->isAmazonPay()):?>
+                      <?php echo DISPLAY_PAYMENT_METHOD_AMAZON_PAY; ?>
+                    <?php else:?>
+                      <?php echo DISPLAY_PAYMENT_METHOD_CREDITCARD ?>
+                    <?php endif;?>
+                  </p>
+                </div>
               <?php else : ?>
               <?php // 法人 ?>
                 <div class="form-group col-lg-12">
@@ -87,23 +97,23 @@
             </div>
           </div>
         </div>
-        <?php if (! $customer->isPrivateCustomer()) : ?>
+        <?php if (!$customer->isPrivateCustomer()):?>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
                 <h2>お支払方法</h2>
                 <div class="form-group col-lg-12">
-				  <?php if ($customer->getInfo()['account_situation']):?>
-		            <p><?php echo h(CORPORATE_PAYMENT_METHOD[$customer->getInfo()['account_situation']]);?></p>
-				  <?php else:?>
-		            <p><?php echo CORPORATE_PAYMENT_METHOD['credit_card'];?></p>
-				  <?php endif;?>
+                    <?php if ($customer->getInfo()['account_situation']):?>
+                      <p><?php echo h(CORPORATE_PAYMENT_METHOD[$customer->getInfo()['account_situation']]);?></p>
+                    <?php else:?>
+                      <p><?php echo CORPORATE_PAYMENT_METHOD['credit_card'];?></p>
+                    <?php endif;?>
                 </div>
               </div>
             </div>
           </div>
         </div>
-		<?php endif;?>
+        <?php endif;?>
       </div><!--col-lg-12-->
     </div><!--row-->

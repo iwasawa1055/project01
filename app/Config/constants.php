@@ -34,6 +34,10 @@ const PAYMENT_METHOD = [
     PAYMENT_METHOD_ACCOUNTTRANSFER => '口座振替',
 ];
 
+// 支払い方法(表示用)
+const DISPLAY_PAYMENT_METHOD_CREDITCARD = 'クレジットカード';
+const DISPLAY_PAYMENT_METHOD_AMAZON_PAY = 'Amazon Pay';
+
 // 支払い口座登録状況
 const ACCOUNT_SITUATION_UNREGISTERED = 'unregistered';
 const ACCOUNT_SITUATION_REGISTRATION = 'registration';
