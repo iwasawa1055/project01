@@ -17,28 +17,8 @@ class CustomerLoginAmazonPay extends ApiModel
         if (empty($responses->error_message)) {
             CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
             CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
+            CakeSession::write(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY, $this->data[$this->model_name]['access_token']);
 
-            //* Login Flag Set For contents.minikura.com Session
-            //** Session Switch To contents.minikura.com
-            session_write_close();
-            ini_set('session.cookie_domain', '.minikura.com');
-            $session_name = 'WWWMINIKURACOM';
-            session_name($session_name);
-            if (! empty($_COOKIE[$session_name])) {
-                session_id($_COOKIE[$session_name]);
-            }
-            session_start();
-
-            //** Login Flag Set
-            $_SESSION['api.token'] = true;
-
-            //** Session Switch To mypage.minikura.com
-            session_write_close();
-            Configure::write('session.cookie_domain', '.mypage.minikura.com');
-            $session_name = 'MINIKURACOM';
-            session_name($session_name);
-            session_id($_COOKIE[$session_name]);
-            session_start();
         }
         return $responses;
     }
