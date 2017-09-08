@@ -24,7 +24,7 @@ var AppAmazonPayLogin =
         var authRequest;
         var host = location.protocol + '//' + location.hostname;
         OffAmazonPayments.Button(button_name, AppAmazonPayLogin.SELLER_ID, {
-          type: "PwA",
+          type: "LwA",
           color: "Gold",
           size: "medium",
           authorization: function () {
