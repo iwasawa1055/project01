@@ -46,7 +46,9 @@
           <div class="panel-body">
             <div class="dsn-amazon-login">
               <h3>Amazonアカウントで会員登録された方はこちらからログインできます。</h3>
-              <a id="AmazonPayButtonLogin">
+              <a>
+                <div id="AmazonPayButtonLogin">
+                </div>
               </a>
               <?php //amazonpay 関連エラー表示 ?>
               <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
@@ -55,6 +57,7 @@
       </div>
     </div>
   </div>
-
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
+<?php if (!$customer->isAmazonPay()):?>
+  <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+<?php endif; ?>
 <script src="/js/login.js"></script>
