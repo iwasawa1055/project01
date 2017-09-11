@@ -49,12 +49,13 @@ var Act =
     },
     c: function()
     {
-        window.onAmazonLoginReady = function(){
-            if ($('#Logout')[0]) {
-                $('#Logout').on('click', function (e) {
-                    amazon.Login.logout();
-                });
-            }
-        };
+        setTimeout(
+            window.onAmazonLoginReady = function(){
+                if ($('#Logout')[0]) {
+                    $('#Logout').on('click', function (e) {
+                        amazon.Login.logout();
+                    });
+                }
+            }, 10);
     }
 };

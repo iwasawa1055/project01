@@ -169,7 +169,6 @@
 
 <?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/js'); ?>
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_pay.js"></script>
 <script src="/first_order_direct_inbound_file/js/dsn-mybox.js"></script>
 <script src="/js/jquery.airAutoKana.js"></script>
