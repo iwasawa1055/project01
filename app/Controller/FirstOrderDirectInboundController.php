@@ -192,7 +192,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         CakeSession::write('Order', $set_direct_inbound);
 
 
-        CakeSession::write('FirstOrderDirectInbound.amazon_pay.access_token', $access_token);
+        CakeSession::write('FirstOrder.amazon_pay.access_token', $access_token);
 
         $this->loadModel('AmazonPayModel');
         $res = $this->AmazonPayModel->getUserInfo($access_token);
@@ -367,7 +367,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // アクセストークンを取得
         //$access_token = filter_input(INPUT_GET, 'access_token');
-        $access_token = CakeSession::read('FirstOrderDirectInbound.amazon_pay.access_token');
+        $access_token = CakeSession::read('FirstOrder.amazon_pay.access_token');
         if($access_token === null) {
 
         }
@@ -1364,7 +1364,7 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
         $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['amazon_user_id'] = $amazon_pay_user_info['user_id'];
-        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['access_token'] = CakeSession::read('FirstOrderDirectInbound.amazon_pay.access_token');
+        $this->CustomerLoginAmazonPay->data['CustomerLoginAmazonPay']['access_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');
 
         if ($is_logined) {
             // エントリユーザ切り替え再度ログイン
@@ -1655,6 +1655,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         CakeSession::delete('Email');
         CakeSession::delete('FirstOrderList');
         CakeSession::delete('order_sneaker');
+        CakeSession::delete('FirstOrder.amazon_pay.access_token');
 
     }
 

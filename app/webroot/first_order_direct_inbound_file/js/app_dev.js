@@ -3,6 +3,7 @@ $(function() {
   Act._();
   Act.a();
   Act.b();
+  Act.c();
 
   $('a[href^="/"]a[target!="_blank"]').addClass('animsition-link');
   $('button[type=submit]').addClass('page-transition-link');
@@ -46,4 +47,15 @@ var Act =
             $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
         }
     },
+    c: function()
+    {
+        setTimeout(
+            window.onAmazonLoginReady = function(){
+                if ($('#Logout')[0]) {
+                    $('#Logout').on('click', function (e) {
+                        amazon.Login.logout();
+                    });
+                }
+            }, 10);
+    }
 };
