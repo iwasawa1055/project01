@@ -20,12 +20,17 @@ var AppAmazonPay =
 
             // サブミット前チェック確認
             // 定期購入未チェックでエラー
-            if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
-                $('#payment_consent_alert').show();
+            if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus != 'false') {
+                $(this).closest("form").submit();
                 return;
             }
 
-            $(this).closest("form").submit();
+            if( !$('div.dev-divider').prev('div').children('span').hasClass('validation')) {
+                $('<div class="dsn-form"><span class="validation">お支払方法の設定は必須です。</span></div>').insertBefore('div.dev-divider');
+            }
+
+            alert('Amazon Pay をお支払方法に設定する 同意は必須です。');
+            return false;
         });
     },
     b: function () {
