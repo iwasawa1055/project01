@@ -679,6 +679,7 @@ class DirectInboundController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
+            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -733,6 +734,7 @@ class DirectInboundController extends MinikuraController
                 foreach ($validation as $key => $message) {
                     $this->Flash->validation($message, ['key' => $key]);
                 }
+                $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
                 $is_validation_error = true;
             }
 
@@ -773,36 +775,59 @@ class DirectInboundController extends MinikuraController
 
             //Address情報を格納する配列
             $get_address = array();
+            $get_address_amazon_pay = array();
+            $get_address_tmp = array();
 
-            $get_address = CakeSession::read('Address');
+            $get_address_tmp = CakeSession::read('Address');
 
             // 住所情報セット
-            $get_address['name']      = $physicaldestination['Name'];
+            $get_address_amazon_pay['name']         = $physicaldestination['Name'];
 
             $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
-            $get_address['postal']      = $PostalCode;
-            $get_address['pref']        = $physicaldestination['StateOrRegion'];
+            $get_address_amazon_pay['postal']       = $PostalCode;
+            $get_address_amazon_pay['pref']         = $physicaldestination['StateOrRegion'];
 
-            $get_address['address1'] = $physicaldestination['AddressLine1'];
-            $get_address['address2'] = $physicaldestination['AddressLine2'];
-            $get_address['address3'] = $physicaldestination['AddressLine3'];
-            $get_address['tel1']        = $physicaldestination['Phone'];
+            $get_address_amazon_pay['address1']     = $physicaldestination['AddressLine1'];
+            $get_address_amazon_pay['address2']     = $physicaldestination['AddressLine2'];
+            $get_address_amazon_pay['address3']     = $physicaldestination['AddressLine3'];
+            $get_address_amazon_pay['tel1']         = $physicaldestination['Phone'];
+
             $get_address['lastname']    = filter_input(INPUT_POST, 'lastname');
             $get_address['firstname']   = filter_input(INPUT_POST, 'firstname');
 
-            // 住所情報更新
-            CakeSession::write('Address',   $get_address);
-            CakeSession::write('DispAddress', $get_address);
 
             //*  validation 基本は共通クラスのAppValidで行う
+            // amazon pay から取得した情報のバリデーション
+            $validation = AppValid::validate($get_address_amazon_pay);
+            //* 共通バリデーションでエラーあったらメッセージセット
+            if ( !empty($validation)) {
+                foreach ($validation as $key => $message) {
+                    $this->Flash->validation($message, ['key' => $key]);
+                }
+                $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+                $is_validation_error = true;
+            }            
+
+            //*  validation 基本は共通クラスのAppValidで行う
+            // 入力した情報のバリデーション
             $validation = AppValid::validate($get_address);
             //* 共通バリデーションでエラーあったらメッセージセット
             if ( !empty($validation)) {
                 foreach ($validation as $key => $message) {
                     $this->Flash->validation($message, ['key' => $key]);
                 }
+                $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
                 $is_validation_error = true;
             }
+
+            $get_address = array_merge($get_address, $get_address_amazon_pay);
+            if ( !empty($get_address_tmp)) {
+                $get_address = array_merge($get_address_tmp, $get_address);
+            } 
+
+            // 住所情報更新
+            CakeSession::write('Address',   $get_address);
+            CakeSession::write('DispAddress', $get_address);
         }
 
         if ($is_validation_error === true) {

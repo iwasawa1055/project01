@@ -18,6 +18,10 @@
     <div class="row">
       <form method="post" class="select-add-address-form" action="/direct_inbound/confirm_amazon_pay" novalidate>
         <div class="col-lg-12">
+          <div class="dev-render">
+          <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+          <?php echo $this->Flash->render('customer_address_info');?>
+          </div>
           <div class="panel panel-default">
             <div class="panel-body">
               <h2>minikuraダイレクト</h2>
@@ -56,21 +60,19 @@
                 </p>
                 <div class="dsn-yamato">
 
-                  <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                    <div class="dsn-address">
-                      <div id="addressBookWidgetDiv">
+                  <div class="form-group col-lg-12">
+                    <div id="dsn-amazon-pay">
+                      <div class="dsn-address">
+                        <div id="addressBookWidgetDiv">
+                        </div>
+                      </div>
+                      <div class="dsn-credit">
+                        <div id="walletWidgetDiv">
+                        </div>
                       </div>
                     </div>
-                    <div class="dsn-credit">
-                      <div id="walletWidgetDiv">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="dsn-form">
                     <div class="dsn-form">
                       <?php // アマゾンから取得した情報をバリデーション ?>
-                      <?php echo $this->Flash->render('customer_amazon_pay_info');?>
                       <?php echo $this->Flash->render('postal');?>
                       <?php echo $this->Flash->render('pref');?>
                       <?php echo $this->Flash->render('address1');?>

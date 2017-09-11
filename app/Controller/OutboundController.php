@@ -1,5 +1,6 @@
 <?php
 
+App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('OutboundList', 'Model');
 App::uses('Outbound', 'Model');
@@ -489,6 +490,7 @@ class OutboundController extends MinikuraController
 
             // お届け先
             $get_address = array();
+            $get_address_amazon_pay = array();
 
             $get_address = [
                 'firstname'         => filter_input(INPUT_POST, 'firstname'),
@@ -530,15 +532,23 @@ class OutboundController extends MinikuraController
             $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
 
             $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
-            $get_address['postal']      = $PostalCode;
-            $get_address['pref']        = $physicaldestination['StateOrRegion'];
+            $get_address_amazon_pay['postal']      = $PostalCode;
+            $get_address_amazon_pay['pref']        = $physicaldestination['StateOrRegion'];
 
-            $get_address['address1'] = $physicaldestination['AddressLine1'];
-            $get_address['address2'] = $physicaldestination['AddressLine2'];
-            $get_address['address3'] = $physicaldestination['AddressLine3'];
-            $get_address['tel1']        = $physicaldestination['Phone'];
+            $get_address_amazon_pay['address1'] = $physicaldestination['AddressLine1'];
+            $get_address_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
+            $get_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
+            $get_address_amazon_pay['tel1']        = $physicaldestination['Phone'];
+
+            $get_address = array_merge($get_address, $get_address_amazon_pay);
 
             CakeSession::write('OutboundAddress', $get_address);
+
+            //バリデーション表示用
+            $validation = AppValid::validate($get_address_amazon_pay);
+            if (!empty($validation)) {
+                $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+            }
 
             $data['Outbound'] = array_merge_recursive($data['Outbound'], $get_address);
             //$data['Outbound'] = $get_address;
