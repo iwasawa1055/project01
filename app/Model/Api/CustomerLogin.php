@@ -17,6 +17,10 @@ class CustomerLogin extends ApiModel
         if (empty($responses->error_message)) {
             CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
             CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
+
+            // #14290 リダイレクトループを引き起こす可能性がある「.minikura.com」のドメインのcookieを削除します。
+            setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
+            setcookie("MINIKURACOM", "", time()-60, "", ".minikura.com");
         }
         return $responses;
     }
