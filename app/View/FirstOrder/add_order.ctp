@@ -316,5 +316,7 @@
 <?php echo $this->element('FirstOrder/js'); ?>
 <script src="/first_order_file/js/first_order/add_order.js"></script>
 
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
+<?php if (empty(CakeSession::read('FirstOrder.amazon_pay.access_token'))):?>
+<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+<?php endif; ?>
 <?php echo $this->element('FirstOrder/last'); ?>

@@ -161,7 +161,6 @@
 </div>
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
-<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 <script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_file/js/first_order/add_amazon_pay.js"></script>
 
