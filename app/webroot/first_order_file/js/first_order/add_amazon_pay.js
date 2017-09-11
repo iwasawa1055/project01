@@ -180,7 +180,10 @@ var AppAmazonPayWallet =
                                 },
                                 onReady: function(billingAgreementConsentStatus){
                                     // Called after widget renders
-                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    // エラー回避
+                                    if(typeof billingAgreementConsentStatus.getConsentStatus == 'function') {
+                                        AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    }
                                     // true – checkbox is selected
                                     // false – checkbox is unselected - default
                                 },
