@@ -28,9 +28,15 @@
                     <li>
                         <a class="animsition-link" href="https://help.minikura.com/hc/ja"><i class="fa fa-question"></i> ヘルプセンター</a>
                     </li>
+                    <?php if (!empty(CakeSession::read('FirstOrder.amazon_pay.access_token'))) : ?>
+                    <li>
+                        <a id="AmazonLogout" class="login" href="javascript:void(0);"><i class="fa fa-unlock-alt"></i> amazonログアウト</a>
+                    </li>
+                    <?php else : ?>
                     <li>
                         <a class="login" href="/login"><i class="fa fa-unlock-alt"></i> ログイン</a>
                     </li>
+                    <?php endif; ?>
                     <li>
                         <a class="signin" href="/first_order/index" target="_blank"><i class="fa fa-sign-in"></i> 初回購入</a>
                     </li>

@@ -42,6 +42,8 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        CakeSession::delete('FirstOrder.amazon_pay.access_token');
+
         // 遷移時にオプションが設定されている場合
         CakeSession::delete('order_option');
         $option = filter_input(INPUT_GET, Configure::read('app.lp_option.param'));
