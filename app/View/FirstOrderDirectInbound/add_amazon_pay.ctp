@@ -47,6 +47,15 @@
             </div>
           </div>
 
+          <div class="dsn-form">
+            <?php // アマゾンから取得した情報をバリデーション ?>
+            <?php echo $this->Flash->render('postal');?>
+            <?php echo $this->Flash->render('pref');?>
+            <?php echo $this->Flash->render('address1');?>
+            <?php echo $this->Flash->render('address2');?>
+            <?php echo $this->Flash->render('tel1');?>
+          </div>
+
           <div class="dsn-divider dev-divider"></div>
           <div class="dsn-form">
             <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
