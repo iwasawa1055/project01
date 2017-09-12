@@ -56,7 +56,7 @@
                             $announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT)
                             && !($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT && !empty($customer->getCorporatePayment()))
                             ) : ?>
-                    <?php if(!$isAmazonPayLogin): ?>
+                    <?php if (!$customer->isAmazonPay()): ?>
                       <div class="row body">
                           <p class="help-block">
                         <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT) : ?>
@@ -89,7 +89,7 @@
               <a class="btn btn-danger btn-lg btn-block" href="/contact_us/<?php echo $announcement['announcement_id']; ?>/add">この内容について問い合わせる</a>
             </span>
 
-            <?php if(!$isAmazonPayLogin): ?>
+            <?php if(!$customer->isAmazonPay()): ?>
               <?php if (($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT ||
                         $announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT)
                         && !($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT && !empty($customer->getCorporatePayment()))
