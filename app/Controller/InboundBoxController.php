@@ -272,7 +272,7 @@ class InboundBoxController extends MinikuraController
             //バリデーション表示用
             $validation = AppValid::validate($data_amazon_pay);
             if (!empty($validation)) {
-                $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+                $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
             }
 
             $model = $this->Inbound->model($data);

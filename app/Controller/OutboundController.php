@@ -547,7 +547,7 @@ class OutboundController extends MinikuraController
             //バリデーション表示用
             $validation = AppValid::validate($get_address_amazon_pay);
             if (!empty($validation)) {
-                $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+                $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
             }
 
             $data['Outbound'] = array_merge_recursive($data['Outbound'], $get_address);
