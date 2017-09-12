@@ -38,6 +38,9 @@ var AppAmazonPayLogin =
         if($("#AmazonPayButtonLogin").children().size() === 0) {
             AppAmazonPayLogin.a();
         };
+    },
+    e: function () {
+        setTimeout("AppAmazonPayLogin.d()",1000);
     }
 }
 
@@ -47,4 +50,4 @@ var AppAmazonPayLogin =
  */
  AppAmazonPayLogin.a();
  // ボタンの表示確認&再表示処理
- setTimeout("AppAmazonPayLogin.d()",1000);
+ AppAmazonPayLogin.e();
