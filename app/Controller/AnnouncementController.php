@@ -24,7 +24,6 @@ class AnnouncementController extends MinikuraController
     public function index()
     {
         $all = $this->Announcement->apiGetResults();
-        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' all ' . print_r($all, true));
         // 特定文字の含まれるメッセージは非表示
         foreach($all as $key => $value) {
             if($this->_isNoDispAnnouncement($value['text'])) {
