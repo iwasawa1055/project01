@@ -1148,8 +1148,8 @@ class FirstOrderController extends MinikuraController
         $get_address_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
         $get_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
         $get_address_amazon_pay['tel1']        = $physicaldestination['Phone'];
-        $get_address_amazon_pay['datetime_cd'] = $get_email['datetime_cd'];
-        $get_address_amazon_pay['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
+        $get_address_form['datetime_cd'] = $get_email['datetime_cd'];
+        $get_address_form['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
 
 
         $get_address_tmp = array_merge($get_address_form, $get_address_amazon_pay);
