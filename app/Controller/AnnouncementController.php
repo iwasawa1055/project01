@@ -40,6 +40,12 @@ class AnnouncementController extends MinikuraController
      */
     public function detail()
     {
+        // アマゾンペイメント対応
+        $this->set('isAmazonPayLogin', false);
+        if ($this->Customer->isAmazonPay()) {
+            $this->set('isAmazonPayLogin', true);
+        }
+
         $id = $this->params['id'];
         $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
         if (!empty($data)) {
