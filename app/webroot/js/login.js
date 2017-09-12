@@ -33,6 +33,11 @@ var AppAmazonPayLogin =
           }
         });
         // amazon.Login.logout();
+    },
+    d: function () {
+        if($("#AmazonPayButtonLogin").children().size() === 0) {
+            AppAmazonPayLogin.a();
+        };
     }
 }
 
@@ -41,3 +46,5 @@ var AppAmazonPayLogin =
  * document ready
  */
  AppAmazonPayLogin.a();
+ // ボタンの表示確認&再表示処理
+ setTimeout("AppAmazonPayLogin.d()",1000);
