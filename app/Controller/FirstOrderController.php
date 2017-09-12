@@ -84,13 +84,16 @@ class FirstOrderController extends MinikuraController
         // オートログイン確認
         // tokenが存在する
         if (!empty($_COOKIE['token'])) {
-            $cookie_login_param = AppCode::decodeLoginData($_COOKIE['token']);
-            $login_params = explode(' ', $cookie_login_param);
+            // エントリーユーザーの場合は以下のリダイレクト処理を実施しない
+            if (!$this->Customer->isEntry()) {
+                $cookie_login_param = AppCode::decodeLoginData($_COOKIE['token']);
+                $login_params = explode(' ', $cookie_login_param);
 
-            // 取得した配列のカウントが2である
-            if (count($login_params) === 2) {
-                // セッション削除しログイン画面へ遷移
-                $this->_redirectLogin();
+                // 取得した配列のカウントが2である
+                if (count($login_params) === 2) {
+                    // セッション削除しログイン画面へ遷移
+                    $this->_redirectLogin();
+                }
             }
         }
 
