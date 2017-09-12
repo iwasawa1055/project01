@@ -73,7 +73,7 @@ class FirstOrderController extends MinikuraController
         /* 以下 初回購入フロー条件判定 */
         // オートログイン確認
         // tokenが存在する
-        if (!empty($_COOKIE['token'])) {
+        if (!empty($_COOKIE['token']) && !$this->Customer->isEntry()) {
             $cookie_login_param = AppCode::decodeLoginData($_COOKIE['token']);
             $login_params = explode(' ', $cookie_login_param);
 
