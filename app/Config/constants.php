@@ -385,3 +385,9 @@ const SALES_STATUS_SALES_CANCEL = '8'; // 販売キャンセル
  */
 // 振込手数料
 const TRANSFER_CHARGE_PRICE = 324;
+
+// amazon pay エラー表示
+const AMAZON_PAY_ERROR_URGING_INPUT = 'Amazon Pay の登録住所に誤りがあります。正しい住所を選択するか、正しい住所を新規追加してください。';
+
+// 入力情報 エラー表示
+const INPUT_ERROR = '入力した内容に誤りがあります。';

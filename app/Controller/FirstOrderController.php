@@ -1093,7 +1093,7 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -1171,37 +1171,34 @@ class FirstOrderController extends MinikuraController
 
         //*  Amazon Payから取得した住所情報の確認
         $validation = AppValid::validate($get_address_amazon_pay);
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
             $is_validation_error = true;
         }
 
         //*  formから取得した住所情報の確認
         $validation = AppValid::validate($get_address_form);
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
         // 規約同意を確認する
         $validation = AppValid::validateTermsAgree($get_email['remember']);
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation) ) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 

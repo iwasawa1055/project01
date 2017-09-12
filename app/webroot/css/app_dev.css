@@ -334,3 +334,11 @@ section.select-login .login-amazon {
   font-weight: normal;
   color: #ff6666;
 }
+
+.panel .form-group .validation {
+    display: inline-block;
+    color: #ff6666;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
+}

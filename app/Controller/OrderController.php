@@ -712,7 +712,7 @@ class OrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -724,7 +724,7 @@ class OrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
             $is_validation_error = true;
         }
 
