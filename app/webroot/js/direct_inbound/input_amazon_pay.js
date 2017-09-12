@@ -225,7 +225,7 @@ var AppAmazonPayWallet =
                 onReady: function(billingAgreement) {
 
                     // お届希望日を取得
-                    // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
+                    AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 
                     // カード選択 Widgetを表示
                     new OffAmazonPayments.Widgets.Wallet({
