@@ -33,7 +33,11 @@
 
             <!-- LINEUP -->
             <section id="dsn-lineup">
-              <div class="dsn-wrapper dev-wrapper">
+              <div class="dsn-form dev-form">
+                <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+                <?php echo $this->Flash->render('customer_address_info');?>
+              </div>
+              <div class="dsn-wrapper">
                 <!-- HAKO -->
                 <div id="dsn-hako" class="dsn-lineup-box">
                   <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>

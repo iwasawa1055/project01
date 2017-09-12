@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>集荷の住所</label>
-                  <p class="form-control-static">〒<?php echo CakeSession::read('DispAddress.postal');?> <?php echo CakeSession::read('DispAddress.pref');?><?php echo CakeSession::read('DispAddress.address1');?><?php echo CakeSession::read('DispAddress.address2');?> <?php echo CakeSession::read('DispAddress.address3');?></p>
+                  <p class="form-control-static">〒<?php echo CakeSession::read('DispAddress.postal');?>　<?php echo CakeSession::read('DispAddress.pref');?><?php echo CakeSession::read('DispAddress.address1');?><?php echo CakeSession::read('DispAddress.address2');?> <?php echo CakeSession::read('DispAddress.address3');?>　<?php echo CakeSession::read('DispAddress.lastname');?> <?php echo CakeSession::read('DispAddress.firstname');?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>集荷の日時</label>

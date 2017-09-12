@@ -16,7 +16,10 @@ var AppAmazonPay =
                 return;
             }
 
-            $('<div class="dsn-form"><span class="validation">お支払方法の設定は必須です。</span></div>').insertBefore('div.dev-divider');
+            if( !$('div.dev-divider').prev('div').children('span').hasClass('validation')) {
+                $('<div class="dsn-form"><span class="validation">お支払方法の設定は必須です。</span></div>').insertBefore('div.dev-divider');
+            }
+
             alert('Amazon Pay をお支払方法に設定する 同意は必須です。');
             return false;
         });
@@ -180,7 +183,10 @@ var AppAmazonPayWallet =
                                 },
                                 onReady: function(billingAgreementConsentStatus){
                                     // Called after widget renders
-                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    // エラー回避
+                                    if(typeof billingAgreementConsentStatus.getConsentStatus == 'function') {
+                                        AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    }
                                     // true – checkbox is selected
                                     // false – checkbox is unselected - default
                                 },
