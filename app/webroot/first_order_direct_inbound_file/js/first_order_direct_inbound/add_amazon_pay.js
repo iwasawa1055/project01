@@ -186,6 +186,14 @@ var AppAmazonPayWallet =
                 onReady: function(billingAgreement) {
                     AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
 
+                    //************* test log *************
+                    if ($('#addressBookWidgetDiv')[0]) {
+                        //console.log("addressBookWidgetDiv is found.");
+                    } else {
+                        console.log("addressBookWidgetDiv is NOT found.");
+                    }
+                    //************* test log *************
+
                     // お届希望日を取得
                     // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 

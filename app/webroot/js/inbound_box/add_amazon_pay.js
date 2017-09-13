@@ -94,6 +94,15 @@ var AppAmazonPayWallet =
 
                 // Widgets起動状態
                 onReady: function(billingAgreement) {
+
+                    //************* test log *************
+                    if ($('#addressBookWidgetDiv')[0]) {
+                        //console.log("addressBookWidgetDiv is found.");
+                    } else {
+                        console.log("addressBookWidgetDiv is NOT found.");
+                    }
+                    //************* test log *************
+                    
                     AppAmazonPayWallet.AmazonOrderReferenceId = billingAgreement.getAmazonOrderReferenceId();
                 },
                 // 住所選択変更時
