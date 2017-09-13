@@ -1750,7 +1750,7 @@ class FirstOrderController extends MinikuraController
             // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
             // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
-            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE, ['key' => 'customer_amazon_pay_info']);
             $this->redirect('/first_order/add_amazon_pay');
         }
 
@@ -1843,7 +1843,7 @@ class FirstOrderController extends MinikuraController
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }
-            $this->redirect(['controller' => 'first_order', 'action' => 'confirm_amazon_pay']);
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_amazon_pay']);
         }
 
         // 完了したページ情報を保存
