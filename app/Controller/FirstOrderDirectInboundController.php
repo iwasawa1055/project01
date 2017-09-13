@@ -1023,10 +1023,14 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         //* 会員登録
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
+        unset($data['select_delivery']);
+        unset($data['select_delivery_list']);
+        unset($data['select_delivery_text']);
         unset($data['select_delivery_day']);
         unset($data['select_delivery_time']);
         unset($data['select_delivery_day_list']);
         unset($data['select_delivery_time_list']);
+        unset($data['cargo']);
 
 
         $this->loadModel(self::MODEL_NAME_REGIST);
