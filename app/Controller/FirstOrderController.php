@@ -44,6 +44,7 @@ class FirstOrderController extends MinikuraController
 
         // Amazonpay 初期化
         CakeSession::delete('registered_user_login_url');
+        CakeSession::delete('FirstOrder.amazon_pay.access_token');
 
         // 遷移時にオプションが設定されている場合
         CakeSession::delete('order_option');

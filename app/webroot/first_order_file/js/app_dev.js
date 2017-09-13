@@ -47,15 +47,12 @@ var Act =
             $('<div class="form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.wrapper');
         }
     },
-    c: function()
-    {
-        setTimeout(
-            window.onAmazonLoginReady = function(){
-                if ($('#Logout')[0]) {
-                    $('#Logout').on('click', function (e) {
-                        amazon.Login.logout();
-                    });
-                }
-            }, 10);
+    c: function () {
+        if ($('#AmazonLogout')[0]) {
+            $('#AmazonLogout').on('click', function (e) {
+                amazon.Login.logout();
+                window.location.href = "/first_order/index";
+            });
+        }
     }
 };
