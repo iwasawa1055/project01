@@ -100,16 +100,16 @@ if (!empty($validErrors)) {
             <div class="form-group col-lg-12 inbound_pickup_only">
               <?php echo $this->Flash->render('customer_amazon_pay_info');?>
               <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.lastname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.firstname_kana', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+              <?php /* echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p'])*/ ?>
+              <?php echo $this->Form->error('Inbound.lastname_kana', null, ['wrap' => 'p']) ?>
+              <?php /* echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p'])*/ ?>
+              <?php echo $this->Form->error('Inbound.firstname_kana', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.tel1', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.postal', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.pref', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address1', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address2', null, ['wrap' => 'p']) ?>
+              <?php echo $this->Form->error('Inbound.address3', null, ['wrap' => 'p']) ?>
             </div>
 
             <div class="form-group col-lg-12 inbound_pickup_only">

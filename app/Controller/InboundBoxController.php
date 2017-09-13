@@ -1,5 +1,6 @@
 <?php
 
+App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('DatePrivate', 'Model');
 App::uses('TimePrivate', 'Model');
@@ -218,7 +219,7 @@ class InboundBoxController extends MinikuraController
             // モデル取得
             $data = $this->Address->merge($data['address_id'], $data);
 
-            // amazonpay データ取得
+            // amazonpayデータ 入力データ取得
             $params = [
                 'lastname'                  => filter_input(INPUT_POST, 'lastname'),
                 'firstname'                 => filter_input(INPUT_POST, 'firstname'),
@@ -244,14 +245,16 @@ class InboundBoxController extends MinikuraController
             $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
             $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
 
-            $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
-            $data['postal']      = $PostalCode;
-            $data['pref']        = $physicaldestination['StateOrRegion'];
+            $data_amazon_pay = array();
 
-            $data['address1'] = $physicaldestination['AddressLine1'];
-            $data['address2'] = $physicaldestination['AddressLine2'];
-            $data['address3'] = $physicaldestination['AddressLine3'];
-            $data['tel1']        = $physicaldestination['Phone'];
+            $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+            $data_amazon_pay['postal']      = $PostalCode;
+            $data_amazon_pay['pref']        = $physicaldestination['StateOrRegion'];
+
+            $data_amazon_pay['address1'] = $physicaldestination['AddressLine1'];
+            $data_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
+            $data_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
+            $data_amazon_pay['tel1']        = $physicaldestination['Phone'];
 
             // 名前上書き
             $data['lastname']   = $params['lastname'];
@@ -261,8 +264,16 @@ class InboundBoxController extends MinikuraController
             $data['lastname_kana'] = '　';
             $data['firstname_kana'] = '　';
 
+            $data = array_merge($data, $data_amazon_pay);
+
             // 一時セッション保持
             CakeSession::write('InboundAddress', $data);
+
+            //バリデーション表示用
+            $validation = AppValid::validate($data_amazon_pay);
+            if (!empty($validation)) {
+                $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
+            }
 
             $model = $this->Inbound->model($data);
             if (empty($model)) {

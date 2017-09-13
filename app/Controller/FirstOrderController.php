@@ -1087,7 +1087,7 @@ class FirstOrderController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -1148,8 +1148,8 @@ class FirstOrderController extends MinikuraController
         $get_address_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
         $get_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
         $get_address_amazon_pay['tel1']        = $physicaldestination['Phone'];
-        $get_address_amazon_pay['datetime_cd'] = $get_email['datetime_cd'];
-        $get_address_amazon_pay['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
+        $get_address_form['datetime_cd'] = $get_email['datetime_cd'];
+        $get_address_form['select_delivery_text'] = $this->_convDatetimeCode($get_email['datetime_cd']);
 
 
         $get_address_tmp = array_merge($get_address_form, $get_address_amazon_pay);
@@ -1165,37 +1165,34 @@ class FirstOrderController extends MinikuraController
 
         //*  Amazon Payから取得した住所情報の確認
         $validation = AppValid::validate($get_address_amazon_pay);
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
             $is_validation_error = true;
         }
 
         //*  formから取得した住所情報の確認
         $validation = AppValid::validate($get_address_form);
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation)) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
         // 規約同意を確認する
         $validation = AppValid::validateTermsAgree($get_email['remember']);
-
         //* 共通バリデーションでエラーあったらメッセージセット
         if ( !empty($validation) ) {
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -1753,7 +1750,7 @@ class FirstOrderController extends MinikuraController
             // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
             // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
-            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE, ['key' => 'customer_amazon_pay_info']);
             $this->redirect('/first_order/add_amazon_pay');
         }
 
@@ -1846,7 +1843,7 @@ class FirstOrderController extends MinikuraController
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }
-            $this->redirect(['controller' => 'first_order', 'action' => 'confirm_amazon_pay']);
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_amazon_pay']);
         }
 
         // 完了したページ情報を保存

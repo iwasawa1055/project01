@@ -349,7 +349,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -467,7 +467,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -481,7 +481,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('Amazon Pay の登録住所に誤りがあります。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
             $is_validation_error = true;
         }
 
@@ -493,7 +493,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             foreach ($validation as $key => $message) {
                 $this->Flash->validation($message, ['key' => $key]);
             }
-            $this->Flash->validation('入力した内容に誤りがあります。', ['key' => 'customer_address_info']);
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
             $is_validation_error = true;
         }
 
@@ -1399,7 +1399,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
             // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
-            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE, ['key' => 'customer_amazon_pay_info']);
             $this->redirect('/first_order_direct_inbound/add_amazon_pay');
         }
 
