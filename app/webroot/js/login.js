@@ -33,11 +33,24 @@ var AppAmazonPayLogin =
           }
         });
         // amazon.Login.logout();
+    },
+    f: function () {
+        if($(".dsn-amazon-login").children('span').hasClass('validation')) {
+            window.onAmazonLoginReady = function(){
+                console.log('amazon logout');
+                amazon.Login.logout();
+            };
+        };
     }
 }
-
 
 /*
  * document ready
  */
- AppAmazonPayLogin.a();
+$(function () {
+
+    AppAmazonPayLogin.a();
+    //AppAmazonPayLogin.e();
+    AppAmazonPayLogin.f();
+
+});
