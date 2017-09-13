@@ -99,7 +99,7 @@
             <a class="btn btn-primary btn-lg btn-block" href="/direct_inbound/input_amazon_pay">戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <button class="btn-next page-transition-link" type="submit" disabled="disabled">
+              <button class="btn btn-next btn-danger btn-lg btn-block page-transition-link" type="submit" disabled="disabled">
                 この内容で申し込みをする
                 <i class="fa fa-chevron-circle-right"></i>
               </button>
