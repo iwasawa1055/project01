@@ -219,6 +219,14 @@ var AppAmazonPayWallet =
                 // Widgets起動状態
                 onReady: function(billingAgreement) {
 
+                    //************* test log *************
+                    if ($('#addressBookWidgetDiv')[0]) {
+                        //console.log("addressBookWidgetDiv is found.");
+                    } else {
+                        console.log("addressBookWidgetDiv is NOT found.");
+                    }
+                    //************* test log *************
+
                     // お届希望日を取得
                     AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 
