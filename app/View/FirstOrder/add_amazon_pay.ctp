@@ -25,12 +25,13 @@
 <div id="full" class="dsn-wrapper">
   <form method="post" action="/first_order/confirm_amazon_pay" novalidate>
     <section id="dsn-adress">
-      <?php echo $this->Flash->render('customer_regist_info');?>
-      <?php echo $this->Flash->render('customer_amazon_pay_info');?>
-      <?php echo $this->Flash->render('customer_address_info');?>
-      <?php echo $this->Flash->render('customer_kit_info');?>
-      <div class="dsn-wrapper">
-        <div class="dsn-form"><div class="alert alert-danger" role="alert" id="error_alert"><i class="fa fa-exclamation-triangle"></i> </div></div>
+      <div class="dsn-wrapper dev-wrapper">
+        <div class="dsn-form">
+          <?php echo $this->Flash->render('customer_regist_info');?>
+          <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+          <?php echo $this->Flash->render('customer_address_info');?>
+          <?php echo $this->Flash->render('customer_kit_info');?>
+        </div>
         <div id="dsn-amazon-pay" class="form-group col-lg-12">
           <div class="dsn-address">
             <div id="addressBookWidgetDiv">
@@ -41,6 +42,11 @@
             </div>
           </div>
         </div>
+        <div id="dsn-payment" class="form-group col-lg-12">
+          <div id="consentWidgetDiv">
+          </div>
+        </div>
+
         <div class="dsn-form">
           <?php // アマゾンから取得した情報をバリデーション ?>
           <?php echo $this->Flash->render('postal');?>
@@ -50,14 +56,9 @@
           <?php echo $this->Flash->render('tel1');?>
         </div>
 
-        <div id="dsn-payment" class="form-group col-lg-12">
-            <div id="consentWidgetDiv">
-            </div>
-          <span class="validation" id="payment_consent_alert">お支払方法の設定は必須です。</span>
-        </div>
-        <div class="dsn-divider"></div>
+        <div class="dsn-divider dev-divider"></div>
         <div class="dsn-form">
-          <label>パスワード<span class="dsn-required">※</span><br><span>minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
+          <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
           <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password">
           <?php echo $this->Flash->render('password');?>
         </div>
@@ -101,12 +102,14 @@
               <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
             <?php endfor;?>
           </select>
+          <br>
           <?php echo $this->Flash->render('birth');?>
         </div>
         <div class="dsn-form dsn-form-line">
           <label>性別<span class="dsn-required">※</span></label>
           <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>
           <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
+          <br>
           <?php echo $this->Flash->render('gender');?>
         </div>
         <div class="dsn-divider"></div>
@@ -125,11 +128,14 @@
             <option value="1">受信する</option>
             <option value="0">受信しない</option>
           </select>
-          <?php echo $this->Flash->render('newsletter');?>
         </div>
         <div class="dsn-form dsn-form-line">
           <label>紹介コード</label>
           <input class="dsn-referral focused" type="text" size="20" maxlength="20" name="alliance_cd">
+        </div>
+        <br>
+        <div class="dsn-form">
+          <?php echo $this->Flash->render('newsletter');?>
           <?php echo $this->Flash->render('alliance_cd');?>
         </div>
         <div class="dsn-divider"></div>

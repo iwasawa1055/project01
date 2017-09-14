@@ -41,13 +41,24 @@ var AppAmazonPayLogin =
     },
     e: function () {
         setTimeout("AppAmazonPayLogin.d()",1000);
+    },
+    f: function () {
+        if($(".dsn-amazon-login").children('span').hasClass('validation')) {
+            window.onAmazonLoginReady = function(){
+                console.log('amazon logout');
+                amazon.Login.logout();
+            };
+        };
     }
 }
-
 
 /*
  * document ready
  */
- AppAmazonPayLogin.a();
- // ボタンの表示確認&再表示処理
- AppAmazonPayLogin.e();
+$(function () {
+
+    AppAmazonPayLogin.a();
+    AppAmazonPayLogin.e();
+    AppAmazonPayLogin.f();
+
+});

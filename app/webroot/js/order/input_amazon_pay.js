@@ -4,7 +4,7 @@ var AppInputOrder =
   {
     // validation メッセージが表示される時に、ページ上部に表示する
     if ($('span').hasClass('validation')) {
-      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-form');
     }
   },
   init_disp1: function () {
@@ -170,6 +170,12 @@ var AppAmazonPay =
                 $.each(data.results, function (index, datatime) {
                     elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
                 });
+
+                //選択済保持
+                if ($("#js-datetime_cd").val() != '') {
+                    $("#datetime_cd").val($("#js-datetime_cd").val());
+                }
+
                 // 戻る対応でリストをpostする
                 $('#select_delivery').val(JSON.stringify(data.results));
             }).fail(function (data, textStatus, errorThrown) {
@@ -212,6 +218,14 @@ var AppAmazonPayWallet =
                 },
                 // Widgets起動状態
                 onReady: function(billingAgreement) {
+
+                    //************* test log *************
+                    if ($('#addressBookWidgetDiv')[0]) {
+                        //console.log("addressBookWidgetDiv is found.");
+                    } else {
+                        console.log("addressBookWidgetDiv is NOT found.");
+                    }
+                    //************* test log *************
 
                     // お届希望日を取得
                     // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);

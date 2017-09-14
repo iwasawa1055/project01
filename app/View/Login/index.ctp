@@ -57,7 +57,5 @@
       </div>
     </div>
   </div>
-<?php if (!$customer->isAmazonPay()):?>
-  <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
-<?php endif; ?>
-<script src="/js/login.js"></script>
+<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
+<?php $this->Html->script('login', ['block' => 'scriptMinikura']); ?>

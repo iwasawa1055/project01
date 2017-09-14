@@ -46,3 +46,7 @@
     width: 100%;
     height: 140px;
 }
+
+section#dsn-adress .dsn-form label span.dev_description{
+    color: silver;
+}

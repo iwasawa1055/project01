@@ -18,6 +18,10 @@
     <div class="row">
       <form method="post" class="select-add-address-form" action="/direct_inbound/confirm_amazon_pay" novalidate>
         <div class="col-lg-12">
+          <div class="dev-render">
+          <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+          <?php echo $this->Flash->render('customer_address_info');?>
+          </div>
           <div class="panel panel-default">
             <div class="panel-body">
               <h2>minikuraダイレクト</h2>
@@ -56,21 +60,19 @@
                 </p>
                 <div class="dsn-yamato">
 
-                  <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                    <div class="dsn-address">
-                      <div id="addressBookWidgetDiv">
+                  <div class="form-group col-lg-12">
+                    <div id="dsn-amazon-pay">
+                      <div class="dsn-address">
+                        <div id="addressBookWidgetDiv">
+                        </div>
+                      </div>
+                      <div class="dsn-credit">
+                        <div id="walletWidgetDiv">
+                        </div>
                       </div>
                     </div>
-                    <div class="dsn-credit">
-                      <div id="walletWidgetDiv">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="dsn-form">
                     <div class="dsn-form">
                       <?php // アマゾンから取得した情報をバリデーション ?>
-                      <?php echo $this->Flash->render('customer_amazon_pay_info');?>
                       <?php echo $this->Flash->render('postal');?>
                       <?php echo $this->Flash->render('pref');?>
                       <?php echo $this->Flash->render('address1');?>
@@ -92,11 +94,11 @@
 
                   <div class="form-group col-lg-12">
                     <label>集荷の日程</label>
-                      <select name="date_cd" id="InboundDayCd" class="form-controlr dev-input-form">
-                        <?php foreach ( CakeSession::read('SelectTime.select_delivery_day_list') as $key => $value ) {?>
-                        <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('SelectTime.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                        <?php } ?>
-                      </select>
+                    <select name="date_cd" id="InboundDayCd" class="form-controlr dev-input-form">
+                      <?php foreach ( CakeSession::read('SelectTime.select_delivery_day_list') as $key => $value ) {?>
+                      <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('SelectTime.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                      <?php } ?>
+                    </select>
                     <?php echo $this->Flash->render('date_cd');?>
                     <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('SelectTime.select_delivery_day'))) : ?><?php echo h(CakeSession::read('SelectTime.select_delivery_day'))?><?php else : ?><?php endif; ?>">
                   </div>

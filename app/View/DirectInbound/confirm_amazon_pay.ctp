@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>集荷の住所</label>
-                  <p class="form-control-static">〒<?php echo CakeSession::read('DispAddress.postal');?> <?php echo CakeSession::read('DispAddress.pref');?><?php echo CakeSession::read('DispAddress.address1');?><?php echo CakeSession::read('DispAddress.address2');?> <?php echo CakeSession::read('DispAddress.address3');?></p>
+                  <p class="form-control-static">〒<?php echo CakeSession::read('DispAddress.postal');?>　<?php echo CakeSession::read('DispAddress.pref');?><?php echo CakeSession::read('DispAddress.address1');?><?php echo CakeSession::read('DispAddress.address2');?> <?php echo CakeSession::read('DispAddress.address3');?>　<?php echo CakeSession::read('DispAddress.lastname');?> <?php echo CakeSession::read('DispAddress.firstname');?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>集荷の日時</label>
@@ -99,7 +99,7 @@
             <a class="btn btn-primary btn-lg btn-block" href="/direct_inbound/input_amazon_pay">戻る</a>
             </span>
             <span class="col-lg-6 col-md-6 col-xs-12">
-              <button class="btn-next page-transition-link" type="submit" disabled="disabled">
+              <button class="btn btn-next btn-danger btn-lg btn-block page-transition-link" type="submit" disabled="disabled">
                 この内容で申し込みをする
                 <i class="fa fa-chevron-circle-right"></i>
               </button>

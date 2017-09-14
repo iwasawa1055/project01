@@ -99,29 +99,32 @@
       <div class="panel-body">
         <div class="form-group col-lg-12">
           <label>お届け先住所</label>
-
-          <div id="dsn-amazon-pay" class="form-group col-lg-12">
-            <div class="dsn-address">
-              <div id="addressBookWidgetDiv">
+          <div class="form-group col-lg-12">
+            <div id="dsn-amazon-pay"> 
+              <div class="dsn-address">
+                <div id="addressBookWidgetDiv">
+                </div>
               </div>
             </div>
           </div>
-          <?php echo $this->Form->error('Outbound.tel1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.postal', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.pref', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.address1', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.address2', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-          <?php echo $this->Form->error('Outbound.address3', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+          <div class="form-group col-lg-12">
+            <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+            <?php echo $this->Form->error('Outbound.tel1', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.postal', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.pref', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.address1', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.address2', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.address3', null, ['wrap' => 'p']) ?>
+          </div>
         </div>
-
         <div class="form-group col-lg-12">
           <label>お名前</label>
           <div class="dsn-form">
             <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('OutboundAddress.lastname');?>">
             <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('OutboundAddress.firstname');?>">
             <br>
-            <?php echo $this->Form->error('Outbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
-            <?php echo $this->Form->error('Outbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.lastname', null, ['wrap' => 'p']) ?>
+            <?php echo $this->Form->error('Outbound.firstname', null, ['wrap' => 'p']) ?>
           </div>
         </div>
 

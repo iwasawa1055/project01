@@ -33,7 +33,11 @@
 
             <!-- LINEUP -->
             <section id="dsn-lineup">
-              <div class="dsn-wrapper dev-wrapper">
+              <div class="dsn-form dev-form">
+                <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+                <?php echo $this->Flash->render('customer_address_info');?>
+              </div>
+              <div class="dsn-wrapper">
                 <!-- HAKO -->
                 <div id="dsn-hako" class="dsn-lineup-box">
                   <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
@@ -134,6 +138,7 @@
                 </div>
                 <div class="dsn-form">
                   <label>お届け希望日時</label>
+                  <input type="hidden" id="js-datetime_cd" value="<?php echo CakeSession::read('Address.datetime_cd');?>">
                   <select name="datetime_cd" id="datetime_cd" class="dsn-delivery focused">
                     <?php foreach ( CakeSession::read('Address.select_delivery_list') as $key => $value ) {?>
                       <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>

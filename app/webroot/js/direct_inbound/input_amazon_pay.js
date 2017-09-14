@@ -63,7 +63,7 @@ var AppInputOrder =
   c: function () {
     // 預け入れ方法の選択初期化
     if ($('span').hasClass('validation')) {
-      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.panel-default');
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-render');
     }
 
   },
@@ -224,6 +224,14 @@ var AppAmazonPayWallet =
                 // Widgets起動状態
                 onReady: function(billingAgreement) {
 
+                    //************* test log *************
+                    if ($('#addressBookWidgetDiv')[0]) {
+                        //console.log("addressBookWidgetDiv is found.");
+                    } else {
+                        console.log("addressBookWidgetDiv is NOT found.");
+                    }
+                    //************* test log *************
+                    
                     // お届希望日を取得
                     // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 

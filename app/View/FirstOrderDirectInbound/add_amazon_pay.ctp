@@ -25,7 +25,12 @@
   <div id="full" class="dsn-wrapper">
     <form method="post" action="/first_order_direct_inbound/confirm_amazon_pay" novalidate>
       <section id="dsn-adress">
-        <div class="dsn-wrapper">
+        <div class="dsn-wrapper dev-wrapper">
+
+          <div class='dsn-form'>
+            <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+            <?php echo $this->Flash->render('customer_address_info');?>
+          </div>
 
           <div id="dsn-amazon-pay" class="form-group col-lg-12">
             <div class="dsn-address">
@@ -42,9 +47,18 @@
             </div>
           </div>
 
-          <div class="dsn-divider"></div>
           <div class="dsn-form">
-            <label>パスワード<span class="dsn-required">※</span><br><span>半角英数記号8文字以上でご入力ください。</span></label>
+            <?php // アマゾンから取得した情報をバリデーション ?>
+            <?php echo $this->Flash->render('postal');?>
+            <?php echo $this->Flash->render('pref');?>
+            <?php echo $this->Flash->render('address1');?>
+            <?php echo $this->Flash->render('address2');?>
+            <?php echo $this->Flash->render('tel1');?>
+          </div>
+
+          <div class="dsn-divider dev-divider"></div>
+          <div class="dsn-form">
+            <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
             <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password">
             <?php echo $this->Flash->render('password');?>
           </div>

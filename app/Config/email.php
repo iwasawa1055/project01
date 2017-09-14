@@ -4,9 +4,9 @@ class EmailConfig
 {
     public $default = array(
         'transport' => 'Smtp',
-        'from' => 'development@example.com',
-        'host' => 'smtp',
-        'port' => 1025,
+        'from' => 'dev.minikura@terrada.co.jp',
+        'host' => '127.0.0.1',
+        'port' => 25,
         'timeout' => 30,
         // 'username' => 'user',
         // 'password' => 'secret',
