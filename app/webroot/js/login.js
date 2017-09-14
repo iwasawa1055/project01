@@ -2,6 +2,8 @@ var AppAmazonPayLogin =
 {
     SELLER_ID:"A1MBRBB8GPQFL9",
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
+    IsAmazonLoginButton:false,
+    TimerID:null,
     a: function () {
         window.onAmazonLoginReady = function(){
             amazon.Login.setClientId(AppAmazonPayLogin.ClientId);
@@ -34,31 +36,26 @@ var AppAmazonPayLogin =
         });
         // amazon.Login.logout();
     },
+    // ログイン時にボタンが表示されない問題のリカバリー処理
     d: function () {
         if($("#AmazonPayButtonLogin").children().size() === 0) {
             AppAmazonPayLogin.a();
+        } else {
+            AppAmazonPayLogin.IsAmazonLoginButton = true;
+            clearInterval(AppAmazonPayLogin.TimerID);
         };
     },
     e: function () {
-        setTimeout("AppAmazonPayLogin.d()",1000);
-    },
-    f: function () {
-        if($(".dsn-amazon-login").children('span').hasClass('validation')) {
-            window.onAmazonLoginReady = function(){
-                console.log('amazon logout');
-                amazon.Login.logout();
-            };
-        };
+        AppAmazonPayLogin.TimerID = setInterval(function(){
+            if (AppAmazonPayLogin.IsAmazonLoginButton === false) {
+                AppAmazonPayLogin.d();
+            }
+        },1000);
     }
 }
 
 /*
  * document ready
  */
-$(function () {
-
-    AppAmazonPayLogin.a();
-    AppAmazonPayLogin.e();
-    AppAmazonPayLogin.f();
-
-});
+AppAmazonPayLogin.a();
+AppAmazonPayLogin.e();
