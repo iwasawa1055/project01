@@ -291,6 +291,25 @@ class FirstOrderDirectInboundController extends MinikuraController
         $birthyear_configure = Configure::read('app.register.birthyear');
         $this->set('birthyear_configure', $birthyear_configure);
 
+        $back  = filter_input(INPUT_GET, 'back');
+
+        if (!$back) {
+            if (empty(CakeSession::read('Email'))) {
+                $Email = array(
+                    'email' => "",
+                    'password' => "",
+                    'password_confirm' => "",
+                    'birth_year' => "1980",
+                    'birth_month' => "",
+                    'birth_day' => "",
+                    'gender' => "",
+                    'newsletter' => "",
+                    'alliance_cd' => "",
+                    'remember' => "",
+                );
+                CakeSession::write('Email', $Email);
+            }
+        }
     }
 
     /**
@@ -1399,7 +1418,7 @@ class FirstOrderDirectInboundController extends MinikuraController
             // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
             // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
             CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
-            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE, ['key' => 'customer_amazon_pay_info']);
             $this->redirect('/first_order_direct_inbound/add_amazon_pay');
         }
 
