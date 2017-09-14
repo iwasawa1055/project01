@@ -39,6 +39,11 @@ class FirstOrderController extends MinikuraController
      */
     public function index()
     {
+        // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookie()を削除します。
+        // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
+        setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
+        setcookie("MINIKURACOM", "", time()-60, "", ".minikura.com");
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 

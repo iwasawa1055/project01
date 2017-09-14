@@ -25,6 +25,11 @@ class InquiryController extends MinikuraController
      */
     public function add()
     {
+        // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookie()を削除します。
+        // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
+        setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
+        setcookie("MINIKURACOM", "", time()-60, "", ".minikura.com");
+
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
             $this->request->data = CakeSession::read(self::MODEL_NAME);
