@@ -291,6 +291,25 @@ class FirstOrderDirectInboundController extends MinikuraController
         $birthyear_configure = Configure::read('app.register.birthyear');
         $this->set('birthyear_configure', $birthyear_configure);
 
+        $back  = filter_input(INPUT_GET, 'back');
+
+        if (!$back) {
+            if (empty(CakeSession::read('Email'))) {
+                $Email = array(
+                    'email' => "",
+                    'password' => "",
+                    'password_confirm' => "",
+                    'birth_year' => "1980",
+                    'birth_month' => "",
+                    'birth_day' => "",
+                    'gender' => "",
+                    'newsletter' => "",
+                    'alliance_cd' => "",
+                    'remember' => "",
+                );
+                CakeSession::write('Email', $Email);
+            }
+        }
     }
 
     /**
