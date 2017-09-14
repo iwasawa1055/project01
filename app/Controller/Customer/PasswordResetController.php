@@ -26,6 +26,11 @@ class PasswordResetController extends MinikuraController
      */
     public function customer_index()
     {
+        // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookieを削除します。
+        // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
+        setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
+        setcookie("MINIKURACOM", "", time()-60, "", ".minikura.com");
+
         if ($this->request->is('post')) {
             $this->CustomerPasswordReset->set($this->request->data);
             if ($this->CustomerPasswordReset->validates(['fieldList' => ['email']])) {
