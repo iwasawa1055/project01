@@ -118,6 +118,40 @@ class OutboundController extends MinikuraController
     }
 
     /**
+     *
+     */
+    public function getAmazonUserInfoDetail()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $amazon_pay_data = $this->request->data['amazon_pay_data'];
+
+        $amazon_order_reference_id = $amazon_pay_data['amazon_order_reference_id'];
+
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+
+        // 住所に関する箇所を取得
+        $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+
+        $address = array();
+        $address['name'] = $physicaldestination['Name'];
+
+        $status = !empty($address['name']);
+
+        return json_encode(compact('status', 'address'));
+    }
+
+    /**
      * data [
      *   'box_id' => ['001' => 1, '002' => 1, '003' => 1]
      * ]
@@ -590,7 +624,7 @@ class OutboundController extends MinikuraController
             if ($validOutbound && $validPointUse) {
                 // 表示ラベル
                 //$address = $this->Address->find($addressId);
-                $this->set('address_text', "〒{$get_address['postal']} {$get_address['pref']}{$get_address['address1']}{$get_address['address2']}{$get_address['address3']}　{$get_address['lastname']}　{$get_address['firstname']}");
+                $this->set('address_text', "〒{$get_address['postal']} {$get_address['pref']}{$get_address['address1']}{$get_address['address2']}{$get_address['address3']}　{$get_address['lastname']}{$get_address['firstname']}");
                 $datetime = $this->getDatetimeOne($get_address['postal'], $data['Outbound']['datetime_cd']);
                 $this->set('datetime_text', $datetime['text']);
                 $this->set('isolateIsland', $isIsolateIsland);

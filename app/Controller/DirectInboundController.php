@@ -1169,6 +1169,39 @@ class DirectInboundController extends MinikuraController
         return json_encode(compact('status', 'result'));
     }
 
+    /**
+     *
+     */
+    public function getAmazonUserInfoDetail()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $amazon_pay_data = $this->request->data['amazon_pay_data'];
+
+        $amazon_order_reference_id = $amazon_pay_data['amazon_order_reference_id'];
+
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+
+        // 住所に関する箇所を取得
+        $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+
+        $address = array();
+        $address['name'] = $physicaldestination['Name'];
+
+        $status = !empty($address['name']);
+
+        return json_encode(compact('status', 'address'));
+    }
 
     /**
      * ヤマト運輸の配送日情報取得
