@@ -101,7 +101,11 @@ class MinikuraController extends AppController
             // 負債ユーザ遷移制限
             if ($this->Customer->isPaymentNG() && $this->request->prefix !== 'paymentng') {
                 if ($this->Customer->hasCreditCard()) {
-                    return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
+                    if ($this->Customer->isAmazonPay()) {
+                        return $this->redirect(['controller' => 'credit_card', 'action' => 'edit_amazon_pay', 'paymentng' => true]);
+                    }else {
+                        return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
+                    }
                 } else {
                     $this->Flash->paymentng_no_credit_card('');
                     return $this->redirect(['controller' => 'login', 'action' => 'logout']);
