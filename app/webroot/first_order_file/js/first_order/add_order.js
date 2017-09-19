@@ -48,6 +48,9 @@ var AppAmazonPayLogin =
     a: function () {
         window.onAmazonLoginReady = function(){
             amazon.Login.setClientId(AppAmazonPayLogin.ClientId);
+
+            // エラー時ログアウト
+            AppAmazonPayLogin.d();
         };
         window.onAmazonPaymentsReady = function() {
             // Render the button here.
@@ -78,13 +81,11 @@ var AppAmazonPayLogin =
         return param;
     },
     d: function () {
-        $('.js-amazon_pay_logout').on('click', function (e) {
-            $('form').submit();
-            amazon.Login.logout();
-            link = $(this).data('href');
 
-            window.location.href = link;
-        });
+        if ($('#js-alert_amazon_pay')[0]) {
+            console.log('logout');
+            amazon.Login.logout();
+        }
     },
     e: function (button_name, path) {
         var authRequest;
@@ -117,5 +118,4 @@ $(function()
     AppAddOrder.a();
     AppAddOrder.b();
     AppAmazonPayLogin.a();
-    AppAmazonPayLogin.d();
 });
