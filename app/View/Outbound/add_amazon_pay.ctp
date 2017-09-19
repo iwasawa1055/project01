@@ -117,11 +117,11 @@
             <?php echo $this->Form->error('Outbound.address3', null, ['wrap' => 'p']) ?>
           </div>
         </div>
-        <div class="form-group col-lg-12">
+        <div class="form-group col-lg-12 name-form-group">
           <label>お名前</label>
-          <div class="dsn-form">
-            <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('OutboundAddress.lastname');?>">
-            <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('OutboundAddress.firstname');?>">
+          <div class="dsn-form">          
+            <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
+            <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
             <br>
             <?php echo $this->Form->error('Outbound.lastname', null, ['wrap' => 'p']) ?>
             <?php echo $this->Form->error('Outbound.firstname', null, ['wrap' => 'p']) ?>

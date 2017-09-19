@@ -81,11 +81,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-lg-12 inbound_pickup_only">
+                  <div class="form-group col-lg-12 inbound_pickup_only name-form-group">
                     <label>お名前</label>
                     <div class="dsn-form">
-                      <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
-                      <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
+                      <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
+                      <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
                       <br>
                       <?php echo $this->Flash->render('firstname');?>
                       <?php echo $this->Flash->render('lastname');?>

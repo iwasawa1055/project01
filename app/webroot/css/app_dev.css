@@ -342,3 +342,7 @@ section.select-login .login-amazon {
     padding: 0.5rem;
     font-size: 1.6rem;
 }
+
+.panel .name-form-group {
+    display: none;
+}

@@ -142,9 +142,10 @@ var AppAmazonPayWallet =
                 },
                 // 住所選択変更時
                 onAddressSelect: function () {
-                    // do stuff here like recalculate tax and/or shipping
-                    // お届希望日を取得
-                    AppAmazonPay.getDatetime(AppAmazonPayWallet.AmazonOrderReferenceId);
+                  // do stuff here like recalculate tax and/or shipping
+                  // お届希望日を取得
+                  AppAmazonPay.getDatetime(AppAmazonPayWallet.AmazonOrderReferenceId);
+                  AppAmazonUserNameDevide.a(AppAmazonPayWallet.AmazonOrderReferenceId);
                 },
                 design: {
                     designMode: 'responsive'
@@ -158,6 +159,99 @@ var AppAmazonPayWallet =
             }).bind("addressBookWidgetDiv");
         };
     }
+}
+
+var AppAmazonUserNameDevide =
+{
+  a: function(amazon_order_reference_id)
+  {
+    $.post('/Outbound/getAmazonUserInfoDetail', {
+              amazon_pay_data: {amazon_order_reference_id}
+          },
+
+          function (data) {
+
+            AppAmazonUserNameDevide.removeNameFormValue();
+
+            if (data.status) {
+
+                var user_name = data.address.name;
+                var split_name;
+
+                /* 空白処理 */
+                //文字列の前後にある空白を削除
+                user_name = $.trim(user_name);
+                //空白を全て全角へ
+                user_name = user_name.replace(/ /g,"　");
+                //連続した空白を1文字へ
+                user_name = user_name.replace(/　+/g,"　");
+
+
+                //名前が1文字のとき
+                if (user_name.length === 1)
+                {
+                  AppAmazonUserNameDevide.showNameForm();
+                  return;
+                }
+
+                //名前が空白１個のとき
+                if ((user_name.split('　').length - 1) === 1)
+                {
+                  split_name = user_name.split('　');
+                  if (split_name[0].length <= 29 && split_name[1].length <= 29)
+                  {
+                    AppAmazonUserNameDevide.setNameFormValue(split_name[0], split_name[1]);
+                    return;
+                  } 
+                }
+
+                split_name = [];
+                //名前が空白なし or 空白２個以上 or 空白１つだけど分割すると文字数オーバー のとき 
+                if (user_name.length <= 29)
+                {
+                    //29文字以下のとき
+                    split_name[0] = user_name.substr(0, user_name.length - 1);
+                    split_name[1] = user_name.substr(-1);
+                }
+                else if (user_name.length <= 58)
+                {
+                    //最大文字数超えてないとき
+                    split_name[0] = user_name.substr(0, 29);
+                    split_name[1] = user_name.substr(29);
+                } else {
+                    //分割できないので入力フォーム出す
+                    AppAmazonUserNameDevide.showNameForm();
+                    return;
+                }
+                AppAmazonUserNameDevide.setNameFormValue(split_name[0], split_name[1]);
+            } else {
+              //AmazonPayからの名前データ取得失敗時は入力フォーム表示
+              AppAmazonUserNameDevide.showNameForm();
+            }
+          }
+          ,
+          'json'
+      );
+  },
+  showNameForm: function()
+  {
+    $(".name-form-group").css('display', 'block');
+  },
+  hideNameForm: function()
+  {
+    $(".name-form-group").css('display', 'none');
+  },
+  setNameFormValue: function(lastname, firstname)
+  {
+    $(".lastname").val(lastname);
+    $(".firstname").val(firstname);
+    AppAmazonUserNameDevide.hideNameForm();
+  },
+  removeNameFormValue: function()
+  {
+    $(".lastname").val('');
+    $(".firstname").val('');
+  },
 }
 
 /*
