@@ -127,9 +127,7 @@ class OutboundController extends MinikuraController
         }
 
         $this->autoRender = false;
-
         $amazon_pay_data = $this->request->data['amazon_pay_data'];
-
         $amazon_order_reference_id = $amazon_pay_data['amazon_order_reference_id'];
 
         $this->loadModel('AmazonPayModel');
@@ -139,16 +137,23 @@ class OutboundController extends MinikuraController
         $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
 
         $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
-
         // 住所に関する箇所を取得
         $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
 
         $address = array();
         $address['name'] = $physicaldestination['Name'];
 
-        $status = !empty($address['name']);
+        $name = array();
+        $name = $this->AmazonPayModel->devideUserName($address['name']);
 
-        return json_encode(compact('status', 'address'));
+        if (empty($name['lastname']) || empty($name['firstname']))
+        {
+            $status = false;
+        } else {
+            $status =  true;
+        }
+
+        return json_encode(compact('status', 'name'));
     }
 
     /**

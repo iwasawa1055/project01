@@ -5,12 +5,6 @@ $(function() {
     $('#InboundDeliveryCarrier').change(function() {
         getDatetime();
         review();
-
-        if ($(".lastname").val() !== '')
-        {
-            $(".name-form-group").css('display', 'none');
-        }
-
     });
     review();
 });
@@ -22,6 +16,10 @@ function review() {
     } else {
         // 集荷の場合
         $('.inbound_pickup_only').show();
+        if ($(".lastname").val() !== '')
+        {
+            $(".name-form-group").css('display', 'none');
+        }
     }
 }
 
