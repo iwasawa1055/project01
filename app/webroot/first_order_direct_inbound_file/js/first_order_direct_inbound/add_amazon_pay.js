@@ -171,98 +171,109 @@ var AppAmazonPayWallet =
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
     buyerBillingAgreementConsentStatus: false,
+    AmazonWidgetReadyFlag: false,
 
     a: function () {
         // amazon Widget Ready
         window.onAmazonLoginReady = function() {
             amazon.Login.setClientId(AppAmazonPayWallet.ClientId);
-
-            // アドレスWidgetを表示
-            new OffAmazonPayments.Widgets.AddressBook({
-                sellerId: AppAmazonPayWallet.SELLER_ID,
-                agreementType: 'BillingAgreement',
-
-                // Widgets起動状態
-                onReady: function(billingAgreement) {
-                    AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
-
-                    //************* test log *************
-                    if ($('#addressBookWidgetDiv')[0]) {
-                        //console.log("addressBookWidgetDiv is found.");
-                    } else {
-                        console.log("addressBookWidgetDiv is NOT found.");
-                    }
-                    //************* test log *************
-
-                    // お届希望日を取得
-                    // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
-
-                    // カード選択 Widgetを表示
-                    new OffAmazonPayments.Widgets.Wallet({
-                        sellerId: AppAmazonPayWallet.SELLER_ID,
-                        amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
-                        design: {
-                            designMode: 'responsive'
-                        },
-                        onReady: function() {
-                            // 定期購入チェックを確認
-                            new OffAmazonPayments.Widgets.Consent({
-                                sellerId: AppAmazonPayWallet.SELLER_ID,
-                                amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
-
-                                // amazonBillingAgreementId obtained from the Amazon Address Book widget.
-                                design: {
-                                    designMode: 'responsive'
-                                },
-                                onReady: function(billingAgreementConsentStatus){
-
-                                    // Called after widget renders
-                                    // エラー回避
-                                    if(typeof billingAgreementConsentStatus.getConsentStatus == 'function') {
-                                        AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
-                                    }
-                                    // true – checkbox is selected
-                                    // false – checkbox is unselected - default
-                                },
-                                onConsent: function(billingAgreementConsentStatus) {
-                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
-                                    // getConsentStatus returns true or false
-                                    // true – checkbox is selected – buyer has consented
-                                    // false – checkbox is unselected – buyer has not consented
-                                    // Replace this code with the action that you want to perform
-                                    // after the consent checkbox is selected/unselected.
-                                },
-                                onError: function(error) {
-                                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                                }
-                            }).bind("consentWidgetDiv ");
-                        },
-                        // カード選択変更時
-                        onPaymentSelect: function () {
-                        },
-                        onError: function (error) {
-                            console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                        }
-                    }).bind("walletWidgetDiv");
-
-                },
-                // 住所選択変更時
-                onAddressSelect: function () {
-                    // do stuff here like recalculate tax and/or shipping
-                    // お届希望日を取得
-                    AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
-
-                },
-                design: {
-                    designMode: 'responsive'
-                },
-                onError: function (error) {
-                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                }
-            }).bind("addressBookWidgetDiv");
-
-
+            AppAmazonPayWallet.b();
         };
+    },
+    b: function () {
+        // アドレスWidgetを表示
+        new OffAmazonPayments.Widgets.AddressBook({
+            sellerId: AppAmazonPayWallet.SELLER_ID,
+            agreementType: 'BillingAgreement',
+
+            // Widgets起動状態
+            onReady: function(billingAgreement) {
+                AppAmazonPayWallet.AmazonWidgetReadyFlag = true;
+                AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
+
+                //************* test log *************
+                if ($('#addressBookWidgetDiv')[0]) {
+                    //console.log("addressBookWidgetDiv is found.");
+                } else {
+                    console.log("addressBookWidgetDiv is NOT found.");
+                }
+                //************* test log *************
+
+                // お届希望日を取得
+                // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
+
+                // カード選択 Widgetを表示
+                new OffAmazonPayments.Widgets.Wallet({
+                    sellerId: AppAmazonPayWallet.SELLER_ID,
+                    amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
+                    design: {
+                        designMode: 'responsive'
+                    },
+                    onReady: function() {
+                        // 定期購入チェックを確認
+                        new OffAmazonPayments.Widgets.Consent({
+                            sellerId: AppAmazonPayWallet.SELLER_ID,
+                            amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
+
+                            // amazonBillingAgreementId obtained from the Amazon Address Book widget.
+                            design: {
+                                designMode: 'responsive'
+                            },
+                            onReady: function(billingAgreementConsentStatus){
+
+                                // Called after widget renders
+                                // エラー回避
+                                if(typeof billingAgreementConsentStatus.getConsentStatus == 'function') {
+                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                }
+                                // true – checkbox is selected
+                                // false – checkbox is unselected - default
+                            },
+                            onConsent: function(billingAgreementConsentStatus) {
+                                AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
+                                // getConsentStatus returns true or false
+                                // true – checkbox is selected – buyer has consented
+                                // false – checkbox is unselected – buyer has not consented
+                                // Replace this code with the action that you want to perform
+                                // after the consent checkbox is selected/unselected.
+                            },
+                            onError: function(error) {
+                                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                            }
+                        }).bind("consentWidgetDiv ");
+                    },
+                    // カード選択変更時
+                    onPaymentSelect: function () {
+                    },
+                    onError: function (error) {
+                        console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                    }
+                }).bind("walletWidgetDiv");
+
+            },
+            // 住所選択変更時
+            onAddressSelect: function () {
+                // do stuff here like recalculate tax and/or shipping
+                // お届希望日を取得
+                AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
+
+            },
+            design: {
+                designMode: 'responsive'
+            },
+            onError: function (error) {
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+            }
+        }).bind("addressBookWidgetDiv");
+    },
+    c : function () {
+        if (AppAmazonPayWallet.AmazonWidgetReadyFlag === false) {
+            AppAmazonPayWallet.b();
+        }
+    },
+    d : function () {
+        // 5秒後にwidget表示の処理が実行されていない場合は、再実行
+        setTimeout(function(){AppAmazonPayWallet.c()}, 5000);
     }
 }
 
@@ -277,5 +288,5 @@ $(function()
     AppAmazonPay.d();
     AppAmazonPay.f();
     AppAmazonPayWallet.a();
-//    AppAmazonPayWallet.b();
+    AppAmazonPayWallet.d();
 });
