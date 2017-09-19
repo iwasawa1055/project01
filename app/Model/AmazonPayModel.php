@@ -213,4 +213,57 @@ class AmazonPayModel extends AppModel
 
         return $ret;
     }
+
+    public function devideUserName($_amazon_info_user_name)
+    {
+        $ret['lastname'] = '';
+        $ret['firstname'] = '';
+        $user_name = $_amazon_info_user_name;
+        $split_name;
+
+        /* 空白処理 */
+        //空白を全て半角へ
+        $user_name = str_replace("　", " ", $user_name);
+        //文字列の前後にある半角空白を削除
+        $user_name = trim($user_name);
+        //連続したスペーズを1文字へ
+        $user_name = preg_replace('/ +/', ' ', $user_name);
+        //名前が1文字のとき
+        if (mb_strlen($user_name) === 1)
+        {
+          return $ret;
+        }
+
+        //名前が空白１個のとき
+        if (mb_substr_count($user_name, " ") === 1)
+        {
+          $split_name = explode(" ", $user_name);
+          if (mb_strlen($split_name[0]) <= 29 && mb_strlen($split_name[1]) <= 29)
+          {
+            $ret['lastname'] = $split_name[0];
+            $ret['firstname'] = $split_name[1];
+            return $ret;
+          } 
+        }
+
+        $split_name = array();
+        //名前が空白なし or 空白２個以上 or 空白１つだけど分割すると文字数オーバー のとき 
+        if (mb_strlen($user_name) <= 29)
+        {
+            //29文字以下のとき
+            $split_name[0] = mb_substr($user_name , 0, mb_strlen($user_name) - 1);
+            $split_name[1] = mb_substr($user_name, -1);
+        }
+        else if (mb_strlen($user_name) <= 58)
+        {
+            //最大文字数超えてないとき
+            $split_name[0] = mb_substr($user_name, 0, 29);
+            $split_name[1] = mb_substr($user_name, 29);
+        } else {
+            return $ret;
+        }
+        $ret['lastname'] = $split_name[0];
+        $ret['firstname'] = $split_name[1];
+        return $ret;
+    }
 }
