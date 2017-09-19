@@ -78,6 +78,7 @@ var AppAmazonPayWallet =
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonOrderReferenceId: '',
     buyerBillingAgreementConsentStatus: false,
+    AmazonWidgetReadyFlag: false,
 
     a: function () {
 
@@ -87,43 +88,54 @@ var AppAmazonPayWallet =
         // amazon Widget Ready
         window.onAmazonLoginReady = function() {
             amazon.Login.setClientId(AppAmazonPayWallet.ClientId);
-
-            // アドレスWidgetを表示
-            new OffAmazonPayments.Widgets.AddressBook({
-                sellerId: AppAmazonPayWallet.SELLER_ID,
-
-                // Widgets起動状態
-                onReady: function(billingAgreement) {
-
-                    //************* test log *************
-                    if ($('#addressBookWidgetDiv')[0]) {
-                        //console.log("addressBookWidgetDiv is found.");
-                    } else {
-                        console.log("addressBookWidgetDiv is NOT found.");
-                    }
-                    //************* test log *************
-                    
-                    AppAmazonPayWallet.AmazonOrderReferenceId = billingAgreement.getAmazonOrderReferenceId();
-                },
-                // 住所選択変更時
-                onAddressSelect: function () {
-                    // do stuff here like recalculate tax and/or shipping
-                    // お届希望日を取得
-                    //AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonOrderReferenceId);
-                    AppAmazonUserNameDevide.a(AppAmazonPayWallet.AmazonOrderReferenceId);
-
-                },
-                design: {
-                    designMode: 'responsive'
-                },
-                onError: function (error) {
-                    if(error.getErrorCode() == 'BuyerSessionExpired') {
-                        amazon.Login.logout();
-                        location.href = '/login/logout';
-                    }
-                }
-            }).bind("addressBookWidgetDiv");
+            AppAmazonPayWallet.b();
         };
+    },
+    b: function () {
+        // アドレスWidgetを表示
+        new OffAmazonPayments.Widgets.AddressBook({
+            sellerId: AppAmazonPayWallet.SELLER_ID,
+
+            // Widgets起動状態
+            onReady: function(billingAgreement) {
+                AppAmazonPayWallet.AmazonWidgetReadyFlag = true;
+
+                //************* test log *************
+                if ($('#addressBookWidgetDiv')[0]) {
+                    //console.log("addressBookWidgetDiv is found.");
+                } else {
+                    console.log("addressBookWidgetDiv is NOT found.");
+                }
+                //************* test log *************
+
+                AppAmazonPayWallet.AmazonOrderReferenceId = billingAgreement.getAmazonOrderReferenceId();
+            },
+            // 住所選択変更時
+            onAddressSelect: function () {
+                // do stuff here like recalculate tax and/or shipping
+                // お届希望日を取得
+                //AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonOrderReferenceId);
+
+            },
+            design: {
+                designMode: 'responsive'
+            },
+            onError: function (error) {
+                if(error.getErrorCode() == 'BuyerSessionExpired') {
+                    amazon.Login.logout();
+                    location.href = '/login/logout';
+                }
+            }
+        }).bind("addressBookWidgetDiv");
+    },
+    c : function () {
+        if (AppAmazonPayWallet.AmazonWidgetReadyFlag === false) {
+            AppAmazonPayWallet.b();
+        }
+    },
+    d : function () {
+        // 5秒後にwidget表示の処理が実行されていない場合は、再実行
+        setTimeout(function(){AppAmazonPayWallet.c()}, 5000);
     }
 }
 
@@ -229,4 +241,5 @@ $(function()
   AppAmazonPay.b();
   AppAmazonPay.c();
   AppAmazonPayWallet.a();
+  AppAmazonPayWallet.d();
 });
