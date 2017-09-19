@@ -8,6 +8,12 @@ $(function() {
   });
 
   initDisp();
+
+  if ($(".lastname").val() !== '')
+  {
+      $(".name-form-group").css('display', 'none');
+  }
+  
 });
 function getDatetime() {
   var elem_address = $('#OutboundAddressId');

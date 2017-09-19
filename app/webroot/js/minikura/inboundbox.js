@@ -5,6 +5,12 @@ $(function() {
     $('#InboundDeliveryCarrier').change(function() {
         getDatetime();
         review();
+
+        if ($(".lastname").val() !== '')
+        {
+            $(".name-form-group").css('display', 'none');
+        }
+
     });
     review();
 });
