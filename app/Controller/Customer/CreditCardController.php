@@ -208,4 +208,12 @@ class CreditCardController extends MinikuraController
             }
         }
     }
+
+    /**
+     * 債務ユーザー(アマゾンペイメント)
+     */
+    public function paymentng_edit_amazon_pay()
+    {
+        return $this->render('customer_edit_amazon_pay');
+    }
 }
