@@ -132,13 +132,6 @@ var AppAmazonPayWallet =
             */
             onReady: function() {
                 AppAmazonPayWallet.AmazonWidgetReadyFlag = true;
-                //************* test log *************
-                if ($('#addressBookWidgetDiv')[0]) {
-                    //console.log("addressBookWidgetDiv is found.");
-                } else {
-                    console.log("addressBookWidgetDiv is NOT found.");
-                }
-                //************* test log *************
             },
 
             onOrderReferenceCreate: function(orderReference) {

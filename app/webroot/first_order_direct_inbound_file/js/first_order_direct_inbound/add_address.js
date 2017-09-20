@@ -101,7 +101,6 @@ var AppAmazonPayLogin =
     },
     b: function () {
         document.getElementById('Logout').onclick = function() {
-            console.log('logout');
             amazon.Login.logout();
         };
     },

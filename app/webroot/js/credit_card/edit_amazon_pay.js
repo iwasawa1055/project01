@@ -29,7 +29,6 @@ var AppAmazonPayWallet =
                             designMode: 'responsive'
                         },
                         onReady: function() {
-                            console.log("OffAmazonPayments.Widgets.Wallet");
                         },
                         // カード選択変更時
                         onPaymentSelect: function () {

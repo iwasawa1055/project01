@@ -81,10 +81,6 @@ var AppAmazonPayWallet =
     AmazonWidgetReadyFlag: false,
 
     a: function () {
-
-        console.log("AppAmazonPayWallet : a");
-
-
         // amazon Widget Ready
         window.onAmazonLoginReady = function() {
             amazon.Login.setClientId(AppAmazonPayWallet.ClientId);
@@ -99,14 +95,6 @@ var AppAmazonPayWallet =
             // Widgets起動状態
             onReady: function(billingAgreement) {
                 AppAmazonPayWallet.AmazonWidgetReadyFlag = true;
-
-                //************* test log *************
-                if ($('#addressBookWidgetDiv')[0]) {
-                    //console.log("addressBookWidgetDiv is found.");
-                } else {
-                    console.log("addressBookWidgetDiv is NOT found.");
-                }
-                //************* test log *************
 
                 AppAmazonPayWallet.AmazonOrderReferenceId = billingAgreement.getAmazonOrderReferenceId();
             },
@@ -148,7 +136,6 @@ var AppAmazonUserNameDevide =
           },
 
           function (data) {
-            console.log(data);
             AppAmazonUserNameDevide.removeNameFormValue();
 
             if (data.status) {
