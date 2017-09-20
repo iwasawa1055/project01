@@ -253,7 +253,7 @@ var AppAmazonPayWallet =
                 // do stuff here like recalculate tax and/or shipping
                 // お届希望日を取得
                 AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
-
+                AppAmazonUserNameDevide.a(AppAmazonPayWallet.AmazonOrderReferenceId);
             },
             design: {
                 designMode: 'responsive'
