@@ -7,11 +7,17 @@
       <li><a class="animsition-link" href="/customer/email/edit"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>
     <?php if (!empty($customer) && $customer->hasCreditCard()) : ?>
       <?php // 個人アカウントまたは、法人(クレジットカード)のみ表示 ?>
-      <li><a class="animsition-link" href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
+      <?php if ($customer->isAmazonPay() === false) : ?>
+        <?php // かつアマゾンペイメントのユーザーではない場合に表示 ?>
+        <li><a class="animsition-link" href="/customer/credit_card/edit"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
+      <?php endif; ?>
     <?php endif; ?>
     <?php if (!$customer->isEntry() && ($customer->isCustomerCreditCardUnregist() || $customer->isCorprateCreditCardUnregist())) : ?>
       <?php // 本登録アカウントかつクレジットカード登録なし(個人、法人)のみ表示 ?>
-      <li><a class="animsition-link" href="/customer/credit_card/add"><i class="fa fa-credit-card fa-fw"></i> クレジットカード登録</a> </li>
+      <?php if ($customer->isAmazonPay() === false) : ?>
+        <?php // かつアマゾンペイメントのユーザーではない場合に表示 ?>
+        <li><a class="animsition-link" href="/customer/credit_card/add"><i class="fa fa-credit-card fa-fw"></i> クレジットカード登録</a> </li>
+      <?php endif; ?>
     <?php endif; ?>
     <?php if (!empty($customer) && !$customer->isEntry() && !$customer->isAmazonPay()) : ?>
       <li><a class="animsition-link" href="/customer/address/"><i class="fa fa-truck fa-fw"></i> お届け先変更</a> </li>
