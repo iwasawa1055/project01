@@ -237,7 +237,7 @@ class InboundBoxController extends MinikuraController
             // GetOrderReferenceDetails
             if($res['ResponseStatus'] != '200') {
                 // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
                 $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
                 return $this->redirect(['action' => 'add_amazon_pay']);
             }
