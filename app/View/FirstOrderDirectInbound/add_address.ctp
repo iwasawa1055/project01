@@ -27,7 +27,7 @@
             <li>お送りいただいたボックスが取り出し時、配送に耐えられないと弊社が判断した場合は別途300円追加の上、弊社指定のボックスに入れ替え保管させていただきます。</li>
             <li>お預かり申し込みできないものを <a href="https://minikura.com/use_agreement/index.html#attachment1" target="_blank">minikura利用規約 <i class="fa fa-external-link-square"></i></a> でご確認いただき申し込みください。</li>
           </ul>
-          <label>預け入れ個数<span class="dsn-required">※</span></label>
+          <label id="scroll" data-section="scroll">預け入れ個数<span class="dsn-required">※</span></label>
           <select class="dsn-select-number" name="direct_inbound">
               <?php for ($i = 0; $i <= Configure::read('app.first_order.direct_inbound.max_box'); $i++):?>
               <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.direct_inbound.direct_inbound') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
@@ -38,9 +38,9 @@
         </div>
 
         <section id="dsn-signin-btns">
-          <a class="dsn-btn dsn-btn-signin">minikuraで会員登録する <i class="fa fa-chevron-circle-right"></i></a>
-          <a class="dsn-btn dsn-btn-amazon">
-            <a id="AmazonPayButtonDirect">
+          <a class="dsn-btn dsn-btn-signin" href="#scroll" data-nav-section="scroll" data-scroll="50">minikuraで会員登録する <i class="fa fa-chevron-circle-right"></i></a>
+          <a class="dsn-btn dsn-btn-amazon" href="#scroll" data-nav-section="scroll" data-scroll="50">
+            <a id="AmazonPayButtonDirect" class="dsn-btn-amazon">
             </a>
             <a id="Logout" >Logout</a>
           </a>
