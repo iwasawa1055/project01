@@ -110,8 +110,8 @@ var Act =
     },
     b: function()
     {
-        if ($('#Logout')[0]) {
-            $('#Logout').on('click', function (e) {
+        if ($('#AmazonPayLogout')[0]) {
+            $('#AmazonPayLogout').on('click', function (e) {
                 amazon.Login.logout();
             });
         }
