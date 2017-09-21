@@ -110,13 +110,11 @@ var Act =
     },
     b: function()
     {
-        window.onAmazonLoginReady = function(){
-            if ($('#Logout')[0]) {
-                $('#Logout').on('click', function (e) {
-                    amazon.Login.logout();
-                });
-            }
-        };
+        if ($('#Logout')[0]) {
+            $('#Logout').on('click', function (e) {
+                amazon.Login.logout();
+            });
+        }
     }
 };
 
