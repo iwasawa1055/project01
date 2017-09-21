@@ -31,7 +31,7 @@ class AmazonPayModel extends AppModel
             'region'        => Configure::read('app.amazon_pay.region'));
 */
         // テスト環境かどうか
-        if(Configure::read('app.amazon_pay.sandbox')){
+        if(Configure::read('app.amazon_pay.sandbox') === 'true'){
             $config['sandbox']  = true;
         }
 
