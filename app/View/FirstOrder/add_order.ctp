@@ -143,11 +143,13 @@
     <p>新しくminikuraアカウントを取得して<br>ボックスを購入します。</p>
     <button class="btn-next-full" type="submit" formnovalidate>お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
   </div>
+  <?php if (!$customer->isEntry()): ?>
   <div class="login-amazon">
     <p>お持ちのAmazonアカウントで<br>支払うことができます。</p>
     <div id="AmazonPayButton">
     </div>
   </div>
+  <?php endif; ?>
 </section>
 <input type="hidden" class="js-set_num" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
 <input type="hidden" class="js-set_num" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
@@ -204,11 +206,13 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <?php if (!$customer->isEntry()): ?>
   <div class="dsn-modal-login-amazon">
     <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonMono">
     </div>
   </div>
+  <?php endif; ?>
 </div>
 <!--HAKO modal-->
 <div class="remodal items" data-remodal-id="modal-hako" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -256,11 +260,13 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <?php if (!$customer->isEntry()): ?>
 　<div class="dsn-modal-login-amazon">
    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonHako">
     </div>
   </div>
+  <?php endif; ?>
 </div>
 <!--Cleaning modal-->
 <div class="remodal items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -280,11 +286,13 @@
   </div>
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <?php if (!$customer->isEntry()): ?>
 　<div class="dsn-modal-login-amazon">
    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonCleaning">
     </div>
-  </div>  
+  </div> 
+  <?php endif; ?> 
 </div>
 <!--Recommend modal-->
 <div class="remodal items" data-remodal-id="modal-recommend" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -305,11 +313,13 @@
 
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <?php if (!$customer->isEntry()): ?>
 　<div class="dsn-modal-login-amazon">
    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonHakoLimitedVer1">
     </div>
   </div>  
+  <?php endif; ?>
 </div>
 
 <?php echo $this->element('FirstOrder/footer'); ?>

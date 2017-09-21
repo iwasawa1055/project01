@@ -39,11 +39,13 @@
 
         <section id="dsn-signin-btns">
           <a class="dsn-btn dsn-btn-signin">minikuraで会員登録する <i class="fa fa-chevron-circle-right"></i></a>
+          <?php if (!$customer->isEntry()): ?>
           <a class="dsn-btn dsn-btn-amazon">
             <a id="AmazonPayButtonDirect">
             </a>
             <a id="Logout" >Logout</a>
           </a>
+          <?php endif; ?>
         </section>
 
         <section id="dsn-signin">
