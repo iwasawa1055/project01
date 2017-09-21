@@ -200,10 +200,10 @@
       <!--sneaker modal-->
       <div class="remodal dsn-items" data-remodal-id="modal-sneaker" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
         <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="クリーニングパック">
+          <div class="dsn-pict-box"><img src="/first_order_file/images/box_sneaker@1x.png" srcset="/first_order_file/images/box_sneaker@1x.png 1x, /first_order_file/images/box_sneaker@2x.png 2x" alt="minikura sneakers">
           </div>
           <div class="dsn-select-box">
-            <h3>クリーニングパック</h3>
+            <h3>minikura sneakers</h3>
             <select class="dsn-item-number js-item-number js-item-sneaker" data-name="sneaker" data-box_type="sneaker">
               <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
               <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.sneaker.sneaker') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
