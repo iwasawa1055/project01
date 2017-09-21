@@ -1998,6 +1998,7 @@ class FirstOrderController extends MinikuraController
 
         $amazon_billing_agreement_id  = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
         if($amazon_billing_agreement_id === null) {
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' none amazon_billing_agreement_id ' . print_r($amazon_billing_agreement_id, true));
             return json_encode(['status' => false]);
         }
 
@@ -2011,10 +2012,12 @@ class FirstOrderController extends MinikuraController
         $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
         // GetBillingAgreementDetails
         if($res['ResponseStatus'] != '200') {
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' getBillingAgreementDetails ' . print_r($res, true));
             return json_encode(['status' => false]);
         }
 
         if(!isset($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination']['PostalCode'])) {
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' none PostalCode ' . print_r($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination']['PostalCode'], true));
             return json_encode(['status' => false]);
         }
 
