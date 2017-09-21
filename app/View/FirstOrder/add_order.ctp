@@ -144,7 +144,7 @@
     <button class="btn-next-full" type="submit" formnovalidate>お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
   </div>
   <div class="login-amazon">
-    <p>ただいま準備中です。<br><br></p>
+    <p>お持ちのAmazonアカウントで<br>支払うことができます。</p>
     <div id="AmazonPayButton">
     </div>
   </div>
@@ -205,7 +205,7 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <div class="dsn-modal-login-amazon">
-    <p>ただいま準備中です。</p>
+    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonMono">
     </div>
   </div>
@@ -257,7 +257,7 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 　<div class="dsn-modal-login-amazon">
-   <p>ただいま準備中です。</p>
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonHako">
     </div>
   </div>
@@ -281,7 +281,7 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 　<div class="dsn-modal-login-amazon">
-   <p>ただいま準備中です。</p>
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonCleaning">
     </div>
   </div>  
@@ -306,7 +306,7 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
 　<div class="dsn-modal-login-amazon">
-   <p>ただいま準備中です。</p>
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonHakoLimitedVer1">
     </div>
   </div>  
