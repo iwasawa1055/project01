@@ -18,7 +18,23 @@
 		});
 		$(".dsn-btn-amazon").click(function () {
 			$('#dsn-amazon').slideToggle('fast');
-				$('#dsn-signin').hide('fast');
+			$('#dsn-signin').hide('fast');
 			$('.dsn-btn-signin').toggleClass('dsn-disable');
 			$('.dsn-btn-amazon').removeClass('dsn-disable');
+		});
+
+		$(function () {
+			$("[data-scroll]").click(function () {
+				 var speed = 200,
+					$self = $(this),
+					$href = $self.attr('href'),
+					$margin = $self.attr('data-scroll') ? parseInt($self.attr('data-scroll')) : 0,
+					$target = $($href);
+				var pos = ($target[0] && $target !== '#page_top') ? $target.offset().top - $margin : 0;
+				$('html,body').animate({
+					scrollTop: pos
+				}, speed, 'swing');
+				$self.blur();
+				return false;
+			});
 		});
