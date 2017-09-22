@@ -14,6 +14,7 @@
 <section id="dsn-lineup">
   <?php //amazonpay 関連エラー表示 ?>
   <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
+  <?php echo $this->Flash->render('customer_regist_info'); ?>
   <?php if (!empty(CakeSession::read('registered_user_login_url'))) : ?>
   <section id="adress">
     <div class="form">

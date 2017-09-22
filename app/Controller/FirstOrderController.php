@@ -1785,6 +1785,9 @@ class FirstOrderController extends MinikuraController
             $this->redirect('/first_order/add_amazon_pay');
         }
 
+        // Amazon Pay ログイン情報を保持
+        CakeSession::write('login.amazon_pay.user_info', CakeSession::read('FirstOrder.amazon_pay.user_info'));
+
         // カスタマー情報を取得しセッションに保存
         $this->Customer->setTokenAndSave($res->results[0]);
         $this->Customer->setPassword(CakeSession::read('Email.password'));
