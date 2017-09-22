@@ -232,20 +232,20 @@ var AppAmazonPayWallet =
                 // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 
                 // カード選択 Widgetを表示
-                new OffAmazonPayments.Widgets.Wallet({
-                    sellerId: AppAmazonPayWallet.SELLER_ID,
-                    design: {
-                        designMode: 'responsive'
-                    },
-                    onReady: function() {
-                    },
-                    // カード選択変更時
-                    onPaymentSelect: function () {
-                    },
-                    onError: function (error) {
-                        console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                    }
-                }).bind("walletWidgetDiv");
+                // new OffAmazonPayments.Widgets.Wallet({
+                //     sellerId: AppAmazonPayWallet.SELLER_ID,
+                //     design: {
+                //         designMode: 'responsive'
+                //     },
+                //     onReady: function() {
+                //     },
+                //     // カード選択変更時
+                //     onPaymentSelect: function () {
+                //     },
+                //     onError: function (error) {
+                //         console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                //     }
+                // }).bind("walletWidgetDiv");
 
             },
             // 住所選択変更時

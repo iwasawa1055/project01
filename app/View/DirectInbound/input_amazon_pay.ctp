@@ -67,8 +67,8 @@
                         </div>
                       </div>
                       <div class="dsn-credit">
-                        <div id="walletWidgetDiv">
-                        </div>
+                        <!--div id="walletWidgetDiv">
+                        </div-->
                       </div>
                     </div>
                     <div class="dsn-form">
@@ -79,6 +79,12 @@
                       <?php echo $this->Flash->render('address2');?>
                       <?php echo $this->Flash->render('tel1');?>
                     </div>
+                  </div>
+
+                  <div class="form-group col-lg-12">
+                    <label>お支払い方法</label>
+                    <p>初回購入時に選択したクレジットカードでのお支払いになります。<br>
+                        クレジットカードを変更される場合は、Amazonのサイトからの変更をお願いいたします。</p>
                   </div>
 
                   <div class="form-group col-lg-12 inbound_pickup_only name-form-group">
