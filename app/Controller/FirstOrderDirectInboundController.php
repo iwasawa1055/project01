@@ -329,8 +329,9 @@ class FirstOrderDirectInboundController extends MinikuraController
         // バリデーションエラーフラグ
         $is_validation_error = false;
 
-        $password = filter_input(INPUT_POST, 'password');
-        $password_confirm = filter_input(INPUT_POST, 'password_confirm');
+        // パスワードをランダムで生成する
+        $password = uniqid();
+        $password_confirm = $password;
 
         $params_email = [
             'password'         => $password,
