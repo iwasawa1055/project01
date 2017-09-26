@@ -491,7 +491,6 @@ class FirstOrderController extends MinikuraController
                 break;
         }
 
-        //* Session write
         CakeSession::write('Order', $Order);
         CakeSession::write('OrderTotal', $OrderTotal);
 
@@ -1072,11 +1071,20 @@ class FirstOrderController extends MinikuraController
 
     /**
      * アマゾンペイメント widgetで遷移先を指定
-     * アマゾンペイメントで
      */
     public function confirm_amazon_pay()
     {
+        if (CakeSession::read('FirstOrder.regist_user_complete') === true) {
+            return $this->_confirm_amazon_pay_irregular();
+        }
+        $this->_confirm_amazon_pay();
+    }
 
+    /**
+     * AmazonPayment Confirm 正常系ルート
+     */
+    private function _confirm_amazon_pay()
+    {
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_pay', 'FirstOrder/confirm_amazon_pay'], true) === false) {
             //* NG redirect
@@ -1299,6 +1307,202 @@ class FirstOrderController extends MinikuraController
         if (!is_null($alliance_cd)) {
             $set_kit_params['alliance_cd'] = $alliance_cd;
         }
+
+        // 文字列にしてカンマ区切りでリクエスト
+        $set_kit_params['kit'] = implode(',', $kit_params);
+
+        // キットコードと合計金額を返すAPI
+        $this->loadModel('KitPrice');
+
+        $res = $this->KitPrice->getKitPrice($set_kit_params);
+        if (!empty($res->error_message)) {
+            $this->Flash->validation('料金取得エラー', ['key' => 'kit_price']);
+        }
+
+        // コードから対象の配列に挿入
+        if (empty($res->error_message)) {
+            $total_kit_price = 0;
+            foreach ($res->results as $key => $value) {
+                $code = $value['kit_cd'];
+                $FirstOrderList[$code]['price'] = number_format($value['price'] * 1);
+                $total_kit_price = $total_kit_price + $value['price'];
+            }
+            if ($amazon_pay_current_remaining_balance_amount < $total_kit_price) {
+                $this->Flash->validation('Amazon Pay の当月限度額を超えています。', ['key' => 'customer_amazon_pay_info']);
+                $this->redirect('/first_order/add_amazon_pay');
+            }
+
+        }
+
+        CakeSession::write('FirstOrderList', $FirstOrderList);
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+    }
+
+    /**
+     * AmazonPayment Confirm エラー発生時のルート
+     *      会員登録が完了している状態で、Kit購入、定期購入に失敗している場合に遷移
+     */
+    private function _confirm_amazon_pay_irregular()
+    {
+        //* session referer check
+        /*
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_amazon_pay', 'FirstOrder/confirm_amazon_pay'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+        */
+
+        // バリデーションエラーフラグ
+        $is_validation_error = false;
+
+        // ログイン会員情報を取得
+        $user_info = $this->Customer->getInfo();
+
+        // 入力情報取得
+        $input_data = [
+            'datetime_cd'      => filter_input(INPUT_POST, 'datetime_cd')
+        ];
+
+        // amazon pay 情報取得
+        // 定期購入ID取得
+        $amazon_billing_agreement_id = filter_input(INPUT_POST, 'amazon_billing_agreement_id');
+        if($amazon_billing_agreement_id === null) {
+            // 初回かリターン確認
+            if(CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id') != null) {
+                $amazon_billing_agreement_id = CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+            }
+        }
+
+        // 住所情報等を取得
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_billing_agreement_id'] = $amazon_billing_agreement_id;
+        $set_param['address_consent_token'] = CakeSession::read('FirstOrder.amazon_pay.access_token');
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->getBillingAgreementDetails($set_param);
+        // GetBillingAgreementDetails
+        if($res['ResponseStatus'] != '200') {
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
+        }
+
+        // 有効な定期購入IDを設定
+        CakeSession::write('FirstOrder.amazon_pay.amazon_billing_agreement_id', $amazon_billing_agreement_id);
+        $amazon_pay_current_remaining_balance_amount = intval($res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['BillingAgreementLimits']['CurrentRemainingBalance']['Amount']);
+        // 住所に関する箇所を取得
+        $physicaldestination = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['Destination']['PhysicalDestination'];
+        $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
+
+        //Address情報を格納する配列
+        $get_address_user = [
+            'firstname'         => $user_info['firstname'],
+            'firstname_kana'    => $user_info['firstname_kana'],
+            'lastname'          => $user_info['lastname'],
+            'lastname_kana'     => $user_info['lastname_kana']
+        ];
+
+        // 住所情報セット
+        $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+        $get_address_amazon_pay['postal']      = $PostalCode;
+        $get_address_amazon_pay['pref']        = $physicaldestination['StateOrRegion'];
+        $get_address_amazon_pay['address1'] = $physicaldestination['AddressLine1'];
+        $get_address_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
+        $get_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
+        $get_address_amazon_pay['tel1']        = $physicaldestination['Phone'];
+        $get_address_user['datetime_cd'] = $input_data['datetime_cd'];
+        $get_address_user['select_delivery_text'] = $this->_convDatetimeCode($input_data['datetime_cd']);
+
+        $get_address_tmp = array_merge($get_address_user, $get_address_amazon_pay);
+
+        if (!empty($get_address)) {
+            $get_address = array_merge($get_address, $get_address_tmp);
+        } else {
+            $get_address = $get_address_tmp;
+        }
+
+        // 住所情報更新
+        CakeSession::write('Address', $get_address);
+
+        //*  Amazon Payから取得した住所情報の確認
+        $validation = AppValid::validate($get_address_amazon_pay);
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->Flash->validation(AMAZON_PAY_ERROR_URGING_INPUT, ['key' => 'customer_amazon_pay_info']);
+            $is_validation_error = true;
+        }
+
+        //*  formから取得した住所情報の確認
+        $validation = AppValid::validate($get_address_user);
+        //* 共通バリデーションでエラーあったらメッセージセット
+        if ( !empty($validation)) {
+            foreach ($validation as $key => $message) {
+                $this->Flash->validation($message, ['key' => $key]);
+            }
+            $this->Flash->validation(INPUT_ERROR, ['key' => 'customer_address_info']);
+            $is_validation_error = true;
+        }
+
+        if ($is_validation_error === true) {
+            $this->redirect('/first_order/add_amazon_pay');
+            return;
+        }
+
+        // オーダー種類を集計
+        // order情報
+        $Order = CakeSession::read('Order');
+
+        $FirstOrderList = array();
+
+        // 添字に対応するコードを設定
+        $kit_code = KIT_CODE_DISP_NAME_ARRAY;
+
+        $kit_params = array();
+
+        // 表示名とAPI パラメータの生成コードごとに格納
+        foreach ($Order as $orders => $kit_order) {
+            foreach ($kit_order as $param => $value) {
+                if ($value > 0) {
+                    // スタータキットは構成が異なるため個別に記述
+                    if($param === 'starter') {
+                        // 先頭のコードのみ料金が返ってくる
+                        $code = KIT_CD_STARTER_MONO;
+                        $FirstOrderList[$code]['number']    = 1;
+                        $FirstOrderList[$code]['kit_name']  = 'mono スターターパック';
+                        $FirstOrderList[$code]['price'] = 0;
+                        $kit_params[] = KIT_CD_STARTER_MONO.':1';
+                    }
+
+                    if($param === 'hako_limited_ver1') {
+                        // 先頭のコードのみ料金が返ってくる
+                        $code = KIT_CD_HAKO_LIMITED_VER1;
+                        $FirstOrderList[$code]['number']    = $value;
+                        $FirstOrderList[$code]['kit_name']  = 'HAKOお片付けパック';
+                        $FirstOrderList[$code]['price'] = 0;
+                        $hako_limited_ver1_num = $value * 5;
+                        $kit_params[] = KIT_CD_HAKO_LIMITED_VER1.':' . $hako_limited_ver1_num;
+                    }
+
+                    // スタータキット以外まとめて処理
+                    if (array_key_exists ($param, $kit_code)) {
+                        //
+                        // $FirstOrderList[$param]['price']     = number_format($kit_code[$param]['price'] * $value * 1);
+                        $code = $kit_code[$param]['code'];
+                        $FirstOrderList[$code]['number']    = $value;
+                        $FirstOrderList[$code]['kit_name']  = $kit_code[$param]['name'];
+                        $FirstOrderList[$code]['price'] = 0;
+                        $kit_params[] = $code . ':' .$value;
+                    }
+                }
+            }
+        }
+
+        $set_kit_params = array();
 
         // 文字列にしてカンマ区切りでリクエスト
         $set_kit_params['kit'] = implode(',', $kit_params);
@@ -1664,7 +1868,19 @@ class FirstOrderController extends MinikuraController
      * オーダー 完了
      */
     public function complete_amazon_pay()
+{
+    if (CakeSession::read('FirstOrder.regist_user_complete') === true) {
+        return $this->_complete_amazon_pay_irregular();
+    }
+    $this->_complete_amazon_pay();
+}
+
+    /**
+     * AmazonPayment Complete 正常系ルート
+     */
+    private function _complete_amazon_pay()
     {
+
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_amazon_pay'], true) === false) {
 
@@ -1751,6 +1967,11 @@ class FirstOrderController extends MinikuraController
             }
         }
 
+        // 会員登録が完了した旨のフラグをセッション内に格納
+        // 当該セッションフラグがたっている場合は、すでに会員登録済みと判定
+        // 会員登録処理をスルーする
+        CakeSession::write('FirstOrder.regist_user_complete', true);
+
         if (!empty($res->error_message)) {
             // 紹介コードエラーの場合 紹介コード入力に遷移
             if (strpos($res->message, 'alliance_cd') !== false) {
@@ -1808,7 +2029,7 @@ class FirstOrderController extends MinikuraController
             // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
             // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
             CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
-            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE, ['key' => 'customer_amazon_pay_info']);
+            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY, ['key' => 'customer_amazon_pay_info']);
             $this->redirect('/first_order/add_amazon_pay');
         }
 
@@ -1897,7 +2118,202 @@ class FirstOrderController extends MinikuraController
 
         if ($result_kit_amazon_pay->status !== '1') {
             if ($result_kit_amazon_pay->http_code === 400) {
-                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_info']);
+                $this->Flash->validation('AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY', ['key' => 'customer_kit_info']);
+            } else {
+                $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
+            }
+            $this->redirect(['controller' => 'first_order', 'action' => 'add_amazon_pay']);
+        }
+
+        // 完了したページ情報を保存
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->_cleanFirstOrderSession();
+
+        // アフィリエイトタグ出力用
+        $this->set('customer_id', $this->Customer->data->info['customer_id']);
+
+        /* いったん無効化
+        // 既にセッションスタートしてる事が条件
+        // マイページ側セッションクローズ
+        $before_session_id = session_id();
+        session_write_close();
+
+        // コンテンツ側のセッション名に変更
+        $SESS_ID = '';
+        if(isset($_COOKIE['WWWMINIKURACOM'])) {
+            $SESS_ID = $_COOKIE['WWWMINIKURACOM'];
+        }
+
+        if( !empty($SESS_ID)) {
+            // セッション再開
+            session_id($SESS_ID);
+            session_start();
+
+            // 紹介コード削除処理
+            if (!empty($_SESSION['ref_code'])) {
+                unset($_SESSION['ref_code']);
+                CakeLog::write(DEBUG_LOG, 'ref_code is unset SESS_ID ' . print_r($SESS_ID, true));
+            }
+
+            // コンテンツ側セッションクローズ
+            session_write_close();
+        }
+
+        // マイページ側セッション名に変更
+        session_name('MINIKURACOM');
+
+        if (!empty($before_session_id)) {
+            session_id($before_session_id);
+        }
+
+        // マイページ側セッション再開
+        session_start();
+        */
+    }
+
+    /**
+     * AmazonPayment Complete 異常系ルート
+     *      会員登録が完了している状態で、Kit購入、定期購入に失敗している場合に遷移
+     */
+    private function _complete_amazon_pay_irregular()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_amazon_pay'], true) === false) {
+
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // セッションが古い場合があるので再チェック
+        // 発送日一覧のエラーチェック
+        $result = $this->_getAddressDatetime(CakeSession::read('Address.postal'));
+
+        $check_address_datetime_cd = false;
+        $address_datetime = CakeSession::read('Address.datetime_cd');
+        foreach ($result->results as $key => $value) {
+            if ($value['datetime_cd'] === $address_datetime) {
+                $check_address_datetime_cd = true;
+            }
+        }
+
+        if (!$check_address_datetime_cd) {
+            $this->Flash->validation('お届け希望日時をご確認ください。',
+                ['key' => 'datetime_cd']);
+            $this->redirect('/first_order/add_amazon_pay');
+        }
+
+        // カスタマー情報を取得しセッションに保存
+        $user_info = $this->Customer->getInfo();
+
+        // AmazonPay 定期購入確定処理 会員登録で確定時にBAIDを確定させる
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['merchant_id'] = Configure::read('app.amazon_pay.merchant_id');
+        $set_param['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
+
+        // GetBillingAgreementDetails
+        if ($res['ResponseStatus'] != '200') {
+            // カードの問題エラー CODE BillingAgreementConstraintsExist constraints PaymentMethodNotAllowed and cannot be confirmed.
+            // チェックがないエラー CODE BillingAgreementConstraintsExist constraints BuyerConsentNotSet and cannot be confirmed.
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res setConfirmBillingAgreement ' . print_r($res, true));
+            $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY, ['key' => 'customer_amazon_pay_info']);
+            $this->redirect('/first_order/add_amazon_pay');
+        }
+
+        // 定期購入ID確定
+        CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
+
+        // amazon pay情報
+        $amazon_pay_user_info = CakeSession::read('FirstOrder.amazon_pay.user_info');
+
+        // 購入
+        $this->loadModel('PaymentAmazonKitAmazonPay');
+        $amazon_kit_pay = array();
+        $amazon_kit_pay['mono_num']      = CakeSession::read('Order.mono.mono');
+        $amazon_kit_pay['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
+        $amazon_kit_pay['mono_book_num'] = CakeSession::read('Order.mono.mono_book');
+        $amazon_kit_pay['hako_num']      = CakeSession::read('Order.hako.hako');
+        $amazon_kit_pay['hako_appa_num'] = CakeSession::read('Order.hako.hako_apparel');
+        $amazon_kit_pay['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
+        $amazon_kit_pay['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
+        $amazon_kit_pay['sneaker_num']   = CakeSession::read('Order.sneaker.sneaker');
+        $amazon_kit_pay['starter_mono_num']      = CakeSession::read('Order.starter.starter');
+        $amazon_kit_pay['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
+        $amazon_kit_pay['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
+        // HAKOお片付けキットは１パック 5箱
+        $amazon_kit_pay['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
+        $amazon_kit_pay['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+
+        $amazon_kit_pay['access_token']     = CakeSession::read('FirstOrder.amazon_pay.access_token');
+        $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
+        $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id');
+        $amazon_kit_pay['name']             = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
+        $amazon_kit_pay['tel1']             = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
+        $amazon_kit_pay['postal']           = CakeSession::read('Address.postal');
+        $amazon_kit_pay['datetime_cd']      = CakeSession::read('Address.datetime_cd');
+
+        $productKitList = [
+            PRODUCT_CD_MONO => [
+                'kitList' => [
+                    KIT_CD_MONO,
+                    KIT_CD_MONO_APPAREL,
+                    KIT_CD_MONO_BOOK,
+                    KIT_CD_STARTER_MONO,
+                    KIT_CD_STARTER_MONO_APPAREL,
+                    KIT_CD_STARTER_MONO_BOOK,
+                    KIT_CD_HAKO_LIMITED_VER1,
+                ],
+            ],
+            PRODUCT_CD_HAKO => [
+                'kitList' => [KIT_CD_HAKO, KIT_CD_HAKO_APPAREL, KIT_CD_HAKO_BOOK],
+            ],
+            PRODUCT_CD_CLEANING_PACK => [
+                'kitList' => [KIT_CD_CLEANING_PACK],
+            ],
+            PRODUCT_CD_SHOES_PACK => [
+                'kitList' => [KIT_CD_SNEAKERS],
+            ],
+        ];
+
+        $dataKeyNum = [
+            KIT_CD_MONO          => 'mono_num',
+            KIT_CD_MONO_APPAREL  => 'mono_appa_num',
+            KIT_CD_MONO_BOOK     => 'mono_book_num',
+            KIT_CD_HAKO          => 'hako_num',
+            KIT_CD_HAKO_APPAREL  => 'hako_appa_num',
+            KIT_CD_HAKO_BOOK     => 'hako_book_num',
+            KIT_CD_CLEANING_PACK => 'cleaning_num',
+            KIT_CD_STARTER_MONO          => 'starter_mono_num',
+            KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
+            KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
+            KIT_CD_SNEAKERS      => 'sneaker_num',
+            KIT_CD_HAKO_LIMITED_VER1     => 'hako_limited_ver1_num',
+        ];
+        $kit_params = [];
+        foreach ($productKitList as $product) {
+            // 個数集計
+            foreach ($product['kitList'] as $kitCd) {
+                $num = $amazon_kit_pay[$dataKeyNum[$kitCd]];
+                if (!empty($num)) {
+                    $kit_params[] = $kitCd . ':' . $num;
+                }
+            }
+        }
+
+        $amazon_kit_pay['kit'] = implode(',', $kit_params);
+
+        $this->PaymentAmazonKitAmazonPay->set($amazon_kit_pay);
+
+        $result_kit_amazon_pay = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
+
+        if ($result_kit_amazon_pay->status !== '1') {
+            if ($result_kit_amazon_pay->http_code === 400) {
+                $this->Flash->validation('AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY', ['key' => 'customer_kit_info']);
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }

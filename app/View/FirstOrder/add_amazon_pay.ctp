@@ -56,6 +56,24 @@
           <?php echo $this->Flash->render('tel1');?>
         </div>
 
+        <?php /* すでに会員登録済みの場合は、入力フォームを非表示とする. */?>
+        <?php if (CakeSession::read('FirstOrder.regist_user_complete') === true) : ?>
+
+        <input type="hidden" id="regist_user_flg" value="1">
+        <div class="dsn-form dsn-form-line">
+          <label>お届け希望日<span class="dsn-required">※</span></label>
+          <input type="hidden" id="js-datetime_cd" value="<?php echo CakeSession::read('Address.datetime_cd');?>">
+          <select class="dsn-select-delivery focused" id="datetime_cd" name="datetime_cd">
+            <option value="">以下からお選びください</option>
+          </select>
+          <?php echo $this->Flash->render('datetime_cd');?>
+        </div>
+
+        <?php /* 会員登録が未完了の場合は、入力フォームを表示とする. */?>
+        <?php else: ?>
+
+        <input type="hidden" id="regist_user_flg" value="0">
+
         <div class="dsn-divider dev-divider"></div>
         <div class="dsn-form">
           <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
@@ -148,6 +166,9 @@
           <?php echo $this->Flash->render('remember');?>
           <span id="js-remember_validation" style="display:none;">利用規約にチェックしてください。</span>
         </div>
+
+        <?php endif; ?>
+
       </div>
     </section>
   <section class="dsn-nextback">

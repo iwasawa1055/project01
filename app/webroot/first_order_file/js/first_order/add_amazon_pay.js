@@ -33,6 +33,14 @@ var AppAmazonPay =
         // 利用規約チェック 複数で使用する場合first_order/app_devに移動
         function checkAgreeBeforeSubmit() {
             var count = $('.agree-before-submit[type="checkbox"]').length;
+            var check_count = $('.agree-before-submit[type="checkbox"]:checked').length;
+
+            // 登録済みの場合は、強制的に確認画面へ遷移できるように修正
+            if ($('#regist_user_flg').val() == '1') {
+                count = 1;
+                check_count = 1;
+            }
+
             if (0 < count) {
                 // disabled
                 $('#js-agreement_on_page button[type=submit]').attr('disabled', 'true');
@@ -41,7 +49,7 @@ var AppAmazonPay =
                 // disabled状態のボタンにクリック要素をラップ
                 $('#js-submit_disabled_wrapper').removeClass('disabled');
                 $('#js-submit_disabled_wrapper').addClass('active');
-                if (count === $('.agree-before-submit[type="checkbox"]:checked').length) {
+                if (count === check_count) {
                     // abled
                     $('#js-agreement_on_page button[type=submit]').attr('disabled', null);
                     $(".agree-submit").css('opacity', '1.0');

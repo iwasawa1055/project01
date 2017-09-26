@@ -85,6 +85,12 @@ switch (true) {
         $config['site.trade.url'] = 'https://yoshida-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://yoshida-contents.minikura.com';
     break;
+    case $_SERVER['HTTP_HOST'] === 't-adachi-contents.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 't-adachi-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://t-adachi-mypage.minikura.com';
+        $config['site.trade.url'] = 'https://t-adachi-contents.minikura.com/trade/';
+        $config['site.static_content_url'] = 'https://t-adachi-contents.minikura.com';
+        break;
     default:
         $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
         $config['site.trade.url'] = 'https://b-www.minikura.com/trade/';
