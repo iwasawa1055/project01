@@ -57,7 +57,7 @@
           </div>
 
           <div class="dsn-divider dev-divider"></div>
-          <div class="dsn-form">
+          <!--div class="dsn-form">
             <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
             <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password">
             <?php echo $this->Flash->render('password');?>
@@ -67,7 +67,7 @@
             <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password_confirm">
             <?php echo $this->Flash->render('password_confirm');?>
           </div> 
-          <div class="dsn-divider"></div>
+          <div class="dsn-divider"></div-->
           <div class="dsn-form">
             <label>預け入れ方法<span class="dsn-required">※</span></label>
               <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="ヤマト運輸" id="yamato"  <?php if ( CakeSession::read('Address.cargo') === "ヤマト運輸" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸に取りに来てもらう</label></label>
