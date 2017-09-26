@@ -79,6 +79,12 @@
           </p>
         </div>
       <?php endif; ?>
+      <?php if (!$is_logined) : ?>
+        <div class="dsn-form">
+          <label>紹介コード</label>
+          <p><?php echo CakeSession::read('Email.alliance_cd');?></p>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
   <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容で申し込みをする <i class="fa fa-chevron-circle-right"></i></button>

@@ -65,6 +65,12 @@
           </p>
         </div>
       <?php endif; ?>
+      <?php if (!$is_logined) : ?>
+        <div class="form">
+          <label>紹介コード</label>
+          <p><?php echo CakeSession::read('Email.alliance_cd');?></p>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
   <section class="nextback"><a href="/first_order/add_email?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
