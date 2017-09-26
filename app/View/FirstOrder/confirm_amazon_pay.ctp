@@ -74,6 +74,10 @@
           <?php endif ?>
         </p>
       </div>
+      <div class="form">
+        <label>紹介コード</label>
+        <p><?php echo CakeSession::read('Email.alliance_cd');?></p>
+      </div>
     </div>
   </section>
   <section class="nextback"><a href="/first_order/add_amazon_pay?back=true" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
