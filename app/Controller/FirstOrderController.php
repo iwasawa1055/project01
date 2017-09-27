@@ -1094,10 +1094,13 @@ class FirstOrderController extends MinikuraController
         // バリデーションエラーフラグ
         $is_validation_error = false;
 
+        // パスワードをランダムで生成する
+        $password = uniqid();
+
         // ログインしていない場合
         $get_email = [
-            'password'         => filter_input(INPUT_POST, 'password'),
-            'password_confirm' => filter_input(INPUT_POST, 'password_confirm'),
+            'password'         => $password,
+            'password_confirm' => $password,
             'birth'            => sprintf("%04d-%02d-%02d", filter_input(INPUT_POST, 'birth_year'), filter_input(INPUT_POST, 'birth_month'), filter_input(INPUT_POST, 'birth_day')),
             'birth_year'       => filter_input(INPUT_POST, 'birth_year'),
             'birth_month'      => filter_input(INPUT_POST, 'birth_month'),
