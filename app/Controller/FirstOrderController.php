@@ -1970,11 +1970,6 @@ class FirstOrderController extends MinikuraController
             }
         }
 
-        // 会員登録が完了した旨のフラグをセッション内に格納
-        // 当該セッションフラグがたっている場合は、すでに会員登録済みと判定
-        // 会員登録処理をスルーする
-        CakeSession::write('FirstOrder.regist_user_complete', true);
-
         if (!empty($res->error_message)) {
             // 紹介コードエラーの場合 紹介コード入力に遷移
             if (strpos($res->message, 'alliance_cd') !== false) {
@@ -1988,6 +1983,11 @@ class FirstOrderController extends MinikuraController
             }
             $this->redirect('/first_order/add_amazon_pay');
         }
+
+        // 会員登録が完了した旨のフラグをセッション内に格納
+        // 当該セッションフラグがたっている場合は、すでに会員登録済みと判定
+        // 会員登録処理をスルーする
+        CakeSession::write('FirstOrder.regist_user_complete', true);
 
         // ログイン
         $this->loadModel('CustomerLoginAmazonPay');
@@ -2121,7 +2121,7 @@ class FirstOrderController extends MinikuraController
 
         if ($result_kit_amazon_pay->status !== '1') {
             if ($result_kit_amazon_pay->http_code === 400) {
-                $this->Flash->validation('AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY', ['key' => 'customer_kit_info']);
+                $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY, ['key' => 'customer_kit_info']);
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }
@@ -2316,7 +2316,7 @@ class FirstOrderController extends MinikuraController
 
         if ($result_kit_amazon_pay->status !== '1') {
             if ($result_kit_amazon_pay->http_code === 400) {
-                $this->Flash->validation('AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY', ['key' => 'customer_kit_info']);
+                $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY, ['key' => 'customer_kit_info']);
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_info']);
             }
