@@ -167,4 +167,10 @@ class AppModel extends Model
         $value = current($_check);
         return AppValid::isAmazonPayId($value);
     }
+
+    public function isNot4ByteString($_check)
+    {
+        $value = current($_check);
+        return AppValid::isNot4ByteString($value);
+    }
 }

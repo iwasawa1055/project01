@@ -26,6 +26,10 @@ class InboundManual extends ApiModel
                 'required' => true,
                 'message' => ['select', 'box'],
             ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'box'],
+            ],
         ],
     ];
 }

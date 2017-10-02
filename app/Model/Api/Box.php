@@ -33,11 +33,19 @@ class Box extends ApiModel
                 'rule' => ['maxLength', 200],
                 'message' => ['maxLength', 'box_name', 200],
             ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'box_name'],
+            ],
         ],
         'box_note' => [
             'maxLength' => [
                 'rule' => ['maxLength', 1000],
                 'message' => ['maxLength', 'box_note', 1000],
+            ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'box_note'],
             ],
         ],
     ];

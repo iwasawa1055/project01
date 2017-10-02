@@ -33,11 +33,19 @@ class Item extends ApiModel
                 'rule' => ['maxLength', 400],
                 'message' => ['maxLength', 'item_name', 400],
             ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'item_name'],
+            ],
         ],
         'item_note' => [
             'maxLength' => [
                 'rule' => ['maxLength', 1000],
                 'message' => ['maxLength', 'item_note', 1000],
+            ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'item_note'],
             ],
         ],
     ];
