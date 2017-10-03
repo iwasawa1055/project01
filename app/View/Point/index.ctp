@@ -1,3 +1,5 @@
+    <?php if(isset($point_balance_error)) : ?><p class="error-message"><?php echo $point_balance_error; ?></p><?php endif; ?>
+    <?php if(isset($point_history_error)) : ?><p class="error-message"><?php echo $point_history_error; ?></p><?php endif; ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-list-alt"></i> ポイント</h1>
@@ -15,7 +17,9 @@
                   <a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶minikuraポイントについて</a>
                 </p>
                 <div class="form-group col-lg-12">
+                  <?php if(isset($point['point_balance'])) : ?>
                   ただいま <span class="point"><?php echo $point['point_balance']; ?></span> ポイント
+                  <?php endif; ?>
                   <p class="help-block">※ポイントのご利用は獲得日から2年間有効です。</p>
                   <p class="help-block">※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
                 </div>
