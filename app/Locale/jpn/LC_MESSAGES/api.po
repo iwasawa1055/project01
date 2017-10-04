@@ -117,7 +117,7 @@ msgid "400 Parameter Invalid - newsletter"
 msgstr "メルマガ配信情報が不正"
 
 msgid "400 Parameter Invalid - postal"
-msgstr "郵便番号が不正"
+msgstr "郵便番号が正しくありません"
 
 msgid "400 Parameter Invalid - pref"
 msgstr "都道府県が不正"
