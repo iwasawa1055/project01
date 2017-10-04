@@ -283,4 +283,4 @@ msgid "amazon_pay_id"
 msgstr "アマゾンペイメントID"
 
 msgid "isNot4ByteString"
-msgstr "%sに絵文字またはJIS X 0213の第3・4水準漢字が含まれています。これらの文字を除いて入力をしてください。"
+msgstr "%sに絵文字または登録できない文字が含まれています。これらの文字を除いて入力をしてください。"
