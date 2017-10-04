@@ -279,7 +279,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     {
 
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_profile', 'FirstOrderDirectInbound/add_amazon_pay'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_profile', 'FirstOrderDirectInbound/add_amazon_pay', 'FirstOrderDirectInbound/confirm_amazon_pay'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'index']);
         }
@@ -329,8 +329,9 @@ class FirstOrderDirectInboundController extends MinikuraController
         // バリデーションエラーフラグ
         $is_validation_error = false;
 
-        $password = filter_input(INPUT_POST, 'password');
-        $password_confirm = filter_input(INPUT_POST, 'password_confirm');
+        // パスワードをランダムで生成する
+        $password = uniqid();
+        $password_confirm = $password;
 
         $params_email = [
             'password'         => $password,

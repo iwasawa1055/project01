@@ -4,7 +4,10 @@
       <i class="fa fa-user fa-fw"></i> <?php echo h($customer->getName()); ?> <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
+    <?php // アマゾンペイメントのユーザーではない場合のみメールアドレス変更を表示 ?>
+    <?php if ($customer->isAmazonPay() === false) : ?>
       <li><a class="animsition-link" href="/customer/email/edit"><i class="fa fa-envelope fa-fw"></i> メールアドレス変更</a> </li>
+    <?php endif; ?>
     <?php if (!empty($customer) && $customer->hasCreditCard()) : ?>
       <?php // 個人アカウントまたは、法人(クレジットカード)のみ表示 ?>
       <?php if ($customer->isAmazonPay() === false) : ?>

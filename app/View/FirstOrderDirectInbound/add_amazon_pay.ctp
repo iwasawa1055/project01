@@ -56,51 +56,6 @@
             <?php echo $this->Flash->render('tel1');?>
           </div>
 
-          <div class="dsn-divider dev-divider"></div>
-          <div class="dsn-form">
-            <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
-            <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password">
-            <?php echo $this->Flash->render('password');?>
-          </div>
-          <div class="dsn-form">
-            <label>パスワード（確認用）<span class="dsn-required">※</span></label>
-            <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password_confirm">
-            <?php echo $this->Flash->render('password_confirm');?>
-          </div> 
-          <div class="dsn-divider"></div>
-          <div class="dsn-form">
-            <label>預け入れ方法<span class="dsn-required">※</span></label>
-              <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="ヤマト運輸" id="yamato"  <?php if ( CakeSession::read('Address.cargo') === "ヤマト運輸" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸に取りに来てもらう</label></label>
-            <div class="dsn-yamato">
-              <div class="dsn-form">
-                <label>集荷希望日<span class="dsn-required">※</span></label>
-                <select class="dsn-select-delivery focused" name="date_cd" id="InboundDayCd">
-                  <?php foreach ( CakeSession::read('Address.select_delivery_day_list') as $key => $value ) {?>
-                  <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                  <?php } ?>
-                </select>
-                <br>
-                <?php echo $this->Flash->render('date_cd');?>
-                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('Address.select_delivery_day'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_day'))?><?php else : ?><?php endif; ?>">
-              </div>
-              <div class="dsn-form">
-                <label>集荷希望時間<span class="dsn-required">※</span></label>
-                <select class="dsn-select-delivery focused" name="time_cd" id="InboundTimeCd">
-                  <?php foreach ( CakeSession::read('Address.select_delivery_time_list') as $key => $value ) {?>
-                  <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                  <?php } ?>
-                </select>
-                <br>
-                <?php echo $this->Flash->render('time_cd');?>
-                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php if (!empty(CakeSession::read('Address.select_delivery_time'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_time'))?><?php else : ?><?php endif; ?>">
-              </div>
-            </div>
-            <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('Address.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>
-            <p class="dsn-arrival">着払いをご選択の場合はminikura運営事務局よりご連絡を差し上げます。<br> ※注意事項
-              <br> ご連絡時のメールに記載する住所へ、ヤマト運輸の着払いでお送りください。
-              <br> コンビニやヤマト営業所への持ち込みとなります。
-            </p>
-          </div>
           <div class="dsn-divider"></div>
           <div class="dsn-form">
             <label>お名前<span class="required">※</span></label>
@@ -144,6 +99,40 @@
             <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
             <br>
             <?php echo $this->Flash->render('gender');?>
+          </div>
+          <div class="dsn-divider"></div>
+          <div class="dsn-form">
+            <label>預け入れ方法<span class="dsn-required">※</span></label>
+              <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="ヤマト運輸" id="yamato"  <?php if ( CakeSession::read('Address.cargo') === "ヤマト運輸" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="yamato" class="dsn-cargo-select"> ヤマト運輸に取りに来てもらう</label></label>
+            <div class="dsn-yamato">
+              <div class="dsn-form">
+                <label>集荷希望日<span class="dsn-required">※</span></label>
+                <select class="dsn-select-delivery focused" name="date_cd" id="InboundDayCd">
+                  <?php foreach ( CakeSession::read('Address.select_delivery_day_list') as $key => $value ) {?>
+                  <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                  <?php } ?>
+                </select>
+                <br>
+                <?php echo $this->Flash->render('date_cd');?>
+                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('Address.select_delivery_day'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_day'))?><?php else : ?><?php endif; ?>">
+              </div>
+              <div class="dsn-form">
+                <label>集荷希望時間<span class="dsn-required">※</span></label>
+                <select class="dsn-select-delivery focused" name="time_cd" id="InboundTimeCd">
+                  <?php foreach ( CakeSession::read('Address.select_delivery_time_list') as $key => $value ) {?>
+                  <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+                  <?php } ?>
+                </select>
+                <br>
+                <?php echo $this->Flash->render('time_cd');?>
+                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php if (!empty(CakeSession::read('Address.select_delivery_time'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_time'))?><?php else : ?><?php endif; ?>">
+              </div>
+            </div>
+            <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('Address.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>
+            <p class="dsn-arrival">着払いをご選択の場合はminikura運営事務局よりご連絡を差し上げます。<br> ※注意事項
+              <br> ご連絡時のメールに記載する住所へ、ヤマト運輸の着払いでお送りください。
+              <br> コンビニやヤマト営業所への持ち込みとなります。
+            </p>
           </div>
           <div class="dsn-divider"></div>
           <div class="dsn-form dsn-form-line">

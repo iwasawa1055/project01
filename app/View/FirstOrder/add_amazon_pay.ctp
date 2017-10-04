@@ -58,17 +58,6 @@
 
         <div class="dsn-divider dev-divider"></div>
         <div class="dsn-form">
-          <label>パスワード<span class="dsn-required">※</span><br><span class="dev_description">minikuraに会員登録するためのパスワードになります。<br>半角英数記号8文字以上でご入力ください。</span></label>
-          <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password">
-          <?php echo $this->Flash->render('password');?>
-        </div>
-        <div class="dsn-form">
-          <label>パスワード（確認用）<span class="dsn-required">※</span></label>
-          <input class="dsn-password focused" type="password" size="20" maxlength="20" name="password_confirm">
-          <?php echo $this->Flash->render('password_confirm');?>
-        </div>
-        <div class="dsn-divider"></div>
-        <div class="dsn-form">
           <label>お名前<span class="required">※</span></label>
           <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
           <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.firstname');?>">
