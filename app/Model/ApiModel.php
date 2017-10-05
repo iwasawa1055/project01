@@ -171,7 +171,10 @@ class ApiModel extends AppModel
                 $msg = __d('api', $code . ' default');
             }
             $apiRes->error_message = $msg;
-            Cakelog::write(DEBUG_LOG, "error_message: ${msgKey} -> ${msg}");
+            Cakelog::write(ERROR_LOG, "FILE_NAME:".__FILE__." LINE:".__LINE__);
+            // エラーの出具合の様子を見て下のコメントアウトを外す
+            // Cakelog::write(ERROR_LOG, "apiRes => ".print_r($apiRes,true));
+            Cakelog::write(ERROR_LOG, "error_message: ${msgKey} -> ${msg}");
         }
 
         // token不正は未承認のエラーコードに変える

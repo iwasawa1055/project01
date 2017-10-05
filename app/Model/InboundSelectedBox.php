@@ -27,6 +27,10 @@ class InboundSelectedBox extends AppModel
                 'rule' => ['maxLength', 200],
                 'message' => ['maxLength', 'box_name', 200],
             ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'box'],
+            ],
         ],
         'option' => [
             'maxLength' => [

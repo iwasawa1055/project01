@@ -281,3 +281,6 @@ msgstr "%sは%dから%dを入力してください"
 
 msgid "amazon_pay_id"
 msgstr "アマゾンペイメントID"
+
+msgid "isNot4ByteString"
+msgstr "%sに絵文字または登録できない文字が含まれています。これらの文字を除いて入力をしてください。"

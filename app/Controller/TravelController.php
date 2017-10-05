@@ -198,7 +198,7 @@ class TravelController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
         $res = $this->PointBalance->apiGet();
         if (!empty($res->error_message)) {
-            $this->Flash->set($res->error_message);
+            $this->Flash->set(POINT_BALANCE_ERROR);
         } else {
             $pointBalance = $res->results[0];
         }
@@ -281,7 +281,7 @@ class TravelController extends MinikuraController
             $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
             $res = $this->PointBalance->apiGet();
             if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
+                $this->Flash->set(POINT_BALANCE_ERROR);
             } else {
                 $pointBalance = $res->results[0];
             }
