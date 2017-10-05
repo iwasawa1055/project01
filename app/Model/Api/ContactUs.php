@@ -56,6 +56,10 @@ class ContactUs extends ApiModel
                 'rule' => ['maxLength', 1000],
                 'message' => 'お問い合わせ内容は1000文字以内で入力してください。お問い合わせ種別が「不具合報告」の場合、不具合報告の全ての内容を含めて1000文字以内で入力してください。',
             ],
+            'isNot4ByteString' => [
+                'rule' => 'isNot4ByteString',
+                'message' => ['isNot4ByteString', 'contact_text'],
+            ],
         ],
         'bug_datetime' => [
         ],

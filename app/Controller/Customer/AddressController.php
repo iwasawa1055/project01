@@ -80,7 +80,13 @@ class AddressController extends MinikuraController
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
                 // create
-                $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
+                $res = $this->CustomerAddress->apiPost($this->CustomerAddress->toArray());
+
+                // 登録失敗の場合
+                if($res->status === '0') {
+                    $this->Flash->set("お届け先追加登録失敗: ".$res->error_message);
+                    return $this->render('customer_add');
+                }
 
                 if ($returnTo === 'order') {
                     return $this->redirect([

@@ -532,6 +532,23 @@ class AppValid
 	}
 
 	/**
+	 * 4byteの文字（絵文字や第3・4水準漢字の一部）が含まれていないかのチェック
+	 *
+	 * @access      public
+	 * @param       バリデーション
+	 * @return      boolean
+	 */
+	public static function isNot4ByteString($value)
+	{
+		// 4byteの文字が含まれているかを確認
+		if (preg_match('/[\xF0-\xF7][\x80-\xBF][\x80-\xBF][\x80-\xBF]/', $value)) {
+			return false;
+		}
+		// 4byteの文字を含んでいない
+		return true;
+	}
+
+	/**
 	 * 共通 validation
 	 * $_requestsの内容をチェックする。フォーマットは
 	 * $_requests = [

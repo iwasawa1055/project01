@@ -392,3 +392,7 @@ const AMAZON_PAY_ERROR_PAYMENT_FAILURE = 'Amazon Pay の決済に失敗しまし
 
 // 入力情報 エラー表示
 const INPUT_ERROR = '入力した内容に誤りがあります。';
+
+// ポイントサービス エラー表示
+const POINT_BALANCE_ERROR = 'ポイント残高の情報の取得に失敗しました。';
+const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しました。';
