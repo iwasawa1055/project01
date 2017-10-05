@@ -1507,6 +1507,11 @@ class FirstOrderController extends MinikuraController
 
         $set_kit_params = array();
 
+        $alliance_cd = CakeSession::read('Email.alliance_cd');
+        if (!is_null($alliance_cd)) {
+            $set_kit_params['alliance_cd'] = $alliance_cd;
+        }
+
         // 文字列にしてカンマ区切りでリクエスト
         $set_kit_params['kit'] = implode(',', $kit_params);
 
@@ -1871,12 +1876,12 @@ class FirstOrderController extends MinikuraController
      * オーダー 完了
      */
     public function complete_amazon_pay()
-{
-    if (CakeSession::read('FirstOrder.regist_user_complete') === true) {
-        return $this->_complete_amazon_pay_irregular();
+    {
+        if (CakeSession::read('FirstOrder.regist_user_complete') === true) {
+            return $this->_complete_amazon_pay_irregular();
+        }
+        $this->_complete_amazon_pay();
     }
-    $this->_complete_amazon_pay();
-}
 
     /**
      * AmazonPayment Complete 正常系ルート

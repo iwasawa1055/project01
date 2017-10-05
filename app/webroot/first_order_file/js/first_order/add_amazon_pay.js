@@ -160,6 +160,7 @@ var AppAmazonPayWallet =
         // amazon Widget Ready
         window.onAmazonLoginReady = function() {
             amazon.Login.setClientId(AppAmazonPayWallet.ClientId);
+            AppAmazonPayWallet.AmazonBillingAgreementId = $("#amazon_billing_agreement_id").val();
             AppAmazonPayWallet.b();
         };
     },
@@ -168,11 +169,14 @@ var AppAmazonPayWallet =
         new OffAmazonPayments.Widgets.AddressBook({
             sellerId: AppAmazonPayWallet.SELLER_ID,
             agreementType: 'BillingAgreement',
+            amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
 
             // Widgets起動状態
             onReady: function(billingAgreement) {
                 AppAmazonPayWallet.AmazonWidgetReadyFlag = true;
-                AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
+                if(AppAmazonPayWallet.AmazonBillingAgreementId === '') {
+                    AppAmazonPayWallet.AmazonBillingAgreementId = billingAgreement.getAmazonBillingAgreementId();
+                }
 
                 // お届希望日を取得
                 // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
@@ -185,40 +189,43 @@ var AppAmazonPayWallet =
                         designMode: 'responsive'
                     },
                     onReady: function() {
-                        // 定期購入チェックを確認
-                        new OffAmazonPayments.Widgets.Consent({
-                            sellerId: AppAmazonPayWallet.SELLER_ID,
-                            amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
+                        //　初回のみ定期購入チェックのウィジェットを表示
+                        if($('#regist_user_flg').val() == '0') {
+                            // 定期購入チェックを確認
+                            new OffAmazonPayments.Widgets.Consent({
+                                sellerId: AppAmazonPayWallet.SELLER_ID,
+                                amazonBillingAgreementId: AppAmazonPayWallet.AmazonBillingAgreementId,
 
-                            // amazonBillingAgreementId obtained from the Amazon Address Book widget.
-                            design: {
-                                designMode: 'responsive'
-                            },
-                            onReady: function(billingAgreementConsentStatus){
-                                // Called after widget renders
-                                // エラー回避
-                                if(typeof billingAgreementConsentStatus.getConsentStatus == 'function') {
-                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                // amazonBillingAgreementId obtained from the Amazon Address Book widget.
+                                design: {
+                                    designMode: 'responsive'
+                                },
+                                onReady: function(billingAgreementConsentStatus){
+                                    // Called after widget renders
+                                    // エラー回避
+                                    if(typeof billingAgreementConsentStatus.getConsentStatus == 'function') {
+                                        AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus(); // getConsentStatus returns true or false
+                                    }
+                                    // true – checkbox is selected
+                                    // false – checkbox is unselected - default
+                                },
+                                onConsent: function(billingAgreementConsentStatus) {
+                                    AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
+                                    // getConsentStatus returns true or false
+                                    // true – checkbox is selected – buyer has consented
+                                    // false – checkbox is unselected – buyer has not consented
+                                    // Replace this code with the action that you want to perform
+                                    // after the consent checkbox is selected/unselected.
+                                },
+                                onError: function(error) {
+                                    $('#error_alert').append(AppAmazonPayWallet.ErrorMessage);
+                                    $('#error_alert').show();
+                                    $('#dsn-amazon-pay').hide();
+                                    $('#dsn-payment').hide();
+                                    amazon.Login.logout();
                                 }
-                                // true – checkbox is selected
-                                // false – checkbox is unselected - default
-                            },
-                            onConsent: function(billingAgreementConsentStatus) {
-                                AppAmazonPayWallet.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
-                                // getConsentStatus returns true or false
-                                // true – checkbox is selected – buyer has consented
-                                // false – checkbox is unselected – buyer has not consented
-                                // Replace this code with the action that you want to perform
-                                // after the consent checkbox is selected/unselected.
-                            },
-                            onError: function(error) {
-                                $('#error_alert').append(AppAmazonPayWallet.ErrorMessage);
-                                $('#error_alert').show();
-                                $('#dsn-amazon-pay').hide();
-                                $('#dsn-payment').hide();
-                                amazon.Login.logout();
-                            }
-                        }).bind("consentWidgetDiv ");
+                            }).bind("consentWidgetDiv ");
+                        }
                     },
                 // カード選択変更時
                     onPaymentSelect: function () {

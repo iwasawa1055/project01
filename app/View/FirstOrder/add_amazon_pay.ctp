@@ -59,6 +59,7 @@
         <?php /* すでに会員登録済みの場合は、入力フォームを非表示とする. */?>
         <?php if (CakeSession::read('FirstOrder.regist_user_complete') === true) : ?>
 
+        <input type="hidden" id="amazon_billing_agreement_id" value="<?php echo CakeSession::read('FirstOrder.amazon_pay.amazon_billing_agreement_id'); ?>">
         <input type="hidden" id="regist_user_flg" value="1">
         <div class="dsn-form dsn-form-line">
           <label>お届け希望日<span class="dsn-required">※</span></label>
@@ -73,6 +74,7 @@
         <?php else: ?>
 
         <input type="hidden" id="regist_user_flg" value="0">
+        <input type="hidden" id="amazon_billing_agreement_id" value="">
 
         <div class="dsn-divider dev-divider"></div>
         <div class="dsn-form">
