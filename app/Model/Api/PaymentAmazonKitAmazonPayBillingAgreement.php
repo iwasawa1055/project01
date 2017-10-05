@@ -4,11 +4,11 @@ App::uses('ApiModel', 'Model');
 App::uses('Announcement', 'Model');
 App::uses('InfoBox', 'Model');
 
-class PaymentAmazonKitAmazonPay extends ApiModel
+class PaymentAmazonKitAmazonPayBillingAgreement extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentAmazonKitAmazonPay', '/kit_amazon_pay', 'amazon_pay_v4');
+        parent::__construct('PaymentAmazonKitAmazonPayBillingAgreement', '/kit_amazon_pay_billing_agreement', 'amazon_pay_v4');
     }
 
     protected function triggerDataChanged()
@@ -86,7 +86,7 @@ class PaymentAmazonKitAmazonPay extends ApiModel
                 'message' => ['notBlank', 'amazon_user_id'],
             ],
         ],
-        'amazon_order_reference_id' => [
+        'amazon_billing_agreement_id' => [
             'notBlank' => [
                 'rule'     => 'notBlank',
                 'required' => true,

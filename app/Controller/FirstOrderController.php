@@ -7,7 +7,7 @@ App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitCard', 'Model');
 App::uses('FirstKitPrice', 'Model');
 App::uses('AmazonPayModel', 'Model');
-App::uses('PaymentAmazonKitAmazonPay', 'Model');
+App::uses('PaymentAmazonKitAmazonPayBillingAgreement', 'Model');
 App::uses('AppCode', 'Lib');
 
 /**
@@ -1819,7 +1819,7 @@ class FirstOrderController extends MinikuraController
         CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
 
         // 購入
-        $this->loadModel('PaymentAmazonKitAmazonPay');
+        $this->loadModel('PaymentAmazonKitAmazonPayBillingAgreement');
         $amazon_kit_pay = array();
         $amazon_kit_pay['mono_num']      = CakeSession::read('Order.mono.mono');
         $amazon_kit_pay['mono_appa_num'] = CakeSession::read('Order.mono.mono_apparel');
@@ -1894,9 +1894,9 @@ class FirstOrderController extends MinikuraController
 
         $amazon_kit_pay['kit'] = implode(',', $kit_params);
 
-        $this->PaymentAmazonKitAmazonPay->set($amazon_kit_pay);
+        $this->PaymentAmazonKitAmazonPayBillingAgreement->set($amazon_kit_pay);
 
-        $result_kit_amazon_pay = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
+        $result_kit_amazon_pay = $this->PaymentAmazonKitAmazonPayBillingAgreement->apiPost($this->PaymentAmazonKitAmazonPayBillingAgreement->toArray());
 
         if ($result_kit_amazon_pay->status !== '1') {
             if ($result_kit_amazon_pay->http_code === 400) {
