@@ -220,34 +220,29 @@ var AppAmazonPayWallet =
                 AppAmazonPayWallet.AmazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
             },
             // Widgets起動状態
-            onReady: function(billingAgreement) {
+            onReady: function() {
                 AppAmazonPayWallet.AmazonWidgetReadyFlag = true;
 
-                // お届希望日を取得
-                // AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
-
                 // カード選択 Widgetを表示
-                // new OffAmazonPayments.Widgets.Wallet({
-                //     sellerId: AppAmazonPayWallet.SELLER_ID,
-                //     design: {
-                //         designMode: 'responsive'
-                //     },
-                //     onReady: function() {
-                //     },
-                //     // カード選択変更時
-                //     onPaymentSelect: function () {
-                //     },
-                //     onError: function (error) {
-                //         console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                //     }
-                // }).bind("walletWidgetDiv");
+                new OffAmazonPayments.Widgets.Wallet({
+                    sellerId: AppAmazonPayWallet.SELLER_ID,
+                    design: {
+                        designMode: 'responsive'
+                    },
+                    // カード選択変更時
+                    onPaymentSelect: function (orderReference) {
+                    },
+                    onError: function (error) {
+                        console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                    }
+                }).bind("walletWidgetDiv");
 
             },
             // 住所選択変更時
             onAddressSelect: function () {
                 // do stuff here like recalculate tax and/or shipping
                 // お届希望日を取得
-                AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
+                AppAmazonPay.ajax_dateime();
 
             },
             design: {

@@ -120,14 +120,15 @@
                     </div>
                   </div>
                   <div class="dsn-credit">
-                    <!--div id="walletWidgetDiv">
-                    </div-->
+                    <div id="walletWidgetDiv">
+                    </div>
                   </div>
                 </div>
                 <div class="dsn-divider"></div>
                 <div class="dsn-form">
                   <div class="dsn-form">
                     <?php // アマゾンから取得した情報をバリデーション ?>
+                    <?php echo $this->Flash->render('customer_kit_card_info');?>
                     <?php echo $this->Flash->render('customer_amazon_pay_info');?>
                     <?php echo $this->Flash->render('postal');?>
                     <?php echo $this->Flash->render('pref');?>
@@ -135,11 +136,6 @@
                     <?php echo $this->Flash->render('address2');?>
                     <?php echo $this->Flash->render('tel1');?>
                   </div>
-                </div>
-                <div class="dsn-form">
-                  <label>お支払い方法</label>
-                  <small>初回購入時に選択したクレジットカードでのお支払いになります。<br>
-                  クレジットカードを変更される場合は、Amazonのサイトからの変更をお願いいたします。</small>
                 </div>
                 <div class="dsn-form">
                   <label>お届け希望日時</label>

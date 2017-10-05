@@ -1005,7 +1005,7 @@ class OrderController extends MinikuraController
         // CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3')
         $amazon_kit_pay['access_token']     = $this->Customer->getAmazonPayAccessKey();
         $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
-        $amazon_kit_pay['amazon_billing_agreement_id'] = CakeSession::read('Order.amazon_pay.amazon_billing_agreement_id');
+        $amazon_kit_pay['amazon_order_reference_id'] = CakeSession::read('Order.amazon_pay.amazon_order_reference_id');
         $amazon_kit_pay['name']             = $set_address['name'];
         $amazon_kit_pay['tel1']             = self::_wrapConvertKana($set_address['tel1']);
         $amazon_kit_pay['postal']           = $set_address['postal'];
@@ -1019,7 +1019,7 @@ class OrderController extends MinikuraController
         $result_kit_amazon_pay = $this->PaymentAmazonKitAmazonPay->apiPost($this->PaymentAmazonKitAmazonPay->toArray());
         if ($result_kit_amazon_pay->status !== '1') {
             if ($result_kit_amazon_pay->http_code === 400) {
-                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+                $this->Flash->validation(AMAZON_PAY_ERROR_PAYMENT_FAILURE_RETRY, ['key' => 'customer_kit_card_info']);
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_card_info']);
             }

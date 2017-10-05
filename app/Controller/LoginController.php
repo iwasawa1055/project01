@@ -125,6 +125,9 @@ class LoginController extends MinikuraController
                 return $this->render('index');
             }
 
+            // BAIDを保持
+            CakeSession::write('login.amazon_pay.baid', $res->results[0]['amazon_billing_agreement_id']);
+
             // ログイン処理
             $this->request->data['CustomerLogin']['password'] = '';
             $cookie_enable = false;
