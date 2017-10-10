@@ -19,6 +19,21 @@ const CUSTOMER_GENDER = [
     'f' => '女性',
 ];
 
+// デフォルトの性別
+const CUSTOMER_DEFAULT_GENDER = 'm';
+
+// デフォルトの生年月日(年)
+const CUSTOMER_DEFAULT_BIRTH_YEAR = '1900';
+
+// デフォルトの生年月日(月)
+const CUSTOMER_DEFAULT_BIRTH_MONTH = '01';
+
+// デフォルトの生年月日(日)
+const CUSTOMER_DEFAULT_BIRTH_DAY = '01';
+
+// デフォルトの生年月日
+const CUSTOMER_DEFAULT_BIRTH = CUSTOMER_DEFAULT_BIRTH_YEAR.'-'.CUSTOMER_DEFAULT_BIRTH_MONTH.'-'.CUSTOMER_DEFAULT_BIRTH_DAY;
+
 // メールマガジン配信
 const CUSTOMER_NEWSLETTER = [
     '0' => '配信しない',

@@ -44,14 +44,6 @@ if ($action === 'customer_add') {
                   <label>名前</label>
                   <p><?php echo $this->CustomerInfo->setName($this->Form->data['CustomerInfo']); ?></p>
                 </div>
-                <div class="form-group col-lg-12">
-                  <label>生年月日（西暦）</label>
-                  <p><?php echo $this->CustomerInfo->setBirth($this->Form->data['CustomerInfo']); ?></p>
-                </div>
-                <div class="form-group col-lg-12">
-                    <label>性別</label>
-                    <p><?php echo CUSTOMER_GENDER[$this->Form->data['CustomerInfo']['gender']] ?></p>
-                </div>
               <?php else : ?>
                 <?php // 法人 ?>
                 <div class="form-group col-lg-12">

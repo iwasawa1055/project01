@@ -46,14 +46,6 @@
             <p><?php echo $this->CustomerInfo->setName($customerInfo); ?></p>
           </div>
           <div class="form-group">
-            <label>生年月日（西暦）</label>
-            <p><?php echo $this->CustomerInfo->setBirth($customerInfo); ?></p>
-          </div>
-          <div class="form-group">
-            <label>性別</label>
-            <p><?php echo CUSTOMER_GENDER[$customerInfo['gender']] ?></p>
-          </div>
-          <div class="form-group">
             <label>お届け希望日時</label>
             <p><?php echo h($datetime); ?></p>
           </div>
