@@ -95,7 +95,7 @@
   <section class="nextback" id="js-agreement_on_page">
     <a href="/first_order/add_credit_sneaker" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
     <div class="submit_disabled_wrapper_parent">
-      <button type="submit" class="btn-next agree-submit" formnovalidate>最後の確認へ <i class="fa fa-chevron-circle-right"></i></button>
+      <button type="submit" class="btn-next agree-submit" formnovalidate>注文内容の確認へ <i class="fa fa-chevron-circle-right"></i></button>
       <div id="js-submit_disabled_wrapper" class="submit_disabled_wrapper active"></div>
     </div>
   </section>

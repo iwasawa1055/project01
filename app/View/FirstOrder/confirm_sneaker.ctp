@@ -4,7 +4,7 @@
 <?php echo $this->element('FirstOrder/header'); ?>
 <?php echo $this->element('FirstOrder/nav_sneaker'); ?>
 <?php echo $this->element('FirstOrder/breadcrumb_list'); ?>
-  <form method="post" action="/first_order/complete_sneaker" novalidate>
+  <form method="post" action="/first_order/add_credit_sneaker" novalidate>
   <!-- ADRESS -->
   <section id="adress">
     <div class="wrapper">
@@ -77,7 +77,7 @@
   </section>
   <section class="nextback">
     <a href="/first_order/add_email_sneaker" class="btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
-    <button type="submit" class="btn-next">この内容でボックスを購入 <i class="fa fa-chevron-circle-right"></i></button>
+    <button type="submit" class="btn-next">クレジットカード情報を入力 <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrder/footer'); ?>

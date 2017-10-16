@@ -167,6 +167,9 @@ msgstr "お届け先住所"
 msgid "kit_datetime"
 msgstr "お届け先希望日時"
 
+msgid "gmo_token"
+msgstr "トークン"
+
 msgid "card_seq"
 msgstr "カード登録連番"
 

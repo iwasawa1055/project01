@@ -161,6 +161,11 @@ $config['app']['amazon_pay']['region'] = 'jp';
 $config['app']['amazon_pay']['sandbox'] = 'true';
 
 /**
+ * GMO 設定値
+ */
+$config['app']['gmo']['shop_id'] = 'tshop00019362';
+
+/**
  * エラー表示
  */
 // CakePHP Debug Level
