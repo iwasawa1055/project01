@@ -346,3 +346,11 @@ section.select-login .login-amazon {
 .panel .name-form-group {
     display: none;
 }
+
+a.use_agreement{
+  color: #ff0000;
+}
+
+a.use_agreement:hover{
+  color: #ff0000;
+}
