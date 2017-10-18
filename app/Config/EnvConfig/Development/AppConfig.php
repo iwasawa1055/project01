@@ -163,6 +163,7 @@ $config['app']['amazon_pay']['sandbox'] = 'true';
 /**
  * GMO 設定値
  */
+$config['app']['gmo']['token_url'] = 'https://pt01.mul-pay.jp/ext/js/token.js';
 $config['app']['gmo']['shop_id'] = 'tshop00019362';
 
 /**

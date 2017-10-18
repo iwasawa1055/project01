@@ -712,7 +712,6 @@ class FirstOrderController extends MinikuraController
         if (empty($params['gmo_token'])) {
             $this->Flash->validation('クレジットカード情報を再度入力してください。', ['key' => 'gmo_token']);
             $this->_flowSwitch('add_credit');
-            return;
         }
 
         //* session referer set
