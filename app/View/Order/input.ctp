@@ -105,13 +105,11 @@
                     <?php echo $this->Flash->render('customer_kit_card_info');?>
                   </div>
                   <div class="dsn-form">
-                    <?php //if (!is_null(CakeSession::read('OrderKit.card_data'))) { ?>
-                      <div class="dsn-form">
-                        <?php echo $this->Flash->render('card_no');?>
-                      </div>
-                      <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="as-card"     value="default"  <?php if((string)CakeSession::read('OrderKit.select_card') === "default") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="as-card" class="dsn-select-card"><?php echo h(CakeSession::read('OrderKit.card_data.card_no')) ?></label></label>
-                      <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="change-card" value="register" <?php if((string)CakeSession::read('OrderKit.select_card') === "register") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="change-card" class="dsn-select-card">登録したカードを変更する</label></label>
-                    <?php //} ?>
+                    <div class="dsn-form">
+                      <?php echo $this->Flash->render('card_no');?>
+                    </div>
+                    <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="as-card"     value="default"  <?php if((string)CakeSession::read('OrderKit.select_card') === "default") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="as-card" class="dsn-select-card"><?php echo h(CakeSession::read('OrderKit.card_data.card_no')) ?></label></label>
+                    <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="change-card" value="register" <?php if((string)CakeSession::read('OrderKit.select_card') === "register") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="change-card" class="dsn-select-card">登録したカードを変更する</label></label>
                   </div>
                   <div class="dsn-input-security-code">
                     <div class="dsn-divider"></div>
