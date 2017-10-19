@@ -100,7 +100,8 @@
                 </table>
                 <div class="dsn-divider"></div>
                 <?php if (CakeSession::read('OrderKit.is_credit')) { ?>
-                  <h4 class="dev-after-link">クレジットカード情報の入力</h4><a href="https://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
+                  <h4 class="dev-after-link">クレジットカード情報の入力</h4>
+                  <a href="https://minikura.com/privacy_case/" target="_blank" class="link-terms"><i class="fa fa-chevron-circle-right"></i> クレジットカード情報の取り扱いについて</a>
                   <div class="dsn-form">
                     <?php echo $this->Flash->render('customer_kit_card_info');?>
                   </div>
@@ -110,6 +111,10 @@
                     </div>
                     <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="as-card"     value="default"  <?php if((string)CakeSession::read('OrderKit.select_card') === "default") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="as-card" class="dsn-select-card"><?php echo h(CakeSession::read('OrderKit.card_data.card_no')) ?></label></label>
                     <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="change-card" value="register" <?php if((string)CakeSession::read('OrderKit.select_card') === "register") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="change-card" class="dsn-select-card">登録したカードを変更する</label></label>
+                  </div>
+                  <div class="dsn-form">
+                    <div id="gmo_validate_error"></div>
+                    <div id="gmo_credit_card_info"></div>
                   </div>
                   <div class="dsn-input-security-code">
                     <div class="dsn-divider"></div>

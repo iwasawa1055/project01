@@ -6,6 +6,8 @@ var gmoCreditCardPayment = {
     libGmoCreditCardPayment : null,
     shopId : null,
     tokenResponces : null,
+    validateErrorSelector: '#gmo_validate_error',
+    creditCardInfoSelector: '#gmo_credit_card_info',
     params : {
         cardno: '',
         expire: '',
@@ -15,6 +17,8 @@ var gmoCreditCardPayment = {
     init : function() {
         $('.loader').airCenter();
         $('.airloader-overlay').show();
+        $(this.validateErrorSelector).empty();
+        $(this.creditCardInfoSelector).empty();
         this.libGmoCreditCardPayment = new libGmoCreditCardPayment();
         this.setShopId();
         this.setParams();
@@ -52,7 +56,7 @@ var gmoCreditCardPayment = {
         if(Object.keys(errors).length){
             $.each(errors,function(k,v){
                 //$('#error_' + k).text(v.message).wrapInner('<p />');
-                gmoCreditCardPayment.displayMessage(v.message);
+                gmoCreditCardPayment.displayMessage(v.message, gmoCreditCardPayment.validateErrorSelector);
                 return false;
             });
             $('.airloader-overlay').hide();
@@ -60,18 +64,14 @@ var gmoCreditCardPayment = {
         }
         return new $.Deferred().resolve().promise();
     },
-    displayMessage: function(message){
-        if($("#modal_error_message").length){
-            $("#modal_error_message").remove();
-        }
-        $('html').append('<div id="modal_error_message" class="remodal" data-remodal-id="modal"><p>'+message+'</p></dev>');
-        var modal = $("#modal_error_message").remodal();
-        modal.open();
+    displayMessage: function(message, selector){
+        $(selector).prepend('<span style="font-size: 1.6rem; color: #ff6666; padding: 0.5rem; margin: 0.5rem 0 0;">'+message+'</span>');
     },
     checkTokenResponce: function(){
         if(gmoCreditCardPayment.tokenResponces.resultCode !== '000'){
             gmoCreditCardPayment.displayMessage(
-                gmoCreditCardPayment.libGmoCreditCardPayment.convertGMOTokenCodeIntoString(gmoCreditCardPayment.tokenResponces.resultCode)
+                gmoCreditCardPayment.libGmoCreditCardPayment.convertGMOTokenCodeIntoString(gmoCreditCardPayment.tokenResponces.resultCode),
+                gmoCreditCardPayment.validateErrorSelector
             );
             $('.airloader-overlay').hide();
             return new $.Deferred().reject().promise();
@@ -133,7 +133,7 @@ var gmoCreditCardPayment = {
                     d.resolve();
                 }else{
                     $('.airloader-overlay').hide();
-                    gmoCreditCardPayment.displayMessage(checkResponce.error_message);
+                    gmoCreditCardPayment.displayMessage(checkResponce.error_message, gmoCreditCardPayment.creditCardInfoSelector);
                     d.reject();
                 }
             },
@@ -162,7 +162,7 @@ var gmoCreditCardPayment = {
                 var registerResponce = JSON.parse(jsonRegisterResponce);
                 console.log(registerResponce);
                 if(registerResponce.status == true){
-                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。");
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     $('.dsn-select-cards').css("display","block");
                     $("#as-card").prop('checked', true);
                     $('label[for=as-card]').text(registerResponce.results.card_no);
@@ -178,7 +178,7 @@ var gmoCreditCardPayment = {
                     d.resolve();
                 }else{
                     $('.airloader-overlay').hide();
-                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。");
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     d.reject();
                 }
             },
@@ -206,7 +206,7 @@ var gmoCreditCardPayment = {
                 var updateResponce = JSON.parse(jsonUpdateResponce);
                 console.log(updateResponce);
                 if(updateResponce.status == true){
-                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。");
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     $("#as-card").prop('checked', true);
                     $("#change-card").prop('checked', false);
                     $('label[for=as-card]').text(updateResponce.results.card_no);
@@ -218,7 +218,7 @@ var gmoCreditCardPayment = {
                     d.resolve();
                 }else{
                     $('.airloader-overlay').hide();
-                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。");
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     d.reject();
                 }
             },
