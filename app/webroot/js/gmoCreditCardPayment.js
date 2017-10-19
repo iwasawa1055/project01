@@ -13,6 +13,8 @@ var gmoCreditCardPayment = {
         holdername: '',
     },
     init : function() {
+        $('.loader').airCenter();
+        $('.airloader-overlay').show();
         this.libGmoCreditCardPayment = new libGmoCreditCardPayment();
         this.setShopId();
         this.setParams();
@@ -53,6 +55,7 @@ var gmoCreditCardPayment = {
                 gmoCreditCardPayment.displayMessage(v.message);
                 return false;
             });
+            $('.airloader-overlay').hide();
             return new $.Deferred().reject().promise();
         }
         return new $.Deferred().resolve().promise();
@@ -70,6 +73,7 @@ var gmoCreditCardPayment = {
             gmoCreditCardPayment.displayMessage(
                 gmoCreditCardPayment.libGmoCreditCardPayment.convertGMOTokenCodeIntoString(gmoCreditCardPayment.tokenResponces.resultCode)
             );
+            $('.airloader-overlay').hide();
             return new $.Deferred().reject().promise();
         }
         return new $.Deferred().resolve().promise();
@@ -136,8 +140,10 @@ var gmoCreditCardPayment = {
                     $('#execute').on('click', function (e) {
                       gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
                     });
+                    $('.airloader-overlay').hide();
                     d.resolve();
                 }else{
+                    $('.airloader-overlay').hide();
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。");
                     d.reject();
                 }
@@ -145,6 +151,7 @@ var gmoCreditCardPayment = {
             // 通信失敗
             function(){
                 //　通信失敗
+                $('.airloader-overlay').hide();
                 d.reject();
             }
         );
@@ -172,8 +179,10 @@ var gmoCreditCardPayment = {
                     $('.dsn-input-security-code').toggle('slow');
                     $('.dsn-input-change-card').hide('slow');
                     $('.dsn-input-new-card').hide('slow');
+                    $('.airloader-overlay').hide();
                     d.resolve();
                 }else{
+                    $('.airloader-overlay').hide();
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。");
                     d.reject();
                 }
@@ -181,6 +190,7 @@ var gmoCreditCardPayment = {
             // 通信失敗
             function(){
                 //　通信失敗
+                $('.airloader-overlay').hide();
                 d.reject();
             }
         );
