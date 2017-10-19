@@ -90,6 +90,17 @@ class PaymentGMOKitByCreditCard extends ApiModel
                 'message'  => ['format', 'card_seq'],
             ],
         ],
+        'security_cd' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'security_cd'],
+            ],
+            'isCreditCardSecurityCode' => [
+                'rule' => 'isCreditCardSecurityCode',
+                'message' => ['format', 'security_cd'],
+            ],
+        ],
         'kit' => [
             'notBlank' => [
                 'rule' => 'notBlank',
