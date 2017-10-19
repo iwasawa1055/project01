@@ -1,6 +1,6 @@
 <?php
 
-App::uses('PaymentGMOCard', 'Model');
+App::uses('PaymentGMOCreditCard', 'Model');
 App::uses('CustomerEntry', 'Model');
 App::uses('CustomerInfo', 'Model');
 App::uses('CorporateInfo', 'Model');
@@ -173,7 +173,7 @@ class CustomerData
     public function getDefaultCard()
     {
         if ($this->isPrivateCustomer() || empty($this->getCorporatePayment())) {
-            $ca = new PaymentGMOCard();
+            $ca = new PaymentGMOCreditCard();
             return $ca->apiGetDefaultCard();
         }
         return null;

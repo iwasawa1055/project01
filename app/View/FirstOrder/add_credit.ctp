@@ -12,11 +12,11 @@
       <div class="form">
         <div id="gmo_validate_error"></div>
         <div id="gmo_credit_card_info"></div>
+        <?php echo $this->Flash->render('gmo_token');?>
       </div>
       <div class="form">
         <label>クレジットカード番号<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
         <input type="tel" id="cardno" class="name focused" name="cardno" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="">
-        <?php echo $this->Flash->render('gmo_token');?>
       </div>
       <div class="form">
         <label>セキュリティコード<span class="required">※</span><br><span>全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>

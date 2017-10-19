@@ -1,10 +1,16 @@
 <?php
 $actionName = '変更';
+$buttonName = '変更する';
 if ($action === 'customer_add') {
     $actionName = '登録';
+    $buttonName = '追加する';
 }
 $return = Hash::get($this->request->query, 'return');
 ?>
+<?php $this->Html->script(Configure::read("app.gmo.token_url"), ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('credit_card/edit', ['block' => 'scriptMinikura']); ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-credit-card"></i> クレジットカード<?php echo $actionName; ?></h1>
@@ -17,15 +23,15 @@ $return = Hash::get($this->request->query, 'return');
             <div class="row">
               <div class="col-lg-12">
                 <h2>クレジットカード<?php echo $actionName; ?></h2>
-              <?php echo $this->Form->create('PaymentGMOSecurityCard', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'confirm', '?' => ['return' => $return]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                <div id="gmo_validate_error"></div>
+
+              <?php echo $this->Form->create('PaymentGMOCreditCard', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete', '?' => ['return' => $return]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('PaymentGMOSecurityCard.card_no', ['class' => "form-control", 'maxlength' => 19, 'placeholder'=>'クレジットカード番号', 'error' => false]); ?>
-                  <?php echo $this->Form->error('PaymentGMOSecurityCard.card_no', null, ['wrap' => 'p']) ?>
+                  <input type="tel" id="cardno" class="form-control" name="cardno" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo isset($this->request->data['PaymentGMOCreditCard']['card_no']) ? $this->request->data['PaymentGMOCreditCard']['card_no']: "" ; ?>">
                   <p class="help-block">ハイフン有り無しどちらでもご入力いただけます。</p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('PaymentGMOSecurityCard.security_cd', ['class' => "form-control", 'maxlength' => 4, 'placeholder'=>'セキュリティコード', 'error' => false]); ?>
-                  <?php echo $this->Form->error('PaymentGMOSecurityCard.security_cd', null, ['wrap' => 'p']) ?>
+                  <input type="tel" id="securitycode" class="form-control" name="securitycode" placeholder="0123" size="6" maxlength="6" value="">
                   <p class="help-block">カード裏面に記載された 3〜4桁の番号をご入力ください。</p>
                   <p class="security_code"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">※セキュリティコードとは？</a></p>
                   <div id="collapseOne" class="panel-collapse collapse panel panel-default">
@@ -80,22 +86,36 @@ $return = Hash::get($this->request->query, 'return');
                 </div>
                 <div class="form-group col-lg-12">
                   <label>有効期限</label>
-                  <?php echo $this->Form->select('PaymentGMOSecurityCard.expire_month', $this->Html->creditcardExpireMonth(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+                  <select class="form-control" id="expiremonth" name="expiremonth">
+                    <?php foreach ( $this->Html->creditcardExpireMonth() as $value => $string ) :?>
+                          <option value="<?php echo $value;?>"><?php echo $string;?></option>
+                          <?php if(isset($this->request->data['PaymentGMOCreditCard']['expire_month'])): ?>
+                          <option value="<?php echo $value;?>"<?php if ( (string) $value === $this->request->data['PaymentGMOCreditCard']['expire_month']) echo " SELECTED";?>><?php echo $string;?></option>
+                          <?php else: ?>
+                          <option value="<?php echo $value;?>"><?php echo $string;?></option>
+                          <?php endif; ?>
+                    <?php endforeach ?>
+                  </select>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->select('PaymentGMOSecurityCard.expire_year', $this->Html->creditcardExpireYear(), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
-                  <?php echo $this->Form->error('PaymentGMOSecurityCard.expire', null, ['wrap' => 'p']) ?>
+                  <select class="form-control" id="expireyear" name="expireyear">
+                    <?php foreach ( $this->Html->creditcardExpireYear() as $value => $string ) :?>
+                          <?php if(isset($this->request->data['PaymentGMOCreditCard']['expire_year'])): ?>
+                          <option value="<?php echo $value;?>"<?php if ( (string) $value === $this->request->data['PaymentGMOCreditCard']['expire_year']) echo " SELECTED";?>><?php echo $string;?></option>
+                          <?php else: ?>
+                          <option value="<?php echo $value;?>"><?php echo $string;?></option>
+                          <?php endif; ?>
+                    <?php endforeach ?>
+                  </select>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('PaymentGMOSecurityCard.holder_name', ['class' => "form-control", 'placeholder'=>'クレジットカード名義', 'error' => false]); ?>
-                  <?php echo $this->Form->error('PaymentGMOSecurityCard.holder_name', null, ['wrap' => 'p']) ?>
+                  <input type="url" id="holdername" class="form-control" name="holdername" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo isset($this->request->data['PaymentGMOCreditCard']['holder_name']) ? $this->request->data['PaymentGMOCreditCard']['holder_name'] : ""; ?>" novalidate>
                   <p class="help-block">（※半角大文字英数字、半角スペース）</p>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
-                  <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
+                  <button type="button" id="execute" class="btn btn-danger btn-lg btn-block"><?php echo $buttonName; ?></button>
                 </span>
-                <?php echo $this->Form->hidden('PaymentGMOSecurityCard.card_seq'); ?>
-                <?php echo $this->Form->hidden('PaymentGMOSecurityCard.add_referer'); ?>
+                <input type="hidden" id="shop_id" value="<?php echo Configure::read('app.gmo.shop_id'); ?>">
               <?php echo $this->Form->end(); ?>
               </div>
             </div>
