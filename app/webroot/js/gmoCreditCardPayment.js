@@ -50,14 +50,14 @@ var gmoCreditCardPayment = {
         if(Object.keys(errors).length){
             $.each(errors,function(k,v){
                 //$('#error_' + k).text(v.message).wrapInner('<p />');
-                gmoCreditCardPayment.displayError(v.message);
+                gmoCreditCardPayment.displayMessage(v.message);
                 return false;
             });
             return new $.Deferred().reject().promise();
         }
         return new $.Deferred().resolve().promise();
     },
-    displayError: function(message){
+    displayMessage: function(message){
         if($("#modal_error_message").length){
             $("#modal_error_message").remove();
         }
@@ -67,19 +67,11 @@ var gmoCreditCardPayment = {
     },
     checkTokenResponce: function(){
         if(gmoCreditCardPayment.tokenResponces.resultCode !== '000'){
-            gmoCreditCardPayment.displayError(
+            gmoCreditCardPayment.displayMessage(
                 gmoCreditCardPayment.libGmoCreditCardPayment.convertGMOTokenCodeIntoString(gmoCreditCardPayment.tokenResponces.resultCode)
             );
             return new $.Deferred().reject().promise();
         }
-        return new $.Deferred().resolve().promise();
-    },
-    setTokenToHiddenParam: function(){
-        if($('[name=gmo_token]').length){
-            $('[name=gmo_token]').remove();
-        }
-        $form.append('<input type="hidden" name="gmo_token" value="'+gmoCreditCardPayment.libGmoCreditCardPayment.tokenResponces.tokenObject.token+'">');
-
         return new $.Deferred().resolve().promise();
     },
     getToken: function(){
@@ -109,15 +101,121 @@ var gmoCreditCardPayment = {
 
         return new $.Deferred().resolve().promise();
     },
+    setTokenToHiddenParamForCheck: function(){
+        if($('[name=gmo_token_for_check]').length){
+            $('[name=gmo_token_for_check]').remove();
+        }
+        $('form').append('<input type="hidden" name="gmo_token_for_check" value="'+gmoCreditCardPayment.tokenResponces.tokenObject.token+'">');
+
+        return new $.Deferred().resolve().promise();
+    },
+    registerCreditCard: function(){
+        var d = new $.Deferred;
+        $.ajax({
+            type: "POST",
+            url: "/order/register_credit_card",
+            data: {
+                "gmo_token": gmoCreditCardPayment.tokenResponces.tokenObject.token
+            }
+        })
+        .then(
+            // 通信成功
+            function(jsonRegisterResponce){
+                console.log(jsonRegisterResponce);
+                registerResponce = JSON.parse(jsonRegisterResponce);
+                console.log(registerResponce);
+                if(registerResponce.status == true){
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。");
+                    $('.dsn-select-cards').css("display","block");
+                    $("#as-card").prop('checked', true);
+                    $('label[for=as-card]').text(registerResponce.results.card_no);
+                    $('.dsn-input-security-code').toggle('slow');
+                    $('.dsn-input-change-card').hide('slow');
+                    $('.dsn-input-new-card').hide('slow');
+                    $('#execute').off('click');
+                    $('#execute').on('click', function (e) {
+                      gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
+                    });
+                    d.resolve();
+                }else{
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。");
+                    d.reject();
+                }
+            },
+            // 通信失敗
+            function(){
+                //　通信失敗
+                d.reject();
+            }
+        );
+        return d.promise();
+    },
+    updateCreditCard: function(){
+        var d = new $.Deferred;
+        $.ajax({
+            type: "POST",
+            url: "/order/update_credit_card",
+            data: {
+                "gmo_token": gmoCreditCardPayment.tokenResponces.tokenObject.token
+            }
+        })
+        .then(
+            // 通信成功
+            function(jsonRegisterResponce){
+                registerResponce = JSON.parse(jsonRegisterResponce);
+                console.log(registerResponce);
+                if(registerResponce.status == true){
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。");
+                    $("#as-card").prop('checked', true);
+                    $("#change-card").prop('checked', false);
+                    $('label[for=as-card]').text(registerResponce.results.card_no);
+                    $('.dsn-input-security-code').toggle('slow');
+                    $('.dsn-input-change-card').hide('slow');
+                    $('.dsn-input-new-card').hide('slow');
+                    d.resolve();
+                }else{
+                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。");
+                    d.reject();
+                }
+            },
+            // 通信失敗
+            function(){
+                //　通信失敗
+                d.reject();
+            }
+        );
+        return d.promise();
+    },
     setGMOTokenAndSubmit: function() {
         this.init();
 
         this.validate()
+        // for card check
+        .then(this.getToken)
+        .then(this.checkTokenResponce)
+        .then(this.setTokenToHiddenParamForCheck)
+
         .then(this.getToken)
         .then(this.checkTokenResponce)
         .then(this.setTokenToHiddenParam)
         .then(function(){
             $('form').submit();
         });
-    }
+    },
+    setGMOTokenAndRegisterCreditCard: function(){
+        this.init();
+
+        this.validate()
+        .then(this.getToken)
+        .then(this.checkTokenResponce)
+        .then(this.registerCreditCard)
+    },
+    setGMOTokenAndUpdateCreditCard: function(){
+        this.init();
+
+        this.validate()
+        .then(this.getToken)
+        .then(this.checkTokenResponce)
+        .then(this.updateCreditCard)
+    },
 }

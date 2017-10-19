@@ -18,6 +18,7 @@ class OrderController extends MinikuraController
     const MODEL_NAME = 'OrderKit';
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
+    const MODEL_NAME_CREDIT_CARD = 'PaymentGMOCreditCard';
 
     /**
      * 制御前段処理.
@@ -1069,9 +1070,48 @@ class OrderController extends MinikuraController
     {
     }
 
-    /**
-     *
-     */
+    public function register_credit_card()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD);
+
+        $gmo_token = $this->request->data['gmo_token'];
+        if(!empty($gmo_token)){
+            $gmo_token = implode(',',$gmo_token);
+        }
+        $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = $gmo_token;
+        $this->PaymentGMOCreditCard->set($credit_data);
+        $result = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
+
+        return json_encode($result);
+    }
+
+    public function update_credit_card()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD);
+
+        $gmo_token = $this->request->data['gmo_token'];
+        if(!empty($gmo_token)){
+            $gmo_token = implode(',',$gmo_token);
+        }
+        $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = $gmo_token;
+        $this->PaymentGMOCreditCard->set($credit_data);
+        $result = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
+
+        return json_encode($result);
+    }
+
     public function getAddressDatetime()
     {
         if (!$this->request->is('ajax')) {

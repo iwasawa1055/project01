@@ -1,6 +1,9 @@
 <?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script(Configure::read("app.gmo.token_url"), ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
@@ -12,7 +15,8 @@
       </div>
     </div>
     <div class="row">
-      <form method="post" class="select-add-address-form" action="/order/confirm" novalidate>
+      <form method="post" id="credit_info" class="select-add-address-form" action="/order/confirm" novalidate>
+        <input type="hidden" id="shop_id" value="<?php echo Configure::read('app.gmo.shop_id'); ?>">
         <div class="col-lg-12">
           <div class="panel panel-default">
             <?php echo $this->element('Order/breadcrumb_list'); ?>
@@ -101,13 +105,13 @@
                     <?php echo $this->Flash->render('customer_kit_card_info');?>
                   </div>
                   <div class="dsn-form">
-                    <?php if (!is_null(CakeSession::read('OrderKit.card_data'))) { ?>
+                    <?php //if (!is_null(CakeSession::read('OrderKit.card_data'))) { ?>
                       <div class="dsn-form">
                         <?php echo $this->Flash->render('card_no');?>
                       </div>
-                      <label class="dsn-select-cards"><input type="radio" name="select-card" id="as-card"     value="default"  <?php if((string)CakeSession::read('OrderKit.select_card') === "default") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="as-card" class="dsn-select-card"><?php echo h(CakeSession::read('OrderKit.card_data.card_no')) ?></label></label>
-                      <label class="dsn-select-cards"><input type="radio" name="select-card" id="change-card" value="register" <?php if((string)CakeSession::read('OrderKit.select_card') === "register") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="change-card" class="dsn-select-card">登録したカードを変更する</label></label>
-                    <?php } ?>
+                      <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="as-card"     value="default"  <?php if((string)CakeSession::read('OrderKit.select_card') === "default") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="as-card" class="dsn-select-card"><?php echo h(CakeSession::read('OrderKit.card_data.card_no')) ?></label></label>
+                      <label class="dsn-select-cards"<?php if (is_null(CakeSession::read('OrderKit.card_data'))) { ?> style="display:none"<?php } ?>><input type="radio" name="select-card" id="change-card" value="register" <?php if((string)CakeSession::read('OrderKit.select_card') === "register") { ?> checked <?php }?>><span class="dsn-check-icon"></span> <label for="change-card" class="dsn-select-card">登録したカードを変更する</label></label>
+                    <?php //} ?>
                   </div>
                   <div class="dsn-input-security-code">
                     <div class="dsn-divider"></div>
@@ -125,36 +129,43 @@
                     <h4>利用するカード情報をご入力ください。</h4>
                     <div class="dsn-form">
                       <label>クレジットカード番号<sup><span class="required">※</span></sup><br><span class="required">全角半角、ハイフンありなし、どちらでもご入力いただけます。</span></label>
-                      <input type="tel" class="name focused" name="card_no" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="<?php echo CakeSession::read('Credit.card_no');?>">
+                      <input type="tel" id="cardno" class="name focused" name="cardno" placeholder="0000-0000-0000-0000" size="20" maxlength="20" value="">
                       <div class="dsn-form">
+                        <div id="error_cardno"></div>
                         <?php echo $this->Flash->render('new_card_no');?>
                       </div>
                     </div>
                     <div class="dsn-form">
                       <label>セキュリティコード<sup><span class="required">※</span></sup></label>
-                      <input type="tel" class="dsn-security-code focused" name="new_security_cd" placeholder="0123" size="6" maxlength="6" value="">
+                      <input type="tel" id="securitycode" class="dsn-security-code focused" name="securitycode" placeholder="0123" size="6" maxlength="6" value="">
+                      <div id="error_securitycode"></div>
                       <?php echo $this->Flash->render('new_security_cd');?>
                     </div>
                     <div class="dsn-form">
                       <label>カード有効期限<sup><span class="required">※</span></sup></label>
-                      <select class="dsn-select-month focused" name="expire_month">
+                      <select class="dsn-select-month focused" id="expiremonth" name="expiremonth">
                         <?php foreach ( $this->Html->creditcardExpireMonth() as $value => $string ) :?>
-                        <option value="<?php echo $value;?>"<?php if ( $value === substr(CakeSession::read('Credit.expire'),0,2) ) echo " SELECTED";?>><?php echo $string;?></option>
+                              <option value="<?php echo $value;?>"><?php echo $string;?></option>
                         <?php endforeach ?>
                       </select>
                       /
-                      <select class="dsn-select-year focused" name="expire_year">
+                      <select class="dsn-select-year focused" id="expireyear" name="expireyear">
                         <?php foreach ( $this->Html->creditcardExpireYear() as $value => $string ) :?>
-                        <option value="<?php echo $value;?>"<?php if ( (string) $value === substr(CakeSession::read('Credit.expire'),2,2) ) echo " SELECTED";?>><?php echo $string;?></option>
+                              <option value="<?php echo $value;?>"><?php echo $string;?></option>
                         <?php endforeach ?>
                       </select>
                       <br>
+                      <div id="error_expire"></div>
                       <?php echo $this->Flash->render('expire');?>
                     </div>
                     <div class="dsn-form">
                       <label>カード名義<sup><span class="required">※</span></sup></label>
-                      <input type="url" class="dsn-name holder_name focused" name="holder_name" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo CakeSession::read('Credit.holder_name');?>" novalidate>
+                      <input type="url" id="holdername" class="dsn-name holder_name focused" name="holdername" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="" novalidate>
+                      <div id="error_holdername"></div>
                       <?php echo $this->Flash->render('holder_name');?>
+                    </div>
+                    <div class="dsn-form">
+                      <button type="button" id="execute" class="dsn-btn-credit">このカードを登録する <i class="fa fa-chevron-circle-right"></i></button>
                     </div>
                   </div>
                   <div class="dsn-divider"></div>

@@ -714,6 +714,19 @@ class FirstOrderController extends MinikuraController
             $this->_flowSwitch('add_credit');
         }
 
+        $for_check_param = [
+            'gmo_token' => filter_input(INPUT_POST, 'gmo_token_for_check'),
+        ];
+
+        $this->loadModel('CreditCardCheck');
+        $res = $this->CreditCardCheck->getCreditCardCheck($for_check_param);
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'gmo_token']);
+            $this->_flowSwitch('add_credit');
+            return;
+        }
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 

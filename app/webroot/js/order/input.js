@@ -44,6 +44,16 @@ var AppInputOrder =
       $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
     }
   },
+  h: function()
+  {
+    $('#execute').on('click', function (e) {
+      if ($('.dsn-select-cards').css('display') === 'none'){
+        gmoCreditCardPayment.setGMOTokenAndRegisterCreditCard();
+      } else {
+        gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
+      }
+    });
+  },
 
   init_disp1: function () {
     // 合計点数の初期化
@@ -73,8 +83,11 @@ var AppInputOrder =
 
   },
   init_disp3: function () {
-    if ($('input[name=select-card]:checked').val() === 'default')
+    if ($('.dsn-select-cards').css('display') === 'none')
     {
+      $('.dsn-input-security-code').hide('slow');
+      $('.dsn-input-change-card').show('slow');
+    } else if ($('input[name=select-card]:checked').val() === 'default') {
       $('.dsn-input-security-code').show('slow');
       $('.dsn-input-change-card').hide('slow');
     } else {
@@ -254,6 +267,7 @@ $(function()
   AppInputOrder.e();
   AppInputOrder.f();
   AppInputOrder.g();
+  AppInputOrder.h();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppInputOrder.init_disp3();

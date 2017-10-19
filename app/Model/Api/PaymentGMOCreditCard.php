@@ -9,6 +9,13 @@ class PaymentGMOCreditCard extends ApiModel
         parent::__construct('PaymentGMOCreditCard', '/credit_card', 'gmopayment_v4');
     }
 
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new PaymentGMOCard())->deleteCache();
+        (new Announcement())->deleteCache();
+    }
+
     public $validate = [
         'gmo_token' => [
             'notBlank' => [
