@@ -719,8 +719,8 @@ class FirstOrderController extends MinikuraController
             'gmo_token' => filter_input(INPUT_POST, 'gmo_token_for_check'),
         ];
 
-        $this->loadModel('CreditCardCheck');
-        $res = $this->CreditCardCheck->getCreditCardCheck($for_check_param);
+        $this->loadModel('PaymentGMOCreditCardCheck');
+        $res = $this->PaymentGMOCreditCardCheck->getCreditCardCheck($for_check_param);
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'gmo_token']);
