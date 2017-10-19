@@ -2,12 +2,12 @@
 
 App::uses('ApiModel', 'Model');
 
-class CreditCardCheck extends ApiModel
+class PaymentGMOCreditCardCheck extends ApiModel
 {
 
     public function __construct()
     {
-        parent::__construct('CreditCardCheck', '/credit_card_check', 'gmopayment_v4');
+        parent::__construct('PaymentGMOCreditCardCheck', '/credit_card_check', 'gmopayment_v4');
     }
 
     /**

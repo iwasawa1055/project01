@@ -2,7 +2,7 @@
 
 App::uses('MinikuraController', 'Controller');
 App::uses('CustomerKitPrice', 'Model');
-App::uses('PaymentGMOKitCard', 'Model');
+App::uses('PaymentGMOKitByCreditCard', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('PaymentAmazonKitAmazonPay', 'Model');
 
@@ -19,6 +19,7 @@ class OrderController extends MinikuraController
     const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
     const MODEL_NAME_CREDIT_CARD = 'PaymentGMOCreditCard';
+    const MODEL_NAME_CREDIT_CARD_CHECK = 'PaymentGMOCreditCardCheck';
 
     /**
      * 制御前段処理.
@@ -264,13 +265,13 @@ class OrderController extends MinikuraController
         if (CakeSession::read('OrderKit.is_credit')) {
             // カードの入力情報
             $input_card_params = array(
-                'card_no' => filter_input(INPUT_POST, 'card_no'),
+                // 'card_no' => filter_input(INPUT_POST, 'card_no'),
                 'security_cd' => filter_input(INPUT_POST, 'security_cd'),
-                'new_security_cd' => filter_input(INPUT_POST, 'new_security_cd'),
-                'expire_month' => filter_input(INPUT_POST, 'expire_month'),
-                'expire_year' => filter_input(INPUT_POST, 'expire_year'),
-                'expire' => filter_input(INPUT_POST, 'expire_month') . filter_input(INPUT_POST, 'expire_year'),
-                'holder_name' => strtoupper(filter_input(INPUT_POST, 'holder_name')),
+                // 'new_security_cd' => filter_input(INPUT_POST, 'new_security_cd'),
+                // 'expire_month' => filter_input(INPUT_POST, 'expire_month'),
+                // 'expire_year' => filter_input(INPUT_POST, 'expire_year'),
+                // 'expire' => filter_input(INPUT_POST, 'expire_month') . filter_input(INPUT_POST, 'expire_year'),
+                // 'holder_name' => strtoupper(filter_input(INPUT_POST, 'holder_name')),
             );
 
             // カード情報をセッションに保存
@@ -287,28 +288,28 @@ class OrderController extends MinikuraController
                 $vali_card_params['security_cd'] = $input_card_params['security_cd'];
             }
 
-            // 登録カードの変更の有無
-            $is_card_insert = false;
+            // // 登録カードの変更の有無
+            // $is_card_insert = false;
 
-            // カード変更
-            if($select_card === 'register') {
-                $is_card_insert = true;
-            }
+            // // カード変更
+            // if($select_card === 'register') {
+            //     $is_card_insert = true;
+            // }
 
-            // カード追加
-            if (is_null(CakeSession::read('OrderKit.card_data'))) {
-                $is_card_insert = true;
-            }
+            // // カード追加
+            // if (is_null(CakeSession::read('OrderKit.card_data'))) {
+            //     $is_card_insert = true;
+            // }
 
-            if($is_card_insert) {
-                // new_security_cdをsecurity_cdにいれバリデーションをかける
-                // new_security_cdとsecurity_cdが２つバリデーションにかけることはない
-                $input_card_params['security_cd'] = $input_card_params['new_security_cd'];
-                $vali_card_params = $input_card_params;
+            // if($is_card_insert) {
+            //     // new_security_cdをsecurity_cdにいれバリデーションをかける
+            //     // new_security_cdとsecurity_cdが２つバリデーションにかけることはない
+            //     $input_card_params['security_cd'] = $input_card_params['new_security_cd'];
+            //     $vali_card_params = $input_card_params;
 
-                // カードno バリデーション前処理
-                $vali_card_params['card_no'] = self::_wrapConvertKana($vali_card_params['card_no']);
-            }
+            //     // カードno バリデーション前処理
+            //     $vali_card_params['card_no'] = self::_wrapConvertKana($vali_card_params['card_no']);
+            // }
 
             // 逐次セッション保存
             CakeSession::write('OrderKit.select_card', $select_card);
@@ -321,41 +322,46 @@ class OrderController extends MinikuraController
             //* 共通バリデーションでエラーあったらメッセージセット
             if (!empty($validation)) {
                 foreach ($validation as $key => $message) {
-                    // カード変更の場合 バリデーションエラーキーを再設定
-                    if ($select_card === 'register') {
-                        switch (true) {
-                            case $key === 'card_no':
-                                $this->Flash->validation($message, ['key' => 'new_card_no']);
-                                break;
-                            case $key === 'security_cd':
-                                $this->Flash->validation($message, ['key' => 'new_security_cd']);
-                                break;
-                            default:
-                                $this->Flash->validation($message, ['key' => $key]);
-                                break;
-                        }
-                    } else {
+                    // // カード変更の場合 バリデーションエラーキーを再設定
+                    // if ($select_card === 'register') {
+                    //     switch (true) {
+                    //         case $key === 'card_no':
+                    //             $this->Flash->validation($message, ['key' => 'new_card_no']);
+                    //             break;
+                    //         case $key === 'security_cd':
+                    //             $this->Flash->validation($message, ['key' => 'new_security_cd']);
+                    //             break;
+                    //         default:
+                    //             $this->Flash->validation($message, ['key' => $key]);
+                    //             break;
+                    //     }
+                    // } else {
                         $this->Flash->validation($message, ['key' => $key]);
-                    }
+                    // }
                 }
                 $is_validation_error = true;
             }
 
-            // バリデーションエラーない場合
-            if (!$is_validation_error) {
-                // 登録カードの変更の有無
-                if ($select_card === 'register') {
-                    // 利用可能カードか確認
-                    //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
-                    $this->loadModel('CardCheck');
-                    $res = $this->CardCheck->getCardCheck($vali_card_params);
-
-                    if (!empty($res->error_message)) {
-                        $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-                        $is_validation_error = true;
-                    }
-                }
+            // 登録したカードを変更するにチェックをつけて、POSTした場合、登録を促す
+            if ($select_card === 'register') {
+                $this->Flash->validation('カードを変更・登録する場合はこの画面でカードを登録を完了させて下さい。。', ['key' => 'card_no']);
             }
+
+            // バリデーションエラーない場合
+            // if (!$is_validation_error) {
+            //     // 登録カードの変更の有無
+            //     if ($select_card === 'register') {
+            //         // 利用可能カードか確認
+            //         //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
+            //         $this->loadModel('CardCheck');
+            //         $res = $this->CardCheck->getCardCheck($vali_card_params);
+
+            //         if (!empty($res->error_message)) {
+            //             $this->Flash->validation($res->error_message, ['key' => 'card_no']);
+            //             $is_validation_error = true;
+            //         }
+            //     }
+            // }
 
         }
 
@@ -798,69 +804,69 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'order', 'action' => 'input']);
         }
 
-        // カード決済の場合
-        if (CakeSession::read('OrderKit.is_credit')) {
+        // // カード決済の場合
+        // if (CakeSession::read('OrderKit.is_credit')) {
 
-            // カード情報編集
-            $is_card_insert = false;
+        //     // カード情報編集
+        //     $is_card_insert = false;
 
-            // カード変更
-            if (CakeSession::read('OrderKit.select_card') === 'register') {
-                $is_card_insert = true;
-            }
+        //     // カード変更
+        //     if (CakeSession::read('OrderKit.select_card') === 'register') {
+        //         $is_card_insert = true;
+        //     }
 
-            // カード追加
-            if (is_null(CakeSession::read('OrderKit.card_data'))) {
-                $is_card_insert = true;
-            }
+        //     // カード追加
+        //     if (is_null(CakeSession::read('OrderKit.card_data'))) {
+        //         $is_card_insert = true;
+        //     }
 
-            if ($is_card_insert) {
-                // カード変更追加モデル
-                $this->loadModel('PaymentGMOSecurityCard');
+        //     if ($is_card_insert) {
+        //         // カード変更追加モデル
+        //         $this->loadModel('PaymentGMOSecurityCard');
 
-                $Credit = CakeSession::read('Credit');
+        //         $Credit = CakeSession::read('Credit');
 
-                $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-                $Credit['security_cd'] = $Credit['new_security_cd'];
-                $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
-                $Credit['card_seq'] = '0';
+        //         $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
+        //         $Credit['security_cd'] = $Credit['new_security_cd'];
+        //         $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+        //         $Credit['card_seq'] = '0';
 
-                // カード構造を更新する
-                CakeSession::write('Credit', $Credit);
+        //         // カード構造を更新する
+        //         CakeSession::write('Credit', $Credit);
 
-                $credit_data['PaymentGMOSecurityCard'] = $Credit;
+        //         $credit_data['PaymentGMOSecurityCard'] = $Credit;
 
-                $this->PaymentGMOSecurityCard->set($credit_data);
+        //         $this->PaymentGMOSecurityCard->set($credit_data);
 
-                // Expire
-                $this->PaymentGMOSecurityCard->setExpire($credit_data);
+        //         // Expire
+        //         $this->PaymentGMOSecurityCard->setExpire($credit_data);
 
-                // ハイフン削除
-                $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
+        //         // ハイフン削除
+        //         $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
 
-                // validates
-                // card_seq 除外
-                $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
+        //         // validates
+        //         // card_seq 除外
+        //         $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
 
-                if (!$this->PaymentGMOSecurityCard->validates()) {
-                    $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors,
-                        ['key' => 'customer_card_info']);
-                    return $this->_flowSwitch('input');
-                }
+        //         if (!$this->PaymentGMOSecurityCard->validates()) {
+        //             $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors,
+        //                 ['key' => 'customer_card_info']);
+        //             return $this->_flowSwitch('input');
+        //         }
 
-                if (is_null(CakeSession::read('OrderKit.card_data'))) {
-                    // カード更新
-                    $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
-                } else {
-                    // カード更新
-                    $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
-                }
-                if (!empty($result_security_card->error_message)) {
-                    $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
-                    return $this->_flowSwitch('input');
-                }
-            }
-        }
+        //         if (is_null(CakeSession::read('OrderKit.card_data'))) {
+        //             // カード更新
+        //             $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
+        //         } else {
+        //             // カード更新
+        //             $result_security_card = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
+        //         }
+        //         if (!empty($result_security_card->error_message)) {
+        //             $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
+        //             return $this->_flowSwitch('input');
+        //         }
+        //     }
+        // }
 
         // 住所のセット
         $set_address = array();
@@ -915,7 +921,7 @@ class OrderController extends MinikuraController
         // 決済方法によって実行するapiが異なる
         if (CakeSession::read('OrderKit.is_credit')) {
             // カード購入
-            $this->loadModel('PaymentGMOKitCard');
+            $this->loadModel('PaymentGMOKitByCreditCard');
             $gmo_kit_card = array();
             $gmo_kit_card['card_seq']      = 0;
             $gmo_kit_card['security_cd']   = self::_wrapConvertKana(CakeSession::read('Credit.security_cd'));
@@ -929,8 +935,8 @@ class OrderController extends MinikuraController
             $kit_params = CakeSession::read('OrderKit.kit_params');
             $gmo_kit_card['kit'] = implode(',', $kit_params);
 
-            $this->PaymentGMOKitCard->set($gmo_kit_card);
-            $result_kit_card = $this->PaymentGMOKitCard->apiPost($this->PaymentGMOKitCard->toArray());
+            $this->PaymentGMOKitByCreditCard->set($gmo_kit_card);
+            $result_kit_card = $this->PaymentGMOKitByCreditCard->apiPost($this->PaymentGMOKitByCreditCard->toArray());
             if ($result_kit_card->status !== '1') {
                 if ($result_kit_card->http_code === 400) {
                     $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
@@ -1109,6 +1115,26 @@ class OrderController extends MinikuraController
         $this->PaymentGMOCreditCard->set($credit_data);
         $result = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
 
+        return json_encode($result);
+    }
+
+    public function check_credit_card()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD_CHECK);
+
+        $gmo_token = $this->request->data['gmo_token'];
+        if(!empty($gmo_token)){
+            $gmo_token = implode(',',$gmo_token);
+        }
+        $credit_data['gmo_token'] = $gmo_token;
+        $result = $this->PaymentGMOCreditCardCheck->getCreditCardCheck($credit_data);
+CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r(json_encode($result), true));
         return json_encode($result);
     }
 

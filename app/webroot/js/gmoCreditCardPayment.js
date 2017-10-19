@@ -113,6 +113,39 @@ var gmoCreditCardPayment = {
 
         return new $.Deferred().resolve().promise();
     },
+    checkCreditCard: function(){
+        var d = new $.Deferred;
+        $.ajax({
+            type: "POST",
+            url: "/order/check_credit_card",
+            data: {
+                "gmo_token": gmoCreditCardPayment.tokenResponces.tokenObject.token
+            }
+        })
+        .then(
+            // 通信成功
+            function(jsonCheckResponce){
+                var checkResponce = JSON.parse(jsonCheckResponce);
+                console.log(checkResponce);
+                if(checkResponce.status == true){
+                    // カード確認OK
+                    console.log(checkResponce);
+                    d.resolve();
+                }else{
+                    $('.airloader-overlay').hide();
+                    gmoCreditCardPayment.displayMessage(checkResponce.error_message);
+                    d.reject();
+                }
+            },
+            // 通信失敗
+            function(){
+                //　通信失敗
+                $('.airloader-overlay').hide();
+                d.reject();
+            }
+        );
+        return d.promise();
+    },
     registerCreditCard: function(){
         var d = new $.Deferred;
         $.ajax({
@@ -126,13 +159,14 @@ var gmoCreditCardPayment = {
             // 通信成功
             function(jsonRegisterResponce){
                 console.log(jsonRegisterResponce);
-                registerResponce = JSON.parse(jsonRegisterResponce);
+                var registerResponce = JSON.parse(jsonRegisterResponce);
                 console.log(registerResponce);
                 if(registerResponce.status == true){
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。");
                     $('.dsn-select-cards').css("display","block");
                     $("#as-card").prop('checked', true);
                     $('label[for=as-card]').text(registerResponce.results.card_no);
+                    $('input[name=security_cd]').val($('input[name=securitycode]').val());
                     $('.dsn-input-security-code').toggle('slow');
                     $('.dsn-input-change-card').hide('slow');
                     $('.dsn-input-new-card').hide('slow');
@@ -168,14 +202,15 @@ var gmoCreditCardPayment = {
         })
         .then(
             // 通信成功
-            function(jsonRegisterResponce){
-                registerResponce = JSON.parse(jsonRegisterResponce);
-                console.log(registerResponce);
-                if(registerResponce.status == true){
+            function(jsonUpdateResponce){
+                var updateResponce = JSON.parse(jsonUpdateResponce);
+                console.log(updateResponce);
+                if(updateResponce.status == true){
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。");
                     $("#as-card").prop('checked', true);
                     $("#change-card").prop('checked', false);
-                    $('label[for=as-card]').text(registerResponce.results.card_no);
+                    $('label[for=as-card]').text(updateResponce.results.card_no);
+                    $('input[name=security_cd]').val($('input[name=securitycode]').val());
                     $('.dsn-input-security-code').toggle('slow');
                     $('.dsn-input-change-card').hide('slow');
                     $('.dsn-input-new-card').hide('slow');
@@ -216,6 +251,11 @@ var gmoCreditCardPayment = {
         this.init();
 
         this.validate()
+        // for card check
+        .then(this.getToken)
+        .then(this.checkTokenResponce)
+        .then(this.checkCreditCard)
+
         .then(this.getToken)
         .then(this.checkTokenResponce)
         .then(this.registerCreditCard)
@@ -224,6 +264,11 @@ var gmoCreditCardPayment = {
         this.init();
 
         this.validate()
+        // for card check
+        .then(this.getToken)
+        .then(this.checkTokenResponce)
+        .then(this.checkCreditCard)
+
         .then(this.getToken)
         .then(this.checkTokenResponce)
         .then(this.updateCreditCard)
