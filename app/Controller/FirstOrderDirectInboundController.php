@@ -113,7 +113,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function add_address()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -835,97 +835,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
         
-        $this->redirect('add_credit');
-    }
-
-    /**
-     * クレジットカード 登録
-     */
-    public function add_credit()
-    {
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_address', 'FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
-            //* NG redirect
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-        }
-
-        // ログインチェック
-        $this->_checkLogin();
-
-        $back  = filter_input(INPUT_GET, 'back');
-        
-        if (!$back) {
-            if (empty(CakeSession::read('Credit'))) {
-                $Credit = array(
-                    'card_no'       => "",
-                    'security_cd'   => "",
-                    'expire'        => "",
-                    'holder_name'   => "",
-                );
-                CakeSession::write('Credit', $Credit);
-            }
-        }
-
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-    }
-
-    /**
-     * クレジットカード 確認
-     */
-    public function confirm_credit()
-    {
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/add_email'], true) === false) {
-            //* NG redirect
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
-        }
-
-        $params = [
-            'card_no'       => filter_input(INPUT_POST, 'card_no'),
-            'security_cd'   => filter_input(INPUT_POST, 'security_cd'),
-            'expire_month'  => filter_input(INPUT_POST, 'expire_month'),
-            'expire_year'   => filter_input(INPUT_POST, 'expire_year'),
-            'expire'        => filter_input(INPUT_POST, 'expire_month').filter_input(INPUT_POST, 'expire_year'),
-            'holder_name'   => strtoupper(filter_input(INPUT_POST, 'holder_name')),
-        ];
-
-        //* Session write
-        CakeSession::write('Credit', $params);
-
-        // ハイフン削除はバリデーション前に実施
-        $params['card_no'] = self::_wrapConvertKana($params['card_no']);
-        $params['security_cd'] = mb_convert_kana($params['security_cd'], 'nhk', "utf-8");;
-
-        //*  validation 基本は共通クラスのAppValidで行う
-        $validation = AppValid::validate($params);
-
-        //* 共通バリデーションでエラーあったらメッセージセット
-        //* バリデーションエラーでAPIを実行しないためここでre
-        if ( !empty($validation)) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-            }
-            $this->redirect('add_credit');
-            return;
-        }
-        
-        //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
-        $this->loadModel('CardCheck');
-        $res = $this->CardCheck->getCardCheck($params);
-
-        if (!empty($res->error_message)) {
-            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $this->redirect('add_credit');
-            return;
-        }
-
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        // 既存登録ユーザ リセット
-        CakeSession::delete('registered_user_login_url', null);
-
         $this->redirect('add_email');
     }
 
@@ -935,7 +844,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function add_email()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_credit', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/add_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1009,7 +918,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function confirm_email()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/add_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1165,12 +1074,30 @@ class FirstOrderDirectInboundController extends MinikuraController
 
 
     /**
+     * クレジットカード 登録
+     */
+    public function add_credit()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
+            //* NG redirect
+            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+        }
+
+        // ログインチェック
+        $this->_checkLogin();
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+    }
+
+    /**
      * オーダー 完了
      */
     public function complete()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_credit', 'FirstOrderDirectInbound/complete'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1225,19 +1152,34 @@ class FirstOrderDirectInboundController extends MinikuraController
             }
         }
 
-        // カードの有効性をチェック
-        //* クレジットカードのチェック 未ログイン時にチェックできる v4/gmo_payment/card_check apiを使用する
-        $this->loadModel('CardCheck');
-        $Credit = CakeSession::read('Credit');
-        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
+        // 入力値チェック
+        $params = [
+            'gmo_token' => filter_input(INPUT_POST, 'gmo_token')
+        ];
 
-        $res = $this->CardCheck->getCardCheck($Credit);
+        if (empty($params['gmo_token'])) {
+            $this->Flash->validation('クレジットカード情報を再度入力してください。', ['key' => 'gmo_token']);
+            return  $this->redirect('add_credit');
+        }
+
+        //* Session write
+        CakeSession::write('Credit', $params);
+
+        $for_check_param = [
+            'gmo_token' => filter_input(INPUT_POST, 'gmo_token_for_check'),
+        ];
+
+        if (empty($for_check_param['gmo_token'])) {
+            $this->Flash->validation('クレジットカード情報を再度入力してください。', ['key' => 'gmo_token']);
+            return $this->redirect('add_credit');
+        }
+
+        $this->loadModel('PaymentGMOCreditCardCheck');
+        $res = $this->PaymentGMOCreditCardCheck->getCreditCardCheck($for_check_param);
 
         if (!empty($res->error_message)) {
-            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            $this->redirect('add_credit');
-            return;
+            $this->Flash->validation($res->error_message, ['key' => 'gmo_token']);
+            return $this->redirect('add_credit');
         }
 
         //* 会員登録
@@ -1333,35 +1275,21 @@ class FirstOrderDirectInboundController extends MinikuraController
         $this->Customer->getInfo();
 
         //* クレジットカード登録
-        $this->loadModel(self::MODEL_NAME_SECURITY);
+        //* クレジットカード登録
+        $this->loadModel('PaymentGMOCreditCard');
 
         $Credit = CakeSession::read('Credit');
-        $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-        $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
-
-        $credit_data[self::MODEL_NAME_SECURITY] = $Credit;
-
-        $this->PaymentGMOSecurityCard->set($credit_data);
-
-        // Expire
-        $this->PaymentGMOSecurityCard->setExpire($credit_data);
-
-        // ハイフン削除
-        $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
-
-        // validates
-        // card_seq 除外
-        $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-
-        if (!$this->PaymentGMOSecurityCard->validates()) {
-            $this->Flash->validation($this->PaymentGMOSecurityCard->validationErrors, ['key' => 'customer_card_info']);
-            return $this->redirect('confirm');
+        $credit_data['PaymentGMOCreditCard'] = $Credit;
+        $this->PaymentGMOCreditCard->set($credit_data);
+        if (!$this->PaymentGMOCreditCard->validates()) {
+            $this->Flash->validation($this->PaymentGMOCreditCard->validationErrors, ['key' => 'gmo_token']);
+            return $this->redirect('add_credit');
         }
 
-        $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
-        if (!empty($result_security_card->error_message)) {
-            $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
-            return $this->redirect('confirm');
+        $result_credit_card = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
+        if (!empty($result_credit_card->error_message)) {
+            $this->Flash->validation($result_credit_card->error_message, ['key' => 'gmo_token']);
+            return $this->redirect('add_credit');
         }
 
         // ボックス情報の生成
@@ -1413,43 +1341,6 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         $this->_cleanFirstOrderSession();
 
-        /* いったん無効化
-        // 既にセッションスタートしてる事が条件
-        // マイページ側セッションクローズ
-        $before_session_id = session_id();
-        session_write_close();
-
-        // コンテンツ側のセッション名に変更
-        $SESS_ID = '';
-        if(isset($_COOKIE['WWWMINIKURACOM'])) {
-            $SESS_ID = $_COOKIE['WWWMINIKURACOM'];
-        }
-
-        if( !empty($SESS_ID)) {
-            // セッション再開
-            session_id($SESS_ID);
-            session_start();
-
-            // 紹介コード削除処理
-            if (!empty($_SESSION['ref_code'])) {
-                unset($_SESSION['ref_code']);
-                CakeLog::write(DEBUG_LOG, 'ref_code is unset SESS_ID ' . print_r($SESS_ID, true));
-            }
-
-            // コンテンツ側セッションクローズ
-            session_write_close();
-        }
-
-        // マイページ側セッション名に変更
-        session_name('MINIKURACOM');
-
-        if (!empty($before_session_id)) {
-            session_id($before_session_id);
-        }
-
-        // マイページ側セッション再開
-        session_start();
-        */
     }
 
     /**

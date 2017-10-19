@@ -4,7 +4,7 @@
 <?php echo $this->element('FirstOrderDirectInbound/header'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/nav'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/breadcrumb_list'); ?>
-  <form method="post" action="/first_order_direct_inbound/complete" novalidate>
+  <form method="post" action="/first_order_direct_inbound/add_credit" novalidate>
   <!-- ADRESS -->
   <section id="dsn-adress">
     <div class="dsn-wrapper">
@@ -87,10 +87,12 @@
       <?php endif; ?>
     </div>
   </section>
-  <section class="dsn-nextback"><a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="submit" class="dsn-btn-next">この内容で申し込みをする <i class="fa fa-chevron-circle-right"></i></button>
+  <section class="dsn-nextback">
+    <a href="/first_order_direct_inbound/add_email?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
+    <button type="submit" class="dsn-btn-next">クレジットカード情報を入力 <i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/js'); ?>
-<script src="/first_order_file/js/first_order/confirm.js"></script>
+<script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/confirm.js"></script>
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>

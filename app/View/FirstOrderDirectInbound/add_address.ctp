@@ -136,7 +136,7 @@
           </div>
           <section class="dsn-nextback">
             <a href="/first_order/add_order?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
-            <button type="submit" class="dsn-btn-next">クレジットカード情報を入力 <i class="fa fa-chevron-circle-right"></i></button>
+            <button type="submit" class="dsn-btn-next">メールアドレスを入力 <i class="fa fa-chevron-circle-right"></i></button>
           </section>
         </section>
       </div>
