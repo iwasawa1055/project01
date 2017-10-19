@@ -48,8 +48,10 @@
           <?php endif; ?>
         </section>
 
-        <section id="dsn-signin">
+          <section id="dsn-signin">
+            <input type="hidden" id="js-display_standard" value="<?php echo CakeSession::read('FirstOrderDirectInbound.display.standard');?>">
           <div class="dsn-divider"></div>
+
           <div class="dsn-form">
             <label>お名前<span class="dsn-required">※</span></label>
             <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">

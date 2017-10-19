@@ -37,6 +37,9 @@ class FirstOrderDirectInboundController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // 初期化
+        CakeSession::write('FirstOrderDirectInbound.display.standard', false);
+
         // 紹介コードで遷移してきた場合
         $code = filter_input(INPUT_GET, Configure::read('app.lp_code.param'));
         if (!is_null($code)) {
@@ -147,6 +150,10 @@ class FirstOrderDirectInboundController extends MinikuraController
 
                 // お届け希望日のリスト
                 CakeSession::write('Address', $Address);
+
+                // 初期化
+                CakeSession::write('FirstOrderDirectInbound.display.standard', 'false');
+
             }
 
             if(is_null(CakeSession::read('Order'))) {
@@ -175,6 +182,9 @@ class FirstOrderDirectInboundController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'index']);
         }
+
+        // 標準入力項目非表示
+        CakeSession::write('FirstOrderDirectInbound.display.standard', 'false');
 
         // アクセストークンを取得
         $access_token = filter_input(INPUT_GET, 'access_token');
@@ -745,6 +755,9 @@ class FirstOrderDirectInboundController extends MinikuraController
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
+
+        // 標準入力項目表示
+        CakeSession::write('FirstOrderDirectInbound.display.standard', 'true');
 
         // ログインチェック
         $this->_checkLogin();
@@ -2039,6 +2052,7 @@ class FirstOrderDirectInboundController extends MinikuraController
         CakeSession::delete('Email');
         CakeSession::delete('FirstOrderList');
         CakeSession::delete('order_sneaker');
+        CakeSession::delete('FirstOrderDirectInbound');
         CakeSession::delete('FirstOrder.amazon_pay.access_token');
 
     }
