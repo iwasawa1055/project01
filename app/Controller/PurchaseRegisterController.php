@@ -71,11 +71,8 @@ class PurchaseRegisterController extends MinikuraController
             $customerInfo = $this->request->data[self::MODEL_CUSTOMER_INFO];
             $customerEntry = $data[self::MODEL_CUSTOMER_ENTRY];
 
-            $birth = [];
-            $birth[0] = $customerInfo['birth_year'];
-            $birth[1] = $customerInfo['birth_month'];
-            $birth[2] = $customerInfo['birth_day'];
-            $customerInfo['birth'] = implode('-', $birth);
+            $customerInfo['birth'] = CUSTOMER_DEFAULT_BIRTH;
+            $customerInfo['gender'] = CUSTOMER_DEFAULT_GENDER;
             $customerInfo['email'] = $customerEntry['email'];
             $customerInfo['password'] = $customerEntry['password'];
             $customerInfo['password_confirm'] = $customerEntry['password_confirm'];

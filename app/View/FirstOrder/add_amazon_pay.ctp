@@ -93,34 +93,6 @@
           <?php echo $this->Flash->render('lastname_kana'); ?>
           <?php echo $this->Flash->render('firstname_kana'); ?>
         </div>
-        <div class="divider"></div>
-        <div class="dsn-form form-line">
-          <label>生年月日<span class="dsn-required">※</span></label>
-          <select class="dsn-select-birth-year focused" name="birth_year">
-            <?php for ($i = date('Y'); $i >= $birthyear_configure['birthyear_start']; $i--) :?>
-              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_year') ) echo " SELECTED";?>><?php echo $i;?>年</option>
-            <?php endfor;?>
-          </select>
-          <select class="dsn-select-birth-month focused" name="birth_month">
-            <?php for ($i = 1; $i <= 12; $i++) :?>
-              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_month') ) echo " SELECTED";?>><?php echo $i;?>月</option>
-            <?php endfor;?>
-          </select>
-          <select class="dsn-select-birth-day focused" name="birth_day">
-            <?php for ($i = 1; $i <= 31; $i++) :?>
-              <option value="<?php echo $i;?>"<?php if ( $i === (int) CakeSession::read('Email.birth_day') ) echo " SELECTED";?>><?php echo $i;?>日</option>
-            <?php endfor;?>
-          </select>
-          <br>
-          <?php echo $this->Flash->render('birth');?>
-        </div>
-        <div class="dsn-form dsn-form-line">
-          <label>性別<span class="dsn-required">※</span></label>
-          <label class="dsn-genders"><input type="radio" name="gender" value="m" id="man"<?php if ( CakeSession::read('Email.gender') === "m" ) echo " CHECKED";?>><span class="check-icon"></span><label for="man" class="dsn-gender">男</label></label>
-          <label class="dsn-genders"><input type="radio" name="gender" value="f" id="woman"<?php if ( CakeSession::read('Email.gender') === "f" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="woman" class="dsn-gender">女</label></label>
-          <br>
-          <?php echo $this->Flash->render('gender');?>
-        </div>
         <div class="dsn-divider"></div>
         <div class="dsn-form">
           <label>お届け希望日<span class="dsn-required">※</span></label>

@@ -64,26 +64,6 @@
                 <?php echo $this->Form->input('CustomerRegistInfo.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerRegistInfo.firstname_kana', null, ['wrap' => 'p']) ?>
               </div>
-              <div class="form-group col-lg-4">
-                <?php echo $this->Form->input('CustomerRegistInfo.birth_year', ['class' => "form-control", 'placeholder'=>'年（西暦）', 'maxlength' => 4, 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerRegistInfo.birth_year', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group col-lg-4">
-                <?php echo $this->Form->input('CustomerRegistInfo.birth_month', ['class' => "form-control date_zero_padding", 'placeholder'=>'月', 'maxlength' => 2, 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerRegistInfo.birth_month', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group col-lg-4">
-                <?php echo $this->Form->input('CustomerRegistInfo.birth_day', ['class' => "form-control date_zero_padding", 'placeholder'=>'日', 'maxlength' => 2, 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerRegistInfo.birth_day', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group col-lg-12">
-                <?php echo $this->Form->error('CustomerRegistInfo.birth', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group col-lg-12">
-                <label>性別</label>
-                <?php echo $this->Form->select('CustomerRegistInfo.gender', CUSTOMER_GENDER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerRegistInfo.gender', null, ['wrap' => 'p']) ?>
-              </div>
               <div class="form-group col-lg-12">
                 <label>ご連絡先</label>
                 <?php echo $this->Form->input('CustomerRegistInfo.tel1', ['class' => "form-control", 'maxlength' => 20, 'placeholder'=>'電話番号', 'error' => false]); ?>
