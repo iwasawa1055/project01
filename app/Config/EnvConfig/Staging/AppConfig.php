@@ -114,6 +114,12 @@ $config['app']['amazon_pay']['client_id'] = 'amzn1.application-oa2-client.9c0c92
 $config['app']['amazon_pay']['region'] = 'jp';
 $config['app']['amazon_pay']['sandbox'] = 'true';
 
+/**
+ * GMO 設定値
+ */
+$config['app']['gmo']['token_url'] = 'https://pt01.mul-pay.jp/ext/js/token.js';
+$config['app']['gmo']['shop_id'] = 'tshop00019363';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');
