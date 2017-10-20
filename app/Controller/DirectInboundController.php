@@ -235,52 +235,7 @@ class DirectInboundController extends MinikuraController
 
         // セッション情報取得
         $OrderKit = CakeSession::read('OrderKit');
-/*
-        // 住所一覧を取得
-        $address_list = $this->Address->get();
 
-        // ヘルパー読み込めないためヘルパーでの処理を転記
-        $set_address_list = array();
-        if (is_array($address_list)) {
-            foreach ($address_list as $address) {
-                $set_address_list[$address['address_id']] = h("〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
-            }
-        }
-
-        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を入力する';
-        $OrderKit['address_list'] = $set_address_list;
-
-        // 追加画面から遷移しているかチェック
-        if(!is_null(CakeSession::read('OrderKit.address_id'))){
-            $check_address_id = CakeSession::read('OrderKit.address_id');
-            if($check_address_id === AddressComponent::CREATE_NEW_ADDRESS_ID ) {
-                // 最後のアドレスid 追加したアドレスidを取得
-                $last_address_id = Hash::get($this->Address->last(), 'address_id', '');
-                $OrderKit['address_id'] = $last_address_id;
-            }
-        }
-
-        // カード判定
-        $OrderKit['is_credit'] = false;
-
-        // クレジットカードかどうか
-        // 法人口座未登録用遷移はbeforeFilterで判定済み
-        if ($this->Customer->isPrivateCustomer()) {
-            // 個人
-            $OrderKit['is_credit'] = true;
-
-            // カード情報取得
-            $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-        } else {
-            // 法人 法人カードの場合 account_situationは空白
-            if (empty($this->Customer->getInfo()['account_situation'])) {
-                $OrderKit['is_credit'] = true;
-                // カード情報取得
-                $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-            }
-        }
-*/
-        
         // セッション情報格納
         CakeSession::write('OrderKit', $OrderKit);
 
@@ -505,66 +460,13 @@ class DirectInboundController extends MinikuraController
 
     }
 
-    public function confirm_credit()
-    {
-        //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['DirectInbound/input_credit', 'DirectInbound/confirm_credit', 'DirectInbound/complete_credit'],
-                true) === false
-        ) {
-            //* NG redirect
-            $this->redirect(['controller' => 'direct_inbound', 'action' => 'input']);
-        }
-
-        $input_card_params = array(
-            'card_no'           => filter_input(INPUT_POST, 'card_no'),
-            'security_cd'       => filter_input(INPUT_POST, 'security_cd'),
-            'expire_month'      => filter_input(INPUT_POST, 'expire_month'),
-            'expire_year'       => filter_input(INPUT_POST, 'expire_year'),
-            'expire'            => filter_input(INPUT_POST, 'expire_month') . filter_input(INPUT_POST, 'expire_year'),
-            'holder_name'       => strtoupper(filter_input(INPUT_POST, 'holder_name')),
-        );
-
-        // カード情報をセッションに保存
-        CakeSession::write('Credit', $input_card_params);
-
-        $input_card_params['card_no'] = self::_wrapConvertKana($input_card_params['card_no']);
-        $input_card_params['security_cd'] = mb_convert_kana($input_card_params['security_cd'], 'nhk', "utf-8");;
-
-        // 逐次バリデーション
-        $validation = AppValid::validate($input_card_params);
-        //* 共通バリデーションでエラーあったらメッセージセット
-        if (!empty($validation)) {
-            foreach ($validation as $key => $message) {
-                $this->Flash->validation($message, ['key' => $key]);
-            }
-
-            // カードチェックはバリデーションOKの場合
-            $this->redirect('input_credit');
-        }
-
-        $this->loadModel('CardCheck');
-        $res = $this->CardCheck->getCardCheck($input_card_params);
-
-        if (!empty($res->error_message)) {
-            $this->Flash->validation($res->error_message, ['key' => 'card_no']);
-            // 共通バリデーションがないのでここでリターン
-            $this->redirect('input_credit');
-        }
-
-        // 伏せ文字カード番号保時
-        CakeSession::write('Credit.disp_card_no', $res->results['card_no']);
-
-        //* session referer set
-        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-
-    }
     /**
      *
      */
     public function complete_credit()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['DirectInbound/confirm_credit', 'DirectInbound/complete_credit', 'DirectInbound/confirm'],
+        if (in_array(CakeSession::read('app.data.session_referer'), ['DirectInbound/input_credit', 'DirectInbound/complete_credit', 'DirectInbound/confirm'],
                 true) === false
         ) {
             //* NG redirect
@@ -574,52 +476,48 @@ class DirectInboundController extends MinikuraController
         // カード未登録の場合
         if (is_null(CakeSession::read('OrderKit.card_data'))) {
 
-            // カード変更追加モデル
-            $this->loadModel('PaymentGMOSecurityCard');
+            // 入力値チェック
+            $params = [
+                'gmo_token' => filter_input(INPUT_POST, 'gmo_token')
+            ];
 
-            $Credit = CakeSession::read('Credit');
+            if (empty($params['gmo_token'])) {
+                $this->Flash->validation('クレジットカード情報を再度入力してください。', ['key' => 'gmo_token']);
+                return  $this->redirect('input_credit');
+            }
 
-            $Credit['card_no'] = self::_wrapConvertKana($Credit['card_no']);
-            $Credit['security_cd'] = mb_convert_kana($Credit['security_cd'], 'nhk', "utf-8");;
-            $Credit['card_seq'] = '0';
+            //* Session write
+            CakeSession::write('Credit', $params);
 
-            // カード構造を更新する
-            CakeSession::write('Credit', $Credit);
+            $for_check_param = [
+                'gmo_token' => filter_input(INPUT_POST, 'gmo_token_for_check'),
+            ];
 
-            $credit_data['PaymentGMOSecurityCard'] = $Credit;
-
-            $this->PaymentGMOSecurityCard->set($credit_data);
-
-            // Expire
-            $this->PaymentGMOSecurityCard->setExpire($credit_data);
-
-            // ハイフン削除
-            $this->PaymentGMOSecurityCard->trimHyphenCardNo($credit_data);
-
-            // validates
-            // card_seq 除外
-            $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-            $this->PaymentGMOSecurityCard->validator()->remove('disp_card_no');
-
-            if (!$this->PaymentGMOSecurityCard->validates()) {
-                foreach ($this->PaymentGMOSecurityCard->validationErrors as $key => $message) {
-                    $this->Flash->validation($message[0], ['key' => 'customer_card_info']);
-                }
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' PaymentGMOSecurityCard->validationErrors ' . print_r($this->PaymentGMOSecurityCard->validationErrors, true));
-
+            if (empty($for_check_param['gmo_token'])) {
+                $this->Flash->validation('クレジットカード情報を再度入力してください。', ['key' => 'gmo_token']);
                 return $this->redirect('input_credit');
             }
 
-            // カード登録処理
-            $result_security_card = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
-            if (!empty($result_security_card->error_message)) {
-                $this->Flash->validation($result_security_card->error_message, ['key' => 'customer_kit_card_info']);
-                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' $result_security_card->error_message ' . print_r($result_security_card->error_message, true));
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' koko2');
 
+            //* クレジットカード登録
+            $this->loadModel('PaymentGMOCreditCard');
+
+            $Credit = CakeSession::read('Credit');
+            $credit_data['PaymentGMOCreditCard'] = $Credit;
+            $this->PaymentGMOCreditCard->set($credit_data);
+            if (!$this->PaymentGMOCreditCard->validates()) {
+                $this->Flash->validation($this->PaymentGMOCreditCard->validationErrors, ['key' => 'gmo_token']);
+                return $this->redirect('input_credit');
+            }
+
+
+            $result_credit_card = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
+            if (!empty($result_credit_card->error_message)) {
+                $this->Flash->validation($result_credit_card->error_message, ['key' => 'gmo_token']);
                 return $this->redirect('input_credit');
             }
         }
-
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);

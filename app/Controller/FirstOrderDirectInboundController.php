@@ -1275,7 +1275,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         $this->Customer->getInfo();
 
         //* クレジットカード登録
-        //* クレジットカード登録
         $this->loadModel('PaymentGMOCreditCard');
 
         $Credit = CakeSession::read('Credit');
