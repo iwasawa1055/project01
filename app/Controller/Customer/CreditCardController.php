@@ -5,7 +5,7 @@ App::uses('MinikuraController', 'Controller');
 class CreditCardController extends MinikuraController
 {
     const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
-    const MODEL_NAME_CARD = 'PaymentGMOCard';
+    const MODEL_NAME_CREDIT_CARD = 'PaymentGMOCreditCard';
 
     /**
      * 制御前段処理.
@@ -13,8 +13,7 @@ class CreditCardController extends MinikuraController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->loadModel(self::MODEL_NAME_SECURITY);
-        $this->loadModel(self::MODEL_NAME_CARD);
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD);
         $this->set('action', $this->action);
     }
 
@@ -39,21 +38,19 @@ class CreditCardController extends MinikuraController
         $back = Hash::get($this->request->query, 'back');
 
         if ($back || $step === 'complete') {
-            $data = CakeSession::read(self::MODEL_NAME_SECURITY);
+            $data = CakeSession::read(self::MODEL_NAME_CREDIT_CARD);
             $this->request->data = $data;
-            CakeSession::delete(self::MODEL_NAME_SECURITY);
+            CakeSession::delete(self::MODEL_NAME_CREDIT_CARD);
         } elseif (($this->action === 'customer_edit' || $this->action === 'paymentng_edit') && empty($step)) {
             // edit 初期表示データ取得
-            $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
-            $this->request->data[self::MODEL_NAME_SECURITY] = $default_payment;
+            $default_payment = $this->PaymentGMOCreditCard->apiGetDefaultCard();
+            $this->request->data[self::MODEL_NAME_CREDIT_CARD] = $default_payment;
         } elseif ($this->action === 'customer_add' && empty($step)) {
             // create カード登録確認
-            $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
+            $default_payment = $this->PaymentGMOCreditCard->apiGetDefaultCard();
             if (!empty($default_payment)) {
                 return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false]);
             }
-            // カード登録時の遷移元取得（ボックス購入時は購入画面へ戻る）
-            $this->request->data[self::MODEL_NAME_SECURITY]['add_referer'] = $this->referer(null, true);
         }
     }
 
@@ -69,45 +66,20 @@ class CreditCardController extends MinikuraController
 
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
-
-            $this->PaymentGMOSecurityCard->set($this->request->data);
-            // Expire
-            $this->PaymentGMOSecurityCard->setExpire($this->request->data);
-            // ハイフン削除
-            $this->PaymentGMOSecurityCard->trimHyphenCardNo($this->request->data);
-
-            // validates
-            // card_seq 除外
-            $this->PaymentGMOSecurityCard->validator()->remove('card_seq');
-            if (!$this->PaymentGMOSecurityCard->validates()) {
-                return $this->render('customer_edit');
+            // create
+            $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = filter_input(INPUT_POST, 'gmo_token');
+            $this->PaymentGMOCreditCard->set($credit_data);
+            $res = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'add']);
             }
 
-            if ($step === 'confirm') {
-                // Expire year 表示用
-                $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
-
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]);
-                CakeSession::write(self::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
-
-                return $this->render('customer_confirm');
-            } elseif ($step === 'complete') {
-                // create
-                $res = $this->PaymentGMOSecurityCard->apiPost($this->PaymentGMOSecurityCard->toArray());
-                if (!empty($res->error_message)) {
-                    $this->Flash->set($res->error_message);
-                    return $this->redirect(['action' => 'add']);
-                }
-
-                if ($this->Customer->isEntry()) {
-                    // 契約情報登録
-                    return $this->redirect(['controller' => 'info', 'action' => 'add']);
-                } elseif ($this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]['add_referer'] === '/order/confirm') {
-                    // ボックス購入
-                    return $this->redirect(['controller' => 'order', 'action' => 'add', 'customer' => false, '?' => ['back' => 'true']]);
-                }
-                return $this->render('customer_complete');
+            if ($this->Customer->isEntry()) {
+                // 契約情報登録
+                return $this->redirect(['controller' => 'info', 'action' => 'add']);
             }
+            return $this->render('customer_complete');
         }
     }
 
@@ -123,44 +95,26 @@ class CreditCardController extends MinikuraController
         if ($this->request->is('get')) {
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
+            $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = filter_input(INPUT_POST, 'gmo_token');
+            $this->PaymentGMOCreditCard->set($credit_data);
 
-            $this->PaymentGMOSecurityCard->set($this->request->data);
-            // Expire
-            $this->PaymentGMOSecurityCard->setExpire($this->request->data);
-            // ハイフン削除
-            $this->PaymentGMOSecurityCard->trimHyphenCardNo($this->request->data);
+            // update
+            $res = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
 
-            // validates
-            if (!$this->PaymentGMOSecurityCard->validates()) {
-                return $this->render('customer_edit');
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
+                return $this->redirect(['action' => 'edit']);
             }
 
-            if ($step === 'confirm') {
-                // Expire year 表示用
-                $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
-
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]);
-                CakeSession::write(self::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
-
-                return $this->render('customer_confirm');
-            } elseif ($step === 'complete') {
-                // update
-                $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
-                if (!empty($res->error_message)) {
-                    $this->Flash->set($res->error_message);
-                    return $this->redirect(['action' => 'edit']);
-                }
-
-                if ($returnTo === 'purchase') {
-                    $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
-                    return $this->redirect([
-                        'controller' => 'purchase', 'action' => 'input', 'customer' => false
-                        , 'id' => $sales_id, '?' => ['back' => 'true']
-                    ]);
-                }
-
-                return $this->render('customer_complete');
+            if ($returnTo === 'purchase') {
+                $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
+                return $this->redirect([
+                    'controller' => 'purchase', 'action' => 'input', 'customer' => false
+                    , 'id' => $sales_id, '?' => ['back' => 'true']
+                ]);
             }
+
+            return $this->render('customer_complete');
         }
     }
 
@@ -193,8 +147,8 @@ class CreditCardController extends MinikuraController
                 // Expire year 表示用
                 $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
 
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_SECURITY]);
-                CakeSession::write(self::MODEL_NAME_SECURITY, $this->PaymentGMOSecurityCard->data);
+                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_CREDIT_CARD]);
+                CakeSession::write(self::MODEL_NAME_CREDIT_CARD, $this->PaymentGMOSecurityCard->data);
 
                 return $this->render('customer_confirm');
             } elseif ($step === 'complete') {
