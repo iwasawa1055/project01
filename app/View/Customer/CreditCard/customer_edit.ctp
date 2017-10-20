@@ -88,7 +88,6 @@ $return = Hash::get($this->request->query, 'return');
                   <label>有効期限</label>
                   <select class="form-control" id="expiremonth" name="expiremonth">
                     <?php foreach ( $this->Html->creditcardExpireMonth() as $value => $string ) :?>
-                          <option value="<?php echo $value;?>"><?php echo $string;?></option>
                           <?php if(isset($this->request->data['PaymentGMOCreditCard']['expire_month'])): ?>
                           <option value="<?php echo $value;?>"<?php if ( (string) $value === $this->request->data['PaymentGMOCreditCard']['expire_month']) echo " SELECTED";?>><?php echo $string;?></option>
                           <?php else: ?>
