@@ -235,52 +235,7 @@ class DirectInboundController extends MinikuraController
 
         // セッション情報取得
         $OrderKit = CakeSession::read('OrderKit');
-/*
-        // 住所一覧を取得
-        $address_list = $this->Address->get();
 
-        // ヘルパー読み込めないためヘルパーでの処理を転記
-        $set_address_list = array();
-        if (is_array($address_list)) {
-            foreach ($address_list as $address) {
-                $set_address_list[$address['address_id']] = h("〒{$address['postal']} {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}　{$address['lastname']}　{$address['firstname']}");
-            }
-        }
-
-        $set_address_list[AddressComponent::CREATE_NEW_ADDRESS_ID] = 'お届先を入力する';
-        $OrderKit['address_list'] = $set_address_list;
-
-        // 追加画面から遷移しているかチェック
-        if(!is_null(CakeSession::read('OrderKit.address_id'))){
-            $check_address_id = CakeSession::read('OrderKit.address_id');
-            if($check_address_id === AddressComponent::CREATE_NEW_ADDRESS_ID ) {
-                // 最後のアドレスid 追加したアドレスidを取得
-                $last_address_id = Hash::get($this->Address->last(), 'address_id', '');
-                $OrderKit['address_id'] = $last_address_id;
-            }
-        }
-
-        // カード判定
-        $OrderKit['is_credit'] = false;
-
-        // クレジットカードかどうか
-        // 法人口座未登録用遷移はbeforeFilterで判定済み
-        if ($this->Customer->isPrivateCustomer()) {
-            // 個人
-            $OrderKit['is_credit'] = true;
-
-            // カード情報取得
-            $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-        } else {
-            // 法人 法人カードの場合 account_situationは空白
-            if (empty($this->Customer->getInfo()['account_situation'])) {
-                $OrderKit['is_credit'] = true;
-                // カード情報取得
-                $OrderKit['card_data'] = $this->Customer->getDefaultCard();
-            }
-        }
-*/
-        
         // セッション情報格納
         CakeSession::write('OrderKit', $OrderKit);
 
