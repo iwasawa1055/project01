@@ -48,8 +48,10 @@
           <?php endif; ?>
         </section>
 
-        <section id="dsn-signin">
+          <section id="dsn-signin">
+            <input type="hidden" id="js-display_standard" value="<?php echo CakeSession::read('FirstOrderDirectInbound.display.standard');?>">
           <div class="dsn-divider"></div>
+
           <div class="dsn-form">
             <label>お名前<span class="dsn-required">※</span></label>
             <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30" value="<?php echo CakeSession::read('Address.lastname');?>">
@@ -134,7 +136,7 @@
           </div>
           <section class="dsn-nextback">
             <a href="/first_order/add_order?back=true" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
-            <button type="submit" class="dsn-btn-next">クレジットカード情報を入力 <i class="fa fa-chevron-circle-right"></i></button>
+            <button type="submit" class="dsn-btn-next">メールアドレスを入力 <i class="fa fa-chevron-circle-right"></i></button>
           </section>
         </section>
       </div>

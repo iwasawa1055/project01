@@ -84,6 +84,13 @@ var AppAddAdress =
                 katakana: true
             });
     },
+    d: function () {
+        // 通常時のバリデーションエラー時表示
+        if ($('#js-display_standard').val() === 'true') {
+            $('#dsn-signin').show();
+        }
+
+    },
 }
 
 var AppAmazonPayLogin =
@@ -141,6 +148,7 @@ $(function()
     AppAddAdress.a();
     AppAddAdress.b();
     AppAddAdress.c();
+    AppAddAdress.d();
     AppAmazonPayLogin.a();
     AppAmazonPayLogin.b();
 });
