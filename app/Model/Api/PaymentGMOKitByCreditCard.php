@@ -72,13 +72,6 @@ class PaymentGMOKitByCreditCard extends ApiModel
                 'message' => ['format', 'kit_cleaning_num'],
             ],
         ],
-        'gmo_token' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'gmo_token'],
-            ],
-        ],
         'card_seq' => [
             'notBlank' => [
                 'rule' => 'notBlank',

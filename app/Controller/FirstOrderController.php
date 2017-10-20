@@ -1698,7 +1698,6 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
         // HAKOお片付けキットは１パック 5箱
         $gmo_kit_card['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
-        $gmo_kit_card['gmo_token']     = $Credit['gmo_token'];
         $gmo_kit_card['security_cd']     = $Credit['security_cd'];
         $gmo_kit_card['card_seq']      = $result_credit_card->results['card_seq'];
         $gmo_kit_card['address_id']    = '';
