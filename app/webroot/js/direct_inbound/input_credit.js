@@ -8,6 +8,12 @@ var AppInputCredit =
     }
 
   },
+  b: function(){
+    // GMO
+    $('button').on('click', function (e) {
+      gmoCreditCardPayment.setGMOTokenAndSubmit();
+    });
+  },
 }
 
 
@@ -17,5 +23,6 @@ var AppInputCredit =
 $(function()
 {
   AppInputCredit.a();
+  AppInputCredit.b();
 });
 
