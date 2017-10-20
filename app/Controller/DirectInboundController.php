@@ -11,7 +11,6 @@ App::uses('AmazonPayModel', 'Model');
 class DirectInboundController extends MinikuraController
 {
     const MODEL_NAME = 'OrderKit';
-    const MODEL_NAME_CARD = 'PaymentGMOCard';
     const MODEL_NAME_DATETIME = 'DatetimeDeliveryKit';
 
     /**
@@ -30,7 +29,6 @@ class DirectInboundController extends MinikuraController
         // 以下、スニーカーがあるため変更できない
         $this->Order = $this->Components->load('Order');
         $this->Order->init($this->Customer->getToken()['division'], $this->Customer->hasCreditCard());
-        $this->loadModel(self::MODEL_NAME_CARD);
         $this->loadModel(self::MODEL_NAME_DATETIME);
         $this->set('validErrors', []);
 

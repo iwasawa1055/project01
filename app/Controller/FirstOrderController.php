@@ -4,7 +4,6 @@ App::uses('MinikuraController', 'Controller');
 App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
 App::uses('CustomerKitPrice', 'Model');
-App::uses('PaymentGMOKitCard', 'Model');
 App::uses('FirstKitPrice', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('PaymentAmazonKitAmazonPayBillingAgreement', 'Model');
@@ -324,7 +323,7 @@ class FirstOrderController extends MinikuraController
     public function add_address()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrder/add_credit', 'FirstOrder/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrder/add_credit', 'FirstOrder/confirm_credit', 'FirstOrder/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -743,7 +742,7 @@ class FirstOrderController extends MinikuraController
     public function add_email()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_address', 'FirstOrder/add_email', 'FirstOrder/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_address', 'FirstOrder/add_email', 'FirstOrder/confirm', 'FirstOrder/confirm_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -955,7 +954,7 @@ class FirstOrderController extends MinikuraController
     public function confirm()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email', 'FirstOrder/confirm', 'FirstOrder/confirm_credit'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/confirm_email', 'FirstOrder/confirm', 'FirstOrder/add_credit', 'FirstOrder/confirm_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }

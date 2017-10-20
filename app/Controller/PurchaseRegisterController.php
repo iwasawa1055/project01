@@ -272,8 +272,8 @@ class PurchaseRegisterController extends MinikuraController
             }
 
             // カード取得
-            $this->loadModel('PaymentGMOCard');
-            $default_payment = $this->PaymentGMOCard->apiGetDefaultCard();
+            $this->loadModel('PaymentGMOCreditCard');
+            $default_payment = $this->PaymentGMOCreditCard->apiGetDefaultCard();
 
             // アイテム購入
             $purchase = $data[self::MODEL_NAME];

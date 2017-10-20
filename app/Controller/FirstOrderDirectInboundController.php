@@ -3,7 +3,6 @@ App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
-App::uses('PaymentGMOKitCard', 'Model');
 App::uses('InboundDirect', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('AppCode', 'Lib');
@@ -16,8 +15,6 @@ class FirstOrderDirectInboundController extends MinikuraController
     protected $checkLogined = false;
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
     const MODEL_NAME_REGIST_AMAZON_PAY = 'CustomerRegistInfoAmazonPay';
-    const MODEL_NAME_CARD = 'PaymentGMOCard';
-    const MODEL_NAME_SECURITY = 'PaymentGMOSecurityCard';
 
     /**
      * 制御前段処理.

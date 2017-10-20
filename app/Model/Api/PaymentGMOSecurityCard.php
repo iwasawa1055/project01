@@ -1,7 +1,7 @@
 <?php
 
 App::uses('ApiModel', 'Model');
-App::uses('PaymentGMOCard', 'Model');
+App::uses('PaymentGMOCreditCard', 'Model');
 App::uses('Announcement', 'Model');
 
 class PaymentGMOSecurityCard extends ApiModel
@@ -14,7 +14,7 @@ class PaymentGMOSecurityCard extends ApiModel
     protected function triggerDataChanged()
     {
         parent::triggerDataChanged();
-        (new PaymentGMOCard())->deleteCache();
+        (new PaymentGMOCreditCard())->deleteCache();
         (new Announcement())->deleteCache();
     }
 

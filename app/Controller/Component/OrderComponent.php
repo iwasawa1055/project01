@@ -2,7 +2,7 @@
 
 App::uses('DatetimeDeliveryKit', 'Model');
 App::uses('PaymentAccountTransferKit', 'Model');
-App::uses('PaymentGMOKitCard', 'Model');
+App::uses('PaymentGMOKitByCreditCard', 'Model');
 
 class OrderComponent extends Component
 {
@@ -73,7 +73,7 @@ class SetCreditCard extends OrderSet
 {
     public function getModel($data = [])
     {
-        $model = new PaymentGMOKitCard();
+        $model = new PaymentGMOKitByCreditCard();
         $model->set([$model->getModelName() => $data]);
         return $model;
     }
@@ -86,7 +86,7 @@ class SetCreditCard extends OrderSet
             $data['address'] = "{$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}";
         }
 
-        $model = new PaymentGMOKitCard();
+        $model = new PaymentGMOKitByCreditCard();
         $model->set([$model->getModelName() => $data]);
         return $model;
     }

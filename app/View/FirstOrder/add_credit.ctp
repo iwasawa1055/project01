@@ -46,7 +46,7 @@
       </div>
     </div>
   </section>
-  <section class="nextback"><a href="/first_order/add_address?back=true" class="btn-back">
+  <section class="nextback"><a href="/first_order/confirm?back=true" class="btn-back">
     <i class="fa fa-chevron-circle-left"></i> 戻る</a><button type="button" id="execute" class="btn-next" formnovalidate>このカードでボックスを購入<i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
