@@ -88,7 +88,6 @@ var gmoCreditCardPayment = {
         Multipayment.init(gmoCreditCardPayment.shopId);
 
         callbackFunction = function(responces){
-          console.log(responces);
             gmoCreditCardPayment.tokenResponces = responces;
             d.resolve();
         }
@@ -131,10 +130,8 @@ var gmoCreditCardPayment = {
             // 通信成功
             function(jsonCheckResponce){
                 var checkResponce = JSON.parse(jsonCheckResponce);
-                console.log(checkResponce);
                 if(checkResponce.status == true){
                     // カード確認OK
-                    console.log(checkResponce);
                     d.resolve();
                 }else{
                     $('.airloader-overlay').hide();
@@ -163,9 +160,7 @@ var gmoCreditCardPayment = {
         .then(
             // 通信成功
             function(jsonRegisterResponce){
-                console.log(jsonRegisterResponce);
                 var registerResponce = JSON.parse(jsonRegisterResponce);
-                console.log(registerResponce);
                 if(registerResponce.status == true){
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     $('.dsn-select-cards').css("display","block");
@@ -209,7 +204,6 @@ var gmoCreditCardPayment = {
             // 通信成功
             function(jsonUpdateResponce){
                 var updateResponce = JSON.parse(jsonUpdateResponce);
-                console.log(updateResponce);
                 if(updateResponce.status == true){
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     $("#as-card").prop('checked', true);
