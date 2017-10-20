@@ -47,11 +47,48 @@ var libGmoCreditCardPayment = function(){
     this.validate = function(params){
         var errors = {};
 
-        // セキュリティコードの存在確認のみ実施する
         if(params.securitycode === ''){
             errors.securitycode = {
                 value: params.securitycode,
                 message: "セキュリティコードが入力されていません。"
+            };
+        }
+
+        if(params.expire === ''){
+            checkValidation = false;
+            errors.expire = {
+                value: params.expire,
+                message: "カード有効期限が入力されていません。"
+            };
+        }
+
+        if(params.expire !== ''){
+            var date = new Date();
+            var date1 = new Date(date.getFullYear(),date.getMonth());
+            var date2;
+
+            // 4桁の場合
+            if(params.expire.length === 4){
+                date2 = new Date(20+params.expire.substr(0,2), params.expire.substr(2,2)-1);
+            // 6桁の場合
+            } else if(params.expire.length === 6) {
+                date2 = new Date(params.expire.substr(0,4), params.expire.substr(3,2)-1);
+            }
+
+            if(date1 > date2){
+                checkValidation = false;
+                errors.holdername = {
+                    value: params.holdername,
+                    message: "カード有効期限をご確認ください。"
+                };
+            }
+        }
+
+        if(params.holdername === ''){
+            checkValidation = false;
+            errors.holdername = {
+                value: params.holdername,
+                message: "カード名義が入力されていません。"
             };
         }
 

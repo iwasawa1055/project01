@@ -72,11 +72,8 @@ class InfoController extends MinikuraController
         } elseif ($this->request->is('post')) {
             // validates
             $data = $this->request->data[self::MODEL_NAME];
-            $birth = [];
-            $birth[0] = $data['birth_year'];
-            $birth[1] = $data['birth_month'];
-            $birth[2] = $data['birth_day'];
-            $data['birth'] = implode('-', $birth);
+            $data['birth'] = CUSTOMER_DEFAULT_BIRTH;
+            $data['gender'] = CUSTOMER_DEFAULT_GENDER;
             $model = $this->Customer->getInfoPostModel($data);
 
             if (!$model->validates()) {
@@ -131,11 +128,9 @@ class InfoController extends MinikuraController
             // validates
             $data = $this->request->data[self::MODEL_NAME];
             if ($this->Customer->isPrivateCustomer()) {
-                $birth = [];
-                $birth[0] = $data['birth_year'];
-                $birth[1] = $data['birth_month'];
-                $birth[2] = $data['birth_day'];
-                $data['birth'] = implode('-', $birth);
+                $customerInfo = $this->Customer->getInfo();
+                $data['birth'] = $customerInfo['birth'];
+                $data['gender'] = $customerInfo['gender'];
             }
             $model = $this->Customer->getInfoPatchModel($data);
 

@@ -131,35 +131,18 @@ class CreditCardController extends MinikuraController
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
 
-            $this->PaymentGMOSecurityCard->set($this->request->data);
-            // Expire
-            $this->PaymentGMOSecurityCard->setExpire($this->request->data);
-            // ハイフン削除
-            $this->PaymentGMOSecurityCard->trimHyphenCardNo($this->request->data);
+            $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = filter_input(INPUT_POST, 'gmo_token');
+            $this->PaymentGMOCreditCard->set($credit_data);
 
-            // validates
-            if (!$this->PaymentGMOSecurityCard->validates()) {
-                $this->Flash->paymentng_card_edit('');
+            // update
+            $res = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
+
+            if (!empty($res->error_message)) {
+                $this->Flash->set($res->error_message);
                 return $this->render('customer_edit');
             }
 
-            if ($step === 'confirm') {
-                // Expire year 表示用
-                $this->PaymentGMOSecurityCard->setDisplayExpire($this->request->data);
-
-                $this->set('security_card', $this->PaymentGMOSecurityCard->data[self::MODEL_NAME_CREDIT_CARD]);
-                CakeSession::write(self::MODEL_NAME_CREDIT_CARD, $this->PaymentGMOSecurityCard->data);
-
-                return $this->render('customer_confirm');
-            } elseif ($step === 'complete') {
-                // update
-                $res = $this->PaymentGMOSecurityCard->apiPut($this->PaymentGMOSecurityCard->toArray());
-                if (!empty($res->error_message)) {
-                    $this->Flash->paymentng_card_edit($res->error_message);
-                    return $this->render('customer_edit');
-                }
-                return $this->redirect(['controller' => 'login', 'action' => 'logout', 'paymentng' => false]);
-            }
+            return $this->redirect(['controller' => 'login', 'action' => 'logout', 'paymentng' => false]);
         }
     }
 

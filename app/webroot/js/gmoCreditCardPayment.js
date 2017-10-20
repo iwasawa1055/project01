@@ -49,6 +49,11 @@ var gmoCreditCardPayment = {
             return String.fromCharCode(s.charCodeAt(0) - 65248);
         });
     },
+    wait : function() {
+        var d = new $.Deferred;
+        setTimeout(d.resolve, 500);
+        return d;
+    },
     validate : function() {
         var errors = gmoCreditCardPayment.libGmoCreditCardPayment.validate(gmoCreditCardPayment.params);
 
@@ -234,7 +239,9 @@ var gmoCreditCardPayment = {
     setGMOTokenAndSubmit: function() {
         this.init();
 
-        this.validate()
+        this.wait()
+        .then(this.validate)
+
         // for card check
         .then(this.getToken)
         .then(this.checkTokenResponce)
@@ -250,7 +257,9 @@ var gmoCreditCardPayment = {
     setGMOTokenAndRegisterCreditCard: function(){
         this.init();
 
-        this.validate()
+        this.wait()
+        .then(this.validate)
+
         // for card check
         .then(this.getToken)
         .then(this.checkTokenResponce)
@@ -263,7 +272,9 @@ var gmoCreditCardPayment = {
     setGMOTokenAndUpdateCreditCard: function(){
         this.init();
 
-        this.validate()
+        this.wait()
+        .then(this.validate)
+
         // for card check
         .then(this.getToken)
         .then(this.checkTokenResponce)

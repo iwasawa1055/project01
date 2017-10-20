@@ -12,7 +12,7 @@
         <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'PurchaseRegister', 'action' => 'address'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <h4>お届け先の住所を入力してください。</h4>
           <div class="form-group">
-            <?php echo $this->Form->input('CustomerRegistInfo.postal', ['class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力すると以下の住所が自動で入力されます）', 'error' => false]); ?>
+            <?php echo $this->Form->input('CustomerRegistInfo.postal', ['id' => "CustomerInfoPostal", 'class' => "form-control search_address_postal", 'maxlength' => 8, 'placeholder'=>'郵便番号（入力すると以下の住所が自動で入力されます）', 'error' => false]); ?>
             <?php echo $this->Form->error('CustomerRegistInfo.postal', null, ['wrap' => 'p']) ?>
           </div>
           <div class="form-group">
@@ -52,28 +52,8 @@
             <?php echo $this->Form->error('CustomerRegistInfo.firstname_kana', null, ['wrap' => 'p']) ?>
           </div>
           <div class="form-group">
-            <?php echo $this->Form->input('CustomerRegistInfo.birth_year', ['class' => "form-control", 'placeholder'=>'年（西暦）', 'maxlength' => 4, 'error' => false]); ?>
-            <?php echo $this->Form->error('CustomerRegistInfo.birth_year', null, ['wrap' => 'p']) ?>
-          </div>
-          <div class="form-group">
-            <?php echo $this->Form->input('CustomerRegistInfo.birth_month', ['class' => "form-control date_zero_padding", 'placeholder'=>'月', 'maxlength' => 2, 'error' => false]); ?>
-            <?php echo $this->Form->error('CustomerRegistInfo.birth_month', null, ['wrap' => 'p']) ?>
-          </div>
-          <div class="form-group">
-            <?php echo $this->Form->input('CustomerRegistInfo.birth_day', ['class' => "form-control date_zero_padding", 'placeholder'=>'日', 'maxlength' => 2, 'error' => false]); ?>
-            <?php echo $this->Form->error('CustomerRegistInfo.birth_day', null, ['wrap' => 'p']) ?>
-          </div>
-          <div class="form-group">
-            <?php echo $this->Form->error('CustomerRegistInfo.birth', null, ['wrap' => 'p']) ?>
-          </div>
-          <div class="form-group">
-            <label>性別</label>
-            <?php echo $this->Form->select('CustomerRegistInfo.gender', CUSTOMER_GENDER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
-            <?php echo $this->Form->error('CustomerRegistInfo.gender', null, ['wrap' => 'p']) ?>
-          </div>
-          <div class="form-group">
             <label>お届け希望日時</label>
-            <?php echo $this->Form->select('CustomerRegistInfo.datetime_cd', $this->Order->setDatetime($datetime), ['class' => 'form-control', 'empty' => null, 'error' => false]); ?>
+            <?php echo $this->Form->select('CustomerRegistInfo.datetime_cd', $this->Order->setDatetime($datetime), ['id' => 'CustomerInfoDatetimeCd', 'class' => 'form-control', 'empty' => null, 'error' => false]); ?>
             <?php echo $this->Form->error('CustomerRegistInfo.datetime_cd', null, ['wrap' => 'p']) ?>
           </div>
           <div class="row">
