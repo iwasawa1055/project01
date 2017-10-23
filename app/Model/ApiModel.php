@@ -171,9 +171,15 @@ class ApiModel extends AppModel
                 $msg = __d('api', $code . ' default');
             }
             $apiRes->error_message = $msg;
-            Cakelog::write(ERROR_LOG, "FILE_NAME:".__FILE__." LINE:".__LINE__);
-            // エラーの出具合の様子を見て下のコメントアウトを外す
-            // Cakelog::write(ERROR_LOG, "apiRes => ".print_r($apiRes,true));
+
+            Cakelog::write(ERROR_LOG, "access_point => ".print_r($this->access_point,true));
+            Cakelog::write(ERROR_LOG, "end_point => ".print_r($this->end_point,true));
+            Cakelog::write(ERROR_LOG, "method => ".print_r($method,true));
+            if(preg_match('/.*\/minikura$/', $this->access_point) && preg_match('/^\/login$/', $this->end_point)){
+                // ログインの失敗はパラメータを出力しない
+            } else {
+                Cakelog::write(ERROR_LOG, "params => ".print_r($params,true));
+            }
             Cakelog::write(ERROR_LOG, "error_message: ${msgKey} -> ${msg}");
         }
 
