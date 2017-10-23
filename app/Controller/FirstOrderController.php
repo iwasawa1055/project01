@@ -1682,6 +1682,13 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
             $this->Flash->validation($result_credit_card->error_message, ['key' => 'gmo_token']);
             return $this->_flowSwitch('confirm_credit');
         }
+
+        // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
+        $address = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . CakeSession::read('Address.address3');
+        if(mb_strlen($address) === 12  && mb_substr($address, 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
+            $address = mb_substr($address, 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
+        }
+
         // 購入
         $this->loadModel('PaymentGMOKitByCreditCard');
         $gmo_kit_card['mono_num']      = CakeSession::read('Order.mono.mono');
@@ -1704,7 +1711,7 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         $gmo_kit_card['name']          = CakeSession::read('Address.lastname') . '　' . CakeSession::read('Address.firstname');
         $gmo_kit_card['tel1']          = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
         $gmo_kit_card['postal']        = CakeSession::read('Address.postal');
-        $gmo_kit_card['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+        $gmo_kit_card['address']       = $address;
 
         $productKitList = [
             PRODUCT_CD_MONO => [
@@ -1998,6 +2005,12 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         // 定期購入ID確定
         CakeSession::read('FirstOrder.amazon_pay.confirm_billing_agreement', true);
 
+        // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
+        $address = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . CakeSession::read('Address.address3');
+        if(mb_strlen($address) === 12  && mb_substr($address, 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
+            $address = mb_substr($address, 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
+        }
+
         // 購入
         $this->loadModel('PaymentAmazonKitAmazonPayBillingAgreement');
         $amazon_kit_pay = array();
@@ -2014,7 +2027,7 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         $amazon_kit_pay['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
         // HAKOお片付けキットは１パック 5箱
         $amazon_kit_pay['hako_limited_ver1_num'] = CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1') * 5;
-        $amazon_kit_pay['address']       = CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3');
+        $amazon_kit_pay['address']       = $address;
 
         $amazon_kit_pay['access_token']     = CakeSession::read('FirstOrder.amazon_pay.access_token');
         $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];

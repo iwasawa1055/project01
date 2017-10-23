@@ -792,6 +792,13 @@ class OrderController extends MinikuraController
             $set_address = $this->Address->find($address_id);
         }
 
+        // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
+        $address = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . $set_address['address3'];
+        if(mb_strlen($address) === 12  && mb_substr($address, 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
+            $address = mb_substr($address, 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
+        }
+
+
         // 決済方法によって実行するapiが異なる
         if (CakeSession::read('OrderKit.is_credit')) {
             // カード購入
@@ -804,7 +811,7 @@ class OrderController extends MinikuraController
             $gmo_kit_card['name']          = $set_address['lastname'] . '　' . $set_address['firstname'];
             $gmo_kit_card['tel1']          = self::_wrapConvertKana($set_address['tel1']);
             $gmo_kit_card['postal']        = $set_address['postal'];
-            $gmo_kit_card['address']       = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . '　' .  $set_address['address3'];
+            $gmo_kit_card['address']       = $address;
 
             $kit_params = CakeSession::read('OrderKit.kit_params');
             $gmo_kit_card['kit'] = implode(',', $kit_params);
@@ -883,6 +890,12 @@ class OrderController extends MinikuraController
 
         $amazon_pay_user_info = CakeSession::read('login.amazon_pay.user_info');
 
+        // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
+        $address = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . $set_address['address3'];
+        if(mb_strlen($address) === 12  && mb_substr($address, 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
+            $address = mb_substr($address, 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
+        }
+
         // CakeSession::read('Address.pref') . CakeSession::read('Address.address1') . CakeSession::read('Address.address2') . '　' .  CakeSession::read('Address.address3')
         $amazon_kit_pay['access_token']     = $this->Customer->getAmazonPayAccessKey();
         $amazon_kit_pay['amazon_user_id']   = $amazon_pay_user_info['user_id'];
@@ -890,7 +903,7 @@ class OrderController extends MinikuraController
         $amazon_kit_pay['name']             = $set_address['name'];
         $amazon_kit_pay['tel1']             = self::_wrapConvertKana($set_address['tel1']);
         $amazon_kit_pay['postal']           = $set_address['postal'];
-        $amazon_kit_pay['address']          = $set_address['pref'] . $set_address['address1'] . $set_address['address2'] . '　' . $set_address['address2'];
+        $amazon_kit_pay['address']          = $address;
         $amazon_kit_pay['datetime_cd']      = CakeSession::read('OrderKit.datetime_cd');
 
         $kit_params = CakeSession::read('OrderKit.kit_params');
