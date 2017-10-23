@@ -50,7 +50,7 @@
   </section>
   <section class="dsn-nextback"><a href="/first_order_direct_inbound/confirm?back=true" class="dsn-btn-back">
     <i class="fa fa-chevron-circle-left"></i> 戻る</a>
-    <button type="button" class="dsn-btn-next" formnovalidate>このカードでボックスを購入<i class="fa fa-chevron-circle-right"></i></button>
+    <button type="button" class="dsn-btn-next" formnovalidate>この内容で申し込みをする<i class="fa fa-chevron-circle-right"></i></button>
   </section>
   </form>
 <?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
