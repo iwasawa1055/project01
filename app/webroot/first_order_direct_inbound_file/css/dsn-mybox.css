@@ -270,8 +270,7 @@ section#dsn-adress .dsn-form a.dsn-link-terms:focus,
 section#dsn-adress .dsn-form a.dsn-link-terms:active {
 	display: inline-block;
 	margin: 0 0 0 .5rem;
-	font-size: 14px;
-	font-size: 1.4rem;
+	color: #ff0000;
 }
 section#dsn-adress .dsn-divider {
 	display: block;
