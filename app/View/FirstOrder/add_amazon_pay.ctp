@@ -123,7 +123,7 @@
         <div class="dsn-form">
           <label class="dsn-terms">
             <input type="checkbox" class="dsn-term agree-before-submit focused" id="term" name="remember" value="Remember Me"><span class="check-icon"></span>
-              <label for="term" class="dsn-term">minikura利用規約に同意する<a href="https://minikura.com/use_agreement/" target="_blank" class="dsn-link-terms"><i class="fa fa-chevron-circle-right"></i> 利用規約</a>
+              <label for="term" class="dsn-term"><a href="https://minikura.com/use_agreement/" target="_blank">minikura利用規約</a>に同意する
               </label>
             </label>
           <?php echo $this->Flash->render('remember');?>

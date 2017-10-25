@@ -1,7 +1,5 @@
 /** minikura ver2.5 REGISTRATION **/
-/*
 @import url("/css/dsn-amazon-pay.css");
-*/
 
 section {
 	width: 100%;
@@ -547,10 +545,20 @@ a.dsn-btn-back {
 a.dsn-btn-submit,
 a.dsn-btn-return,
 a.dsn-btn-select,
-a.dsn-btn-starter {
+a.dsn-btn-starter,
+a.dsn-btn-mybox {
 	margin: .75rem 0 0;
 	font-size: 14px;
 	font-size: 1.4rem;
+}
+section.select-login {
+	display: block;
+	margin-top: 1rem;
+}
+section.select-login .login-amazon {
+	margin: 0 .5rem 2rem;
+	padding-top: 2rem;
+	border-top: 1px solid #bbbbbb;
 }
 section {
 	width: 100%;
@@ -588,7 +596,7 @@ section#dsn-adress .dsn-wrapper {
 	margin: 0;
 }
 section#dsn-lineup .dsn-wrapper {
-	margin: .5rem 0 8rem;
+	margin: .5rem 0 2rem;
 }
 section#dsn-lineup div[class^="dsn-box"],
 section#dsn-lineup div[class^="dsn-caption"] {
