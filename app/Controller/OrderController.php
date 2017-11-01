@@ -818,11 +818,17 @@ class OrderController extends MinikuraController
 
             $this->PaymentGMOKitByCreditCard->set($gmo_kit_card);
             $result_kit_card = $this->PaymentGMOKitByCreditCard->apiPost($this->PaymentGMOKitByCreditCard->toArray());
+
             if ($result_kit_card->status !== '1') {
                 if ($result_kit_card->http_code === 400) {
-                    $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+                    // セキュリティコード入力エラーの場合は、出力位置を変更
+                    if ($result_kit_card->message === '400 Bad Request - 42G440000') {
+                        $this->Flash->validation($result_kit_card->error_message, ['key' => 'buy_kit_security_cd_error']);
+                    } else {
+                        $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
+                    }
                 } else {
-                    $this->Flash->validation($result_kit_card->message, ['key' => 'customer_kit_card_info']);
+                    $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
                 }
                 // 暫定
                 return $this->_flowSwitch('input');

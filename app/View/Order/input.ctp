@@ -124,6 +124,7 @@
                       <input type="tel" class="dsn-security-code" name="security_cd" placeholder="0123" size="6" maxlength="6">
                       <div class="dsn-form">
                         <?php echo $this->Flash->render('security_cd');?>
+                        <?php echo $this->Flash->render('buy_kit_security_cd_error');?>
                       </div>
                     </div>
                   </div>
@@ -143,6 +144,7 @@
                       <input type="tel" id="securitycode" class="dsn-security-code focused" name="securitycode" placeholder="0123" size="6" maxlength="6" value="">
                       <div id="error_securitycode"></div>
                       <?php echo $this->Flash->render('new_security_cd');?>
+                      <?php echo $this->Flash->render('buy_kit_security_cd_error');?>
                     </div>
                     <div class="dsn-form">
                       <label>カード有効期限<sup><span class="required">※</span></sup></label>
