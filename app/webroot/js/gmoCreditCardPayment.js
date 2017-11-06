@@ -2,10 +2,17 @@
  * gmoCreditCardPayment.js
  */
 
+// GMOのcallBack用関数(グローバルでないとIE11で動かない)
+function gmoCallbackFunction(responces){
+    gmoCreditCardPayment.tokenResponces = responces;
+    gmoCreditCardPayment.gmoCallbackDefferd.resolve();
+}
+
 var gmoCreditCardPayment = {
     libGmoCreditCardPayment : null,
     shopId : null,
     tokenResponces : null,
+    gmoCallbackDefferd : null,
     validateErrorSelector: '#gmo_validate_error',
     creditCardInfoSelector: '#gmo_credit_card_info',
     params : {
@@ -85,19 +92,15 @@ var gmoCreditCardPayment = {
     },
     getToken: function(){
         var d = new $.Deferred;
+        gmoCreditCardPayment.gmoCallbackDefferd = d;
         Multipayment.init(gmoCreditCardPayment.shopId);
-
-        callbackFunction = function(responces){
-            gmoCreditCardPayment.tokenResponces = responces;
-            d.resolve();
-        }
         Multipayment.getToken({
             cardno: gmoCreditCardPayment.params.cardno,
             expire: gmoCreditCardPayment.params.expire,
             securitycode: gmoCreditCardPayment.params.securitycode,
             holdername: gmoCreditCardPayment.params.holdername,
             tokennumber: '10'
-        }, callbackFunction);
+        }, gmoCallbackFunction);
         return d.promise();
     },
     setTokenToHiddenParam: function(){
