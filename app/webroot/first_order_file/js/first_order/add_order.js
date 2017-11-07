@@ -117,5 +117,7 @@ $(function()
 {
     AppAddOrder.a();
     AppAddOrder.b();
-    AppAmazonPayLogin.a();
 });
+
+// widjet.jsのコールバックの設定なので、即時実行しておく
+AppAmazonPayLogin.a();
