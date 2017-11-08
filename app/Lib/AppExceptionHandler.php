@@ -13,12 +13,23 @@ class AppExceptionHandler
 {
     public static function handle($_e)
     {
-        CakeLog::write(DEBUG_LOG, 'AppExceptionHandler::handle');
         if ('AppE' !== get_parent_class($_e)) {
             // AppE継承クラスではない場合はAppInternalCriticalの例外処理を行う
             try {
-                // 例外処理を実行するThrowはしない
-                new AppInternalCritical($_e->getMessage(), $_e->getCode());
+                switch (true) {
+                    // pngController, cssControllerなどのエラーが.comで多発しているようなので、一旦メール発報しないように暫定
+                    // メール発報させたくないExceptionを追加
+                    case $_e instanceof MissingControllerException:
+                        new AppInternalInfo($_e->getMessage(), $_e->getCode(), $_e);
+                        break;
+                    case $_e instanceof MissingActionException:
+                        new AppInternalInfo($_e->getMessage(), $_e->getCode(), $_e);
+                        break;
+                    //メール発報します
+                    default:
+                        new AppInternalCritical($_e->getMessage(), $_e->getCode(), $_e);
+                        break;
+                }
             } catch (Exception $e) {
             }
         }

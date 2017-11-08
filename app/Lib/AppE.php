@@ -3,10 +3,10 @@
  * Import by CakePHP
  * Config by CakePHP
  * Logger by CakePHP
- * Mailer by AppMail
+ * Mailer by AppMinikuraMail
  */
 
-App::uses('AppMail', 'Lib');
+App::uses('AppMinikuraMail', 'Lib');
 
 /**
  * AppE
@@ -124,7 +124,10 @@ class AppE extends Exception
         //* Http Code Init
         $this->initHttpCode($_http_code);
 
-        parent::__construct($this->error_msg, $this->http_code, $_error_prev);
+        //* previous error object 
+        $this->error_prev = $_error_prev;
+
+        parent::__construct($this->error_msg, $this->http_code, $this->error_prev);
 
         //* Error Node Init
         $this->initErrorNodeLevel();
@@ -253,7 +256,11 @@ class AppE extends Exception
 
         // Format
         $log  = "\n";
-        $log .= $this->__toString();
+        if ($this->error_prev) {
+            $log .= $this->error_prev->__toString();
+        } else {
+            $log .= $this->__toString();
+        }
         $log .= '[Access ID]' . "\n" . (! empty($_SERVER['UNIQUE_ID']) ? $_SERVER['UNIQUE_ID'] : uniqid('@', true)) . "\n";
         $log .= '[Env Variable]' . "\n" . (isset($_SERVER) ? var_export($_SERVER, true) : '-') . "\n";
         $log .= '[Request Body]' . "\n" . ($request_body ? $request_body : '-') . "\n";
@@ -264,91 +271,72 @@ class AppE extends Exception
         if ($_write) {
             CakeLog::write(ERROR_LOG, $log);
         }
-        return $log;
+
+        //return $log;
+        $this->log_form = $log;
+        return $this->log_form;
     }
 
     /**
      * エラーメール
      *
      * @access	static
-     * @param	object $_that($this,AppExceptionHandlerへthrowした$thisが循環する)
+     * @param   object
      * @return	string メールフォーマット
      */
-    public function mail($_that)
+    public function mail()
     {
-    	if (! Configure::read($_that->config_prefix . 'mail.flag')) {
-    		return false;
-    	}
+        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export('pass',true));
+        if (! Configure::read($this->config_prefix . 'mail.flag')) {
+            return false;
+        }
 
-    	$body = str_replace("\n", "\r\n", $this->log(false));
+        if ($this->log_form === null) {
+            $this->log_form = $this->log(false);
+        }
+        $body = str_replace("\n", "\r\n", $this->log_form);
 
-    	$confs = Configure::read($_that->config_prefix . 'mail');
+        $confs = Configure::read($this->config_prefix . 'mail');
+        $senders = $confs['sender'];
+        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export($senders,true));
 
-    	// return false;
-    	//*---------------------------------------------------------------------------
-    	//* ここまで確認済みです。$_that->config_prefix確認できています。
-    	//* 以下$senders以降は、最新版のmail処理に置き換わる予定です。大幅変更を想定し未編集となります。
-    	//*---------------------------------------------------------------------------
+        $envs = array();
+        $envs['HOST'] = $senders['HOST'];
+        $envs['PORT'] = $senders['PORT'];
+        $envs['MAIL FROM'] = $senders['MAIL FROM'];
+        $envs['USER'] = $senders['USER'];
+        $envs['PASS'] = $senders['PASS'];
 
-    	// $senders = $confs['sender'];
-        //
-    	// $envs = array();
-    	// $envs['HOST'] = $senders['HOST'];
-    	// $envs['PORT'] = $senders['PORT'];
-    	// $envs['MAIL FROM'] = $senders['MAIL FROM'];
-    	// $envs['USER'] = $senders['USER'];
-    	// $envs['PASS'] = $senders['PASS'];
-        // todo: try exceptionを使おうとするとエラーがでるので暫定で定義したが、どうすればよいか。
-        $envs = null;
+        $headers = array();
+        $headers['Subject'] = '【' . $confs['env_name'] . ' ' . $confs['service_name'] . '】 ' . $this->error_node . ' ' . $this->error_level . ' Error';
+        $headers['From'] = $envs['MAIL FROM'];
+        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export($headers,true));
 
-    	$headers = array();
-    	$headers['Subject'] = '【' . $_that->service_name . '】 ' . $_that->error_node . ' ' . $_that->error_level . ' Alert';
-    	// $headers['From'] = //$envs['MAIL FROM'];
-        //
-    	$receivers = $confs['receiver'];
-    	$headers['To'] = '';
-    	$headers['Cc'] = '';
-    	$headers['Bcc'] = '';
-    	$error_level = strtolower($_that->error_level);
-    	// foreach ($receivers[$error_level] as $k => $receiver) {
-    	// 	if ($k === 'To') {
-    	// 		$headers['To'] = implode(',', $receiver);
-    	// 	} else if ($k === 'Cc') {
-    	// 		$headers['Cc'] = implode(',', $receiver);
-    	// 	} else if ($k === 'Bcc') {
-    	// 		$headers['Bcc'] = implode(',', $receiver);
-    	// 	}
-    	// }
+        $receivers = $confs['receiver'];
+        $headers['To'] = '';
+        $headers['Cc'] = '';
+        $headers['Bcc'] = '';
+        $error_level = strtolower($this->error_level);
 
-        if (array_key_exists($error_level, $receivers)) {
-            foreach ($receivers[$error_level] as $k => $a) {
-                foreach ($a as $receiver) {
-                    if ($k === 'To') {
-                        $envs['RCPT TO'] = $receiver;
-                    } else if ($k === 'Cc') {
-                        $envs['RCPT TO'] = $receiver;
-                    } else if ($k === 'Bcc') {
-                        $envs['RCPT TO'] = $receiver;
-                    }
-                    // if (! AppMail::send($envs, $headers, $body)) {
-                    // 	return false;
-                    // }
+        foreach ($receivers[$error_level] as $k => $a) {
+            foreach ($a as $receiver) {
+                if ($k === 'To') {
+                    $envs['RCPT TO'] = array($receiver);
+                    $headers['To'] =  $receiver;
+                } else if ($k === 'Cc') {
+                    $envs['RCPT TO'] = array($receiver);
+                    $headers['Cc'] = $receiver;
+                } else if ($k === 'Bcc') {
+                    $envs['RCPT TO'] = array($receiver);
+                    $headers['Bcc'] = $receiver;
                 }
-                $str = '';
-                foreach ((array)$envs as $kk => $vv) {
-                    $str .= "${kk}: ${vv}\n";
+                if (! AppMinikuraMail::send($envs, $headers, $body)) {
+                    return false;
                 }
-                foreach ($headers as $kk => $vv) {
-                    $str .= "${kk}: ${vv}\n";
-                }
-                foreach ($headers as $kk => $vv) {
-                    $str .= "${kk}: ${vv}\n";
-                }
-                $str .= $body;
-                CakeLog::write(MAIL_LOG, $str);
             }
         }
-    	return;
+        $this->mail_form = $body;
+        return $this->mail_form;
     }
 
     /**

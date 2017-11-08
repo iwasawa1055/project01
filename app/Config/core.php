@@ -48,10 +48,17 @@
  *
  * @see ErrorHandler for more information on error handling and configuration.
  */
-
-    // エラーハンドラはデフォルト
+ 
     Configure::write('Error', array(
         'handler' => 'ErrorHandler::handleError',
+        // custom Error Handler
+        /*
+        * 元々.comはCakeのエラーハンドラーを使用していた
+        * ワインproject以降、自前AppCoreErrorを使用するようにしたが、継承元のAppE.phpにもhandle()メソッドがあり、
+        * AppCoreErrorのpublic static handle()と、AppEのprotected handle()がアクセス権が違う
+        * このため影響範囲を考え元々のCakeエラーハンドラーに戻した
+        */
+        //'handler' => 'AppCoreError::handle',
         'level' => E_ALL & ~E_DEPRECATED,
         'trace' => true
     ));

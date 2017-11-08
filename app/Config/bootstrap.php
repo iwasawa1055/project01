@@ -182,8 +182,9 @@ CakeLog::config('bench', array(
     'rotate' => 2,
 ));
 
-App::uses('AppExceptionHandler', 'Lib');
 App::uses('AppE', 'Lib');
+App::uses('AppExceptionHandler', 'Lib');
+App::uses('AppCoreError', 'Lib');
 App::uses('AppInternalPass', 'Lib');
 App::uses('AppInternalInfo', 'Lib');
 App::uses('AppInternalNotice', 'Lib');
