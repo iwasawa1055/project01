@@ -12,7 +12,7 @@ App::uses('AppE', 'Lib');
  */
 class AppCoreError extends AppE
 {
-    public static function handle($_level, $_message, $_file, $_line, $_traces)
+    public static function handleError($_level, $_message, $_file, $_line, $_traces)
     {
         //* Error Type
         $error_type = 'PHP syntax error';
@@ -135,13 +135,15 @@ class AppCoreError extends AppE
 
         // ログデータ生成
         $log = [];
-        $log['Log ID'] = uniqid(APP_FAILURE_LOG . '-', true);
+        $log['Log ID'] = uniqid(ERROR_LOG . '-', true);
         $log['Access ID'] = isset($_SERVER['UNIQUE_ID']) ? $_SERVER['UNIQUE_ID'] : '';
         $log['Request URI'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         $log['Controller'] = $controller;
         $log['Action'] = $action;
         if (class_exists('CakeSession')) {
-            $log['Customer ID'] = CakeSession::read('app.data.customer_info.customer_id');
+            //各project sessionのcustomer_id
+            $customer = CakeSession::read('CUSTOMER_DATA_CACHE');
+            $log['Customer ID'] = $customer->token['customer_id'];
         }
         $log['Request Method'] = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '';
         if ($_show_request) {
@@ -170,7 +172,7 @@ class AppCoreError extends AppE
 
         // Write Flag
         if ($_write) {
-            CakeLog::write(APP_FAILURE_LOG, $_message);
+            CakeLog::write(ERROR_LOG, $_message);
         }
     }
 
@@ -213,7 +215,7 @@ class AppCoreError extends AppE
         }
 
         //送信設定
-        $subject = '【' . Configure::read('app.env_name') . ' ' . Configure::read('app.name.0') . '】 ' . $_error_type;
+        $subject = '【' . Configure::read('app.e.mail.env_name') . ' ' . Configure::read('app.e.mail.service_name') . '】 ' . $_error_type;
         $confs = Configure::read('app.e.mail');
         $senders = $confs['sender'];
 
@@ -232,9 +234,6 @@ class AppCoreError extends AppE
         $headers['To'] = '';
         $headers['Cc'] = '';
         $headers['Bcc'] = '';
-        debug($headers);
-        debug($envs);
-        exit;
         if ($_mail) {
             //error_level 暫定 
             $error_level = 'critical';
