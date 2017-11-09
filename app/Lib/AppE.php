@@ -219,7 +219,7 @@ class AppE extends Exception
                     $this->log();
                 }
                 if (in_array(self::MAIL, $this->handlers, true)) {
-                    $this->mail($this);
+                    $this->mail();
                 }
                 if (in_array(self::PATCH, $this->handlers, true)) {
                     $this->patch();
@@ -286,7 +286,6 @@ class AppE extends Exception
      */
     public function mail()
     {
-        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export('pass',true));
         if (! Configure::read($this->config_prefix . 'mail.flag')) {
             return false;
         }
@@ -298,7 +297,6 @@ class AppE extends Exception
 
         $confs = Configure::read($this->config_prefix . 'mail');
         $senders = $confs['sender'];
-        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export($senders,true));
 
         $envs = array();
         $envs['HOST'] = $senders['HOST'];
@@ -308,9 +306,8 @@ class AppE extends Exception
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
-        $headers['Subject'] = '【' . $confs['env_name'] . ' ' . $confs['service_name'] . '】 ' . $this->error_node . ' ' . $this->error_level . ' Error';
+        $headers['Subject'] = '【 障害 】' . $confs['env_name'] . ' ' . $confs['service_name'] . ' システムエラー';
         $headers['From'] = $envs['MAIL FROM'];
-        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export($headers,true));
 
         $receivers = $confs['receiver'];
         $headers['To'] = '';

@@ -215,7 +215,7 @@ class AppCoreError extends AppE
         }
 
         //送信設定
-        $subject = '【' . Configure::read('app.e.mail.env_name') . ' ' . Configure::read('app.e.mail.service_name') . '】 ' . $_error_type;
+        $subject = '【 障害 】' . Configure::read('app.e.mail.env_name') . ' ' . Configure::read('app.e.mail.service_name') . ' システムエラー';
         $confs = Configure::read('app.e.mail');
         $senders = $confs['sender'];
 
