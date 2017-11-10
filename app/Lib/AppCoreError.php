@@ -218,6 +218,8 @@ class AppCoreError extends AppE
         $subject = '【 障害 】' . Configure::read('app.e.mail.env_name') . ' ' . Configure::read('app.e.mail.service_name') . ' システムエラー';
         $confs = Configure::read('app.e.mail');
         $senders = $confs['sender'];
+        $message = Configure::read('app.e.mail.body');
+        $message .= $_message; 
 
         $envs = array();
         $envs['HOST'] = $senders['HOST'];
@@ -250,7 +252,7 @@ class AppCoreError extends AppE
                             $envs['RCPT TO'] = array($receiver);
                             $headers['Bcc'] = $receiver;
                         }
-                        if (! AppMinikuraMail::send($envs, $headers, $_message)) {
+                        if (! AppMinikuraMail::send($envs, $headers, $message)) {
                             return false;
                         }
                     }

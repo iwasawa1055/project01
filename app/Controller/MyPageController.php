@@ -14,7 +14,6 @@ class MyPageController extends MinikuraController
      */
     public function index()
     {
-
         $News = new News();
 
         $newsList = $News->getNews(2);

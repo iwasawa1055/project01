@@ -179,7 +179,7 @@ error_reporting(E_ALL);
 * Exception時のメール送信関連
 */
 // Error Mail Sender
-$config['app.e.mail.flag'] = true;
+$config['app.e.mail.flag'] = false;
 $config['app.e.mail.env_name'] = '開発';
 $config['app.e.mail.service_name'] = 'minikura.com';
 $config['app.e.mail.sender.HOST'] = 'mail.minikura.com';
@@ -201,3 +201,7 @@ $config['app.e.mail.receiver.critical.Bcc'] = array();
 $config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
+$config['app.e.mail.body'] = "minikura.comでシステムエラーが発生しました。\n
+１〜２回発生：システム担当者は営業時間内に調査してください。\n
+３回連続発生：緊急調査対象です。プロジェクトリーダーに緊急対応を依頼ください。\n
+※連続発生が条件です\n";

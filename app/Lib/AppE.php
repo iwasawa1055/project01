@@ -293,7 +293,8 @@ class AppE extends Exception
         if ($this->log_form === null) {
             $this->log_form = $this->log(false);
         }
-        $body = str_replace("\n", "\r\n", $this->log_form);
+        $body = Configure::read($this->config_prefix . 'mail.body'); 
+        $body .= str_replace("\n", "\r\n", $this->log_form);
 
         $confs = Configure::read($this->config_prefix . 'mail');
         $senders = $confs['sender'];
