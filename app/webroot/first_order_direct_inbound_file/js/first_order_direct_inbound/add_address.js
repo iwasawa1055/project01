@@ -149,6 +149,8 @@ $(function()
     AppAddAdress.b();
     AppAddAdress.c();
     AppAddAdress.d();
-    AppAmazonPayLogin.a();
-    AppAmazonPayLogin.b();
 });
+
+// widjet.jsのコールバックの設定なので、即時実行しておく
+AppAmazonPayLogin.a();
+AppAmazonPayLogin.b();
