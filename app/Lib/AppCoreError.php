@@ -225,12 +225,17 @@ class AppCoreError extends AppE
         $envs['HOST'] = $senders['HOST'];
         $envs['PORT'] = $senders['PORT'];
         $envs['MAIL FROM'] = $senders['MAIL FROM'];
+        $envs['MAIL FROM DISP'] = $senders['MAIL FROM DISP'];
         $envs['USER'] = $senders['USER'];
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
         $headers['Subject'] = $subject;
-        $headers['From'] = $envs['MAIL FROM'];
+        $headers['From'] = sprintf(
+            '%s<%s>'
+            , $envs['MAIL FROM DISP']
+            , $envs['MAIL FROM']
+        );
 
         $receivers = $confs['receiver'];
         $headers['To'] = '';

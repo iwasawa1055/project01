@@ -25,6 +25,10 @@ class AppExceptionHandler
                     case $_e instanceof MissingActionException:
                         new AppInternalInfo($_e->getMessage(), $_e->getCode(), $_e);
                         break;
+                    //404系 CakeがNotFoundExceptionをthrowしてくる=>AppTerminal系の処理で適宜対応する(メールは発報しないなど)
+                    case $_e instanceof NotFoundException:
+                        new AppTerminalInfo($_e->getMessage(), $_e->getCode(), $_e);
+                        break;
                     //メール発報します
                     default:
                         new AppInternalCritical($_e->getMessage(), $_e->getCode(), $_e);

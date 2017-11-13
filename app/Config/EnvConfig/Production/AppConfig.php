@@ -131,8 +131,8 @@ $config['app.e.mail.env_name'] = '本番';
 $config['app.e.mail.service_name'] = 'minikura.com';
 $config['app.e.mail.sender.HOST'] = 'mail.minikura.com';
 $config['app.e.mail.sender.PORT'] = 25;
-$config['app.e.mail.sender.MAIL FROM'] = 'minikura@terrada.co.jp';
-$config['app.e.mail.sender.MAIL FROM DISP'] = '寺田倉庫（minikura運営事務局）';
+$config['app.e.mail.sender.MAIL FROM'] = 'alert@minikura.com';
+$config['app.e.mail.sender.MAIL FROM DISP'] = 'MINIKURA本番';
 $config['app.e.mail.sender.USER'] = '';
 $config['app.e.mail.sender.PASS'] = '';
 // Receiver

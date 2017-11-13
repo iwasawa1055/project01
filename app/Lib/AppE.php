@@ -303,18 +303,25 @@ class AppE extends Exception
         $envs['HOST'] = $senders['HOST'];
         $envs['PORT'] = $senders['PORT'];
         $envs['MAIL FROM'] = $senders['MAIL FROM'];
+        $envs['MAIL FROM DISP'] = $senders['MAIL FROM DISP'];
         $envs['USER'] = $senders['USER'];
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
         $headers['Subject'] = '【 障害 】' . $confs['env_name'] . ' ' . $confs['service_name'] . ' システムエラー';
         $headers['From'] = $envs['MAIL FROM'];
+        $headers['From'] = sprintf(
+            '%s<%s>'
+            , $envs['MAIL FROM DISP']
+            , $envs['MAIL FROM']
+        );
 
         $receivers = $confs['receiver'];
         $headers['To'] = '';
         $headers['Cc'] = '';
         $headers['Bcc'] = '';
         $error_level = strtolower($this->error_level);
+        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export($headers, true));
 
         foreach ($receivers[$error_level] as $k => $a) {
             foreach ($a as $receiver) {
