@@ -86,4 +86,5 @@
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
 <script src="/first_order_file/js/first_order/confirm.js"></script>
+<script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 <?php echo $this->element('FirstOrder/last'); ?>

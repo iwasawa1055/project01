@@ -130,23 +130,36 @@ CakeLog::drop('debug');
 /**
  * エラーメール設定
  */
-$config['app']['e']['mail'] = [
-    'flag' => true,
-    'receiver' => [
-        'warning' => [
-            'To' => [],
-            'Cc' => [],
-            'Bcc' => [],
-        ],
-        'error' => [
-            'To' => [],
-            'Cc' => [],
-            'Bcc' => [],
-        ],
-        'critical' => [
-            'To' => [],
-            'Cc' => [],
-            'Bcc' => [],
-        ]
-    ]
-];
+// Error Mail Sender
+$config['app.e.mail.flag'] = true;
+$config['app.e.mail.env_name'] = '検証';
+$config['app.e.mail.service_name'] = 'minikura.com';
+$config['app.e.mail.sender.HOST'] = 'mail.minikura.com';
+$config['app.e.mail.sender.PORT'] = 25;
+$config['app.e.mail.sender.MAIL FROM'] = 'minikura@terrada.co.jp';
+$config['app.e.mail.sender.MAIL FROM DISP'] = '寺田倉庫（minikura運営事務局）';
+$config['app.e.mail.sender.USER'] = '';
+$config['app.e.mail.sender.PASS'] = '';
+// Receiver
+$config['app.e.mail.receiver.warning.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.warning.Cc'] = array();
+$config['app.e.mail.receiver.warning.Bcc'] = array();
+$config['app.e.mail.receiver.defect.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.defect.Cc'] = array();
+$config['app.e.mail.receiver.defect.Bcc'] = array();
+$config['app.e.mail.receiver.critical.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.critical.Cc'] = array();
+$config['app.e.mail.receiver.critical.Bcc'] = array();
+$config['app.e.mail.receiver.fatal.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.fatal.Cc'] = array();
+$config['app.e.mail.receiver.fatal.Bcc'] = array();
+$config['app.e.mail.body'] = <<<MAIL_BODY
+minikura.comでシステムエラーが発生しました。
+
+１〜２回発生：システム担当者は営業時間内に調査してください。
+
+３回連続発生：緊急調査対象です。プロジェクトリーダーに緊急対応を依頼ください。
+
+※連続発生が条件です
+
+MAIL_BODY;
