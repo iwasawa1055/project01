@@ -127,7 +127,7 @@ CakeLog::drop('debug');
  */
 // Error Mail Sender
 $config['app.e.mail.flag'] = true;
-$config['app.e.mail.env_name'] = '検証';
+$config['app.e.mail.env_name'] = '本番';
 $config['app.e.mail.service_name'] = 'minikura.com';
 $config['app.e.mail.sender.HOST'] = 'mail.minikura.com';
 $config['app.e.mail.sender.PORT'] = 25;
