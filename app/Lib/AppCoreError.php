@@ -229,7 +229,7 @@ class AppCoreError extends AppE
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
-        $headers['Subject'] = Configure::read('app.e.mail.subject.default'); ;
+        $headers['Subject'] = Configure::read('app.e.mail.subject.default');
         $headers['From'] = sprintf(
             '%s<%s>'
             , $envs['MAIL FROM DISP']
