@@ -206,7 +206,6 @@ class AppE extends Exception
 
         // $hasAbort = false;
         // $hasShut = false;
-        CakeLog::write(DEBUG_LOG, var_export($this->handlers, true));
 
 
         switch (true) {
@@ -267,7 +266,6 @@ class AppE extends Exception
         $log .= '[Response Header]' . "\n" . ($response_headers ? var_export($response_headers, true) : '-') . "\n";
         $log .= "\n";
         // Write Flag
-        CakeLog::write(DEBUG_LOG, $log);
         if ($_write) {
             CakeLog::write(ERROR_LOG, $log);
         }
@@ -293,7 +291,10 @@ class AppE extends Exception
         if ($this->log_form === null) {
             $this->log_form = $this->log(false);
         }
-        $body = Configure::read($this->config_prefix . 'mail.body'); 
+        $body = Configure::read($this->config_prefix . 'mail.body.default'); 
+        if ($this->error_level === 'Warning') {
+            $body = Configure::read($this->config_prefix . 'mail.body.warning'); 
+        }
         $body .= str_replace("\n", "\r\n", $this->log_form);
 
         $confs = Configure::read($this->config_prefix . 'mail');
@@ -308,7 +309,10 @@ class AppE extends Exception
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
-        $headers['Subject'] = '【 障害 】' . $confs['env_name'] . ' ' . $confs['service_name'] . ' システムエラー';
+        $headers['Subject'] = Configure::read($this->config_prefix . 'mail.subject.default'); ;
+        if ($this->error_level === 'Warning') {
+            $headers['Subject'] = Configure::read($this->config_prefix . 'mail.subject.warning'); ;
+        }
         $headers['From'] = $envs['MAIL FROM'];
         $headers['From'] = sprintf(
             '%s<%s>'
@@ -321,7 +325,6 @@ class AppE extends Exception
         $headers['Cc'] = '';
         $headers['Bcc'] = '';
         $error_level = strtolower($this->error_level);
-        CakeLog::write(DEBUG_LOG, __METHOD__.'['.__LINE__.']'.var_export($headers, true));
 
         foreach ($receivers[$error_level] as $k => $a) {
             foreach ($a as $receiver) {

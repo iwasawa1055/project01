@@ -205,7 +205,9 @@ $config['app.e.mail.receiver.critical.Bcc'] = array();
 $config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
-$config['app.e.mail.body'] = <<<MAIL_BODY
+$config['app.e.mail.subject.default'] = '【 障害 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' システムエラー';
+$config['app.e.mail.subject.warning'] = '【 警告 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' Warningエラー';
+$config['app.e.mail.body.default'] = <<<MAIL_BODY
 minikura.comでシステムエラーが発生しました。
 
 １〜２回発生：システム担当者は営業時間内に調査してください。
@@ -213,5 +215,14 @@ minikura.comでシステムエラーが発生しました。
 ３回連続発生：緊急調査対象です。プロジェクトリーダーに緊急対応を依頼ください。
 
 ※連続発生が条件です
+
+MAIL_BODY;
+$config['app.e.mail.body.warning'] = <<<MAIL_BODY
+以下の可能性があります。
+・URLを変更してアクセスした
+・ページのリンク切れ
+
+基本的には営業時間中に調査いたしますが、大量に発生している場合は、ページのリンク切れの可能性があり、緊急調査対象になりますのでプロジェクトリーダーに依頼ください
+
 
 MAIL_BODY;
