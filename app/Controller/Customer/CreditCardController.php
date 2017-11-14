@@ -1,10 +1,10 @@
-<?php
-
+<?php 
 App::uses('MinikuraController', 'Controller');
 
 class CreditCardController extends MinikuraController
 {
     const MODEL_NAME_CREDIT_CARD = 'PaymentGMOCreditCard';
+    const MODEL_NAME_CREDIT_CARD_CHECK = 'PaymentGMOCreditCardCheck';
 
     /**
      * 制御前段処理.
@@ -21,7 +21,7 @@ class CreditCardController extends MinikuraController
         if (!$this->Customer->hasCreditCard() && $this->action === 'customer_edit') {
             // カード登録なし：変更不可
             return true;
-        } elseif ($this->Customer->hasCreditCard() && $this->action === 'customer_add') {
+        } elseif ($this->Customer->hasCreditCard() && ($this->action === 'customer_add' && Hash::get($this->request->params, 'step') !== 'complete')) {
             // カード登録あり：登録不可
             return true;
         } elseif (!$this->Customer->isPaymentNG() && $this->action === 'paymentng_edit') {
@@ -65,14 +65,6 @@ class CreditCardController extends MinikuraController
 
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
-            // create
-            $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = filter_input(INPUT_POST, 'gmo_token');
-            $this->PaymentGMOCreditCard->set($credit_data);
-            $res = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'add']);
-            }
 
             if ($this->Customer->isEntry()) {
                 // 契約情報登録
@@ -94,16 +86,6 @@ class CreditCardController extends MinikuraController
         if ($this->request->is('get')) {
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
-            $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = filter_input(INPUT_POST, 'gmo_token');
-            $this->PaymentGMOCreditCard->set($credit_data);
-
-            // update
-            $res = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
-
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'edit']);
-            }
 
             if ($returnTo === 'purchase') {
                 $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
@@ -130,17 +112,6 @@ class CreditCardController extends MinikuraController
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
 
-            $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = filter_input(INPUT_POST, 'gmo_token');
-            $this->PaymentGMOCreditCard->set($credit_data);
-
-            // update
-            $res = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
-
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->render('customer_edit');
-            }
-
             return $this->render('customer_paymentng_complete');
         }
     }
@@ -151,5 +122,67 @@ class CreditCardController extends MinikuraController
     public function paymentng_edit_amazon_pay()
     {
         return $this->render('customer_edit_amazon_pay');
+    }
+
+    public function paymentng_as_register_credit_card()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD);
+
+        $gmo_token = $this->request->data['gmo_token'];
+        if(!empty($gmo_token)){
+            $gmo_token = implode(',',$gmo_token);
+        }
+        $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = $gmo_token;
+        $this->PaymentGMOCreditCard->set($credit_data);
+        $result = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
+
+        return json_encode($result);
+    }
+
+    public function paymentng_as_update_credit_card()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD);
+
+        $gmo_token = $this->request->data['gmo_token'];
+        if(!empty($gmo_token)){
+            $gmo_token = implode(',',$gmo_token);
+        }
+        $credit_data[self::MODEL_NAME_CREDIT_CARD]['gmo_token'] = $gmo_token;
+        $this->PaymentGMOCreditCard->set($credit_data);
+        $result = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
+
+        return json_encode($result);
+    }
+
+    public function paymentng_as_check_credit_card()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $this->loadModel(self::MODEL_NAME_CREDIT_CARD_CHECK);
+
+        $gmo_token = $this->request->data['gmo_token'];
+        if(!empty($gmo_token)){
+            $gmo_token = implode(',',$gmo_token);
+        }
+        $credit_data['gmo_token'] = $gmo_token;
+        $result = $this->PaymentGMOCreditCardCheck->getCreditCardCheck($credit_data);
+
+        return json_encode($result);
     }
 }

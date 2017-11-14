@@ -23,6 +23,7 @@ $return = Hash::get($this->request->query, 'return');
             <div class="row">
               <div class="col-lg-12">
                 <h2>クレジットカード<?php echo $actionName; ?></h2>
+                <div id="gmo_credit_card_info"></div>
                 <div id="gmo_validate_error"></div>
 
               <?php echo $this->Form->create('PaymentGMOCreditCard', ['url' => ['controller' => 'credit_card', 'action' => $action, 'step' => 'complete', '?' => ['return' => $return]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
@@ -114,6 +115,11 @@ $return = Hash::get($this->request->query, 'return');
                 <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="button" id="execute" class="btn btn-danger btn-lg btn-block"><?php echo $buttonName; ?></button>
                 </span>
+                <?php if ($action === 'customer_add'): ?>
+                    <input type="hidden" id="registerd_credit_card" value="0">
+                <?php else: ?>
+                    <input type="hidden" id="registerd_credit_card" value="1">
+                <?php endif; ?>
                 <input type="hidden" id="shop_id" value="<?php echo Configure::read('app.gmo.shop_id'); ?>">
               <?php echo $this->Form->end(); ?>
               </div>
