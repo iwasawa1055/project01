@@ -215,22 +215,26 @@ class AppCoreError extends AppE
         }
 
         //送信設定
-        $subject = '【 障害 】' . Configure::read('app.e.mail.env_name') . ' ' . Configure::read('app.e.mail.service_name') . ' システムエラー';
         $confs = Configure::read('app.e.mail');
         $senders = $confs['sender'];
-        $message = Configure::read('app.e.mail.body');
+        $message = Configure::read('app.e.mail.body.default');
         $message .= $_message; 
 
         $envs = array();
         $envs['HOST'] = $senders['HOST'];
         $envs['PORT'] = $senders['PORT'];
         $envs['MAIL FROM'] = $senders['MAIL FROM'];
+        $envs['MAIL FROM DISP'] = $senders['MAIL FROM DISP'];
         $envs['USER'] = $senders['USER'];
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
-        $headers['Subject'] = $subject;
-        $headers['From'] = $envs['MAIL FROM'];
+        $headers['Subject'] = Configure::read('app.e.mail.subject.default');
+        $headers['From'] = sprintf(
+            '%s<%s>'
+            , $envs['MAIL FROM DISP']
+            , $envs['MAIL FROM']
+        );
 
         $receivers = $confs['receiver'];
         $headers['To'] = '';

@@ -206,7 +206,6 @@ class AppE extends Exception
 
         // $hasAbort = false;
         // $hasShut = false;
-        CakeLog::write(DEBUG_LOG, var_export($this->handlers, true));
 
 
         switch (true) {
@@ -267,7 +266,6 @@ class AppE extends Exception
         $log .= '[Response Header]' . "\n" . ($response_headers ? var_export($response_headers, true) : '-') . "\n";
         $log .= "\n";
         // Write Flag
-        CakeLog::write(DEBUG_LOG, $log);
         if ($_write) {
             CakeLog::write(ERROR_LOG, $log);
         }
@@ -293,7 +291,10 @@ class AppE extends Exception
         if ($this->log_form === null) {
             $this->log_form = $this->log(false);
         }
-        $body = Configure::read($this->config_prefix . 'mail.body'); 
+        $body = Configure::read($this->config_prefix . 'mail.body.default'); 
+        if ($this->error_level === 'Warning') {
+            $body = Configure::read($this->config_prefix . 'mail.body.warning'); 
+        }
         $body .= str_replace("\n", "\r\n", $this->log_form);
 
         $confs = Configure::read($this->config_prefix . 'mail');
@@ -303,12 +304,21 @@ class AppE extends Exception
         $envs['HOST'] = $senders['HOST'];
         $envs['PORT'] = $senders['PORT'];
         $envs['MAIL FROM'] = $senders['MAIL FROM'];
+        $envs['MAIL FROM DISP'] = $senders['MAIL FROM DISP'];
         $envs['USER'] = $senders['USER'];
         $envs['PASS'] = $senders['PASS'];
 
         $headers = array();
-        $headers['Subject'] = '【 障害 】' . $confs['env_name'] . ' ' . $confs['service_name'] . ' システムエラー';
+        $headers['Subject'] = Configure::read($this->config_prefix . 'mail.subject.default'); ;
+        if ($this->error_level === 'Warning') {
+            $headers['Subject'] = Configure::read($this->config_prefix . 'mail.subject.warning'); ;
+        }
         $headers['From'] = $envs['MAIL FROM'];
+        $headers['From'] = sprintf(
+            '%s<%s>'
+            , $envs['MAIL FROM DISP']
+            , $envs['MAIL FROM']
+        );
 
         $receivers = $confs['receiver'];
         $headers['To'] = '';

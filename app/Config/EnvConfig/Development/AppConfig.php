@@ -179,29 +179,35 @@ error_reporting(E_ALL);
 * Exception時のメール送信関連
 */
 // Error Mail Sender
-$config['app.e.mail.flag'] = false;
+$config['app.e.mail.flag'] = true;
 $config['app.e.mail.env_name'] = '開発';
 $config['app.e.mail.service_name'] = 'minikura.com';
 $config['app.e.mail.sender.HOST'] = 'mail.minikura.com';
 $config['app.e.mail.sender.PORT'] = 25;
-$config['app.e.mail.sender.MAIL FROM'] = 'minikura@terrada.co.jp';
-$config['app.e.mail.sender.MAIL FROM DISP'] = '寺田倉庫（minikura運営事務局）';
+$config['app.e.mail.sender.MAIL FROM'] = 'alert@minikura.com';
+$config['app.e.mail.sender.MAIL FROM DISP'] = 'MINIKURA開発';
 $config['app.e.mail.sender.USER'] = '';
 $config['app.e.mail.sender.PASS'] = '';
 // Receiver
-$config['app.e.mail.receiver.warning.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+//$config['app.e.mail.receiver.warning.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+$config['app.e.mail.receiver.warning.To'] = array('goto.masayuki@terrada.co.jp');
 $config['app.e.mail.receiver.warning.Cc'] = array();
 $config['app.e.mail.receiver.warning.Bcc'] = array();
-$config['app.e.mail.receiver.defect.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+//$config['app.e.mail.receiver.defect.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+$config['app.e.mail.receiver.defect.To'] = array('goto.masayuki@terrada.co.jp');
 $config['app.e.mail.receiver.defect.Cc'] = array();
 $config['app.e.mail.receiver.defect.Bcc'] = array();
-$config['app.e.mail.receiver.critical.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+//$config['app.e.mail.receiver.critical.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+$config['app.e.mail.receiver.critical.To'] = array('goto.masayuki@terrada.co.jp');
 $config['app.e.mail.receiver.critical.Cc'] = array();
 $config['app.e.mail.receiver.critical.Bcc'] = array();
-$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+//$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
+$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
-$config['app.e.mail.body'] = <<<MAIL_BODY
+$config['app.e.mail.subject.default'] = '【 障害 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' システムエラー';
+$config['app.e.mail.subject.warning'] = '【 警告 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' Warningエラー';
+$config['app.e.mail.body.default'] = <<<MAIL_BODY
 minikura.comでシステムエラーが発生しました。
 
 １〜２回発生：システム担当者は営業時間内に調査してください。
@@ -209,5 +215,14 @@ minikura.comでシステムエラーが発生しました。
 ３回連続発生：緊急調査対象です。プロジェクトリーダーに緊急対応を依頼ください。
 
 ※連続発生が条件です
+
+MAIL_BODY;
+$config['app.e.mail.body.warning'] = <<<MAIL_BODY
+以下の可能性があります。
+・URLを変更してアクセスした
+・ページのリンク切れ
+
+基本的には営業時間中に調査いたしますが、大量に発生している場合は、ページのリンク切れの可能性があり、緊急調査対象になりますのでプロジェクトリーダーに依頼ください
+
 
 MAIL_BODY;
