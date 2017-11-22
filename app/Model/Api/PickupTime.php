@@ -21,6 +21,16 @@ class PickupTime extends ApiModel
         $this->data[$this->model_name]['oem_key'] = Configure::check($app_oem_key) ? Configure::read($app_oem_key) : new AppInternalCritical(AppE::CONFIG . $app_oem_key, 500);
 
         $responses = $this->request('/pickup_time', $this->data[$this->model_name], 'GET');
+
+        if (!empty($responses->results)) {
+            foreach ($responses->results as $key => $val) {
+                // time_cd 3を削除
+                if ($val['time_cd'] == '3') {
+                    unset($responses->results[$key]);
+                }
+            }
+        }
+
         return $responses;
     }
 
