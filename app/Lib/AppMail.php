@@ -39,7 +39,7 @@ class AppMail
         $email->emailFormat('text');
         $email->template($templete);
         $email->viewVars($data);
-        $email->send();
+        CakeLog::write(MAIL_LOG, print_r($email->send(), true));
     }
     /**
      * 設定配列を取得

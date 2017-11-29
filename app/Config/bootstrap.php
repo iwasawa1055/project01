@@ -131,6 +131,8 @@ Configure::write('Dispatcher.filters', array(
  * 		ex. CakeLog::write(DEBUG_LOG, $d, ['bench']);
  * ・mail（対応する例外種別：mail）
  * 		例外のメール通知用
+ * ・relay（対応する例外種別：relay）
+ * 		APIとの通信をログファイルに出力
  */
 App::uses('CakeLog', 'Log');
 
@@ -139,12 +141,13 @@ define('ERROR_LOG', 'error');
 define('DEBUG_LOG', 'debug');
 define('MAIL_LOG', 'mail');
 define('BENCH_LOG', 'bench');
+define('RELAY_LOG', 'relay');
 
 // add mail level
 CakeLog::levels([MAIL_LOG]);
 
 // create log folder
-$folders = ['error', 'mail', 'bench', 'debug'];
+$folders = ['error', 'mail', 'bench', 'debug', 'relay'];
 foreach ($folders as $folderName) {
     if (! is_dir(LOGS . DS . $folderName)) {
         mkdir(LOGS . DS . $folderName, 2770);
@@ -162,7 +165,7 @@ CakeLog::config('error', array(
 CakeLog::config('mail', array(
     'engine' => 'File',
     'types' => array('mail'),
-    'file' => 'mail' . DS . date('Ymd') . '_' . time(),
+    'file' => 'mail' . DS . date('Ymd'),
 ));
 
 CakeLog::config('debug', array(
@@ -180,6 +183,12 @@ CakeLog::config('bench', array(
     'scopes' => array('bench'),
     'size' => '10M',
     'rotate' => 2,
+));
+
+CakeLog::config('relay', array(
+    'engine' => 'File',
+    'types' => array('relay'),
+    'file' => 'relay' . DS . date('Ymd'),
 ));
 
 App::uses('AppE', 'Lib');

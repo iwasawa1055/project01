@@ -69,7 +69,31 @@ class AppHttp
         $results['body'] = substr($responses, $header_size);
         curl_close($ch);
 
+        //* Api results log
+        self::_writeRelayLog($_url, $query, $results);
+
         return $results;
+    }
+
+    protected static function _writeRelayLog($_url, $_query, $_results)
+    {
+        $log = [];
+        $log['Log ID'] = uniqid('app_relay_', true);
+        $log['Access ID'] = isset($_SERVER['UNIQUE_ID']) ? $_SERVER['UNIQUE_ID'] : '';
+        $log['Own Host'] = isset($_SERVER['SEVER_NAME']) ? $_SERVER['SERVER_NAME'] : '-';
+        $log['Own IPv4'] = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '-';
+        $log['Client Host'] = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : '-';
+        $log['Client IPv4'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '-';
+        $log['Client User Agent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '-';
+        $log['Client Referer'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '-';
+        $log['Forward UTC'] = time();
+        $log['Forward URL'] = !empty($_url) ? $_url : '-';
+        $log['Forward Header'] = !empty($_results['request_header']) ? var_export($_results['request_header'], true) : '-';
+        $log['Forward Query'] = !empty($_query) ? var_export($_query, true) : '-';
+        $log['Reverse Header'] = !empty($_results['response_header']) ? var_export($_results['response_header'], true) : '-';
+        $log['Reverse Body'] = !empty($_results['body']) ? var_export($_results['body'], true) : '-';
+
+        CakeLog::write(RELAY_LOG, var_export($log, true) . "\n");
     }
 
     protected static function _parse($_content, $_accept = null)
