@@ -5,6 +5,7 @@
 /app/tmp/sessions
 /app/tmp/cache
 /app/tmp/sneakers
+/app/tmp/reset_password
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /build

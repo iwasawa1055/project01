@@ -3,11 +3,15 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('CustomerEmail', 'Model');
 App::uses('AppMail', 'Lib');
-
+App::uses('Folder', 'Utility');
 
 class PasswordResetController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerPasswordReset';
+    // パスワードリセット管理用ディレクトリ
+    const RESET_PASSWORD_FILE_DIR   = TMP . 'reset_password';
+    // パスワードの有効期限(30分間)
+    const RESET_PASSWORD_MAIL_LIMIT = 60 * 30;
 
     // ログイン不要なページ
     protected $checkLogined = false;
@@ -46,14 +50,19 @@ class PasswordResetController extends MinikuraController
                     return $this->redirect(['action' => 'customer_index']);
                 }
 
-                // リセット処理
-                CakeSession::renew();
+                // 再設定用キー取得
+                $key = Security::hash(date('YmdHis') . CakeText::uuid() . $to, 'md5', true);
+
+                // キーファイル名
+                $filename = date('Ymd') . '_' . $key;
+
+                // 再設定用キーファイル作成
+                $key_file_path = self::RESET_PASSWORD_FILE_DIR . DS . $filename;
+                $key_file = new File($key_file_path, true);
+                $key_file->append($to);
 
                 $mail = new AppMail();
-                $id = CakeSession::id();
-                $mail->sendPasswordReset($to, $id);
-
-                CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
+                $mail->sendPasswordReset($to, $key);
 
                 $this->Flash->set(__('customer_password_reset_mail_send'));
                 return $this->redirect(['action' => 'customer_index']);
@@ -69,37 +78,45 @@ class PasswordResetController extends MinikuraController
      */
     public function customer_add()
     {
-        $hash = Hash::get($this->request->query, 'hash');
-        if ($hash) {
-            // セッション復元
-            $newid = CakeSession::id();
-            CakeSession::id($hash);
-            session_reset();
+        $key = Hash::get($this->request->query, 'hash');
 
-            $this->request->data = CakeSession::read(self::MODEL_NAME);
-            // $this->request->data[self::MODEL_NAME]['new_password'] = '';
-            // $this->request->data[self::MODEL_NAME]['new_password_confirm'] = '';
-            CakeSession::destroy();
-
-            // 既存セッションに戻す
-            CakeSession::id($newid);
-            session_reset();
-            CakeSession::write(self::MODEL_NAME, $this->request->data);
-        }
-
-        $this->request->data = CakeSession::read(self::MODEL_NAME);
-        // $this->request->data[self::MODEL_NAME]['new_password'] = '';
-        // $this->request->data[self::MODEL_NAME]['new_password_confirm'] = '';
-
-        $this->CustomerPasswordReset->set($this->request->data);
-        if (empty($this->CustomerPasswordReset->data) ||
-            !$this->CustomerPasswordReset->validates(['fieldList' => ['email']])) {
-
-            $this->Flash->set('無効なコードです。もう一度最初からやってください。');
+        // tmpファイル形式チェック
+        if ($key === null or $key === "") {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
+            $this->Flash->set(__('customer_password_reset_expiration'));
             return $this->redirect(['action' => 'customer_index']);
         }
 
-        CakeSession::write(self::MODEL_NAME, $this->CustomerPasswordReset->data);
+        // 再発行申請ファイル取得
+        $dir   = new Folder(self::RESET_PASSWORD_FILE_DIR);
+        $files = $dir->find('[0-9]{8}_' . $key);
+
+        // tmpファイルチェック
+        if (!is_array($files) or count($files) !== 1) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
+            $this->Flash->set(__('customer_password_reset_expiration'));
+            return $this->redirect(['action' => 'customer_index']);
+        }
+
+        // tmpファイル存在チェック
+        $file = new File(self::RESET_PASSWORD_FILE_DIR . DS . $files[0]);
+        if (! $file->exists()) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not exist', 400);
+            $this->Flash->set(__('customer_password_reset_expiration'));
+            return $this->redirect(['action' => 'customer_index']);
+        }
+
+        // 有効期限チェック
+        if ($file->lastChange() < time() - self::RESET_PASSWORD_MAIL_LIMIT) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file is expired', 400);
+            $this->Flash->set(__('customer_password_reset_expiration'));
+            return $this->redirect(['action' => 'customer_index']);
+        }
+
+        // キーファイルから変更メールアドレス取り出し
+        $email = $file->read();
+        $this->request->data = [self::MODEL_NAME => ["email" => $email, "key" => $key]];
+        CakeSession::write(self::MODEL_NAME, $this->request->data);
     }
 
     /**
@@ -109,11 +126,6 @@ class PasswordResetController extends MinikuraController
     {
         // メールアドレスを上書き
         $data = CakeSession::read(self::MODEL_NAME);
-        CakeSession::delete(self::MODEL_NAME);
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
-        }
 
         $email = $data['CustomerPasswordReset']['email'];
         $this->request->data['CustomerPasswordReset']['email'] = $email;
@@ -123,6 +135,19 @@ class PasswordResetController extends MinikuraController
             // api
             $this->CustomerPasswordReset->apiPut($this->CustomerPasswordReset->toArray());
             $this->set('email', $this->CustomerPasswordReset->toArray()['email']);
+
+            // セッションの削除
+            CakeSession::delete(self::MODEL_NAME);
+
+            // キーファイルの削除
+            $dir = new Folder(self::RESET_PASSWORD_FILE_DIR);
+            $files = $dir->find('[0-9]{8}_' . $data['CustomerPasswordReset']['key']);
+            $file = new File(self::RESET_PASSWORD_FILE_DIR . DS . $files[0]);
+            if (!$file->exists()) {
+                new AppInternalInfo(AppE::FILESYSTEM . 'key file not exist');
+            } else {
+                $file->delete();
+            }
         } else {
             $this->Flash->set(__('empty_session_data'));
             return $this->redirect(['action' => 'add']);
