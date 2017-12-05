@@ -80,6 +80,13 @@ class PasswordResetController extends MinikuraController
     {
         $key = Hash::get($this->request->query, 'hash');
 
+        if (isset($key) === false) {
+            $data = CakeSession::read(self::MODEL_NAME);
+            if (isset($data['CustomerPasswordReset']['key'])) {
+                $key = $data['CustomerPasswordReset']['key'];
+            }
+        }
+
         // tmpファイル形式チェック
         if ($key === null or $key === "") {
             new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
@@ -149,7 +156,9 @@ class PasswordResetController extends MinikuraController
                 $file->delete();
             }
         } else {
-            $this->Flash->set(__('empty_session_data'));
+            foreach ($this->CustomerPasswordReset->validationErrors as $key => $val) {
+                $this->Flash->validation($val[0], ['key' => $key]);
+            }
             return $this->redirect(['action' => 'add']);
         }
     }

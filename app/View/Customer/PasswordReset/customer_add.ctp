@@ -16,11 +16,11 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerPasswordReset.new_password', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'新しいパスワード', 'type' => 'password', 'error' => false]); ?>
-                  <?php echo $this->Form->error('CustomerPasswordReset.new_password', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Flash->render('new_password'); ?>
                 </div>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('CustomerPasswordReset.new_password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'新しいパスワード（再入力）', 'type' => 'password', 'error' => false]); ?>
-                  <?php echo $this->Form->error('CustomerPasswordReset.new_password_confirm', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Flash->render('new_password_confirm'); ?>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">変更する</button>
