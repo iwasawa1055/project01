@@ -4,12 +4,32 @@ class AppHttp
 {
     public static function request($_url, $_requests = array(), $_method = null, $_headers = array())
     {
-        //* Request
-        $curls = self::_curl($_url, $_requests, $_method, $_headers);
-        //debug($curls);
+        $retry_num = 0;
+        $retry_max_num = Configure::read('api.retry_max_num');
 
-        // json形式として分解
-        $curls['body_parsed'] = self::_parse($curls['body'], 'json');
+        for ($retry_num; $retry_num <= $retry_max_num; $retry_num++) {
+            //* Request
+            $curls = self::_curl($_url, $_requests, $_method, $_headers);
+
+            // json形式として分解
+            $curls['body_parsed'] = self::_parse($curls['body'], 'json');
+
+            // 429 too many requested以外は抜ける
+            if ($curls['headers']['http_code'] !== 429) {
+                break;
+            }
+
+            // リトライ上限に達した場合
+            if ($retry_max_num == $retry_num) {
+                // ログを出力 & 発報
+                new AppMedialCritical(AppE::TOO_MANY_REQUESTS.'Maximum retry has been reached. (APIのリトライ上限に達しました) Request URI:'.$_SERVER['REQUEST_URI'].', API Endpoint:'.$_url.', Retry Count:'.$retry_num, 500);
+            } else {
+                // ログを出力
+                new AppMedialNotice(AppE::TOO_MANY_REQUESTS.'Retry API request. (APIのリトライを実行します) Request URI:'.$_SERVER['REQUEST_URI'].', API Endpoint:'.$_url.', Retry Count:'.$retry_num);
+                // スリープ処理
+                usleep(Configure::read('api.retry_sleep_sec') * 1000000);
+            }
+        }
         return $curls;
     }
 

@@ -49,6 +49,10 @@ $config['api.timeout'] = 30;
 $config['api.connect_timeout'] = 30;
 $config['api.user_agent'] = 'minikura';
 
+// APIリトライ設定
+$config['api.retry_max_num'] = 5;
+$config['api.retry_sleep_sec'] = 0.5;
+
 /**
  * 恒久ログインlogout パラメータ
  */

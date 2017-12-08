@@ -60,6 +60,7 @@ class AppE extends Exception
     const REQUEST_TIMEOUT = 'Request Timeout - ';
     const CONFLICT = 'Conflict - ';
     const REQUEST_ENTITY_TOO_LARGE = 'Request Entity Too Large - ';
+    const TOO_MANY_REQUESTS = 'Too Many Requests - ';
 
     //* 5xx
     const INTERNAL_SERVER_ERROR = 'Internal Server Error - ';
