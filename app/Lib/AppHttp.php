@@ -25,7 +25,7 @@ class AppHttp
                 new AppMedialCritical(AppE::TOO_MANY_REQUESTS.'Maximum retry has been reached. (APIのリトライ上限に達しました) Request URI:'.$_SERVER['REQUEST_URI'].', API Endpoint:'.$_url.', Retry Count:'.$retry_num, 500);
             } else {
                 // ログを出力
-                new AppMedialNotice(AppE::TOO_MANY_REQUESTS.'Retry API request. (APIのリトライを実行します) Request URI:'.$_SERVER['REQUEST_URI'].', API Endpoint:'.$_url.', Retry Count:'.$retry_num);
+                new AppMedialInfo(AppE::TOO_MANY_REQUESTS.'Retry API request. (APIのリトライを実行します) Request URI:'.$_SERVER['REQUEST_URI'].', API Endpoint:'.$_url.', Retry Count:'.$retry_num);
                 // スリープ処理
                 usleep(Configure::read('api.retry_sleep_sec') * 1000000);
             }
