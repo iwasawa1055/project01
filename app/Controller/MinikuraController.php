@@ -107,8 +107,12 @@ class MinikuraController extends AppController
                         return $this->redirect(['controller' => 'credit_card', 'action' => 'edit', 'paymentng' => true]);
                     }
                 } else {
-                    $this->Flash->paymentng_no_credit_card('');
-                    return $this->redirect(['controller' => 'login', 'action' => 'logout']);
+                    if ($this->Customer->isAmazonPay()) {
+                        return $this->redirect(['controller' => 'credit_card', 'action' => 'edit_amazon_pay', 'paymentng' => true]);
+                    }else {
+                        $this->Flash->paymentng_no_credit_card('');
+                        return $this->redirect(['controller' => 'login', 'action' => 'logout']);
+                    }
                 }
             }
 
