@@ -39,40 +39,7 @@ class TradeController extends MinikuraController
         if (!empty($sales_result->results[0])) {
             $sales = $sales_result->results[0];
         }
-        //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
-                
-        //* for og:image 
-        if (!empty($sales)) {
-            //* url  
-            $replace_image_file = preg_replace('/\.jpg/', '_fb.png', $sales['item_image'][0]['image_url']);
-            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($replace_image_file, true));
 
-            /*
-            * file_get_contents() 確認用 検証機用
-            * 開発srvから画像検証srvへ接続するには以下必要
-            * ゲートウェイがポートフォワーディングしている関係の為
-            */
-            $patterns = [];
-            $patterns[0] = '/dev-image.minikura.com:10080/';
-            $patterns[1] = '/dev-image.minikura.com:10443/';
-            $patterns[2] = '/stag-image.minikura.com:10080/';
-            $patterns[3] = '/stag-image.minikura.com:10443/';
-            $patterns[4] = '/image.minikura.com/';
-            $replacements = [];
-            $replacements[0] = 'dev-image.minikura.lan';
-            $replacements[1] = 'dev-image.minikura.lan';
-            $replacements[2] = 'stag-image.minikura.lan';
-            $replacements[3] = 'stag-image.minikura.lan';
-            $replacements[4] = 'image.minikura.lan';
-            $check_url = preg_replace($patterns, $replacements, $replace_image_file);
-            //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($check_url, true));
-
-            if (!@file_get_contents($check_url)) {
-                new AppInternalInfo('Error : found not fb.png ', $code = 500);
-            } else {
-                $sales['og_fb_image_url'] = $replace_image_file;
-            }
-        }
         $this->set('sales', $sales);
         //CakeLog::write(BENCH_LOG, __METHOD__.'('.__LINE__.')'.var_export($sales, true));
         
@@ -138,4 +105,60 @@ class TradeController extends MinikuraController
 
     }
 
+    public function ogp_image()
+    {
+        $this->autoRender = false;
+        $this->loadModel(self::MODEL_NAME_SALES);
+
+        $id = str_replace('.png', '', $this->params['id']);
+        $sales_result = $this->Sales->apiGet(['sales_id' => $id]);
+        if (!isset($sales_result->results[0])) {
+            throw new NotFoundException("Not found image of sales_id: $id");
+        }
+
+        /*
+        * 開発srvから画像検証srvへ接続するには以下必要
+        * ゲートウェイがポートフォワーディングしている関係の為
+        */
+        $patterns = [];
+        $patterns[0] = '/dev-image.minikura.com:10080/';
+        $patterns[1] = '/dev-image.minikura.com:10443/';
+        $patterns[2] = '/stag-image.minikura.com:10080/';
+        $patterns[3] = '/stag-image.minikura.com:10443/';
+        $patterns[4] = '/image.minikura.com/';
+        $replacements = [];
+        $replacements[0] = 'dev-image.minikura.lan';
+        $replacements[1] = 'dev-image.minikura.lan';
+        $replacements[2] = 'stag-image.minikura.lan';
+        $replacements[3] = 'stag-image.minikura.lan';
+        $replacements[4] = 'image.minikura.lan';
+        $replace_image_url = preg_replace($patterns, $replacements, $sales_result->results[0]['item_image'][0]['image_url']);
+
+        //* create
+        $get_image = imagecreatefromjpeg($replace_image_url);
+
+        if ($get_image === false) {
+            throw new NotFoundException("Cannot create image of url: {$replace_image_url}");
+        } else {
+            //* recommend for og:image  (横:縦,1.91:1)
+            $width = '1528';
+            $height = '800';
+            $create_image = imagecreatetruecolor($width, $height);
+            $background = imagecolorallocate($create_image, 0, 0, 0);
+            //* 背景を透明に
+            imagecolortransparent($create_image, $background);
+
+            //* $get_imageの配置position_x  =  (1528 - 800) / 2 , position_y=0
+            $position_x = ($width - $height) / 2 ;
+            $position_y = 0;
+            imagecopy($create_image, $get_image, $position_x, $position_y, 0, 0, 800, 800);
+
+            //* output
+            header('Content-Type: image/png');
+            imagepng($create_image);
+
+            //* メモリから開放
+            imagedestroy($create_image);
+        }
+    }
 }

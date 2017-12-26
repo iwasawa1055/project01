@@ -79,10 +79,10 @@ switch (true) {
         $config['site.trade.url'] = 'https://yamamoto-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://yamamoto-contents.minikura.com';
         break;
-    case $_SERVER['HTTP_HOST'] === 'yoshida-contents.minikura.com':
+    case $_SERVER['HTTP_HOST'] === 'yoshida-www.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yoshida-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://yoshida-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://yoshida-contents.minikura.com/trade/';
+        $config['site.trade.url'] = 'https://yoshida-www.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://yoshida-contents.minikura.com';
     break;
     case $_SERVER['HTTP_HOST'] === 't-adachi-contents.minikura.com':
@@ -189,17 +189,16 @@ $config['app.e.mail.sender.MAIL FROM DISP'] = 'MINIKURA開発';
 $config['app.e.mail.sender.USER'] = '';
 $config['app.e.mail.sender.PASS'] = '';
 // Receiver
-$config['app.e.mail.receiver.warning.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.warning.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.warning.Cc'] = array();
 $config['app.e.mail.receiver.warning.Bcc'] = array();
-$config['app.e.mail.receiver.defect.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.defect.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.defect.Cc'] = array();
 $config['app.e.mail.receiver.defect.Bcc'] = array();
-$config['app.e.mail.receiver.critical.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.critical.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.critical.Cc'] = array();
 $config['app.e.mail.receiver.critical.Bcc'] = array();
-//$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp', 'wada.nobuya@terrada.co.jp');
-$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp');
+$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
 $config['app.e.mail.subject.default'] = '【 障害 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' システムエラー';

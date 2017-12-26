@@ -13,21 +13,21 @@ var Act_sns =
 
         //* 画像処理とupload 
         $(document).on('click', '.btn-facebook', function(event){
-           //* image process  
-           $.ajax({
-                type: 'post',
-                dataType: 'text',
-                url: '/item/ajax_image_up',
-                data: {
-                    'image_url' : image_url,
-                },
-            }).done(function (data, textStatus, errorThrown) {
-                console.log(data);
-            }).fail(function(data, textStatus, errorThrown){
-                console.log(textStatus);
-                alert('FB画像の処理にエラーが発生しました');
-            }).always(function(data){
-            }); 
+            // //* image process
+            // $.ajax({
+            //     type: 'post',
+            //     dataType: 'text',
+            //     url: '/item/ajax_image_up',
+            //     data: {
+            //         'image_url' : image_url,
+            //     },
+            // }).done(function (data, textStatus, errorThrown) {
+            //     console.log(data);
+            // }).fail(function(data, textStatus, errorThrown){
+            //     console.log(textStatus);
+            //     alert('FB画像の処理にエラーが発生しました');
+            // }).always(function(data){
+            // });
 
             //* sns share
             var href = $(this).attr('href'); 
