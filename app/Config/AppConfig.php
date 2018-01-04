@@ -45,8 +45,8 @@ $config['api.sneakers.action_name.complete'] = 'customer_complete_sneakers';
 $config['site.sneakers.MY_SNKRS_url'] = 'https://nike.jp/sportswear/my-snkrs/';
 
 // タイムアウト（秒）
-$config['api.timeout'] = 30;
-$config['api.connect_timeout'] = 30;
+$config['api.timeout'] = 40;
+$config['api.connect_timeout'] = 40;
 $config['api.user_agent'] = 'minikura';
 
 // APIリトライ設定
