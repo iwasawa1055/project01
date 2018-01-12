@@ -112,8 +112,8 @@ $config['app']['kit']['cleaning']['work_type']['010'] = "030";
 $config['app']['kit']['cleaning']['work_type']['030'] = "032";
 
 // タイムアウト（秒）
-$config['api.timeout'] = 30;
-$config['api.connect_timeout'] = 30;
+$config['api.timeout'] = 40;
+$config['api.connect_timeout'] = 40;
 $config['api.user_agent'] = 'minikura';
 /**
  * 恒久ログインlogout パラメータ
