@@ -585,6 +585,10 @@ class FirstOrderController extends MinikuraController
                 CakeSession::write('Email', $Email);
             }
         }
+
+        // 調査用のログ #
+        CakeLog::write(ERROR_LOG, '[INFO] RegisterAmazonPay add_amazon_pay $_SERVER ' . print_r($_SERVER, true));
+        CakeLog::write(ERROR_LOG, '[INFO] RegisterAmazonPay add_amazon_pay $_REQUEST ' . print_r($_REQUEST, true));
     }
 
     /**
