@@ -50,6 +50,12 @@ class PasswordResetController extends MinikuraController
                     return $this->redirect(['action' => 'customer_index']);
                 }
 
+                // メールアドレスの形式チェック
+                if (property_exists($res, 'message') && $res->message == 'Parameter Invalid - email') {
+                    $this->CustomerPasswordReset->validationErrors = ['email' => ['メールアドレスの形式が正しくありません']];
+                    return $this->render('customer_index');
+                }
+
                 // 再設定用キー取得
                 $key = Security::hash(date('YmdHis') . CakeText::uuid() . $to, 'md5', true);
 
