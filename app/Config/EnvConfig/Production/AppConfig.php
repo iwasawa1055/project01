@@ -12,13 +12,7 @@ $config['site.env_name'] = 'production';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://minikura.com/contents/sneakers/';
 
-//* trade 
-/*
-* コンテンツ側からApacheでAlias設定中 
-* 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
-*/
 $config['site.mypage.url'] = 'https://mypage.minikura.com';
-$config['site.trade.url'] = 'https://minikura.com/trade/';
 
 /**
  * エラー表示

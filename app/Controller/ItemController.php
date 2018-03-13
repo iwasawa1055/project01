@@ -235,54 +235,26 @@ class ItemController extends MinikuraController
         // 取り出しリスト追加許可
         $outboundList = OutboundList::restore();
         $this->set('denyOutboundList', $outboundList->canAddItem($item));
-        
-        //* 販売機能
-        $customer_sales = $this->Customer->isCustomerSales();
 
-        // 販売機能無効
-        if (in_array($box['product_cd'], [PRODUCT_CD_DIRECT_INBOUND], true)) {
-            $customer_sales = false;
-        }
-
-        $this->set('customer_sales', $customer_sales);
-        //* 販売情報 
+        //* 販売情報
         $sales = null;
-        $trade_url = null;
-        $widget_url = null;
         /* viewで表示分け用
-        *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php 
+        *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php
         */
         $sales = $this->Sales->checkSales($item);
-        if (!empty($sales) && $sales['sales_status'] === SALES_STATUS_ON_SALE) {
-            $sales_id = $sales['sales_id'];
-            //* trade page url
-            $trade_url = Configure::read('site.trade.url').$sales_id;
-            //* widget page url
-            $widget_url = Configure::read('site.trade.url') . 'widget/' . $sales_id;
-        }
-        
-  
+
         // クリーニング可能フラグ
         $flgCleaning = true;
         if (!empty($sales)) {
-            if($sales['sales_status'] >= SALES_STATUS_ON_SALE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED) {
+            if ($sales['sales_status'] >= SALES_STATUS_ON_SALE && $sales['sales_status'] <= SALES_STATUS_REMITTANCE_COMPLETED) {
                 $flgCleaning = false;
             }
         }
 
-        //*  戻る用
-        $session_sales = null;
-        $session_sales = CakeSession::read(self::MODEL_NAME_SALES);
-        $this->set('session_sales', $session_sales);
-
-        $this->set('sales', $sales);
         $this->set('flg_cleaning', $flgCleaning);
-        $this->set('trade_url', $trade_url);
-        $this->set('widget_url', $widget_url);
 
         // Session Referer
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-    
     }
 
     /**

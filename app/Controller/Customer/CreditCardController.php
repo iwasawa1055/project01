@@ -80,21 +80,10 @@ class CreditCardController extends MinikuraController
     public function customer_edit()
     {
         $this->setRequestDataFromSession();
-        $step = Hash::get($this->request->params, 'step');
-        $returnTo = Hash::get($this->request->query, 'return');
 
         if ($this->request->is('get')) {
             return $this->render('customer_edit');
         } elseif ($this->request->is('post')) {
-
-            if ($returnTo === 'purchase') {
-                $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
-                return $this->redirect([
-                    'controller' => 'purchase', 'action' => 'input', 'customer' => false
-                    , 'id' => $sales_id, '?' => ['back' => 'true']
-                ]);
-            }
-
             return $this->render('customer_complete');
         }
     }

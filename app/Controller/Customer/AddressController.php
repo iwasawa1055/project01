@@ -108,12 +108,6 @@ class AddressController extends MinikuraController
                         'controller' => 'travel', 'action' => 'index', 'customer' => false,
                         '?' => ['back' => 'true']
                     ]);
-                } else if ($returnTo === 'purchase') {
-                    $sales_id = Hash::get(CakeSession::read('PaymentGMOPurchase'), 'sales_id');
-                    return $this->redirect([
-                        'controller' => 'purchase', 'action' => 'input', 'customer' => false
-                        , 'id' => $sales_id, '?' => ['back' => 'true']
-                    ]);
                 } else if ($returnTo === 'direct_inbound') {
                     return $this->redirect([
                         'controller' => 'direct_inbound', 'action' => 'input', 'customer' => false,

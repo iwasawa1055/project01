@@ -238,13 +238,6 @@ class AppController extends Controller
 
                     $referer = $_SERVER['HTTP_REFERER'];
 
-                    // trade判定 静的ページtradeから遷移した場合
-                    $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/sale.html';
-                    if (strpos($referer, $static_content_url_trade) !== false) {
-                        // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono referer trade ');
-                        return $this->redirect(['controller' => 'sale', 'action' => 'index']);
-                    }
-
                     // travel判定 静的ページtravelから遷移した場合
                     $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';
                     if (strpos($referer, $static_content_url_travel) !== false) {
@@ -264,12 +257,6 @@ class AppController extends Controller
                 $is_order_redirct = false;
 
                 $referer = $_SERVER['HTTP_REFERER'];
-
-                // trade判定 静的ページtradeから遷移した場合
-                $static_content_url_trade = Configure::read('site.static_content_url') . '/lineup/sale.html';
-                if (strpos($referer, $static_content_url_trade) !== false) {
-                    $is_order_redirct = true;
-                }
 
                 // travel判定 静的ページtravelから遷移した場合
                 $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';

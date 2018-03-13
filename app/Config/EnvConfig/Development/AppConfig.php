@@ -5,11 +5,6 @@ $config['site.env_name'] = 'development';
 // sneakers top page
 $config['site.sneakers.static_content_url'] = 'https://b-www.minikura.com/contents/sneakers/';
 
-//* trade 
-/*
-* コンテンツ側からApacheでAlias設定中 
-* 見た目コンテンツのURLを表示し、mypage側を参照する。絶対ドメインパスが必要になる
-*/
 //* Env Switch
 switch (true) {
     //** Console
@@ -21,38 +16,16 @@ switch (true) {
     case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'osada-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://osada-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://osada-contents.minikura.com/trade/';
 		$config['site.static_content_url'] = 'https://osada-contents.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'goto-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://goto-contents.minikura.com/trade/';
 		$config['site.static_content_url'] = 'https://goto-contents.minikura.com';
-        break;
-    case $_SERVER['HTTP_HOST'] === 'harasawa.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'harasawa-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://harasawa-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://harasawa.minikura.com/trade/';
-		$config['site.static_content_url'] = 'https://harasawa-contents.minikura.com';
-        break;
-
-    case $_SERVER['HTTP_HOST'] === 'maekawa-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'maekawa-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://maekawa-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://maekawa-contents.minikura.com/trade/';
-		$config['site.static_content_url'] = 'https://maekawa-contents.minikura.com';
-        break;
-    case $_SERVER['HTTP_HOST'] === 'murai-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'murai-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://murai-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://murai-contents.minikura.com/trade/';
-		$config['site.static_content_url'] = 'https://murai-contents.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'wada-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'wada-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://wada-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://wada-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://wada-contents.minikura.com';
 
         $url = 'https://wada-user-api.minikura.com';
@@ -70,30 +43,25 @@ switch (true) {
     case $_SERVER['HTTP_HOST'] === 'izumi-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'izumi-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://izumi-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://izumi-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://izumi-contents.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'yamamjoto-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yamamoto-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://yamamoto-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://yamamoto-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://yamamoto-contents.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'yoshida-www.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yoshida-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://yoshida-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://yoshida-www.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://yoshida-contents.minikura.com';
     break;
     case $_SERVER['HTTP_HOST'] === 't-adachi-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 't-adachi-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://t-adachi-mypage.minikura.com';
-        $config['site.trade.url'] = 'https://t-adachi-contents.minikura.com/trade/';
         $config['site.static_content_url'] = 'https://t-adachi-contents.minikura.com';
         break;
     default:
         $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
-        $config['site.trade.url'] = 'https://b-www.minikura.com/trade/';
 }
 
 //* strage server

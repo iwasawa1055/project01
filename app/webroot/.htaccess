@@ -1,12 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # trade
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_URI} ^/trade
-    RewriteRule ^(.*)$ /trade/index.php [L]
-
     # Standard
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
