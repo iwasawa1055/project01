@@ -71,19 +71,6 @@ class FirstOrderController extends MinikuraController
             CakeSession::write('order_option', 'code');
         }
 
-        // スニーカー判定 keyがあれば空白なければnull
-        CakeSession::delete('order_sneaker');
-        if (filter_input(INPUT_GET, Configure::read('app.sneaker_option.param')) === '') {
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' key sneaker ');
-            CakeSession::write('order_sneaker', true);
-            CakeSession::write('order_option', 'sneaker');
-        }
-        // 紹介コードが sneakers の場合
-        if ($code === Configure::read('api.sneakers.alliance_cd')) {
-            CakeSession::write('order_sneaker', true);
-            CakeSession::write('order_option', 'sneaker');
-        }
-
         /* 以下 初回購入フロー条件判定 */
         // オートログイン確認
         // tokenが存在する
@@ -108,25 +95,6 @@ class FirstOrderController extends MinikuraController
             if (!$this->Customer->isEntry()) {
                 // セッション削除しログイン画面へ遷移
                 $this->_redirectLogin();
-            }
-
-            // ログインしており、本登録でない、スニーカーユーザの場合
-            if ($this->Customer->isSneaker()) {
-                // スニーカー購入動線遷移
-                CakeSession::write('order_sneaker', true);
-                CakeSession::write('order_option', 'sneaker');
-
-                // ログイン済みスニーカーユーザ エントリーユーザ 初回購入フローへ
-                $this->_flowSwitch('add_order');
-            }
-
-            // スニーカでないエントリユーザの場合コードがあってもスニーカではない
-            CakeSession::write('order_sneaker', false);
-
-            // スニーカコードの場合 コードオプションを削除する
-            if ($code === Configure::read('api.sneakers.alliance_cd')) {
-                CakeSession::delete('order_option');
-                CakeSession::delete('order_code');
             }
 
             // エントリユーザの紹介コードの確認
@@ -170,9 +138,6 @@ class FirstOrderController extends MinikuraController
             case $order_option === 'code':
                 $kit_select_type = 'code';
                 break;
-            case $order_option === 'sneaker':
-                $kit_select_type = 'sneaker';
-                break;
             default:
                 $kit_select_type = 'all';
                 break;
@@ -191,17 +156,6 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
-    }
-
-    /**
-     * スニーカーview変更
-     * Boxの選択 静的ページからのオプション、ユーザ条件によって表示内容を変更
-     */
-    public function add_order_sneaker()
-    {
-        // refererは基本の初回購入フローを使用する
-        $this->setAction('add_order');
-        return $this->render('add_order_sneaker');
     }
 
     /**
@@ -276,10 +230,6 @@ class FirstOrderController extends MinikuraController
             case $kit_select_type === 'starter_kit':
                 $Order = $this->_setStarterOrder($Order);
                 $params = array('select_starter_kit' => $Order['starter']['starter']);
-                break;
-            case $kit_select_type === 'sneaker':
-                $Order = $this->_setSneakerOrder($Order);
-                $params = array('select_oreder_sneaker' => $Order['sneaker']['sneaker']);
                 break;
             case $kit_select_type === 'hako_limited_ver1':
                 $Order = $this->_setHakoLimitedVer1Order($Order);
@@ -361,18 +311,6 @@ class FirstOrderController extends MinikuraController
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
     }
-
-    /**
-     * スニーカーview変更
-     * ユーザ名 住所の登録
-     */
-    public function add_address_sneaker()
-    {
-        // refererは基本の初回購入フローを使用する
-        $this->setAction('add_address');
-        return $this->render('add_address_sneaker');
-    }
-
 
     /**
      * アマゾンペイメント widgetで遷移先を指定
@@ -475,10 +413,6 @@ class FirstOrderController extends MinikuraController
             case $kit_select_type === 'starter_kit':
                 $Order = $this->_setStarterOrderByGet($Order);
                 $params = array('select_starter_kit' => $Order['starter']['starter']);
-                break;
-            case $kit_select_type === 'sneaker':
-                $Order = $this->_setSneakerOrderByGet($Order);
-                $params = array('select_oreder_sneaker' => $Order['sneaker']['sneaker']);
                 break;
             case $kit_select_type === 'hako_limited_ver1':
                 $Order = $this->_setHakoLimitedVer1OrderByGet($Order);
@@ -684,17 +618,6 @@ class FirstOrderController extends MinikuraController
     }
 
     /**
-     * スニーカーview変更
-     * クレジットカード 登録
-     */
-    public function add_credit_sneaker()
-    {
-        // refererは基本の初回購入フローを使用する
-        $this->setAction('add_credit');
-        return $this->render('add_credit_sneaker');
-    }
-
-    /**
      * クレジットカード 確認
      */
     public function confirm_credit()
@@ -809,17 +732,6 @@ class FirstOrderController extends MinikuraController
 
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
-    }
-
-    /**
-     * スニーカーview変更
-     * メールアドレス 登録
-     */
-    public function add_email_sneaker()
-    {
-        // refererは基本の初回購入フローを使用する
-        $this->setAction('add_email');
-        return $this->render('add_email_sneaker');
     }
 
     /**
@@ -1533,17 +1445,6 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
     }
 
     /**
-     * スニーカーview変更
-     * オーダー 会員登録
-     */
-    public function confirm_sneaker()
-    {
-        // refererは基本の初回購入フローを使用する
-        $this->setAction('confirm');
-        return $this->render('confirm_sneaker');
-    }
-
-    /**
      * オーダー 完了
      */
     public function complete()
@@ -1621,14 +1522,7 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         if ($is_logined) {
             $res = $this->CustomerRegistInfo->regist_no_oemkey();
         } else {
-            // スニーカーユーザかどうか
-            if (!CakeSession::read('order_sneaker')) {
-                //スニーカーでない
-                $res = $this->CustomerRegistInfo->regist();
-            } else {
-                // スニーカーユーザかどうか
-                $res = $this->CustomerRegistInfo->regist_sneakers();
-            }
+            $res = $this->CustomerRegistInfo->regist();
         }
 
         if (!empty($res->error_message)) {
@@ -1824,20 +1718,6 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
     }
 
     /**
-     * スニーカーview変更
-     * オーダー 会員登録
-     */
-    public function complete_sneaker()
-    {
-        // refererは基本の初回購入フローを使用する
-        $this->setAction('complete');
-
-        // スニーカーセッション情報を削除
-        CakeSession::delete('order_sneaker');
-        return $this->render('complete_sneaker');
-    }
-
-    /**
      * オーダー 完了
      */
     public function complete_amazon_pay()
@@ -1930,14 +1810,7 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         if ($is_logined) {
             $res = $this->CustomerRegistInfoAmazonPay->regist_no_oemkey();
         } else {
-            // スニーカーユーザかどうか
-            if (!CakeSession::read('order_sneaker')) {
-                //スニーカーでない
-                $res = $this->CustomerRegistInfoAmazonPay->regist();
-            } else {
-                // スニーカーユーザかどうか
-                $res = $this->CustomerRegistInfoAmazonPay->regist_sneakers();
-            }
+            $res = $this->CustomerRegistInfoAmazonPay->regist();
         }
 
         if (!empty($res->error_message)) {
@@ -2566,15 +2439,6 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
     }
 
     /**
-     * kit box sneaker set
-     */
-    private function _setSneakerOrder($Order)
-    {
-        $Order['sneaker']['sneaker'] = (int)filter_input(INPUT_POST, 'sneaker');
-        return $Order;
-    }
-
-    /**
      * kit box starter set
      */
     private function _setStarterOrder($Order)
@@ -2637,17 +2501,10 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
 
     /**
      * フローを変更スイッチ
-     * 遷移先メッソドを指定し、スニーカの場合_sneakerメソッドへ遷移させる
      */
     private function _flowSwitch($base_method)
     {
         $set_method = $base_method;
-
-        // スニーカー判定
-        if (CakeSession::read('order_sneaker')) {
-            // CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' sneaker ');
-            $set_method = $base_method . '_sneaker';
-        }
 
         $this->redirect(['controller' => 'first_order', 'action' => $set_method]);
 
