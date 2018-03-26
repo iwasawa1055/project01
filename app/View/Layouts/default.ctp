@@ -75,13 +75,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
 
     <?php if (!empty($customer) && $customer->isLogined()) : ?>
-      <?php if($customer->isSneaker()) : ?>
-        <?php echo $this->element('navbar_right'); ?>
-        <?php echo $this->element('sidebar_sneakers'); ?>
-      <?php else:?>
-        <?php echo $this->element('navbar_right'); ?>
-        <?php echo $this->element('sidebar'); ?>
-      <?php endif;?>
+      <?php echo $this->element('navbar_right'); ?>
+      <?php echo $this->element('sidebar'); ?>
     <?php else : ?>
       <?php echo $this->element('navbar_right_nonlogin'); ?>
       <?php //echo $this->element('sidebar_nonlogin'); ?>
