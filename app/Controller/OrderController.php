@@ -590,6 +590,9 @@ class OrderController extends MinikuraController
             }
         }
 
+        // お届けコードをキットセッションにも保存
+        CakeSession::write('OrderKit.datetime_cd', $params['datetime_cd']);
+
         // amazon pay 情報取得
         // アマゾンウィジェットID取得
         $amazon_order_reference_id = filter_input(INPUT_POST, 'amazon_order_reference_id');
