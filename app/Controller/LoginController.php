@@ -106,6 +106,7 @@ class LoginController extends MinikuraController
             $this->redirect(['controller' => 'login', 'action' => 'index']);
         }
 
+        $amazon_user_id = $res['user_id'];
         CakeSession::write('login.amazon_pay.user_info', $res);
 
         $this->loadModel('CustomerLoginAmazonPay');
@@ -127,6 +128,15 @@ class LoginController extends MinikuraController
 
             // BAIDを保持
             CakeSession::write('login.amazon_pay.baid', $res->results[0]['amazon_billing_agreement_id']);
+
+            // access_tokenを保持
+            CakeSession::write('login.amazon_pay.access_token', $access_token);
+
+            // amazon_user_idを保持
+            CakeSession::write('login.amazon_pay.amazon_user_id', $amazon_user_id);
+
+            // billing_statusを保持
+            CakeSession::write('login.amazon_pay.billing_status', $res->results[0]['amazon_billing_status']);
 
             // ログイン処理
             $this->request->data['CustomerLogin']['password'] = '';

@@ -116,6 +116,13 @@ class MinikuraController extends AppController
                 }
             }
 
+            // アマペイ決済失敗ユーザー
+            if ($this->Customer->isAmazonPay()) {
+                if (CakeSession::read('login.amazon_pay.billing_status') == 3 && $this->request->prefix !== 'paymentng') {
+                    return $this->redirect(['controller' => 'credit_card', 'action' => 'edit_amazon_pay', 'paymentng' => true]);
+                }
+            }
+
             // ご利用中サービスの集計
             $this->set('product_summary', []);
             if (!$this->Customer->isEntry()) {
