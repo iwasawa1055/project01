@@ -97,12 +97,6 @@ var AppEditAmazonPay =
     },
 }
 
-/*
- * document ready
- * */
-$(function()
-{
-    AppEditAmazonPay.a();
-    AppEditAmazonPay.b();
-    AppEditAmazonPay.d();
-});
+AppEditAmazonPay.a();
+AppEditAmazonPay.b();
+AppEditAmazonPay.d();
