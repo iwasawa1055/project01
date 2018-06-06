@@ -1075,8 +1075,7 @@ class DirectInboundController extends MinikuraController
         }
 
         $this->autoRender = false;
-        $amazon_pay_data = $this->request->data['amazon_pay_data'];
-        $amazon_order_reference_id = $amazon_pay_data['amazon_order_reference_id'];
+        $amazon_order_reference_id = $this->request->data['amazon_order_reference_id'];
 
         $this->loadModel('AmazonPayModel');
         $set_param = array();
