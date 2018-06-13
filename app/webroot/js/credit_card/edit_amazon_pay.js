@@ -61,7 +61,10 @@ var AppEditAmazonPay =
                                     AppEditAmazonPay.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
                                 },
                                 onError: function(error) {
-                                    console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+                                    if(error.getErrorCode() == 'BuyerSessionExpired') {
+                                        amazon.Login.logout();
+                                        location.href = '/login/logout';
+                                    }
                                 }
                             }).bind("consentWidgetDiv ");
                         }
@@ -70,7 +73,10 @@ var AppEditAmazonPay =
                     onPaymentSelect: function () {
                     },
                     onError: function (error) {
-                        AppEditAmazonPay.c();
+                        if(error.getErrorCode() == 'BuyerSessionExpired') {
+                            amazon.Login.logout();
+                            location.href = '/login/logout';
+                        }
                     }
                 }).bind("walletWidgetDiv");
 
@@ -82,7 +88,10 @@ var AppEditAmazonPay =
                 designMode: 'responsive'
             },
             onError: function (error) {
-                AppEditAmazonPay.c();
+                if(error.getErrorCode() == 'BuyerSessionExpired') {
+                    amazon.Login.logout();
+                    location.href = '/login/logout';
+                }
             }
         }).bind("addressBookWidgetDiv");
     },
