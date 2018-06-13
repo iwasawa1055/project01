@@ -176,29 +176,27 @@ class CreditCardController extends MinikuraController
 
         $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
 
-        if($res['ResponseStatus'] != '200') {
-            $this->Flash->validation('AmazonPay情報の取得に失敗しました。', ['key' => 'amazon_pay_info']);
+        if ($res['ResponseStatus'] != '200') {
+            $this->Flash->validation('AmazonPay情報の更新処理に失敗しました。', ['key' => 'amazon_pay_info']);
             CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
             return $this->redirect('/customer/credit_card/edit_amazon_pay');
         }
 
-        // BAIDが変更された場合は保存
-        if ($regist_user_flg == 1) {
-            $this->loadModel(self::MODEL_NAME_AMAZON_PAY_INFO);
+        //baid
+        $this->loadModel(self::MODEL_NAME_AMAZON_PAY_INFO);
 
-            $data = array();
-            $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_user_id'] = CakeSession::read('login.amazon_pay.amazon_user_id');
-            $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_billing_agreement_id'] = $baid;
-            $this->AmazonPayInfo->set($data);
-            $res = $this->AmazonPayInfo->apiPatch($this->AmazonPayInfo->toArray());
+        $data = array();
+        $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_user_id'] = CakeSession::read('login.amazon_pay.amazon_user_id');
+        $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_billing_agreement_id'] = $baid;
+        $this->AmazonPayInfo->set($data);
+        $res = $this->AmazonPayInfo->apiPatch($this->AmazonPayInfo->toArray());
 
-            if ($res->status != 1) {
-                $this->Flash->validation('AmazonPay情報の登録に失敗しました。', ['key' => 'amazon_pay_info']);
-                return $this->redirect('/customer/credit_card/edit_amazon_pay');
-            }
-
-            CakeSession::write('login.amazon_pay.baid', $baid);
+        if ($res->status != 1) {
+            $this->Flash->validation('AmazonPay情報の登録に失敗しました。', ['key' => 'amazon_pay_info']);
+            return $this->redirect('/customer/credit_card/edit_amazon_pay');
         }
+
+        CakeSession::write('login.amazon_pay.baid', $baid);
 
         $this->set('debt', false);
         return $this->render('customer_complete_amazon_pay');
@@ -275,28 +273,26 @@ class CreditCardController extends MinikuraController
         $res = $this->AmazonPayModel->setConfirmBillingAgreement($set_param);
 
         if($res['ResponseStatus'] != '200') {
-            $this->Flash->validation('AmazonPay情報の取得に失敗しました。', ['key' => 'amazon_pay_info']);
+            $this->Flash->validation('AmazonPay情報の更新に失敗しました。', ['key' => 'amazon_pay_info']);
             CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
             return $this->redirect(['controller' => 'credit_card', 'action' => 'edit_amazon_pay', 'paymentng' => true]);
         }
 
-        // BAIDが変更された場合は保存
-        if ($regist_user_flg == 1) {
-            $this->loadModel(self::MODEL_NAME_AMAZON_PAY_INFO);
+        //baid
+        $this->loadModel(self::MODEL_NAME_AMAZON_PAY_INFO);
 
-            $data = array();
-            $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_user_id'] = CakeSession::read('login.amazon_pay.amazon_user_id');
-            $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_billing_agreement_id'] = $baid;
-            $this->AmazonPayInfo->set($data);
-            $res = $this->AmazonPayInfo->apiPatch($this->AmazonPayInfo->toArray());
+        $data = array();
+        $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_user_id'] = CakeSession::read('login.amazon_pay.amazon_user_id');
+        $data[self::MODEL_NAME_AMAZON_PAY_INFO]['amazon_billing_agreement_id'] = $baid;
+        $this->AmazonPayInfo->set($data);
+        $res = $this->AmazonPayInfo->apiPatch($this->AmazonPayInfo->toArray());
 
-            if ($res->status != 1) {
-                $this->Flash->validation('AmazonPay情報の登録に失敗しました。', ['key' => 'amazon_pay_info']);
-                return $this->redirect(['controller' => 'credit_card', 'action' => 'edit_amazon_pay', 'paymentng' => true]);
-            }
-
-            CakeSession::write('login.amazon_pay.baid', $baid);
+        if ($res->status != 1) {
+            $this->Flash->validation('AmazonPay情報の登録に失敗しました。', ['key' => 'amazon_pay_info']);
+            return $this->redirect(['controller' => 'credit_card', 'action' => 'edit_amazon_pay', 'paymentng' => true]);
         }
+
+        CakeSession::write('login.amazon_pay.baid', $baid);
 
         $this->set('debt', true);
         return $this->render('customer_complete_amazon_pay');
