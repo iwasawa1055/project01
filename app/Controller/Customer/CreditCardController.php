@@ -136,7 +136,7 @@ class CreditCardController extends MinikuraController
             $state = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['BillingAgreementStatus']['State'];
         }
 
-        if ($state == 'Open') {
+        if ($state == 'Open' || $state == 'Suspended') {
             $baid = CakeSession::read('login.amazon_pay.baid');
             $regist_user_flg = 0;
         } else {
@@ -232,7 +232,7 @@ class CreditCardController extends MinikuraController
             $state = $res['GetBillingAgreementDetailsResult']['BillingAgreementDetails']['BillingAgreementStatus']['State'];
         }
 
-        if ($state == 'Open') {
+        if ($state == 'Open' || $state == 'Suspended') {
             $baid = CakeSession::read('login.amazon_pay.baid');
             $regist_user_flg = 0;
         } else {
