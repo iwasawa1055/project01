@@ -77,6 +77,8 @@ var AppEditAmazonPay =
                             amazon.Login.logout();
                             location.href = '/login/logout';
                         }
+                        // BuyerSessionExpired以外のエラーの場合は、AmazonPay公式サイトへの誘導
+                        AppEditAmazonPay.e();
                     }
                 }).bind("walletWidgetDiv");
 
@@ -92,6 +94,8 @@ var AppEditAmazonPay =
                     amazon.Login.logout();
                     location.href = '/login/logout';
                 }
+                // BuyerSessionExpired以外のエラーの場合は、AmazonPay公式サイトへの誘導
+                AppEditAmazonPay.e();
             }
         }).bind("addressBookWidgetDiv");
     },
@@ -103,6 +107,14 @@ var AppEditAmazonPay =
             }
             alert('Amazon Pay をお支払方法に設定する 同意は必須です。');
         });
+    },
+    e: function () {
+        var amazon_pay_link_txt = '<p class="form-control-static col-lg-12">技術的な問題により、この画面でクレジットカード変更ができません。お手数ですがAmazonPay公式サイトからクレジットカードをご変更下さい。</p>';
+           amazon_pay_link_txt += '<br>';
+           amazon_pay_link_txt += '<span class="col-lg-12 col-md-12 col-xs-12"><a href="https://payments.amazon.co.jp/jr/your-account/ba/' + $('#amazon_billing_agreement_id').val() + '" class="btn btn-danger btn-lg btn-block">AmazonPay公式サイト</a></span>';
+        $('#dsn-amazon-pay').after(amazon_pay_link_txt);
+        $('#dsn-amazon-pay').remove();
+        $('#amazonPayComplete').remove();
     },
 }
 
