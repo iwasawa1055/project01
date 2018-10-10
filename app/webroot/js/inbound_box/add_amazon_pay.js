@@ -109,7 +109,7 @@ var AppAmazonPayWallet =
                 designMode: 'responsive'
             },
             onError: function (error) {
-                JsError.a("/inbound_box/add_amazon_pay", error);
+                JsError.a("/inbound_box/add_amazon_pay", error.getErrorCode() + error.getErrorMessage());
                 if(error.getErrorCode() == 'BuyerSessionExpired') {
                     amazon.Login.logout();
                     location.href = '/login/logout';

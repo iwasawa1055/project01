@@ -61,6 +61,7 @@ var AppEditAmazonPay =
                                     AppEditAmazonPay.buyerBillingAgreementConsentStatus = billingAgreementConsentStatus.getConsentStatus();
                                 },
                                 onError: function(error) {
+                                    JsError.a("/customer/credit_card/edit_amazon_pay", error.getErrorCode() + error.getErrorMessage());
                                     if(error.getErrorCode() == 'BuyerSessionExpired') {
                                         amazon.Login.logout();
                                         location.href = '/login/logout';
@@ -73,6 +74,7 @@ var AppEditAmazonPay =
                     onPaymentSelect: function () {
                     },
                     onError: function (error) {
+                        JsError.a("/customer/credit_card/edit_amazon_pay", error.getErrorCode() + error.getErrorMessage());
                         if(error.getErrorCode() == 'BuyerSessionExpired') {
                             amazon.Login.logout();
                             location.href = '/login/logout';
@@ -90,6 +92,7 @@ var AppEditAmazonPay =
                 designMode: 'responsive'
             },
             onError: function (error) {
+                JsError.a("/customer/credit_card/edit_amazon_pay", error.getErrorCode() + error.getErrorMessage());
                 if(error.getErrorCode() == 'BuyerSessionExpired') {
                     amazon.Login.logout();
                     location.href = '/login/logout';
