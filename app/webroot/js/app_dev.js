@@ -63,18 +63,34 @@ $(function () {
 // change contact form 
 $(function () {
   $("#ContactUsDivision").change(function () {
-      contactUsDivision = $("#ContactUsDivision").val();
+      var contactUsDivision = $("#ContactUsDivision").val();
       if (contactUsDivision === '15') {
           $("#bug_area").show();
       } else {
           $("#bug_area").hide();
+      }
+
+      if(contactUsDivision === '17') {
+          var txt_17  = "溶解サービスのお申込みにつきましては、下記項目をご記入ください。\n";
+              txt_17 += "\n";
+              txt_17 += "お申込み内容\n";
+              txt_17 += "**************************************************\n";
+              txt_17 += "【オプション：溶解サービス】\n";
+              txt_17 += "溶解する箱の商品名：minikuraHAKO \n";
+              txt_17 += "溶解する箱の個数： \n";
+              txt_17 += "溶解する箱No：HK-0000 \n";
+              txt_17 += "溶解証明書を取得する：【はい　または　いいえ】 \n";
+              txt_17 += "**************************************************";
+          $("#ContactUsText").val(txt_17);
+      } else {
+          $("#ContactUsText").val("");
       }
   });
 });
 
 // contact form default
 $(function () {
-    contactUsDivision = $("#ContactUsDivision").val();
+    var contactUsDivision = $("#ContactUsDivision").val();
     if (contactUsDivision === '15') {
         $("#bug_area").show();
     } else {
