@@ -266,15 +266,6 @@ var AppAmazonPayWallet =
                 }
             }
         }).bind("addressBookWidgetDiv");
-    },
-    c : function () {
-        if (AppAmazonPayWallet.AmazonWidgetReadyFlag === false) {
-            AppAmazonPayWallet.b();
-        }
-    },
-    d : function () {
-        // 5秒後にwidget表示の処理が実行されていない場合は、再実行
-        setTimeout(function(){AppAmazonPayWallet.c()}, 5000);
     }
 }
 
@@ -283,7 +274,7 @@ var AppAmazonUserNameDevide =
   a: function(amazon_order_reference_id)
   {
     $.post('/DirectInbound/getAmazonUserInfoDetail', {
-              amazon_pay_data: {amazon_order_reference_id}
+              amazon_order_reference_id: amazon_order_reference_id
           },
           function (data) {
             AppAmazonUserNameDevide.removeNameFormValue();
@@ -320,6 +311,9 @@ var AppAmazonUserNameDevide =
   },
 }
 
+// Amazonpay callback
+AppAmazonPayWallet.a();
+
 /*
  * document ready
  * */
@@ -331,7 +325,5 @@ $(function()
   AppAmazonPay.a();
   AppAmazonPay.b();
   AppAmazonPay.c();
-  AppAmazonPayWallet.a();
-  AppAmazonPayWallet.d();
 });
 

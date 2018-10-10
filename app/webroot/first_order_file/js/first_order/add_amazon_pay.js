@@ -257,15 +257,6 @@ var AppAmazonPayWallet =
         $('#dsn-amazon-pay').hide();
         $('#dsn-payment').hide();
         amazon.Login.logout();
-    },
-    d : function () {
-        if (AppAmazonPayWallet.AmazonWidgetReadyFlag === false) {
-            AppAmazonPayWallet.b();
-        }
-    },
-    e : function () {
-        // 5秒後にwidget表示の処理が実行されていない場合は、再実行
-        setTimeout(function(){AppAmazonPayWallet.d()}, 5000);
     }
 }
 
@@ -280,6 +271,9 @@ var AppInputOrder =
   },
 }
 
+// Amazonpay callback
+AppAmazonPayWallet.a();
+
 /*
  * document ready
  * */
@@ -289,7 +283,5 @@ $(function()
     AppAmazonPay.b();
     AppAmazonPay.c();
     AppAmazonPay.d();
-    AppAmazonPayWallet.a();
-    AppAmazonPayWallet.e();
     AppInputOrder.g();
 });

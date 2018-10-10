@@ -22,6 +22,9 @@
         <li><a class="animsition-link" href="/customer/credit_card/add"><i class="fa fa-credit-card fa-fw"></i> クレジットカード登録</a> </li>
       <?php endif; ?>
     <?php endif; ?>
+    <?php if ($customer->isAmazonPay() === true) : ?>
+      <li><a class="animsition-link" href="/customer/credit_card/edit_amazon_pay"><i class="fa fa-credit-card fa-fw"></i> クレジットカード変更</a> </li>
+    <?php endif; ?>
     <?php if (!empty($customer) && !$customer->isEntry() && !$customer->isAmazonPay()) : ?>
       <li><a class="animsition-link" href="/customer/address/"><i class="fa fa-truck fa-fw"></i> お届け先変更</a> </li>
     <?php endif; ?>

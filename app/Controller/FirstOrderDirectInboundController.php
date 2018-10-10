@@ -217,6 +217,11 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         CakeSession::write('FirstOrderDirectInbound.amazon_pay.user_info', $res);
 
+        // access_tokenを保持
+        CakeSession::write('login.amazon_pay.access_token', $access_token);
+
+        // amazon_user_idを保持
+        CakeSession::write('login.amazon_pay.amazon_user_id', $res['user_id']);
 
         $is_validation_error = false;
 

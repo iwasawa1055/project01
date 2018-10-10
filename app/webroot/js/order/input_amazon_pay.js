@@ -255,23 +255,17 @@ var AppAmazonPayWallet =
                 }
             }
         }).bind("addressBookWidgetDiv");
-    },
-    c : function () {
-        if (AppAmazonPayWallet.AmazonWidgetReadyFlag === false) {
-            AppAmazonPayWallet.b();
-        }
-    },
-    d : function () {
-        // 5秒後にwidget表示の処理が実行されていない場合は、再実行
-        setTimeout(function(){AppAmazonPayWallet.c()}, 5000);
     }
 }
+
+// amazonpay callback
+AppAmazonPayWallet.a();
+
 /*
  * document ready
  * */
 $(function()
 {
-
   AppInputOrder.g();
   AppInputOrder.init_disp1();
   AppAddOrder.a();
@@ -279,6 +273,4 @@ $(function()
   AppAmazonPay.a();
   AppAmazonPay.b();
   AppAmazonPay.c();
-  AppAmazonPayWallet.a();
-  AppAmazonPayWallet.d();
 });
