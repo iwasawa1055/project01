@@ -145,10 +145,12 @@
     <button class="btn-next-full" type="submit" formnovalidate>お届け先を入力 <i class="fa fa-chevron-circle-right"></i></button>
   </div>
   <?php if (!$customer->isEntry()): ?>
+  <div style="display:none">
   <div class="login-amazon">
     <p>お持ちのAmazonアカウントで<br>支払うことができます。</p>
     <div id="AmazonPayButton">
     </div>
+  </div>
   </div>
   <?php endif; ?>
 </section>
@@ -208,10 +210,12 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <?php if (!$customer->isEntry()): ?>
+  <div style="display:none">
   <div class="dsn-modal-login-amazon">
     <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonMono">
     </div>
+  </div>
   </div>
   <?php endif; ?>
 </div>
@@ -262,10 +266,12 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <?php if (!$customer->isEntry()): ?>
+  <div style="display:none">
 　<div class="dsn-modal-login-amazon">
    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonHako">
     </div>
+  </div>
   </div>
   <?php endif; ?>
 </div>
@@ -288,10 +294,12 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <?php if (!$customer->isEntry()): ?>
+  <div style="display:none">
 　<div class="dsn-modal-login-amazon">
    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonCleaning">
     </div>
+  </div> 
   </div> 
   <?php endif; ?> 
 </div>
@@ -315,11 +323,13 @@
   <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
   <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
   <?php if (!$customer->isEntry()): ?>
+  <div style="display:none">
 　<div class="dsn-modal-login-amazon">
    <p>お持ちのAmazonアカウントで支払うことができます。</p>
     <div id="AmazonPayButtonHakoLimitedVer1">
     </div>
   </div>  
+  </div>
   <?php endif; ?>
 </div>
 
