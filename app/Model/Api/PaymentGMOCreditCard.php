@@ -42,6 +42,12 @@ class PaymentGMOCreditCard extends ApiCachedModel
                 return $card;
             }
         }
+        # 19026 default_flgが0の場合があるので、その場合は0番目のカードを返却する
+        if (isset($d[0])) {
+            $d[0]['expire_month'] = substr($d[0]['expire'], 0, 2);
+            $d[0]['expire_year'] = substr($d[0]['expire'], 2, 2);
+            return $d[0];
+        }
         return null;
     }
 }
