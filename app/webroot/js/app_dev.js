@@ -134,6 +134,30 @@ var Act =
     }
 };
 
+var JsError =
+{
+    a: function(name, error)
+    {
+        if (typeof error === 'object' ) {
+            var error_string = JSON.stringify(error);
+        } else {
+            var error_string = error;
+        }
+
+        var params = {
+            name: name,
+            error: error_string
+        }
+
+        $.ajax({
+            url: '/JsError/index',
+            data: params,
+            dataType: 'json',
+            type: 'POST'
+        });
+    }
+}
+
 /* 指定したターゲットまでスクロールする */
 function scrollTo(_target,_correction,_speed) {
   if (!_speed) {
