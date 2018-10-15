@@ -87,6 +87,15 @@
               <label>お届け希望日時</label>
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
             </div>
+            <div class="form-group col-lg-12">
+              <div class="panel panel-red">
+                <div class="panel-heading">
+                  <label>ご注意ください</label>
+                  <p>お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
+                  内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。</p>
+                </div>
+              </div>
+            </div>
             <?php endif; ?>
             <span class="col-lg-6 col-md-6 col-xs-12">
             <a class="btn btn-primary btn-lg btn-block" href="/outbound/?back=true">戻る</a>
