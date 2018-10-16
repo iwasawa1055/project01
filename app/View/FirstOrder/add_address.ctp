@@ -61,9 +61,11 @@
         <label>お届け希望日<span class="required ">※</span></label>
         <select name="datetime_cd" id="datetime_cd" class="select-delivery focused">
           <option value="">以下からお選びください</option>
-          <?php foreach ( CakeSession::read('Address.select_delivery_list') as $key => $value ) {?>
-          <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-          <?php } ?>
+          <?php if(CakeSession::read('Address.select_delivery_list')): ?>
+            <?php foreach ( CakeSession::read('Address.select_delivery_list') as $key => $value ) {?>
+            <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
+            <?php } ?>
+          <?php endif; ?>
         </select>
         <?php echo $this->Flash->render('datetime_cd');?>
         <input type="hidden" name="select_delivery" id="select_delivery" value="<?php if (!empty(CakeSession::read('Address.select_delivery'))) : ?><?php echo h(CakeSession::read('Address.select_delivery'))?><?php else : ?><?php endif; ?>">
