@@ -83,9 +83,21 @@
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-primary btn-lg btn-block" href="/announcement/">メッセージ一覧に戻る</a>
             </span>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block" href="/contact_us/<?php echo $announcement['announcement_id']; ?>/add">この内容について問い合わせる</a>
-            </span>
+            <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_ANNOUNCEMENT) : ?>
+                <?php if ($pickup_yamato_change) : ?>
+                <span class="col-lg-6 col-md-6 col-xs-12">
+                  <a class="btn btn-danger btn-lg btn-block" href="edit.php">集荷情報を変更する</a>
+                  <p class="text-center text-alert">集荷情報は<span><?php echo $pickup_yamato_change['change_date']; ?>時</span>まで変更可能です。</p>
+                </span>
+                <?php else : ?>
+                <span class="col-lg-6 col-md-6 col-xs-12">
+                  <a class="btn btn-danger btn-lg btn-block" disabled>集荷情報を変更する</a>
+                  <p class="text-center text-alert"><span>集荷情報の変更可能時間が過ぎているため、変更できません。<br>
+                  ヤマト運輸のサポートセンターに直接ご連絡ください<br>
+                  <a href="http://www.kuronekoyamato.co.jp/ytc/center/servicecenter_list.html" target="_blank">サービスセンター一覧（外部サイト）</a></span></p>
+                  </span>
+                <?php endif; ?>
+            <?php endif; ?>
             <?php if (($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT ||
                       $announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT)
                       && !($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT && !empty($customer->getCorporatePayment()))

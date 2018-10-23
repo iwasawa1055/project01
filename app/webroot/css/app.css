@@ -587,6 +587,16 @@ ul.tile li .sale-icon {
 .announcement .body {
 	margin-bottom: 30px;
 }
+
+.text-alert {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.text-alert span {
+    color: #ff0000;
+}
+
 .box_note,
 .item_note {
 	margin-top: 10px;
@@ -859,6 +869,9 @@ h3,
 	font-size: 12em;
 	padding: 0;
 	color: #EC670E;
+}
+.text-alert {
+    font-size: 10px;
 }
 .box .item {
 	margin-bottom: 0;
