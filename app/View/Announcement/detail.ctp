@@ -86,7 +86,7 @@
             <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_ANNOUNCEMENT) : ?>
                 <?php if ($pickup_yamato_change) : ?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
-                  <a class="btn btn-danger btn-lg btn-block" href="edit.php">集荷情報を変更する</a>
+                <a class="btn btn-danger btn-lg btn-block" href="/pickup/edit/<?php echo $pickup_yamato['pickup_yamato_id']; ?>">集荷情報を変更する</a>
                   <p class="text-center text-alert">集荷情報は<span><?php echo $pickup_yamato_change['change_date']; ?>時</span>まで変更可能です。</p>
                 </span>
                 <?php else : ?>

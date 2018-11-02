@@ -239,6 +239,15 @@ msgstr "口座名義"
 msgid "outbound_expire"
 msgstr "ご返却予定日"
 
+msgid "pickup_date"
+msgstr "集荷日"
+
+msgid "pickup_time_code"
+msgstr "集荷時間"
+
+msgid "address_id"
+msgstr "集荷住所"
+
 # Validation
 msgid "notBlank"
 msgstr "%sは必須です"

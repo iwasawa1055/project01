@@ -597,6 +597,10 @@ ul.tile li .sale-icon {
     color: #ff0000;
 }
 
+.input-address {
+    margin-top: 15px;
+}
+
 .box_note,
 .item_note {
 	margin-top: 10px;

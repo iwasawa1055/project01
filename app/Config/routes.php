@@ -23,6 +23,9 @@ Router::connect('/:controller/:id/:action', [], ['id' => '[A-Z\-0-9]+']);
 Router::connect('/:controller/detail/:id', ['action' => 'detail'], ['id' => '[A-Z\-0-9]+']);
 Router::connect('/:controller/detail/:id/:action', [], ['id' => '[A-Z\-0-9]+']);
 
+// pickup
+Router::connect('/pickup/edit/:id', ['controller' => 'Pickup', 'action' => 'edit']);
+
 // top
 Router::connect('/', ['controller' => 'MyPage', 'action' => 'index']);
 
