@@ -6,9 +6,7 @@
 
         <li<?php if($active_status['item']['toggle']):?> class="active"<?php endif;?>> <a href="#"><i class="fa fa-diamond fa-fw"></i> アイテムリスト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <?php if (! empty($product_summary)):?>
-              <li> <a class="animsition-link<?php if($active_status['item']['all']):?> active<?php endif;?>" href="/item?product="><i class="fa fa-diamond fa-fw"></i> すべてのアイテム</a> </li>
-            <?php endif;?>
+            <li> <a class="animsition-link<?php if($active_status['item']['all']):?> active<?php endif;?>" href="/item?product="><i class="fa fa-diamond fa-fw"></i> すべてのアイテム</a> </li>
             <?php foreach(IN_USE_SERVICE['minikura'] as $v):?>
               <?php if(hash::get($product_summary, $v['product_cd'], '0') > 0) : ?>
                 <?php if ($v['product'] !== 'hako' ):?>
