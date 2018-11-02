@@ -7,6 +7,11 @@ $(function() {
         review();
     });
     review();
+
+    checkIncludeMonoBox()
+    $("input[type='checkbox']").click(function() {
+        checkIncludeMonoBox();
+    });
 });
 
 function review() {
@@ -65,3 +70,15 @@ function getDatetime() {
         elem_time.removeAttr("disabled");
     });
 };
+
+function checkIncludeMonoBox() {
+    // 初期化としてお知らせを消す
+    $('#dev_inbound_notice').hide();
+
+    var check_list = $('.inbound_box_select_checkbox').children('input[type="checkbox"]:checked');
+    check_list.each(function(index, element) {
+        if ($(element).attr('name').match(/MN-/)) {
+            $('#dev_inbound_notice').show();
+        }
+    });
+}

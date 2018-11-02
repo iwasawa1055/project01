@@ -117,6 +117,7 @@ var AppEditAmazonPay =
            amazon_pay_link_txt += '<span class="col-lg-12 col-md-12 col-xs-12"><a href="https://payments.amazon.co.jp/jr/your-account/ba/' + $('#amazon_billing_agreement_id').val() + '" class="btn btn-danger btn-lg btn-block">AmazonPay公式サイト</a></span>';
         $('#dsn-amazon-pay').after(amazon_pay_link_txt);
         $('#dsn-amazon-pay').remove();
+        $('#dsn-payment').remove();
         $('#amazonPayComplete').remove();
     },
 }

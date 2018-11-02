@@ -13,7 +13,7 @@
         <?php if (!empty($box['inbound_date'])) : ?>
         <p class="box-list-caption"><span>入庫日</span><?php echo $this->Html->formatYmdKanji($box['inbound_date']); ?></p>
         <?php endif;?>
-        <?php if (!empty($box['outbound_date'])) : ?>
+        <?php if (!empty($box['outbound_date']) && $box['box_status'] == BOXITEM_STATUS_OUTBOUND_DONE) : ?>
         <p class="box-list-caption"><span>出庫日</span><?php echo $this->Html->formatYmdKanji($box['outbound_date']); ?></p>
         <?php endif;?>
       </div>
