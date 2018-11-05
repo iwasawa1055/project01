@@ -38,8 +38,6 @@ class AppHttp
         //* Args No Check
         $ch = curl_init();
         $query = http_build_query($_requests);
-        //debug($_url);
-        //debug($query);
 
         //* Option
         //** Common
