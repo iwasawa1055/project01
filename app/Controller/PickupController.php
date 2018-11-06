@@ -183,7 +183,7 @@ class PickupController extends MinikuraController
 
         $this->request->data[self::MODEL_NAME_PICKUP_YAMATO] = [
             'address_id' => $address_id, 
-            'hidden_pickup_date' => str_replace('-', '/', $results['pickup_date']), 
+            'hidden_pickup_date' => $results['pickup_date'],
             'hidden_pickup_time_code' => $results['pickup_time_code'], 
         ];
 
@@ -317,7 +317,7 @@ class PickupController extends MinikuraController
         $pickup['pickup_date'] = $pickup_yamato['pickup_date'];
         $pickup['pickup_time'] = $pickup_yamato['pickup_time'];
         // 出荷日+曜日
-        $pickup['pickup_date_text'] = $pickup_yamato['pickup_date'].$this->_getWeek($pickup_yamato['pickup_date']);
+        $pickup['pickup_date_text'] = str_replace('-', '/', $pickup_yamato['pickup_date'].$this->_getWeek($pickup_yamato['pickup_date']));
         // pickup_time_codeから表示用の文字列
         $pickup['pickup_time_text'] = $this->time_text[$pickup_yamato['pickup_time']];
 
@@ -375,7 +375,7 @@ class PickupController extends MinikuraController
         for ($i = $start; $i <= $end; $i++) {
             // 当日の14時～16時 18時～21時指定OK
             if ($i === 0) {
-                $time_key = date('Y/m/d');
+                $time_key = date('Y-m-d');
                 if ($time_zone === self::TIME_ZONE_1) {
                     $days[$time_key][self::PICKUP_TIME_CODE_1] = $this->time_text[self::PICKUP_TIME_CODE_1];
                     $days[$time_key][self::PICKUP_TIME_CODE_4] = $this->time_text[self::PICKUP_TIME_CODE_4];
@@ -387,7 +387,7 @@ class PickupController extends MinikuraController
                 }
             // 全ての選択がOK
             } else {
-                $time_key = date('Y/m/d', strtotime('+'.$i. ' day'));
+                $time_key = date('Y-m-d', strtotime('+'.$i. ' day'));
                 foreach($this->time_text as $key => $val){
                     $days[$time_key][$key] = $val;
                 }

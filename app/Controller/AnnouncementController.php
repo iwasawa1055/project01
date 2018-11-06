@@ -64,7 +64,7 @@ class AnnouncementController extends MinikuraController
                 ]);
                 if ($res->isSuccess()) {
                     $pickup_yamato_change = $this->pickupYamatoChangeFlag($res);
-                    $this->set('pickup_yamato', $res->results);
+                    $this->set('pickup_yamato', $res->results[0]);
                     $this->set('pickup_yamato_change', $pickup_yamato_change);
                 }
             }
@@ -174,7 +174,7 @@ class AnnouncementController extends MinikuraController
 
         // APIで取得した値
         $pickup_date = $api_res->results[0]['pickup_date'];
-        $pickup_time_code = $api_res->results[0]['pickup_time_code'];
+        $pickup_time_code = (int)$api_res->results[0]['pickup_time_code'];
         $tracking_number = $api_res->results[0]['tracking_number']; 
         $create_datetime = explode(' ', $api_res->results[0]['create_date']);
         $create_date = $create_datetime[0];

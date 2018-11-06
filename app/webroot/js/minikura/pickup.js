@@ -147,7 +147,7 @@ function getPickupYamatoDatetime() {
                 // 集荷日程をセット
                 var date_obj = new Date(item);
                 var week = date_obj.getDay();
-                var pickup_date_text = item + ' ' + week_text[week]; 
+                var pickup_date_text = item.replace(/-/g, '/') + ' ' + week_text[week]; 
                 $('#select-pickup-date').append($('<option>').text(pickup_date_text).attr('value', item));
             }
 

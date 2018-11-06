@@ -16,12 +16,10 @@ class PickupYamato extends ApiModel
                 'required' => true,
                 'message' => ['notBlank', 'pickup_date']
             ],
-            /*
             'isDate' => [
                 'rule' => 'isDate',
                 'message' => ['format', 'pickup_date'],
             ],
-             */
         ],
         'pickup_time' => [
             'notBlank' => [
