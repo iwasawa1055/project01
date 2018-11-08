@@ -72,42 +72,6 @@ class AnnouncementController extends MinikuraController
     }
 
     /**
-     * 集荷日時変更
-     */
-    public function pickupYamatoEdit()
-    {
-        $id = $this->params['id'];
-        $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
-        if (!empty($data)) {
-            $this->set('announcement', $data);
-            $this->Announcement->apiPatch(['announcement_id' => $id]);
-
-            if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_BILLING) {
-                $billing = new Billing();
-                $res = $billing->apiGet([
-                    'announcement_id' => $id,
-                    'category_id' => $data['category_id']
-                ]);
-                if ($res->isSuccess()) {
-                    $this->set('billing', $res->results);
-                }
-            }
-
-            if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_ANNOUNCEMENT) {
-                $pickup_yamato = new PickupYamato();
-                $res = $pickup_yamato->apiGet([
-                    'announcement_id' => $id,
-                ]);
-                if ($res->isSuccess()) {
-                    $pickup_yamato_change = $this->pickupYamatoChangeFlag($res);
-                    $this->set('pickup_yamato', $res->results);
-                    $this->set('pickup_yamato_change', $pickup_yamato_change);
-                }
-            }
-        }
-    }
-
-    /**
      * 領収証ダウンロード
      * @return [type] [description]
      */
@@ -202,7 +166,7 @@ class AnnouncementController extends MinikuraController
         $change_flag = null;
         // 集荷情報変更可能日時
         $change_date = null;
-
+       
         /***  集荷依頼日が明日以降の場合 ***/
         if (strtotime(date('Ymd', strtotime('+1 day'))) <= strtotime($pickup_date)) {
             // AM指定 又は 指定希望なし
@@ -233,36 +197,50 @@ class AnnouncementController extends MinikuraController
         }
 
         /***  ユーザ締め切り時間(07:00) ***/
-        // 集荷依頼日が本日 かつ 現在時刻が21時以降 かつ 現在時刻が7時以前
+        // 集荷依頼日が本日 かつ 現在時刻が21時以降 かつ 現在時刻が7時以前 
         if (strtotime($current_date) === strtotime($pickup_date) && strtotime($current_time) > strtotime('21:00:00') && strtotime($current_time) < strtotime('07:00:00')) {
-            // (集荷依頼時刻が14時～16時 16時～18時を指定) 又は
-            if (($pickup_time_code === $pickup_time_code_4 && $pickup_time_code === $pickup_time_code_5) ||
-                // (集荷依頼時刻希望なし かつ create_dateが本日 かつ create_timeが21:05以降 かつ tracking_number(伝票番号)がnull)
-                ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) === strtotime($current_date) && strtotime($create_time) > strtotime('21:05:00') && is_null($tracking_number)) ) {
-                    $change_flag = true;
-                    $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 07:00';
+            // (集荷依頼時刻が14時～16時 16時～18時を指定)
+            if ($pickup_time_code === $pickup_time_code_4 && $pickup_time_code === $pickup_time_code_5) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 07:00';
+            }
+            // (集荷依頼時刻希望なし かつ create_dateが本日 かつ create_timeが21:05以降 かつ tracking_number(伝票番号)がnull)
+            if ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) === strtotime($current_date) && strtotime($create_time) > strtotime('21:05:00') && is_null($tracking_number)) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 07:00';
+            }
+            // (集荷依頼時刻希望なし かつ create_dateが本日より過去  かつ racking_number(伝票番号)がnull)
+            if ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) < strtotime($current_date) && is_null($tracking_number)) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 07:00';
             }
 
         /***  ユーザ締め切り時間(13:00) ***/
         // 集荷依頼日が本日 かつ 現在時刻が7時以降 かつ 現在時刻が13時以前
-        } else if (strtotime($current_time) > strtotime('07:00:00') && strtotime($current_time) < strtotime('13:00:00')) {
+        } else if (strtotime($current_date) === strtotime($pickup_date) && strtotime($current_time) > strtotime('07:00:00') && strtotime($current_time) < strtotime('13:00:00')) {
             // (集荷依頼時刻が18時～21時を指定) 又は
-            if (($pickup_time_code === $pickup_time_code_6) ||
-                // (集荷依頼時刻希望なし かつ create_dateが本日 かつ create_timeが07:05以降 かつ tracking_number(伝票番号)がnull)
-                ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) === strtotime($current_date) && strtotime($create_time) > strtotime('07:05:00') && is_null($tracking_number)) ) {
-                    $change_flag = true;
-                    $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 13:00';
+            if ($pickup_time_code === $pickup_time_code_6) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 13:00';
+            }
+            // (集荷依頼時刻希望なし かつ create_dateが本日 かつ create_timeが07:05以降 かつ tracking_number(伝票番号)がnull)
+            if ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) === strtotime($current_date) && strtotime($create_time) > strtotime('07:05:00') && is_null($tracking_number)) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 13:00';
+            }
+            // (集荷依頼時刻希望なし かつ create_dateが本日より過去  かつ racking_number(伝票番号)がnull)
+            if ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) < strtotime($current_date) && is_null($tracking_number)) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 13:00';
             }
 
         /***  ユーザ締め切り時間(21:00) ***/
         // 現在時刻が13時以降 かつ 現在時刻が21時以前 の場合
         } else if ( strtotime($current_time) > strtotime('13:00:00') && strtotime($current_time) < strtotime('21:00:00')) {
-            // (集荷依頼時刻が午前中指定 かつ 集荷日が明日指定)  又は
-            if (($pickup_time_code === $pickup_time_code_2 && strtotime('+1 day', strtotime($current_date)) === strtotime($pickup_date)) || 
-                // (集荷依頼時刻希望なし かつ create_dateが本日 かつ create_timeが13:05以降 かつ tracking_number(伝票番号)がnull)
-                ($pickup_time_code === $pickup_time_code_1 && strtotime($create_date) === strtotime($current_date) && strtotime($create_time) > strtotime('13:05:00') && is_null($tracking_number)) ) {
-                    $change_flag = true;
-                    $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 21:00';
+            // 集荷依頼時刻が午前中指定 かつ 集荷日が明日指定
+            if ($pickup_time_code === $pickup_time_code_2 && strtotime('+1 day', strtotime($current_date)) === strtotime($pickup_date)) {
+                $change_flag = true;
+                $change_date = date('Y/m/d', strtotime($pickup_date)) . ' 21:00';
             }
         }
 
