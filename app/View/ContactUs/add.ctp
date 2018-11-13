@@ -1,4 +1,4 @@
-    <?php if (!empty($validErrors)) { $this->validationErrors['ContactUs'] = $validErrors; } ?>
+    <?php if (!empty($validErrors)) { $this->validationErrors['ZendeskContactUs'] = $validErrors; } ?>
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> お問い合わせ</h1>
@@ -9,61 +9,61 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-            <?php echo $this->Form->create('ContactUs', ['url' => ['controller' => 'contact_us', 'action' => 'confirm', 'id' => $id], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php echo $this->Form->create('ZendeskContactUs', ['url' => ['controller' => 'contact_us', 'action' => 'confirm', 'id' => $id], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="col-lg-12 none-title">
 
                 <!-- エントリーユーザー向け -->
                 <?php if ($customer->isEntry()) : ?>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.lastname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.lastname', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Form->input('ZendeskContactUs.lastname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ZendeskContactUs.lastname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.lastname_kana', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Form->input('ZendeskContactUs.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ZendeskContactUs.lastname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.firstname', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Form->input('ZendeskContactUs.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ZendeskContactUs.firstname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ContactUs.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.firstname_kana', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Form->input('ZendeskContactUs.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ZendeskContactUs.firstname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <?php endif; ?>
                 <!-- エントリーユーザー向け end -->
 
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別</label>
-                  <?php echo $this->Form->select('ContactUs.division', CONTACTUS_DIVISION, ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.division', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Form->select('ZendeskContactUs.division', CONTACTUS_DIVISION, ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
+                  <?php echo $this->Form->error('ZendeskContactUs.division', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
-                  <?php echo $this->Form->textarea('ContactUs.text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
-                  <?php echo $this->Form->error('ContactUs.text', null, ['wrap' => 'p']) ?>
+                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
+                  <?php echo $this->Form->error('ZendeskContactUs.comment', null, ['wrap' => 'p']) ?>
                 </div>
 
                 <div id="bug_area">
                   <div class="form-group col-lg-12">
                     <label>不具合発生日時</label>
-                    <?php echo $this->Form->input('ContactUs.bug_datetime', ['class' => "form-control", 'error' => false, 'placeholder' => '例）2016/6/10 13:00 または 2016年6月10日 13時頃 など']); ?>
-                    <?php echo $this->Form->error('ContactUs.bug_datetime', null, ['wrap' => 'p']) ?>
+                    <?php echo $this->Form->input('ZendeskContactUs.bug_datetime', ['class' => "form-control", 'error' => false, 'placeholder' => '例）2020/1/1 13:00 または 2020年1月1日 13時頃 など']); ?>
+                    <?php echo $this->Form->error('ZendeskContactUs.bug_datetime', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
                     <label>不具合発生URL（またはページ）</label>
-                    <?php echo $this->Form->input('ContactUs.bug_url', ['class' => "form-control", 'error' => false, 'placeholder' => '例）https://mypage.minikura.com/login または ログインページ など']); ?>
-                    <?php echo $this->Form->error('ContactUs.bug_url', null, ['wrap' => 'p']) ?>
+                    <?php echo $this->Form->input('ZendeskContactUs.bug_url', ['class' => "form-control", 'error' => false, 'placeholder' => '例）https://mypage.minikura.com/login または ログインページ など']); ?>
+                    <?php echo $this->Form->error('ZendeskContactUs.bug_url', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
                     <label>ご利用環境（OS・ブラウザ）</label>
-                    <?php echo $this->Form->input('ContactUs.bug_environment', ['class' => "form-control", 'error' => false, 'placeholder' => '例）iOS9・Safari など']); ?>
-                    <?php echo $this->Form->error('ContactUs.bug_environment', null, ['wrap' => 'p']) ?>
+                    <?php echo $this->Form->input('ZendeskContactUs.bug_environment', ['class' => "form-control", 'error' => false, 'placeholder' => '例）iOS9・Safari など']); ?>
+                    <?php echo $this->Form->error('ZendeskContactUs.bug_environment', null, ['wrap' => 'p']) ?>
                   </div>
                   <div class="form-group col-lg-12">
                     <label>具体的な操作と症状</label>
-                    <?php echo $this->Form->textarea('ContactUs.bug_text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
-                    <?php echo $this->Form->error('ContactUs.bug_text', null, ['wrap' => 'p']) ?>
+                    <?php echo $this->Form->textarea('ZendeskContactUs.bug_text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
+                    <?php echo $this->Form->error('ZendeskContactUs.bug_text', null, ['wrap' => 'p']) ?>
                   </div>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">

@@ -37,13 +37,13 @@
                                             <?php echo h($data['id']);?>
                                         </div>
                                         <div class="col-xs-12 col-md-5 col-lg-6">
-                                            <span class="detail"><a href="archive.php"><strong><?php echo h($data['subject']);?></strong></a></span>
+                                            <span class="detail"><a href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>"><?php echo h($data['subject']);?></a></span>
                                         </div>
                                         <div class="col-xs-12 col-md-2 col-lg-2 pull-right">
                                             <?php if ($data['status'] === 'solved'):?>
-                                            <a class="btn btn-success btn-xs" href="archive.php">回答済み</a>
+                                            <a class="btn btn-success btn-xs" href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>">回答済み</a>
                                             <?php else:?>
-                                            <a class="btn btn-danger btn-xs" href="archive.php">回答待ち</a>
+                                            <a class="btn btn-danger btn-xs" href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>">回答待ち</a>
                                             <?php endif;?>
                                         </div>
                                     </div>

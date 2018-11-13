@@ -64,6 +64,10 @@ class AppHttp
             $options[CURLOPT_URL] = $_url;
             $options[CURLOPT_POSTFIELDS] = $query;
             $options[CURLOPT_POST] = true;
+        } elseif ($_method === 'PUT') {
+            $options[CURLOPT_URL] = $_url;
+            $options[CURLOPT_POSTFIELDS] = $query;
+            $options[CURLOPT_CUSTOMREQUEST] = $_method;
         } else {
             new AppInternalCritical(AppE::FUNC . 'Http method ['.$_method.'] not supported', 500);
         }
@@ -77,7 +81,6 @@ class AppHttp
             $error = curl_error($ch);
             new AppMedialCritical(AppE::CONNECTION . 'Could not connect external server [' . $errno . ': ' . $error . ']', 500);
         }
-        //debug($responses);
 
         //* Results
         $results['headers'] = curl_getinfo($ch);

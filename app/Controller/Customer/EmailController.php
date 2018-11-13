@@ -1,10 +1,12 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('ZedeskModel', 'Model');
 
 class EmailController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerEmail';
+    const MODEL_NAME_ZENDESK = 'ZendeskModel';
 
     /**
      * 制御前段処理.
@@ -45,6 +47,7 @@ class EmailController extends MinikuraController
 
     /**
      * 完了
+     * ※ zendeskユーザーがいる場合は更新
      */
     public function customer_complete()
     {
@@ -58,13 +61,32 @@ class EmailController extends MinikuraController
 
         $model = $this->Customer->getEmailModel($data);
         if ($model->validates()) {
-            // api
+             // api
             $res = $model->apiPatch($model->toArray());
             if (!empty($res->error_message)) {
                 $this->Flash->set($res->error_message);
                 return $this->redirect(['action' => 'edit']);
             }
 
+            // zendesk
+            $original_customer_data = $this->Customer->getInfo();
+            $this->loadModel(self::MODEL_NAME_ZENDESK);
+            $zendesk_user = $this->ZendeskModel->getUserByEmail([
+                'email' => $original_customer_data['email'],
+            ]);
+
+            if (!empty($zendesk_user)) {
+                $put_user_params = [
+                    'zendesk_user_id' => $zendesk_user['id'],
+                    'email' => $data['email'],
+                ];
+                // メールアドレス更新
+                $user_response = $this->ZendeskModel->putUserEmail($put_user_params);
+                if ($user_response === false) {
+                    new AppInternalCritical(AppE::FUNC . ' putUserEmail Failed', 500);
+                }
+            }
+ 
             $this->Customer->reloadInfo();
             $this->set('email', $model->toArray()['email']);
         } else {
