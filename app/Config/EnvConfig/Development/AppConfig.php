@@ -137,10 +137,17 @@ $config['app']['gmo']['shop_id'] = 'tshop00019362';
 /**
  * zendesk 設定値
  */
-$config['app']['zendesk']['env_type'] = 'dev';
+//$config['app']['zendesk']['env_type'] = 'dev';
+//$config['app']['zendesk']['access_point'] = 'https://minikura1539678083.zendesk.com/api';
+//$config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
+//$config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
+
+// 保田開発用
+$config['app']['zendesk']['env_type'] = 'test';
 $config['app']['zendesk']['access_point'] = 'https://minikura1539678083.zendesk.com/api';
-$config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
-$config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
+$config['app']['zendesk']['site_id'] = 'yasuda.soichi@terrada.co.jp/token';
+$config['app']['zendesk']['site_token'] = 'CFGP8PLZ7KCyEgn2uX2mQEPP6ncZJF7PQEo1HJ5H';
+
 
 /**
  * エラー表示

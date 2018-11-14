@@ -42,17 +42,11 @@ class ContactUsController extends MinikuraController
             // チケット取得
             $ticket_param = [
                 'zendesk_user_id' => $zendesk_user['id'],
-                'created_at' => strtotime($zendesk_user['created_at']),
             ];
             $response = $this->ZendeskModel->getTicketList($ticket_param);
 
-            if (!empty($response['tickets'])) {
-                $ticket_list['tickets'] = $this->paginate($response['tickets']);
-                $ticket_list['count'] = $response['count'];
-            } else {
-                $ticket_list['tickets'] = [];
-                $ticket_list['count'] = 0;
-            }
+            $ticket_list['tickets'] = $this->paginate($response['tickets']);
+            $ticket_list['count'] = $response['count'];
         } else {
             $ticket_list['count'] = 0;
         }
