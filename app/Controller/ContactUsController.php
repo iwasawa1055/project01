@@ -3,6 +3,8 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('ZedeskModel', 'Model');
 App::uses('ZedeskContactUs', 'Model');
+App::uses('Announcement', 'Model');
+App::uses('Billing', 'Model');
 
 class ContactUsController extends MinikuraController
 {
@@ -283,7 +285,19 @@ class ContactUsController extends MinikuraController
             return [];
         }
         $o = new Announcement();
-        return $o->apiGetResultsFind([], ['announcement_id' => $id]);
+        $data = $o->apiGetResultsFind([], ['announcement_id' => $id]);
+        // お知らせが請求情報の場合
+        if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_BILLING) {
+            $billing = new Billing();
+            $res = $billing->apiGet([
+                'announcement_id' => $id,
+                'category_id' => $data['category_id']
+            ]);
+            if ($res->isSuccess()) {
+                $data['billing'] = $res->results;
+            }
+        }
+        return $data;
     }
 
 

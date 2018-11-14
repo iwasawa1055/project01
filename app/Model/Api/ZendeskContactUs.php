@@ -78,7 +78,7 @@ class ZendeskContactUs extends ZendeskModel
             $annoucement .= "メッセージ内容"."\n";
             $annoucement .= "**************************************************"."\n";
             $annoucement .= "メッセージID: ".$data['announcement_id']."\n";
-            $annoucement .= $data['datetime'] . "\n\n";
+            $annoucement .= "日時: ".$data['datetime'] . "\n\n";
             $annoucement .= $data['title'] . "\n\n";
             $annoucement .= $data['text'];
         }
