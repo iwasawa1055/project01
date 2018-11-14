@@ -193,8 +193,7 @@ class ZendeskModel extends AppModel
      * チケットリスト取得
      * @param array $_param
      *         zendesk_user_id zendeskユーザーID
-     *         page ページ数
-     *         per_page 1ページあたりの表示数
+     *         created_at zendeskユーザー作成日
      * @return array
      */
     public function getTicketList($_param)
@@ -202,18 +201,26 @@ class ZendeskModel extends AppModel
         $resource = '/v2/users/' . $_param['zendesk_user_id'] . '/tickets/requested.json';
         $url = Configure::read('app.zendesk.access_point') . $resource;
         $method = 'GET';
-        $request_params = [
-            'sort_by' => 'updated_at',
-            'sort_order' =>'desc',
-        ];
 
-        $response = $this->requestZendeskApi($url, $request_params, $method);
+        // 100件以上のチケットも取得できるようにする
         $results = [];
-        if (!empty($response['body_parsed']['count'])) {
-            foreach ($response['body_parsed']['tickets'] as $key => $value) {
-                $results['tickets'][$key] = $value;
+        $page = 1;
+        do {
+            $request_params = [
+                'sort_by' => 'updated_at',
+                'sort_order' =>'desc',
+                'page' => $page,
+            ];
+            $response = $this->requestZendeskApi($url, $request_params, $method);
+            if (!empty($response['body_parsed']['count'])) {
+                foreach ($response['body_parsed']['tickets'] as $key => $value) {
+                    // TODO 退会済みユーザーのdeleted_ticketフラグは弾く(退会動線次第)
+                    $results['tickets'][] = $value;
+                }
             }
-        }
+            $page += 1;
+        } while (!is_null($response['body_parsed']['next_page']));
+
         $results['count'] = !empty($response['body_parsed']['count']) ? $response['body_parsed']['count'] : 0;
 
         return $results;

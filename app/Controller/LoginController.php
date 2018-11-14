@@ -167,6 +167,8 @@ class LoginController extends MinikuraController
         ApiCachedModel::deleteAllCache();
         OutboundList::delete();
         CustomerData::delete();
+        // zendeskユーザークリア
+        CakeSession::delete('app.data.contact_us');
 
         // クッキー削除
         setcookie('token', '', time() - 1800, '/', '.' . $_SERVER['HTTP_HOST']);
