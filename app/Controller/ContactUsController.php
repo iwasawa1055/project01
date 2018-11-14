@@ -45,8 +45,13 @@ class ContactUsController extends MinikuraController
             ];
             $response = $this->ZendeskModel->getTicketList($ticket_param);
 
-            $ticket_list['tickets'] = $this->paginate($response['tickets']);
-            $ticket_list['count'] = $response['count'];
+            if (!empty($response['tickets'])) {
+                $ticket_list['tickets'] = $this->paginate($response['tickets']);
+                $ticket_list['count'] = $response['count'];
+            } else {
+                $ticket_list['tickets'] = [];
+                $ticket_list['count'] = 0;
+            }
         } else {
             $ticket_list['count'] = 0;
         }
