@@ -327,7 +327,7 @@ class PickupController extends MinikuraController
     /**
      * 日付から曜日を返却
      */
-    private function _getWeek($date)
+    public function _getWeek($date)
     {
         $datetime = new DateTime($date);
         $week = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
@@ -362,7 +362,7 @@ class PickupController extends MinikuraController
     /**
      * ヤマト運輸の配送日情報取得
      */
-    private function _getPickupYamatoDate($time_zone)
+    public function _getPickupYamatoDate($time_zone)
     {
         if ($time_zone === self::TIME_ZONE_3) {
             $start = 1;
@@ -372,6 +372,7 @@ class PickupController extends MinikuraController
             $end = 13;
         }
 
+        $time_text = $this->getTimeText();
         for ($i = $start; $i <= $end; $i++) {
             // 当日の14時～16時 18時～21時指定OK
             if ($i === 0) {
@@ -400,12 +401,12 @@ class PickupController extends MinikuraController
     /**
      * 現在時刻からweb出荷cs締め時間をを返却
      */
-    private function getTimeZone($target_time)
+    public function getTimeZone($target_time)
     {
         $time_zone = null;
         $target_strtotime = strtotime($target_time);
 
-        foreach($this->time_slot as $key => $val) {
+        foreach($this->getTimeSlot() as $key => $val) {
             $time_zone_strtotime = strtotime($val);
             if ($time_zone_strtotime > $target_strtotime) {
                 $time_zone = $key; 
@@ -416,23 +417,24 @@ class PickupController extends MinikuraController
         return $time_zone;
     }
 
-    /**
-     * 指定できるヤマト集荷日時を返却
-     */
-    public function as_getYamatoDatetime()
+    public function getTimeSlot()
     {
-        $this->autoRender = false;
-        if (!$this->request->is('ajax')) {
-            return false;
-        }
+        return $time_slot = [
+            self::TIME_ZONE_1 => '08:00:00',
+            self::TIME_ZONE_2 => '14:00:00',
+            self::TIME_ZONE_3 => '22:00:00',
+        ];
+    }
 
-        $ret_status = true;
-        $time = date('H:i:s');
-        $time_zone = $this->getTimeZone($time);
-        $days = $this->_getPickupYamatoDate($time_zone); 
-        $result = $days;
-        $status = $ret_status;
-        return json_encode(compact('status', 'result'));
+    public function getTimeText()
+    {
+        return $time_text = [
+            self::PICKUP_TIME_CODE_1 => '指定なし',
+            self::PICKUP_TIME_CODE_2 => '午前',
+            self::PICKUP_TIME_CODE_4 => '14時～16時',
+            self::PICKUP_TIME_CODE_5 => '16時～18時',
+            self::PICKUP_TIME_CODE_6 => '18時～21時',
+        ];
     }
 
 }

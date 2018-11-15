@@ -57,7 +57,7 @@ class AnnouncementController extends MinikuraController
                 }
             }
 
-            if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_ANNOUNCEMENT) {
+            if (in_array($data['category_id'], ANNOUNCEMENT_CATEGORY_YAMATO)) {
                 $pickup_yamato = new PickupYamato();
                 $res = $pickup_yamato->apiGet([
                     'announcement_id' => $id,

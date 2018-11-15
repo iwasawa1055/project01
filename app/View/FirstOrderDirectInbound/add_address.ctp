@@ -110,24 +110,18 @@
               <div class="dsn-form">
                 <label>集荷希望日</label>
                 <select name="date_cd" id="InboundDayCd" class="dsn-select-delivery focused dev-input-form">
-                  <?php foreach ( CakeSession::read('Address.select_delivery_day_list') as $key => $value ) {?>
-                  <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                  <?php } ?>
                 </select>
                 <br>
                 <?php echo $this->Flash->render('date_cd');?>
-                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('Address.select_delivery_day'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_day'))?><?php else : ?><?php endif; ?>">
+                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php echo !empty(CakeSession::read('Address.date_cd')) ? CakeSession::read('Address.date_cd') : ''; ?>">
               </div>
               <div class="dsn-form">
                 <label>集荷希望時間</label>
                 <select name="time_cd" id="InboundTimeCd" class="dsn-select-delivery focused dev-input-form">
-                  <?php foreach ( CakeSession::read('Address.select_delivery_time_list') as $key => $value ) {?>
-                  <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                  <?php } ?>
                 </select>
+                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php echo !empty(CakeSession::read('Address.time_cd')) ?  CakeSession::read('Address.time_cd') : ''; ?>">
                 <br>
                 <?php echo $this->Flash->render('time_cd');?>
-                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php if (!empty(CakeSession::read('Address.select_delivery_time'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_time'))?><?php else : ?><?php endif; ?>">
               </div>
             </div>
             <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('Address.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>

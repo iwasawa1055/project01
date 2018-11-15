@@ -132,14 +132,14 @@ function getPickupYamatoDatetime() {
     var week_text = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)"];
 
     $.ajax({
-      url: '/pickup/as_getYamatoDatetime',
+      url: '/ajax/as_getYamatoDatetime',
       cache: false,
       dataType: 'json',
       type: 'POST'
     }).done(function (data, textStatus, jqXHR) {
         console.log(data);
-        if (data.result) {
-            pickup_date_time = data.result;
+        if (data.results) {
+            pickup_date_time = data.results;
             $('#select-pickup-date option').remove();
             //for (var item in data.result) {
             for (var item in pickup_date_time) {
@@ -168,8 +168,10 @@ function getPickupYamatoDatetime() {
         };
 
     }).fail(function (data, textStatus, errorThrown) {
+        console.log(data);
 
     }).always(function (data, textStatus, returnedObject) {
+        console.log(data);
 
     });
 };

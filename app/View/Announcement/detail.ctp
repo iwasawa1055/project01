@@ -83,7 +83,7 @@
             <span class="col-lg-6 col-md-6 col-xs-12">
               <a class="btn btn-primary btn-lg btn-block" href="/announcement/">メッセージ一覧に戻る</a>
             </span>
-            <?php if ($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_ANNOUNCEMENT) : ?>
+            <?php if (in_array($announcement['category_id'], ANNOUNCEMENT_CATEGORY_YAMATO)) : ?>
                 <?php if ($pickup_yamato_change) : ?>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-danger btn-lg btn-block" href="/pickup/edit/<?php echo $pickup_yamato['pickup_yamato_id']; ?>">集荷情報を変更する</a>
