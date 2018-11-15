@@ -65,6 +65,15 @@
         </section>
       </div>
     </div>
+    <div class="form-group col-lg-12">
+      <div class="panel panel-red">
+        <div class="panel-heading">
+          <label>ご注意ください</label>
+          <p>お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
+          内容にお間違いないか再度ご確認の上、「購入する」にお進みください。</p>
+        </div>
+      </div>
+    </div>
     <section class="dsn-nextback dev-forefront">
       <a href="/order/input" class="dsn-btn-back"><i class="fa fa-chevron-circle-left"></i> 戻る</a>
       <button type="submit" class="dsn-btn-next">購入する <i class="fa fa-chevron-circle-right"></i></button>
