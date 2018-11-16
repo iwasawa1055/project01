@@ -36,7 +36,7 @@ class InfoBox extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct(self::SESSION_CACHE_KEY, 300, 'InfoBox', '/info_box');
+        parent::__construct(self::SESSION_CACHE_KEY, 300, 'InfoBox', '/info_box', 'minikura_v5');
     }
 
     // 結果ゼロ件チェック
