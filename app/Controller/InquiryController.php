@@ -109,6 +109,9 @@ class InquiryController extends MinikuraController
         // 不具合情報の場合 内容マージ
         $inquiry_params = $this->ZendeskInquiry->editContactUsComment($inquiry_params);
 
+        // 未ログインユーザー識別コメント
+        $inquiry_params['comment'] .= "\n\n"."※ ログインしていないお客様からのお問い合わせです。"."\n";
+
         $ticket_params = [
             'subject' => INQUIRY_DIVISION[$inquiry_params['division']],
             'body' => $inquiry_params['comment'],

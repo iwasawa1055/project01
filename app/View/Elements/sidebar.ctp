@@ -62,6 +62,9 @@
         <li>
           <a href="https://help.minikura.com/hc/ja" target="_blank"><i class="fa fa-question-circle fa-fw"></i> ヘルプ</a>
         </li>
+        <li>
+          <a href="/contact_us"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a>
+        </li>
       </ul>
     </div>
   </div>

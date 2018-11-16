@@ -25,21 +25,6 @@ class ZendeskInquiry extends ZendeskModel
                 'message' => ['notBlank', 'firstname']
             ],
         ],
-        'lastname_kana' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'lastname_kana']
-            ],
-            'maxLength' => [
-                'rule' => ['maxLength', 29],
-                'message' => ['maxLength', 'lastname_kana', 29]
-            ],
-            'isFwKana' => [
-                'rule' => 'isFwKana',
-                'message' => ['isFwKana', 'lastname_kana']
-            ],
-        ],
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -53,21 +38,6 @@ class ZendeskInquiry extends ZendeskModel
             'isNotOnlySpace' => [
                 'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'firstname']
-            ],
-        ],
-        'firstname_kana' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'firstname_kana']
-            ],
-            'maxLength' => [
-                'rule' => ['maxLength', 29],
-                'message' =>  ['maxLength', 'firstname_kana', 29]
-            ],
-            'isFwKana' => [
-                'rule' => 'isFwKana',
-                'message' => ['isFwKana', 'firstname_kana']
             ],
         ],
         'email' => [

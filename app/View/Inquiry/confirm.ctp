@@ -12,7 +12,7 @@
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>お名前</label>
-                  <p class="form-control-static"><?php echo $this->CustomerInfo->setName($this->Form->data['ZendeskInquiry']); ?></p>
+                  <p class="form-control-static"><?php echo h($this->Form->data['ZendeskInquiry']['lastname']); ?> <?php echo h($this->Form->data['ZendeskInquiry']['firstname']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
                   <label>メールアドレス</label>

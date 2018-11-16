@@ -15,16 +15,8 @@
                   <?php echo $this->Form->error('ZendeskInquiry.lastname', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ZendeskInquiry.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ZendeskInquiry.lastname_kana', null, ['wrap' => 'p']) ?>
-                </div>
-                <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('ZendeskInquiry.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
                   <?php echo $this->Form->error('ZendeskInquiry.firstname', null, ['wrap' => 'p']) ?>
-                </div>
-                <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('ZendeskInquiry.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
-                  <?php echo $this->Form->error('ZendeskInquiry.firstname_kana', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
                   <?php echo $this->Form->input('ZendeskInquiry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
