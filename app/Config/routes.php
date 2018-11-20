@@ -25,6 +25,7 @@ Router::connect('/:controller/detail/:id/:action', [], ['id' => '[A-Z\-0-9]+']);
 
 // pickup
 Router::connect('/pickup/edit/:id', ['controller' => 'Pickup', 'action' => 'edit']);
+Router::connect('/pickup/edit_amazon_pay/:id', ['controller' => 'Pickup', 'action' => 'edit_amazon_pay']);
 
 // top
 Router::connect('/', ['controller' => 'MyPage', 'action' => 'index']);

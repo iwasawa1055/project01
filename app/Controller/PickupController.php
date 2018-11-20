@@ -2,6 +2,7 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('PickupYamato', 'Model');
 App::uses('CustomerAddress', 'Model');
+App::uses('PickupYamatoDateTime', 'Model');
 
 class PickupController extends MinikuraController
 {
@@ -59,6 +60,11 @@ class PickupController extends MinikuraController
      */
     public function edit()
     {
+        // アマゾンペイメント対応
+        if ($this->Customer->isAmazonPay()) {
+            $this->redirect('/pickup/edit_amazon_pay/'.$this->request->params['id']);
+        }
+
         //* session referer set
         CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
 
@@ -189,6 +195,7 @@ class PickupController extends MinikuraController
 
     }
 
+
     /**
      * 集荷情報確認画面
      */
@@ -268,6 +275,195 @@ class PickupController extends MinikuraController
     }
 
     /**
+     * 集荷情報編集画面(Amazon Pay)
+     */
+    public function edit_amazon_pay()
+    {
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $isBack = Hash::get($this->request->query, 'back');
+
+        // GET(集荷変更画面に遷移時)
+        if (!$isBack && $this->request->is('get')) {
+            // パラメータpickup_yamato_idがない場合はエラー
+            if (!$pickup_yamato_id = $this->request->params['id']) {
+                new AppTerminalError(AppE::NOT_FOUND . 'pickup_yamato_id', 404);
+            }
+
+            // PickupYamato情報取得
+            $pickup_yamato = new PickupYamato();
+            $res = $pickup_yamato->apiGet([
+                'pickup_yamato_id' => $pickup_yamato_id,
+            ]);
+
+            $pickup_detail['pickup_yamato_id'] = $pickup_yamato_id;
+            $pickup_detail['pickup_date'] = $res->results[0]['pickup_date'];
+            $pickup_detail['pickup_time'] = $res->results[0]['pickup_time_code'];
+            CakeSession::write(self::MODEL_NAME_PICKUP_YAMATO, $pickup_detail);
+        }
+
+        // POST(確認ボタン押下時)
+        if ($this->request->is('post')) {
+            $data = CakeSession::read(self::MODEL_NAME_PICKUP_YAMATO);
+            $pickup_yamato = Hash::get($this->request->data, self::MODEL_NAME_PICKUP_YAMATO);
+            $this->PickupYamato->set($this->request->data);
+
+            if (!$this->PickupYamato->validates()) {
+                return $this->render('edit_amazon_pay');
+            }
+
+            $params = [
+                'pickup_yamato_id'          => $data['pickup_yamato_id'],
+                'pickup_date'               => $pickup_yamato['pickup_date'],
+                'pickup_time'               => $pickup_yamato['pickup_time'],
+                'lastname'                  => filter_input(INPUT_POST, 'lastname'),
+                'firstname'                 => filter_input(INPUT_POST, 'firstname'),
+                'amazon_order_reference_id' => filter_input(INPUT_POST, 'amazon_order_reference_id'),
+            ];
+
+            CakeSession::delete(self::MODEL_NAME_PICKUP_YAMATO);
+            CakeSession::write(self::MODEL_NAME_PICKUP_YAMATO, $params);
+
+            // 日付のチェックを行う
+            if (!$this->_checkPickupYamatoDateTime($pickup_yamato['pickup_date'], $pickup_yamato['pickup_time'])) {
+                $this->Flash->set(__('選択した集荷日又は集荷時間は締め切られました。集荷日、集荷時間を選択し直してください。'));
+                // redirect
+                return $this->render('edit_amazon_pay');
+            }
+
+            $this->redirect('/pickup/confirm_amazon_pay');
+        }
+
+        // 戻るボタン押下時
+        if ($isBack) {
+            // session情報が取得できなかった時
+            if (!$pickup_detail = CakeSession::read(self::MODEL_NAME_PICKUP_YAMATO)) {
+               $this->redirect('/announcement');
+            }
+
+            $this->request->data[self::MODEL_NAME_PICKUP_YAMATO] = [
+                'hidden_pickup_date' => $pickup_detail['pickup_date'], 
+                'hidden_pickup_time_code' => $pickup_detail['pickup_time'], 
+            ];
+
+            // 編集画面に戻る
+            return $this->render('edit_amazon_pay');
+        }
+
+        $this->request->data[self::MODEL_NAME_PICKUP_YAMATO] = [
+            'hidden_pickup_date' => $pickup_detail['pickup_date'], 
+            'hidden_pickup_time_code' => $pickup_detail['pickup_time'], 
+        ];
+    }
+
+    /**
+     * 集荷情報確認画面(Amazon Pay)
+     */
+    public function confirm_amazon_pay()
+    {
+        //* session referer check
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Pickup/edit_amazon_pay', 'Pickup/confirm_amazon_pay', 'Pickup/complete_amazon_pay'],
+                true) === false
+        ) {
+            //* NG redirect
+            $this->redirect(['controller' => 'announcement', 'action' => 'index']);
+        }
+
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $params = CakeSession::read(self::MODEL_NAME_PICKUP_YAMATO);
+
+        // 住所情報等を取得
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_order_reference_id'] = $params['amazon_order_reference_id'];
+        $set_param['address_consent_token'] = CakeSession::read(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY);
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        // GetOrderReferenceDetails
+        if($res['ResponseStatus'] != '200') {
+            // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+            $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
+            return $this->redirect(['action' => 'add_amazon_pay']);
+        }
+
+        $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+        $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
+
+        $data_amazon_pay = array();
+
+        $PostalCode = $this->_editPostalFormat($physicaldestination['PostalCode']);
+        $data_amazon_pay['postal']      = $PostalCode;
+        $data_amazon_pay['pref']        = $physicaldestination['StateOrRegion'];
+
+        $data_amazon_pay['address1'] = $physicaldestination['AddressLine1'];
+        $data_amazon_pay['address2'] = $physicaldestination['AddressLine2'];
+        $data_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
+        $data_amazon_pay['tel1']        = $physicaldestination['Phone'];
+
+        // 名前上書き
+        $data_amazon_pay['name']   = $params['lastname'].$params['firstname'];
+        $data_amazon_pay['name_kana']  = ' ';
+        $data_amazon_pay['lastname']   = $params['lastname'];
+        $data_amazon_pay['firstname']  = $params['firstname'];
+        $data_amazon_pay['lastname_kana']   = ' ';
+        $data_amazon_pay['firstname_kana']  = ' ';
+        $data_amazon_pay['pickup_yamato_id'] = $params['pickup_yamato_id'];
+        $data_amazon_pay['pickup_date']   = $params['pickup_date'];
+        $data_amazon_pay['pickup_time']   = $params['pickup_time'];
+        $data_amazon_pay['pickup_date_text']   = str_replace('-', '/', $data_amazon_pay['pickup_date'].$this->_getWeek($data_amazon_pay['pickup_date']));
+        $data_amazon_pay['pickup_time_text']   = $this->time_text[$data_amazon_pay['pickup_time']];
+
+        CakeSession::delete(self::MODEL_NAME_PICKUP_YAMATO);
+        CakeSession::write(self::MODEL_NAME_PICKUP_YAMATO, $data_amazon_pay);
+
+        $this->set('pickup_confirm', $data_amazon_pay);
+    }
+
+
+    /**
+     * 集荷情報完了画面(Amazon pay)
+     */
+    public function complete_amazon_pay()
+    {
+        $pickup_data = CakeSession::read(self::MODEL_NAME_PICKUP_YAMATO);
+
+        // 日付のチェックを行う
+        if (!$this->_checkPickupYamatoDateTime($pickup_data['pickup_date'], $pickup_data['pickup_time'])) {
+            $this->Flash->set(__('選択した集荷日又は集荷時間は締め切られました。集荷日、集荷時間を選択し直してください。'));
+            // redirect
+            return $this->render('edit_amazon_pay');
+        }
+
+        // PickupYamato
+        $pickup_yamato = new PickupYamato();
+        // 更新のパラメータ
+        $res = $pickup_yamato->apiPatch([
+            'pickup_yamato_id' => $pickup_data['pickup_yamato_id'],
+            'pickup_yamato_name' => $pickup_data['name'],
+            'pickup_yamato_postcode' => str_replace('-', '', $pickup_data['postal']),
+            'pickup_yamato_address1' => $pickup_data['pref'].$pickup_data['address1'],
+            'pickup_yamato_address2' => $pickup_data['address2'].$pickup_data['address3'],
+            'pickup_yamato_telephone' => $pickup_data['tel1'],
+            'pickup_date' => $pickup_data['pickup_date'],
+            'pickup_time_code' => $pickup_data['pickup_time'],
+        ]);
+
+        // 更新成功
+        if ($res->isSuccess()) {
+            return $this->render('complete');
+        } else {
+            $this->Flash->set(__('集荷変更処理が失敗しました。再度登録をしてください。'));
+            // redirect
+            return $this->render('edit_amazon_pay');
+        }
+    }
+
+    /**
      * Sessionから画面表示用に配列に代入
      */
     private function _getPickupDetail()
@@ -340,19 +536,14 @@ class PickupController extends MinikuraController
      */
     private function _checkPickupYamatoDateTime($pickup_date, $pickup_time_code)
     {
-        $time = date('H:i:s');
-        $time_zone = $this->getTimeZone($time);
-        $days = $this->_getPickupYamatoDate($time_zone); 
+        // 集荷日の確認
+        $pickup_yamato_datetime = new PickupYamatoDateTime();
+        $datetime = json_decode($pickup_yamato_datetime->getPickupYamatoDateTime(), true);
 
-        // 集荷日が存在しない場合はエラー
-        if (!array_key_exists($pickup_date, $days)) {
+        if (!array_key_exists($pickup_date, $datetime['results']['contents'])) {
             return false;
         }
-
-        // 集荷日から集荷時間を取得する
-        $times = $days[$pickup_date];
-        // 集荷時間が存在しない場合はエラー
-        if (!array_key_exists($pickup_time_code, $times)) {
+        if (!array_key_exists($pickup_time_code, $datetime['results']['contents'][$pickup_date])) {
             return false;
         }
 
@@ -360,70 +551,41 @@ class PickupController extends MinikuraController
     }
 
     /**
-     * ヤマト運輸の配送日情報取得
+     *
      */
-    public function _getPickupYamatoDate($time_zone)
+    public function getAmazonUserInfoDetail()
     {
-        if ($time_zone === self::TIME_ZONE_3) {
-            $start = 1;
-            $end = 14;
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+        $amazon_order_reference_id = $this->request->data['amazon_order_reference_id'];
+
+        $this->loadModel('AmazonPayModel');
+        $set_param = array();
+        $set_param['amazon_order_reference_id'] = $amazon_order_reference_id;
+        $set_param['address_consent_token'] = $this->Customer->getAmazonPayAccessKey();
+        $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+
+        $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+        // 住所に関する箇所を取得
+        $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+
+        $address = array();
+        $address['name'] = $physicaldestination['Name'];
+
+        $name = array();
+        $name = $this->AmazonPayModel->devideUserName($address['name']);
+
+        if (empty($name['lastname']) || empty($name['firstname']))
+        {
+            $status = false;
         } else {
-            $start = 0;
-            $end = 13;
+            $status =  true;
         }
 
-        $time_text = $this->getTimeText();
-        for ($i = $start; $i <= $end; $i++) {
-            // 当日の14時～16時 18時～21時指定OK
-            if ($i === 0) {
-                $time_key = date('Y-m-d');
-                if ($time_zone === self::TIME_ZONE_1) {
-                    $days[$time_key][self::PICKUP_TIME_CODE_1] = $this->time_text[self::PICKUP_TIME_CODE_1];
-                    $days[$time_key][self::PICKUP_TIME_CODE_4] = $this->time_text[self::PICKUP_TIME_CODE_4];
-                    $days[$time_key][self::PICKUP_TIME_CODE_5] = $this->time_text[self::PICKUP_TIME_CODE_5];
-                    $days[$time_key][self::PICKUP_TIME_CODE_6] = $this->time_text[self::PICKUP_TIME_CODE_6];
-                } else if($time_zone === self::TIME_ZONE_2){
-                    $days[$time_key][self::PICKUP_TIME_CODE_1] = $this->time_text[self::PICKUP_TIME_CODE_1];
-                    $days[$time_key][self::PICKUP_TIME_CODE_6] = $this->time_text[self::PICKUP_TIME_CODE_6];
-                }
-            // 全ての選択がOK
-            } else {
-                $time_key = date('Y-m-d', strtotime('+'.$i. ' day'));
-                foreach($this->time_text as $key => $val){
-                    $days[$time_key][$key] = $val;
-                }
-            }
-        }
-
-        return $days;
-    }
-
-    /**
-     * 現在時刻からweb出荷cs締め時間をを返却
-     */
-    public function getTimeZone($target_time)
-    {
-        $time_zone = null;
-        $target_strtotime = strtotime($target_time);
-
-        foreach($this->getTimeSlot() as $key => $val) {
-            $time_zone_strtotime = strtotime($val);
-            if ($time_zone_strtotime > $target_strtotime) {
-                $time_zone = $key; 
-                break;
-            } 
-        }
-
-        return $time_zone;
-    }
-
-    public function getTimeSlot()
-    {
-        return $time_slot = [
-            self::TIME_ZONE_1 => '08:00:00',
-            self::TIME_ZONE_2 => '14:00:00',
-            self::TIME_ZONE_3 => '22:00:00',
-        ];
+        return json_encode(compact('status', 'name'));
     }
 
     public function getTimeText()
@@ -436,5 +598,4 @@ class PickupController extends MinikuraController
             self::PICKUP_TIME_CODE_6 => '18時～21時',
         ];
     }
-
 }
