@@ -18,14 +18,13 @@ class AjaxController extends MinikuraController
     public function as_getYamatoDatetime()
     {
         $this->autoRender = false;
-
         if (!$this->request->is('ajax')) {
             return false;
         }
 
         $pickup_yamato_datetime = new PickupYamatoDateTime();
-        $datetime = json_decode($pickup_yamato_datetime->getPickupYamatoDateTime(), true);
-        $results = $datetime['results']['contents'];
+        $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
+        $results = $datetime->results;
 
         return json_encode(compact('results'));
     }

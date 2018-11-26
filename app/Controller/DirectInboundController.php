@@ -3,10 +3,12 @@
 App::uses('MinikuraController', 'Controller');
 App::uses('CustomerKitPrice', 'Model');
 App::uses('InboundDirect', 'Model');
+App::uses('InboundDirectYamato', 'Model');
 App::uses('InboundDirectArrival', 'Model');
 App::uses('DatePickup', 'Model');
 App::uses('TimePickup', 'Model');
 App::uses('AmazonPayModel', 'Model');
+App::uses('PickupYamatoDateTime', 'Model');
 
 class DirectInboundController extends MinikuraController
 {
@@ -788,10 +790,9 @@ class DirectInboundController extends MinikuraController
             $date_cd = CakeSession::read('SelectTime.date_cd');
 
             // 日付リストの確認
-            $date_list = $this->_getInboundDate();
-
-            foreach ($date_list as $key => $value) {
-                if ($value['date_cd'] === $date_cd) {
+            $datetime_list = $this->_getInboundDateTime();
+            foreach ($datetime_list->results as $key => $value) {
+                if ($key === $date_cd) {
                     $check_address_datetime_cd = true;
                 }
             }
@@ -807,9 +808,8 @@ class DirectInboundController extends MinikuraController
             $time_cd = CakeSession::read('SelectTime.time_cd');
 
             // 時間リストの確認
-            $time_list = $this->_getInboundTime();
-            foreach ($time_list as $key => $value) {
-                if ($value['time_cd'] === $time_cd) {
+            foreach ($datetime_list->results[$date_cd] as $key => $value) {
+                if ($key === $time_cd) {
                     $check_address_datetime_cd = true;
                 }
             }
@@ -837,6 +837,7 @@ class DirectInboundController extends MinikuraController
         // 入庫
 
         $this->InboundDirect = new InboundDirect();
+        $this->InboundDirectYamato = new InboundDirectYamato();
 
         $inbound_direct = array();
         $inbound_direct['box']          = $box;
@@ -854,12 +855,14 @@ class DirectInboundController extends MinikuraController
             $inbound_direct['address3'] = CakeSession::read('Address.address3');
             $inbound_direct['day_cd'] = CakeSession::read('SelectTime.date_cd');
             $inbound_direct['time_cd'] = CakeSession::read('SelectTime.time_cd');
+            $res = $this->InboundDirectYamato->postInboundDirectYamato($inbound_direct);
         } else {
             // 着払い
             $inbound_direct['direct_type']          = "1";
+            $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         }
 
-        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
+        //$res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('confirm');
@@ -923,10 +926,9 @@ class DirectInboundController extends MinikuraController
             $date_cd = CakeSession::read('SelectTime.date_cd');
 
             // 日付リストの確認
-            $date_list = $this->_getInboundDate();
-
-            foreach ($date_list as $key => $value) {
-                if ($value['date_cd'] === $date_cd) {
+            $datetime_list = $this->_getInboundDateTime();
+            foreach ($datetime_list->results as $key => $value) {
+                if ($key === $date_cd) {
                     $check_address_datetime_cd = true;
                 }
             }
@@ -942,9 +944,8 @@ class DirectInboundController extends MinikuraController
             $time_cd = CakeSession::read('SelectTime.time_cd');
 
             // 時間リストの確認
-            $time_list = $this->_getInboundTime();
-            foreach ($time_list as $key => $value) {
-                if ($value['time_cd'] === $time_cd) {
+            foreach ($datetime_list->results[$date_cd] as $key => $value) {
+                if ($key === $time_cd) {
                     $check_address_datetime_cd = true;
                 }
             }
@@ -972,6 +973,7 @@ class DirectInboundController extends MinikuraController
         // 入庫
 
         $this->InboundDirect = new InboundDirect();
+        $this->InboundDirectYamato = new InboundDirectYamato();
 
         $inbound_direct = array();
         $inbound_direct['box']          = $box;
@@ -989,12 +991,13 @@ class DirectInboundController extends MinikuraController
             $inbound_direct['address3'] = CakeSession::read('Address.address3');
             $inbound_direct['day_cd'] = CakeSession::read('SelectTime.date_cd');
             $inbound_direct['time_cd'] = CakeSession::read('SelectTime.time_cd');
+            $res = $this->InboundDirectYamato->postInboundDirectYamato($inbound_direct);
         } else {
             // 着払い
             $inbound_direct['direct_type']          = "1";
+            $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         }
 
-        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('confirm_amazon_pay');
@@ -1101,6 +1104,16 @@ class DirectInboundController extends MinikuraController
         }
 
         return json_encode(compact('status', 'name'));
+    }
+
+    /**
+     * ヤマト運輸の配送日時情報取得
+     */
+    private function _getInboundDateTime()
+    {
+        $pickupYamato = new PickupYamatoDateTime();
+        $datetime = $pickupYamato->getPickupYamatoDateTime();
+        return $datetime;
     }
 
     /**

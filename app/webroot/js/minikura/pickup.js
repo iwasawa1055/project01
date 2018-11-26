@@ -6,11 +6,11 @@ $(function() {
     // 郵便番号検索
     blurSearchAddressPostal();
     //集荷日を選択時に集荷時間をセットする
-    changeSelectPickup();
+    PickupYamato.changeSelectPickup();
     // 集荷の住所セレクトボックス表示制御
     dispAddressAdd();
     // 集荷日と集荷時間取得
-    getPickupYamatoDatetime();
+    PickupYamato.getDateTime();
 
     //** Auto Kana
     $('input.lastname').airAutoKana(
@@ -49,18 +49,6 @@ function blurSearchAddressPostal() {
 
         $('.search-address-error-message').remove();
         searchAddress(postal);
-    });
-}
-
-function changeSelectPickup() {
-    $('select.select-pickup-date').change(function() {
-        var change_pickup_date = $('#select-pickup-date option:selected').val();
-        $('select.select-pickup-time option').remove();
-        console.log(change_pickup_date);
-        for(var item in pickup_date_time[change_pickup_date]) {
-            var pickup_time_text = pickup_date_time[change_pickup_date][item];
-            $('select.select-pickup-time').append($('<option>').text(pickup_time_text).attr('value', item));
-        }
     });
 }
 
@@ -126,52 +114,3 @@ function searchAddress(postalCode) {
         $('#address_id').val('-99');
     }
  }
-
-function getPickupYamatoDatetime() {
-
-    var week_text = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)"];
-
-    $.ajax({
-      url: '/ajax/as_getYamatoDatetime',
-      cache: false,
-      dataType: 'json',
-      type: 'POST'
-    }).done(function (data, textStatus, jqXHR) {
-        console.log(data);
-        if (data.results) {
-            pickup_date_time = data.results;
-            $('#select-pickup-date option').remove();
-            //for (var item in data.result) {
-            for (var item in pickup_date_time) {
-                //console.log(new Date(item));
-                // 集荷日程をセット
-                var date_obj = new Date(item);
-                var week = date_obj.getDay();
-                var pickup_date_text = item.replace(/-/g, '/') + ' ' + week_text[week]; 
-                $('#select-pickup-date').append($('<option>').text(pickup_date_text).attr('value', item));
-            }
-
-            // 現在登録されている集荷依頼日
-            var pickup_date = $('#pickup_date').val();
-            // 選択状態にする
-            $("#select-pickup-date").val(pickup_date);
-
-            // 現在登録されている集荷時間
-            var pickup_time_code = $('#pickup_time_code').val();
-
-            $('#select-pickup-time option').remove();
-            for(var item in pickup_date_time[pickup_date]) {
-                var pickup_time_text = pickup_date_time[pickup_date][item];
-                $('#select-pickup-time').append($('<option>').text(pickup_time_text).attr('value', item));
-            }
-            $("#select-pickup-time").val(pickup_time_code);
-        };
-
-    }).fail(function (data, textStatus, errorThrown) {
-        console.log(data);
-
-    }).always(function (data, textStatus, returnedObject) {
-        console.log(data);
-
-    });
-};

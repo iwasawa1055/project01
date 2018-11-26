@@ -4,7 +4,6 @@ var AppAddAdress =
 {
     DELIVERY_ID_PICKUP : '6',
     DELIVERY_ID_MANUAL : '7',
-
     a: function(){
         var week_text = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)"];
 
@@ -159,7 +158,9 @@ var AppAmazonPayLogin =
  * */
 $(function()
 {
-    AppAddAdress.a();
+    PickupYamato.getDateTime();
+    PickupYamato.changeSelectPickup();
+    //AppAddAdress.a();
     AppAddAdress.b();
     AppAddAdress.c();
     AppAddAdress.d();

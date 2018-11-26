@@ -1,5 +1,6 @@
 var DELIVERY_ID_PICKUP = '6';
 var DELIVERY_ID_MANUAL = '7';
+var pickup_date_time;
 $(function() {
 
     $('#InboundDeliveryCarrier').change(function() {
@@ -12,6 +13,8 @@ $(function() {
     $("input[type='checkbox']").click(function() {
         checkIncludeMonoBox();
     });
+
+    changeSelectPickup();
 });
 
 function review() {
@@ -28,7 +31,7 @@ function review() {
     }
 }
 
-function getDatetime() {
+function getDatetime(day_cd) {
     var elem_deca = $('#InboundDeliveryCarrier');
     var elem_day = $('#InboundDayCd');
     var elem_time = $('#InboundTimeCd');
@@ -44,23 +47,36 @@ function getDatetime() {
     if (!elem_deca.val() || elem_deca.val().indexOf(DELIVERY_ID_PICKUP) === -1) {
       return;
     }
-
     $.post('/inbound/box/getInboundDatetime', {
             Inbound: {delivery_carrier: elem_deca.val()}
         },
         function(data) {
-            if (data.result.date) {
+                console.log(data.result.datetime);
+            if (data.result.datetime) {
+                // 日付セレクトボックス
+                var date = null;
                 var optionItems = new Array();
                 $.each(data.result.date, function() {
+                    if (day_cd) {
+                        date = day_cd;
+                    }
+                    if (!date) {
+                        date = this.date_cd;
+                    }
                     optionItems.push(new Option(this.text, this.date_cd));
                 });
                 elem_day.append(optionItems);
-            };
-            if (data.result.time) {
+                elem_day.val(date);
+
+                // 時間セレクトボックス
+                pickup_date_time = data.result.datetime.results;
+                //pickup_date_time = data.result.datetime;
+                console.log(data.result.time);
                 var optionItems = new Array();
-                $.each(data.result.time, function() {
-                    optionItems.push(new Option(this.text, this.time_cd));
-                });
+                for(var item in pickup_date_time[date]) {
+                    var pickup_time_text = pickup_date_time[date][item];
+                    optionItems.push(new Option(pickup_time_text, item));
+                }
                 elem_time.append(optionItems);
             };
         },
@@ -79,6 +95,21 @@ function checkIncludeMonoBox() {
     check_list.each(function(index, element) {
         if ($(element).attr('name').match(/MN-/)) {
             $('#dev_inbound_notice').show();
+        }
+    });
+}
+
+function changeSelectPickup() {
+    $('#InboundDayCd').change(function() {
+        var change_pickup_date = $('#InboundDayCd option:selected').val();
+        $('#InboundTimeCd option').remove();
+        if (pickup_date_time) {
+            for(var item in pickup_date_time[change_pickup_date]) {
+                var pickup_time_text = pickup_date_time[change_pickup_date][item];
+                $('#InboundTimeCd').append($('<option>').text(pickup_time_text).attr('value', item));
+            }
+        } else {
+            getDatetime(change_pickup_date);           
         }
     });
 }

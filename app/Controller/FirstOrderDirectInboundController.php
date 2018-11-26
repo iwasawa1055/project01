@@ -113,7 +113,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function add_address()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm','FirstOrderDirectInbound/complete'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1044,6 +1044,9 @@ class FirstOrderDirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
         // 購入前にログインし、エントリユーザでない場合のチェック
         $is_logined = $this->_checkLogin();
         $this->set('is_logined', $is_logined);
@@ -1058,19 +1061,21 @@ class FirstOrderDirectInboundController extends MinikuraController
 
             // 集荷日の確認
             $pickup_yamato_datetime = new PickupYamatoDateTime();
-            $datetime = json_decode($pickup_yamato_datetime->getPickupYamatoDateTime(), true);
+            $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
 
-            if (!array_key_exists($date_cd, $datetime['results']['contents'])) {
+            if (!array_key_exists($date_cd, $datetime->results)) {
                 $this->Flash->validation('集荷希望日をご確認ください。',
                     ['key' => 'date_cd']);
                 CakeSession::delete('Address.date_cd');
-                return $this->redirect('add_address');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
+                return;
             }
-            if (!array_key_exists($time_cd, $datetime['results']['contents'][$date_cd])) {
+            if (!array_key_exists($time_cd, $datetime->results[$date_cd])) {
                 $this->Flash->validation('集荷希望時間をご確認ください。',
                     ['key' => 'time_cd']);
                 CakeSession::delete('Address.time_cd');
-                return $this->redirect('add_address');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
+                return;
             }
         }
 
@@ -1297,24 +1302,21 @@ class FirstOrderDirectInboundController extends MinikuraController
 
             // 集荷日の確認
             $pickup_yamato_datetime = new PickupYamatoDateTime();
-            $datetime = json_decode($pickup_yamato_datetime->getPickupYamatoDateTime(), true);
+            $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
 
-            if (!array_key_exists($date_cd, $datetime['results']['contents'])) {
+            if (!array_key_exists($date_cd, $datetime->results)) {
                 $this->Flash->validation('集荷希望日をご確認ください。',
                     ['key' => 'date_cd']);
-
                 CakeSession::delete('Address.date_cd');
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
-                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
-            if (!array_key_exists($time_cd, $datetime['results']['contents'][$date_cd])) {
+            if (!array_key_exists($time_cd, $datetime->results[$date_cd])) {
                 $this->Flash->validation('集荷希望時間をご確認ください。',
                     ['key' => 'time_cd']);
                 CakeSession::delete('Address.time_cd');
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
-                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
         }
 
@@ -1544,24 +1546,24 @@ class FirstOrderDirectInboundController extends MinikuraController
 
             // 集荷日の確認
             $pickup_yamato_datetime = new PickupYamatoDateTime();
-            $datetime = json_decode($pickup_yamato_datetime->getPickupYamatoDateTime(), true);
-
-            if (!array_key_exists($date_cd, $datetime['results']['contents'])) {
+            $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
+            if (!array_key_exists($date_cd, $datetime->results)) {
                 $this->Flash->validation('集荷希望日をご確認ください。',
                     ['key' => 'date_cd']);
-
                 CakeSession::delete('Address.date_cd');
                 CakeLog::write(DEBUG_LOG,
                     $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
-                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
-            if (!array_key_exists($time_cd, $datetime['results']['contents'][$date_cd])) {
+            if (!array_key_exists($time_cd, $datetime->results[$date_cd])) {
                 $this->Flash->validation('集荷希望時間をご確認ください。',
                     ['key' => 'time_cd']);
                 CakeSession::delete('Address.time_cd');
                 CakeLog::write(DEBUG_LOG,
                     $this->name . '::' . $this->action . ' check_address_datetime_cd error');
-                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
         }
 

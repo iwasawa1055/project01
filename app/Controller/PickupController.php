@@ -73,7 +73,7 @@ class PickupController extends MinikuraController
         // GET(集荷変更画面に遷移時)
         if (!$isBack && $this->request->is('get')) {
             // パラメータpickup_yamato_idがない場合はエラー
-            if (!$pickup_yamato_id = $this->request->params['id']) {
+            if (isset($this->request->params['id']) && !$pickup_yamato_id = $this->request->params['id']) {
                 new AppTerminalError(AppE::NOT_FOUND . 'pickup_yamato_id', 404);
             }
             $data['pickup_yamato_id'] = $pickup_yamato_id;
@@ -538,12 +538,12 @@ class PickupController extends MinikuraController
     {
         // 集荷日の確認
         $pickup_yamato_datetime = new PickupYamatoDateTime();
-        $datetime = json_decode($pickup_yamato_datetime->getPickupYamatoDateTime(), true);
+        $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
 
-        if (!array_key_exists($pickup_date, $datetime['results']['contents'])) {
+        if (!array_key_exists($pickup_date, $datetime->results)) {
             return false;
         }
-        if (!array_key_exists($pickup_time_code, $datetime['results']['contents'][$pickup_date])) {
+        if (!array_key_exists($pickup_time_code, $datetime->results[$pickup_date])) {
             return false;
         }
 

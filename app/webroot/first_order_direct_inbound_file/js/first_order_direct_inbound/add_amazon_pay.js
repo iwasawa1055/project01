@@ -261,6 +261,7 @@ var AppAmazonPayWallet =
                 }).bind("walletWidgetDiv");
 
             },
+            /*
             // 住所選択変更時
             onAddressSelect: function () {
                 // do stuff here like recalculate tax and/or shipping
@@ -268,6 +269,7 @@ var AppAmazonPayWallet =
                 AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 
             },
+            */
             design: {
                 designMode: 'responsive'
             },
@@ -291,5 +293,6 @@ $(function()
     AppAmazonPay.c();
     AppAmazonPay.d();
     AppAmazonPay.f();
-    AppAmazonPay.change_pickup_date();
+    PickupYamato.getDateTime();
+    PickupYamato.changeSelectPickup();
 });

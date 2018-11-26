@@ -40,13 +40,11 @@
         <section id="dsn-signin-btns">
           <a class="dsn-btn dsn-btn-signin" href="#scroll" data-nav-section="scroll" data-scroll="50">minikuraで会員登録する <i class="fa fa-chevron-circle-right"></i></a>
           <?php if (!$customer->isEntry()): ?>
-          <div style="display:none">
           <a class="dsn-btn dsn-btn-amazon" href="#scroll" data-nav-section="scroll" data-scroll="50">
             <a id="AmazonPayButtonDirect" class="dsn-btn-amazon">
             </a>
             <a id="Logout" >Logout</a>
           </a>
-          </div>
           <?php endif; ?>
         </section>
 
@@ -109,17 +107,17 @@
             <div class="dsn-yamato">
               <div class="dsn-form">
                 <label>集荷希望日</label>
-                <select name="date_cd" id="InboundDayCd" class="dsn-select-delivery focused dev-input-form">
+                <select name="date_cd" id="DayCd" class="dsn-select-delivery focused dev-input-form">
                 </select>
                 <br>
                 <?php echo $this->Flash->render('date_cd');?>
-                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php echo !empty(CakeSession::read('Address.date_cd')) ? CakeSession::read('Address.date_cd') : ''; ?>">
+                <input type="hidden" name="select_delivery_day" id="pickup_date" value="<?php echo !empty(CakeSession::read('Address.date_cd')) ? CakeSession::read('Address.date_cd') : ''; ?>">
               </div>
               <div class="dsn-form">
                 <label>集荷希望時間</label>
-                <select name="time_cd" id="InboundTimeCd" class="dsn-select-delivery focused dev-input-form">
+                <select name="time_cd" id="TimeCd" class="dsn-select-delivery focused dev-input-form">
                 </select>
-                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php echo !empty(CakeSession::read('Address.time_cd')) ?  CakeSession::read('Address.time_cd') : ''; ?>">
+                <input type="hidden" name="select_delivery_time" id="pickup_time_code" value="<?php echo !empty(CakeSession::read('Address.time_cd')) ?  CakeSession::read('Address.time_cd') : ''; ?>">
                 <br>
                 <?php echo $this->Flash->render('time_cd');?>
               </div>
@@ -149,5 +147,6 @@
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_address.js"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_pay.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+<script src="/js/pickupYamato.js"></script>
 
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>

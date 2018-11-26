@@ -48,6 +48,7 @@ class InboundBoxController extends MinikuraController
         $this->Inbound->init(Hash::get($this->request->data, self::MODEL_NAME));
         $result['date'] = $this->Inbound->date();
         $result['time'] = $this->Inbound->time();
+        $result['datetime'] = $this->Inbound->datetime();
         $status = !empty($result);
         return json_encode(compact('status', 'result'));
     }
