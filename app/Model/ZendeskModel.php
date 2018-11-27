@@ -329,6 +329,7 @@ class ZendeskModel extends AppModel
         $method = 'PUT';
         $request_params = [
             'ticket' => [
+                'status' => 'open',
                 'comment' => [
                     'body' => $_param['comment'],
                     'author_id' => $_param['zendesk_user_id'],
