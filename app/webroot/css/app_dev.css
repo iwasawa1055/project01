@@ -205,6 +205,10 @@ p.error-message a:hover,
   cursor: pointer;
 }
 
+/* contact_us/detail */
+.dev_contact_us_margin {
+  margin-left: 10px;
+}
 
 
 /** minikura ver2.5 amazon pay **/

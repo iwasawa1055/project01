@@ -774,6 +774,61 @@ ul.sale-caption {
 	margin-right: 10px;
 }
 
+.btn-contact {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    padding: 6px 8px;
+    font-size: 12px;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    background: #ffffff;
+}
+
+.btn-contact:hover {
+    color: #ffffff;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    background: #ff0000;
+}
+
+.history {
+    margin-bottom: 20px;
+}
+
+.history li {
+    padding: 20px 0 10px;
+    list-style: none;
+}
+
+.history li {
+    border-top: 1px solid #dddddd;
+}
+
+.history li:last-child {
+    border-bottom: 1px solid #dddddd;
+}
+
+.history .name {
+    font-weight: bold;
+}
+
+.history .data {
+    font-size: 12px;
+}
+
+.caution {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.status.btn {
+    margin: 0 0 0 10px;
+}
+
+
 @media screen and (max-width: 991px) {
 .form-control {
 	margin-bottom: 5px;
@@ -950,4 +1005,22 @@ div.panel-body .sp-navi a:hover {
 	width: 75px;
 }
 
+}
+
+.btn-contact {
+	position: absolute;
+	top: 0px;
+	right: 15px;
+	padding: 6px 8px;
+	font-size: 12px;
+	color: #ff0000;
+	border: 1px solid #ff0000;
+	border-radius: 3px;
+	background: #ffffff;
+}
+.btn-contact:hover {
+	color: #ffffff;
+	border: 1px solid #ff0000;
+	border-radius: 3px;
+	background: #ff0000;
 }
