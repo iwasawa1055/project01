@@ -14,9 +14,9 @@
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別
                       <?php if ($ticket_data['status'] === 'solved'):?>
-                      <span class="btn btn-success btn-xs dev_contact_us_margin">回答済み</span>
+                      <span class="btn btn-success btn-xs dev_contact_us_margin">完了</span>
                       <?php else:?>
-                      <span class="btn btn-danger btn-xs dev_contact_us_margin">回答待ち</a>
+                      <span class="btn btn-danger btn-xs dev_contact_us_margin">オープン</a>
                       <?php endif;?>
                   </label>
                   <p class="form-control-static"><?php echo $ticket_data['subject'];?></p>
