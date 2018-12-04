@@ -120,7 +120,7 @@ $config['app']['zendesk']['site_token'] = 'wtzyht5aRK5gBUvlTrZhfcgrhPM6Q3KizwS3K
 /**
  * Google Map API
  */
-$config['app']['googlemap']['api']['key'] = 'AIzaSyDTUsXrnbPBzq2PQ58FcU5XJ53d417ZxEI';
+$config['app']['googlemap']['api']['key'] = 'AIzaSyDxi2OvmjkJZZlH6dPjzByrluQqAuMMqDk';
 
 //*** Log
 // 不要なログはDropします。
