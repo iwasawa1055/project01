@@ -81,7 +81,7 @@
 
 <?php echo $this->element('FirstOrder/footer'); ?>
 <?php echo $this->element('FirstOrder/js'); ?>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=<?php echo Configure::read('app.googlemap.api.key'); ?>&libraries=places"></script>
 <script src="/js/minikura/address.js"></script>
 <script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_file/js/first_order/add_address.js"></script>
