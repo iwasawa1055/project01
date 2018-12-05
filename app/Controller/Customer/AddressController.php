@@ -103,11 +103,12 @@ class AddressController extends MinikuraController
                         'controller' => 'outbound', 'action' => 'index', 'customer' => false,
                         '?' => ['back' => 'true']
                     ]);
-                } else if ($returnTo === 'travel') {
-                    return $this->redirect([
-                        'controller' => 'travel', 'action' => 'index', 'customer' => false,
-                        '?' => ['back' => 'true']
-                    ]);
+                // #20214 Travel クローズ対応
+                // } else if ($returnTo === 'travel') {
+                //    return $this->redirect([
+                //        'controller' => 'travel', 'action' => 'index', 'customer' => false,
+                //        '?' => ['back' => 'true']
+                //    ]);
                 } else if ($returnTo === 'direct_inbound') {
                     return $this->redirect([
                         'controller' => 'direct_inbound', 'action' => 'input', 'customer' => false,

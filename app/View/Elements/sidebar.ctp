@@ -51,9 +51,14 @@
         <li<?php if($active_status['cleaning']):?> class="active"<?php endif;?>>
 	    <a href="/cleaning/input"<?php if($active_status['cleaning']):?> class="active"<?php endif;?>><i class="fa icon-cleaning fa-fw"></i> minikuraCLEANING＋</a>	</li>
         <?php if (!$customer->isAmazonPay()) : ?>
+
+        <?php // #20214 トラベルクローズ対応 ?>
+        <!--
         <li<?php if($active_status['travel']):?> class="active"<?php endif;?>>
             <a href="/travel/mono"<?php if($active_status['travel']):?> class="active"<?php endif;?>><i class="fa fa-suitcase fa-fw"></i> minikura teburaTRAVEL</a>
         </li>
+        -->
+
         <?php endif; ?>
         <li class="separator">
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
