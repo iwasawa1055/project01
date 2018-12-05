@@ -72,9 +72,7 @@ class ContactUsController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $customer_data = $this->Customer->getInfo();
         $ticket_params = [
-           'customer_id' => $customer_data,
            'ticket_id' => $this->request->is('get') ? $this->request->query('ticket_id') : $this->request->data['ZendeskContactUs']['ticket_id'],
         ];
         $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
@@ -169,7 +167,6 @@ class ContactUsController extends MinikuraController
         // クローズしたチケットを元にした新規問い合わせ対応
         if (!empty($this->request->data['ZendeskContactUs']['ticket_id'])) {
             $ticket_params = [
-               'customer_id' => $this->Customer->getInfo(),
                'ticket_id' => $this->request->data['ZendeskContactUs']['ticket_id'],
             ];
             $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
@@ -223,7 +220,6 @@ class ContactUsController extends MinikuraController
             $this->redirect(['action' => 'add']);
         }
 
-        $customer_data = $this->Customer->getInfo();
         $zendesk_user = !empty(CakeSession::read('app.data.contact_us.zendesk_user')) ? CakeSession::read('app.data.contact_us.zendesk_user') : $this->ZendeskModel->getUser($customer_data);
 
         // zendesk_userがいなければ作成(external_idが無いユーザー)
@@ -279,6 +275,16 @@ class ContactUsController extends MinikuraController
 
         // ログインユーザー識別コメント
         $contact_us_params['comment'] .= "\n\n"."※ マイページからのお問い合わせです。"."\n";
+
+        // クローズチケットの場合 参照元のチケットIDをコメントに追加
+        if (!empty($contact_us_params['ticket_id'])) {
+            $ticket_params = [
+               'ticket_id' => $contact_us_params['ticket_id']
+            ];
+            $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
+            $follow_up_text = "以前いただいたリクエストNo.#{$ticket_data['id']}「{$ticket_data['subject']}」に対する補足コメントです";
+            $contact_us_params['comment'] = $follow_up_text . "\n\n" . $contact_us_params['comment'];
+        }
 
         $ticket_params = [
             'subject' => CONTACTUS_DIVISION[$contact_us_params['division']],

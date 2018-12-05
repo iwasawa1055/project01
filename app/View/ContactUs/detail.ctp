@@ -39,7 +39,7 @@
                 <?php if ($ticket_data['status'] === 'closed'):?>
                 <div class="form-group col-lg-12">
                 <label>このお問い合わせは有効期限が切れております。</label>
-                <p>ご質問があるお客様は、下記の「新規お問い合わせ作成」よりお問い合わせください。</p>
+                <p>本お問い合わせに関してご質問があるお客様は、下記の「新規お問い合わせ作成」よりお問い合わせください。</p>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                     <a class="btn btn-primary btn-lg btn-block" href="/contact_us/index">戻る</a>
                 </span>
