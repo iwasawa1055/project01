@@ -36,6 +36,8 @@ class ZendeskContactUs extends ZendeskModel
         ],
         'bug_text' => [
         ],
+        'ticket_id' => [
+        ],
     ];
 
     /**
