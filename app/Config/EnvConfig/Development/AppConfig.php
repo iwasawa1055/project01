@@ -143,6 +143,11 @@ $config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
 $config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
 
 /**
+ * Google Map API
+ */
+$config['app']['googlemap']['api']['key'] = 'AIzaSyDTUsXrnbPBzq2PQ58FcU5XJ53d417ZxEI';
+
+/**
  * エラー表示
  */
 // CakePHP Debug Level
@@ -165,16 +170,16 @@ $config['app.e.mail.sender.MAIL FROM DISP'] = 'MINIKURA開発';
 $config['app.e.mail.sender.USER'] = '';
 $config['app.e.mail.sender.PASS'] = '';
 // Receiver
-$config['app.e.mail.receiver.warning.To'] = array('yasuda.soichi@terrada.co.jp');
+$config['app.e.mail.receiver.warning.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.warning.Cc'] = array();
 $config['app.e.mail.receiver.warning.Bcc'] = array();
-$config['app.e.mail.receiver.defect.To'] = array('yasuda.soichi@terrada.co.jp');
+$config['app.e.mail.receiver.defect.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.defect.Cc'] = array();
 $config['app.e.mail.receiver.defect.Bcc'] = array();
-$config['app.e.mail.receiver.critical.To'] = array('yasuda.soichi@terrada.co.jp');
+$config['app.e.mail.receiver.critical.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.critical.Cc'] = array();
 $config['app.e.mail.receiver.critical.Bcc'] = array();
-$config['app.e.mail.receiver.fatal.To'] = array('yasuda.soichi@terrada.co.jp');
+$config['app.e.mail.receiver.fatal.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
 $config['app.e.mail.subject.default'] = '【 障害 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' システムエラー';

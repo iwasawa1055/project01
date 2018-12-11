@@ -122,6 +122,11 @@ $config['app']['zendesk']['access_point'] = 'https://minikura1539678083.zendesk.
 $config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
 $config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
 
+/**
+ * Google Map API
+ */
+$config['app']['googlemap']['api']['key'] = 'AIzaSyDxi2OvmjkJZZlH6dPjzByrluQqAuMMqDk';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');

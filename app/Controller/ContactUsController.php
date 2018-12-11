@@ -72,9 +72,7 @@ class ContactUsController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $customer_data = $this->Customer->getInfo();
         $ticket_params = [
-           'customer_id' => $customer_data,
            'ticket_id' => $this->request->is('get') ? $this->request->query('ticket_id') : $this->request->data['ZendeskContactUs']['ticket_id'],
         ];
         $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
@@ -82,7 +80,7 @@ class ContactUsController extends MinikuraController
         //zenndeskユーザーいるか確認
         $zendesk_user = CakeSession::read('app.data.contact_us.zendesk_user');
         // 自身のチケットかチェック
-        if ($ticket_data['requester_id'] !== $zendesk_user['id']) {
+        if (empty($ticket_data) || $ticket_data['requester_id'] !== $zendesk_user['id']) {
             $this->Flash->set(__(' 該当するお問い合わせ詳細がありません'));
             return $this->redirect(['action' => 'index']);
         }
@@ -137,6 +135,12 @@ class ContactUsController extends MinikuraController
         $this->set('id', $id);
         $data = $this->getAnnouncement($id);
         $this->set('announcement', $data);
+
+        // クローズしたチケットを元にした新規問い合わせ対応
+        if (!empty($this->request->query['ticket_id'])) {
+            $ticket_id = $this->request->query['ticket_id'];
+            $this->set('ticket_id', $ticket_id);
+        }
     }
 
 
@@ -159,6 +163,22 @@ class ContactUsController extends MinikuraController
             CakeSession::write('app.data.contact_us.announcement_data', $announcement_data);
         }
         $this->set('announcement', $announcement_data);
+
+        // クローズしたチケットを元にした新規問い合わせ対応
+        if (!empty($this->request->data['ZendeskContactUs']['ticket_id'])) {
+            $ticket_params = [
+               'ticket_id' => $this->request->data['ZendeskContactUs']['ticket_id'],
+            ];
+            $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
+
+            $customer_data = $this->Customer->getInfo();
+            // 参照チケットが本人のものか確認
+            $zendesk_user = !empty(CakeSession::read('app.data.contact_us.zendesk_user')) ? CakeSession::read('app.data.contact_us.zendesk_user') : $this->ZendeskModel->getUser($customer_data);
+            if (empty($ticket_data) || $ticket_data['requester_id'] !== $zendesk_user['id']) {
+                $this->Flash->set(__(' 該当するお問い合わせ詳細がありません'));
+                return $this->redirect(['action' => 'index']);
+            }
+        }
 
         // 入力フォーム内容を取得
         $contact_us_params = $this->request->data;
@@ -255,6 +275,19 @@ class ContactUsController extends MinikuraController
             $contact_us_params['comment'] .= $this->ZendeskContactUs->editAnnouncementText($announcement_params);
         }
 
+        // ログインユーザー識別コメント
+        $contact_us_params['comment'] .= "\n\n"."※ マイページからのお問い合わせです。"."\n";
+
+        // クローズチケットの場合 参照元のチケットIDをコメントに追加
+        if (!empty($contact_us_params['ticket_id'])) {
+            $ticket_params = [
+               'ticket_id' => $contact_us_params['ticket_id']
+            ];
+            $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
+            $follow_up_text = "以前いただいたリクエストNo.#{$ticket_data['id']}「{$ticket_data['subject']}」に対する補足コメントです";
+            $contact_us_params['comment'] = $follow_up_text . "\n\n" . $contact_us_params['comment'];
+        }
+
         $ticket_params = [
             'subject' => CONTACTUS_DIVISION[$contact_us_params['division']],
             'body' => $contact_us_params['comment'],
@@ -263,7 +296,14 @@ class ContactUsController extends MinikuraController
         ];
 
         // zendeskチケット作成
-        $results = $this->ZendeskModel->postTicket($ticket_params);
+        // クローズ済みチケットから作成の場合
+        if (!empty($contact_us_params['ticket_id'])) {
+            $ticket_params['ticket_id'] = $contact_us_params['ticket_id'];
+            $results = $this->ZendeskModel->postTicketWithClosedTicketId($ticket_params);
+        // それ以外
+        } else {
+            $results = $this->ZendeskModel->postTicket($ticket_params);
+        }
         if ($results === false) {
             $this->Flash->set(__('ケース作成に失敗しました'));
             return $this->redirect(['action' => 'index']);

@@ -72,7 +72,11 @@
                 <span class="col-lg-6 col-md-12 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>
                 </span>
-              <?php if ($id) : ?>
+                <?php if (!empty($ticket_id)):?>
+                    <?php echo $this->Form->hidden('ZendeskContactUs.ticket_id', ['value' => $ticket_id]); ?>
+                <?php endif;?>
+
+                <?php if ($id) : ?>
                 <div class="col-lg-12 col-md-12 col-xs-12">
                   <h3 class="col-lg-12"><?php echo h($announcement['title']); ?></h3>
                   <h4 class="date col-lg-12"><?php echo $this->Html->formatYmdKanji($announcement['date']); ?></h4>

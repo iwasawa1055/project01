@@ -148,7 +148,7 @@
 
 <?php echo $this->element('FirstOrderDirectInbound/footer'); ?>
 <?php echo $this->element('FirstOrderDirectInbound/js'); ?>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=<?php echo Configure::read('app.googlemap.api.key'); ?>&libraries=places"></script>
 <script src="/js/minikura/address.js"></script>
 <script src="/js/jquery.airAutoKana.js"></script>
 <script src="/first_order_direct_inbound_file/js/dsn-mybox.js"></script>

@@ -315,6 +315,45 @@ class ZendeskModel extends AppModel
 
 
     /**
+     * チケット登録
+     * (クローズされたチケットを元に作成)
+     * @param array $_param
+     *          subject タイトル
+     *          body 内容
+     *          tags タイトル
+     *          zendesk_user_id zendeskユーザID
+     *          ticket_id 参照元クローズチケットID
+     * @return boolean
+     */
+    public function postTicketWithClosedTicketId($_param)
+    {
+        $resource = '/v2/tickets.json';
+        $url = Configure::read('app.zendesk.access_point') . $resource;
+        $method = 'POST';
+        $request_params = [
+            'ticket' => [
+                'via_followup_source_id' => $_param['ticket_id'],
+                'comment' => [
+                    'body' => $_param['body'],
+                ],
+                'subject' => $_param['subject'],
+                'requester_id' => $_param['zendesk_user_id'],
+                'tags' => $_param['tags'],
+            ],
+        ];
+
+        $response = $this->requestZendeskApi($url, $request_params, $method);
+        if (empty($response['body_parsed']['ticket'])) {
+            $results = false;
+        } else {
+            $results = true;
+        }
+
+        return $results;
+    }
+
+
+    /**
      * ユーザーのチケット更新
      * @param array $_param
      *          zendesk_user_id zendeskユーザID

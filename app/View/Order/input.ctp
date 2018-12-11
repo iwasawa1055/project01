@@ -1,5 +1,5 @@
 <?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script(Configure::read("app.gmo.token_url"), ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>

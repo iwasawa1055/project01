@@ -13,10 +13,10 @@
               <div class="col-lg-12 none-title">
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの種別
-                      <?php if ($ticket_data['status'] === 'solved'):?>
-                      <span class="btn btn-success btn-xs dev_contact_us_margin">回答済み</span>
+                      <?php if ($ticket_data['status'] === 'solved' || $ticket_data['status'] === 'closed'):?>
+                      <span class="btn btn-success btn-xs dev_contact_us_margin">完了</span>
                       <?php else:?>
-                      <span class="btn btn-danger btn-xs dev_contact_us_margin">回答待ち</a>
+                      <span class="btn btn-danger btn-xs dev_contact_us_margin">オープン</a>
                       <?php endif;?>
                   </label>
                   <p class="form-control-static"><?php echo $ticket_data['subject'];?></p>
@@ -36,6 +36,18 @@
                   <?php endif; ?>
                 <?php endforeach; ?>
                 </ul>
+                <?php if ($ticket_data['status'] === 'closed'):?>
+                <div class="form-group col-lg-12">
+                <label>このお問い合わせは有効期限が切れております。</label>
+                <p>本お問い合わせに関してご質問があるお客様は、下記の「新規お問い合わせ作成」よりお問い合わせください。</p>
+                <span class="col-lg-6 col-md-6 col-xs-12">
+                    <a class="btn btn-primary btn-lg btn-block" href="/contact_us/index">戻る</a>
+                </span>
+                <span class="col-lg-6 col-md-12 col-xs-12">
+                    <a class="btn btn-danger btn-lg btn-block" href="/contact_us/add?ticket_id=<?php echo h($ticket_data['id']);?>">新規お問い合わせ作成</a>
+                </span>
+                </div>
+                <?php else:?>
                 <div class="form-group col-lg-12">
                   <label>メッセージを送信</label>
                   <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['class' => "form-control", 'rows' => 5, 'error' => false, 'placeholder' => 'お問い合わせ内容を入力してください']); ?>
@@ -47,6 +59,7 @@
                 <button type="submit" class="btn btn-danger btn-lg btn-block">この内容を送信する</button>
                 </span>
                 </div>
+                <?php endif;?>
               </div>
             <?php echo $this->Form->hidden('ZendeskContactUs.ticket_id', ['value' => $ticket_data['id']]); ?>
             <?php echo $this->Form->end(); ?>

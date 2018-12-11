@@ -40,10 +40,10 @@
                                             <span class="detail"><a href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>"><?php echo h($data['subject']);?></a></span>
                                         </div>
                                         <div class="col-xs-12 col-md-2 col-lg-2 pull-right">
-                                            <?php if ($data['status'] === 'solved'):?>
-                                            <a class="btn btn-success btn-xs" href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>">回答済み</a>
+                                            <?php if ($data['status'] === 'solved' || $data['status'] === 'closed'):?>
+                                            <a class="btn btn-success btn-xs" href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>">完了</a>
                                             <?php else:?>
-                                            <a class="btn btn-danger btn-xs" href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>">回答待ち</a>
+                                            <a class="btn btn-danger btn-xs" href="/contact_us/detail?ticket_id=<?php echo h($data['id'])?>">オープン</a>
                                             <?php endif;?>
                                         </div>
                                     </div>
