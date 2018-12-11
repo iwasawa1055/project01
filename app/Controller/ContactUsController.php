@@ -171,6 +171,7 @@ class ContactUsController extends MinikuraController
             ];
             $ticket_data = $this->ZendeskModel->getTicketByTicketId($ticket_params);
 
+            $customer_data = $this->Customer->getInfo();
             // 参照チケットが本人のものか確認
             $zendesk_user = !empty(CakeSession::read('app.data.contact_us.zendesk_user')) ? CakeSession::read('app.data.contact_us.zendesk_user') : $this->ZendeskModel->getUser($customer_data);
             if (empty($ticket_data) || $ticket_data['requester_id'] !== $zendesk_user['id']) {
@@ -220,6 +221,7 @@ class ContactUsController extends MinikuraController
             $this->redirect(['action' => 'add']);
         }
 
+        $customer_data = $this->Customer->getInfo();
         $zendesk_user = !empty(CakeSession::read('app.data.contact_us.zendesk_user')) ? CakeSession::read('app.data.contact_us.zendesk_user') : $this->ZendeskModel->getUser($customer_data);
 
         // zendesk_userがいなければ作成(external_idが無いユーザー)
