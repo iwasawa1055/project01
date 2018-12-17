@@ -58,6 +58,21 @@
                   <?php echo $this->Form->input('CustomerInfo.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.firstname_kana', null, ['wrap' => 'p']) ?>
                 </div>
+                <div class="form-group col-lg-4">
+                  <?php echo $this->Form->input('CustomerInfo.birth_year', ['class' => "form-control", 'placeholder'=>'年（西暦）', 'maxlength' => 4, 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.birth_year', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-4">
+                  <?php echo $this->Form->input('CustomerInfo.birth_month', ['class' => "form-control date_zero_padding", 'placeholder'=>'月', 'maxlength' => 2, 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.birth_month', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-4">
+                  <?php echo $this->Form->input('CustomerInfo.birth_day', ['class' => "form-control date_zero_padding", 'placeholder'=>'日', 'maxlength' => 2, 'error' => false]); ?>
+                  <?php echo $this->Form->error('CustomerInfo.birth_day', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="col-lg-12">
+                  <?php echo $this->Form->error('CustomerInfo.birth', null, ['wrap' => 'p']) ?>
+                </div>
               <?php else : ?>
                 <?php // 法人 ?>
                 <div class="form-group col-lg-12">
