@@ -234,10 +234,12 @@ class ContactUsController extends MinikuraController
                 'customer_cd' => $customer_data['customer_cd']
             ];
             // Entryユーザーの姓名set
-            if ($customer_data['division'] == CUSTOMER_REGIST_LEVEL_ENTRY) {
-                $customer_params = [
-                    'name' => $contact_us_params['lastname'] . $contact_us_params['firstname']
-                ];
+            if ($this->Customer->isEntry()) {
+                $customer_params['name'] = $contact_us_params['lastname'] . $contact_us_params['firstname'];
+            }
+            // Corporateユーザーの姓名set
+            if ($this->Customer->isCorporateCustomer()) {
+                $customer_params['name'] = $customer_data['company_name'] . ':' .  $customer_data['staff_name'];
             }
             // 同一メールアドレスチェック（非会員時問い合わせユーザー処理）
             $zendesk_user_data = $this->ZendeskModel->getUserByEmail([

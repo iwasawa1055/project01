@@ -120,6 +120,14 @@ class CustomerData
         return null;
     }
 
+    public function isCorporateCustomer()
+    {
+        if (is_array($this->token) && array_key_exists('division', $this->token)) {
+            return $this->token['division'] === CUSTOMER_DIVISION_CORPORATE;
+        }
+        return null;
+    }
+
     public function isPaymentNG()
     {
         if (is_array($this->token) && array_key_exists('payment', $this->token)) {
