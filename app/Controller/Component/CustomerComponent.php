@@ -182,6 +182,13 @@ class CustomerComponent extends Component
         }
         return null;
     }
+    public function isCorporateCustomer()
+    {
+        if ($this->isLogined()) {
+            return $this->data->isCorporateCustomer();
+        }
+        return null;
+    }
     public function getCorporatePayment()
     {
         if ($this->isLogined()) {
