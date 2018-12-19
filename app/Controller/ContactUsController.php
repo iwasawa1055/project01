@@ -228,16 +228,19 @@ class ContactUsController extends MinikuraController
         if (empty($zendesk_user)) {
             $customer_params = [];
             $customer_params = [
-                'name' => $customer_data['lastname'].' '.$customer_data['firstname'],
                 'email' => $customer_data['email'],
                 'customer_id' => $customer_data['customer_id'],
                 'customer_cd' => $customer_data['customer_cd']
             ];
+            // 個人ユーザーの姓名set
+            if ($this->Customer->isPrivateCustomer()) {
+                $customer_params['name'] = $customer_data['lastname'].' '.$customer_data['firstname'];
+            }
             // Entryユーザーの姓名set
             if ($this->Customer->isEntry()) {
-                $customer_params['name'] = $contact_us_params['lastname'] . $contact_us_params['firstname'];
+                $customer_params['name'] = $contact_us_params['lastname'] .' '. $contact_us_params['firstname'];
             }
-            // Corporateユーザーの姓名set
+            // 法人ユーザーの姓名set
             if ($this->Customer->isCorporateCustomer()) {
                 $customer_params['name'] = $customer_data['company_name'] . ':' .  $customer_data['staff_name'];
             }
