@@ -273,8 +273,9 @@ class MinikuraController extends AppController
             } elseif (preg_match('/\/box/', $url)) {
                 $active_status['box'] = $active_status_tmp;
             }
-        }  elseif (preg_match('/\/travel/', $url)) {
-            $active_status['travel'] = true;
+        // #20214 Travel クローズ対応
+        // }  elseif (preg_match('/\/travel/', $url)) {
+        //     $active_status['travel'] = true;
         }  elseif (preg_match('/\/cleaning/', $url)) {
             $active_status['cleaning'] = true;
         }
