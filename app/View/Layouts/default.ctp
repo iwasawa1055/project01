@@ -48,17 +48,19 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-</head>
-<body>
 <!-- Google Tag Manager -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-K4MN3W"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
 <!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4MN3W"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class='airloader-overlay'>
   <div class="loader">Loading...</div>
 </div>
@@ -138,16 +140,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script>
 <![endif]-->
 
-<!-- Yahoo Tag Manager -->
-<script type="text/javascript">
-  (function () {
-    var tagjs = document.createElement("script");
-    var s = document.getElementsByTagName("script")[0];
-    tagjs.async = true;
-    tagjs.src = "//s.yjtag.jp/tag.js#site=yCeb9Et";
-    s.parentNode.insertBefore(tagjs, s);
-  }());
-</script>
 <?php // アマゾンペイメント対応 ?>
 <?php if (!empty($customer) && $customer->isLogined()) : ?>
   <?php if ($customer->isAmazonPay()):?>
@@ -155,9 +147,5 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <?php endif; ?>
 <?php endif; ?>
 
-<noscript>
-  <iframe src="//b.yjtag.jp/iframe?c=yCeb9Et" width="1" height="1" title="iframe"></iframe>
-</noscript>
-<!-- End Yahoo Tag Manager -->
 </body>
 </html>
