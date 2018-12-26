@@ -90,7 +90,7 @@ class InquiryController extends MinikuraController
         $zendesk_user = $this->ZendeskModel->getUserByEmail([
             'email' => $inquiry_params['email'],
         ]);
-        
+
         // 新規zendeskユーザー作成
         if (empty($zendesk_user)) {
             $customer_params = [];
@@ -102,6 +102,17 @@ class InquiryController extends MinikuraController
             ];
             $zendesk_user = $this->ZendeskModel->postUser($customer_params);
             if (empty($zendesk_user)) {
+                $error = $this->ZendeskModel->getError();
+                if (isset($error["description"]) && ($error["description"] == "Record validation errors")) {
+                    if (isset($error["details"])) {
+                        $message = "";
+                        foreach ($error["details"] as $e) {
+                            $message .= $e[0]["description"] . " ";
+                        }
+                        $this->Flash->set($message);
+                        $this->redirect('/inquiry/add?back=true');
+                    }
+                }
                 new AppInternalCritical(AppE::FUNC . ' putUser Failed', 500);
             }
         }

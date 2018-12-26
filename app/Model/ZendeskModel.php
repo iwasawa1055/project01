@@ -10,6 +10,8 @@ class ZendeskModel extends AppModel
 {
     public $useTable = false;
 
+    protected $error = [];
+
     public function __construct($name = 'ZendeskModel')
     {
         parent::__construct($name);
@@ -110,7 +112,14 @@ class ZendeskModel extends AppModel
             ],
         ];
 
+        $this->error = [];
+
         $response = $this->requestZendeskApi($url, $request_params, $method);
+
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
         $results = ! empty($response['body_parsed']['user']) ? $response['body_parsed']['user'] : [];
 
         return $results;
@@ -139,7 +148,14 @@ class ZendeskModel extends AppModel
             ],
         ];
 
+        $this->error = [];
+
         $response = $this->requestZendeskApi($url, $request_params, $method);
+
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
         $results = ! empty($response['body_parsed']['user']) ? $response['body_parsed']['user'] : [];
 
         return $results;
@@ -178,7 +194,15 @@ class ZendeskModel extends AppModel
                 'value' => $_param['email'],
             ],
         ];
+
+        $this->error = [];
+
         $response = $this->requestZendeskApi($url, $request_params, $method);
+
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
         if (empty($response['body_parsed']['identity'])) {
             $results = false;
         } else {
@@ -303,7 +327,14 @@ class ZendeskModel extends AppModel
             ],
         ];
 
+        $this->error = [];
+
         $response = $this->requestZendeskApi($url, $request_params, $method);
+
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
         if (empty($response['body_parsed']['ticket'])) {
             $results = false;
         } else {
@@ -342,7 +373,14 @@ class ZendeskModel extends AppModel
             ],
         ];
 
+        $this->error = [];
+
         $response = $this->requestZendeskApi($url, $request_params, $method);
+
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
         if (empty($response['body_parsed']['ticket'])) {
             $results = false;
         } else {
@@ -376,12 +414,27 @@ class ZendeskModel extends AppModel
             ],
         ];
 
+        $this->error = [];
+
         $response = $this->requestZendeskApi($url, $request_params, $method);
+
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
         $results = !empty($response['body_parsed']['ticket']) ? $response['body_parsed']['ticket'] : [];
 
         return $results;
     }
 
+    /**
+     * 登録・更新系のZendesk APIを実行した際に、最後に発生したエラー返却する
+     * @return array
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
 
     /**
      * 環境ごとにIDを使い分けるための処理
