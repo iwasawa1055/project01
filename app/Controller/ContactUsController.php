@@ -224,31 +224,32 @@ class ContactUsController extends MinikuraController
         $customer_data = $this->Customer->getInfo();
         $zendesk_user = !empty(CakeSession::read('app.data.contact_us.zendesk_user')) ? CakeSession::read('app.data.contact_us.zendesk_user') : $this->ZendeskModel->getUser($customer_data);
 
+        $customer_params = [];
+        $customer_params = [
+            'email' => $customer_data['email'],
+            'customer_id' => $customer_data['customer_id'],
+            'customer_cd' => $customer_data['customer_cd']
+        ];
+        // 個人ユーザーの姓名set
+        if ($this->Customer->isPrivateCustomer()) {
+            $customer_params['name'] = $customer_data['lastname'].' '.$customer_data['firstname'];
+        }
+        // Entryユーザーの姓名set
+        if ($this->Customer->isEntry()) {
+            $customer_params['name'] = $contact_us_params['lastname'] .' '. $contact_us_params['firstname'];
+        }
+        // 法人ユーザーの姓名set
+        if ($this->Customer->isCorporateCustomer()) {
+            $customer_params['name'] = $customer_data['company_name'] . ':' .  $customer_data['staff_name'];
+        }
+
         // zendesk_userがいなければ作成(external_idが無いユーザー)
         if (empty($zendesk_user)) {
-            $customer_params = [];
-            $customer_params = [
-                'email' => $customer_data['email'],
-                'customer_id' => $customer_data['customer_id'],
-                'customer_cd' => $customer_data['customer_cd']
-            ];
-            // 個人ユーザーの姓名set
-            if ($this->Customer->isPrivateCustomer()) {
-                $customer_params['name'] = $customer_data['lastname'].' '.$customer_data['firstname'];
-            }
-            // Entryユーザーの姓名set
-            if ($this->Customer->isEntry()) {
-                $customer_params['name'] = $contact_us_params['lastname'] .' '. $contact_us_params['firstname'];
-            }
-            // 法人ユーザーの姓名set
-            if ($this->Customer->isCorporateCustomer()) {
-                $customer_params['name'] = $customer_data['company_name'] . ':' .  $customer_data['staff_name'];
-            }
             // 同一メールアドレスチェック（非会員時問い合わせユーザー処理）
             $zendesk_user_data = $this->ZendeskModel->getUserByEmail([
                 'email' => $customer_params['email'],
             ]);
-            
+
             // 既存zendeskユーザーがいれば更新
             if (!empty($zendesk_user_data)) {
                 $put_user_params = [
@@ -294,7 +295,7 @@ class ContactUsController extends MinikuraController
         }
 
         $ticket_params = [
-            'subject' => CONTACTUS_DIVISION[$contact_us_params['division']],
+            'subject' => $customer_params['name'] . '様(' . $customer_data['customer_cd'] . ')からのお問い合わせ',
             'body' => $contact_us_params['comment'],
             'tags' => CONTACTUS_DIVISION[$contact_us_params['division']],
             'zendesk_user_id' => $zendesk_user['id'],

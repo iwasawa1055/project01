@@ -124,7 +124,7 @@ class InquiryController extends MinikuraController
         $inquiry_params['comment'] .= "\n\n"."※ ログインしていないお客様からのお問い合わせです。"."\n";
 
         $ticket_params = [
-            'subject' => INQUIRY_DIVISION[$inquiry_params['division']],
+            'subject' => $customer_params['name'] . '様からのお問い合わせ',
             'body' => $inquiry_params['comment'],
             'tags' => INQUIRY_DIVISION[$inquiry_params['division']],
             'zendesk_user_id' => $zendesk_user['id'],
