@@ -91,15 +91,16 @@ class InquiryController extends MinikuraController
             'email' => $inquiry_params['email'],
         ]);
 
+        $customer_params = [];
+        $customer_params = [
+            'name' => $inquiry_params['lastname'].' '.$inquiry_params['firstname'],
+            'email' => $inquiry_params['email'],
+            'customer_id' => '',
+            'customer_cd' => ''
+        ];
+
         // 新規zendeskユーザー作成
         if (empty($zendesk_user)) {
-            $customer_params = [];
-            $customer_params = [
-                'name' => $inquiry_params['lastname'].' '.$inquiry_params['firstname'],
-                'email' => $inquiry_params['email'],
-                'customer_id' => '',
-                'customer_cd' => ''
-            ];
             $zendesk_user = $this->ZendeskModel->postUser($customer_params);
             if (empty($zendesk_user)) {
                 $error = $this->ZendeskModel->getError();
