@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col-lg-12">
             <h2>ポイントのご利用</h2>
-              ただいまポイントが利用できません。
+ただいま、ポイントシステムの不具合のため、ポイントのご利用ができません。<br >ポイントをご利用の場合は、復旧後に取り出しをお申し込みください。
 <?php /*?>
             <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
               <br />
@@ -73,6 +73,8 @@
               <p class="help-block">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。
                 取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。</p>
               <?php */?>
+
+<?php /*?>
               <h3>利用ポイント</h3>
               <div class="form-group col-lg-2">
                 <?php if (!empty($pointBalance['point_balance'])) : ?>
@@ -81,6 +83,7 @@
                   <?php echo $this->Form->input('PointUse.use_point', ['class' => 'form-control', 'value' => '0', 'readonly' => 'readonly', 'error' => false]); ?>
                 <?php endif; ?>
               </div>
+<?php */?>
               <div class="form-group col-lg-12">
                 <?php echo $this->Form->error("PointUse.use_point", null, ['wrap' => 'p']) ?>
               </div>
