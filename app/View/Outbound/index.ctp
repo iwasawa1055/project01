@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col-lg-12">
             <h2>ポイントのご利用</h2>
-              ただいまポイントが利用できません。
+              ただいま、ポイントシステムの不具合のため、ポイントのご利用ができません。<br >ポイントをご利用の場合は、復旧後に取り出しをお申し込みください。
 <?php /*?>
             <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
               <br />
