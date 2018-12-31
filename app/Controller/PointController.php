@@ -14,6 +14,7 @@ class PointController extends MinikuraController
     {
         // ポイント取得
         $point = [];
+        /*
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
         $res = $this->PointBalance->apiGet();
         if (!empty($res->error_message)) {
@@ -22,10 +23,12 @@ class PointController extends MinikuraController
         } else {
             $point = $res->results[0];
         }
+         */
         $this->set('point', $point);
 
 	//* 履歴
         $histories = [];
+        /*
         $this->loadModel(self::MODEL_NAME);
         $res = $this->PointHistory->apiGet();
         if (!empty($res->error_message)) {
@@ -34,6 +37,7 @@ class PointController extends MinikuraController
         } else {
             $histories = $res->results;
         }
+         */
         $list = $this->paginate($histories);
         $this->set('histories', $list);
     }

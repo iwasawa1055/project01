@@ -12,6 +12,8 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>ポイント</h2>
+                <p class="form-control-point col-lg-12">ただいま、ポイントシステムの不具合のため、ポイントのご利用ができません。</p>
+                <!--
                 <p class="form-control-point col-lg-12">使えば使うほどたまる minikura ポイント。<br />
                   たまったポイントはオプションや取り出し送料に使うことができます<br />
                   <a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶minikuraポイントについて</a>
@@ -23,6 +25,7 @@
                   <p class="help-block">※ポイントのご利用は獲得日から2年間有効です。</p>
                   <p class="help-block">※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
                 </div>
+                -->
 				<?php if (! empty($histories)):?>
                 <h2>ポイント履歴</h2>
                 <p></p>
