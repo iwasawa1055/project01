@@ -60,15 +60,19 @@
         <div class="row">
           <div class="col-lg-12">
             <h2>ポイントのご利用</h2>
+              ただいまポイントが利用できません。
+<?php /*?>
             <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
               <br />
               ※1ポイント＝1円換算<br />
               ※100ポイントから利用可能です。<br />
               ※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
             <div class="form-group col-lg-12">
+              <?php /*?><span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です
               <span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です。
               <p class="help-block">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。
                 取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。</p>
+              <?php */?>
               <h3>利用ポイント</h3>
               <div class="form-group col-lg-2">
                 <?php if (!empty($pointBalance['point_balance'])) : ?>
