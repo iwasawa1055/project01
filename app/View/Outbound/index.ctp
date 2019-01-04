@@ -61,14 +61,16 @@
           <div class="col-lg-12">
             <h2>ポイントのご利用</h2>
               ただいま、ポイントシステムの不具合のため、ポイントのご利用ができません。<br >ポイントをご利用の場合は、復旧後に取り出しをお申し込みください。
-<?php /*?>
+            <?php /*?>
             <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
               <br />
               ※1ポイント＝1円換算<br />
               ※100ポイントから利用可能です。<br />
               ※ポイントは100ポイント以上の残高かつ10ポイント単位からのご利用となります。</p>
+            <?php */?>
             <div class="form-group col-lg-12">
-              <?php /*?><span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です
+              <?php /*?>
+              <span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です
               <span class="point"><?php echo $pointBalance['point_balance']; ?></span> ポイント利用可能です。
               <p class="help-block">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。
                 取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。</p>
