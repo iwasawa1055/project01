@@ -323,15 +323,12 @@ class OutboundController extends MinikuraController
         // ポイント取得
         $pointBalance = [];
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-/*
         $res = $this->PointBalance->apiGet();
         if (!empty($res->error_message)) {
             $this->Flash->set(POINT_BALANCE_ERROR);
         } else {
             $pointBalance = $res->results[0];
         }
-*/
-        $pointBalance = ['point_balance' => 0];
         $this->set('pointBalance', $pointBalance);
 
         $dateItemList = [];
@@ -375,15 +372,12 @@ class OutboundController extends MinikuraController
         // ポイント取得
         $pointBalance = [];
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-/*
         $res = $this->PointBalance->apiGet();
         if (!empty($res->error_message)) {
             $this->Flash->set(POINT_BALANCE_ERROR);
         } else {
             $pointBalance = $res->results[0];
         }
-*/
-        $pointBalance = ['point_balance' => 0];
         $this->set('pointBalance', $pointBalance);
 
         $dateItemList = [];
@@ -454,15 +448,12 @@ class OutboundController extends MinikuraController
             // ポイント取得
             $pointBalance = [];
             $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-/*
             $res = $this->PointBalance->apiGet();
             if (!empty($res->error_message)) {
                 $this->Flash->set(POINT_BALANCE_ERROR);
             } else {
                 $pointBalance = $res->results[0];
             }
-*/
-            $pointBalance = ['point_balance' => 0];
             $this->set('pointBalance', $pointBalance);
 
             // 利用ポイント
@@ -602,15 +593,12 @@ class OutboundController extends MinikuraController
             // ポイント取得
             $pointBalance = [];
             $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-/*
             $res = $this->PointBalance->apiGet();
             if (!empty($res->error_message)) {
                 $this->Flash->set(POINT_BALANCE_ERROR);
             } else {
                 $pointBalance = $res->results[0];
             }
-*/
-            $pointBalance = ['point_balance' => 0];
             $this->set('pointBalance', $pointBalance);
 
             // 利用ポイント
