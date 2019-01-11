@@ -78,7 +78,7 @@
                   <div class="dsn-box-library dev-box-library"><img src="/images/order/box_library@1x.png" srcset="/images/order/box_library@1x.png 1x, /images/order/box_library@2x.png 2x" alt="minikuraクリーニングパック"> </div>
                   <div class="dsn-caption">
                     <p class="dsn-price">月額保管料<span>450円</p>
-                    <p class="dsn-price">ボックス代金<span>400円</span>
+                    <p class="dsn-price">ボックス代金<span>450円</span>
                     </p>
                     <p class="dsn-select-number" id="select_library"><?php if (CakeSession::read('Order.library.library') > 0) : ?><span><?php echo h(CakeSession::read('Order.library.library')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
                   </div>
