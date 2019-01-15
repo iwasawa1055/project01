@@ -193,7 +193,7 @@
     <p class="size">W60cm×H20cm×D38cm</p>
     <p class="caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
   </div>
-  <div class="box">
+  <div class="box" style="display:none">
     <div class="pict-box"><img src="/first_order_file/images/box_book@1x.png" srcset="/first_order_file/images/box_book@1x.png 1x, /first_order_file/images/box_book@2x.png 2x" alt="">
     </div>
     <div class="select-box">

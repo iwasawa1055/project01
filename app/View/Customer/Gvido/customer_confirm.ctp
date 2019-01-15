@@ -37,6 +37,10 @@
                     <label>建物名以降</label>
                     <p class="confirm"><?php echo h($CustomerRegistInfo['address3']); ?></p>
                 </li>
+                <li>
+                    <label>専用ボックスお届け希望日時</label>
+                    <p class="confirm"><?php echo $this->App->convDatetimeCode($CustomerRegistInfo['datetime_cd']); ?></p>
+                </li>
             </ul>
             <h2>ご連絡先</h2>
             <ul class="input-form">

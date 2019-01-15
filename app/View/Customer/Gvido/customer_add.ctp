@@ -101,8 +101,8 @@ $this->Html->script('customer/gvido/add', ['block' => 'scriptMinikura']);
                 </li>
                 <li>
                     <label>専用ボックスお届け希望日時</label>
-                    <?php echo $this->Form->input('CustomerRegistInfo.address3', ['size' => 23, 'maxlength' => 23, 'placeholder'=>'建物名・部屋番号をご入力ください。', 'label' => false, 'error' => false, 'div' => false]); ?>
-                    <?php echo $this->Form->error('CustomerRegistInfo.address3', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+                    <?php echo $this->Form->select('CustomerRegistInfo.datetime_cd', [], ['class' => 'w100', 'empty' => false, 'label' => false, 'error' => false, 'div' => false, 'data-datetime_cd' => isset($this->request->data['CustomerRegistInfo']['datetime_cd']) ? $this->request->data['CustomerRegistInfo']['datetime_cd'] : '']); ?>
+                    <?php echo $this->Form->error('CustomerRegistInfo.datetime_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
             </ul>
             <h2>ご連絡先</h2>
