@@ -96,6 +96,8 @@ const KIT_CD_STARTER_MONO = '200';
 const KIT_CD_STARTER_MONO_APPAREL = '201';
 const KIT_CD_STARTER_MONO_BOOK = '202';
 const KIT_CD_HAKO_LIMITED_VER1 = '203';
+const KIT_CD_LIBRARY_DEFAULT = '214';
+const KIT_CD_LIBRARY_GVIDO = '215';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -106,6 +108,7 @@ const PRODUCT_CD_CLEANING_PACK = '004029';
 const PRODUCT_CD_SHOES_PACK = '005000';
 const PRODUCT_CD_SNEAKERS = '005310';
 const PRODUCT_CD_DIRECT_INBOUND = '005003';
+const PRODUCT_CD_LIBRARY = '005004';
 
 // box_status, item_status
 // キット購入・依頼
@@ -177,7 +180,9 @@ const KIT_NAME = [
     KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
     KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
     KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
-    KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック'
+    KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック',
+    KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
+    KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
@@ -189,6 +194,8 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
     'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
     'sneaker'       => array('code' => KIT_CD_SNEAKERS,         'name' => 'SNEAKERS'),
+    'library'       => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
+    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Libraryボックス'),
 ];
 
 const PRODUCT_NAME = [
@@ -200,6 +207,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
+    PRODUCT_CD_LIBRARY => 'Libraryボックス',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';

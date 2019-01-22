@@ -53,7 +53,7 @@ switch (true) {
     case $_SERVER['HTTP_HOST'] === 'yoshida-www.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yoshida-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://yoshida-mypage.minikura.com';
-        $config['site.static_content_url'] = 'https://yoshida-contents.minikura.com';
+        $config['site.static_content_url'] = 'https://yoshida-www.minikura.com';
     break;
     case $_SERVER['HTTP_HOST'] === 't-adachi-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 't-adachi-mypage.minikura.com':

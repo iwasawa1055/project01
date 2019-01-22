@@ -190,6 +190,10 @@ class InfoBox extends ApiCachedModel
             case KIT_CD_HAKO_LIMITED_VER1:
                 $productCd = PRODUCT_CD_HAKO;
                 break;
+            case KIT_CD_LIBRARY_DEFAULT:
+            case KIT_CD_LIBRARY_GVIDO:
+                $productCd = PRODUCT_CD_LIBRARY;
+                break;
             default:
                 break;
         }

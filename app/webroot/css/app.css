@@ -708,9 +708,13 @@ tfoot td {
 .cleaning-box {
 	background-color: #deebff !important;
 }
+.library-box {
+    background-color: #dddddd !important;
+}
 .mono-box h3,
 .hako-box h3,
-.cleaning-box h3 {
+.cleaning-box h3,
+.library-box h3 {
 	margin-top: 20px;
 }
 .panel-body .btn-regist {

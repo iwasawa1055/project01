@@ -108,10 +108,12 @@ class OrderController extends MinikuraController
             $order_hako = CakeSession::read('Order.hako');
             $order_mono = CakeSession::read('Order.mono');
             $order_cleaning = CakeSession::read('Order.cleaning');
+            $order_library = CakeSession::read('Order.library');
             CakeSession::delete('Order');
             CakeSession::write('Order.hako', $order_hako);
             CakeSession::write('Order.mono', $order_mono);
             CakeSession::write('Order.cleaning', $order_cleaning);
+            CakeSession::write('Order.library', $order_library);
         }
 
         // セッションリセット
@@ -226,12 +228,14 @@ class OrderController extends MinikuraController
                 $Order = $this->_setHakoOrder($Order);
                 $OrderTotal['hako_num'] = array_sum($Order['hako']);
                 $Order = $this->_setCleaningOrder($Order);
+                $Order = $this->_setLibraryOrder($Order);
 
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['library']['library'])) === 0) {
                     $vali_oreder_params = array(
                         'select_oreder_mono' => $OrderTotal['mono_num'],
                         'select_oreder_hako' => $OrderTotal['hako_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
+                        'select_oreder_library' => $Order['library']['library'],
                     );
                 }
                 break;
@@ -462,7 +466,12 @@ class OrderController extends MinikuraController
                 if ($value != 0 ) {
                     if (array_key_exists ($key, $kit_code)) {
                         // $OrderList[$key]['price']     = number_format($kit_code[$key]['price'] * $value * 1);
-                        $code = $kit_code[$key]['code'];
+                        // gvido用のコードを変換
+                        if ($this->Customer->getInfo()["alliance_cd"] == 'gvido' && $kit_code[$key]['code'] == KIT_CD_LIBRARY_DEFAULT) {
+                            $code = KIT_CD_LIBRARY_GVIDO;
+                        } else {
+                            $code = $kit_code[$key]['code'];
+                        }
                         $OrderList[$code]['number']    = $value;
                         $OrderList[$code]['kit_name']  = $kit_code[$key]['name'];
                         $OrderList[$code]['price'] = 0;
@@ -535,12 +544,14 @@ class OrderController extends MinikuraController
                 $Order = $this->_setHakoOrder($Order);
                 $OrderTotal['hako_num'] = array_sum($Order['hako']);
                 $Order = $this->_setCleaningOrder($Order);
+                $Order = $this->_setLibraryOrder($Order);
 
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['library']['library'])) === 0) {
                     $vali_oreder_params = array(
                         'select_oreder_mono' => $OrderTotal['mono_num'],
                         'select_oreder_hako' => $OrderTotal['hako_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
+                        'select_oreder_library' => $Order['library']['library'],
                     );
                 }
                 break;
@@ -706,7 +717,12 @@ class OrderController extends MinikuraController
                 if ($value != 0 ) {
                     if (array_key_exists ($key, $kit_code)) {
                         // $OrderList[$key]['price']     = number_format($kit_code[$key]['price'] * $value * 1);
-                        $code = $kit_code[$key]['code'];
+                        // gvido用のコードを変換
+                        if ($this->Customer->getInfo()["alliance_cd"] == 'gvido' && $kit_code[$key]['code'] == KIT_CD_LIBRARY_DEFAULT) {
+                            $code = KIT_CD_LIBRARY_GVIDO;
+                        } else {
+                            $code = $kit_code[$key]['code'];
+                        }
                         $OrderList[$code]['number']    = $value;
                         $OrderList[$code]['kit_name']  = $kit_code[$key]['name'];
                         $OrderList[$code]['price'] = 0;
@@ -1246,6 +1262,15 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r(js
     private function _setCleaningOrder($Order)
     {
         $Order['cleaning']['cleaning'] = (int)filter_input(INPUT_POST, 'cleaning');
+        return $Order;
+    }
+
+    /**
+     * kit box library 箱数をset
+     */
+    private function _setLibraryOrder($Order)
+    {
+        $Order['library']['library'] = (int)filter_input(INPUT_POST, 'library');
         return $Order;
     }
 
