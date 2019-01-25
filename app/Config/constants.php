@@ -207,7 +207,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
-    PRODUCT_CD_LIBRARY => 'Libraryボックス',
+    PRODUCT_CD_LIBRARY => 'minikuraLibrary',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -300,6 +300,12 @@ const IN_USE_SERVICE = [
             'name' => 'シューズパック',
             'product_cd' => PRODUCT_CD_SHOES_PACK,
             'name_mobile' => 'シューズ<br />パック',
+        ],
+        [
+            'product' => 'library',
+            'name' => 'minikuraLibrary',
+            'product_cd' => PRODUCT_CD_LIBRARY,
+            'name_mobile' => 'minikura<br />Library',
         ],
     ],
     'sneakers' => [
@@ -418,3 +424,8 @@ const INPUT_ERROR = '入力した内容に誤りがあります。';
 // ポイントサービス エラー表示
 const POINT_BALANCE_ERROR = 'ポイント残高の情報の取得に失敗しました。';
 const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しました。';
+
+// LIBRARY出庫金額
+const LIBRARY_OUTBOUND_BASIC_PRICE = 350; //出庫基本料金
+const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金
+const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 800; //1箱解約時出庫基本料金

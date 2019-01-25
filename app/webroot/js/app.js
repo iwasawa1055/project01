@@ -38,3 +38,23 @@ $(function() {
         element.addClass('active');
     }
 });
+$(function() {
+    $('.input-address').hide();
+    $('[name=address]').change(function() {
+        $('.input-address').hide();
+        if ($(this).val() === 'add') {
+            $('.input-address').toggle('fast');
+        } else {
+            $('.input-address').hide();
+        }
+    });
+    return false;
+});
+
+$(function() {
+    $('.inline-description').hide();
+    $('.title-description').click(function() {
+        $(this).next('.inline-description').slideToggle(300);
+    });
+    return false;
+});

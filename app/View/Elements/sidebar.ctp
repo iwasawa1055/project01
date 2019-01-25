@@ -46,6 +46,7 @@
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/outbound/mono"><i class="fa fa-arrow-circle-o-down fa-fw"></i> アイテムを取り出す</a> </li>
             <li> <a class="animsition-link" href="/outbound/box"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
+            <li> <a class="animsition-link" href="/outbound/library_select_item"><i class="fa fa-arrow-circle-o-down fa-fw"></i> minikura Libraryを取り出す</a> </li>
           </ul>
         </li>
         <?php endif; ?>
