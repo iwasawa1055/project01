@@ -211,6 +211,7 @@ class MinikuraController extends AppController
                 'cleaning' => false,
                 'shoes' => false,
                 'sneakers' => false,
+                'library' => false,
             ],
             'box' => [
                 'toggle' => false,
@@ -223,6 +224,7 @@ class MinikuraController extends AppController
                 'cleaning' => false,
                 'shoes' => false,
                 'sneakers' => false,
+                'library' => false,
             ],
             'cleaning' => false,
             'travel' => false,
@@ -263,6 +265,9 @@ class MinikuraController extends AppController
                     break;
                 case $this->request->query['product'] === 'sneakers':
                     $active_status_tmp['sneakers'] = true;
+                    break;
+                case $this->request->query['product'] === 'library':
+                    $active_status_tmp['library'] = true;
                     break;
                 default:
                     $active_status_tmp['all'] = true;

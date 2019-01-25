@@ -87,7 +87,7 @@
                   <input type="checkbox" class="agree-before-submit">
                   重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。</label>
               </p>
-              <p>※明らかに20kgを超えた場合は保管料を別途頂戴することがございます。あらかじめご了承ください。</p>
+              <p>※明らかに20kgを超えた場合はお預かりできないため、着払いで返送することがございます。あらかじめご了承ください。</p>
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
@@ -105,6 +105,9 @@
                 <img src="/images/burning@1x.png" srcset="/images/burning@1x.png 1x, /images/burning@2x.png 2x">
                 <img src="/images/crack@1x.png" srcset="/images/crack@1x.png 1x, /images/crack@2x.png 2x">
                 <img src="/images/liquid@1x.png" srcset="/images/liquid@1x.png 1x, /images/liquid@2x.png 2x">
+                <?php if ($library) : ?>
+                <img src="/images/loose@1x.png" srcset="/images/loose@1x.png 1x, /images/loose@2x.png 2x">
+                <?php endif; ?>
               </div>
             </div>
             <div class="panel-footer">
