@@ -234,6 +234,7 @@ const CONTACT_DIVISION_OTHER = '12'; // その他
 const CONTACT_DIVISION_BUG = '15'; // 不具合報告
 const CONTACT_DIVISION_OPINION = '16'; // minikuraへのご意見・ご感想
 const CONTACT_DIVISION_DISSOLUTION = '17'; //溶解の申し込みについて
+const CONTACT_DIVISION_DATA = '18'; //データ化のお申込みについて
 
 
 const CONTACTUS_DIVISION = [
@@ -241,6 +242,7 @@ const CONTACTUS_DIVISION = [
     CONTACT_DIVISION_RESIGN => '退会について',
     CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
     CONTACT_DIVISION_DISSOLUTION => '溶解の申し込みについて',
+    CONTACT_DIVISION_DATA => 'データ化のお申込みについて',
     CONTACT_DIVISION_BUG => '不具合報告',
     CONTACT_DIVISION_OTHER => 'その他',
 ];
