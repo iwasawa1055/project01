@@ -6,6 +6,7 @@ var AppOutboundLibrary =
     display_box: [],
     init: function() {
       $.when(AppOutboundLibrary.getAllLibraryItem(), AppOutboundLibrary.getAllLibraryBox())
+        .then(AppOutboundLibrary.renderNoItem)
         .then(AppOutboundLibrary.changeSelectDeposit)
         .then(AppOutboundLibrary.triggerRedisplay)
         .then(AppOutboundLibrary.allSelect)
@@ -51,6 +52,21 @@ var AppOutboundLibrary =
           }
         );
       return d.promise();
+    },
+    renderNoItem: function() {
+      if (AppOutboundLibrary.item.length == 0) {
+          var html = '';
+          html += '<p class="form-control-static col-lg-12">ただ今、お預かりしているお品物はございません。<br />';
+          html += '梱包キットをお持ちでない方は、弊社指定の専用キットをご購入ください。<br />';
+          html += '梱包キットをお持ちの方は、預け入れのお手続きにすすんでください。</p>';
+          $('.grid').empty();
+          $('.grid').append(html);
+          // footerボタンを削除
+          $('.nav-fixed').remove();
+          return new $.Deferred().reject().promise();
+      } else {
+          return new $.Deferred().resolve().promise();
+      }
     },
     render: function() {
       // 表示エリアをクリアする
