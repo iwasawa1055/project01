@@ -95,6 +95,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <?php if (isset($no_select_item_error)) : ?>
             <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> アイテムが選択されていません</div>
             <?php endif; ?>
+            <?php if (isset($over_select_item_error)) : ?>
+            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 選択したアイテムの合計が300点を超えているので、分割をして出庫をしてください。</div>
+            <?php endif; ?>
             <ul class="setting-switcher">
                 <li>
                     <label class="setting-switch">

@@ -875,6 +875,12 @@ class OutboundController extends MinikuraController
                 return $this->render('library_select_item');
             }
 
+            // 選択したアイテムが300以上ないか確認
+            if (count($this->_getLibraryOutboundItemList()) > 300) {
+                $this->set('over_select_item_error', true);
+                return $this->render('library_select_item');
+            }
+
             if ($this->Customer->isAmazonPay()) {
                 return $this->redirect('/outbound/library_input_address_amazon_pay');
             } else {
