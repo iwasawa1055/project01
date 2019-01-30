@@ -159,10 +159,10 @@ const BOX_STATUS_LIST = [
 
 // 入庫時選択オプション
 const KIT_OPTION = [
-    KIT_CD_MONO => ['MH' => 'あんしんオプション（162円/月）'],
-    KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
-    KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
-    KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_MONO => ['MH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
 //    KIT_CD_SNEAKERS => ['XX' => 'スニーカーシュリンク処置'], // todo: 検討中
 ];
 
