@@ -13,7 +13,10 @@ var AppOutboundLibrary =
         .then(AppOutboundLibrary.searchTxt)
         .then(AppOutboundLibrary.search)
         .then(AppOutboundLibrary.checkSelectedItems)
-        .then(AppOutboundLibrary.submitForm);
+        .then(AppOutboundLibrary.submitForm)
+        .then(AppOutboundLibrary.disableButton)
+        .then(AppOutboundLibrary.checkActiveButton)
+        .then(AppOutboundLibrary.clickItem);
     },
     getAllLibraryItem: function() {
       var d = new $.Deferred();
@@ -68,9 +71,52 @@ var AppOutboundLibrary =
           return new $.Deferred().resolve().promise();
       }
     },
-    render: function() {
+    render: function(checked_remain_flg) {
+      checked_remain_flg = checked_remain_flg || false;
+
+      var item = [];
+      var box = [];
       // 表示エリアをクリアする
-      $('.grid').empty();
+      if (checked_remain_flg == false) {
+          $('.grid').empty();
+      } else {
+        if($("input[name='select-deposit']:checked").val() == 'item') {
+          $.each($('input[name="item_id[]"]:checked'), function(i, v){
+            $.each(AppOutboundLibrary.item, function(ii, vv){
+              if (vv.item_id == $(v).val()) {
+                var exist = false;
+                item.push(vv.item_id);
+                $.each(AppOutboundLibrary.display_item, function(iii, vvv){
+                  if(vvv.item_id == $(v).val()) {
+                    exist = true;
+                  }
+                })
+                if (exist == false) {
+                  AppOutboundLibrary.display_item.push(vv);
+                }
+              }
+            })
+          })
+        } else {
+          $.each($('input[name="box_id[]"]:checked'), function(i, v){
+            $.each(AppOutboundLibrary.box, function(ii, vv){
+              if (vv.box_id == $(v).val()) {
+                var exist = false;
+                box.push(vv.box_id);
+                $.each(AppOutboundLibrary.display_box, function(iii, vvv){
+                  if(vvv.box_id == $(v).val()) {
+                    exist = true;
+                  }
+                })
+                if (exist == false) {
+                  AppOutboundLibrary.display_box.push(vv);
+                }
+              }
+            })
+          })
+        }
+        $('.grid').empty();
+      }
 
       var deposit = $("input[name='select-deposit']:checked").val();
       if (deposit == "item") {
@@ -88,6 +134,11 @@ var AppOutboundLibrary =
           renderItem += '</li>';
           $('.grid').append(renderItem);
         });
+        if (item.length > 0) {
+          $.each(item, function(i, v){
+            $("#"+v).prop('checked', true);
+          });
+        }
       }
       if (deposit == "box") {
         $.each(AppOutboundLibrary.display_box, function(index, value){
@@ -104,7 +155,14 @@ var AppOutboundLibrary =
           renderItem += '</li>';
           $('.grid').append(renderItem);
         });
+        if (box.length > 0) {
+          $.each(box, function(i, v){
+            $("#"+v).prop('checked', true);
+          });
+        }
       }
+      AppOutboundLibrary.clickItem();
+
       return new $.Deferred().resolve().promise();
     },
     changeSelectDeposit: function() {
@@ -145,11 +203,29 @@ var AppOutboundLibrary =
         });
       }
 
+      AppOutboundLibrary.checkActiveButton();
       return new $.Deferred().resolve().promise();
     },
     triggerRedisplay: function() {
-      $("input[name='select-deposit']").click("on", function(){
-        AppOutboundLibrary.search($("#search_txt").val());
+      $("input[name='select-deposit']").change(function(){
+        // チェックされているアイテムが存在する場合はクリアされる確認
+        if ($('input[name="box_id[]"]:checked,input[name="item_id[]"]:checked').length > 0) {
+          var txt = ($("input[name='select-deposit']:checked").val() == 'item') ? 'ボックス' : 'アイテム';
+          var ret = window.confirm('現在ご選択中の' + txt + 'がクリアされます。よろしいですか？');
+          if (ret == true) {
+              $('#execute').css('opacity','0.3');
+              $('#execute').prop('disabled',true);
+              AppOutboundLibrary.search($("#search_txt").val());
+          } else {
+            if ($("input[name='select-deposit']:eq(0)").prop('checked')) {
+              $("input[name='select-deposit']:eq(1)").prop('checked', true);
+            } else {
+              $("input[name='select-deposit']:eq(0)").prop('checked', true);
+            }
+          }
+        } else {
+          AppOutboundLibrary.search($("#search_txt").val());
+        }
       });
       return new $.Deferred().resolve().promise();
     },
@@ -157,18 +233,27 @@ var AppOutboundLibrary =
       $("#all_select").click("on", function(){
         if ($("#all_select").prop("checked")) {
           $('input[name="box_id[]"], input[name="item_id[]"]').prop("checked", true);
+          $('#execute').css('opacity','1');
+          $('#execute').prop('disabled',false);
         } else {
+          $('#execute').css('opacity','0.3');
+          $('#execute').prop('disabled',true);
           $('input[name="box_id[]"], input[name="item_id[]"]').prop("checked", false);
         }
       });
       return new $.Deferred().resolve().promise();
     },
     searchTxt: function() {
-      $("#search_txt").keyup("on", function(){
-        AppOutboundLibrary.search($("#search_txt").val());
-      });
-      $("#search_txt").keypress("on", function(){
-        AppOutboundLibrary.search($("#search_txt").val());
+      var stack = [];
+      $("#search_txt").on("keyup paste", function(){
+        stack.push(1);
+        setTimeout(function() {
+          stack.pop();
+          if (stack.length == 0) {
+            AppOutboundLibrary.search($("#search_txt").val());
+            stack = [];
+          }
+        }, 1000);
       });
       return new $.Deferred().resolve().promise();
     },
@@ -177,7 +262,7 @@ var AppOutboundLibrary =
       if (txt == '' || txt == undefined) {
         AppOutboundLibrary.display_item = AppOutboundLibrary.item;
         AppOutboundLibrary.display_box = AppOutboundLibrary.box;
-        AppOutboundLibrary.render();
+        AppOutboundLibrary.render(true);
         return true;
       }
 
@@ -216,10 +301,33 @@ var AppOutboundLibrary =
           return true; // continue
         }
       });
+
       AppOutboundLibrary.display_box = disp_box;
 
-      AppOutboundLibrary.render();
+      AppOutboundLibrary.render(true);
 
+      return new $.Deferred().resolve().promise();
+    },
+    disableButton: function() {
+      // ボタンを非活性
+      $('#execute').css('opacity','0.3');
+      $('#execute').prop('disabled',true);
+      return new $.Deferred().resolve().promise();
+    },
+    checkActiveButton: function() {
+      if ($('input[name="box_id[]"]:checked,input[name="item_id[]"]:checked').length > 0) {
+        $('#execute').css('opacity','1');
+        $('#execute').prop('disabled',false);
+      } else {
+        $('#execute').css('opacity','0.3');
+        $('#execute').prop('disabled',true);
+      }
+      return new $.Deferred().resolve().promise();
+    },
+    clickItem: function() {
+      $('input[name="box_id[]"],input[name="item_id[]"]').click("on", function(){
+        AppOutboundLibrary.checkActiveButton();
+      });
       return new $.Deferred().resolve().promise();
     },
     submitForm: function() {

@@ -126,14 +126,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <ul class="li-libry-box">
                         <?php foreach($outbound_box_list as $k => $v): ?>
                         <li>
-                            <p class="li-libry-box-id"><?php echo $k; ?></p>
+                            <p class="li-libry-box-id"><?php echo $this->App->getBoxName($k); ?><br><?php echo $k; ?></p>
                             <ul class="li-libry-box-item">
-                                <?php foreach($v as $kk => $vv): ?>
-                                <li><?php echo $kk; ?></li>
-                                <li><?php echo $kk; ?></li>
+                                <?php foreach($v['item'] as $kk => $vv): ?>
+                                <li><?php echo $vv['item_name']; ?>(<?php echo $kk; ?>)</li>
                                 <?php endforeach; ?>
                             </ul>
-                            <p class="li-libry-box-price"><?php echo LIBRARY_OUTBOUND_CANCELLATION_PRICE; ?>円</p>
+                            <p class="li-libry-box-price"><?php echo $v['price']; ?>円</p>
                         </li>
                         <?php endforeach; ?>
                         <li>
@@ -165,7 +164,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <li>
                     <label class="headline">配送方法</label>
                     <ul class="li-address">
-                        <?php if (isset($outbound_item_list) && (count($outbound_item_list) == 1)) : ?>
+                        <?php if (isset($datetime_cd) == false) : ?>
                         <li class="note">メール便での配送</li>
                         <?php else : ?>
                         <li class="note">宅配便での配送</li>

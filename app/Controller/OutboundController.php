@@ -924,6 +924,9 @@ class OutboundController extends MinikuraController
                 $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
             }
         } elseif ($this->request->is('post')) {
+            CakeSession::delete('app.data.library.address');
+            CakeSession::delete('app.data.library.datetime_cd');
+
             $error = false;
 
             $this->loadModel('CustomerAddress');
@@ -1025,7 +1028,9 @@ class OutboundController extends MinikuraController
         $this->set('address', $address);
 
         // 配送時間
-        $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
+        if (CakeSession::Read('app.data.library.datetime_cd')) {
+            $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
+        }
 
         // デフォルトのクレカを取得
         $this->loadModel('PaymentGMOCreditCard');
@@ -1168,6 +1173,9 @@ class OutboundController extends MinikuraController
                 $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
             }
         } elseif ($this->request->is('post')) {
+            CakeSession::delete('app.data.library.address');
+            CakeSession::delete('app.data.library.datetime_cd');
+
             $error = false;
 
             // amazon_order_reference_idの確認
@@ -1215,7 +1223,9 @@ class OutboundController extends MinikuraController
         $this->set('address', $address);
 
         // 配送時間
-        $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
+        if (CakeSession::Read('app.data.library.datetime_cd')) {
+            $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
+        }
     }
 
     public function library_complete_amazon_pay()
@@ -1431,18 +1441,28 @@ class OutboundController extends MinikuraController
             // 歯抜けのキーを詰める
             $outbound_item_list = array_values($outbound_item_list);
 
-            $outbound_item_price = (count($outbound_item_list) * LIBRARY_OUTBOUND_PER_ITEM_PRICE) + LIBRARY_OUTBOUND_BASIC_PRICE;
-            $this->set('outbound_item_price', $outbound_item_price);
-            $this->set('outbound_item_list', $outbound_item_list);
+            if (count($outbound_item_list) > 0) {
+                $outbound_item_price = (count($outbound_item_list) * LIBRARY_OUTBOUND_PER_ITEM_PRICE) + LIBRARY_OUTBOUND_BASIC_PRICE;
+                $this->set('outbound_item_price', $outbound_item_price);
+                $this->set('outbound_item_list', $outbound_item_list);
+            }
         }
 
         $outbound_box_list = [];
         $outbound_box_price = 0;
         if ($box_id) {
             foreach ($box_id as $bi) {
-                $outbound_box_list[$bi] = $item_list[$bi];
+                $outbound_box_list[$bi]['item'] = $item_list[$bi];
+                $box = $this->_getLibraryBoxByBoxId($bi);
+                $outbound_box_list[$bi]['box'] = $box[0];
+                if (date('Y-m-d', strtotime('16 month ago')) > $box[0]['last_inbound_date']) {
+                    $outbound_box_list[$bi]['price'] = 0;
+                } else {
+                    $outbound_box_list[$bi]['price'] = LIBRARY_OUTBOUND_CANCELLATION_PRICE;
+                    $outbound_box_price += LIBRARY_OUTBOUND_CANCELLATION_PRICE;
+                }
             }
-            $outbound_box_price = count($outbound_box_list) * LIBRARY_OUTBOUND_CANCELLATION_PRICE;
+            // 課金対象になるボックスを算出
             $this->set('outbound_box_price', $outbound_box_price);
             $this->set('outbound_box_list', $outbound_box_list);
         }
@@ -1452,6 +1472,16 @@ class OutboundController extends MinikuraController
         $this->set('outbound_total_price', $outbound_total_price);
 
         return $outbound_total_price;
+    }
+
+    private function _getLibraryBoxByBoxId($box_id)
+    {
+        // 対象アイテム一覧
+        $where = [
+            'product_cd' => [PRODUCT_CD_LIBRARY],
+            'box_id' => $box_id,
+        ];
+        return $this->InfoBox->apiGetResultsWhere([], $where);
     }
 
     private function _getLibraryItemByBoxId($box_id)

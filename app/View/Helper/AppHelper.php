@@ -115,4 +115,20 @@ class AppHelper extends Helper
         if( isset( $timeList[$time] )  ) $datetime .= ' '.$timeList[$time];
         return $datetime;
     }
+
+    // ボックス名取得
+    public function getBoxName ( $box_id ){
+        // 対象アイテム一覧
+        $where = [
+            'box_id' => $box_id,
+        ];
+        $InfoBox = new InfoBox();
+        $results = $InfoBox->apiGetResultsWhere([], $where);
+        foreach ($results as $v) {
+            if ($v['box_id'] == $box_id) {
+                return $v['box_name'];
+            }
+        }
+        return null;
+    }
 }
