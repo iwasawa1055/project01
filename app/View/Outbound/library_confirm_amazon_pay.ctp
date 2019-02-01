@@ -146,7 +146,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <ul class="li-libry-box">
                         <li>
                             <p class="li-libry-box-id"></p>
-                            <p class="li-libry-box-item">総計</p>
+                            <p class="li-libry-box-item">総計(税込み)</p>
                             <p class="li-libry-box-price"><?php echo $outbound_total_price; ?>円</p>
                         </li>
                     </ul>
