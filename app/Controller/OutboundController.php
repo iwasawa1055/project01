@@ -901,7 +901,7 @@ class OutboundController extends MinikuraController
 
         if (is_array($item_id) && (count($item_id) == 1)) {
             $yumail = true;
-        } elseif (is_array($box_id) && (count($box_id == 1))) {
+        } elseif (is_array($box_id) && (count($box_id) == 1)) {
             // 選択したboxが1個でitemが1個しかない場合
             $items = $this->_getLibraryItemByBoxId($box_id[0]);
             if (is_array($items) && (count($items) == 1)) {
