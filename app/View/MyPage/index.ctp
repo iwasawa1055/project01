@@ -79,9 +79,10 @@
 					if($customer->isSneaker()):
 					  $productCdList = [PRODUCT_CD_SNEAKERS];
 					else:
-					  $productCdList = [PRODUCT_CD_MONO, PRODUCT_CD_HAKO, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_DIRECT_INBOUND];
+					  $productCdList = [PRODUCT_CD_MONO, PRODUCT_CD_HAKO, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_DIRECT_INBOUND, PRODUCT_CD_LIBRARY];
 					endif;?>
 					<?php foreach($productCdList as $productCd) : ?>
+					<?php if(Hash::get($product_summary, $productCd, 0) != 0) : ?>
 					<div class="row list">
 					  <div class="col-xs-12 col-md-10 col-lg-10">
 						<?php echo PRODUCT_NAME[$productCd]; ?>
@@ -90,6 +91,7 @@
 						<?php echo Hash::get($product_summary, $productCd, 0); ?>箱
 					  </div>
 					</div>
+                                        <?php endif; ?>
 					<?php endforeach; ?>
 				  </div>
 				</div>

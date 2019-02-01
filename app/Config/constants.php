@@ -207,7 +207,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
-    PRODUCT_CD_LIBRARY => 'Libraryボックス',
+    PRODUCT_CD_LIBRARY => 'minikuraLibrary',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -234,6 +234,7 @@ const CONTACT_DIVISION_OTHER = '12'; // その他
 const CONTACT_DIVISION_BUG = '15'; // 不具合報告
 const CONTACT_DIVISION_OPINION = '16'; // minikuraへのご意見・ご感想
 const CONTACT_DIVISION_DISSOLUTION = '17'; //溶解の申し込みについて
+const CONTACT_DIVISION_DATA = '18'; //データ化のお申込みについて
 
 
 const CONTACTUS_DIVISION = [
@@ -241,6 +242,7 @@ const CONTACTUS_DIVISION = [
     CONTACT_DIVISION_RESIGN => '退会について',
     CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
     CONTACT_DIVISION_DISSOLUTION => '溶解の申し込みについて',
+    CONTACT_DIVISION_DATA => 'データ化のお申込みについて',
     CONTACT_DIVISION_BUG => '不具合報告',
     CONTACT_DIVISION_OTHER => 'その他',
 ];
@@ -300,6 +302,12 @@ const IN_USE_SERVICE = [
             'name' => 'シューズパック',
             'product_cd' => PRODUCT_CD_SHOES_PACK,
             'name_mobile' => 'シューズ<br />パック',
+        ],
+        [
+            'product' => 'library',
+            'name' => 'minikuraLibrary',
+            'product_cd' => PRODUCT_CD_LIBRARY,
+            'name_mobile' => 'minikura<br />Library',
         ],
     ],
     'sneakers' => [
@@ -418,3 +426,8 @@ const INPUT_ERROR = '入力した内容に誤りがあります。';
 // ポイントサービス エラー表示
 const POINT_BALANCE_ERROR = 'ポイント残高の情報の取得に失敗しました。';
 const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しました。';
+
+// LIBRARY出庫金額
+const LIBRARY_OUTBOUND_BASIC_PRICE = 350; //出庫基本料金
+const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金
+const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 850; //1箱解約時出庫基本料金

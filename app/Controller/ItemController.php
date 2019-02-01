@@ -73,6 +73,8 @@ class ItemController extends MinikuraController
             $productName = 'シューズパック';
         } else if ($_product === 'sneakers') {
             $productName = 'minikura SNEAKERS';
+        } else if ($_product === 'library') {
+            $productName = 'minikuraLibrary';
         }
         return $productName;
     }
@@ -226,7 +228,7 @@ class ItemController extends MinikuraController
         $this->set('linkToCleaning', $linkToCleaning);
         
         $linkToAuction = null;
-        if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK], true)) {
+        if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_LIBRARY], true)) {
             $linkToAuction = "/mini_auction/lite/item/${item['box_id']}/${item['item_id']}";
         }
         $this->set('linkToAuction', $linkToAuction);

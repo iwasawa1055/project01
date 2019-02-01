@@ -40,7 +40,7 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
-                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
+                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['class' => "form-control", 'rows' => 11, 'error' => false]); ?>
                   <?php echo $this->Form->error('ZendeskContactUs.comment', null, ['wrap' => 'p']) ?>
                 </div>
 

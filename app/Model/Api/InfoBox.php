@@ -122,6 +122,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_CARGO_HITOMAKASE];
         } elseif ($product === 'sneakers') {
             $productCd = [PRODUCT_CD_SNEAKERS];
+        } elseif ($product === 'library') {
+            $productCd = [PRODUCT_CD_LIBRARY];
         }
 
         $okStatus = [
