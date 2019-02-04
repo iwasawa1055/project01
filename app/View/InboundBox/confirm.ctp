@@ -14,6 +14,7 @@
             <p class="form-control-static col-lg-12">以下の内容で預け入れ手続きを行います。</p>
             <div class="row box-list">
               <!--loop-->
+              <?php $library = false; ?>
               <?php foreach ($boxList as $i => $box): ?>
               <?php
                     $formBox = $this->data['Inbound']['box_list'][$box['box_id']];
@@ -24,6 +25,9 @@
                     $kitName = '';
                     if (!empty($formBox['option'])) {
                         $kitName = KIT_OPTION[$kitCd][$formBox['option']];
+                    }
+                    if ($box['kit_cd'] == KIT_CD_LIBRARY_DEFAULT || $box['kit_cd'] == KIT_CD_LIBRARY_GVIDO) {
+                        $library = true;
                     }
                 ?>
               <div class="col-lg-12">
@@ -83,16 +87,27 @@
                   <input type="checkbox" class="agree-before-submit">
                   重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。</label>
               </p>
-              <p>※明らかに20kgを超えた場合は保管料を別途頂戴することがございます。あらかじめご了承ください。</p>
+              <p>※明らかに20kgを超えた場合はお預かりできないため、着払いで返送することがございます。あらかじめご了承ください。</p>
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
                   発火性・引火性のある危険物（スプレー缶等）、割れ物（精密機器、ガラス製品、陶磁器 等）、液体、食品、生物、その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a> で定められたものはお預かりできません。  </label>
               </p>
+              <?php if ($library): ?>
+              <p>
+                <label>
+                  <input type="checkbox" class="agree-before-submit">
+                  minikuraLibraryは開封・アイテム撮影するサービスですが、一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
+                </label>
+              </p>
+              <?php endif; ?>
               <div class="caution">
                 <img src="/images/burning@1x.png" srcset="/images/burning@1x.png 1x, /images/burning@2x.png 2x">
                 <img src="/images/crack@1x.png" srcset="/images/crack@1x.png 1x, /images/crack@2x.png 2x">
                 <img src="/images/liquid@1x.png" srcset="/images/liquid@1x.png 1x, /images/liquid@2x.png 2x">
+                <?php if ($library) : ?>
+                <img src="/images/loose@1x.png" srcset="/images/loose@1x.png 1x, /images/loose@2x.png 2x">
+                <?php endif; ?>
               </div>
             </div>
             <div class="panel-footer">

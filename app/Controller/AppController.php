@@ -238,12 +238,13 @@ class AppController extends Controller
 
                     $referer = $_SERVER['HTTP_REFERER'];
 
-                    // travel判定 静的ページtravelから遷移した場合
-                    $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';
-                    if (strpos($referer, $static_content_url_travel) !== false) {
-                        // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono  referer travel ');
-                        return $this->redirect(['controller' => 'travel', 'action' => 'mono']);
-                    }
+                    // #20214 Travel クローズ対応
+                    // // travel判定 静的ページtravelから遷移した場合
+                    // $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';
+                    // if (strpos($referer, $static_content_url_travel) !== false) {
+                    //     // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl on mono  referer travel ');
+                    //     return $this->redirect(['controller' => 'travel', 'action' => 'mono']);
+                    // }
                 }
 
                 // 遷移元がオプション静的ページでない場合 アイテム一覧に遷移
@@ -258,11 +259,12 @@ class AppController extends Controller
 
                 $referer = $_SERVER['HTTP_REFERER'];
 
-                // travel判定 静的ページtravelから遷移した場合
-                $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';
-                if (strpos($referer, $static_content_url_travel) !== false) {
-                    $is_order_redirct = true;
-                }
+                // #20214 Travel クローズ対応
+                // // travel判定 静的ページtravelから遷移した場合
+                // $static_content_url_travel = Configure::read('site.static_content_url') . '/lineup/travel.html';
+                // if (strpos($referer, $static_content_url_travel) !== false) {
+                //     $is_order_redirct = true;
+                // }
 
                 // monoがない場合でオプションページから遷移してきた場合、ボックス購入に遷移
                 if ($is_order_redirct) {

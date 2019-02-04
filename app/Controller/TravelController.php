@@ -19,6 +19,9 @@ class TravelController extends MinikuraController
      */
     public function beforeFilter()
     {
+        // #20214 トラベルクローズ対応
+        new AppTerminalError(AppE::NOT_FOUND, 404);
+
         parent::beforeFilter();
 
         $this->loadModel('InfoBox');

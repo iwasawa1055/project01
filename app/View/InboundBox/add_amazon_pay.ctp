@@ -133,6 +133,10 @@ if (!empty($validErrors)) {
               <?php echo $this->Form->select("Inbound.time_cd", $this->Order->setOption($timeList, 'time_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
               <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
             </div>
+            <div class="form-group col-lg-12" id="dev_inbound_notice">
+              <p style="color:red">現在、撮影の完了まで倉庫にお荷物が届いてから10日前後頂戴しております。<br>
+お荷物到着後、すぐの取り出しはできませんので、ご注意ください。</p>
+            </div>
             <span class="col-lg-12 col-md-12 col-xs-12">
                 <button type="submit" class="btn btn-danger btn-lg btn-block js-btn-submit">預け入れボックスを確認する</button>
             </span>

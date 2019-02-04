@@ -35,7 +35,9 @@
         <li> <a href="#"><i class="fa fa-arrow-circle-o-up fa-fw"></i> 預け入れ<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/inbound/box/add"><i class="fa fa-arrow-circle-o-up fa-fw"></i> ボックス預け入れ</a> </li>
+            <?php /* ダイレクトクローズ
             <li> <a class="animsition-link" href="/direct_inbound/input"><i class="fa fa-arrow-circle-o-up fa-fw"></i> minikuraダイレクト</a> </li>
+             */ ?>
           </ul>
         </li>
         <?php endif; ?>
@@ -44,6 +46,7 @@
           <ul class="nav nav-second-level">
             <li> <a class="animsition-link" href="/outbound/mono"><i class="fa fa-arrow-circle-o-down fa-fw"></i> アイテムを取り出す</a> </li>
             <li> <a class="animsition-link" href="/outbound/box"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
+            <li> <a class="animsition-link" href="/outbound/library_select_item"><i class="fa fa-arrow-circle-o-down fa-fw"></i> minikura Libraryを取り出す</a> </li>
           </ul>
         </li>
         <?php endif; ?>
@@ -51,9 +54,14 @@
         <li<?php if($active_status['cleaning']):?> class="active"<?php endif;?>>
 	    <a href="/cleaning/input"<?php if($active_status['cleaning']):?> class="active"<?php endif;?>><i class="fa icon-cleaning fa-fw"></i> minikuraCLEANING＋</a>	</li>
         <?php if (!$customer->isAmazonPay()) : ?>
+
+        <?php // #20214 トラベルクローズ対応 ?>
+        <!--
         <li<?php if($active_status['travel']):?> class="active"<?php endif;?>>
             <a href="/travel/mono"<?php if($active_status['travel']):?> class="active"<?php endif;?>><i class="fa fa-suitcase fa-fw"></i> minikura teburaTRAVEL</a>
         </li>
+        -->
+
         <?php endif; ?>
         <li class="separator">
           <a href="/mini_auction/" target="_blank"><i class="fa fa-gavel fa-fw"></i> ヤフオク! 出品</a>
@@ -61,6 +69,9 @@
         <?php endif; ?>
         <li>
           <a href="https://help.minikura.com/hc/ja" target="_blank"><i class="fa fa-question-circle fa-fw"></i> ヘルプ</a>
+        </li>
+        <li>
+          <a href="/contact_us"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a>
         </li>
       </ul>
     </div>

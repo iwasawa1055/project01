@@ -39,8 +39,8 @@ function checkAgreeBeforeSubmit() {
 
 // change contact form 
 $(function () {
-  $("#InquiryDivision").change(function () {
-      inquiryDivision = $("#InquiryDivision").val();
+  $("#ZendeskInquiryDivision").change(function () {
+      inquiryDivision = $("#ZendeskInquiryDivision").val();
       if (inquiryDivision === '15') {
           $("#inquiry_bug_area").show();
       } else {
@@ -51,7 +51,7 @@ $(function () {
 
 // contact form default
 $(function () {
-    inquiryDivision = $("#InquiryDivision").val();
+    inquiryDivision = $("#ZendeskInquiryDivision").val();
     if (inquiryDivision === '15') {
         $("#inquiry_bug_area").show();
     } else {
@@ -62,8 +62,8 @@ $(function () {
 
 // change contact form 
 $(function () {
-  $("#ContactUsDivision").change(function () {
-      var contactUsDivision = $("#ContactUsDivision").val();
+  $("#ZendeskContactUsDivision").change(function () {
+      var contactUsDivision = $("#ZendeskContactUsDivision").val();
       if (contactUsDivision === '15') {
           $("#bug_area").show();
       } else {
@@ -81,16 +81,27 @@ $(function () {
               txt_17 += "溶解する箱No：HK-0000 \n";
               txt_17 += "溶解証明書を取得する：【はい　または　いいえ】 \n";
               txt_17 += "**************************************************";
-          $("#ContactUsText").val(txt_17);
+          $("#ZendeskContactUsComment").val(txt_17);
+      } else if (contactUsDivision === '18') {
+          var txt_18  = "データ化の申し込みにつきましては、下記項目をご記入ください。\n";
+              txt_18 += "\n";
+              txt_18 += "お申込み内容\n";
+              txt_18 += "**************************************************\n";
+              txt_18 += "【オプション：データ化サービス】\n";
+              txt_18 += "データ化するサービス：【スキャニング　または　ダビング】 \n";
+              txt_18 += "データ化するアイテムID：MN-0000-000 \n";
+              txt_18 += "ダビングの場合DVD送付（別途600円）を希望する：【はい　または　いいえ】 \n";
+              txt_18 += "**************************************************";
+          $("#ZendeskContactUsComment").val(txt_18);
       } else {
-          $("#ContactUsText").val("");
+          $("#ZendeskContactUsComment").val("");
       }
   });
 });
 
 // contact form default
 $(function () {
-    var contactUsDivision = $("#ContactUsDivision").val();
+    var contactUsDivision = $("#ZendeskContactUsDivision").val();
     if (contactUsDivision === '15') {
         $("#bug_area").show();
     } else {

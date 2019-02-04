@@ -1,97 +1,142 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
-App::uses('Inquiry', 'Model');
-App::uses('CustomerEnvUnAuth', 'Model');
+App::uses('ZedeskModel', 'Model');
+App::uses('ZedeskInquiry', 'Model');
 
 class InquiryController extends MinikuraController
 {
-    const MODEL_NAME = 'Inquiry';
+    const MODEL_NAME_ZENDESK = 'ZendeskModel';
+    const MODEL_NAME_ZENDESK_INQUIRY = 'ZendeskInquiry';
 
     // ログイン不要なページ
     protected $checkLogined = false;
 
+    /**
+     * 制御前段処理.
+     */
     public function beforeFilter()
     {
         parent::beforeFilter();
-        // ログイン中は専用フォームへ
+        // ログイン中はContactUsへ
         if ($this->Customer->isLogined()) {
-            return $this->redirect(['controller' => 'contact_us', 'action' => 'add', 'customer' => false]);
+            return $this->redirect(['controller' => 'contact_us', 'action' => 'index', 'customer' => false]);
         }
+        $this->loadModel(self::MODEL_NAME_ZENDESK);
+        $this->loadModel(self::MODEL_NAME_ZENDESK_INQUIRY);
     }
 
+
     /**
-     * ルートインデックス.
+     * add
+     *     新規お問い合わせ作成(ルートインデックス)
+     *     (未ログインユーザー)
      */
     public function add()
     {
-        // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookie()を削除します。
-        // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
-        setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
-        setcookie("MINIKURACOM", "", time()-60, "", ".minikura.com");
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
-            $this->request->data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data = CakeSession::read(self::MODEL_NAME_ZENDESK_INQUIRY);
         }
-        CakeSession::delete(self::MODEL_NAME);
+        CakeSession::delete(self::MODEL_NAME_ZENDESK_INQUIRY);
     }
 
-    /**
-     *
+
+   /**
+     * confirm
+     *     お問い合わせ確認
      */
     public function confirm()
     {
-        $model = new Inquiry();
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Inquiry/add', 'Inquiry/confirm'], true) === false) {
+            $this->redirect('/');
+        }
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $originalData = $this->request->data;
-        // 不具合報告を問い合わせ内容とマージしてチェックする
-        $checkData = $model->editText($this->request->data);
-        $model->set($checkData); 
-        if ($model->validates()) {
-            // 戻るなどに対応するため、セッションに保存する前に不具合報告のマージを解除する
-            $model->set($originalData);
-            CakeSession::write(self::MODEL_NAME, $model->data);
-        } else {
+        // 入力フォーム内容を取得
+        $inquiry_params = $this->request->data;
+        $this->ZendeskInquiry->set($inquiry_params);
+        CakeSession::write(self::MODEL_NAME_ZENDESK_INQUIRY, $inquiry_params);
+
+        // validation
+        if ($this->ZendeskInquiry->validates() === false) {
+            $this->set('validErrors', $this->ZendeskInquiry->validationErrors);
             return $this->render('add');
         }
     }
 
+
     /**
-     *
+     * complete
+     *     お問い合わせ・zendeskユーザー作成完了
      */
     public function complete()
     {
-        $data = CakeSession::read(self::MODEL_NAME);
-        CakeSession::delete(self::MODEL_NAME);
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add']);
+        if (in_array(CakeSession::read('app.data.session_referer'), ['Inquiry/confirm'], true) === false) {
+            $this->redirect('/');
+        }
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // お問い合わせ内容
+        $inquiry_params = [];
+        $inquiry_params = CakeSession::read(self::MODEL_NAME_ZENDESK_INQUIRY)['ZendeskInquiry'];
+        if (empty($inquiry_params)) {
+            $this->redirect(['action' => 'add']);
         }
 
-        $model = new Inquiry();
-        $data = $model->editText($data);
-        $model->set($data);
-        if ($model->validates()) {
-            // リクエスト本体には例外処理を入れる from 2016.6.22
-            try {
-                $res = $model->apiPost($model->toArray());
-            } catch (Exception $e) {
-                $this->Flash->set(__('お問い合わせの送信に失敗しました。'));
-                return $this->redirect(['action' => 'add']);
-            }
+        // 同一メールアドレスチェック（非会員時問い合わせユーザー処理）
+        $zendesk_user = $this->ZendeskModel->getUserByEmail([
+            'email' => $inquiry_params['email'],
+        ]);
 
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'add']);
-            }
-            // ユーザー環境値登録
-            $env = new CustomerEnvUnAuth();
-            $env->apiPostEnv($data[self::MODEL_NAME]['email']);
+        $customer_params = [];
+        $customer_params = [
+            'name' => $inquiry_params['lastname'].' '.$inquiry_params['firstname'],
+            'email' => $inquiry_params['email'],
+            'customer_id' => '',
+            'customer_cd' => ''
+        ];
 
-        } else {
-            $this->Flash->set(__('empty_session_data'));
+        // 新規zendeskユーザー作成
+        if (empty($zendesk_user)) {
+            $zendesk_user = $this->ZendeskModel->postUser($customer_params);
+            if (empty($zendesk_user)) {
+                $error = $this->ZendeskModel->getError();
+                if (isset($error["description"]) && ($error["description"] == "Record validation errors")) {
+                    if (isset($error["details"])) {
+                        $message = "";
+                        foreach ($error["details"] as $e) {
+                            $message .= $e[0]["description"] . " ";
+                        }
+                        $this->Flash->set($message);
+                        $this->redirect('/inquiry/add?back=true');
+                    }
+                }
+                new AppInternalCritical(AppE::FUNC . ' putUser Failed', 500);
+            }
+        }
+
+        // 不具合情報の場合 内容マージ
+        $inquiry_params = $this->ZendeskInquiry->editContactUsComment($inquiry_params);
+
+        // 未ログインユーザー識別コメント
+        $inquiry_params['comment'] .= "\n\n"."※ ログインしていないお客様からのお問い合わせです。"."\n";
+
+        $ticket_params = [
+            'subject' => $customer_params['name'] . '様からのお問い合わせ',
+            'body' => $inquiry_params['comment'],
+            'tags' => INQUIRY_DIVISION[$inquiry_params['division']],
+            'zendesk_user_id' => $zendesk_user['id'],
+        ];
+
+        // zendeskチケット作成
+        $results = $this->ZendeskModel->postTicket($ticket_params);
+        if ($results === false) {
+            $this->Flash->set(__('ケース作成に失敗しました'));
             return $this->redirect(['action' => 'add']);
         }
+        CakeSession::delete(self::MODEL_NAME_ZENDESK_INQUIRY);
     }
 }

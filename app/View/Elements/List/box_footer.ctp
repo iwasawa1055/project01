@@ -10,8 +10,8 @@
         <p class="box-list-caption"><span>ステータス</span><?php echo BOX_STATUS_LIST[$box['box_status']];?></p>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-12">
-        <?php if (!empty($box['inbound_date'])) : ?>
-        <p class="box-list-caption"><span>入庫日</span><?php echo $this->Html->formatYmdKanji($box['inbound_date']); ?></p>
+        <?php if (!empty($box['last_inbound_date'])) : ?>
+        <p class="box-list-caption"><span>入庫日</span><?php echo $this->Html->formatYmdKanji($box['last_inbound_date']); ?></p>
         <?php endif;?>
         <?php if (!empty($box['outbound_date']) && $box['box_status'] == BOXITEM_STATUS_OUTBOUND_DONE) : ?>
         <p class="box-list-caption"><span>出庫日</span><?php echo $this->Html->formatYmdKanji($box['outbound_date']); ?></p>

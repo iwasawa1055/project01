@@ -20,6 +20,9 @@ class DirectInboundController extends MinikuraController
      */
     public function beforeFilter()
     {
+        // #20216 ダイレクト終了
+        new AppTerminalError(AppE::NOT_FOUND, 404);
+
         parent::beforeFilter();
 
         // 法人口座未登録用遷移

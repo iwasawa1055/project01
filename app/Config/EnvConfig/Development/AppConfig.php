@@ -53,7 +53,19 @@ switch (true) {
     case $_SERVER['HTTP_HOST'] === 'yoshida-www.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yoshida-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://yoshida-mypage.minikura.com';
-        $config['site.static_content_url'] = 'https://yoshida-contents.minikura.com';
+        $config['site.static_content_url'] = 'https://yoshida-www.minikura.com';
+
+        // $url = 'https://yoshida-user-api.minikura.com';
+        // $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+        // $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
+        // $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
+        // $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
+        // $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+        // $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
+        // $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+        // $config['api.minikura.access_point.amazon_pay_v3'] = $url . '/v3/payment/amazon_pay';
+        // $config['api.minikura.access_point.amazon_pay_v4'] = $url . '/v4/amazon_pay';
+        // $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
     break;
     case $_SERVER['HTTP_HOST'] === 't-adachi-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 't-adachi-mypage.minikura.com':
@@ -135,6 +147,19 @@ $config['app']['gmo']['token_url'] = 'https://pt01.mul-pay.jp/ext/js/token.js';
 $config['app']['gmo']['shop_id'] = 'tshop00019362';
 
 /**
+ * zendesk 設定値
+ */
+$config['app']['zendesk']['env_type'] = 'dev';
+$config['app']['zendesk']['access_point'] = 'https://minikura1539678083.zendesk.com/api';
+$config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
+$config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
+
+/**
+ * Google Map API
+ */
+$config['app']['googlemap']['api']['key'] = 'AIzaSyDTUsXrnbPBzq2PQ58FcU5XJ53d417ZxEI';
+
+/**
  * エラー表示
  */
 // CakePHP Debug Level
@@ -157,16 +182,16 @@ $config['app.e.mail.sender.MAIL FROM DISP'] = 'MINIKURA開発';
 $config['app.e.mail.sender.USER'] = '';
 $config['app.e.mail.sender.PASS'] = '';
 // Receiver
-$config['app.e.mail.receiver.warning.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.warning.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.warning.Cc'] = array();
 $config['app.e.mail.receiver.warning.Bcc'] = array();
-$config['app.e.mail.receiver.defect.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.defect.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.defect.Cc'] = array();
 $config['app.e.mail.receiver.defect.Bcc'] = array();
-$config['app.e.mail.receiver.critical.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.critical.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.critical.Cc'] = array();
 $config['app.e.mail.receiver.critical.Bcc'] = array();
-$config['app.e.mail.receiver.fatal.To'] = array('goto.masayuki@terrada.co.jp', 'yoshida.shota@terrada.co.jp');
+$config['app.e.mail.receiver.fatal.To'] = array('yasuda.soichi@terrada.co.jp','yoshida.shota@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
 $config['app.e.mail.subject.default'] = '【 障害 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' システムエラー';

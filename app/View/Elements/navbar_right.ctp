@@ -36,7 +36,7 @@
       <li><a class="animsition-link" href="/contract"><i class="fa fa-list-alt fa-fw"></i> 会員情報</a> </li>
     <?php endif; ?>
       <li class="divider"></li>
-      <li><a href="/contact_us/add"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
+      <li><a href="/contact_us"><i class="fa fa-pencil-square-o fa-fw"></i> お問い合わせ</a> </li>
       <li class="divider"></li>
       <li><a <?php if ($customer->isAmazonPay()): ?> id="AmazonPayLogout"<?php endif; ?> href="/login/logout"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a> </li>
     </ul>

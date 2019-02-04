@@ -96,6 +96,9 @@ function checkIncludeMonoBox() {
         if ($(element).attr('name').match(/MN-/)) {
             $('#dev_inbound_notice').show();
         }
+        if ($(element).attr('name').match(/ML-/)) {
+            $('#dev_inbound_notice').show();
+        }
     });
 }
 

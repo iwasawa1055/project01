@@ -24,6 +24,9 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     public function beforeFilter()
     {
+        // #20216 ダイレクト終了
+        new AppTerminalError(AppE::NOT_FOUND, 404);
+
         parent::beforeFilter();
         //* mypageとは違うlayoutにする
         $this->layout = 'element_set';

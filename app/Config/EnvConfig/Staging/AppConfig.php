@@ -114,6 +114,19 @@ $config['app']['amazon_pay']['sandbox'] = 'true';
 $config['app']['gmo']['token_url'] = 'https://pt01.mul-pay.jp/ext/js/token.js';
 $config['app']['gmo']['shop_id'] = 'tshop00019363';
 
+/**
+ * zendesk 設定値
+ */
+$config['app']['zendesk']['env_type'] = 'stag';
+$config['app']['zendesk']['access_point'] = 'https://minikura1539678083.zendesk.com/api';
+$config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
+$config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
+
+/**
+ * Google Map API
+ */
+$config['app']['googlemap']['api']['key'] = 'AIzaSyDxi2OvmjkJZZlH6dPjzByrluQqAuMMqDk';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');

@@ -36,7 +36,7 @@ class InfoBox extends ApiCachedModel
 
     public function __construct()
     {
-        parent::__construct(self::SESSION_CACHE_KEY, 300, 'InfoBox', '/info_box');
+        parent::__construct(self::SESSION_CACHE_KEY, 300, 'InfoBox', '/info_box', 'minikura_v5');
     }
 
     // 結果ゼロ件チェック
@@ -122,6 +122,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_CARGO_HITOMAKASE];
         } elseif ($product === 'sneakers') {
             $productCd = [PRODUCT_CD_SNEAKERS];
+        } elseif ($product === 'library') {
+            $productCd = [PRODUCT_CD_LIBRARY];
         }
 
         $okStatus = [
@@ -189,6 +191,10 @@ class InfoBox extends ApiCachedModel
                 break;
             case KIT_CD_HAKO_LIMITED_VER1:
                 $productCd = PRODUCT_CD_HAKO;
+                break;
+            case KIT_CD_LIBRARY_DEFAULT:
+            case KIT_CD_LIBRARY_GVIDO:
+                $productCd = PRODUCT_CD_LIBRARY;
                 break;
             default:
                 break;
