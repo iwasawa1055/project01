@@ -90,18 +90,30 @@ class InquiryController extends MinikuraController
         $zendesk_user = $this->ZendeskModel->getUserByEmail([
             'email' => $inquiry_params['email'],
         ]);
-        
+
+        $customer_params = [];
+        $customer_params = [
+            'name' => $inquiry_params['lastname'].' '.$inquiry_params['firstname'],
+            'email' => $inquiry_params['email'],
+            'customer_id' => '',
+            'customer_cd' => ''
+        ];
+
         // 新規zendeskユーザー作成
         if (empty($zendesk_user)) {
-            $customer_params = [];
-            $customer_params = [
-                'name' => $inquiry_params['lastname'].' '.$inquiry_params['firstname'],
-                'email' => $inquiry_params['email'],
-                'customer_id' => '',
-                'customer_cd' => ''
-            ];
             $zendesk_user = $this->ZendeskModel->postUser($customer_params);
             if (empty($zendesk_user)) {
+                $error = $this->ZendeskModel->getError();
+                if (isset($error["description"]) && ($error["description"] == "Record validation errors")) {
+                    if (isset($error["details"])) {
+                        $message = "";
+                        foreach ($error["details"] as $e) {
+                            $message .= $e[0]["description"] . " ";
+                        }
+                        $this->Flash->set($message);
+                        $this->redirect('/inquiry/add?back=true');
+                    }
+                }
                 new AppInternalCritical(AppE::FUNC . ' putUser Failed', 500);
             }
         }
@@ -113,7 +125,7 @@ class InquiryController extends MinikuraController
         $inquiry_params['comment'] .= "\n\n"."※ ログインしていないお客様からのお問い合わせです。"."\n";
 
         $ticket_params = [
-            'subject' => INQUIRY_DIVISION[$inquiry_params['division']],
+            'subject' => $customer_params['name'] . '様からのお問い合わせ',
             'body' => $inquiry_params['comment'],
             'tags' => INQUIRY_DIVISION[$inquiry_params['division']],
             'zendesk_user_id' => $zendesk_user['id'],

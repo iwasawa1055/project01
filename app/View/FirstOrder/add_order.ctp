@@ -89,6 +89,7 @@
     <?php if (($kit_select_type === 'all') || ($kit_select_type === 'mono') || ($kit_select_type === 'code')) : ?>
     <!-- MONO -->
     <div id="dsn-mono" class="dsn-lineup-box">
+        <p class="best"></p>
         <h3><span>1 点ごとのアイテム管理</span>minikuraMONO</h3>
         <div class="dsn-box-mono"><img src="/first_order_file/images/box_mono@1x.png" srcset="/first_order_file/images/box_mono@1x.png 1x, /first_order_file/images/box_mono@2x.png 2x" alt="minikuraMONO"></div>
         <div class="dsn-caption">
@@ -99,6 +100,23 @@
         <a href="#" class="btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
         <div class="dsn-form">
           <?php echo $this->Flash->render('select_oreder_mono'); ?>
+        </div>
+      </div>
+    <?php endif; ?>
+    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'library') || ($kit_select_type === 'code')) : ?>
+      <!-- LIBRARY -->
+      <div id="dsn-library" class="dsn-lineup-box">
+        <p class="new"></p>
+        <h3><span>書籍に最適</span>minikuraLibrary</h3>
+        <div class="dsn-box-library"><img src="/first_order_file/images/box_library@1x.png" srcset="/first_order_file/images/box_library@1x.png 1x, /first_order_file/images/box_library@2x.png 2x" alt="minikuraLibrary"> </div>
+        <div class="dsn-caption">
+          <p class="dsn-price">月額保管料<span>450円</p>
+          <p class="dsn-price">ボックス代金<span>450円</p>
+          <p class="dsn-select-number" id="select_library"><?php if (CakeSession::read('Order.library.library') > 0) : ?><span><?php echo h(CakeSession::read('Order.library.library')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
+        </div>
+        <a href="#" class="dsn-btn-select" data-remodal-target="modal-library"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
+        <div class="dsn-form">
+          <?php echo $this->Flash->render('select_oreder_library'); ?>
         </div>
       </div>
     <?php endif; ?>
@@ -117,25 +135,6 @@
           <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
         </div>
       </div>
-    <?php endif; ?>
-    <?php if (($kit_select_type === 'all') || ($kit_select_type === 'code')) : ?>
-    <!-- minikuraダイレクト -->
-    <div id="dsn-mybox" class="dsn-lineup-box">
-      <div class="dsn-medal">
-        <picture>
-          <source srcset="/first_order_file/images/md-caption@1x.png 1x, /first_order_file/images/md-caption@2x.png 2x">
-          <img src="/first_order_file/images/md-caption@1x.png" alt="すぐに送れる！">
-        </picture>
-      </div>
-      <h3><span>片付けたらそのまま</span>minikuraダイレクト</h3>
-      <div class="dsn-box-cleaning"><img src="/first_order_file/images/box_mybox@1x.png" srcset="/first_order_file/images/box_mybox@1x.png 1x, /first_order_file/images/box_mybox@2x.png 2x" alt="minikuraダイレクト"> </div>
-      <div class="dsn-caption">
-        <p class="dsn-price">月額保管料<span>250円</p>
-        <p class="dsn-price">ボックス代金<span>0円</span>
-        </p>
-      </div>
-      <a href="/first_order_direct_inbound/add_address" class="dsn-btn-mybox"><i class="fa fa-chevron-circle-right"></i> 預け入れに進む</a>
-    </div>
     <?php endif; ?>
   </div>
 </section>
@@ -162,6 +161,7 @@
 <input type="hidden" class="js-set_num" name="hako_book"     value="<?php echo h(CakeSession::read('Order.hako.hako_book')); ?>" />
 <input type="hidden" class="js-set_num" name="cleaning"      value="<?php echo h(CakeSession::read('Order.cleaning.cleaning')); ?>" />
 <input type="hidden" class="js-set_num" name="hako_limited_ver1"      value="<?php echo h(CakeSession::read('Order.hako_limited_ver1.hako_limited_ver1')); ?>" />
+<input type="hidden" class="js-set_num" name="library"      value="<?php echo h(CakeSession::read('Order.library.library')); ?>" />
 </form>
 <!--MONO modal-->
 <div class="remodal items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
@@ -193,7 +193,7 @@
     <p class="size">W60cm×H20cm×D38cm</p>
     <p class="caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
   </div>
-  <div class="box">
+  <div class="box" style="display:none">
     <div class="pict-box"><img src="/first_order_file/images/box_book@1x.png" srcset="/first_order_file/images/box_book@1x.png 1x, /first_order_file/images/box_book@2x.png 2x" alt="">
     </div>
     <div class="select-box">
@@ -274,6 +274,34 @@
   </div>
   </div>
   <?php endif; ?>
+</div>
+<!--minikuraLibrary modal-->
+<div class="remodal items" data-remodal-id="modal-library" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
+  <div class="box">
+    <div class="pict-box"><img src="/first_order_file/images/box_library@1x.png" srcset="/first_order_file/images/box_library@1x.png 1x, /first_order_file/images/box_library@2x.png 2x" alt="minikuraLibrary">
+    </div>
+    <div class="select-box">
+      <h3>minikuraLibrary</h3>
+      <select class="item-number js-item-number js-item-library" data-name="library" data-box_type="library">
+        <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
+        <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.library.library') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
+        <?php endfor;?>
+      </select>
+    </div>
+    <p class="size">W42cm×H29cm×D33cm</p>
+    <p class="caption">文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+  </div>
+  <a class="btn-return" data-remodal-action="close" class="" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
+  <a class="btn-submit js-btn-submit">お届け先を入力 <i class="fa fa-chevron-circle-right"></i></a>
+  <?php if (!$customer->isEntry()): ?>
+  <div style="display:none">
+　<div class="dsn-modal-login-amazon">
+   <p>お持ちのAmazonアカウントで支払うことができます。</p>
+    <div id="AmazonPayButtonCleaning">
+    </div>
+  </div> 
+  </div> 
+  <?php endif; ?> 
 </div>
 <!--Cleaning modal-->
 <div class="remodal items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">

@@ -862,6 +862,7 @@ class AppValid
 				case $name === 'select_oreder_mono':
 				case $name === 'select_oreder_hako':
 				case $name === 'select_oreder_cleaning':
+				case $name === 'select_oreder_library':
 				case $name === 'select_oreder_sneaker':
 				case $name === 'select_oreder_hako_limited_ver1':
 				case $name === 'select_direct_inbound':

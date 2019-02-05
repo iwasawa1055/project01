@@ -96,6 +96,8 @@ const KIT_CD_STARTER_MONO = '200';
 const KIT_CD_STARTER_MONO_APPAREL = '201';
 const KIT_CD_STARTER_MONO_BOOK = '202';
 const KIT_CD_HAKO_LIMITED_VER1 = '203';
+const KIT_CD_LIBRARY_DEFAULT = '214';
+const KIT_CD_LIBRARY_GVIDO = '215';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -106,6 +108,7 @@ const PRODUCT_CD_CLEANING_PACK = '004029';
 const PRODUCT_CD_SHOES_PACK = '005000';
 const PRODUCT_CD_SNEAKERS = '005310';
 const PRODUCT_CD_DIRECT_INBOUND = '005003';
+const PRODUCT_CD_LIBRARY = '005004';
 
 // box_status, item_status
 // キット購入・依頼
@@ -156,10 +159,10 @@ const BOX_STATUS_LIST = [
 
 // 入庫時選択オプション
 const KIT_OPTION = [
-    KIT_CD_MONO => ['MH' => 'あんしんオプション（162円/月）'],
-    KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
-    KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
-    KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_MONO => ['MH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_MONO_APPAREL => ['MH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_MONO_BOOK => ['MH' => 'あんしんオプション（162円/月）'],
+    // KIT_CD_CLEANING_PACK => ['CH' => 'あんしんオプション（162円/月）'],
 //    KIT_CD_SNEAKERS => ['XX' => 'スニーカーシュリンク処置'], // todo: 検討中
 ];
 
@@ -177,7 +180,9 @@ const KIT_NAME = [
     KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
     KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
     KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
-    KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック'
+    KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック',
+    KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
+    KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
@@ -189,6 +194,8 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
     'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
     'sneaker'       => array('code' => KIT_CD_SNEAKERS,         'name' => 'SNEAKERS'),
+    'library'       => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
+    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Libraryボックス'),
 ];
 
 const PRODUCT_NAME = [
@@ -200,6 +207,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_CARGO_HITOMAKASE => 'minikura CARGO ひとまかせ',
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
+    PRODUCT_CD_LIBRARY => 'minikuraLibrary',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -226,6 +234,7 @@ const CONTACT_DIVISION_OTHER = '12'; // その他
 const CONTACT_DIVISION_BUG = '15'; // 不具合報告
 const CONTACT_DIVISION_OPINION = '16'; // minikuraへのご意見・ご感想
 const CONTACT_DIVISION_DISSOLUTION = '17'; //溶解の申し込みについて
+const CONTACT_DIVISION_DATA = '18'; //データ化のお申込みについて
 
 
 const CONTACTUS_DIVISION = [
@@ -233,6 +242,7 @@ const CONTACTUS_DIVISION = [
     CONTACT_DIVISION_RESIGN => '退会について',
     CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
     CONTACT_DIVISION_DISSOLUTION => '溶解の申し込みについて',
+    CONTACT_DIVISION_DATA => 'データ化のお申込みについて',
     CONTACT_DIVISION_BUG => '不具合報告',
     CONTACT_DIVISION_OTHER => 'その他',
 ];
@@ -292,6 +302,12 @@ const IN_USE_SERVICE = [
             'name' => 'シューズパック',
             'product_cd' => PRODUCT_CD_SHOES_PACK,
             'name_mobile' => 'シューズ<br />パック',
+        ],
+        [
+            'product' => 'library',
+            'name' => 'minikuraLibrary',
+            'product_cd' => PRODUCT_CD_LIBRARY,
+            'name_mobile' => 'minikura<br />Library',
         ],
     ],
     'sneakers' => [
@@ -410,3 +426,8 @@ const INPUT_ERROR = '入力した内容に誤りがあります。';
 // ポイントサービス エラー表示
 const POINT_BALANCE_ERROR = 'ポイント残高の情報の取得に失敗しました。';
 const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しました。';
+
+// LIBRARY出庫金額
+const LIBRARY_OUTBOUND_BASIC_PRICE = 350; //出庫基本料金
+const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金
+const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 850; //1箱解約時出庫基本料金

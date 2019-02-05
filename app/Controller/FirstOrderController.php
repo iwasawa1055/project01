@@ -186,14 +186,16 @@ class FirstOrderController extends MinikuraController
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
                 $Order = $this->_setCleaningOrder($Order);
                 $Order = $this->_setHakoLimitedVer1Order($Order);
+                $Order = $this->_setLibraryOrder($Order);
 
                 // 箱選択されているか
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['hako_limited_ver1']['hako_limited_ver1'])) === 0) {
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['hako_limited_ver1']['hako_limited_ver1'], $Order['library']['library'])) === 0) {
                     $params = array(
                         'select_oreder_mono' => $OrderTotal['mono_num'],
                         'select_oreder_hako' => $OrderTotal['hako_num'],
                         'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
-                        'select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1']
+                        'select_oreder_hako_limited_ver1' => $Order['hako_limited_ver1']['hako_limited_ver1'],
+                        'select_oreder_library' => $Order['library']['library']
                     );
                 }
                 break;
@@ -203,13 +205,15 @@ class FirstOrderController extends MinikuraController
                 $Order = $this->_setMonoOrder($Order);
                 $OrderTotal['mono_num'] = array_sum($Order['mono']);
                 $Order = $this->_setCleaningOrder($Order);
+                $Order = $this->_setLibraryOrder($Order);
 
                 // 箱選択されているか
-                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'])) === 0) {
+                if (array_sum(array($OrderTotal['mono_num'], $OrderTotal['hako_num'], $Order['cleaning']['cleaning'], $Order['library']['library'])) === 0) {
                     $params = array(
                         'select_oreder_mono' => $OrderTotal['mono_num'],
                         'select_oreder_hako' => $OrderTotal['hako_num'],
-                        'select_oreder_cleaning' => $Order['cleaning']['cleaning']
+                        'select_oreder_cleaning' => $Order['cleaning']['cleaning'],
+                        'select_oreder_library' => $Order['library']['library'],
                     );
                 }
                 break;
@@ -226,6 +230,10 @@ class FirstOrderController extends MinikuraController
             case $kit_select_type === 'cleaning':
                 $Order = $this->_setCleaningOrder($Order);
                 $params = array('select_oreder_cleaning' => $Order['cleaning']['cleaning']);
+                break;
+            case $kit_select_type === 'library':
+                $Order = $this->_setLibraryOrder($Order);
+                $params = array('select_oreder_library' => $Order['library']['library']);
                 break;
             case $kit_select_type === 'starter_kit':
                 $Order = $this->_setStarterOrder($Order);
@@ -1602,6 +1610,7 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
         $gmo_kit_card['hako_book_num'] = CakeSession::read('Order.hako.hako_book');
         $gmo_kit_card['cleaning_num']  = CakeSession::read('Order.cleaning.cleaning');
         $gmo_kit_card['sneaker_num']   = CakeSession::read('Order.sneaker.sneaker');
+        $gmo_kit_card['library_num']  = CakeSession::read('Order.library.library');
         $gmo_kit_card['starter_mono_num']      = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_appa_num'] = CakeSession::read('Order.starter.starter');
         $gmo_kit_card['starter_mono_book_num'] = CakeSession::read('Order.starter.starter');
@@ -1637,6 +1646,9 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
             PRODUCT_CD_SHOES_PACK => [
                 'kitList' => [KIT_CD_SNEAKERS],
             ],
+            PRODUCT_CD_LIBRARY => [
+                'kitList' => [KIT_CD_LIBRARY_DEFAULT],
+            ],
         ];
 
         $dataKeyNum = [
@@ -1647,6 +1659,7 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
             KIT_CD_HAKO_APPAREL  => 'hako_appa_num',
             KIT_CD_HAKO_BOOK     => 'hako_book_num',
             KIT_CD_CLEANING_PACK => 'cleaning_num',
+            KIT_CD_LIBRARY_DEFAULT => 'library_num',
             KIT_CD_STARTER_MONO          => 'starter_mono_num',
             KIT_CD_STARTER_MONO_APPAREL  => 'starter_mono_appa_num',
             KIT_CD_STARTER_MONO_BOOK     => 'starter_mono_book_num',
@@ -2476,6 +2489,24 @@ CakeLog::write(DEBUG_LOG, 'FILE_NAME:'.__FILE__.' LINE:'.__LINE__.' '.print_r($C
     private function _setHakoLimitedVer1OrderByGet($Order)
     {
         $Order['hako_limited_ver1']['hako_limited_ver1'] = (int)filter_input(INPUT_POST, 'hako_limited_ver1');
+        return $Order;
+    }
+
+    /**
+     * kit box library 箱数をset
+     */
+    private function _setLibraryOrder($Order)
+    {
+        $Order['library']['library'] = (int)filter_input(INPUT_POST, 'library');
+        return $Order;
+    }
+
+    /**
+     * kit box library 箱数をset
+     */
+    private function _setLibraryOrderByGet($Order)
+    {
+        $Order['library']['library'] = (int)filter_input(INPUT_GET, 'library');
         return $Order;
     }
 
