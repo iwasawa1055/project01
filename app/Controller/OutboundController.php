@@ -1100,7 +1100,7 @@ class OutboundController extends MinikuraController
             $request_params = [];
             $request_params['OutboundCreditCardYumail'] = [
                 'price'=>$price,
-                'delivery_type'=>'11',
+                'delivery_type'=>'10',
                 'product'=>implode(',', $product_list),
                 'name'=>$address['lastname'] . $address['firstname'],
                 'pref'=>$address['pref'],
@@ -1265,7 +1265,7 @@ class OutboundController extends MinikuraController
             $request_params['OutboundAmazonPayYumail'] = [
                 'amazon_order_reference_id'=>CakeSession::Read('app.data.library.amazon_order_reference_id'),
                 'price'=>$price,
-                'delivery_type'=>'11',
+                'delivery_type'=>'10',
                 'product'=>implode(',', $product_list),
                 'name'=>$address['lastname'] . $address['firstname'],
                 'pref'=>$address['pref'],
