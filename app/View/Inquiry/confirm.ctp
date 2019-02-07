@@ -65,7 +65,7 @@
                 <div class="form-group col-lg-12">
                   <label>
                     <input class="agree-before-submit" type="checkbox">
-                    当社の<span data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color:red; cursor: pointer;">個人情報保護方針</span>に同意する
+                    <span data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color:red; cursor: pointer;">個人情報の利用目的</span>に同意する
                   </label>
                   <br>
                   <div id="collapseOne" class="panel-collapse collapse panel panel-default">
