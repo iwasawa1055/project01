@@ -72,6 +72,11 @@ switch (true) {
         $config['site.mypage.url'] = 'https://t-adachi-mypage.minikura.com';
         $config['site.static_content_url'] = 'https://t-adachi-contents.minikura.com';
         break;
+    case $_SERVER['HTTP_HOST'] === 'yoshioka-contents.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 'yoshioka-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://yoshioka-mypage.minikura.com';
+        $config['site.static_content_url'] = 'https://yoshioka-contents.minikura.com';
+        break;
     default:
         $config['site.mypage.url'] = 'https://' . $_SERVER['HTTP_HOST'];
 }

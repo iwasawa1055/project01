@@ -34,6 +34,10 @@
                 <p><?php echo $this->CustomerInfo->setName($this->Form->data['CustomerRegistInfo']); ?></p>
               </div>
               <div class="form-group">
+                <label>生年月日（西暦）</label>
+                <p><?php echo $this->CustomerInfo->setBirth($this->Form->data['CustomerRegistInfo']); ?></p>
+              </div>
+              <div class="form-group">
                 <label>電話番号</label>
                 <p><?php echo $this->Form->data['CustomerRegistInfo']['tel1']; ?></p>
               </div>

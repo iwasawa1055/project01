@@ -192,7 +192,11 @@ class RegisterController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_REGIST);
 
         $data = $this->request->data[self::MODEL_NAME_REGIST];
-        $data['birth'] = CUSTOMER_DEFAULT_BIRTH;
+        $birth = [];
+        $birth[0] = $data['birth_year'];
+        $birth[1] = $data['birth_month'];
+        $birth[2] = $data['birth_day'];
+        $data['birth'] = implode('-', $birth);
         $data['gender'] = CUSTOMER_DEFAULT_GENDER;
         $this->CustomerRegistInfo->set($data);
 

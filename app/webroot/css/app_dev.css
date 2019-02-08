@@ -358,3 +358,9 @@ a.use_agreement{
 a.use_agreement:hover{
   color: #ff0000;
 }
+
+.panel_scroll {
+  border: 1px solid #bbbbbb;
+  height: 200px;
+  overflow: auto;
+}

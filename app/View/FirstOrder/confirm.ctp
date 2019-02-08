@@ -50,6 +50,11 @@
       </div>
       <div class="divider"></div>
       <div class="form">
+        <label>生年月日</label>
+        <p><?php echo date('Y年n月j日',strtotime(CakeSession::read('Email.birth')));?></p>
+      </div>
+      <div class="divider"></div>
+      <div class="form">
         <label>メールアドレス</label>
         <p><?php echo CakeSession::read('Email.email');?></p>
       </div>

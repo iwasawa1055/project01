@@ -33,9 +33,20 @@ class InfoController extends MinikuraController
         $step = Hash::get($this->request->params, 'step');
         $back = Hash::get($this->request->query, 'back');
 
-        if ($back || $step === 'complete') {
+        if ($back) {
             $data = CakeSession::read(self::MODEL_NAME);
             $this->request->data = [self::MODEL_NAME => $data];
+            CakeSession::delete(self::MODEL_NAME);
+        } elseif ($step === 'complete') {
+            $data = CakeSession::read(self::MODEL_NAME);
+            $this->request->data = [self::MODEL_NAME => $data];
+            // 生年月日が未入力の場合はデフォルトを入れる
+            if ($this->request->data[self::MODEL_NAME]['birth_year'] == '' && $this->request->data[self::MODEL_NAME]['birth_month'] == '' && $this->request->data[self::MODEL_NAME]['birth_day'] == '') {
+                $this->request->data[self::MODEL_NAME]['birth']       = CUSTOMER_DEFAULT_BIRTH;
+                $this->request->data[self::MODEL_NAME]['birth_year']  = CUSTOMER_DEFAULT_BIRTH_YEAR;
+                $this->request->data[self::MODEL_NAME]['birth_month'] = CUSTOMER_DEFAULT_BIRTH_MONTH;
+                $this->request->data[self::MODEL_NAME]['birth_day']   = CUSTOMER_DEFAULT_BIRTH_DAY;
+            }
             CakeSession::delete(self::MODEL_NAME);
         } elseif ($this->action === 'customer_edit' && empty($step)) {
             // edit 初期表示データ取得
@@ -47,10 +58,17 @@ class InfoController extends MinikuraController
                 $data = $res->results[0];
                 $this->request->data[self::MODEL_NAME] = $data;
                 if ($this->Customer->isPrivateCustomer()) {
-                    $ymd = explode('-', $data['birth']);
-                    $this->request->data[self::MODEL_NAME]['birth_year'] = $ymd[0];
-                    $this->request->data[self::MODEL_NAME]['birth_month'] = $ymd[1];
-                    $this->request->data[self::MODEL_NAME]['birth_day'] = $ymd[2];
+                    // 生年月日の必須を外していた時のユーザーの場合
+                    if ($data['birth'] == "1900-01-01") {
+                        $this->request->data[self::MODEL_NAME]['birth_year'] = "";
+                        $this->request->data[self::MODEL_NAME]['birth_month'] = "";
+                        $this->request->data[self::MODEL_NAME]['birth_day'] = "";
+                    } else {
+                        $ymd = explode('-', $data['birth']);
+                        $this->request->data[self::MODEL_NAME]['birth_year'] = $ymd[0];
+                        $this->request->data[self::MODEL_NAME]['birth_month'] = $ymd[1];
+                        $this->request->data[self::MODEL_NAME]['birth_day'] = $ymd[2];
+                    }
                 }
             }
         } elseif ($this->action === 'customer_add' && empty($step)) {
@@ -72,7 +90,11 @@ class InfoController extends MinikuraController
         } elseif ($this->request->is('post')) {
             // validates
             $data = $this->request->data[self::MODEL_NAME];
-            $data['birth'] = CUSTOMER_DEFAULT_BIRTH;
+            $birth = [];
+            $birth[0] = $data['birth_year'];
+            $birth[1] = $data['birth_month'];
+            $birth[2] = $data['birth_day'];
+            $data['birth'] = implode('-', $birth);
             $data['gender'] = CUSTOMER_DEFAULT_GENDER;
             $model = $this->Customer->getInfoPostModel($data);
 
@@ -128,11 +150,22 @@ class InfoController extends MinikuraController
             // validates
             $data = $this->request->data[self::MODEL_NAME];
             if ($this->Customer->isPrivateCustomer()) {
+                $birth = [];
+                $birth[0] = $data['birth_year'];
+                $birth[1] = $data['birth_month'];
+                $birth[2] = $data['birth_day'];
+                $data['birth'] = implode('-', $birth);
                 $customerInfo = $this->Customer->getInfo();
-                $data['birth'] = $customerInfo['birth'];
                 $data['gender'] = $customerInfo['gender'];
             }
             $model = $this->Customer->getInfoPatchModel($data);
+
+            // 生年月日が1900-01-01で、今回の更新でも生年月日を入力されない場合は生年月日をバリデーションから外す
+            if ($this->Customer->isPrivateCustomer()) {
+                if ($this->Customer->getInfo()['birth'] == CUSTOMER_DEFAULT_BIRTH && $data['birth_year'] == '' && $data['birth_month'] == '' && $data['birth_day'] == '') {
+                    unset($model->validate['birth']);
+                }
+            }
 
             if (!$model->validates()) {
                 $this->set('validErrors', $model->validationErrors);
