@@ -185,9 +185,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
                         内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。</span>
                         </label>
+                        <?php if (isset($datetime_cd) == false) : ?>
                         <label class="input-check">
                             <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">1冊のみのお取り出しの場合、メール便での配送となります。<br>お届け希望日時および伝票追跡ができません。</span>
                         </label>
+                        <?php endif ; ?>
                     </div>
                 </li>
             </ul>

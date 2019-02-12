@@ -44,6 +44,13 @@ if ($action === 'customer_add') {
                   <label>名前</label>
                   <p><?php echo $this->CustomerInfo->setName($this->Form->data['CustomerInfo']); ?></p>
                 </div>
+                <?php // 値が空じゃなければ、表示する ?>
+                <?php if ($this->Form->data['CustomerInfo']['birth_year'] != '' && $this->Form->data['CustomerInfo']['birth_month'] != '' && $this->Form->data['CustomerInfo']['birth_day'] != '') : ?>
+                  <div class="form-group col-lg-12">
+                    <label>生年月日（西暦）</label>
+                    <p><?php echo $this->CustomerInfo->setBirth($this->Form->data['CustomerInfo']); ?></p>
+                  </div>
+                <?php endif; ?>
               <?php else : ?>
                 <?php // 法人 ?>
                 <div class="form-group col-lg-12">

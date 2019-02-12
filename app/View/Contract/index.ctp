@@ -42,6 +42,13 @@
                   <label>お名前（カナ）</label>
                   <p><?php echo h($data['lastname_kana'] . '　' . $data['firstname_kana']); ?></p>
                 </div>
+                <?php if ($data['birth'] != CUSTOMER_DEFAULT_BIRTH) : ?>
+                <div class="form-group col-lg-12">
+                  <label>生年月日</label>
+                  <p><?php echo date('Y年m月d日', strtotime($data['birth'])); ?></p>
+                </div>
+                <?php endif;?>
+
                 <div class="form-group col-lg-12">
                   <label>お支払い方法</label>
                   <p>
