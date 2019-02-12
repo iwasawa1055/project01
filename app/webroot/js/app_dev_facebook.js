@@ -1,7 +1,6 @@
-var Facebook =
-{
+var Facebook = {
 
-    a: function() {
+    _ : function() {
         $(".dev_facebook_login").click(function(){
             FB.login(function(response) {
                 if (response.status === 'connected') {
@@ -27,16 +26,22 @@ var Facebook =
             userId      : response.authResponse.userID,
         };
 
-        FB.api('/me', {fields: 'email,picture.width(720).height(720)'}, function(response) {
+        FB.api('/me', {fields: 'email,name,first_name,last_name,gender,birthday,location'}, function(response) {
             if (response.email == undefined) {
                 alert('we can’t regist an account without email. please allow our application to send email on facebook.');
                 return false;
             }
 
             $('#dev_id_facebook_registform input[name="facebook_user_id"]').val(obj_authinfo.userId);
-            $('#dev_id_facebook_registform input[name="facebook_token"]').val(obj_authinfo.accessToken);
-            $('#dev_id_facebook_registform input[name="email"]').val(response.email);
-            $('#dev_id_facebook_registform input[name="picture"]').val(response.picture.data.url);
+            $('#dev_id_facebook_registform input[name="facebook_email"]').val(response.email);
+            $('#dev_id_facebook_registform input[name="facebook_first_name"]').val(response.first_name);
+            $('#dev_id_facebook_registform input[name="facebook_last_name"]').val(response.last_name);
+
+            // TODO facebookへ申請をする必要あり
+            // $('#dev_id_facebook_registform input[name="facebook_gender"]').val(response.gender);
+            // $('#dev_id_facebook_registform input[name="facebook_birthday"]').val(response.birthday);
+            // $('#dev_id_facebook_registform input[name="facebook_location"]').val(response.location);
+
             $("#dev_id_facebook_registform").submit();
 
         });
@@ -60,6 +65,8 @@ var Facebook =
     }
 }
 
-$(function(){
-    Facebook.a();
+
+$(function()
+{
+    Facebook._();
 });
