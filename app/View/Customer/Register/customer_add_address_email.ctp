@@ -1,4 +1,9 @@
-
+<?php
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
+$this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
+$this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
+$this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
+?>
       <section id="page-wrapper" class="wrapper register">
         <ul class="pagenation">
           <li><span class="number">1</span><span class="txt">登録方法<br>選択</span>
@@ -23,23 +28,23 @@
           <ul class="input-info">
             <li>
               <label class="headline">郵便番号<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.postal', ['size' => 8, 'maxlength' => 8, 'placeholder'=>'例：012 3456', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.postal', ['size' => 8, 'maxlength' => 8, 'placeholder'=>'例：012 3456', 'class' => 'search_address_postal', 'label' => false, 'error' => false, 'div' => false]); ?>
               <p class="txt-caption">全角半角、ハイフンありなし、どちらでもご入力いただけます。<br>入力すると以下の住所が自動で入力されます。</p>
               <?php echo $this->Form->error('CustomerRegistInfo.postal', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
               <label class="headline">都道府県<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.pref', ['size' => 28, 'maxlength' => 50, 'placeholder'=>'例：東京都', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.pref', ['size' => 28, 'maxlength' => 50, 'placeholder'=>'例：東京都', 'class' => 'address_pref', 'label' => false, 'error' => false, 'div' => false]); ?>
               <?php echo $this->Form->error('CustomerRegistInfo.pref', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
               <label class="headline">市区郡（町村）<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.address1', ['size' => 28, 'maxlength' => 50, 'placeholder'=>'例：品川区東品川2', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.address1', ['size' => 28, 'maxlength' => 50, 'placeholder'=>'例：品川区東品川2', 'class' => 'address_address1', 'label' => false, 'error' => false, 'div' => false]); ?>
               <?php echo $this->Form->error('CustomerRegistInfo.address1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
               <label class="headline">番地<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.address2', ['size' => 28, 'maxlength' => 50, 'placeholder'=>'例：2-28', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.address2', ['size' => 28, 'maxlength' => 50, 'placeholder'=>'例：2-28', 'class' => 'address_address2', 'label' => false, 'error' => false, 'div' => false]); ?>
               <?php echo $this->Form->error('CustomerRegistInfo.address2', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
@@ -60,7 +65,7 @@
             </li>
             <li>
               <label class="input-check icon-checkmark-circle">
-                <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt"><a href="https://minikura.com/use_agreement/" class="link" target="_blank">minikura利用規約</a>に同意する</span>
+                <input type="checkbox" class="cb-square" id="terms"><span class="icon"></span><span class="label-txt"><a href="https://minikura.com/use_agreement/" class="link" target="_blank">minikura利用規約</a>に同意する</span>
               </label>
             </li>
           </ul>
@@ -69,7 +74,7 @@
               <a href="/customer/register/add_personal_email" class="btn back">戻る</a>
             </li>
             <li>
-              <button type="submit" class="btn next">次へ</button>
+              <button type="button" class="btn next" id="execute">次へ</button>
             </li>
           </ul>
           <?php echo $this->Form->end(); ?>

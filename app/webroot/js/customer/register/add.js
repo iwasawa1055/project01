@@ -1,4 +1,4 @@
-var AppCustomerOemAdd =
+var AppCustomerRegisterAdd =
 {
     a: function () {
         //** Auto Kana
@@ -32,7 +32,7 @@ var AppCustomerOemAdd =
 
         $('#execute').on('click', function(){
             if ($('#terms').prop('checked')) {
-                $('#CustomerRegistInfoCustomerAddEntryForm').submit();
+                $('#CustomerRegistInfoCustomerAddAddressEmailForm').submit();
             } else {
                 if ($('#terms-error').length == 0) {
                     $('#terms').parent('label').parent('li').append('<p class="valid-il" id="terms-error">個人情報について、利用規約をご確認下さい</p>');
@@ -47,6 +47,6 @@ var AppCustomerOemAdd =
  * */
 $(function()
 {
-    AppCustomerOemAdd.a();
-    AppCustomerOemAdd.b();
+    AppCustomerRegisterAdd.a();
+    AppCustomerRegisterAdd.b();
 });

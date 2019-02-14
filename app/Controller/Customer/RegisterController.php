@@ -1,42 +1,23 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
-// TODO 未確認
 App::uses('CustomerEmail', 'Model');
-// TODO 使用している
 App::uses('AppMail', 'Lib');
-// TODO 未確認
 App::uses('Folder', 'Utility');
 
 class RegisterController extends MinikuraController
 {
     /** model */
-    const MODEL_NAME = 'CustomerEntry';
-    const MODEL_NAME_EMAIL = 'Email';
+    const MODEL_NAME        = 'CustomerEntry';
+    const MODEL_NAME_EMAIL  = 'Email';
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
-    // TODO これなんだろう
-    const MODEL_NAME_CORP_REGIST = 'CorporateRegistInfo';
 
     /** tmp file */
     const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
-    // TODO 時間は要確認
     const REGISTER_EMAIL_MAIL_LIMIT = 60 * 30 * 24;
 
     /** layout */
     public $layout = 'register';
-
-
-	//* nike_snkrs alliance_cd
-//	const SNEAKERS_ALLIANCE_CD = 'api.sneakers.alliance_cd';
-//	const SNEAKERS_FILE_KEY_LIST = 'api.sneakers.file.key_list';
-//	const SNEAKERS_FILE_REGISTERED_LIST = 'api.sneakers.file.registered_list';
-//	const SNEAKERS_FILE_ERROR_LIST = 'api.sneakers.file.error_list';
-//	const SNEAKERS_DIR = 'api.sneakers.dir';
-//	const SNEAKERS_REASON_NOT_EXIST = 'sneakers key is not exist';
-//	const SNEAKERS_REASON_REGISTERED = 'sneakers key has already registered';
-
-
-
 
     // ログイン不要なページ
     protected $checkLogined = false;
@@ -54,32 +35,26 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * エントリー登録フォーム
+     * 登録種別選択フォーム
      */
     public function customer_add()
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 紹介コード(紹介コード付きのURLの場合にここで保持しておく)
-        $alliance_cd = '';
-        if (isset($_GET['alliance_cd'])) {
-            $alliance_cd = $_GET['alliance_cd'];
-        } elseif (CakeSession::read('app.data.alliance_cd')) {
-            $alliance_cd = CakeSession::read('app.data.alliance_cd');
-        }
-        CakeSession::Write('app.data.alliance_cd', $alliance_cd);
+        // TODO 後で消す
+//        CakeSession::delete(self::MODEL_NAME_REGIST);
 
         // 初期表示
         if ($this->request->is('get')) {
-            // セッションから入力値を取得
-            $data = CakeSession::read(self::MODEL_NAME_REGIST);
-            $this->request->data = [self::MODEL_NAME_REGIST => $data];
 
-            if (empty($this->request->data[self::MODEL_NAME_REGIST])) {
-                $this->request->data[self::MODEL_NAME_REGIST] = [
-                    'alliance_cd' => $alliance_cd,
-                ];
+            // 紹介コード
+            $alliance_cd = '';
+            if (isset($_GET['alliance_cd'])) {
+                $alliance_cd = $_GET['alliance_cd'];
+            } elseif (CakeSession::read('app.data.alliance_cd')) {
+                $alliance_cd = CakeSession::read('app.data.alliance_cd');
             }
+            CakeSession::Write('app.data.alliance_cd', $alliance_cd);
 
         // 確認へ遷移する場合
         } elseif ($this->request->is('post')) {
@@ -93,7 +68,7 @@ class RegisterController extends MinikuraController
             if ($this->CustomerRegistInfo->validates(['fieldList' => ['email']])) {
                 CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
             } else {
-                return $this->render('customer_add_email');
+                return $this->render('customer_add');
             }
 
             // 既存ユーザチェック
@@ -109,6 +84,9 @@ class RegisterController extends MinikuraController
         }
     }
 
+    /**
+     * Eメール送信完了フォーム
+     */
     public function customer_complete_email()
     {
         //* session referer 確認
@@ -138,6 +116,8 @@ class RegisterController extends MinikuraController
         // セッションから入力値を取得しviewに渡す
         $this->set(self::MODEL_NAME_REGIST, $data);
 
+        CakeSession::delete(self::MODEL_NAME_REGIST);
+
     }
 
     /**
@@ -147,57 +127,31 @@ class RegisterController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 初期表示
+        $this->loadModel(self::MODEL_NAME_REGIST);
+
+        // URL遷移時
         if ($this->request->is('get')) {
 
-            $key = Hash::get($this->request->query, 'hash');
+            // セッションから入力値を取得
+            $this->request->data[self::MODEL_NAME_REGIST] = CakeSession::read(self::MODEL_NAME_REGIST);
 
-            // TODO これらのチェック時の動作を確認（どこにreturnさせるかとか）
-            // tmpファイル形式チェック
-            if ($key === null or $key === "") {
-                new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
-                $this->Flash->set(__('customer_register_email_expiration'));
-                return $this->redirect(['action' => 'customer_index']);
+            if (empty($this->request->data[self::MODEL_NAME_REGIST])) {
+                $key = Hash::get($this->request->query, 'hash');
+                if (isset($key)) {
+                    // キーファイルからEmail情報取得
+                    $this->request->data[self::MODEL_NAME_REGIST] = $this->_getKeyFileData($key);
+                    CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
+                }
             }
+            $this->CustomerRegistInfo->set($this->request->data);
 
-            // 再発行申請ファイル取得
-            $dir   = new Folder(self::REGISTER_EMAIL_FILE_DIR);
-            $files = $dir->find('[0-9]{8}_' . $key);
-
-            // tmpファイルチェック
-            if (!is_array($files) or count($files) !== 1) {
-                new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
-                $this->Flash->set(__('customer_register_email_expiration'));
-                return $this->redirect(['action' => 'customer_index']);
-            }
-
-            // tmpファイル存在チェック
-            $file = new File(self::REGISTER_EMAIL_FILE_DIR . DS . $files[0]);
-            if (! $file->exists()) {
-                new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not exist', 400);
-                $this->Flash->set(__('customer_register_email_expiration'));
-                return $this->redirect(['action' => 'customer_index']);
-            }
-
-            // 有効期限チェック
-            if ($file->lastChange() < time() - self::REGISTER_EMAIL_MAIL_LIMIT) {
-                new AppTerminalInfo(AppE::BAD_REQUEST . 'key file is expired', 400);
-                $this->Flash->set(__('customer_register_email_expiration'));
-                return $this->redirect(['action' => 'customer_index']);
-            }
-
-            // キーファイルから変更メールアドレス取り出し
-            $email = $file->read();
-            CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data);
-            $this->request->data = [self::MODEL_NAME_REGIST => ["email" => $email, "key" => $key]];
-
-        // 確認へ遷移する場合
+        // 確認遷移時
         } else if ($this->request->is('post')) {
 
-            // TODO とりあえず誕生日を詰める
-            $this->request->data[self::MODEL_NAME_REGIST]['birth_year'] = '1998';
-            $this->request->data[self::MODEL_NAME_REGIST]['birth_month'] = '11';
-            $this->request->data[self::MODEL_NAME_REGIST]['birth_day'] = '21';
+            $this->request->data[self::MODEL_NAME_REGIST] = array_merge(
+                CakeSession::read(self::MODEL_NAME_REGIST),
+                $this->request->data[self::MODEL_NAME_REGIST]
+            );
 
             // 生年月日を結合
             $this->request->data[self::MODEL_NAME_REGIST]['birth'] = implode('-', [
@@ -207,8 +161,6 @@ class RegisterController extends MinikuraController
                 // ゼロ埋め
                 sprintf('%02d', $this->request->data[self::MODEL_NAME_REGIST]['birth_day']),
             ]);
-
-            $this->loadModel(self::MODEL_NAME_REGIST);
 
             // 入力値セット
             $this->CustomerRegistInfo->set($this->request->data);
@@ -236,12 +188,11 @@ class RegisterController extends MinikuraController
             $result = $this->Email->getEmail(array('email' => $this->request->data[self::MODEL_NAME_REGIST]['email']));
             if ($result->status === "0") {
                 $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
-                // TODO 登録済みの場合にどこにrenderするのがいいのだろう・・・
-                return $this->render('customer_add_entry');
+                return $this->render('customer_add');
             }
 
             // エラーがない場合は確認画面にリダイレクト
-            return $this->redirect('/customer/register/add_address_email');
+            return $this->redirect(['controller' => 'register', 'action' => 'add_address_email']);
         }
     }
 
@@ -258,10 +209,16 @@ class RegisterController extends MinikuraController
             ], true) === false ) {
             $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
-
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        if ($this->request->is('post')) {
+        $this->loadModel(self::MODEL_NAME_REGIST);
+
+        if ($this->request->is('get')) {
+            // セッションから入力値を取得
+            $this->request->data[self::MODEL_NAME_REGIST] = CakeSession::read(self::MODEL_NAME_REGIST);
+            $this->CustomerRegistInfo->set($this->request->data);
+
+        } else if ($this->request->is('post')) {
 
             $this->request->data[self::MODEL_NAME_REGIST] = array_merge(
                 CakeSession::read(self::MODEL_NAME_REGIST),
@@ -270,8 +227,6 @@ class RegisterController extends MinikuraController
 
             // 電話番号を半角変換
             $this->request->data[self::MODEL_NAME_REGIST]['tel1'] = self::_wrapConvertKana($this->request->data[self::MODEL_NAME_REGIST]['tel1']);
-
-            $this->loadModel(self::MODEL_NAME_REGIST);
 
             // 入力値セット
             $this->CustomerRegistInfo->set(array_merge($this->request->data));
@@ -292,10 +247,13 @@ class RegisterController extends MinikuraController
             CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
 
             // エラーがない場合は確認画面にリダイレクト
-            return $this->redirect('/customer/register/confirm_entry_email');
+            return $this->redirect(['controller' => 'register', 'action' => 'confirm_entry_email']);
         }
     }
 
+    /**
+     * Email登録内容確認フォーム
+     */
     public function customer_confirm_entry_email()
     {
         //* session referer 確認
@@ -312,6 +270,9 @@ class RegisterController extends MinikuraController
         $this->set(self::MODEL_NAME_REGIST, CakeSession::read(self::MODEL_NAME_REGIST));
     }
 
+    /**
+     * Email登録完了フォーム
+     */
     public function customer_complete_entry_email()
     {
         //* session referer 確認
@@ -391,5 +352,47 @@ class RegisterController extends MinikuraController
         // facebook情報を保持
         CakeSession::write(self::MODEL_NAME_REGIST, $input_data);
 
+    }
+
+    private function _getKeyFileData($key)
+    {
+        // tmpファイル形式チェック
+        if ($key === null or $key === "") {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
+            // TODO 要確認
+            $this->Flash->set(__('customer_register_email_expiration'));
+            $this->CustomerRegistInfo->validationErrors['error_message'][0] = 'お手数ですが初めから設定してください';
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        // 再発行申請ファイル取得
+        $dir   = new Folder(self::REGISTER_EMAIL_FILE_DIR);
+        $files = $dir->find('[0-9]{8}_' . $key);
+
+        // tmpファイルチェック
+        if (!is_array($files) or count($files) !== 1) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        // tmpファイル存在チェック
+        $file = new File(self::REGISTER_EMAIL_FILE_DIR . DS . $files[0]);
+        if (! $file->exists()) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not exist', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        // 有効期限チェック
+        if ($file->lastChange() < time() - self::REGISTER_EMAIL_MAIL_LIMIT) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file is expired', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        // キーファイルから変更メールアドレス取り出し
+        $email = $file->read();
+        return ["email" => $email, "key" => $key];
     }
 }

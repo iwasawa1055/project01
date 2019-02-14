@@ -10,18 +10,17 @@
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no">
     <?php echo $this->fetch('meta'); ?>
+
     <title>登録方法選択 - minikura</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Global CSS -->
-    <link href="https://minikura.com/contents/common/css/app.min.css" rel="stylesheet">
-    <!-- Remodal CSS -->
-    <link href="/css/remodal.css" rel="stylesheet">
-    <link href="/css/remodal-theme.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/css/style.css" rel="stylesheet">
-    <!-- Custom Fonts -->
-    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <?php
+      $this->Html->css('bootstrap.min', ['inline' => false]);
+      // TODO 以下のファイルをcss直下に置くかは吉田さんに確認すること
+      $this->Html->css('https://minikura.com/contents/common/css/app.min.css', ['inline' => false]);
+      $this->Html->css('style', ['inline' => false]);
+      $this->Html->css('font-awesome.min', ['inline' => false]);
+      // TODO appに置くかを吉田さんに確認すること
+      $this->Html->css('app_dev', ['inline' => false]);
+    ?>
     <?php echo $this->fetch('css'); ?>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
@@ -40,18 +39,22 @@
   </head>
 
   <body id="page-top">
-    <div id="header"> </div>
+    <div id="header">
+      <?php echo $this->element('Register/nav'); ?>
+    </div>
     <?php echo $this->fetch('content'); ?>
-    <!-- jQuery -->
-    <script src="https://minikura.com/contents/common/js/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="https://minikura.com/contents/common/js/bootstrap.min.js"></script>
-    <!-- Plugin JavaScript -->
-    <script src="https://minikura.com/contents/common/js/jquery.easing.min.js"></script>
-    <!-- Remodal JavaScript -->
-    <script src="/js/remodal.min.js"></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="/js/register/dsn-register.js"></script>
+
+    <?php
+      $this->Html->script('jquery.min', ['inline' => false]);
+      $this->Html->script('jquery-ui.min', ['inline' => false]);
+      $this->Html->script('jquery.easing', ['inline' => false]);
+      $this->Html->script('bootstrap.min', ['inline' => false]);
+      $this->Html->script('metisMenu.min', ['inline' => false]);
+      $this->Html->script('remodal.min', ['inline' => false]);
+      $this->Html->script('register/dsn-register.js', ['inline' => false]);
+      $this->Html->script('app', ['inline' => false]);
+      $this->Html->script('app_dev', ['inline' => false]);
+    ?>
     <?php
       echo $this->fetch('script');
       echo $this->fetch('scriptMinikura');

@@ -116,6 +116,7 @@ $config['app']['login_cookie']['param'] = 'logout';
  * 会員登録用パラメタ―
  */
 $config['app']['register']['birthyear']['birthyear_start'] = 1920;
+$config['app']['register']['birthyear']['birthyear_default'] = 1980;
 
 /**
  * 静的ページからの遷移先変更

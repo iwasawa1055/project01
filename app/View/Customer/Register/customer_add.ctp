@@ -14,14 +14,16 @@
         </ul>
         <div class="content">
           <h2 class="page-title">登録方法選択</h2>
+          <?php echo $this->Flash->render(); ?>
           <ul class="col-login">
             <li>
               <h3>SNSアカウントで新規会員登録</h3>
               <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_regist"><img src="/images/icon-fb.svg" class="icon">Facebookで登録</a>
+              <p class="txt-caption">minikuraが許可なくお客さまのFacebookへ投稿することはございません。</p>
             </li>
             <li>
               <h3>メールアドレスで新規会員登録</h3>
-              <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add']]); ?>
+              <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add'], 'novalidate' => true]); ?>
 
               <?php echo $this->Form->input('CustomerRegistInfo.email', ['class' => "form-control", 'placeholder'=>'例：terrada@minikura.com', 'size' => '28', 'maxlength' => '50', 'error' => false, 'label' => false, 'div' => false]); ?>
               <p class="txt-caption">半角英数記号でご入力ください。</p>

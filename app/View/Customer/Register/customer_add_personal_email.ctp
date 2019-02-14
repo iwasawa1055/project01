@@ -1,5 +1,8 @@
 <?php
-  $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
+$this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
+$this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
+$this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
 ?>
       <section id="page-wrapper" class="wrapper register">
         <ul class="pagenation">
@@ -27,11 +30,11 @@
               <label class="headline">お名前<span class="required">※</span></label>
               <ul class="col-name">
                 <li>
-                  <?php echo $this->Form->input('CustomerRegistInfo.lastname', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：寺田', 'label' => false, 'error' => false, 'div' => false]); ?>
+                  <?php echo $this->Form->input('CustomerRegistInfo.lastname', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：寺田', 'class' => 'lastname', 'label' => false, 'error' => false, 'div' => false]); ?>
                   <?php echo $this->Form->error('CustomerRegistInfo.lastname', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>
-                  <?php echo $this->Form->input('CustomerRegistInfo.firstname', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：太郎', 'label' => false, 'error' => false, 'div' => false]); ?>
+                  <?php echo $this->Form->input('CustomerRegistInfo.firstname', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：太郎', 'class' => 'firstname', 'label' => false, 'error' => false, 'div' => false]); ?>
                   <?php echo $this->Form->error('CustomerRegistInfo.firstname', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
               </ul>
@@ -40,11 +43,11 @@
               <label class="headline">フリガナ<span class="required">※</span></label>
               <ul class="col-name">
                 <li>
-                  <?php echo $this->Form->input('CustomerRegistInfo.lastname_kana', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：テラダ', 'label' => false, 'error' => false, 'div' => false]); ?>
+                  <?php echo $this->Form->input('CustomerRegistInfo.lastname_kana', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：テラダ', 'class' => 'lastname_kana', 'label' => false, 'error' => false, 'div' => false]); ?>
                   <?php echo $this->Form->error('CustomerRegistInfo.lastname_kana', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>
-                  <?php echo $this->Form->input('CustomerRegistInfo.firstname_kana', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：タロウ', 'class' => 'firstname_kana', 'label' => false, 'error' => false, 'div' => false]); ?>
+                  <?php echo $this->Form->input('CustomerRegistInfo.firstname_kana', ['size' => 10, 'maxlength' => 30, 'placeholder'=>'例：タロウ', 'class' => 'firstname_kana', 'class' => 'firstname_kana', 'label' => false, 'error' => false, 'div' => false]); ?>
                   <?php echo $this->Form->error('CustomerRegistInfo.firstname_kana', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
               </ul>
@@ -55,17 +58,18 @@
                 <li>
                   <?php
                     $year_list = array();
-                    for ($year = 1900; $year <= date('Y'); ++$year) {
-                        $year_list[] = $year . '年';
+                    for ($year = date('Y'); $year >= REGISTER_CUSTOMER_DEFAULT_BIRTH_START_YEAR; $year--) {
+                        $year_list[$year] = $year . '年';
                     }
-                    echo $this->Form->select('CustomerRegistInfo.birth_year', $year_list, ['empty' => false, 'label' => false, 'error' => false, 'div' => false, 'default' => '80']);
+                    $default_year_key = array_search(REGISTER_CUSTOMER_DEFAULT_BIRTH_DEFAULT_YEAR, $year_list);
+                    echo $this->Form->select('CustomerRegistInfo.birth_year', $year_list, ['empty' => false, 'label' => false, 'error' => false, 'div' => false, 'default' => $default_year_key]);
                   ?>
                 </li>
                 <li>
                   <?php
                     $month_list = array();
                     for ($month = 1; $month <= 12; ++$month) {
-                        $month_list[] = $month . '月';
+                        $month_list[$month] = $month . '月';
                     }
                     echo $this->Form->select('CustomerRegistInfo.birth_month', $month_list, ['empty' => false, 'label' => false, 'error' => false, 'div' => false]);
                   ?>
@@ -74,7 +78,7 @@
                   <?php
                     $day_list = array();
                     for ($day = 1; $day <= 31; ++$day) {
-                        $day_list[] = $day . '日';
+                        $day_list[$day] = $day . '日';
                     }
                     echo $this->Form->select('CustomerRegistInfo.birth_day', $day_list, ['empty' => false, 'label' => false, 'error' => false, 'div' => false]);
                   ?>

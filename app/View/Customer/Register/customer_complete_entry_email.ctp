@@ -21,7 +21,7 @@
         </div>
         <ul class="nextback">
           <li>
-            <a href="/purchase/index.php" class="btn next">ボックス購入へ進む</a>
+            <a href="/order/add" class="btn next">ボックス購入へ進む</a>
           </li>
         </ul>
       </div>
