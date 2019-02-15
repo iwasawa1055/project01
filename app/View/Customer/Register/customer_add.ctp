@@ -34,16 +34,17 @@
           </ul>
         </div>
       </section>
-      <form id="dev_id_facebook_registform" method="POST" action="/customer/register/complete_facebook">
-        <input type="hidden" name="facebook_user_id" value="">
-        <input type="hidden" name="facebook_email" value="">
-        <input type="hidden" name="facebook_first_name" value="">
-        <input type="hidden" name="facebook_last_name" value="">
-        <?php if (false): ?>
-        <!--TODO facebookへ申請する必要あり-->
-        <input type="hidden" name="facebook_gender" value="">
-        <input type="hidden" name="facebook_birthday" value="">
-        <input type="hidden" name="facebook_location" value="">
-        <?php endif; ?>
+      <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_complete_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_first_name', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_last_name', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php if (false): ?>
+      <!--TODO facebookへ申請する必要あり-->
+      <input type="hidden" name="facebook_gender" value="">
+      <input type="hidden" name="facebook_birthday" value="">
+      <input type="hidden" name="facebook_location" value="">
+      <?php endif; ?>
+      <?php echo $this->Form->end(); ?>
 
       </form>

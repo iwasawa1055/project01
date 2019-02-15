@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="keywords" content="minikura,あずける,トラクルーム,収納スペース">
 <meta name="description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
-<meta property="og:locale" content="ja_JP" /> 
+<meta property="og:locale" content="ja_JP" />
 <meta property="og:site_name"  content="minikura" />
 <meta property="og:title" content="minikura" />
 <meta property="og:type" content="website" />
@@ -146,6 +146,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
   <?php endif; ?>
 <?php endif; ?>
+
+<?php // facebook対応 ?>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : "<?php echo Configure::read('app.facebook.app_id'); ?>",
+            cookie     : true,
+            xfbml      : true,
+            version    : "<?php echo Configure::read('app.facebook.version'); ?>"
+        });
+
+        FB.AppEvents.logPageView();
+
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/ja_JP/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<script src="/js/app_dev_facebook.js"></script>
 
 </body>
 </html>

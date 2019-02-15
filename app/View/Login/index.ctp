@@ -51,6 +51,19 @@
             </div>
         </div>
       </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="dsn-amazon-login">
+            <h3>Facebookアカウントで会員登録された方はこちらからログインできます。</h3>
+            <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_login"><img src="/images/icon-fb.svg" class="icon">Facebookでログイン</a>
+            <?php echo $this->Form->create('CustomerLoginFacebook', ['url' => ['controller' => 'login', 'action' => 'login_by_facebook'], "id" => "dev_id_facebook_loginform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+              <?php echo $this->Form->hidden('CustomerLoginFacebook.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->hidden('CustomerLoginFacebook.facebook_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+            <?php echo $this->Form->end(); ?>
+            <?php echo $this->Flash->render('facebook_access_token'); ?>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 <script src="/js/login.js"></script>

@@ -129,10 +129,10 @@ class RegisterController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $input_data = [
-            'facebook_user_id' => isset($_POST['facebook_user_id'])    ? $_POST['facebook_user_id']    : '',
-            'email'            => isset($_POST['facebook_email'])      ? $_POST['facebook_email']      : '',
-            'firstname'        => isset($_POST['facebook_first_name']) ? $_POST['facebook_first_name'] : '',
-            'lastname'         => isset($_POST['facebook_last_name'])  ? $_POST['facebook_last_name']  : '',
+            'facebook_user_id' => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id'])    ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']    : '',
+            'email'            => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_email'])      ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_email']      : '',
+            'firstname'        => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_first_name']) ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_first_name'] : '',
+            'lastname'         => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_last_name'])  ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_last_name']  : '',
             // TODO facebookへ申請する必要あり
 //            'gender'     => isset($_POST['facebook_gender'])     ? $_POST['facebook_gender']     : '',
 //            'birthday'   => isset($_POST['facebook_birthday'])   ? $_POST['facebook_birthday']   : '',
