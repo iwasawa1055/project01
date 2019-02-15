@@ -32,7 +32,7 @@ var AppCustomerRegisterAdd =
 
         $('#execute').on('click', function(){
             if ($('#terms').prop('checked')) {
-                $('#CustomerRegistInfoCustomerAddAddressEmailForm').submit();
+                $('#CustomerRegistInfoCustomerAddAddressForm').submit();
             } else {
                 if ($('#terms-error').length == 0) {
                     $('#terms').parent('label').parent('li').append('<p class="valid-il" id="terms-error">個人情報について、利用規約をご確認下さい</p>');

@@ -22,9 +22,7 @@
             </li>
             <li>
               <label class="headline">生年月日</label>
-              <?php if (false): ?>
               <p class="txt-confirm"><?php echo h($CustomerRegistInfo['birth_year']); ?>年<?php echo h($CustomerRegistInfo['birth_month']); ?>月<?php echo h($CustomerRegistInfo['birth_day']); ?>日</p>
-              <?php endif; ?>
             </li>
             <li>
               <label class="headline">性別</label>
@@ -56,10 +54,10 @@
           </ul>
           <ul class="nextback">
             <li>
-              <a href="/customer/register/add_address_email" class="btn back">戻る</a>
+              <a href="/customer/register/add_address" class="btn back">戻る</a>
             </li>
             <li>
-              <a href="/customer/register/complete_entry_email" class="btn next">完了</a>
+              <a href="/customer/register/complete_entry" class="btn next">完了</a>
             </li>
           </ul>
         </div>

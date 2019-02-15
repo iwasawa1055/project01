@@ -30,7 +30,7 @@ class AppMail
         $from = null;
         $subject = '新規会員(仮登録)';
         $templete = 'register_email';
-        $data = [ 'url' => Configure::read('site.url') . '/customer/register/add_personal_email?hash=' . $hash ];
+        $data = [ 'url' => Configure::read('site.url') . '/customer/register/add_personal?hash=' . $hash ];
         $this->sendTemplate($from, $to, $subject, $templete, $data);
     }
     /**

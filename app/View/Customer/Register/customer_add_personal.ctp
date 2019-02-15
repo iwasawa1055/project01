@@ -18,7 +18,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
           </li>
         </ul>
         <div class="content">
-          <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add_personal_email'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add_personal'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <?php $complete_error = $this->Flash->render('complete_error');?>
           <?php if (isset($complete_error)) : ?>
           <p class="valid-bl"><?php echo $complete_error; ?></p>

@@ -41,9 +41,6 @@ class RegisterController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // TODO 後で消す
-//        CakeSession::delete(self::MODEL_NAME_REGIST);
-
         // 初期表示
         if ($this->request->is('get')) {
 
@@ -120,10 +117,42 @@ class RegisterController extends MinikuraController
 
     }
 
+    public function customer_complete_facebook()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_add',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $input_data = [
+            'facebook_user_id' => isset($_POST['facebook_user_id'])    ? $_POST['facebook_user_id']    : '',
+            'email'            => isset($_POST['facebook_email'])      ? $_POST['facebook_email']      : '',
+            'firstname'        => isset($_POST['facebook_first_name']) ? $_POST['facebook_first_name'] : '',
+            'lastname'         => isset($_POST['facebook_last_name'])  ? $_POST['facebook_last_name']  : '',
+            // TODO facebookへ申請する必要あり
+//            'gender'     => isset($_POST['facebook_gender'])     ? $_POST['facebook_gender']     : '',
+//            'birthday'   => isset($_POST['facebook_birthday'])   ? $_POST['facebook_birthday']   : '',
+//            'location'   => isset($_POST['facebook_location'])   ? $_POST['facebook_location']   : '',
+        ];
+
+        // TODO facebook登録APIを実施する
+
+        // facebook情報を保持
+        CakeSession::write(self::MODEL_NAME_REGIST, $input_data);
+
+        // TODO 個人情報入力画面へリダイレクトする
+        return $this->redirect(['controller' => 'register', 'action' => 'add_personal']);
+
+    }
+
     /**
      * Email個人情報登録フォーム
      */
-    public function customer_add_personal_email()
+    public function customer_add_personal()
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
@@ -178,7 +207,7 @@ class RegisterController extends MinikuraController
                 'newsletter',
             ];
             if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
-                return $this->render('customer_add_personal_email');
+                return $this->render('customer_add_personal');
             }
 
             CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
@@ -192,20 +221,20 @@ class RegisterController extends MinikuraController
             }
 
             // エラーがない場合は確認画面にリダイレクト
-            return $this->redirect(['controller' => 'register', 'action' => 'add_address_email']);
+            return $this->redirect(['controller' => 'register', 'action' => 'add_address']);
         }
     }
 
     /**
      * Email住所情報登録フォーム
      */
-    public function customer_add_address_email()
+    public function customer_add_address()
     {
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
-                'Register/customer_add_personal_email',
-                'Register/customer_add_address_email',
-                'Register/customer_confirm_entry_email',
+                'Register/customer_add_personal',
+                'Register/customer_add_address',
+                'Register/customer_confirm_entry',
             ], true) === false ) {
             $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
@@ -241,25 +270,25 @@ class RegisterController extends MinikuraController
                 'tel1',
             ];
             if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
-                return $this->render('customer_add_address_email');
+                return $this->render('customer_add_address');
             }
 
             CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
 
             // エラーがない場合は確認画面にリダイレクト
-            return $this->redirect(['controller' => 'register', 'action' => 'confirm_entry_email']);
+            return $this->redirect(['controller' => 'register', 'action' => 'confirm_entry']);
         }
     }
 
     /**
      * Email登録内容確認フォーム
      */
-    public function customer_confirm_entry_email()
+    public function customer_confirm_entry()
     {
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
-                'Register/customer_add_address_email',
-                'Register/customer_confirm_entry_email',
+                'Register/customer_add_address',
+                'Register/customer_confirm_entry',
             ], true) === false ) {
             $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
@@ -273,11 +302,11 @@ class RegisterController extends MinikuraController
     /**
      * Email登録完了フォーム
      */
-    public function customer_complete_entry_email()
+    public function customer_complete_entry()
     {
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
-                'Register/customer_confirm_entry_email',
+                'Register/customer_confirm_entry',
             ], true) === false ) {
             $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
@@ -297,17 +326,22 @@ class RegisterController extends MinikuraController
         $this->loadModel(self::MODEL_NAME_EMAIL);
         $result = $this->Email->getEmail(array('email' => $data['email']));
         if ($result->status === "0") {
-            // TODO 登録済みの場合にどこにrenderするのがいいのだろう・・・
             $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
-            return $this->render('customer_add_entry');
+            return $this->render('customer_add');
         }
 
-        // 本登録
-        $res = $this->CustomerRegistInfo->regist();
+        if (isset($data['facebook_user_id'])) {
+            // TODO facebook登録API実施
+            exit;
+        } else {
+            // 本登録
+            $res = $this->CustomerRegistInfo->regist();
+        }
 
         if (!empty($res->error_message)) {
+            // TODO どこに返却すべき？吉田さんに確認する
             $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
-            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
         }
 
         // ログイン
@@ -325,43 +359,12 @@ class RegisterController extends MinikuraController
         CakeSession::delete('app.data.alliance_cd');
     }
 
-    public function customer_complete_facebook()
-    {
-        //* session referer 確認
-        if (in_array(CakeSession::read('app.data.session_referer'), [
-                'Register/customer_add',
-            ], true) === false ) {
-            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
-        }
-
-        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $input_data = [
-            'facebook_user_id'    => isset($_POST['facebook_user_id'])    ? $_POST['facebook_user_id']    : '',
-            'facebook_email'      => isset($_POST['facebook_email'])      ? $_POST['facebook_email']      : '',
-            'facebook_first_name' => isset($_POST['facebook_first_name']) ? $_POST['facebook_first_name'] : '',
-            'facebook_last_name'  => isset($_POST['facebook_last_name'])  ? $_POST['facebook_last_name']  : '',
-            // TODO facebookへ申請する必要あり
-//            'facebook_gender'     => isset($_POST['facebook_gender'])     ? $_POST['facebook_gender']     : '',
-//            'facebook_birthday'   => isset($_POST['facebook_birthday'])   ? $_POST['facebook_birthday']   : '',
-//            'facebook_location'   => isset($_POST['facebook_location'])   ? $_POST['facebook_location']   : '',
-        ];
-
-        // TODO facebook登録APIを実施する
-
-        // facebook情報を保持
-        CakeSession::write(self::MODEL_NAME_REGIST, $input_data);
-
-    }
-
     private function _getKeyFileData($key)
     {
         // tmpファイル形式チェック
         if ($key === null or $key === "") {
             new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
-            // TODO 要確認
             $this->Flash->set(__('customer_register_email_expiration'));
-            $this->CustomerRegistInfo->validationErrors['error_message'][0] = 'お手数ですが初めから設定してください';
             return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
 

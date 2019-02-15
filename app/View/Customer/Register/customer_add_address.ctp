@@ -18,7 +18,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
           </li>
         </ul>
         <div class="content">
-          <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add_address_email'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+          <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add_address'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <?php $complete_error = $this->Flash->render('complete_error');?>
           <?php if (isset($complete_error)) : ?>
           <p class="valid-bl"><?php echo $complete_error; ?></p>
@@ -71,7 +71,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
           </ul>
           <ul class="nextback">
             <li>
-              <a href="/customer/register/add_personal_email" class="btn back">戻る</a>
+              <a href="/customer/register/add_personal" class="btn back">戻る</a>
             </li>
             <li>
               <button type="button" class="btn next" id="execute">次へ</button>
