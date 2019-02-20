@@ -64,11 +64,15 @@
             <li><a href="http://www.terrada.co.jp/ja/company/" target="_blank">会社概要</a></li>
             <li><a href="http://www.terrada.co.jp/ja/privacy/" target="_blank">個人情報保護方針</a></li>
             <li><a href="http://www.terrada.co.jp/ja/privacy/handling.html" target="_blank">個人情報の取扱いについて</a></li>
-            <li><a href="/ja/policies.html">セキュリティーポリシー</a></li>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/security_policy/" target="_blank">セキュリティポリシー</a>
+            </li>
             <li><a href="https://www.terrada.co.jp/ja/security/cookie.html" target="_blank">クッキーポリシー</a></li>
-            <li><a href="/ja/law.html">特定商取引</a></li>
-            <li><a href="/ja/terms.html">利用規約</a></li>
-            <li><a href="/contact/add" target="_blank">お問い合わせ</a></li>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/commercial_transaction/" target="_blank">特定商取引に関する表記について</a>
+            </li>
+            <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a>
+            </li>
+            <li><a href="/inquiry/add">お問い合わせ</a>
+            </li>
         </ul>
         <p class="copyright futura"> &copy; Warehouse TERRADA</p>
         <p id="pagetop"><a href="#header" data-scroll><span></span></a></p>
