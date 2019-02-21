@@ -479,17 +479,15 @@ class OrderController extends MinikuraController
                         $product = $code . ':' .$value;
                         $kit_params[] = $product;
 
-                        $r = $kitPrice->apiGet([
-                            'kit' => $product
-                        ]);
-                        if ($r->isSuccess()) {
-                            $price = $r->results[0]['total_price'] * 1;
-                            $OrderList[$code]['price'] = number_format($price);
-                            $OrderTotalList['price'] += $price;
-                        }
                     }
                 }
             }
+        }
+
+        $r = $kitPrice->apiGet(['kit' => implode(',', $kit_params)]);
+        if ($r->isSuccess()) {
+            $price = $r->results[0]['total_price'] * 1;
+            $OrderTotalList['price'] += $price;
         }
 
         CakeSession::write('OrderList', $OrderList);
@@ -730,17 +728,15 @@ class OrderController extends MinikuraController
                         $product = $code . ':' .$value;
                         $kit_params[] = $product;
 
-                        $r = $kitPrice->apiGet([
-                            'kit' => $product
-                        ]);
-                        if ($r->isSuccess()) {
-                            $price = $r->results[0]['total_price'] * 1;
-                            $OrderList[$code]['price'] = number_format($price);
-                            $OrderTotalList['price'] += $price;
-                        }
                     }
                 }
             }
+        }
+
+        $r = $kitPrice->apiGet(['kit' => implode(',', $kit_params)]);
+        if ($r->isSuccess()) {
+            $price = $r->results[0]['total_price'] * 1;
+            $OrderTotalList['price'] += $price;
         }
 
         CakeSession::write('OrderList', $OrderList);

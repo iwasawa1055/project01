@@ -30,7 +30,7 @@
                 <tr>
                   <th><?php echo $value['kit_name'] ?></th>
                   <td><div class="text-right"><?php echo $value['number'] ?></div></td>
-                  <td><div class="text-right"><?php echo $value['price'] ?>円</div></td>
+                  <td><div class="text-right"></div></td>
                 </tr>
                 <?php } ?>
                 <tr>
