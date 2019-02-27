@@ -46,5 +46,3 @@
       <input type="hidden" name="facebook_location" value="">
       <?php endif; ?>
       <?php echo $this->Form->end(); ?>
-
-      </form>

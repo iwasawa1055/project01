@@ -117,6 +117,9 @@ class RegisterController extends MinikuraController
 
     }
 
+    /**
+     * facebook情報取得フォーム
+     */
     public function customer_complete_facebook()
     {
         //* session referer 確認
@@ -128,23 +131,10 @@ class RegisterController extends MinikuraController
 
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $input_data = [
-            'facebook_user_id' => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id'])    ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']    : '',
-            'email'            => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_email'])      ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_email']      : '',
-            'firstname'        => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_first_name']) ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_first_name'] : '',
-            'lastname'         => isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_last_name'])  ? $this->request->data[self::MODEL_NAME_REGIST]['facebook_last_name']  : '',
-            // TODO facebookへ申請する必要あり
-//            'gender'     => isset($_POST['facebook_gender'])     ? $_POST['facebook_gender']     : '',
-//            'birthday'   => isset($_POST['facebook_birthday'])   ? $_POST['facebook_birthday']   : '',
-//            'location'   => isset($_POST['facebook_location'])   ? $_POST['facebook_location']   : '',
-        ];
-
-        // TODO facebook登録APIを実施する
-
         // facebook情報を保持
-        CakeSession::write(self::MODEL_NAME_REGIST, $input_data);
+        CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
 
-        // TODO 個人情報入力画面へリダイレクトする
+        // 個人情報入力画面へリダイレクトする
         return $this->redirect(['controller' => 'register', 'action' => 'add_personal']);
 
     }
@@ -339,7 +329,6 @@ class RegisterController extends MinikuraController
         }
 
         if (!empty($res->error_message)) {
-            // TODO どこに返却すべき？吉田さんに確認する
             $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
             return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
         }

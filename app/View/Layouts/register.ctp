@@ -14,11 +14,9 @@
     <title>登録方法選択 - minikura</title>
     <?php
       $this->Html->css('bootstrap.min', ['inline' => false]);
-      // TODO 以下のファイルをcss直下に置くかは吉田さんに確認すること
       $this->Html->css('https://minikura.com/contents/common/css/app.min.css', ['inline' => false]);
       $this->Html->css('style', ['inline' => false]);
       $this->Html->css('font-awesome.min', ['inline' => false]);
-      // TODO appに置くかを吉田さんに確認すること
       $this->Html->css('app_dev', ['inline' => false]);
     ?>
     <?php echo $this->fetch('css'); ?>

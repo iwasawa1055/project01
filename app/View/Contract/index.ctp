@@ -4,7 +4,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-12 account">
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
@@ -104,6 +104,29 @@
             </div>
           </div>
         </div>
+        <div class="account-info">
+          <h2>SNS連携</h2>
+          <ul class="input-info">
+            <li>
+              <label class="headline">Facebookログイン</label>
+              <ul class="li-address">
+                <?php if ($data['facebook_flg']): ?>
+                <li>
+                  設定済み
+                </li>
+                <?php else: ?>
+                <li>
+                  未設定
+                  <label class="sns">
+                    <input type="checkbox" class="cb dev_facebook_regist" name="sns" value="link">
+                    <span class="text"></span>
+                  </label>
+                </li>
+                <?php endif; ?>
+              </ul>
+            </li>
+          </ul>
+        </div>
         <?php if (!$customer->isPrivateCustomer()):?>
         <div class="panel panel-default">
           <div class="panel-body">
@@ -124,3 +147,7 @@
         <?php endif;?>
       </div><!--col-lg-12-->
     </div><!--row-->
+    <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'contract', 'action' => 'register_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+    <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+    <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+    <?php echo $this->Form->end(); ?>

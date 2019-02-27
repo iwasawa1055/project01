@@ -186,6 +186,8 @@ class LoginController extends MinikuraController
             }
 
             // TODO amazon pay ではいろいろ情報をセッション保持していたが、facebookも必要なのかを吉田さんに確認する
+            // TODO アクセストークンの取得はどうするかを検討すること
+            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $access_token);
 
             // ログイン処理
             $this->request->data['CustomerLogin']['password'] = '';
