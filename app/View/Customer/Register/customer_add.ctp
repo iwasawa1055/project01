@@ -35,6 +35,7 @@
         </div>
       </section>
       <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_complete_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_accessToken', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_first_name', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>

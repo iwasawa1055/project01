@@ -32,6 +32,7 @@ var Facebook = {
                 return false;
             }
 
+            $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][facebook_accessToken]"]').val(obj_authinfo.accessToken);
             $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][facebook_user_id]"]').val(obj_authinfo.userId);
             $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][facebook_email]"]').val(response.email);
             $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][facebook_first_name]"]').val(response.first_name);
