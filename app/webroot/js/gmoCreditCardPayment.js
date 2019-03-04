@@ -227,11 +227,6 @@ var gmoCreditCardPayment = {
                     $("#input-cc").hide('slow');
                     $("#input-nc").hide('slow');
                     $('.execute').val('1');
-                    // TODO 何だろう？やる必要あるのかな？
-                    // $('#execute').off('click');
-                    // $('#execute').on('click', function (e) {
-                    //   gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
-                    // });
                     $('.airloader-overlay').hide();
                     d.resolve();
                 }else{

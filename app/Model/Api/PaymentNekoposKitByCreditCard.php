@@ -8,7 +8,7 @@ class PaymentNekoposKitByCreditCard extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentNekoposKitByCreditCard', '/kit_by_credit_card', 'gmopayment_v4');
+        parent::__construct('PaymentNekoposKitByCreditCard', '/nekopos_kit_by_credit_card', 'gmopayment_v5');
     }
 
     protected function triggerDataChanged()

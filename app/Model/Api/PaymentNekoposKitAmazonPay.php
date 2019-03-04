@@ -8,7 +8,7 @@ class PaymentNekoposKitAmazonPay extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentNekoposKitAmazonPay', '/kit_amazon_pay', 'amazon_pay_v4');
+        parent::__construct('PaymentNekoposKitAmazonPay', '/nekopos_kit_amazon_pay', 'amazon_pay_v5');
     }
 
     protected function triggerDataChanged()
