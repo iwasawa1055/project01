@@ -4,11 +4,11 @@ App::uses('ApiModel', 'Model');
 App::uses('Announcement', 'Model');
 App::uses('InfoBox', 'Model');
 
-class PaymentAmazonKitAmazonPay extends ApiModel
+class PaymentNekoposKitAmazonPay extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentAmazonKitAmazonPay', '/kit_amazon_pay', 'amazon_pay_v4');
+        parent::__construct('PaymentNekoposKitAmazonPay', '/kit_amazon_pay', 'amazon_pay_v4');
     }
 
     protected function triggerDataChanged()
@@ -19,7 +19,7 @@ class PaymentAmazonKitAmazonPay extends ApiModel
     }
 
     public $validate = [
-        'mono_num' => [
+        'hanger_num' => [
             'checkNotEmpty' => [
                 'rule' => 'checkNotEmpty',
                 'message' => ['checkNotEmpty', 'box'],
@@ -27,61 +27,7 @@ class PaymentAmazonKitAmazonPay extends ApiModel
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
-            ],
-        ],
-        'mono_appa_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
-            ],
-        ],
-        'hako_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_num'],
-            ],
-        ],
-        'hako_appa_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_num'],
-            ],
-        ],
-        'hako_book_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_num'],
-            ],
-        ],
-        'cleaning_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_cleaning_num'],
-            ],
-        ],
-        'library_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_library_num'],
+                'message' => ['format', 'kit_hanger_num'],
             ],
         ],
         'access_token' => [
@@ -168,29 +114,11 @@ class PaymentAmazonKitAmazonPay extends ApiModel
                 'message' => ['notBlank', 'staff_name']
             ],
         ],
-        'datetime_cd' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'kit_datetime']
-            ],
-            'isDatetimeDelivery' => [
-                'rule' => 'isDatetimeDelivery',
-                'message' => ['format', 'kit_datetime']
-            ],
-        ],
     ];
 
     public function checkNotEmpty()
     {
-        if (!empty($this->data[$this->model_name]['mono_num']) ||
-            !empty($this->data[$this->model_name]['mono_appa_num']) ||
-            !empty($this->data[$this->model_name]['mono_book_num']) ||
-            !empty($this->data[$this->model_name]['hako_num']) ||
-            !empty($this->data[$this->model_name]['hako_appa_num']) ||
-            !empty($this->data[$this->model_name]['hako_book_num']) ||
-            !empty($this->data[$this->model_name]['library_num']) ||
-            !empty($this->data[$this->model_name]['cleaning_num'])) {
+        if (!empty($this->data[$this->model_name]['hanger_num'])) {
             return true;
         } else {
             return false;

@@ -4,11 +4,11 @@ App::uses('ApiModel', 'Model');
 App::uses('Announcement', 'Model');
 App::uses('InfoBox', 'Model');
 
-class PaymentGMOKitByCreditCard extends ApiModel
+class PaymentNekoposKitByCreditCard extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentGMOKitByCreditCard', '/kit_by_credit_card', 'gmopayment_v4');
+        parent::__construct('PaymentNekoposKitByCreditCard', '/kit_by_credit_card', 'gmopayment_v4');
     }
 
     protected function triggerDataChanged()
@@ -19,7 +19,7 @@ class PaymentGMOKitByCreditCard extends ApiModel
     }
 
     public $validate = [
-        'mono_num' => [
+        'hanger_num' => [
             'checkNotEmpty' => [
                 'rule' => 'checkNotEmpty',
                 'message' => ['checkNotEmpty', 'box'],
@@ -27,61 +27,7 @@ class PaymentGMOKitByCreditCard extends ApiModel
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_regular_num'],
-            ],
-        ],
-        'mono_appa_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_wide_num'],
-            ],
-        ],
-        'hako_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_regular_num'],
-            ],
-        ],
-        'hako_appa_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_wide_num'],
-            ],
-        ],
-        'hako_book_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_book_num'],
-            ],
-        ],
-        'cleaning_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_cleaning_num'],
-            ],
-        ],
-        'library_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_library_num'],
+                'message' => ['format', 'kit_hanger_num'],
             ],
         ],
         'card_seq' => [
@@ -243,17 +189,6 @@ class PaymentGMOKitByCreditCard extends ApiModel
                 'message' => ['maxLength', 'address3', 30]
             ],
         ],
-        'datetime_cd' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'kit_datetime']
-            ],
-            'isDatetimeDelivery' => [
-                'rule' => 'isDatetimeDelivery',
-                'message' => ['format', 'kit_datetime']
-            ],
-        ],
         'address_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -265,14 +200,7 @@ class PaymentGMOKitByCreditCard extends ApiModel
 
     public function checkNotEmpty()
     {
-        if (!empty($this->data[$this->model_name]['mono_num']) ||
-            !empty($this->data[$this->model_name]['mono_appa_num']) ||
-            !empty($this->data[$this->model_name]['mono_book_num']) ||
-            !empty($this->data[$this->model_name]['hako_num']) ||
-            !empty($this->data[$this->model_name]['hako_appa_num']) ||
-            !empty($this->data[$this->model_name]['hako_book_num']) ||
-            !empty($this->data[$this->model_name]['library_num']) ||
-            !empty($this->data[$this->model_name]['cleaning_num'])) {
+        if (!empty($this->data[$this->model_name]['hanger_num'])) {
             return true;
         } else {
             return false;

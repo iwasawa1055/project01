@@ -35,14 +35,11 @@ class PaymentAccountTransferKit extends ApiModel
                 'message' => ['format', 'kit_mono_num'],
             ],
         ],
-        'mono_book_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
-            ],
-        ],
         'hako_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
@@ -64,6 +61,10 @@ class PaymentAccountTransferKit extends ApiModel
             ],
         ],
         'cleaning_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,

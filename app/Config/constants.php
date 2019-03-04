@@ -98,6 +98,7 @@ const KIT_CD_STARTER_MONO_BOOK = '202';
 const KIT_CD_HAKO_LIMITED_VER1 = '203';
 const KIT_CD_LIBRARY_DEFAULT = '214';
 const KIT_CD_LIBRARY_GVIDO = '215';
+const KIT_CD_HANGER = '216';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -186,16 +187,26 @@ const KIT_NAME = [
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
-    'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
-    'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
-    'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス'),
-    'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
-    'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
-    'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
-    'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
-    'sneaker'       => array('code' => KIT_CD_SNEAKERS,         'name' => 'SNEAKERS'),
-    'library'       => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
+    'mono_num'      => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
+    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
+    'hako_num'      => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
+    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
+    'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
+    'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
+    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
     'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Libraryボックス'),
+    // TODO ★★★★★★★文言確認★★★★★★★★★
+    'hanger_num'    => array('code' => KIT_CD_HANGER,           'name' => 'ハンガー'),
+];
+
+const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
+    'Name'          => 'name',
+    'PostalCode'    => 'postal',
+    'StateOrRegion' => 'pref',
+    'AddressLine1'  => 'address1',
+    'AddressLine2'  => 'address2',
+    'AddressLine3'  => 'address3',
+    'Phone'         => 'tel1',
 ];
 
 const PRODUCT_NAME = [
@@ -435,3 +446,12 @@ const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 850; //1箱解約時出庫基本料�
 // REGISTER(会員登録)用
 const REGISTER_CUSTOMER_DEFAULT_BIRTH_START_YEAR = 1920;
 const REGISTER_CUSTOMER_DEFAULT_BIRTH_DEFAULT_YEAR = 1980;
+
+// 営業日
+// TODO 確認すること
+const EXPECTED_STORING_COMPLETE_DATE_HAKO = 100;
+const EXPECTED_STORING_COMPLETE_DATE_MONO = 101;
+const EXPECTED_STORING_COMPLETE_DATE_MONO_DASH = 102;
+const EXPECTED_STORING_COMPLETE_DATE_LIBRARY = 103;
+const EXPECTED_STORING_COMPLETE_DATE_HANGER = 104;
+const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 105;
