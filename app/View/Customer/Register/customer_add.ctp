@@ -1,60 +1,49 @@
-  <?php if (!empty($code)) : ?>
-    <?php $header_params = @get_headers('https://minikura.com/contents/image/with/' . $code . '.gif'); ?>
-    <?php if (strpos($header_params[0], '200') !== false) : ?>
-    <div class="row">
-      <div class="col-lg-12" align="center">
-        <img class="alliance" src="https://minikura.com/contents/image/with/<?php echo $code ?>.gif" />
-      </div>
-    </div>
-    <?php endif; ?>
-  <?php endif; ?>
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h1 class="page-header"><i class="fa fa-keyboard-o"></i> ユーザー登録</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default">
-          <div class="panel-body">
-          <?php echo $this->Form->create('CustomerEntry', ['url' => ['controller' => 'register', 'action' => 'customer_confirm', '?' => ['code' => $code]], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-            <div class="col-lg-12 col-md-12 none-title">
-              <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.email', ['class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerEntry.email', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.password', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード', 'type' => 'password', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerEntry.password', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.password_confirm', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'パスワード（確認用）', 'type' => 'password', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerEntry.password_confirm', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group">
-                <?php echo $this->Form->input('CustomerEntry.alliance_cd', ['class' => "form-control", 'maxlength' => 64, 'placeholder'=>'紹介コードをお持ちの方はこちらにご入力ください', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerEntry.alliance_cd', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="form-group">
-                <label>お知らせメール</label>
-                <?php echo $this->Form->select('CustomerEntry.newsletter', CUSTOMER_NEWSLETTER, ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
-              </div>
-              <a class="btn btn-info btn-xs btn-block" href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">minikura 利用規約</a>
-              <div class="checkbox">
-                <label>
-                  <input name="remember" type="checkbox" value="Remember Me" class="agree-before-submit">
-                  <a class="link-privacy" href="<?php echo Configure::read("site.static_content_url"); ?>/privacy/" target="_blank">個人情報について</a>、及びminikura利用規約に同意する </label>
-              </div>
-              <button type="submit" class="btn btn-danger btn-lg btn-block">利用規約に同意して会員登録する</button>
-              <a class="btn btn-primary btn-xs btn-block" href="/login">ログインはこちら</a>
-              <?php if (!empty($code)) : ?>
-              <a class="btn btn-danger btn-xs btn-block animsition-link" href="/corporate/register/add_info?code=<?php echo $code ?>">法人の方はこちら</a>
-              <?php else : ?>
-              <a class="btn btn-danger btn-xs btn-block animsition-link" href="/corporate/register/add_info">法人の方はこちら</a>
-              <?php endif; ?>
-            </div>
-          <?php echo $this->Form->end(); ?>
-          </div>
+
+      <section id="page-wrapper" class="wrapper register">
+        <ul class="pagenation">
+          <li class="on"><span class="number">1</span><span class="txt">登録方法<br>選択</span>
+          </li>
+          <li><span class="number">2</span><span class="txt">お名前<br>入力</span>
+          </li>
+          <li><span class="number">3</span><span class="txt">ご住所<br>入力</span>
+          </li>
+          <li><span class="number">4</span><span class="txt">登録内容<br>確認</span>
+          </li>
+          <li><span class="number">5</span><span class="txt">完了</span>
+          </li>
+        </ul>
+        <div class="content">
+          <h2 class="page-title">登録方法選択</h2>
+          <?php echo $this->Flash->render(); ?>
+          <ul class="col-login">
+            <li>
+              <h3>SNSアカウントで新規会員登録</h3>
+              <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_regist"><img src="/images/icon-fb.svg" class="icon">Facebookで登録</a>
+              <p class="txt-caption">minikuraが許可なくお客さまのFacebookへ投稿することはございません。</p>
+            </li>
+            <li>
+              <h3>メールアドレスで新規会員登録</h3>
+              <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add'], 'novalidate' => true]); ?>
+
+              <?php echo $this->Form->input('CustomerRegistInfo.email', ['class' => "form-control", 'placeholder'=>'例：terrada@minikura.com', 'size' => '28', 'maxlength' => '50', 'error' => false, 'label' => false, 'div' => false]); ?>
+              <p class="txt-caption">半角英数記号でご入力ください。</p>
+              <?php echo $this->Form->error('CustomerRegistInfo.email', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+              <button type="submit" class="btn send-mail">送信する</button>
+              <?php echo $this->Form->end(); ?>
+            </li>
+          </ul>
         </div>
-      </div>
-    </div>
+      </section>
+      <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_complete_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('CustomerRegistInfo.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php if (false): ?>
+      <!--TODO facebookへ申請する必要あり-->
+      <input type="hidden" name="facebook_gender" value="">
+      <input type="hidden" name="facebook_birthday" value="">
+      <input type="hidden" name="facebook_location" value="">
+      <?php endif; ?>
+      <?php echo $this->Form->end(); ?>

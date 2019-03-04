@@ -13,11 +13,24 @@ class AppMail
      */
     public function sendPasswordReset($to, $hash)
     {
-        //
         $from = null;
         $subject = 'パスワードリセット';
         $templete = 'password_reset';
         $data = [ 'url' => Configure::read('site.url') . '/customer/password_reset/add?hash=' . $hash ];
+        $this->sendTemplate($from, $to, $subject, $templete, $data);
+    }
+    /**
+     * 新規会員登録時の仮登録メール
+     * @param [type] $to   [description]
+     * @param [type] $hash [description]
+     */
+    public function sendRegisterEmail($to, $hash)
+    {
+        //
+        $from = null;
+        $subject = '【minikura】新規会員登録';
+        $templete = 'register_email';
+        $data = [ 'url' => Configure::read('site.url') . '/customer/register/add_personal?hash=' . $hash ];
         $this->sendTemplate($from, $to, $subject, $templete, $data);
     }
     /**

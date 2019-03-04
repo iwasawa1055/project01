@@ -181,7 +181,7 @@ class CustomerRegistInfo extends ApiModel
                 'message' => ['format_format', 'postal', '例、110-0001']
             ],
         ],
-        'pref' => [
+            'pref' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,

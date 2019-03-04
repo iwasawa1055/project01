@@ -27,11 +27,12 @@ $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 $config['api.minikura.access_point.amazon_pay_v4'] = $url . '/v4/amazon_pay';
 $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
+$config['api.minikura.access_point.facebook_v5'] = $url . '/v5/facebook';
 
 /**
  * nike_snkrs用
- *  @todo oem_keyが決まり次第  EnvConfig/Staging, EnvConfig/Productionにも同様に設定する 
- *  @todo alliance_cdが決まり次第 
+ *  @todo oem_keyが決まり次第  EnvConfig/Staging, EnvConfig/Productionにも同様に設定する
+ *  @todo alliance_cdが決まり次第
  */
 $config['api.sneakers.oem_key'] = '1gI.NKWGSgpMzJevM3PNJLvKrbzcVkIvE_WQMIJ_ij.AH.8z_Vd.J29tPSClUn1HUDfLhYrPnuE-';
 $config['api.sneakers.alliance_cd'] = 'sneakers';

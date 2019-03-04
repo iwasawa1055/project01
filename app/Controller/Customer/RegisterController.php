@@ -1,20 +1,24 @@
 <?php
 
 App::uses('MinikuraController', 'Controller');
+App::uses('CustomerEmail', 'Model');
+App::uses('AppMail', 'Lib');
+App::uses('Folder', 'Utility');
 
 class RegisterController extends MinikuraController
 {
-    const MODEL_NAME = 'CustomerEntry';
+    /** model */
+    const MODEL_NAME        = 'CustomerEntry';
+    const MODEL_NAME_EMAIL  = 'Email';
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
-    const MODEL_NAME_CORP_REGIST = 'CorporateRegistInfo';
-	//* nike_snkrs alliance_cd
-	const SNEAKERS_ALLIANCE_CD = 'api.sneakers.alliance_cd';
-	const SNEAKERS_FILE_KEY_LIST = 'api.sneakers.file.key_list';
-	const SNEAKERS_FILE_REGISTERED_LIST = 'api.sneakers.file.registered_list';
-	const SNEAKERS_FILE_ERROR_LIST = 'api.sneakers.file.error_list';
-	const SNEAKERS_DIR = 'api.sneakers.dir';
-	const SNEAKERS_REASON_NOT_EXIST = 'sneakers key is not exist';
-	const SNEAKERS_REASON_REGISTERED = 'sneakers key has already registered';
+    const MODEL_NAME_FB_REGIST = 'CustomerFacebook';
+
+    /** tmp file */
+    const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
+    const REGISTER_EMAIL_MAIL_LIMIT = 60 * 30 * 24;
+
+    /** layout */
+    public $layout = 'register';
 
     // ログイン不要なページ
     protected $checkLogined = false;
@@ -32,348 +36,382 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * エントリー登録フォーム
-     *  - 現在は非アクティブ 2017.2.16
+     * 登録種別選択フォーム
      */
     public function customer_add()
     {
-        $queries = array();
-        $query = '';
-        // 初回キット購入導線へリダイレクト
-        if (!empty($this->request->query)) {
-            foreach ($this->request->query as $param => $value) {
-                $queries[] = "{$param}=$value";
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // 初期表示
+        if ($this->request->is('get')) {
+
+            // 紹介コード
+            $alliance_cd = '';
+            if (isset($_GET['alliance_cd'])) {
+                $alliance_cd = $_GET['alliance_cd'];
+            } elseif (CakeSession::read('app.data.alliance_cd')) {
+                $alliance_cd = CakeSession::read('app.data.alliance_cd');
             }
-            $query = implode('&', $queries);
-            $query = "?" . $query;
-        }
-        return $this->redirect('/first_order/' . $query);
+            CakeSession::Write('app.data.alliance_cd', $alliance_cd);
 
-        // 紹介コード
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-        $this->request->data[self::MODEL_NAME]['alliance_cd'] = $code;
+        // 確認へ遷移する場合
+        } elseif ($this->request->is('post')) {
 
-        $isBack = Hash::get($this->request->query, 'back');
-        if ($isBack) {
-            $this->request->data = [self::MODEL_NAME => CakeSession::read(self::MODEL_NAME)];
-            $this->request->data[self::MODEL_NAME]['password'] = '';
-            $this->request->data[self::MODEL_NAME]['password_confirm'] = '';
-        }
-        CakeSession::delete(self::MODEL_NAME);
-    }
+            $this->loadModel(self::MODEL_NAME_REGIST);
 
-    /**
-     * エントリー登録フォーム（確認）
-     *  - 現在は非アクティブ 2017.2.16
-     */
-    public function customer_confirm()
-    {
-        $queries = array();
-        $query = '';
-        // 初回キット購入導線へリダイレクト
-        if (!empty($this->request->query)) {
-            foreach ($this->request->query as $param => $value) {
-                $queries[] = "{$param}=$value";
-            }
-            $query = implode('&', $queries);
-            $query = "?" . $query;
-        }
-        return $this->redirect('/first_order/' . $query);
+            // 入力値セット
+            $this->CustomerRegistInfo->set($this->request->data);
 
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-
-        $this->loadModel(self::MODEL_NAME);
-        $this->CustomerEntry->set($this->request->data);
-
-        if ($this->CustomerEntry->validates()) {
-            CakeSession::write(self::MODEL_NAME, $this->CustomerEntry->toArray());
-        } else {
-            return $this->render('customer_add');
-        }
-    }
-
-    /**
-     * エントリー登録フォーム（完了）
-     *  - 現在は非アクティブ 2017.2.16
-     */
-    public function customer_complete()
-    {
-        $queries = array();
-        $query = '';
-        // 初回キット購入導線へリダイレクト
-        if (!empty($this->request->query)) {
-            foreach ($this->request->query as $param => $value) {
-                $queries[] = "{$param}=$value";
-            }
-            $query = implode('&', $queries);
-            $query = "?" . $query;
-        }
-        return $this->redirect('/first_order/' . $query);
-
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-
-        $data = CakeSession::read(self::MODEL_NAME);
-        CakeSession::delete(self::MODEL_NAME);
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add', '?' => ['code' => $code]]);
-        }
-
-        $this->loadModel(self::MODEL_NAME);
-        $this->CustomerEntry->set($data);
-
-        if ($this->CustomerEntry->validates()) {
-            // 仮登録
-            $res = $this->CustomerEntry->entry();
-            if (!empty($res->error_message)) {
-                $this->CustomerEntry->data[self::MODEL_NAME]['password'] = '';
-                $this->CustomerEntry->data[self::MODEL_NAME]['password_confirm'] = '';
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'customer_add', '?' => ['code' => $code]]);
-            }
-
-            // ログイン
-            $this->loadModel('CustomerLogin');
-            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerEntry->data[self::MODEL_NAME]['email'];
-            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerEntry->data[self::MODEL_NAME]['password'];
-
-            $res = $this->CustomerLogin->login();
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
+            // バリデーション
+            if ($this->CustomerRegistInfo->validates(['fieldList' => ['email']])) {
+                CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
+            } else {
                 return $this->render('customer_add');
             }
 
-            // カスタマー情報を取得しセッションに保存
-            $this->Customer->setTokenAndSave($res->results[0]);
-            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
-            $this->Customer->getInfo();
+            // 既存ユーザチェック
+            $this->loadModel(self::MODEL_NAME_EMAIL);
+            $result = $this->Email->getEmail(array('email' => $this->request->data[self::MODEL_NAME_REGIST]['email']));
+            if ($result->status === "0") {
+                $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
+                return $this->render('customer_add');
+            }
 
-            // 完了画面
-            $this->set('alliance_cd', $this->CustomerEntry->data[self::MODEL_NAME]['alliance_cd']);
-            return $this->render('customer_complete');
-
-        } else {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add', '?' => ['code' => $code]]);
+            // エラーがない場合は確認画面にリダイレクト
+            return $this->redirect('/customer/register/complete_email');
         }
     }
 
     /**
-     * 本登録フォーム
-     *  - 現在はこちらのみアクティブ 2017.2.16
+     * Eメール送信完了フォーム
      */
-    public function customer_add_info()
+    public function customer_complete_email()
     {
-        // 紹介コード
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-        $this->request->data[self::MODEL_NAME_REGIST]['alliance_cd'] = $code;
-
-        $isBack = Hash::get($this->request->query, 'back');
-        if ($isBack) {
-            $this->request->data = [self::MODEL_NAME_REGIST => CakeSession::read(self::MODEL_NAME_REGIST)];
-            $this->request->data[self::MODEL_NAME_REGIST]['password'] = '';
-            $this->request->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_add',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
-        CakeSession::delete(self::MODEL_NAME_REGIST);
-    }
 
-    /**
-     * 
-     */
-    public function customer_confirm_info()
-    {
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-
-        $this->loadModel(self::MODEL_NAME_REGIST);
-
-        $data = $this->request->data[self::MODEL_NAME_REGIST];
-        $birth = [];
-        $birth[0] = $data['birth_year'];
-        $birth[1] = $data['birth_month'];
-        $birth[2] = $data['birth_day'];
-        $data['birth'] = implode('-', $birth);
-        $data['gender'] = CUSTOMER_DEFAULT_GENDER;
-        $this->CustomerRegistInfo->set($data);
-
-        if ($this->CustomerRegistInfo->validates()) {
-            CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
-        } else {
-            return $this->render('customer_add_info');
-        }
-    }
-
-    /**
-     *
-     */
-    public function customer_complete_info()
-    {
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $data = CakeSession::read(self::MODEL_NAME_REGIST);
+        $to = $data['email'];
+
+        /** send mail */
+        // 再設定用キー取得
+        $key = Security::hash(date('YmdHis') . CakeText::uuid() . $to, 'md5', true);
+        // キーファイル名
+        $filename = date('Ymd') . '_' . $key;
+        // 再設定用キーファイル作成
+        $key_file_path = self::REGISTER_EMAIL_FILE_DIR . DS . $filename;
+        $key_file = new File($key_file_path, true);
+        $key_file->append($to);
+        $mail = new AppMail();
+        $mail->sendRegisterEmail($to, $key);
+
+        // セッションから入力値を取得しviewに渡す
+        $this->set(self::MODEL_NAME_REGIST, $data);
+
         CakeSession::delete(self::MODEL_NAME_REGIST);
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
+
+    }
+
+    /**
+     * facebook情報取得フォーム
+     */
+    public function customer_complete_facebook()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_add',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
 
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // facebook情報を保持
+        CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
+
+        // 個人情報入力画面へリダイレクトする
+        return $this->redirect(['controller' => 'register', 'action' => 'add_personal']);
+
+    }
+
+    /**
+     * Email個人情報登録フォーム
+     */
+    public function customer_add_personal()
+    {
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
         $this->loadModel(self::MODEL_NAME_REGIST);
+
+        // URL遷移時
+        if ($this->request->is('get')) {
+
+            // セッションから入力値を取得
+            $this->request->data[self::MODEL_NAME_REGIST] = CakeSession::read(self::MODEL_NAME_REGIST);
+
+            if (empty($this->request->data[self::MODEL_NAME_REGIST])) {
+                $key = Hash::get($this->request->query, 'hash');
+                if (isset($key)) {
+                    // キーファイルからEmail情報取得
+                    $this->request->data[self::MODEL_NAME_REGIST] = $this->_getKeyFileData($key);
+                    CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
+                }
+            }
+            $this->CustomerRegistInfo->set($this->request->data);
+
+        // 確認遷移時
+        } else if ($this->request->is('post')) {
+
+            $this->request->data[self::MODEL_NAME_REGIST] = array_merge(
+                CakeSession::read(self::MODEL_NAME_REGIST),
+                $this->request->data[self::MODEL_NAME_REGIST]
+            );
+
+            // 生年月日を結合
+            $this->request->data[self::MODEL_NAME_REGIST]['birth'] = implode('-', [
+                $this->request->data[self::MODEL_NAME_REGIST]['birth_year'],
+                // ゼロ埋め
+                sprintf('%02d', $this->request->data[self::MODEL_NAME_REGIST]['birth_month']),
+                // ゼロ埋め
+                sprintf('%02d', $this->request->data[self::MODEL_NAME_REGIST]['birth_day']),
+            ]);
+
+            // 入力値セット
+            $this->CustomerRegistInfo->set($this->request->data);
+
+            // バリデーション
+            $validation_item = [
+                'lastname',
+                'lastname_kana',
+                'firstname',
+                'firstname_kana',
+                'gender',
+                'birth',
+                'newsletter',
+            ];
+
+            // パスワードをバリデーション追加(FBユーザー以外)
+            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false) {
+                $validation_item[] = 'password';
+                $validation_item[] = 'password_confirm';
+            }
+
+            if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
+                return $this->render('customer_add_personal');
+            }
+
+            CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
+
+            // 既存ユーザチェック
+            $this->loadModel(self::MODEL_NAME_EMAIL);
+            $result = $this->Email->getEmail(array('email' => $this->request->data[self::MODEL_NAME_REGIST]['email']));
+            if ($result->status === "0") {
+                $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
+                return $this->render('customer_add');
+            }
+
+            // エラーがない場合は確認画面にリダイレクト
+            return $this->redirect(['controller' => 'register', 'action' => 'add_address']);
+        }
+    }
+
+    /**
+     * Email住所情報登録フォーム
+     */
+    public function customer_add_address()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_add_personal',
+                'Register/customer_add_address',
+                'Register/customer_confirm_entry',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->loadModel(self::MODEL_NAME_REGIST);
+
+        if ($this->request->is('get')) {
+            // セッションから入力値を取得
+            $this->request->data[self::MODEL_NAME_REGIST] = CakeSession::read(self::MODEL_NAME_REGIST);
+            $this->CustomerRegistInfo->set($this->request->data);
+
+        } else if ($this->request->is('post')) {
+
+            $this->request->data[self::MODEL_NAME_REGIST] = array_merge(
+                CakeSession::read(self::MODEL_NAME_REGIST),
+                $this->request->data[self::MODEL_NAME_REGIST]
+            );
+
+            // 電話番号を半角変換
+            $this->request->data[self::MODEL_NAME_REGIST]['tel1'] = self::_wrapConvertKana($this->request->data[self::MODEL_NAME_REGIST]['tel1']);
+
+            // 入力値セット
+            $this->CustomerRegistInfo->set(array_merge($this->request->data));
+
+            // バリデーション
+            $validation_item = [
+                'postal',
+                'pref',
+                'address1',
+                'address2',
+                'address3',
+                'tel1',
+            ];
+            if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
+                return $this->render('customer_add_address');
+            }
+
+            CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
+
+            // エラーがない場合は確認画面にリダイレクト
+            return $this->redirect(['controller' => 'register', 'action' => 'confirm_entry']);
+        }
+    }
+
+    /**
+     * Email登録内容確認フォーム
+     */
+    public function customer_confirm_entry()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_add_address',
+                'Register/customer_confirm_entry',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // セッションから入力値を取得しviewに渡す
+        $this->set(self::MODEL_NAME_REGIST, CakeSession::read(self::MODEL_NAME_REGIST));
+    }
+
+    /**
+     * Email登録完了フォーム
+     */
+    public function customer_complete_entry()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_confirm_entry',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->loadModel(self::MODEL_NAME_REGIST);
+        $this->loadModel(self::MODEL_NAME_FB_REGIST);
+
+        $data = CakeSession::read(self::MODEL_NAME_REGIST);
+
+        if (empty($data['alliance_cd'])) {
+            unset($data['alliance_cd']);
+        }
         $this->CustomerRegistInfo->set($data);
 
-        if ($this->CustomerRegistInfo->validates()) {
-            // 部屋番号
-            $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['address3'] = $data['address3'] . $data['room'];
+        // 既存ユーザチェック
+        $this->loadModel(self::MODEL_NAME_EMAIL);
+        $result = $this->Email->getEmail(array('email' => $data['email']));
+        if ($result->status === "0") {
+            $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
+            return $this->render('customer_add');
+        }
 
-            if (empty($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd'])) {
-                unset($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['alliance_cd']);
-            }
+        if (isset($data['facebook_user_id'])) {
+            // 仮のパスワードを設定
+            $this->CustomerRegistInfo->data['CustomerRegistInfo']['password'] = uniqid();
 
             // 本登録
             $res = $this->CustomerRegistInfo->regist();
-            if (!empty($res->error_message)) {
-                $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'] = '';
-                $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password_confirm'] = '';
-                $this->Flash->set($res->error_message);
-                return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
-            }
+
+            // FB連携
+            $this->CustomerFacebook->set(['customer_id' => $res->results[0]['customer_id'], 'facebook_user_id' => $data['facebook_user_id']]);
+            $res = $this->CustomerFacebook->regist();
+
+            // ログイン
+            $this->loadModel('CustomerLoginFacebook');
+            $this->CustomerLoginFacebook->data['CustomerLoginFacebook']['access_token'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token'];
+            $login_res = $this->CustomerLoginFacebook->login();
+
+            // isFacebook(Facebook判定)メソッドで使用するためにaccess_tokenを保存
+            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($login_res->results[0]);
+            $this->Customer->setPassword($this->CustomerRegistInfo->data['CustomerRegistInfo']['password']);
+            $this->Customer->getInfo();
+        } else {
+            // 本登録
+            $res = $this->CustomerRegistInfo->regist();
 
             // ログイン
             $this->loadModel('CustomerLogin');
             $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
             $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
-
-            $res = $this->CustomerLogin->login();
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->render('customer_add_info');
-            }
+            $login_res = $this->CustomerLogin->login();
 
             // カスタマー情報を取得しセッションに保存
-            $this->Customer->setTokenAndSave($res->results[0]);
+            $this->Customer->setTokenAndSave($login_res->results[0]);
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
             $this->Customer->getInfo();
-
-            // ご利用中サービスの集計
-            $this->set('product_summary', []);
-            if (!$this->Customer->isEntry()) {
-                $summary = $this->InfoBox->getProductSummary(false);
-                $this->set('product_summary', $summary);
-                // 出庫済み含めた利用
-                $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
-                $this->set('summary_all', $summary_all);
-            }
-
-            // 完了画面
-            $this->set('alliance_cd', Hash::get($this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST], 'alliance_cd'));
-            return $this->render('customer_complete');
-
-        } else {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'customer_add_info', '?' => ['code' => $code]]);
         }
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
+        }
+
+        CakeSession::delete(self::MODEL_NAME_REGIST);
+        CakeSession::delete('app.data.alliance_cd');
     }
 
-    /**
-     * 法人カスタマー登録（いきなり本登録）
-     */
-    public function corporate_add_info()
+    private function _getKeyFileData($key)
     {
-        // 紹介コード
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-        $this->request->data[self::MODEL_NAME_CORP_REGIST]['alliance_cd'] = $code;
-
-        $isBack = Hash::get($this->request->query, 'back');
-        if ($isBack) {
-            $this->request->data = [self::MODEL_NAME_CORP_REGIST => CakeSession::read(self::MODEL_NAME_CORP_REGIST)];
-            $this->request->data[self::MODEL_NAME_CORP_REGIST]['password'] = '';
-            $this->request->data[self::MODEL_NAME_CORP_REGIST]['password_confirm'] = '';
-        }
-        CakeSession::delete(self::MODEL_NAME_CORP_REGIST);
-    }
-
-    /**
-     * 法人カスタマー登録確認（いきなり本登録）
-     */
-    public function corporate_confirm_info()
-    {
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-
-        $this->loadModel(self::MODEL_NAME_CORP_REGIST);
-        $this->CorporateRegistInfo->set($this->request->data);
-        if ($this->CorporateRegistInfo->validates()) {
-            CakeSession::write(self::MODEL_NAME_CORP_REGIST, $this->CorporateRegistInfo->toArray());
-        } else {
-            return $this->render('corporate_add_info');
-        }
-    }
-
-    /**
-     * 法人カスタマー登録完了（いきなり本登録）
-     */
-    public function corporate_complete_info()
-    {
-        $code = Hash::get($this->request->query, 'code');
-        $this->set('code', $code);
-
-        $data = CakeSession::read(self::MODEL_NAME_CORP_REGIST);
-        CakeSession::delete(self::MODEL_NAME_CORP_REGIST);
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'corporate_add_info', '?' => ['code' => $code]]);
+        // tmpファイル形式チェック
+        if ($key === null or $key === "") {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
 
-        $this->loadModel(self::MODEL_NAME_CORP_REGIST);
-        $this->CorporateRegistInfo->set($data);
-        if ($this->CorporateRegistInfo->validates()) {
-            // 本登録
-            $res = $this->CorporateRegistInfo->regist();
-            if (!empty($res->error_message)) {
-                $this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST]['password'] = '';
-                $this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST]['password_confirm'] = '';
-                $this->Flash->set($res->error_message);
-                return $this->render('corporate_add_info');
-            }
+        // 再発行申請ファイル取得
+        $dir   = new Folder(self::REGISTER_EMAIL_FILE_DIR);
+        $files = $dir->find('[0-9]{8}_' . $key);
 
-            // ログイン
-            $this->loadModel('CustomerLogin');
-            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST]['email'];
-            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST]['password'];
-
-            $res = $this->CustomerLogin->login();
-            if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
-                return $this->render('corporate_add_info');
-            }
-
-            // カスタマー情報を取得しセッションに保存
-            $this->Customer->setTokenAndSave($res->results[0]);
-            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
-            $this->Customer->getInfo();
-
-            // ご利用中サービスの集計
-            $this->set('product_summary', []);
-            if (!$this->Customer->isEntry()) {
-                $summary = $this->InfoBox->getProductSummary(false);
-                $this->set('product_summary', $summary);
-                // 出庫済み含めた利用
-                $summary_all = $this->InfoBox->getProductSummary(true, 'summary_all');
-                $this->set('summary_all', $summary_all);
-            }
-
-            // 完了画面
-            $this->set('alliance_cd', Hash::get($this->CorporateRegistInfo->data[self::MODEL_NAME_CORP_REGIST], 'alliance_cd'));
-            return $this->render('corporate_complete');
-
-        } else {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'corporate_add_info', '?' => ['code' => $code]]);
+        // tmpファイルチェック
+        if (!is_array($files) or count($files) !== 1) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not found', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
+
+        // tmpファイル存在チェック
+        $file = new File(self::REGISTER_EMAIL_FILE_DIR . DS . $files[0]);
+        if (! $file->exists()) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file not exist', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        // 有効期限チェック
+        if ($file->lastChange() < time() - self::REGISTER_EMAIL_MAIL_LIMIT) {
+            new AppTerminalInfo(AppE::BAD_REQUEST . 'key file is expired', 400);
+            $this->Flash->set(__('customer_register_email_expiration'));
+            return $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        // キーファイルから変更メールアドレス取り出し
+        $email = $file->read();
+        return ["email" => $email, "key" => $key];
     }
 }

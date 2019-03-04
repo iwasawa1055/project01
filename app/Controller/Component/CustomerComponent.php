@@ -168,6 +168,15 @@ class CustomerComponent extends Component
         return true;
     }
 
+    public function isFacebook()
+    {
+
+        if (empty(CakeSession::read(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY))) {
+            return false;
+        }
+        return true;
+    }
+
     public function getName()
     {
         if ($this->isLogined()) {
@@ -318,7 +327,7 @@ class CustomerComponent extends Component
         if ($this->isLogined()) {
             $oem_cd = $this->getInfo()['oem_cd'];
             if ($oem_cd === Configure::read('api.sneakers.alliance_cd')) {
-                return true;    
+                return true;
             }
         }
         return false;

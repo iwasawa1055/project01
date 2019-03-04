@@ -1,5 +1,5 @@
 <?php
-$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); 
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
 $this->Html->script('customer/oem/add', ['block' => 'scriptMinikura']);
