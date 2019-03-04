@@ -205,9 +205,12 @@ class OrderController extends MinikuraController
                 'address1',
                 'address2',
                 'address3',
-                'datetime_cd',
                 'address_id',
             ];
+            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
+            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
+                $validation_item[] = 'datetime_cd';
+            }
             if (!$this->PaymentGMOKitByCreditCard->validates(['fieldList' => $validation_item])) {
                 $error_flag = true;
             }
@@ -527,9 +530,12 @@ class OrderController extends MinikuraController
                 'address1',
                 'address2',
                 'address3',
-                'datetime_cd',
                 'address_id',
             ];
+            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
+            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
+                $validation_item[] = 'datetime_cd';
+            }
             if (!$this->PaymentAmazonKitAmazonPay->validates(['fieldList' => $validation_item])) {
                 $error_flag = true;
             }

@@ -11,7 +11,7 @@ switch (true) {
     case (! isset($_SERVER['SERVER_NAME'])):
         break;
 
-    //** 
+    //**
     //case $_SERVER['SERVER_NAME'] === 'goto-contents.minikura.com':
     case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'osada-mypage.minikura.com':
@@ -66,7 +66,24 @@ switch (true) {
         // $config['api.minikura.access_point.amazon_pay_v3'] = $url . '/v3/payment/amazon_pay';
         // $config['api.minikura.access_point.amazon_pay_v4'] = $url . '/v4/amazon_pay';
         // $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
-    break;
+        break;
+    case $_SERVER['HTTP_HOST'] === 'sato-www.minikura.com':
+    case $_SERVER['SERVER_NAME'] === 'sato-mypage.minikura.com':
+        $config['site.mypage.url'] = 'https://sato-mypage.minikura.com';
+        $config['site.static_content_url'] = 'https://sato-www.minikura.com';
+
+//        $url = 'https://yoshida-user-api.minikura.com';
+//        $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
+//        $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
+//        $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
+//        $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
+//        $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
+//        $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
+//        $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
+//        $config['api.minikura.access_point.amazon_pay_v3'] = $url . '/v3/payment/amazon_pay';
+//        $config['api.minikura.access_point.amazon_pay_v4'] = $url . '/v4/amazon_pay';
+//        $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
+        break;
     case $_SERVER['HTTP_HOST'] === 't-adachi-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 't-adachi-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://t-adachi-mypage.minikura.com';
