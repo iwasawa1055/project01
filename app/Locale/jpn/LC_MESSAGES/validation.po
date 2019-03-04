@@ -188,11 +188,32 @@ msgstr "セキュリティコード"
 msgid "kit_mono_num"
 msgstr "オーダー数（minikuraMONO）"
 
+msgid "kit_mono_regular_num"
+msgstr "オーダー数（MONOレギュラー）"
+
+msgid "kit_mono_wide_num"
+msgstr "オーダー数（MONOワイド）"
+
 msgid "kit_hako_num"
 msgstr "オーダー数（minikurHAKO）"
 
+msgid "kit_hako_regular_num"
+msgstr "オーダー数（HAKOレギュラー）"
+
+msgid "kit_hako_wide_num"
+msgstr "オーダー数（HAKOワイド）"
+
+msgid "kit_hako_book_num"
+msgstr "オーダー数（HAKOブック）"
+
 msgid "kit_cleaning_num"
 msgstr "オーダー数（クリーニングパック）"
+
+msgid "kit_library_num"
+msgstr "オーダー数（ライブラリーパック）"
+
+msgid "kit_hanger_num"
+msgstr "オーダー数（ハンガーパック）"
 
 msgid "company_name"
 msgstr "会社名（漢字）"

@@ -31,6 +31,16 @@ var gmoCreditCardPayment = {
         this.setParams();
         this.convertHalfSize();
     },
+    new_init : function() {
+        $('.loader').airCenter();
+        $('.airloader-overlay').show();
+        $(this.validateErrorSelector).empty();
+        $(this.creditCardInfoSelector).empty();
+        this.libGmoCreditCardPayment = new libGmoCreditCardPayment();
+        this.setShopIdNew();
+        this.setParamsNew();
+        this.convertHalfSize();
+    },
     setParams : function() {
         this.params = {
             cardno: $("#cardno").val(),
@@ -41,6 +51,17 @@ var gmoCreditCardPayment = {
     },
     setShopId : function() {
         this.shopId = $('#shop_id').val();
+    },
+    setParamsNew : function() {
+        this.params = {
+            cardno: $("#cardno_new").val(),
+            expire: $("#expireyear_new").val() + $("#expiremonth_new").val(),
+            securitycode: $("#securitycode_new").val(),
+            holdername: $("#holdername_new").val(),
+        };
+    },
+    setShopIdNew : function() {
+        this.shopId = $('#shop_id_new').val();
     },
     convertHalfSize : function() {
         // cardno(全角数字=>半角数字変換)
@@ -124,7 +145,7 @@ var gmoCreditCardPayment = {
         var d = new $.Deferred();
         $.ajax({
             type: "POST",
-            url: "/order/check_credit_card",
+            url: "/order/as_check_credit_card",
             data: {
                 "gmo_token": gmoCreditCardPayment.tokenResponses.tokenObject.token
             }
@@ -187,7 +208,7 @@ var gmoCreditCardPayment = {
         var d = new $.Deferred();
         $.ajax({
             type: "POST",
-            url: "/order/register_credit_card",
+            url: "/order/as_register_credit_card",
             data: {
                 "gmo_token": gmoCreditCardPayment.tokenResponses.tokenObject.token
             }
@@ -198,17 +219,19 @@ var gmoCreditCardPayment = {
                 var registerResponse = JSON.parse(jsonRegisterResponse);
                 if(registerResponse.status == true){
                     gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
-                    $('.dsn-select-cards').css("display","block");
-                    $("#as-card").prop('checked', true);
+                    $("#AsCard").prop('checked', true);
                     $('label[for=as-card]').text(registerResponse.results.card_no);
-                    $('input[name=security_cd]').val($('input[name=securitycode]').val());
-                    $('.dsn-input-security-code').toggle('slow');
-                    $('.dsn-input-change-card').hide('slow');
-                    $('.dsn-input-new-card').hide('slow');
-                    $('#execute').off('click');
-                    $('#execute').on('click', function (e) {
-                      gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
-                    });
+                    $('input[id=security_cd]').val($('input[id=securitycode_new]').val());
+                    $(".input-check-list").toggle('slow');
+                    $("#input-sc").toggle('slow');
+                    $("#input-cc").hide('slow');
+                    $("#input-nc").hide('slow');
+                    $('.execute').val('1');
+                    // TODO 何だろう？やる必要あるのかな？
+                    // $('#execute').off('click');
+                    // $('#execute').on('click', function (e) {
+                    //   gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
+                    // });
                     $('.airloader-overlay').hide();
                     d.resolve();
                 }else{
@@ -262,7 +285,7 @@ var gmoCreditCardPayment = {
         var d = new $.Deferred();
         $.ajax({
             type: "POST",
-            url: "/order/update_credit_card",
+            url: "/order/as_update_credit_card",
             data: {
                 "gmo_token": gmoCreditCardPayment.tokenResponses.tokenObject.token
             }
@@ -272,25 +295,28 @@ var gmoCreditCardPayment = {
             function(jsonUpdateResponse){
                 var updateResponse = JSON.parse(jsonUpdateResponse);
                 if(updateResponse.status == true){
-                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
-                    $("#as-card").prop('checked', true);
-                    $("#change-card").prop('checked', false);
+                    gmoCreditCardPayment.displayMessage("クレジットカードの変更に成功しました。", gmoCreditCardPayment.creditCardInfoSelector);
+                    $("#AsCard").prop('checked', true);
+                    $("#ChangeCard").prop('checked', false);
                     $('label[for=as-card]').text(updateResponse.results.card_no);
-                    $('input[name=security_cd]').val($('input[name=securitycode]').val());
-                    $('.dsn-input-security-code').toggle('slow');
-                    $('.dsn-input-change-card').hide('slow');
-                    $('.dsn-input-new-card').hide('slow');
+                    $('input[id=security_cd]').val($('input[id=securitycode]').val());
+                    $("#input-sc").toggle('slow');
+                    $("#input-cc").hide('slow');
+                    $("#input-nc").hide('slow');
+                    // TODO これがローディングのやつかな？
                     $('.airloader-overlay').hide();
                     d.resolve();
                 }else{
                     $('.airloader-overlay').hide();
-                    gmoCreditCardPayment.displayMessage("クレジットカードの登録に失敗しました。", gmoCreditCardPayment.creditCardInfoSelector);
+                    // TODO これはエラーセレクタじゃないの？
+                    gmoCreditCardPayment.displayMessage("クレジットカードの変更に失敗しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     d.reject();
                 }
             },
             // 通信失敗
             function(){
                 //　通信失敗
+                // TODO これはエラーセレクタじゃないの？
                 gmoCreditCardPayment.displayMessage('通信に失敗しました。', gmoCreditCardPayment.creditCardInfoSelector);
                 $('.airloader-overlay').hide();
                 d.reject();
@@ -348,7 +374,7 @@ var gmoCreditCardPayment = {
         });
     },
     setGMOTokenAndRegisterCreditCard: function(){
-        this.init();
+        this.new_init();
 
         this.wait()
         .then(this.validate)

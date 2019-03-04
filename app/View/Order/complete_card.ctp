@@ -1,5 +1,5 @@
 
-  <?php echo $this->Form->create('PaymentAmazonKitAmazonPay', ['novalidate' => true]); ?>
+  <?php echo $this->Form->create('PaymentGMOKitByCreditCard', ['novalidate' => true]); ?>
 
     <div id="page-wrapper" class="lineup wrapper">
       <?php echo $this->Flash->render(); ?>
@@ -29,33 +29,35 @@
               <td></td>
             </tr>
             <?php endforeach; ?>
-            </tbody>
             <tr>
               <th>合計</th>
               <td><?php echo $order_total_data['number'] ?></td>
               <td><?php echo $order_total_data['price'] ?></td>
             </tr>
+            </tbody>
           </table>
         </li>
         <li>
           <label class="headline">配送住所</label>
           <ul class="li-address">
-            <li>〒<?php echo h($PaymentAmazonKitAmazonPay['postal']); ?></li>
-            <li><?php echo h($PaymentAmazonKitAmazonPay['address']); ?></li>
-            <li><?php echo h($PaymentAmazonKitAmazonPay['name']); ?></li>
-            <li><?php echo h($PaymentAmazonKitAmazonPay['tel1']); ?></li>
+            <li>〒<?php echo h($PaymentGMOKitByCreditCard['postal']); ?></li>
+            <li><?php echo h($PaymentGMOKitByCreditCard['address']); ?></li>
+            <li><?php echo h($PaymentGMOKitByCreditCard['name']); ?></li>
+            <li><?php echo h($PaymentGMOKitByCreditCard['tel1']); ?></li>
           </ul>
         </li>
         <li>
           <label class="headline">お届け日時</label>
           <ul class="li-address">
-            <li><?php echo h($PaymentAmazonKitAmazonPay['select_delivery_text']); ?></li>
+            <li><?php echo h($PaymentGMOKitByCreditCard['select_delivery_text']); ?></li>
           </ul>
         </li>
         <li>
           <label class="headline">決済</label>
           <ul class="li-credit">
-            <li>Amazon Pay</li>
+            <li>ご登録のクレジットカード</li>
+            <li><?php echo h($card_data['card_no']); ?></li>
+            <li><?php echo h($card_data['holder_name']); ?></li>
           </ul>
         </li>
       </ul>

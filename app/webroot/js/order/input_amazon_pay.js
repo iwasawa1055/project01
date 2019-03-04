@@ -82,7 +82,7 @@ var AppAmazonPay =
     a: function () {
         $('.js-btn-submit').on('click', function (e) {
             var self = $(this);
-            var add_billing  = $('<input type="hidden" name="amazon_order_reference_id">');
+            var add_billing  = $('<input type="hidden" name="PaymentAmazonKitAmazonPay[amazon_order_reference_id]">');
             add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
             add_billing.insertAfter(self);
 
@@ -163,20 +163,10 @@ var AppAmazonPay =
                 dataType: 'json',
                 type: 'POST'
             }).done(function (data, textStatus, jqXHR) {
-                $('#datetime_cd > option').remove();
-                // 成功時 お届け日時セット
-                elem_datetime.append($('<option>').html('以下からお選びください').val(''));
-                $.each(data.results, function (index, datatime) {
-                    elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
-                });
-
-                //選択済保持
-                if ($("#js-datetime_cd").val() != '') {
-                    $("#datetime_cd").val($("#js-datetime_cd").val());
-                }
-
-                // 戻る対応でリストをpostする
-                $('#select_delivery').val(JSON.stringify(data.results));
+              elem_datetime.empty();
+              $.each(data.result.results, function (index, datatime) {
+                elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
+              });
             }).fail(function (data, textStatus, errorThrown) {
                 // 失敗時 お届け日時リセット
                 $('#datetime_cd > option').remove();
