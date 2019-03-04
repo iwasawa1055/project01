@@ -55,10 +55,10 @@
         <div class="panel-body">
           <div class="dsn-amazon-login">
             <h3>Facebookアカウントで会員登録された方はこちらからログインできます。</h3>
-            <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_login"><img src="/images/icon-fb.svg" class="icon">Facebookでログイン</a>
+            <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_login" style="width:200px; height:35px">Facebookでログイン</a>
             <?php echo $this->Form->create('CustomerLoginFacebook', ['url' => ['controller' => 'login', 'action' => 'login_by_facebook'], "id" => "dev_id_facebook_loginform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <?php echo $this->Form->hidden('CustomerLoginFacebook.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-              <?php echo $this->Form->hidden('CustomerLoginFacebook.facebook_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->hidden('CustomerLoginFacebook.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
             <?php echo $this->Form->end(); ?>
             <?php echo $this->Flash->render('facebook_access_token'); ?>
           </div>
@@ -69,3 +69,25 @@
 <script src="/js/login.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
 <?php $this->Html->script('login_dev', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('app_dev_facebook', ['block' => 'scriptMinikura']); ?>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : "<?php echo Configure::read('app.facebook.app_id'); ?>",
+            cookie     : true,
+            xfbml      : true,
+            version    : "<?php echo Configure::read('app.facebook.version'); ?>"
+        });
+
+        FB.AppEvents.logPageView();
+
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/ja_JP/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>

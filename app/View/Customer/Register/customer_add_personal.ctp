@@ -137,6 +137,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
               <?php echo $this->Form->error('CustomerRegistInfo.email', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
               <p class="txt-caption">半角英数記号でご入力ください。</p>
             </li>
+            <?php if (isset($this->request->data['CustomerRegistInfo']['facebook_user_id']) == false) : ?>
             <li>
               <label class="headline">パスワード<span class="required">※</span></label>
               <?php echo $this->Form->input('CustomerRegistInfo.password', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcDeF12', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
@@ -148,6 +149,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
               <?php echo $this->Form->input('CustomerRegistInfo.password_confirm', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcD1234', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
               <?php echo $this->Form->error('CustomerRegistInfo.password_confirm', null, ['size' => 20, 'maxlength' => 20, 'wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
+            <?php endif; ?>
             <li>
               <label class="headline">お知らせメール<span class="required">※</span></label>
               <ul class="col-mail">

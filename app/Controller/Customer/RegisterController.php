@@ -11,6 +11,7 @@ class RegisterController extends MinikuraController
     const MODEL_NAME        = 'CustomerEntry';
     const MODEL_NAME_EMAIL  = 'Email';
     const MODEL_NAME_REGIST = 'CustomerRegistInfo';
+    const MODEL_NAME_FB_REGIST = 'CustomerFacebook';
 
     /** tmp file */
     const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
@@ -192,10 +193,15 @@ class RegisterController extends MinikuraController
                 'firstname_kana',
                 'gender',
                 'birth',
-                'password',
-                'password_confirm',
                 'newsletter',
             ];
+
+            // パスワードをバリデーション追加(FBユーザー以外)
+            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false) {
+                $validation_item[] = 'password';
+                $validation_item[] = 'password_confirm';
+            }
+
             if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
                 return $this->render('customer_add_personal');
             }
@@ -304,6 +310,7 @@ class RegisterController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->loadModel(self::MODEL_NAME_REGIST);
+        $this->loadModel(self::MODEL_NAME_FB_REGIST);
 
         $data = CakeSession::read(self::MODEL_NAME_REGIST);
 
@@ -321,28 +328,48 @@ class RegisterController extends MinikuraController
         }
 
         if (isset($data['facebook_user_id'])) {
-            // TODO facebook登録API実施
-            exit;
+            // 仮のパスワードを設定
+            $this->CustomerRegistInfo->data['CustomerRegistInfo']['password'] = uniqid();
+
+            // 本登録
+            $res = $this->CustomerRegistInfo->regist();
+
+            // FB連携
+            $this->CustomerFacebook->set(['customer_id' => $res->results[0]['customer_id'], 'facebook_user_id' => $data['facebook_user_id']]);
+            $res = $this->CustomerFacebook->regist();
+
+            // ログイン
+            $this->loadModel('CustomerLoginFacebook');
+            $this->CustomerLoginFacebook->data['CustomerLoginFacebook']['access_token'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token'];
+            $login_res = $this->CustomerLoginFacebook->login();
+
+            // isFacebook(Facebook判定)メソッドで使用するためにaccess_tokenを保存
+            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($login_res->results[0]);
+            $this->Customer->setPassword($this->CustomerRegistInfo->data['CustomerRegistInfo']['password']);
+            $this->Customer->getInfo();
         } else {
             // 本登録
             $res = $this->CustomerRegistInfo->regist();
+
+            // ログイン
+            $this->loadModel('CustomerLogin');
+            $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
+            $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
+            $login_res = $this->CustomerLogin->login();
+
+            // カスタマー情報を取得しセッションに保存
+            $this->Customer->setTokenAndSave($login_res->results[0]);
+            $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
+            $this->Customer->getInfo();
         }
 
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
             return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
         }
-
-        // ログイン
-        $this->loadModel('CustomerLogin');
-        $this->CustomerLogin->data['CustomerLogin']['email'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['email'];
-        $this->CustomerLogin->data['CustomerLogin']['password'] = $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['password'];
-        $res = $this->CustomerLogin->login();
-
-        // カスタマー情報を取得しセッションに保存
-        $this->Customer->setTokenAndSave($res->results[0]);
-        $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
-        $this->Customer->getInfo();
 
         CakeSession::delete(self::MODEL_NAME_REGIST);
         CakeSession::delete('app.data.alliance_cd');

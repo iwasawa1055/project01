@@ -61,7 +61,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
             </li>
             <li>
               <label class="headline">紹介コード</label>
-              <?php echo $this->Form->input('CustomerRegistInfo.alliance_cd', ['size' => 20, 'maxlength' => 20, 'readonly' => 'readonly', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.alliance_cd', ['size' => 20, 'maxlength' => 20, 'label' => false, 'error' => false, 'div' => false]); ?>
             </li>
             <li>
               <label class="input-check icon-checkmark-circle">

@@ -167,10 +167,6 @@ class LoginController extends MinikuraController
      */
     public function login_by_facebook()
     {
-        // TODO facebook_user_idとfacebook_tokenをここで取得
-        pr($this->request->data);
-        exit;
-
         $this->loadModel('CustomerLoginFacebook');
         $this->CustomerLoginFacebook->set($this->request->data);
 
@@ -185,9 +181,7 @@ class LoginController extends MinikuraController
                 return $this->render('index');
             }
 
-            // TODO amazon pay ではいろいろ情報をセッション保持していたが、facebookも必要なのかを吉田さんに確認する
-            // TODO アクセストークンの取得はどうするかを検討すること
-            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $access_token);
+            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->request->data['CustomerLoginFacebook']['access_token']);
 
             // ログイン処理
             $this->request->data['CustomerLogin']['password'] = '';
@@ -197,7 +191,6 @@ class LoginController extends MinikuraController
             // ユーザー環境値登録
             $this->Customer->postEnvAuthed();
 
-            // TODO amazon payで実施している（吉田さんに何をしているものかを確認する）
             // ログイン前のページに戻る
             $this->_endJunction();
 
@@ -206,7 +199,6 @@ class LoginController extends MinikuraController
             $this->redirect(['controller' => 'login', 'action' => 'index']);
         }
 
-        //$this->redirect($set_url);
         $this->redirect(['controller' => 'login', 'action' => 'index']);
 
     }

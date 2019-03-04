@@ -19,7 +19,7 @@ class CustomerLoginFacebook extends ApiModel
         if (empty($responses->error_message)) {
             CakeSession::write(self::SESSION_API_TOKEN, $responses->results[0]['token']);
             CakeSession::write(self::SESSION_API_DIVISION, $responses->results[0]['division']);
-            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->data[$this->model_name]['facebook_token']);
+            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->data[$this->model_name]['access_token']);
 
         }
         return $responses;
@@ -33,7 +33,7 @@ class CustomerLoginFacebook extends ApiModel
                 'message' => ['notBlank', 'facebook_user_id'],
             ],
         ],
-        'facebook_token' => [
+        'access_token' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,

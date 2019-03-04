@@ -39,13 +39,14 @@ class ContractController extends MinikuraController
         // facebook情報
         $data = $this->request->data[self::MODEL_NAME_REGIST];
 
-        // TODO facebook登録APIを実施する
+        // FB連携
+        $this->loadModel('CustomerFacebook');
+        $this->CustomerFacebook->set(['customer_id' => $this->Customer->getInfo()['customer_id'], 'facebook_user_id' => $data['facebook_user_id']]);
+        $this->CustomerFacebook->regist();
 
-        pr($data);
-        exit;
-
+        // isFacebook(Facebook判定)メソッドで使用するためにaccess_tokenを保存
+        CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $data['access_token']);
 
         return $this->redirect(['controller' => 'contract', 'action' => 'index']);
-
     }
 }

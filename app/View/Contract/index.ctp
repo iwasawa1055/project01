@@ -104,28 +104,26 @@
             </div>
           </div>
         </div>
-        <div class="account-info">
-          <h2>SNS連携</h2>
-          <ul class="input-info">
-            <li>
-              <label class="headline">Facebookログイン</label>
-              <ul class="li-address">
-                <?php if ($data['facebook_flg']): ?>
-                <li>
-                  設定済み
-                </li>
-                <?php else: ?>
-                <li>
-                  未設定
-                  <label class="sns">
-                    <input type="checkbox" class="cb dev_facebook_regist" name="sns" value="link">
-                    <span class="text"></span>
-                  </label>
-                </li>
-                <?php endif; ?>
-              </ul>
-            </li>
-          </ul>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h2>SNS連携</h2>
+                <div class="form-group col-lg-12">
+                  <label>Facebookログイン</label>
+                  <p>
+                      <?php if ($customer->isFacebook()) : ?>
+                        設定済み
+                      <?php else: ?>
+                        <label class="sns">
+                          <span class="btn btn-info btn-md pull-right dev_facebook_regist" href="/customer/info/edit">連携する</span>
+                        </label>
+                      <?php endif; ?>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <?php if (!$customer->isPrivateCustomer()):?>
         <div class="panel panel-default">
@@ -148,6 +146,26 @@
       </div><!--col-lg-12-->
     </div><!--row-->
     <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'contract', 'action' => 'register_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+    <?php echo $this->Form->hidden('CustomerRegistInfo.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
     <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-    <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
     <?php echo $this->Form->end(); ?>
+    <?php $this->Html->script('app_dev_facebook', ['block' => 'scriptMinikura']); ?>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : "<?php echo Configure::read('app.facebook.app_id'); ?>",
+                cookie     : true,
+                xfbml      : true,
+                version    : "<?php echo Configure::read('app.facebook.version'); ?>"
+            });
+            FB.AppEvents.logPageView();
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/ja_JP/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
