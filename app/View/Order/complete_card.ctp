@@ -46,12 +46,14 @@
             <li><?php echo h($PaymentGMOKitByCreditCard['tel1']); ?></li>
           </ul>
         </li>
+        <?php if(!empty($PaymentGMOKitByCreditCard['datetime_cd'])) :?>
         <li>
           <label class="headline">お届け日時</label>
           <ul class="li-address">
             <li><?php echo h($PaymentGMOKitByCreditCard['select_delivery_text']); ?></li>
           </ul>
         </li>
+        <?php endif; ?>
         <li>
           <label class="headline">決済</label>
           <ul class="li-credit">
