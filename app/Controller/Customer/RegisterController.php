@@ -8,9 +8,9 @@ App::uses('Folder', 'Utility');
 class RegisterController extends MinikuraController
 {
     /** model */
-    const MODEL_NAME        = 'CustomerEntry';
-    const MODEL_NAME_EMAIL  = 'Email';
-    const MODEL_NAME_REGIST = 'CustomerRegistInfo';
+    const MODEL_NAME           = 'CustomerEntry';
+    const MODEL_NAME_EMAIL     = 'Email';
+    const MODEL_NAME_REGIST    = 'CustomerRegistInfo';
     const MODEL_NAME_FB_REGIST = 'CustomerFacebook';
 
     /** tmp file */
@@ -23,13 +23,19 @@ class RegisterController extends MinikuraController
     // ログイン不要なページ
     protected $checkLogined = false;
 
+    // エントリーフラグ
+    private $entryFlag = false;
+
     /**
      * アクセス拒否.
      */
     protected function isAccessDeny()
     {
         if ($this->Customer->isLogined()) {
-            return true;
+            if (!$this->Customer->isEntry()) {
+                return true;
+            }
+            $this->entryFlag = true;
         }
 
         return false;
@@ -141,7 +147,7 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * Email個人情報登録フォーム
+     * 個人情報登録フォーム
      */
     public function customer_add_personal()
     {
@@ -149,20 +155,28 @@ class RegisterController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_REGIST);
 
+        $this->set('entry_flag', $this->entryFlag);
+
         // URL遷移時
         if ($this->request->is('get')) {
 
-            // セッションから入力値を取得
-            $this->request->data[self::MODEL_NAME_REGIST] = CakeSession::read(self::MODEL_NAME_REGIST);
+            $data = CakeSession::read(self::MODEL_NAME_REGIST);
+            if ($this->entryFlag && empty($data)) {
+                // エントリーユーザデータ取得
+                $this->request->data[self::MODEL_NAME_REGIST] = $this->Customer->getInfo();
+            } else {
+                // セッションから入力値を取得
+                $this->request->data[self::MODEL_NAME_REGIST] = $data;
+            }
 
             if (empty($this->request->data[self::MODEL_NAME_REGIST])) {
                 $key = Hash::get($this->request->query, 'hash');
                 if (isset($key)) {
                     // キーファイルからEmail情報取得
                     $this->request->data[self::MODEL_NAME_REGIST] = $this->_getKeyFileData($key);
-                    CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
                 }
             }
+            CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
             $this->CustomerRegistInfo->set($this->request->data);
 
         // 確認遷移時
@@ -197,7 +211,7 @@ class RegisterController extends MinikuraController
             ];
 
             // パスワードをバリデーション追加(FBユーザー以外)
-            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false) {
+            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false && !$this->entryFlag) {
                 $validation_item[] = 'password';
                 $validation_item[] = 'password_confirm';
             }
@@ -208,12 +222,14 @@ class RegisterController extends MinikuraController
 
             CakeSession::write(self::MODEL_NAME_REGIST, $this->CustomerRegistInfo->toArray());
 
-            // 既存ユーザチェック
-            $this->loadModel(self::MODEL_NAME_EMAIL);
-            $result = $this->Email->getEmail(array('email' => $this->request->data[self::MODEL_NAME_REGIST]['email']));
-            if ($result->status === "0") {
-                $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
-                return $this->render('customer_add');
+            // 既存ユーザチェック(エントリーユーザは登録済みのため除く)
+            if (!$this->entryFlag) {
+                $this->loadModel(self::MODEL_NAME_EMAIL);
+                $result = $this->Email->getEmail(array('email' => $this->request->data[self::MODEL_NAME_REGIST]['email']));
+                if ($result->status === "0") {
+                    $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
+                    return $this->render('customer_add');
+                }
             }
 
             // エラーがない場合は確認画面にリダイレクト
@@ -222,7 +238,7 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * Email住所情報登録フォーム
+     * 住所情報登録フォーム
      */
     public function customer_add_address()
     {
@@ -277,7 +293,7 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * Email登録内容確認フォーム
+     * 登録内容確認フォーム
      */
     public function customer_confirm_entry()
     {
@@ -296,7 +312,7 @@ class RegisterController extends MinikuraController
     }
 
     /**
-     * Email登録完了フォーム
+     * 登録完了フォーム
      */
     public function customer_complete_entry()
     {
@@ -314,17 +330,25 @@ class RegisterController extends MinikuraController
 
         $data = CakeSession::read(self::MODEL_NAME_REGIST);
 
+        // エントリーユーザ用情報
+        if ($this->entryFlag) {
+            $data['token'] = CakeSession::read(ApiModel::SESSION_API_TOKEN);
+            $data['password'] = $this->Customer->getPassword();
+        }
+
         if (empty($data['alliance_cd'])) {
             unset($data['alliance_cd']);
         }
         $this->CustomerRegistInfo->set($data);
 
-        // 既存ユーザチェック
-        $this->loadModel(self::MODEL_NAME_EMAIL);
-        $result = $this->Email->getEmail(array('email' => $data['email']));
-        if ($result->status === "0") {
-            $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
-            return $this->render('customer_add');
+        // 既存ユーザチェック(エントリーユーザは登録済みのため除く)
+        if (!$this->entryFlag) {
+            $this->loadModel(self::MODEL_NAME_EMAIL);
+            $result = $this->Email->getEmail(array('email' => $data['email']));
+            if ($result->status === "0") {
+                $this->CustomerRegistInfo->validationErrors['email'][0] = '登録済みのメールアドレスです';
+                return $this->render('customer_add');
+            }
         }
 
         if (isset($data['facebook_user_id'])) {
@@ -337,6 +361,10 @@ class RegisterController extends MinikuraController
             // FB連携
             $this->CustomerFacebook->set(['customer_id' => $res->results[0]['customer_id'], 'facebook_user_id' => $data['facebook_user_id']]);
             $res = $this->CustomerFacebook->regist();
+            if (!empty($res->error_message)) {
+                $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+                return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
+            }
 
             // ログイン
             $this->loadModel('CustomerLoginFacebook');
@@ -351,8 +379,19 @@ class RegisterController extends MinikuraController
             $this->Customer->setPassword($this->CustomerRegistInfo->data['CustomerRegistInfo']['password']);
             $this->Customer->getInfo();
         } else {
-            // 本登録
-            $res = $this->CustomerRegistInfo->regist();
+            if (!$this->entryFlag) {
+                // 本登録
+                $res = $this->CustomerRegistInfo->regist();
+            } else {
+                // エントリーユーザ登録
+                $res = $this->CustomerRegistInfo->regist_no_oemkey();
+                // 再度ログイン
+                $this->Customer->switchEntryToCustomer();
+            }
+            if (!empty($res->error_message)) {
+                $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+                return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
+            }
 
             // ログイン
             $this->loadModel('CustomerLogin');
@@ -364,11 +403,6 @@ class RegisterController extends MinikuraController
             $this->Customer->setTokenAndSave($login_res->results[0]);
             $this->Customer->setPassword($this->CustomerLogin->data['CustomerLogin']['password']);
             $this->Customer->getInfo();
-        }
-
-        if (!empty($res->error_message)) {
-            $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
-            return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
         }
 
         CakeSession::delete(self::MODEL_NAME_REGIST);
