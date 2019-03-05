@@ -62,7 +62,7 @@ const ACCOUNT_SITUATION_AMAZON_PAY = 'AmazonPay';
 const CORPORATE_PAYMENT_METHOD = [
     'unregistered' => '振替口座未登録',
     'registration' => '口座振替',
-    'credit_card' => 'クレジットカード', 
+    'credit_card' => 'クレジットカード',
 ];
 
 // 配送業者コード
@@ -373,18 +373,18 @@ const NEWS_LASTEST_ARTICLE_LIMIT = 5;
 
 const SORT_ORDER = [
     'box' => [
-        'inbound_date' => 'お預かり日順 で', 
-        'box_id' => 'ボックスID順 で', 
+        'inbound_date' => 'お預かり日順 で',
+        'box_id' => 'ボックスID順 で',
         'box_name' => 'ボックス名順 で'
     ],
     'item' => [
-        'inbound_date' => 'お預かり日順 で', 
-        'item_id' => 'アイテムID順 で', 
+        'inbound_date' => 'お預かり日順 で',
+        'item_id' => 'アイテムID順 で',
         'item_name' => 'アイテム名順 で'
     ],
     'item_grid' => [
-        'inbound_date' => 'お預かり日順', 
-        'item_id' => 'アイテムID順', 
+        'inbound_date' => 'お預かり日順',
+        'item_id' => 'アイテムID順',
         'item_name' => 'アイテム名順'
     ],
 ];
@@ -407,7 +407,7 @@ const RANK_RATE = [
     'neary_num' => 5,
 ];
 // ニュース機能on off 切り替え
-// 1:稼働中 0:停止中 
+// 1:稼働中 0:停止中
 const NEWS_ACTIVE_FLAG = 1;
 
 // お知らせで表示しないメッセージに含まれる文字
@@ -457,10 +457,9 @@ const REGISTER_CUSTOMER_DEFAULT_BIRTH_START_YEAR = 1920;
 const REGISTER_CUSTOMER_DEFAULT_BIRTH_DEFAULT_YEAR = 1980;
 
 // 営業日
-// TODO 確認すること
-const EXPECTED_STORING_COMPLETE_DATE_HAKO = 100;
-const EXPECTED_STORING_COMPLETE_DATE_MONO = 101;
-const EXPECTED_STORING_COMPLETE_DATE_MONO_DASH = 102;
-const EXPECTED_STORING_COMPLETE_DATE_LIBRARY = 103;
-const EXPECTED_STORING_COMPLETE_DATE_HANGER = 104;
-const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 105;
+const EXPECTED_STORING_COMPLETE_DATE_HAKO = 1;
+const EXPECTED_STORING_COMPLETE_DATE_MONO = 7;
+const EXPECTED_STORING_COMPLETE_DATE_MONO_DASH = 3;
+const EXPECTED_STORING_COMPLETE_DATE_LIBRARY = 7;
+const EXPECTED_STORING_COMPLETE_DATE_CLOSET = 7;
+const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 7   ;

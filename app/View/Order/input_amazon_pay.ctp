@@ -1,5 +1,4 @@
 <?php $this->Html->script('/js/order/input_amazon_pay', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
@@ -19,78 +18,6 @@
       <div class="dsn-wrapper dev-wrapper"></div>
 
       <ul class="items">
-        <li id="hako" class="item type_other">
-          <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
-          <div class="lineup-pict">
-            <picture>
-              <img src="/images/order/photo-hako@1x.jpg" srcset="/images/order/photo-hako@1x.jpg 1x, /images/order/photo-hako@2x.jpg 2x" alt="minikuraHAKO">
-            </picture>
-          </div>
-          <div class="lineup-caption">
-            <ul class="lineup-price">
-              <li>
-                <p class="price">月額保管料<span class="price-hs">200</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-hb">200</span>円
-                </p>
-              </li>
-              <li class="option">
-              </li>
-            </ul>
-            <ul class="select-item">
-              <li>
-                <a class="view-caption"><img src="/images/order/question.svg">レギュラー</a>
-              </li>
-              <li>
-                <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
-                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
-                </div>
-              </li>
-              <li class="captions">
-                <p class="size">W38cm×H38cm×D38cm</p>
-                <p class="caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
-              </li>
-            </ul>
-            <ul class="select-item">
-              <li>
-                <a class="view-caption"><img src="/images/order/question.svg">ワイド</a>
-              </li>
-              <li>
-                <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
-                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
-                </div>
-              </li>
-              <li class="captions">
-                <p class="size">W60cm×H20cm×D38cm</p>
-                <p class="caption">薄手のジャケット約10着収納できる横長ワイドボックスです。</p>
-              </li>
-            </ul>
-            <ul class="select-item">
-              <li>
-                <a class="view-caption"><img src="/images/order/question.svg">ブック</a>
-              </li>
-              <li>
-                <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
-                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_book_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
-                </div>
-              </li>
-              <li class="captions">
-                <p class="size">W42cm×H29cm×D33cm</p>
-                <p class="caption">文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
-              </li>
-            </ul>
-            <p class="select-num"><span id="hako_total">0</span>個選択済み</p>
-            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_appa_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_book_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-          </div>
-        </li>
         <li id="mono" class="item type_other">
           <p class="rib best"></p>
           <h3><span>1点ごとのアイテム管理</span>minikuraMONO</h3>
@@ -199,7 +126,8 @@
           </div>
         </li>
         <li id="hanger" class="item type_hanger">
-          <h3><span>ハンガー保管</span>minikuraハンガー</h3>
+          <p class="rib new"></p>
+          <h3><span>ハンガー保管</span>minikuraCloset</h3>
           <div class="lineup-pict">
             <picture>
               <img src="/images/order/photo-cleaning@1x.jpg" srcset="/images/order/photo-cleaning@1x.jpg 1x, /images/order/photo-cleaning@2x.jpg 2x" alt="minikuraハンガー">
@@ -232,6 +160,78 @@
             </ul>
             <p class="select-num"><span id="hanger_total">0</span>個選択済み</p>
             <?php echo $this->Form->error('PaymentNekoposKitAmazonPay.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          </div>
+        </li>
+        <li id="hako" class="item type_other">
+          <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-hako@1x.jpg" srcset="/images/order/photo-hako@1x.jpg 1x, /images/order/photo-hako@2x.jpg 2x" alt="minikuraHAKO">
+            </picture>
+          </div>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">月額保管料<span class="price-hs">200</span>円
+                </p>
+                <p class="price">ボックス代金<span class="price-hb">200</span>円
+                </p>
+              </li>
+              <li class="option">
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">レギュラー</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W38cm×H38cm×D38cm</p>
+                <p class="caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">ワイド</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W60cm×H20cm×D38cm</p>
+                <p class="caption">薄手のジャケット約10着収納できる横長ワイドボックスです。</p>
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">ブック</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_book_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W42cm×H29cm×D33cm</p>
+                <p class="caption">文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="hako_total">0</span>個選択済み</p>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_appa_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_book_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
         </li>
         <li id="cleaning" class="item type_other">
@@ -283,7 +283,7 @@
             <li>minikuraMONO DASH：<?php echo EXPECTED_STORING_COMPLETE_DATE_MONO_DASH; ?>営業日</li>
             <?php endif; ?>
             <li>minikuraLibrary：<?php echo EXPECTED_STORING_COMPLETE_DATE_LIBRARY; ?>営業日</li>
-            <li>minikuraハンガー保管（仮）：<?php echo EXPECTED_STORING_COMPLETE_DATE_HANGER; ?>営業日</li>
+            <li>minikuraCloset：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLOSET; ?>営業日</li>
             <li>minikuraクリーニングパック：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLEANING; ?>営業日</li>
           </ul>
         </div>
@@ -313,7 +313,7 @@
           <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.datetime_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
         </li>
         <li class="caution-box select_hanger">
-          <p class="title">ハンガー保管（仮）はminikuraの他の商品と異なり、<br class="sp">お届け日時が選べません。</p>
+          <p class="title">Closetはminikuraの他の商品と異なり、<br class="sp">お届け日時が選べません。</p>
           <div class="content">
             <label id="hanger_check" class="input-check">
               <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">ネコポスでの配送となりお客さまのポストに直接投函・配達します。<br>
