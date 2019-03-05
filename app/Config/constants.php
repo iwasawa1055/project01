@@ -98,7 +98,7 @@ const KIT_CD_STARTER_MONO_BOOK = '202';
 const KIT_CD_HAKO_LIMITED_VER1 = '203';
 const KIT_CD_LIBRARY_DEFAULT = '214';
 const KIT_CD_LIBRARY_GVIDO = '215';
-const KIT_CD_HANGER = '216';
+const KIT_CD_CLOSET = '216';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -110,6 +110,7 @@ const PRODUCT_CD_SHOES_PACK = '005000';
 const PRODUCT_CD_SNEAKERS = '005310';
 const PRODUCT_CD_DIRECT_INBOUND = '005003';
 const PRODUCT_CD_LIBRARY = '005004';
+const PRODUCT_CD_CLOSET = '005005';
 
 // box_status, item_status
 // キット購入・依頼
@@ -184,6 +185,7 @@ const KIT_NAME = [
     KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック',
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
     KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
+    KIT_CD_CLOSET => 'minikuraCloset',
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
@@ -196,7 +198,7 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
     'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Libraryボックス'),
     // TODO ★★★★★★★文言確認★★★★★★★★★
-    'hanger_num'    => array('code' => KIT_CD_HANGER,           'name' => 'ハンガー'),
+    'hanger_num'    => array('code' => KIT_CD_CLOSET,           'name' => 'Closet'),
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
@@ -219,6 +221,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
     PRODUCT_CD_LIBRARY => 'minikuraLibrary',
+    PRODUCT_CD_CLOSET => 'minikuraCloset',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -319,6 +322,12 @@ const IN_USE_SERVICE = [
             'name' => 'minikuraLibrary',
             'product_cd' => PRODUCT_CD_LIBRARY,
             'name_mobile' => 'minikura<br />Library',
+        ],
+        [
+            'product' => 'closet',
+            'name' => 'minikuraCloset',
+            'product_cd' => PRODUCT_CD_CLOSET,
+            'name_mobile' => 'minikura<br />Closet',
         ],
     ],
     'sneakers' => [

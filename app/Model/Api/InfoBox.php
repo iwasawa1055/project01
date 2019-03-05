@@ -124,6 +124,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_SNEAKERS];
         } elseif ($product === 'library') {
             $productCd = [PRODUCT_CD_LIBRARY];
+        } elseif ($product === 'closet') {
+            $productCd = [PRODUCT_CD_CLOSET];
         }
 
         $okStatus = [
@@ -195,6 +197,9 @@ class InfoBox extends ApiCachedModel
             case KIT_CD_LIBRARY_DEFAULT:
             case KIT_CD_LIBRARY_GVIDO:
                 $productCd = PRODUCT_CD_LIBRARY;
+                break;
+            case KIT_CD_CLOSET:
+                $productCd = PRODUCT_CD_CLOSET;
                 break;
             default:
                 break;

@@ -87,6 +87,8 @@ class InfoItem extends ApiCachedModel
 				$productCd = [PRODUCT_CD_SNEAKERS];
 			} elseif ($product === 'library') {
 				$productCd = [PRODUCT_CD_LIBRARY];
+			} elseif ($product === 'closet') {
+				$productCd = [PRODUCT_CD_CLOSET];
 			}
 		}
 
