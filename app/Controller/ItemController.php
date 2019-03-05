@@ -228,7 +228,7 @@ class ItemController extends MinikuraController
         $this->set('linkToCleaning', $linkToCleaning);
         
         $linkToAuction = null;
-        if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_LIBRARY], true)) {
+        if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_LIBRARY, PRODUCT_CD_CLOSET], true)) {
             $linkToAuction = "/mini_auction/lite/item/${item['box_id']}/${item['item_id']}";
         }
         $this->set('linkToAuction', $linkToAuction);

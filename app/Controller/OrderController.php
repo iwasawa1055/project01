@@ -1090,7 +1090,7 @@ class OrderController extends MinikuraController
                     $_order_total_data['number']  += $value;
                     $product = $code . ':' .$value;
                     $kit_params[] = $product;
-                    if ($kit_code[$key]['code'] == KIT_CD_HANGER) {
+                    if ($kit_code[$key]['code'] == KIT_CD_CLOSET) {
                         $_kit_list['hanger'][$code] = $value;
                     } else {
                         $_kit_list['other'][$code] = $value;
