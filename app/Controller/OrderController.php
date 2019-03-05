@@ -186,8 +186,8 @@ class OrderController extends MinikuraController
             $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
 
             $this->PaymentGMOKitByCreditCard->set($data);
-            CakeSession::write(self::MODEL_NAME_KIT_BY_CREDIT_CARD, $this->PaymentGMOKitByCreditCard->toArray());
-            CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD, array());
+            CakeSession::write(self::MODEL_NAME_KIT_BY_CREDIT_CARD, $data);
+            CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD, $data);
 
             /** バリデーション */
             $error_flag = false;
@@ -304,7 +304,7 @@ class OrderController extends MinikuraController
 
         /** 決済 */
         // 通常
-        if (!empty($other_data)) {
+        if (isset($other_data['kit'])) {
             // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
             if(mb_strlen($other_data['address']) === 12  && mb_substr($other_data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
                 $other_data['address'] = mb_substr($other_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
@@ -312,7 +312,7 @@ class OrderController extends MinikuraController
             $this->_postPaymentCreditCard($other_data);
         }
         // ハンガー
-        if (!empty($hanger_data)) {
+        if (isset($hanger_data['kit'])) {
             // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
             if(mb_strlen($hanger_data['address']) === 12  && mb_substr($hanger_data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
                 $hanger_data['address'] = mb_substr($hanger_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
