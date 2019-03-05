@@ -511,26 +511,20 @@ class OrderController extends MinikuraController
             $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
 
             $this->PaymentAmazonKitAmazonPay->set($data);
-            CakeSession::write(self::MODEL_NAME_KIT_BY_AMAZON, $this->PaymentAmazonKitAmazonPay->toArray());
-            CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_AMAZON, array());
+            CakeSession::write(self::MODEL_NAME_KIT_BY_AMAZON, $data);
+            CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_AMAZON, $data);
 
             /** バリデーション */
             $error_flag = false;
             // キットを除く購入者情報
             $validation_item = [
-                'card_seq',
-                'security_cd',
+                'access_token',
+                'amazon_user_id',
+                'amazon_order_reference_id',
                 'name',
-                'lastname',
-                'firstname',
                 'tel1',
                 'postal',
                 'address',
-                'pref',
-                'address1',
-                'address2',
-                'address3',
-                'address_id',
             ];
             // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
             if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
@@ -623,11 +617,11 @@ class OrderController extends MinikuraController
 
         /** 決済 */
         // 通常
-        if (!empty($other_data)) {
+        if (isset($other_data['kit'])) {
             $this->_postPaymentAmazon($other_data);
         }
         // ハンガー
-        if (!empty($hanger_data)) {
+        if (isset($hanger_data['kit'])) {
             $this->_postPaymentNekoposAmazon($hanger_data);
         }
 

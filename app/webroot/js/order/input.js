@@ -121,17 +121,16 @@ var AppInputOrder =
     });
 
     $('#execute').on('mouseup', function(){
-      var form_id = $('form').attr('id');
       // ハンガー未選択時
       if ($('.select_hanger').css('display') == 'none') {
-        $('#' + form_id).submit();
+        $(this).closest("form").submit();
       } else {
         // ハンガー選択時
         if ($('#hanger_check input').prop('checked')) {
-          $('#' + form_id).submit();
+          $(this).closest("form").submit();
         } else {
           if ($('#hanger-check-error').length == 0) {
-            $('#hanger_check').parent('label').parent('li').append('<p class="valid-il" id="hanger-check-error">個人情報について、利用規約をご確認下さい</p>');
+            $('#hanger_check').parent('label').parent('li').append('<p class="valid-il" id="hanger-check-error">お届け日時のご確認をお願いします。</p>');
           }
         }
       }

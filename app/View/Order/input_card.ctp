@@ -284,7 +284,7 @@
             <li>minikuraMONO DASH：<?php echo EXPECTED_STORING_COMPLETE_DATE_MONO_DASH; ?>営業日</li>
             <?php endif; ?>
             <li>minikuraLibrary：<?php echo EXPECTED_STORING_COMPLETE_DATE_LIBRARY; ?>営業日</li>
-            <li>minikuraハンガー保管（仮）：<?php echo EXPECTED_STORING_COMPLETE_DATE_HANGER; ?>営業日</li>
+            <li>minikuraCloset：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLOSET; ?>営業日</li>
             <li>minikuraクリーニングパック：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLEANING; ?>営業日</li>
           </ul>
         </div>
@@ -378,7 +378,7 @@
         </li>
         <li>
         <li class="caution-box select_hanger">
-          <p class="title">ハンガー保管（仮）はminikuraの他の商品と異なり、<br class="sp">お届け日時が選べません。</p>
+          <p class="title">Closetはminikuraの他の商品と異なり、<br class="sp">お届け日時が選べません。</p>
           <div class="content">
             <label id="hanger_check" class="input-check">
               <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">ネコポスでの配送となりお客さまのポストに直接投函・配達します。<br>

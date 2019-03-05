@@ -46,12 +46,14 @@
           <li><?php echo h($PaymentAmazonKitAmazonPay['tel1']); ?></li>
         </ul>
       </li>
+      <?php if(!empty($PaymentAmazonKitAmazonPay['datetime_cd'])) :?>
       <li>
         <label class="headline">お届け日時</label>
         <ul class="li-address">
           <li><?php echo h($PaymentAmazonKitAmazonPay['select_delivery_text']); ?></li>
         </ul>
       </li>
+      <?php endif; ?>
     </ul>
     <div class="panel panel-red">
       <div class="panel-heading">
