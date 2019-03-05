@@ -161,7 +161,7 @@ $config['app']['gmo']['shop_id'] = 'tshop00019362';
 /**
  * facebook 設定値
  */
-$config['app']['facebook']['app_id'] = '2340758592601558';
+$config['app']['facebook']['app_id'] = '382847972547430';
 $config['app']['facebook']['version'] = 'v3.2';
 
 /**
