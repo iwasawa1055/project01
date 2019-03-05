@@ -116,6 +116,12 @@ $config['app']['gmo']['token_url'] = 'https://pt01.mul-pay.jp/ext/js/token.js';
 $config['app']['gmo']['shop_id'] = 'tshop00019363';
 
 /**
+ * facebook 設定値
+ */
+$config['app']['facebook']['app_id'] = '382847972547430';
+$config['app']['facebook']['version'] = 'v3.2';
+
+/**
  * zendesk 設定値
  */
 $config['app']['zendesk']['env_type'] = 'stag';
