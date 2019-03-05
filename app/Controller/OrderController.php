@@ -308,6 +308,8 @@ class OrderController extends MinikuraController
             if(mb_strlen($other_data['address']) === 12  && mb_substr($other_data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
                 $other_data['address'] = mb_substr($other_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
             }
+            // API用にデータを整形
+            unset($other_data['address1'], $other_data['address2'], $other_data['address3']);
             $this->_postPaymentCreditCard($other_data);
         }
         // ハンガー
@@ -316,6 +318,8 @@ class OrderController extends MinikuraController
             if(mb_strlen($hanger_data['address']) === 12  && mb_substr($hanger_data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
                 $hanger_data['address'] = mb_substr($hanger_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
             }
+            // API用にデータを整形
+            unset($hanger_data['address1'], $hanger_data['address2'], $hanger_data['address3']);
             $this->_postPaymentNekoposCreditCard($hanger_data);
         }
 
