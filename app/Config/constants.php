@@ -195,10 +195,9 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
     'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
     'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
-    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
-    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Libraryボックス'),
-    // TODO ★★★★★★★文言確認★★★★★★★★★
-    'hanger_num'    => array('code' => KIT_CD_CLOSET,           'name' => 'Closet'),
+    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Library ボックス'),
+    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Library ボックス'),
+    'hanger_num'    => array('code' => KIT_CD_CLOSET,           'name' => 'Closet ボックス'),
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[

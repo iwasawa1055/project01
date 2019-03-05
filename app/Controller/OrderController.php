@@ -87,8 +87,7 @@ class OrderController extends MinikuraController
 
         // entry user
         if ($this->Customer->isEntry()) {
-            // TODO 会員登録画面へ遷移するように実装する
-            $this->redirect(['controller' => 'first_order', 'action' => 'index']);
+            return $this->redirect(['controller' => 'customer/register', 'action' => 'add_personal']);
         }
 
         // Amazon Payment
