@@ -108,31 +108,35 @@ var AppInputOrder =
   },
   k: function ()
   {
-    $('#hanger_check input').change(function () {
+    $('.caution-box input').change(function () {
       if ($(this).prop('checked')) {
-        $('#execute').css("opacity", "1");
-
-        if ($('#hanger-check-error').length) {
-          $('#hanger-check-error').remove();
+        var exe_flag = true;
+        $(".caution-box input").each(function(i) {
+          if ($(this).prop("checked") == false) {
+            exe_flag = false;
+            return false;
+          }
+        });
+        if (exe_flag) {
+          $('#execute').css("opacity", "1");
         }
       } else {
         $('#execute').css("opacity", "0.5");
       }
     });
-
+  },
+  l: function ()
+  {
     $('#execute').on('mouseup', function(){
-      // ハンガー未選択時
-      if ($('.select_hanger').css('display') == 'none') {
-        $(this).closest("form").submit();
-      } else {
-        // ハンガー選択時
-        if ($('#hanger_check input').prop('checked')) {
-          $(this).closest("form").submit();
-        } else {
-          if ($('#hanger-check-error').length == 0) {
-            $('#hanger_check').parent('label').parent('li').append('<p class="valid-il" id="hanger-check-error">お届け日時のご確認をお願いします。</p>');
-          }
+      var exe_flag = true;
+      $(".caution-box input").each(function(i) {
+        if (!$(this).prop("checked")) {
+          exe_flag = false;
+          return false;
         }
+      });
+      if (exe_flag) {
+        $(this).closest("form").submit();
       }
     });
   },
@@ -173,8 +177,6 @@ var AppInputOrder =
       $('.dsn-input-security-code').show('slow');
       $('.dsn-input-change-card').hide('slow');
     } else {
-//      console.log('is change');
-
       $('.dsn-input-security-code').hide('slow');
       $('.dsn-input-change-card').show('slow');
     }
@@ -233,16 +235,11 @@ var AppInputOrder =
         flag_total[box.flag] += parseFloat(type_total);
     });
 
-    // hanger other 出力エリア
-    if (flag_total['hanger'] > 0 && flag_total['other'] > 0) {
-      $('.select_other').show();
-      $('.select_hanger').show();
-    } else if (flag_total['hanger'] > 0 && flag_total['other'] == 0) {
+    // お届け日時
+    if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
       $('.select_other').hide();
-      $('.select_hanger').show();
     } else {
       $('.select_other').show();
-      $('.select_hanger').hide();
     }
 
     var valueStep = 1;
@@ -269,33 +266,18 @@ var AppInputOrder =
           flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
         }
       }
-      if (flag_total['hanger'] > 0 && flag_total['other'] > 0) {
-        $('.select_other').show('slow');
-        $('.select_hanger').show('slow');
-      } else if (flag_total['hanger'] > 0 && flag_total['other'] == 0) {
+      // お届け日時
+      if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
         $('.select_other').hide('slow');
-        $('.select_hanger').show('slow');
       } else {
         $('.select_other').show('slow');
-        $('.select_hanger').hide('slow');
-      }
-
-      // 確認画面遷移ボタン制御
-      if (flag_total['hanger'] > 0) {
-        if ($('#hanger_check input').prop('checked')) {
-          $('#execute').css("opacity", "1");
-        } else {
-          $('#execute').css("opacity", "0.5");
-        }
-      } else {
-        $('#execute').css("opacity", "1");
       }
     });
     return false;
   },
   init_disp7: function () {
     // ハンガー時にボタンを薄くする
-    if ($('.select_hanger').css('display') != 'none') {
+    if ($('.caution-box').css('display') != 'none') {
       $('#execute').css("opacity", "0.5");
     }
   },
@@ -331,7 +313,6 @@ var AppInputOrder =
     }).fail(function (data, textStatus, errorThrown) {
         // TODO どうするかな
     }).always(function (data, textStatus, returnedObject) {
-        // TODO これ必要？
         elem_datetime.removeAttr("disabled");
     });
   },
@@ -364,7 +345,6 @@ var AppInputOrder =
         }).fail(function (data, textStatus, errorThrown) {
             // TODO どうするかな
         }).always(function (data, textStatus, returnedObject) {
-            // TODO これ必要？
             elem_datetime.removeAttr("disabled");
         });
       } else {
@@ -439,6 +419,7 @@ $(function()
   AppInputOrder.i();
   AppInputOrder.j();
   AppInputOrder.k();
+  AppInputOrder.l();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppInputOrder.init_disp3();

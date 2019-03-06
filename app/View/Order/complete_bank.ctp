@@ -11,6 +11,7 @@
       <p class="page-caption">以下の内容でボックス購入手続きが完了しました。</p>
 
       <ul class="input-info">
+        <?php foreach($order_list as $order_type => $order_data): ?>
         <li>
           <label class="headline">ご注文内容</label>
           <table class="usage-details">
@@ -22,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($order_list as $key => $item): ?>
+            <?php foreach ($order_data as $key => $item): ?>
             <tr>
               <th><?php echo $item['kit_name'] ?></th>
               <td><?php echo $item['number'] ?></td>
@@ -31,8 +32,8 @@
             <?php endforeach; ?>
             <tr>
               <th>合計</th>
-              <td><?php echo $order_total_data['number'] ?></td>
-              <td><?php echo $order_total_data['price'] ?></td>
+              <td><?php echo $order_total_data[$order_type]['number'] ?></td>
+              <td><?php echo $order_total_data[$order_type]['price'] ?></td>
             </tr>
             </tbody>
           </table>
@@ -52,6 +53,8 @@
             <li><?php echo h($PaymentAccountTransferKit['select_delivery_text']); ?></li>
           </ul>
         </li>
+        <li class="border_gray"></li>
+        <?php endforeach; ?>
         <li>
           <label class="headline">決済</label>
           <ul class="li-credit">

@@ -11,8 +11,10 @@
       <p class="page-caption">以下の内容でボックス購入手続きが完了しました。</p>
 
       <ul class="input-info">
+        <?php $order_cnt = 1;?>
+        <?php foreach($order_list as $order_type => $order_data): ?>
         <li>
-          <label class="headline">ご注文内容</label>
+          <label class="headline">ご注文内容<?php echo $order_cnt; ?></label>
           <table class="usage-details">
             <thead>
             <tr>
@@ -22,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($order_list as $key => $item): ?>
+            <?php foreach ($order_data as $key => $item): ?>
             <tr>
               <th><?php echo $item['kit_name'] ?></th>
               <td><?php echo $item['number'] ?></td>
@@ -31,8 +33,8 @@
             <?php endforeach; ?>
             <tr>
               <th>合計</th>
-              <td><?php echo $order_total_data['number'] ?></td>
-              <td><?php echo $order_total_data['price'] ?></td>
+              <td><?php echo $order_total_data[$order_type]['number'] ?></td>
+              <td><?php echo $order_total_data[$order_type]['price'] ?></td>
             </tr>
             </tbody>
           </table>
@@ -46,7 +48,7 @@
             <li><?php echo h($PaymentGMOKitByCreditCard['tel1']); ?></li>
           </ul>
         </li>
-        <?php if(!empty($PaymentGMOKitByCreditCard['datetime_cd'])) :?>
+        <?php if($order_type === 'other') :?>
         <li>
           <label class="headline">お届け日時</label>
           <ul class="li-address">
@@ -54,6 +56,9 @@
           </ul>
         </li>
         <?php endif; ?>
+        <li class="border_gray"></li>
+        <?php $order_cnt++;?>
+        <?php endforeach; ?>
         <li>
           <label class="headline">決済</label>
           <ul class="li-credit">

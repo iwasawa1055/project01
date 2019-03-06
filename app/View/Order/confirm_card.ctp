@@ -1,3 +1,4 @@
+  <?php $this->Html->script('order/input', ['block' => 'scriptMinikura']); ?>
 
   <?php echo $this->Form->create('PaymentGMOKitByCreditCard', ['url' => ['controller' => 'order', 'action' => 'complete_card'], 'novalidate' => true]); ?>
 
@@ -11,8 +12,10 @@
       <p class="page-caption">以下の内容でボックス購入手続きを行います。</p>
 
       <ul class="input-info">
+        <?php $order_cnt = 1;?>
+        <?php foreach($order_list as $order_type => $order_data): ?>
         <li>
-          <label class="headline">ご注文内容</label>
+          <label class="headline">ご注文内容<?php echo $order_cnt; ?></label>
           <table class="usage-details">
             <thead>
             <tr>
@@ -22,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-              <?php foreach ($order_list as $key => $item): ?>
+              <?php foreach ($order_data as $key => $item): ?>
               <tr>
                 <th><?php echo $item['kit_name'] ?></th>
                 <td><?php echo $item['number'] ?></td>
@@ -31,8 +34,8 @@
               <?php endforeach; ?>
               <tr>
                 <th>合計</th>
-                <td><?php echo $order_total_data['number'] ?></td>
-                <td><?php echo $order_total_data['price'] ?></td>
+                <td><?php echo $order_total_data[$order_type]['number'] ?></td>
+                <td><?php echo $order_total_data[$order_type]['price'] ?></td>
               </tr>
             </tbody>
           </table>
@@ -46,7 +49,7 @@
             <li><?php echo h($PaymentGMOKitByCreditCard['tel1']); ?></li>
           </ul>
         </li>
-        <?php if(!empty($PaymentGMOKitByCreditCard['datetime_cd'])) :?>
+        <?php if($order_type === 'other') :?>
         <li>
           <label class="headline">お届け日時</label>
           <ul class="li-address">
@@ -54,6 +57,9 @@
           </ul>
         </li>
         <?php endif; ?>
+        <li class="border_gray"></li>
+        <?php $order_cnt++;?>
+        <?php endforeach; ?>
         <li>
           <label class="headline">決済</label>
           <ul class="li-credit">
@@ -62,20 +68,38 @@
             <li><?php echo h($card_data['holder_name']); ?></li>
           </ul>
         </li>
+        <li class="caution-box">
+          <p class="title">注意事項</p>
+          <div class="content">
+            <label id="confirm_check" class="input-check">
+              <input type="checkbox" class="cb-square">
+              <span class="icon"></span>
+              <span class="label-txt">
+                お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
+                内容にお間違いないか再度ご確認の上、「購入する」にお進みください。
+              </span>
+            </label>
+            <?php if($order_type === 'hanger') :?>
+            <label id="hanger_check" class="input-check">
+              <input type="checkbox" class="cb-square">
+              <span class="icon"></span>
+              <span class="label-txt">
+                Closetはminikuraの他の商品と異なり、お届け日時が選べません。<br>
+                ネコポスでの配送となりお客さまのポストに直接投函・配達します。<br>
+                注文内容にお間違いないか再度ご確認の上、「ボックスの確認」にお進みください。
+              </span>
+            </label>
+            <?php endif; ?>
+          </div>
+        </li>
       </ul>
-      <div class="panel panel-red">
-        <div class="panel-heading">
-          <label>ご注意ください</label>
-          <p>お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
-            内容にお間違いないか再度ご確認の上、「購入する」にお進みください。</p>
-        </div>
-      </div>
     </div>
     <div class="nav-fixed">
       <ul>
         <li><a class="btn-d-gray animsition-link" href="/order/add">戻る</a>
         </li>
-        <li><button class="btn-red" type="submit">ボックスを購入</button>
+        <li>
+          <button id="execute" class="btn-red" type="button">ボックスを購入</button>
         </li>
       </ul>
     </div>
