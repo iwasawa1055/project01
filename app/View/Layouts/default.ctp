@@ -124,6 +124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   $this->Html->script('metisMenu.min', ['inline' => false]);
   $this->Html->script('animsition.min', ['inline' => false]);
   $this->Html->script('remodal.min', ['inline' => false]);
+  $this->Html->script('iziModal.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
   $this->Html->script('jquery.airCenter', ['inline' => false]);
