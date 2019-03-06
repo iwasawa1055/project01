@@ -47,7 +47,8 @@
                 </div>
               </a>
               <?php //amazonpay 関連エラー表示 ?>
-              <?php echo $this->Flash->render('amazon_pay_access_token'); ?>
+              <?php $amazon_pay_access_token = $this->Flash->render('amazon_pay_access_token'); ?>
+              <?php echo (!is_null($amazon_pay_access_token))? '<br /><p class="error-message">' . $amazon_pay_access_token . '</p>' : ""; ?>
             </div>
         </div>
       </div>
@@ -60,7 +61,8 @@
               <?php echo $this->Form->hidden('CustomerLoginFacebook.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
               <?php echo $this->Form->hidden('CustomerLoginFacebook.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
             <?php echo $this->Form->end(); ?>
-            <?php echo $this->Flash->render('facebook_access_token'); ?>
+            <?php $facebook_access_token = $this->Flash->render('facebook_access_token'); ?>
+            <?php echo (!is_null($facebook_access_token))? '<p class="error-message">' . $facebook_access_token . '</p>' : ""; ?>
           </div>
         </div>
       </div>
