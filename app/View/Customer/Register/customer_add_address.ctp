@@ -28,7 +28,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
           <ul class="input-info">
             <li>
               <label class="headline">郵便番号<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.postal', ['size' => 8, 'maxlength' => 8, 'placeholder'=>'例：012 3456', 'class' => 'search_address_postal', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.postal', ['size' => 8, 'maxlength' => 8, 'placeholder'=>'例：012-3456', 'class' => 'search_address_postal', 'label' => false, 'error' => false, 'div' => false]); ?>
               <p class="txt-caption">全角半角、ハイフンありなし、どちらでもご入力いただけます。<br>入力すると以下の住所が自動で入力されます。</p>
               <?php echo $this->Form->error('CustomerRegistInfo.postal', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
@@ -54,7 +54,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
             </li>
             <li>
               <label class="headline">電話番号<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.tel1', ['size' => 15, 'maxlength' => 15, 'placeholder'=>'例：012 3456 7890', 'label' => false, 'error' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('CustomerRegistInfo.tel1', ['size' => 15, 'maxlength' => 15, 'placeholder'=>'例：012-3456-7890', 'label' => false, 'error' => false, 'div' => false]); ?>
               <p class="txt-caption">全角半角、ハイフンありなし、どちらでもご入力いただけます。</p>
               <?php echo $this->Form->error('CustomerRegistInfo.tel1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
 
