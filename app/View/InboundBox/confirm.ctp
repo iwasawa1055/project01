@@ -15,6 +15,7 @@
             <div class="row box-list">
               <!--loop-->
               <?php $library = false; ?>
+              <?php $closet = false; ?>
               <?php foreach ($boxList as $i => $box): ?>
               <?php
                     $formBox = $this->data['Inbound']['box_list'][$box['box_id']];
@@ -28,6 +29,9 @@
                     }
                     if ($box['kit_cd'] == KIT_CD_LIBRARY_DEFAULT || $box['kit_cd'] == KIT_CD_LIBRARY_GVIDO) {
                         $library = true;
+                    }
+                    if ($box['kit_cd'] == KIT_CD_CLOSET) {
+                        $closet = true;
                     }
                 ?>
               <div class="col-lg-12">
@@ -87,7 +91,7 @@
                   <input type="checkbox" class="agree-before-submit">
                   重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。</label>
               </p>
-              <p>※明らかに20kgを超えた場合はお預かりできないため、着払いで返送することがございます。あらかじめご了承ください。</p>
+              <p>重量超過およびお預かりできない物があった場合、お荷物を返送することがございます。その際、送料および返送手数料が発生いたしますので、あらかじめご了承ください。</p>
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
@@ -98,6 +102,14 @@
                 <label>
                   <input type="checkbox" class="agree-before-submit">
                   minikuraLibraryは開封・アイテム撮影するサービスですが、一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
+                </label>
+              </p>
+              <?php endif; ?>
+              <?php if ($closet): ?>
+              <p>
+                <label>
+                  <input type="checkbox" class="agree-before-submit">
+                  Closet ボックスは、衣類および布製品以外はお預かりできません。
                 </label>
               </p>
               <?php endif; ?>

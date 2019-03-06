@@ -30,7 +30,7 @@ class MyPageHelper extends AppHelper {
         PRODUCT_CD_SHOES_PACK => '',
         PRODUCT_CD_DIRECT_INBOUND => 'mono-box',
         PRODUCT_CD_LIBRARY => 'library-box',
-        PRODUCT_CD_CLOSET => 'closet-box',
+        PRODUCT_CD_CLOSET => 'cleaning-box',
     ];
 
     public function boxClassName($box) {

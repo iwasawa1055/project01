@@ -89,6 +89,7 @@
   $this->Html->script('bootstrap.min', ['inline' => false]);
   $this->Html->script('metisMenu.min', ['inline' => false]);
   $this->Html->script('remodal.min', ['inline' => false]);
+  $this->Html->script('iziModal.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
   $this->Html->script('jquery.airCenter', ['inline' => false]);
