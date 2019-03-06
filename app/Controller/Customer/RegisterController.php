@@ -392,7 +392,6 @@ class RegisterController extends MinikuraController
                 return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
             }
 
-            // isFacebook(Facebook判定)メソッドで使用するためにaccess_tokenを保存
             CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
         }
 

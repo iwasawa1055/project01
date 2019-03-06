@@ -12,6 +12,7 @@ App::uses('ContactUs', 'Model');
 App::uses('ContactUsCorporate', 'Model');
 App::uses('CustomerEmail', 'Model');
 App::uses('CustomerSales', 'Model');
+App::uses('CustomerFacebook', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');
@@ -170,11 +171,12 @@ class CustomerComponent extends Component
 
     public function isFacebook()
     {
-
-        if (empty(CakeSession::read(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY))) {
-            return false;
+        $model = new CustomerFacebook();
+        $res = $model->apiGet();
+        if (isset($res->results[0])) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     public function getName()

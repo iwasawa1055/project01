@@ -44,8 +44,23 @@ class ContractController extends MinikuraController
         $this->CustomerFacebook->set(['facebook_user_id' => $data['facebook_user_id']]);
         $this->CustomerFacebook->regist();
 
-        // isFacebook(Facebook判定)メソッドで使用するためにaccess_tokenを保存
+        // Facebook用access_tokenを保存
         CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $data['access_token']);
+
+        return $this->redirect(['controller' => 'contract', 'action' => 'index']);
+    }
+
+    /**
+     * SNS連携解除
+     */
+    public function unregister_facebook()
+    {
+        $this->loadModel('CustomerFacebook');
+        $res = $this->CustomerFacebook->apiGet();
+
+        if (isset($res->results[0])) {
+            $this->CustomerFacebook->apiDelete(['facebook_user_id' => $res->results[0]['facebook_user_id']]);
+        }
 
         return $this->redirect(['controller' => 'contract', 'action' => 'index']);
     }

@@ -124,8 +124,7 @@ class LoginController extends MinikuraController
             if (!empty($res->error_message)) {
                 // パスワード不正など
                 $this->request->data['CustomerLogin']['password'] = '';
-                $this->Flash->set($res->error_message);
-                $this->Flash->validation('※Amazonアカウントで会員登録された方のみご利用可能です。', ['key' => 'amazon_pay_access_token']);
+                $this->Flash->validation('Amazonアカウントで会員登録された方のみご利用可能です。', ['key' => 'amazon_pay_access_token']);
                 return $this->render('index');
             }
 
@@ -176,8 +175,7 @@ class LoginController extends MinikuraController
             if (!empty($res->error_message)) {
                 // パスワード不正など
                 $this->request->data['CustomerLogin']['password'] = '';
-                $this->Flash->set($res->error_message);
-                $this->Flash->validation('※Facebookアカウントで会員登録された方のみご利用可能です。', ['key' => 'facebook_access_token']);
+                $this->Flash->validation('Facebookアカウントで会員登録された方のみご利用可能です。', ['key' => 'facebook_access_token']);
                 return $this->render('index');
             }
 

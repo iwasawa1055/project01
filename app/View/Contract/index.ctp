@@ -113,10 +113,12 @@
                   <label>Facebookログイン</label>
                   <p>
                       <?php if ($customer->isFacebook()) : ?>
-                        設定済み
+                        <label class="sns">
+                          <span class="btn btn-info btn-md pull-right" onclick="javascript:location.href='/contract/unregister_facebook'">連携を解除する</span>
+                        </label>
                       <?php else: ?>
                         <label class="sns">
-                          <span class="btn btn-info btn-md pull-right dev_facebook_regist" href="/customer/info/edit">連携する</span>
+                          <span class="btn btn-info btn-md pull-right dev_facebook_regist">連携する</span>
                         </label>
                       <?php endif; ?>
                   </p>
