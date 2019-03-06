@@ -41,7 +41,7 @@ class ContractController extends MinikuraController
 
         // FB連携
         $this->loadModel('CustomerFacebook');
-        $this->CustomerFacebook->set(['customer_id' => $this->Customer->getInfo()['customer_id'], 'facebook_user_id' => $data['facebook_user_id']]);
+        $this->CustomerFacebook->set(['facebook_user_id' => $data['facebook_user_id']]);
         $this->CustomerFacebook->regist();
 
         // isFacebook(Facebook判定)メソッドで使用するためにaccess_tokenを保存

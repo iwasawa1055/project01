@@ -27,7 +27,7 @@ class AppMail
     public function sendRegisterEmail($to, $hash)
     {
         //
-        $from = null;
+        $from = ['minikura@terrada.co.jp' => '寺田倉庫(minikura運営事務局)'];
         $subject = '【minikura】新規会員登録';
         $templete = 'register_email';
         $data = [ 'url' => Configure::read('site.url') . '/customer/register/add_personal?hash=' . $hash ];
