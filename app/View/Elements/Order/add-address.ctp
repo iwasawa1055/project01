@@ -47,7 +47,7 @@
 <label class="input-check">
   <?php
     echo $this->Form->input(
-      'PaymentGMOKitByCreditCard.insert_adress_flg',
+      'PaymentGMOKitByCreditCard.insert_address_flag',
         [
           'class' => 'cb-square',
           'label' => false,
@@ -55,7 +55,6 @@
           'type' => 'checkbox',
           'div' => false,
           'hiddenField' => false,
-          'checked' => 'checked'
         ]
       );
   ?>

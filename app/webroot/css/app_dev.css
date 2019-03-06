@@ -369,3 +369,10 @@ a.use_agreement:hover{
   content:initial;
   background:initial;
 }
+
+.border_gray {
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

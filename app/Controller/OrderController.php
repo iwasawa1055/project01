@@ -165,47 +165,36 @@ class OrderController extends MinikuraController
 
             $data = $this->request->data[self::MODEL_NAME_KIT_BY_CREDIT_CARD];
 
-            /** データ整形 */
-            // 既存アドレス使用時
-            if ($data['address_id'] !== 'add') {
-                $address_list = $this->Address->get();
-                $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
-                $data = array_merge($data, $address_list[$target_index]);
-            }
-            $data['name']                 = $data['lastname'] . '　' . $data['firstname'];
-            $data['address']              = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
-            $data['card_seq']             = 0;
-            $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
-            $data['lastname_kana']        = '　';
-            $data['firstname_kana']       = '　';
-
             // 注文情報
             $kit_list = array();
             $order_total_data = array();
             $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
 
-            $this->PaymentGMOKitByCreditCard->set($data);
+            /** セッションデータ */
             CakeSession::write(self::MODEL_NAME_KIT_BY_CREDIT_CARD, $data);
             CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD, $data);
 
-            /** バリデーション */
+            $this->PaymentGMOKitByCreditCard->set($data);
+            $this->PaymentNekoposKitByCreditCard->set($data);
+
             $error_flag = false;
-            // キットを除く購入者情報
+
+            /** 購入者情報バリデーション */
             $validation_item = [
-                'card_seq',
                 'security_cd',
-                'name',
-                'lastname',
-                'firstname',
-                'tel1',
-                'postal',
-                'address',
-                'pref',
-                'address1',
-                'address2',
-                'address3',
                 'address_id',
             ];
+            // お届け先入力時
+            if ($data['address_id'] == 'add') {
+                $validation_item[] = 'lastname';
+                $validation_item[] = 'firstname';
+                $validation_item[] = 'tel1';
+                $validation_item[] = 'postal';
+                $validation_item[] = 'pref';
+                $validation_item[] = 'address1';
+                $validation_item[] = 'address2';
+                $validation_item[] = 'address3';
+            }
             // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
             if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
                 $validation_item[] = 'datetime_cd';
@@ -213,6 +202,7 @@ class OrderController extends MinikuraController
             if (!$this->PaymentGMOKitByCreditCard->validates(['fieldList' => $validation_item])) {
                 $error_flag = true;
             }
+
             // 通常項目 or キット未選択
             if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
                 $this->_setKitData($data, $kit_list['other']);
@@ -232,7 +222,6 @@ class OrderController extends MinikuraController
             }
             // ハンガー項目 or キット未選択
             if (!empty($kit_list['hanger']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
-                $this->PaymentNekoposKitByCreditCard->set($data);
                 $this->_setKitData($data, $kit_list['hanger']);
                 CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD, $data);
                 // バリデーション項目
@@ -272,6 +261,29 @@ class OrderController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        /** セッションデータリスト */
+        $data_list = array(
+            self::MODEL_NAME_KIT_BY_CREDIT_CARD         => CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD),
+            self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD => CakeSession::read(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD),
+        );
+
+        /** データ整形 */
+        foreach ($data_list as $key => $data) {
+            // 既存アドレス使用時
+            if ($data['address_id'] !== 'add') {
+                $address_list = $this->Address->get();
+                $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
+                $data = array_merge($data, $address_list[$target_index]);
+            }
+            $data['name']                 = $data['lastname'] . '　' . $data['firstname'];
+            $data['address']              = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
+            $data['card_seq']             = 0;
+            $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
+            $data['lastname_kana']        = '　';
+            $data['firstname_kana']       = '　';
+            CakeSession::write($key, $data);
+        }
+
         $this->set('card_data', CakeSession::read('card_data'));
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
@@ -297,8 +309,10 @@ class OrderController extends MinikuraController
         $hanger_data = CakeSession::read(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD);
 
         /** 住所登録 */
-        if (isset($other_data['insert_adress_flg']) && $other_data['insert_adress_flg']) {
-            $this->_postCustomerAddress($other_data, 'input_card');
+        if ($other_data['address_id'] == 'add') {
+            if (isset($other_data['insert_address_flag']) && $other_data['insert_address_flag']) {
+                $this->_postCustomerAddress($other_data, 'input_card');
+            }
         }
 
         /** 決済 */
@@ -309,7 +323,9 @@ class OrderController extends MinikuraController
                 $other_data['address'] = mb_substr($other_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
             }
             // API用にデータを整形
-            unset($other_data['address1'], $other_data['address2'], $other_data['address3']);
+            if ($other_data['address_id'] == 'add') {
+                unset($other_data['address1'], $other_data['address2'], $other_data['address3']);
+            }
             $this->_postPaymentCreditCard($other_data);
         }
         // ハンガー
@@ -319,7 +335,9 @@ class OrderController extends MinikuraController
                 $hanger_data['address'] = mb_substr($hanger_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
             }
             // API用にデータを整形
-            unset($hanger_data['address1'], $hanger_data['address2'], $hanger_data['address3']);
+            if ($hanger_data['address_id'] == 'add') {
+                unset($hanger_data['address1'], $hanger_data['address2'], $hanger_data['address3']);
+            }
             $this->_postPaymentNekoposCreditCard($hanger_data);
         }
 
@@ -378,34 +396,47 @@ class OrderController extends MinikuraController
 
             $data = $this->request->data[self::MODEL_NAME_KIT_BY_BANK];
 
-            // 既存アドレス使用時
-            if ($data['address_id'] !== 'add') {
-                $address_list = $this->Address->get();
-                $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
-                $data = array_merge($data, $address_list[$target_index]);
-            }
-
-            $data['name']     = $data['lastname'] . '　' . $data['firstname'];
-            $data['address']  = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
-            $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
-            $data['lastname_kana']        = '　';
-            $data['firstname_kana']       = '　';
-
             // 注文情報
+            $kit_list = array();
             $order_total_data = array();
-            $order_list = $this->_setOrderList($data, $order_total_data);
+            $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
+            $this->_setKitData($data, $kit_list['other']);
+
+            /** セッションデータ */
+            CakeSession::write(self::MODEL_NAME_KIT_BY_BANK, $data);
 
             $this->PaymentAccountTransferKit->set($data);
-            if (!$this->PaymentAccountTransferKit->validates()) {
+
+            /** 購入者情報バリデーション */
+            $validation_item = [
+                'mono_num',
+                'mono_appa_num',
+                'hako_num',
+                'hako_appa_num',
+                'hako_book_num',
+                'cleaning_num',
+                'address_id',
+            ];
+            // お届け先入力時
+            if ($data['address_id'] == 'add') {
+                $validation_item[] = 'lastname';
+                $validation_item[] = 'firstname';
+                $validation_item[] = 'tel1';
+                $validation_item[] = 'postal';
+                $validation_item[] = 'pref';
+                $validation_item[] = 'address1';
+                $validation_item[] = 'address2';
+                $validation_item[] = 'address3';
+            }
+
+            if (!$this->PaymentAccountTransferKit->validates(['fieldList' => $validation_item])) {
                 $this->set('address_list', CakeSession::read('address_list'));
                 return $this->render('input_bank');
             }
 
             CakeSession::write('order_list', $order_list);
             CakeSession::write('order_total_data', $order_total_data);
-            CakeSession::write(self::MODEL_NAME_KIT_BY_BANK, $this->PaymentAccountTransferKit->toArray());
 
-            // エラーがない場合は確認画面にリダイレクト
             return $this->redirect(['controller' => 'order', 'action' => 'confirm_bank']);
         }
     }
@@ -424,6 +455,22 @@ class OrderController extends MinikuraController
             $this->redirect(['controller' => 'order', 'action' => 'add']);
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $data = CakeSession::read(self::MODEL_NAME_KIT_BY_BANK);
+
+        /** データ整形 */
+        // 既存アドレス使用時
+        if ($data['address_id'] !== 'add') {
+            $address_list = $this->Address->get();
+            $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
+            $data = array_merge($data, $address_list[$target_index]);
+        }
+        $data['name']     = $data['lastname'] . '　' . $data['firstname'];
+        $data['address']  = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
+        $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
+        $data['lastname_kana']        = '　';
+        $data['firstname_kana']       = '　';
+        CakeSession::write(self::MODEL_NAME_KIT_BY_BANK, $data);
 
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
@@ -448,8 +495,10 @@ class OrderController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME_KIT_BY_BANK);
 
         /** 住所登録 */
-        if (isset($data['insert_adress_flg']) && $data['insert_adress_flg']) {
-            $this->_postCustomerAddress($data, 'input_bank');
+        if ($data['address_id'] == 'add') {
+            if (isset($data['insert_address_flag']) && $data['insert_address_flag']) {
+                $this->_postCustomerAddress($data, 'input_bank');
+            }
         }
 
         /** 決済 */
@@ -513,13 +562,16 @@ class OrderController extends MinikuraController
             $order_total_data = array();
             $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
 
-            $this->PaymentAmazonKitAmazonPay->set($data);
+            /** セッションデータ */
             CakeSession::write(self::MODEL_NAME_KIT_BY_AMAZON, $data);
             CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_AMAZON, $data);
 
-            /** バリデーション */
+            $this->PaymentAmazonKitAmazonPay->set($data);
+            $this->PaymentNekoposKitAmazonPay->set($data);
+
             $error_flag = false;
-            // キットを除く購入者情報
+
+            /** 購入者情報バリデーション */
             $validation_item = [
                 'access_token',
                 'amazon_user_id',
@@ -536,6 +588,7 @@ class OrderController extends MinikuraController
             if (!$this->PaymentAmazonKitAmazonPay->validates(['fieldList' => $validation_item])) {
                 $error_flag = true;
             }
+
             // 通常項目 or キット未選択
             if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
                 $this->_setKitData($data, $kit_list['other']);
@@ -555,7 +608,6 @@ class OrderController extends MinikuraController
             }
             // ハンガー項目 or キット未選択
             if (!empty($kit_list['hanger']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
-                $this->PaymentNekoposKitAmazonPay->set($data);
                 $this->_setKitData($data, $kit_list['hanger']);
                 CakeSession::write(self::MODEL_NAME_NEKOPOS_KIT_BY_AMAZON, $data);
                 // バリデーション項目
@@ -1062,12 +1114,14 @@ class OrderController extends MinikuraController
         // 金額取得API
         $kit_price = new CustomerKitPrice();
         // 決済時に使用するkitパラメータ
-        $kit_params = array();
+        $kit_param_list = array();
         // 金額集計
         $order_list = array();
         // 合計情報
-        $_order_total_data['number'] = 0;
-        $_order_total_data['price']  = 0;
+        $_order_total_data['other']['number'] = 0;
+        $_order_total_data['other']['price']  = 0;
+        $_order_total_data['hanger']['number'] = 0;
+        $_order_total_data['hanger']['price']  = 0;
         // kit情報
         $_kit_list['hanger'] = array();
         $_kit_list['other'] = array();
@@ -1081,25 +1135,28 @@ class OrderController extends MinikuraController
                     } else {
                         $code = $kit_code[$key]['code'];
                     }
-                    $order_list[$code]['number']   = $value;
-                    $order_list[$code]['kit_name'] = $kit_code[$key]['name'];
-                    $order_list[$code]['price']    = 0;
-                    $_order_total_data['number']  += $value;
-                    $product = $code . ':' .$value;
-                    $kit_params[] = $product;
-                    if ($kit_code[$key]['code'] == KIT_CD_CLOSET) {
-                        $_kit_list['hanger'][$code] = $value;
-                    } else {
-                        $_kit_list['other'][$code] = $value;
+                    // 注文タイプ判別
+                    $order_type = 'other';
+                    if ($code === KIT_CD_CLOSET) {
+                        $order_type = 'hanger';
                     }
+                    $_kit_list[$order_type][$code] = $value;
+                    $order_list[$order_type][$code]['number']   = $value;
+                    $order_list[$order_type][$code]['kit_name'] = $kit_code[$key]['name'];
+                    $order_list[$order_type][$code]['price']    = 0;
+                    $_order_total_data[$order_type]['number']  += $value;
+                    $kit_param_list[$order_type][] = $code . ':' .$value;
                 }
             }
         }
 
-        $r = $kit_price->apiGet(['kit' => implode(',', $kit_params)]);
-        if ($r->isSuccess()) {
-            $price = $r->results[0]['total_price'] * 1;
-            $_order_total_data['price'] += $price;
+        // 合計金額
+        foreach ($kit_param_list as $key => $kit_params) {
+            $r = $kit_price->apiGet(['kit' => implode(',', $kit_params)]);
+            if ($r->isSuccess()) {
+                $price = $r->results[0]['total_price'] * 1;
+                $_order_total_data[$key]['price'] += $price;
+            }
         }
 
         return $order_list;
