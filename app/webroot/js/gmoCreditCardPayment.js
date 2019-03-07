@@ -298,12 +298,10 @@ var gmoCreditCardPayment = {
                     $("#input-sc").toggle('slow');
                     $("#input-cc").hide('slow');
                     $("#input-nc").hide('slow');
-                    // TODO これがローディングのやつかな？
                     $('.airloader-overlay').hide();
                     d.resolve();
                 }else{
                     $('.airloader-overlay').hide();
-                    // TODO これはエラーセレクタじゃないの？
                     gmoCreditCardPayment.displayMessage("クレジットカードの変更に失敗しました。", gmoCreditCardPayment.creditCardInfoSelector);
                     d.reject();
                 }
@@ -311,7 +309,6 @@ var gmoCreditCardPayment = {
             // 通信失敗
             function(){
                 //　通信失敗
-                // TODO これはエラーセレクタじゃないの？
                 gmoCreditCardPayment.displayMessage('通信に失敗しました。', gmoCreditCardPayment.creditCardInfoSelector);
                 $('.airloader-overlay').hide();
                 d.reject();

@@ -70,7 +70,6 @@
               <span class="icon"></span>
               <span class="label-txt">
                 お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
-                内容にお間違いないか再度ご確認の上、「購入する」にお進みください。
               </span>
             </label>
           </div>

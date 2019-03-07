@@ -232,6 +232,13 @@ class OrderController extends MinikuraController
                     $error_flag = true;
                 }
             }
+
+            // 登録したカードを変更するにチェックをつけて、POSTした場合、登録を促す
+            if ($data['select-card'] !== 'as-card' || empty(CakeSession::read('card_data'))) {
+                $this->PaymentGMOKitByCreditCard->validationErrors['card_no'][0] = 'カードを変更・登録する場合はこの画面でカードを登録を完了させて下さい';
+                $error_flag = true;
+            }
+
             if ($error_flag) {
                 $this->set('address_list', CakeSession::read('address_list'));
                 $this->set('card_data', CakeSession::read('card_data'));
@@ -1129,11 +1136,13 @@ class OrderController extends MinikuraController
         foreach ($_data as $key => $value) {
             if (array_key_exists ($key, $kit_code)) {
                 if ($value != 0 ) {
+                    $code = $kit_code[$key]['code'];
                     // gvido用のコードを変換
-                    if (CakeSession::read('order_type') !== 'bank' && $this->Customer->getInfo()["alliance_cd"] == 'gvido' && $kit_code[$key]['code'] == KIT_CD_LIBRARY_DEFAULT) {
-                        $code = KIT_CD_LIBRARY_GVIDO;
-                    } else {
-                        $code = $kit_code[$key]['code'];
+                    $customer_info = $this->Customer->getInfo();
+                    if (isset($customer_info['alliance_cd'])) {
+                        if ($customer_info["alliance_cd"] == 'gvido' && $kit_code[$key]['code'] == KIT_CD_LIBRARY_DEFAULT) {
+                            $code = KIT_CD_LIBRARY_GVIDO;
+                        }
                     }
                     // 注文タイプ判別
                     $order_type = 'other';

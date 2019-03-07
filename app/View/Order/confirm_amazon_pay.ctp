@@ -72,7 +72,6 @@
             <span class="icon"></span>
             <span class="label-txt">
                 お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
-                内容にお間違いないか再度ご確認の上、「購入する」にお進みください。
               </span>
           </label>
           <?php if($order_type === 'hanger') :?>
@@ -82,7 +81,6 @@
             <span class="label-txt">
                 Closetはminikuraの他の商品と異なり、お届け日時が選べません。<br>
                 ネコポスでの配送となりお客さまのポストに直接投函・配達します。<br>
-                注文内容にお間違いないか再度ご確認の上、「ボックスの確認」にお進みください。
               </span>
           </label>
           <?php endif; ?>
