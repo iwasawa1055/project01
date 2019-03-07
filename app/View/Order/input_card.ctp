@@ -341,6 +341,9 @@
       </div>
       <div id="gmo_validate_error"></div>
       <div id="gmo_credit_card_info"></div>
+      <div class="dsn-form">
+        <?php echo $this->Flash->render('customer_kit_card_info');?>
+      </div>
       <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
       <div id="input-sc" class="input-card">
         <h4>登録済みのカードを使用する</h4>
@@ -372,7 +375,7 @@
           <?php echo $this->Form->select('PaymentGMOKitByCreditCard.address_id', $address_list, ['id' => 'address_id', 'class' => 'dsn-adress select-delivery focused', 'empty' => false, 'label' => false, 'error' => false, 'div' => false]); ?>
         </li>
         <li class="order-input-address">
-          <?php echo $this->element('Order/add-address'); ?>
+          <?php echo $this->element('Order/add-address-card'); ?>
         </li>
         <li class="select_other">
           <label class="headline">お届けに上がる日時</label>

@@ -20,7 +20,6 @@ var AppInputOrder =
       }
     });
   },
-  // TODO 移動
   b: function ()
   {
     $('#execute').on('mouseup', function(){
@@ -32,9 +31,18 @@ var AppInputOrder =
         }
       });
       if (exe_flag) {
+        $('.loader').airCenter();
+        $('.airloader-overlay').show();
         $(this).closest("form").submit();
       }
     });
+  },
+  c: function()
+  {
+    // validation メッセージが表示される時に、ページ上部に表示する
+    if ($('p').hasClass('valid-il')) {
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.head_validation');
+    }
   },
 
   init_disp1: function () {
@@ -102,7 +110,6 @@ var AppInputOrder =
     });
     return false;
   },
-  // TODO 移動
   init_disp2: function () {
     // ハンガー時にボタンを薄くする
     if ($('.caution-box').css('display') != 'none') {
@@ -318,6 +325,7 @@ $(function()
 {
   AppInputOrder.a();
   AppInputOrder.b();
+  AppInputOrder.c();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppAmazonPay.a();

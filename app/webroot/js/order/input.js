@@ -119,6 +119,13 @@ var AppInputOrder =
       }
     });
   },
+  h: function()
+  {
+    // validation メッセージが表示される時に、ページ上部に表示する
+    if ($('p').hasClass('valid-il')) {
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
+    }
+  },
 
   init_disp1: function() {
     // 初回表示時
@@ -278,6 +285,7 @@ $(function()
   AppInputOrder.e();
   AppInputOrder.f();
   AppInputOrder.g();
+  AppInputOrder.h();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppInputOrder.init_disp3();

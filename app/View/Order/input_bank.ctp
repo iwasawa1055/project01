@@ -215,7 +215,7 @@
           <?php echo $this->Form->select('PaymentAccountTransferKit.address_id', $address_list, ['id' => 'address_id', 'class' => 'dsn-adress select-delivery focused', 'empty' => false, 'label' => false, 'error' => false, 'div' => false]); ?>
         </li>
         <li class="order-input-address">
-          <?php echo $this->element('Order/add-address'); ?>
+          <?php echo $this->element('Order/add-address-bank'); ?>
         </li>
         <li class="select_other">
           <label class="headline">お届けに上がる日時</label>

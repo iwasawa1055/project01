@@ -1,6 +1,5 @@
 <?php
 
-// TODO ここにハンガー用を追加しなくてもいいのかな？
 App::uses('MinikuraController', 'Controller');
 App::uses('CustomerKitPrice', 'Model');
 App::uses('PaymentGMOKitByCreditCard', 'Model');
@@ -56,10 +55,7 @@ class OrderController extends MinikuraController
      */
     protected function isAccessDeny()
     {
-        /*
-         * TODO ★★★★★★★★canOrderKitを組み込み後に削除する★★★★★★★★★
-         */
-        if (!$this->Customer->canOrderKit() && $this->action === 'complete') {
+        if (!$this->Customer->canOrderKit() && ($this->action === 'complete_card' || $this->action === 'complete_bank')) {
             return true;
         }
         return false;
@@ -274,27 +270,33 @@ class OrderController extends MinikuraController
             self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD => CakeSession::read(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD),
         );
 
-        /** データ整形 */
+        /** 表示用データ整形 */
         foreach ($data_list as $key => $data) {
+            // 配送日時テキスト
+            $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
             // 既存アドレス使用時
             if ($data['address_id'] !== 'add') {
                 $address_list = $this->Address->get();
                 $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
-                $data = array_merge($data, $address_list[$target_index]);
+                $address_data = $address_list[$target_index];
+                $data['name']    = $address_data['lastname'] . '　' . $address_data['firstname'];
+                $data['address'] = $address_data['pref'] . $address_data['address1'] . $address_data['address2'] . $address_data['address3'];
+            } else {
+                $data['name']    = $data['lastname'] . '　' . $data['firstname'];
+                $data['address'] = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
             }
-            $data['name']                 = $data['lastname'] . '　' . $data['firstname'];
-            $data['address']              = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
-            $data['card_seq']             = 0;
-            $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
-            $data['lastname_kana']        = '　';
-            $data['firstname_kana']       = '　';
             CakeSession::write($key, $data);
+            // 出力時のみ用に郵便番号を保持
+            if ($data['address_id'] !== 'add') {
+                $data['postal'] = $address_data['postal'];
+                $data['tel1']   = $address_data['tel1'];
+            }
+            $this->set($key, $data);
         }
 
         $this->set('card_data', CakeSession::read('card_data'));
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
-        $this->set(self::MODEL_NAME_KIT_BY_CREDIT_CARD, CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD));
     }
 
     /**
@@ -311,47 +313,60 @@ class OrderController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // セッションから入力値を取得
-        $other_data  = CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD);
-        $hanger_data = CakeSession::read(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD);
+        /** セッションデータリスト */
+        $data_list = array(
+            'other'  => CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD),
+            'hanger' => CakeSession::read(self::MODEL_NAME_NEKOPOS_KIT_BY_CREDIT_CARD),
+        );
+
+        /** 登録用データ整形 */
+        foreach ($data_list as &$data) {
+            // 既存アドレス使用時
+            if ($data['address_id'] !== 'add') {
+                $address_list = $this->Address->get();
+                $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
+                $data = array_merge($data, $address_list[$target_index]);
+            }
+            $data['card_seq']       = 0;
+            $data['lastname_kana']  = '　';
+            $data['firstname_kana'] = '　';
+        }
 
         /** 住所登録 */
-        if ($other_data['address_id'] == 'add') {
-            if (isset($other_data['insert_address_flag']) && $other_data['insert_address_flag']) {
-                $this->_postCustomerAddress($other_data, 'input_card');
+        if ($data_list['other']['address_id'] == 'add') {
+            if (isset($data_list['other']['insert_address_flag']) && $data_list['other']['insert_address_flag']) {
+                $this->_postCustomerAddress($data_list['other'], 'input_card');
             }
         }
 
         /** 決済 */
         // 通常
-        if (isset($other_data['kit'])) {
+        if (isset($data_list['other']['kit'])) {
             // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
-            if(mb_strlen($other_data['address']) === 12  && mb_substr($other_data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
-                $other_data['address'] = mb_substr($other_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
+            if(mb_strlen($data_list['other']['address']) === 12  && mb_substr($data_list['other']['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
+                $data_list['other']['address'] = mb_substr($data_list['other']['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
             }
             // API用にデータを整形
-            if ($other_data['address_id'] == 'add') {
-                unset($other_data['address1'], $other_data['address2'], $other_data['address3']);
-            }
-            $this->_postPaymentCreditCard($other_data);
+            unset($data_list['other']['address1'], $data_list['other']['address2'], $data_list['other']['address3']);
+
+            $this->_postPaymentCreditCard($data_list['other']);
         }
         // ハンガー
-        if (isset($hanger_data['kit'])) {
+        if (isset($data_list['hanger']['kit'])) {
             // アドレスの処理(API側でパースした際に12文字目がスペースのみで終わらないように変換をかける)
-            if(mb_strlen($hanger_data['address']) === 12  && mb_substr($hanger_data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
-                $hanger_data['address'] = mb_substr($hanger_data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
+            if(mb_strlen($data_list['hanger']['address']) === 12  && mb_substr($data_list['hanger']['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
+                $data_list['hanger']['address'] = mb_substr($data_list['hanger']['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
             }
             // API用にデータを整形
-            if ($hanger_data['address_id'] == 'add') {
-                unset($hanger_data['address1'], $hanger_data['address2'], $hanger_data['address3']);
-            }
-            $this->_postPaymentNekoposCreditCard($hanger_data);
+            unset($data_list['hanger']['address1'], $data_list['hanger']['address2'], $data_list['hanger']['address3']);
+
+            $this->_postPaymentNekoposCreditCard($data_list['hanger']);
         }
 
         $this->set('card_data', CakeSession::read('card_data'));
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
-        $this->set(self::MODEL_NAME_KIT_BY_CREDIT_CARD, CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD));
+        $this->set(self::MODEL_NAME_KIT_BY_CREDIT_CARD, $data_list['other']);
 
         $this->_cleanKitOrderSession();
     }
@@ -423,6 +438,7 @@ class OrderController extends MinikuraController
                 'hako_book_num',
                 'cleaning_num',
                 'address_id',
+                'datetime_cd',
             ];
             // お届け先入力時
             if ($data['address_id'] == 'add') {
@@ -466,22 +482,29 @@ class OrderController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME_KIT_BY_BANK);
 
         /** データ整形 */
+        // 配送日時テキスト
+        $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
         // 既存アドレス使用時
         if ($data['address_id'] !== 'add') {
             $address_list = $this->Address->get();
             $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
-            $data = array_merge($data, $address_list[$target_index]);
+            $address_data = $address_list[$target_index];
+            $data['name']    = $address_data['lastname'] . '　' . $address_data['firstname'];
+            $data['address'] = $address_data['pref'] . $address_data['address1'] . $address_data['address2'] . $address_data['address3'];
+        } else {
+            $data['name']    = $data['lastname'] . '　' . $data['firstname'];
+            $data['address'] = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
         }
-        $data['name']     = $data['lastname'] . '　' . $data['firstname'];
-        $data['address']  = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
-        $data['select_delivery_text'] = $this->_convDatetimeCode($data['datetime_cd']);
-        $data['lastname_kana']        = '　';
-        $data['firstname_kana']       = '　';
         CakeSession::write(self::MODEL_NAME_KIT_BY_BANK, $data);
+        // 出力時のみ用データ
+        if ($data['address_id'] !== 'add') {
+            $data['postal'] = $address_data['postal'];
+            $data['tel1']   = $address_data['tel1'];
+        }
+        $this->set(self::MODEL_NAME_KIT_BY_BANK, $data);
 
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
-        $this->set(self::MODEL_NAME_KIT_BY_BANK, CakeSession::read(self::MODEL_NAME_KIT_BY_BANK));
     }
 
     /**
@@ -501,6 +524,16 @@ class OrderController extends MinikuraController
         // セッションから入力値を取得
         $data = CakeSession::read(self::MODEL_NAME_KIT_BY_BANK);
 
+        // 既存アドレス使用時
+        if ($data['address_id'] !== 'add') {
+            $address_list = $this->Address->get();
+            $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
+            $data = array_merge($data, $address_list[$target_index]);
+        }
+        $data['card_seq']       = 0;
+        $data['lastname_kana']  = '　';
+        $data['firstname_kana'] = '　';
+
         /** 住所登録 */
         if ($data['address_id'] == 'add') {
             if (isset($data['insert_address_flag']) && $data['insert_address_flag']) {
@@ -517,7 +550,7 @@ class OrderController extends MinikuraController
 
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
-        $this->set(self::MODEL_NAME_KIT_BY_BANK, CakeSession::read(self::MODEL_NAME_KIT_BY_BANK));
+        $this->set(self::MODEL_NAME_KIT_BY_BANK, $data);
 
         $this->_cleanKitOrderSession();
     }
@@ -1091,7 +1124,7 @@ class OrderController extends MinikuraController
     }
 
     /**
-     * AmazonPayment決済
+     * AmazonPayment決済(ネコポス)
      */
     private function _postPaymentNekoposAmazon($_data)
     {
