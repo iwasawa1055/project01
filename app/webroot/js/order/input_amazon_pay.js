@@ -1,62 +1,7 @@
 var flag_total = [];
 var AppInputOrder =
 {
-  g: function()
-  {
-    // validation メッセージが表示される時に、ページ上部に表示する
-    if ($('span').hasClass('validation')) {
-      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-form');
-    }
-  },
-  i: function()
-  {
-    // 初回表示時
-    var address_id = $('#address_id').val();
-    if (address_id !== 'add') {
-      $('.order-input-address').hide();
-    }
-    // 選択住所変更時
-    $('#address_id').change(function() {
-      $('.order-input-address').hide();
-      if ($(this).val() === 'add') {
-        $('.order-input-address').slideDown(Speed, Ease);
-      } else {
-        $('.order-input-address').slideUp(Speed, Ease);
-      }
-    });
-  },
-  j: function()
-  {
-    var cc = $('#input-cc');
-    var sc = $('#input-sc');
-    var nc = $('#input-nc');
-
-    var is_update = $('#is_update').val();
-    // カード更新
-    if (is_update === '1') {
-      cc.hide();
-      nc.hide();
-      // カード登録
-    } else {
-      cc.hide();
-      sc.hide();
-      $('.input-check-list').hide();
-    }
-
-    $('.card_check_type').change(function() {
-      if ($(this).val() === 'as-card') {
-        sc.slideDown(Speed, Ease);
-        cc.slideUp(Speed, Ease);
-        nc.slideUp(Speed, Ease);
-      }
-      if ($(this).val() === 'change-card') {
-        cc.slideDown(Speed, Ease);
-        sc.slideUp(Speed, Ease);
-        nc.slideUp(Speed, Ease);
-      }
-    });
-  },
-  k: function ()
+  a: function ()
   {
     $('.caution-box input').change(function () {
       if ($(this).prop('checked')) {
@@ -75,7 +20,8 @@ var AppInputOrder =
       }
     });
   },
-  l: function ()
+  // TODO 移動
+  b: function ()
   {
     $('#execute').on('mouseup', function(){
       var exe_flag = true;
@@ -92,23 +38,6 @@ var AppInputOrder =
   },
 
   init_disp1: function () {
-    // 合計点数の初期化
-    var total_number = Number(0);
-    $('.js-item-number').each(function () {
-      var set_number = $(this).val();
-      var selector_name = $(this).data("name");
-      $('input[name='+ selector_name + ']').val(set_number);
-      total_number += Number(set_number);
-      // console.log('number:' + number);
-    });
-
-    if (total_number === 0) {
-      $('#js-item-total').html('0点');
-    } else {
-      $('#js-item-total').html(total_number +'点');
-    }
-  },
-  init_disp2: function () {
     // タイプ別箱の合計値設定
     var box_type_list = [
       {class : 'box_type_hanger',   id : 'hanger_total'  , flag : 'hanger'},
@@ -173,60 +102,14 @@ var AppInputOrder =
     });
     return false;
   },
-  init_disp3: function () {
+  // TODO 移動
+  init_disp2: function () {
     // ハンガー時にボタンを薄くする
     if ($('.caution-box').css('display') != 'none') {
       $('#execute').css("opacity", "0.5");
     }
   },
 
-}
-
-// FirstOrderから移植
-var AppAddOrder =
-{
-  a: function () {
-    // ボックス数選択
-    $('.js-item-number').change(function () {
-      var selector = $(this).data("box_type");
-      var number = Number(0);
-      var total_number = Number(0);
-
-      $('.js-item-'+ selector).each(function () {
-        var set_number = $(this).val();
-        var selector_name = $(this).data("name");
-        $('input[name='+ selector_name + ']').val(set_number);
-        number += Number(set_number);
-        // console.log('number:' + number);
-      });
-
-      $('.js-item-number').each(function () {
-        var set_number = $(this).val();
-        var selector_name = $(this).data("name");
-        $('input[name='+ selector_name + ']').val(set_number);
-        total_number += Number(set_number);
-        // console.log('number:' + number);
-      });
-
-      if (number === 0) {
-        $('#select_' + selector).html('未選択');
-      } else {
-        $('#select_' + selector).html('<span>' +  number +'個選択済み</span>');
-      }
-
-      if (total_number === 0) {
-        $('#js-item-total').html('0点');
-      } else {
-        $('#js-item-total').html(total_number +'点');
-      }
-    });
-  },
-
-  b: function () {
-    $('.btn-submit').on('click', function (e) {
-      $('form').submit();
-    });
-  },
 }
 
 var AppAmazonPay =
@@ -433,16 +316,10 @@ AppAmazonPayWallet.a();
  * */
 $(function()
 {
-  AppInputOrder.g();
-  AppInputOrder.i();
-  AppInputOrder.j();
-  AppInputOrder.k();
-  AppInputOrder.l();
+  AppInputOrder.a();
+  AppInputOrder.b();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
-  AppInputOrder.init_disp3();
-  AppAddOrder.a();
-  AppAddOrder.b();
   AppAmazonPay.a();
   AppAmazonPay.b();
   AppAmazonPay.c();

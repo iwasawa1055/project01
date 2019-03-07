@@ -341,6 +341,7 @@
       </div>
       <div id="gmo_validate_error"></div>
       <div id="gmo_credit_card_info"></div>
+      <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
       <div id="input-sc" class="input-card">
         <h4>登録済みのカードを使用する</h4>
         <p class="page-caption">セキュリティコードをご入力ください。</p>
