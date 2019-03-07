@@ -15,6 +15,10 @@
 
       <?php echo $this->element('Order/breadcrumb_list'); ?>
 
+      <div class="head_validation">
+        <?php echo $this->Flash->render('customer_amazon_pay_info');?>
+      </div>
+
       <div class="dsn-wrapper dev-wrapper"></div>
 
       <ul class="items">

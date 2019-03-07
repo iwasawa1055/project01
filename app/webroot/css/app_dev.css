@@ -376,3 +376,15 @@ a.use_agreement:hover{
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+.head_validation .validation {
+  display: inline-block;
+  color: #ff6666;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.dsn-form .alert-danger {
+  font-size: 1.6rem;
+}
