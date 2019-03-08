@@ -20,6 +20,7 @@
               <h3>SNSアカウントで新規会員登録</h3>
               <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_regist"><img src="/images/icon-fb.svg" class="icon">Facebookで登録</a>
               <p class="txt-caption">minikuraが許可なくお客さまのFacebookへ投稿することはございません。</p>
+              <?php echo $this->Form->error('FacebookUser.facebook', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
               <h3>メールアドレスで新規会員登録</h3>
@@ -34,16 +35,10 @@
           </ul>
         </div>
       </section>
-      <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_complete_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-      <?php echo $this->Form->hidden('CustomerRegistInfo.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('CustomerRegistInfo.email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('CustomerRegistInfo.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('CustomerRegistInfo.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php if (false): ?>
-      <!--TODO facebookへ申請する必要あり-->
-      <input type="hidden" name="facebook_gender" value="">
-      <input type="hidden" name="facebook_birthday" value="">
-      <input type="hidden" name="facebook_location" value="">
-      <?php endif; ?>
+      <?php echo $this->Form->create('FacebookUser', ['url' => ['controller' => 'register', 'action' => 'customer_complete_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->hidden('FacebookUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('FacebookUser.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('FacebookUser.email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('FacebookUser.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('FacebookUser.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->end(); ?>
