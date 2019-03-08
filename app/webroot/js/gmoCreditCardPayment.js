@@ -223,9 +223,9 @@ var gmoCreditCardPayment = {
                     $('label[for=as-card]').text(registerResponse.results.card_no);
                     $('input[id=security_cd]').val($('input[id=securitycode_new]').val());
                     $(".input-check-list").toggle('slow');
-                    $("#input-sc").toggle('slow');
-                    $("#input-cc").hide('slow');
-                    $("#input-nc").hide('slow');
+                    $("#input-exist").toggle('slow');
+                    $("#input-change").hide('slow');
+                    $("#input-new").hide('slow');
                     $('.execute').val('1');
                     $('.airloader-overlay').hide();
                     d.resolve();
@@ -295,9 +295,9 @@ var gmoCreditCardPayment = {
                     $("#ChangeCard").prop('checked', false);
                     $('label[for=as-card]').text(updateResponse.results.card_no);
                     $('input[id=security_cd]').val($('input[id=securitycode]').val());
-                    $("#input-sc").toggle('slow');
-                    $("#input-cc").hide('slow');
-                    $("#input-nc").hide('slow');
+                    $("#input-exist").toggle('slow');
+                    $("#input-change").hide('slow');
+                    $("#input-new").hide('slow');
                     $('.airloader-overlay').hide();
                     d.resolve();
                 }else{

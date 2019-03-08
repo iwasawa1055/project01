@@ -44,9 +44,9 @@ var AppInputOrder =
   },
   e: function()
   {
-      var sc = $('#input-sc'); // 既存
-      var cc = $('#input-cc'); // 変更
-      var nc = $('#input-nc'); // 新規
+      var sc = $('#input-exist'); // 既存
+      var cc = $('#input-change'); // 変更
+      var nc = $('#input-new'); // 新規
 
       var is_update = $('#is_update').val();
       // カード更新

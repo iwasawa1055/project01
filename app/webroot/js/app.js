@@ -141,31 +141,30 @@ $(function() {
 });
 
 $(function() {
-    // TODO 消したいね。。。一旦考えよう
-    // var cc = $('#input-cc');
-    // var sc = $('#input-sc');
-    // var nc = $('#input-nc');
-    // cc.hide();
-    // nc.hide();
-    // //
-    // $('[name=select-card]').change(function() {
-    //     if ($(this).val() === 'as-card') {
-    //         sc.slideDown(Speed, Ease);
-    //         cc.slideUp(Speed, Ease);
-    //         nc.slideUp(Speed, Ease);
-    //     }
-    //     if ($(this).val() === 'change-card') {
-    //         cc.slideDown(Speed, Ease);
-    //         sc.slideUp(Speed, Ease);
-    //         nc.slideUp(Speed, Ease);
-    //     }
-    //     if ($(this).val() === 'new-card') {
-    //         nc.slideDown(Speed, Ease);
-    //         sc.slideUp(Speed, Ease);
-    //         cc.slideUp(Speed, Ease);
-    //     }
-    // });
-    // return false;
+    var cc = $('#input-cc');
+    var sc = $('#input-sc');
+    var nc = $('#input-nc');
+    cc.hide();
+    nc.hide();
+    //
+    $('[name=select-card]').change(function() {
+        if ($(this).val() === 'as-card') {
+            sc.slideDown(Speed, Ease);
+            cc.slideUp(Speed, Ease);
+            nc.slideUp(Speed, Ease);
+        }
+        if ($(this).val() === 'change-card') {
+            cc.slideDown(Speed, Ease);
+            sc.slideUp(Speed, Ease);
+            nc.slideUp(Speed, Ease);
+        }
+        if ($(this).val() === 'new-card') {
+            nc.slideDown(Speed, Ease);
+            sc.slideUp(Speed, Ease);
+            cc.slideUp(Speed, Ease);
+        }
+    });
+    return false;
 });
 
 $('.guidance').iziModal({
@@ -179,6 +178,6 @@ $('.guidance').iziModal({
     arrowKeys: false,
     navigateCaption: false,
     navigateArrows: true,
-    overlayColor: 'rgba(0, 0, 0, 0.5)',
+    overlayColor: 'rgba(0, 0, 0, 0.8)',
     overlayClose: false,
 });
