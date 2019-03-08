@@ -32,16 +32,11 @@ var Facebook = {
                 return false;
             }
 
-            $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][access_token]"]').val(obj_authinfo.accessToken);
-            $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][facebook_user_id]"]').val(obj_authinfo.userId);
-            $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][email]"]').val(response.email);
-            $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][firstname]"]').val(response.first_name);
-            $('#dev_id_facebook_registform input[name="data[CustomerRegistInfo][lastname]"]').val(response.last_name);
-            // TODO facebookへ申請をする必要あり
-            // $('#dev_id_facebook_registform input[name="facebook_gender"]').val(response.gender);
-            // $('#dev_id_facebook_registform input[name="facebook_birthday"]').val(response.birthday);
-            // $('#dev_id_facebook_registform input[name="facebook_location"]').val(response.location);
-
+            $('#dev_id_facebook_registform input[name="data[FacebookUser][access_token]"]').val(obj_authinfo.accessToken);
+            $('#dev_id_facebook_registform input[name="data[FacebookUser][facebook_user_id]"]').val(obj_authinfo.userId);
+            $('#dev_id_facebook_registform input[name="data[FacebookUser][email]"]').val(response.email);
+            $('#dev_id_facebook_registform input[name="data[FacebookUser][firstname]"]').val(response.first_name);
+            $('#dev_id_facebook_registform input[name="data[FacebookUser][lastname]"]').val(response.last_name);
             $("#dev_id_facebook_registform").submit();
 
         });
