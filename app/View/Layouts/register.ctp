@@ -18,6 +18,7 @@
       $this->Html->css('style', ['inline' => false]);
       $this->Html->css('font-awesome.min', ['inline' => false]);
       $this->Html->css('app_dev', ['inline' => false]);
+      $this->Html->css('customer/register/app_dev', ['inline' => false]);
     ?>
     <?php echo $this->fetch('css'); ?>
     <!-- Favicon -->
@@ -40,8 +41,30 @@
     <div id="header">
       <?php echo $this->element('Register/nav'); ?>
     </div>
+
     <?php echo $this->fetch('content'); ?>
 
+    <div class="footer">
+      <div class="col-xs-12">
+        <ul class="list-inline">
+          <li><a href="https://minikura-logitech.com/" target="_blank">運営チーム</a>
+          </li>
+          <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/privacy/" target="_blank">個人情報について</a>
+          </li>
+          <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/security_policy/" target="_blank">セキュリティポリシー</a>
+          </li>
+          <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/commercial_transaction/" target="_blank">特定商取引に関する表記について</a>
+          </li>
+          <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a>
+          </li>
+          <li><a href="/inquiry/add">お問い合わせ</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-12">
+        <p>© 2012 Warehouse TERRADA</p>
+      </div>
+    </div>
     <?php
       $this->Html->script('jquery.min', ['inline' => false]);
       $this->Html->script('jquery-ui.min', ['inline' => false]);
