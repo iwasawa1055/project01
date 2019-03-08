@@ -345,7 +345,7 @@
         <?php echo $this->Flash->render('customer_kit_card_info');?>
       </div>
       <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-      <div id="input-sc" class="input-card">
+      <div id="input-exist" class="input-card">
         <h4>登録済みのカードを使用する</h4>
         <p class="page-caption">セキュリティコードをご入力ください。</p>
         <ul class="input-info add-credit">
@@ -357,13 +357,13 @@
           </li>
         </ul>
       </div>
-      <div id="input-cc" class="input-card">
+      <div id="input-change" class="input-card">
         <h4>登録したカードを変更する</h4>
         <p class="page-caption">利用するカード情報をご入力ください。</p>
         <?php echo $this->element('Order/add-credit'); ?>
         <a class="btn-red dsn-btn-credit execute" href="javascript:void(0)">このカードに変更する</a>
       </div>
-      <div id="input-nc" class="input-card">
+      <div id="input-new" class="input-card">
         <h4>カードを新規登録する</h4>
         <p class="page-caption">利用するカード情報をご入力ください。</p>
         <?php echo $this->element('Order/add-credit-new'); ?>
