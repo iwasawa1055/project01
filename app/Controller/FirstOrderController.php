@@ -37,6 +37,9 @@ class FirstOrderController extends MinikuraController
      */
     public function index()
     {
+        #21226 初回登録導線の改修でこのページは会員登録にリダイレクト
+        $this->redirect('/customer/register/add');
+
         // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookie()を削除します。
         // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
         setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
@@ -119,6 +122,9 @@ class FirstOrderController extends MinikuraController
      */
     public function add_order()
     {
+        #21226 初回登録導線の改修でこのページは会員登録にリダイレクト
+        $this->redirect('/customer/register/add');
+
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index', 'FirstOrder/add_order', 'FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrderDirectInbound/add_address'], true) === false) {
             //* NG redirect

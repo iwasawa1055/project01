@@ -12,6 +12,7 @@ class RegisterController extends MinikuraController
     const MODEL_NAME_EMAIL     = 'Email';
     const MODEL_NAME_REGIST    = 'CustomerRegistInfo';
     const MODEL_NAME_FB_REGIST = 'CustomerFacebook';
+    const MODEL_NAME_FB_CHECK  = 'FacebookUser';
 
     /** tmp file */
     const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
@@ -132,14 +133,29 @@ class RegisterController extends MinikuraController
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
                 'Register/customer_add',
+                'Register/customer_complete_facebook',
             ], true) === false ) {
             $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
         }
 
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        $this->loadModel(self::MODEL_NAME_FB_CHECK);
+
+        // facebook既存チェック
+        $this->FacebookUser->set($this->request->data);
+        if ($this->FacebookUser->validates()) {
+            $res = $this->FacebookUser->get_account_data();
+            if (!empty($res->error_message)) {
+                $this->FacebookUser->validationErrors['facebook'][0] = '既にfacebookアカウントで登録済みです';
+                return $this->render('customer_add');
+            }
+        } else {
+            return $this->render('customer_add');
+        }
+
         // facebook情報を保持
-        CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
+        CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_FB_CHECK]);
 
         // 個人情報入力画面へリダイレクトする
         return $this->redirect(['controller' => 'register', 'action' => 'add_personal']);
