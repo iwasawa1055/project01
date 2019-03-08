@@ -30,7 +30,7 @@
         </li>
 
         <?php endif; ?>
-        <li> <a class="animsition-link" href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>
+        <li> <a class="animsition-link<?php if($active_status['order']):?> active<?php endif;?>" href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> ボックス購入</a></li>
         <?php if (!empty($customer) && $customer->canInbound()) : ?>
         <li> <a href="#"><i class="fa fa-arrow-circle-o-up fa-fw"></i> 預け入れ<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
