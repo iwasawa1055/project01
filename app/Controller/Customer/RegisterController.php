@@ -16,6 +16,7 @@ class RegisterController extends MinikuraController
 
     /** tmp file */
     const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
+    const REGISTER_ALLIANCE_FILE_DIR   = TMP . 'register_alliance_cd';
     const REGISTER_EMAIL_MAIL_LIMIT = 60 * 30 * 24;
 
     /** layout */
@@ -118,6 +119,13 @@ class RegisterController extends MinikuraController
         $mail = new AppMail();
         $mail->sendRegisterEmail($to, $key);
 
+        if (CakeSession::Read('app.data.alliance_cd')) {
+            // alliance_cdをキーファイル作成
+            $key_file_path = self::REGISTER_ALLIANCE_FILE_DIR . DS . $filename;
+            $key_file = new File($key_file_path, true);
+            $key_file->append(CakeSession::Read('app.data.alliance_cd'));
+        }
+
         // セッションから入力値を取得しviewに渡す
         $this->set(self::MODEL_NAME_REGIST, $data);
 
@@ -152,6 +160,10 @@ class RegisterController extends MinikuraController
             }
         } else {
             return $this->render('customer_add');
+        }
+        // alliance_cdを保存
+        if (CakeSession::Read('app.data.alliance_cd')) {
+            $this->request->data[self::MODEL_NAME_FB_CHECK]['alliance_cd'] = CakeSession::Read('app.data.alliance_cd');
         }
 
         // facebook情報を保持
@@ -190,6 +202,19 @@ class RegisterController extends MinikuraController
                 if (isset($key)) {
                     // キーファイルからEmail情報取得
                     $this->request->data[self::MODEL_NAME_REGIST] = $this->_getKeyFileData($key);
+
+                    // AllianceCdファイル取得
+                    $dir   = new Folder(self::REGISTER_ALLIANCE_FILE_DIR);
+                    $files = $dir->find('[0-9]{8}_' . $key);
+
+                    // tmpファイル存在チェック
+                    if (isset($files) && count($files) == 1) {
+                        $file = new File(self::REGISTER_ALLIANCE_FILE_DIR . DS . $files[0]);
+                        if ($file->exists()) {
+                            $alliance_cd = $file->read();
+                            $this->request->data[self::MODEL_NAME_REGIST]['alliance_cd'] = $alliance_cd;
+                        }
+                    }
                 }
             }
             CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_REGIST]);
