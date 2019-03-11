@@ -149,8 +149,8 @@
       </div><!--col-lg-12-->
     </div><!--row-->
     <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'contract', 'action' => 'register_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-    <?php echo $this->Form->hidden('CustomerRegistInfo.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-    <?php echo $this->Form->hidden('CustomerRegistInfo.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+    <?php echo $this->Form->hidden('FacebookUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+    <?php echo $this->Form->hidden('FacebookUser.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
     <?php echo $this->Form->end(); ?>
     <?php $this->Html->script('app_dev_facebook', ['block' => 'scriptMinikura']); ?>
     <script>

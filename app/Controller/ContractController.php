@@ -37,7 +37,7 @@ class ContractController extends MinikuraController
     {
 
         // facebook情報
-        $data = $this->request->data[self::MODEL_NAME_REGIST];
+        $data = $this->request->data['FacebookUser'];
 
         // FB連携
         $this->loadModel('CustomerFacebook');
