@@ -38,7 +38,7 @@
                     </li>
                     <?php endif; ?>
                     <li>
-                        <a class="signin" href="/first_order/index" target="_blank"><i class="fa fa-sign-in"></i> 初回購入</a>
+                        <a class="signin" href="/first_order/index" target="_blank"><i class="fa fa-sign-in"></i> 会員登録</a>
                     </li>
                     <?php endif; ?>
                 </ul>
