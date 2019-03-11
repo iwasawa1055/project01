@@ -369,3 +369,9 @@ a.use_agreement:hover{
   content:initial;
   background:initial;
 }
+
+p.facebook-message a,
+.panel-body p.flash-message a {
+  color: #333;
+  text-decoration: underline;
+}
