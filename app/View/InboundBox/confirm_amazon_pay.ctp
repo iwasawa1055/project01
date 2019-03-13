@@ -15,6 +15,7 @@
             <div class="row box-list">
               <!--loop-->
               <?php $library = false; ?>
+              <?php $closet = false; ?>
               <?php foreach ($boxList as $i => $box): ?>
               <?php
                     $formBox = $this->data['Inbound']['box_list'][$box['box_id']];
@@ -28,6 +29,9 @@
                     }
                     if ($box['kit_cd'] == KIT_CD_LIBRARY_DEFAULT || $box['kit_cd'] == KIT_CD_LIBRARY_GVIDO) {
                         $library = true;
+                    }
+                    if ($box['kit_cd'] == KIT_CD_CLOSET) {
+                        $closet = true;
                     }
                 ?>
               <div class="col-lg-12">
@@ -91,13 +95,50 @@
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
-                  発火性・引火性のある危険物（スプレー缶等）、割れ物（精密機器、ガラス製品、陶磁器 等）、液体、食品、生物、その他<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/" target="_blank">利用規約</a> で定められたものはお預かりできません。  </label>
+                    以下のお荷物は預け入れすることができません。<br />
+                </label>
+                <p>
+                    現金、有価証券、通帳、切手、印紙、証書、重要書類、印鑑、クレジットカード、キャッシュカード類<br />
+                    貴金属、美術品、骨董品、宝石、工芸品、毛皮、着物等の高額品または貴重品<br />
+                    精密機器、ガラス製品、陶磁器、仏壇等の壊れやすい物品<br />
+                    磁気を発し、その他の保管品に影響を与える物品<br />
+                    灯油、ガソリン、ガスボンベ、マッチ、ライター、塗料等の可燃物<br />
+                    農薬、劇薬、火薬、毒物、化学薬品、放射性物質等の危険物また劇物<br />
+                    食品、動物、植物（種子、苗を含む）<br />
+                    液体物<br />
+                    異臭、悪臭を発するまたは発するおそれのある物品<br />
+                    廃棄物<br />
+                    法令により所持を禁止されている物品<br />
+                    公序良俗に反する物品<br />
+                    弊社が保管に適さないと判断した物品<br />
+                    <br />
+                    上記に該当するお荷物が弊社に届いた場合、返送いたします。その場合、送料および手数料金（500円税抜き）はお客様の負担になります。<br />
+                </p>
+              </p>
+              <p>
+                <label>
+                  <input type="checkbox" class="agree-before-submit">
+                    お預かり中の保証につきまして、寄託価額（きたくかがく）を基に対応いたします。<br />
+                  </label>
+                  <p>
+                    寄託価額は1箱につき上限は１万円です。<br />
+                    寄託価額とは、寄託（保管するために預ける行為）する荷物の値打ちに相当する金額を指します。<br />
+                    保管中の荷物に万一の事故や弊社の過失によって損害が発生した場合などで保証できる金額の上限（時価額）となります。<br />
+                  </p>
               </p>
               <?php if ($library): ?>
               <p>
                 <label>
                   <input type="checkbox" class="agree-before-submit">
                   minikuraLibraryは開封・アイテム撮影するサービスですが、一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
+                </label>
+              </p>
+              <?php endif; ?>
+              <?php if ($closet): ?>
+              <p>
+                <label>
+                  <input type="checkbox" class="agree-before-submit">
+                  Closet ボックスは、衣類および布製品以外はお預かりできません。
                 </label>
               </p>
               <?php endif; ?>
@@ -109,11 +150,6 @@
                 <img src="/images/loose@1x.png" srcset="/images/loose@1x.png 1x, /images/loose@2x.png 2x">
                 <?php endif; ?>
               </div>
-            </div>
-            <div class="panel-footer">
-              <label>
-                <input type="checkbox" class="agree-before-submit">
-                利用規約に同意する。</label>
             </div>
           </div>
         </div>
