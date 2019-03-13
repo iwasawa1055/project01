@@ -202,6 +202,7 @@
             <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.library_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
         </li>
+        <?php /* ?>
         <li id="closet" class="item type_hanger">
           <p class="rib new"></p>
           <h3><span>ハンガー保管</span>minikuraCloset</h3>
@@ -239,6 +240,7 @@
             <?php echo $this->Form->error('PaymentNekoposKitByCreditCard.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
         </li>
+        <?php */ ?>
         <li id="cleaning" class="item type_other">
           <p class="rib spring"></p>
           <h3><span>衣類10点</span>クリーニングパック</h3>
@@ -288,7 +290,9 @@
             <li>minikuraMONO DASH：<?php echo EXPECTED_STORING_COMPLETE_DATE_MONO_DASH; ?>営業日</li>
             <?php endif; ?>
             <li>minikuraLibrary：<?php echo EXPECTED_STORING_COMPLETE_DATE_LIBRARY; ?>営業日</li>
+            <?php /* ?>
             <li>minikuraCloset：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLOSET; ?>営業日</li>
+            <?php */ ?>
             <li>minikuraクリーニングパック：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLEANING; ?>営業日</li>
           </ul>
         </div>
