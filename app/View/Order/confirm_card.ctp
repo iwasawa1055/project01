@@ -97,7 +97,7 @@
                 &nbsp&nbsp&nbsp公序良俗に反する物品<br />
                 &nbsp&nbsp&nbsp弊社が保管に適さないと判断した物品<br />
                 <br />
-                <strong style="font-weight:bold">上記に該当するお荷物が弊社に届いた場合、1390円（税込）にて返送いたします。この料金は毎月のご利用料金と一緒にご請求致します。</strong><br />
+                <strong style="font-weight:bold">上記に該当するお荷物が弊社に届いた場合、お預かりができません。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。</strong><br />
               </span>
             </label>
             <label id="confirm_check" class="input-check">
