@@ -170,17 +170,17 @@ const KIT_OPTION = [
 
 const KIT_NAME = [
     KIT_CD_HAKO => 'minikuraHAKO（レギュラーボックス）',
-    KIT_CD_HAKO_APPAREL => 'minikuraHAKO（アパレルボックス）',
+    KIT_CD_HAKO_APPAREL => 'minikuraHAKO（ワイドボックス）',
     KIT_CD_HAKO_BOOK => 'minikuraHAKO（ブックボックス）',
     KIT_CD_MONO => 'minikuraMONO（レギュラーボックス）',
-    KIT_CD_MONO_APPAREL => 'minikuraMONO（アパレルボックス）',
+    KIT_CD_MONO_APPAREL => 'minikuraMONO（ワイドボックス）',
     KIT_CD_MONO_BOOK => 'minikuraMONO（ブックボックス）',
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
     KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
     KIT_CD_SNEAKERS => 'minikura SNEAKERS KIT',
     KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
-    KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
+    KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（ワイドボックス）',
     KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
     KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック',
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
@@ -190,9 +190,9 @@ const KIT_NAME = [
 
 const KIT_CODE_DISP_NAME_ARRAY =[
     'mono_num'      => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
-    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
+    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO ワイドボックス'),
     'hako_num'      => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
-    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
+    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO ワイドボックス'),
     'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
     'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
     'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Library ボックス'),
