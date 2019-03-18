@@ -345,7 +345,7 @@
       </div>
       <div id="gmo_validate_error"></div>
       <div id="gmo_credit_card_info"></div>
-      <div class="dsn-form">
+      <div class="dsn-form card_error">
         <?php echo $this->Flash->render('customer_kit_card_info');?>
       </div>
       <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>

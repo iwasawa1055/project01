@@ -36,7 +36,6 @@
     <input autocomplete="cc-csc" id="securitycode" name="securitycode" placeholder="例：123">
     <p class="txt-caption">カード裏面に記載された3〜4桁の番号をご入力ください。</p>
     <div id="error_securitycode"></div>
-    <?php echo $this->Flash->render('buy_kit_security_cd_error');?>
   </li>
   <li>
     <?php echo $this->element('Order/securitycode'); ?>

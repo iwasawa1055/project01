@@ -1032,21 +1032,10 @@ class OrderController extends MinikuraController
         $result_kit_card = $this->PaymentGMOKitByCreditCard->apiPost($this->PaymentGMOKitByCreditCard->toArray());
 
         if ($result_kit_card->status !== '1') {
-            if ($result_kit_card->http_code === 400) {
-                // セキュリティコード入力エラーの場合は、出力位置を変更
-                if ($result_kit_card->message === '400 Bad Request - 42G440000') {
-                    $this->Flash->validation($result_kit_card->error_message, ['key' => 'buy_kit_security_cd_error']);
-                } else {
-                    $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
-                }
-            } else {
-                $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
-            }
-            // 暫定
+            $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
             return $this->redirect(['controller' => 'order', 'action' => 'input_card']);
         }
     }
-
 
     /**
      * カード決済(ネコポス)
@@ -1063,17 +1052,7 @@ class OrderController extends MinikuraController
         $result_kit_card = $this->PaymentNekoposKitByCreditCard->apiPost($this->PaymentNekoposKitByCreditCard->toArray());
 
         if ($result_kit_card->status !== '1') {
-            if ($result_kit_card->http_code === 400) {
-                // セキュリティコード入力エラーの場合は、出力位置を変更
-                if ($result_kit_card->message === '400 Bad Request - 42G440000') {
-                    $this->Flash->validation($result_kit_card->error_message, ['key' => 'buy_kit_security_cd_error']);
-                } else {
-                    $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
-                }
-            } else {
-                $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
-            }
-            // 暫定
+            $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
             return $this->redirect(['controller' => 'order', 'action' => 'input_card']);
         }
     }

@@ -393,3 +393,11 @@ p.facebook-message a,
   color: #333;
   text-decoration: underline;
 }
+
+.card_error .validation {
+  display: inline-block;
+  color: #ff6666;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem;
+  font-size: 1.6rem;
+}
