@@ -8,6 +8,7 @@ App::uses('Folder', 'Utility');
 class PasswordResetController extends MinikuraController
 {
     const MODEL_NAME = 'CustomerPasswordReset';
+    const MODEL_NAME_ENV_UN_AUTH = 'CustomerEnvUnAuth';
     // パスワードリセット管理用ディレクトリ
     const RESET_PASSWORD_FILE_DIR   = TMP . 'reset_password';
     // パスワードの有効期限(30分間)
@@ -69,6 +70,10 @@ class PasswordResetController extends MinikuraController
 
                 $mail = new AppMail();
                 $mail->sendPasswordReset($to, $key);
+
+                // ユーザー環境値登録
+                $this->loadModel(self::MODEL_NAME_ENV_UN_AUTH);
+                $this->CustomerEnvUnAuth->apiPostEnv($this->CustomerPasswordReset->toArray()['email']);
 
                 $this->Flash->set(__('customer_password_reset_mail_send'));
                 return $this->redirect(['action' => 'customer_index']);
