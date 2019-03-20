@@ -95,7 +95,7 @@ class ContactUsController extends MinikuraController
             $post_params = $this->request->data;
 
             // お問い合わせステータスが終了の場合はエラーでdetailへ戻す
-            if ($ticket_data['status'] !== 'closed') {
+            if ($ticket_data['status'] === 'closed') {
                 $this->Flash->validation("このお問い合わせは有効期限が切れております。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;お問い合わせに関してご質問があるお客様は、こちらの「新規お問い合わせ」よりお問い合わせください。", ['key' => 'zendesk_error']);
                 $post_params['ZendeskContactUs']['division'] = array_search($ticket_data['tags'][0], CONTACTUS_DIVISION);
                 CakeSession::write(self::MODEL_NAME_ZENDESK_CONTACT_US, $post_params);
