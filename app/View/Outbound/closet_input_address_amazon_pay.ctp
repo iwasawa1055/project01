@@ -30,6 +30,8 @@
   $this->Html->css('app', ['inline' => false]);
   $this->Html->css('app_dev', ['inline' => false]);
   $this->Html->css('style', ['inline' => false]);
+  $this->Html->css('dsn-amazon-pay', ['inline' => false]);
+  $this->Html->css('outbound/input_amazon_pay_dev', ['inline' => false]);
 
   echo $this->fetch('css');
 ?>
@@ -61,6 +63,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4MN3W"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+    <div class='airloader-overlay'>
+        <div class="loader">Loading...</div>
+    </div>
+
     <div id="wrapper">
         <!--nav-->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -76,67 +83,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <?php echo $this->element('navbar_right'); ?>
             <?php echo $this->element('sidebar'); ?>
         </nav>
-        <form method="POST" action="/outbound/library_select_item" name="form">
+        <form method="POST" action="/outbound/closet_input_address_amazon_pay" name="form" id="form">
         <div id="page-wrapper" class="wrapper library">
-            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Library</h1>
+            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Closet</h1>
             <ul class="pagenation">
-                <li class="on"><span class="number">1</span><span class="txt">アイテム<br>選択</span>
+                <li><span class="number">1</span><span class="txt">アイテム<br>選択</span>
                 </li>
-                <li><span class="number">2</span><span class="txt">配送情報<br>入力</span>
+                <li class="on"><span class="number">2</span><span class="txt">配送情報<br>入力</span>
                 </li>
                 <li><span class="number">3</span><span class="txt">確認</span>
                 </li>
                 <li><span class="number">4</span><span class="txt">完了</span>
                 </li>
             </ul>
-            <?php if (isset($complete_error)) : ?>
-            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i><?php echo $this->Flash->render('complete_error');?></div>
+            <?php if (isset($datetime_cd_error)) : ?>
+            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i><?php echo $datetime_cd_error; ?></div>
             <?php endif; ?>
-            <?php if (isset($no_select_item_error)) : ?>
-            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> アイテムが選択されていません</div>
+            <?php if (isset($amazon_order_reference_id_error)) : ?>
+            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i><?php echo $amazon_order_reference_id_error; ?></div>
             <?php endif; ?>
-            <?php if (isset($over_select_item_error)) : ?>
-            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 選択したアイテムの合計が300点を超えているので、分割をして出庫をしてください。</div>
-            <?php endif; ?>
-            <ul class="setting-switcher">
+            <p class="page-caption">minikura Closetで取り出すアイテムの配送情報を入力します。</p>
+            <ul class="input-info">
                 <li>
-                    <label class="setting-switch">
-                        <input type="radio" class="ss" name="select-deposit" value="item" checked="">
-                        <span class="btn-ss"><span class="icon"></span>アイテムから選択</span>
-                    </label>
+                    <label class="headline">配送住所と支払い方法</label>
+                    <div id="dsn-amazon-pay" class="form-group col-lg-12">
+                        <div class="dsn-adress">
+                            <div id="addressBookWidgetDiv">
+                            </div>
+                        </div>
+                        <div class="dsn-credit">
+                            <div id="walletWidgetDiv">
+                            </div>
+                        </div>
+                    </div>
                 </li>
-                <li>
-                    <label class="setting-switch">
-                        <input type="radio" class="ss" name="select-deposit" value="box">
-                        <span class="btn-ss"><span class="icon"></span>ボックスごと取り出す</span>
-                    </label>
-                </li>
-            </ul>
-            <ul class="item-search">
-                <li>
-                    <input type="search" placeholder="" class="search" id="search_txt">
-                </li>
-                <li>
-                    <!--<label class="cb-circle">
-                        <input type="checkbox" class="cb" id="all_select"><span class="icon-cb"></span><span class="txt-cb">すべて選択</span>
-                    </label>-->
-                    <label class="input-check">
-                        <input type="checkbox" class="cb-circle" id="all_select">
-                        <span class="icon"></span>
-                        <span class="label-txt">すべて選択</span>
-                    </label>
-                </li>
-            </ul>
-            <div class="item-content">
-                <!--<ul class="grid-view grid-library">
-                </ul>-->
-                <ul class="grid grid-lg">
-                </ul>
-            </div>
 
-            <input type="hidden" id="selected_item_ids" value="<?php echo $item_id; ?>">
-            <input type="hidden" id="selected_box_ids" value="<?php echo $box_id; ?>">
-        </div>
+                <li>
+                    <label class="headline">お届け希望日時</label>
+                    <select name="datetime_cd" data-datetime_cd='<?php echo isset($datetime_cd) ? $datetime_cd : '0000-00-00'; ?>' id="datetime_cd">
+                    </select>
+                </li>
+            </div>
         </form>
         <!--footer-->
         <footer>
@@ -158,7 +145,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </footer>
         <div class="nav-fixed">
             <ul>
-                <li><button class="btn-red" id="execute">配送先入力へ</button></li>
+                <li><a class="btn-d-gray" href="/outbound/closet_select_item">戻る</a></li>
+                <li><button class="btn-red" id="execute">確認</button></li>
             </ul>
         </div>
     </div>
@@ -172,7 +160,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       $this->Html->script('app', ['inline' => false]);
       $this->Html->script('app_dev', ['inline' => false]);
       $this->Html->script('jquery.airCenter', ['inline' => false]);
-      $this->Html->script('outbound/library', ['inline' => false]);
+      $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['inline' => false]);
+      $this->Html->script('jquery.airAutoKana.js', ['inline' => false]);
+      $this->Html->script('outbound/closet_input_address_amazon_pay', ['inline' => false]);
 
       echo $this->fetch('script');
       echo $this->fetch('scriptMinikura');
@@ -185,5 +175,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     </script>
 <![endif]-->
+    <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
 </body>
 </html>
