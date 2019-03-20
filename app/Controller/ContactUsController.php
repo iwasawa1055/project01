@@ -93,8 +93,16 @@ class ContactUsController extends MinikuraController
         // メッセージ送信処理
         if ($this->request->is('post')) {
             $post_params = $this->request->data;
-            $this->ZendeskContactUs->set($post_params);
 
+            // お問い合わせステータスが終了の場合はエラーでdetailへ戻す
+            if ($ticket_data['status'] !== 'closed') {
+                $this->Flash->validation("このお問い合わせは有効期限が切れております。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;お問い合わせに関してご質問があるお客様は、こちらの「新規お問い合わせ」よりお問い合わせください。", ['key' => 'zendesk_error']);
+                $post_params['ZendeskContactUs']['division'] = array_search($ticket_data['tags'][0], CONTACTUS_DIVISION);
+                CakeSession::write(self::MODEL_NAME_ZENDESK_CONTACT_US, $post_params);
+                $this->redirect('/contact_us/add?ticket_id=' . $ticket_params['ticket_id'] . '&back=true');
+            }
+
+            $this->ZendeskContactUs->set($post_params);
             // remove validation required
             $this->ZendeskContactUs->validator()->remove('division');
             // validation
@@ -127,8 +135,9 @@ class ContactUsController extends MinikuraController
         $isBack = Hash::get($this->request->query, 'back');
         if ($isBack) {
             $this->request->data = CakeSession::read(self::MODEL_NAME_ZENDESK_CONTACT_US);
+        } else {
+            CakeSession::delete(self::MODEL_NAME_ZENDESK_CONTACT_US);
         }
-        CakeSession::delete(self::MODEL_NAME_ZENDESK_CONTACT_US);
 
         // お知らせからの場合は内容を取得
         $id = $this->params['id'];
@@ -141,6 +150,7 @@ class ContactUsController extends MinikuraController
             $ticket_id = $this->request->query['ticket_id'];
             $this->set('ticket_id', $ticket_id);
         }
+
     }
 
 
