@@ -104,6 +104,7 @@
             </div>
           </div>
         </div>
+        <?php if ($customer->isAmazonPay() === false):?>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
@@ -113,13 +114,10 @@
                   <label>Facebookログイン</label>
                   <p>
                       <?php if ($customer->isFacebook()) : ?>
-                        <!--label class="sns">
+                        <label class="sns">
                           <span class="btn btn-info btn-md pull-right" onclick="javascript:location.href='/contract/unregister_facebook'">連携を解除する</span>
                         </label>
-                        <p class="facebook-message">※facebook側の連携を外す場合は<a class="" href="https://www.facebook.com/help/170585223002660?helpref=related" target="_blank">こちら</a>をご確認ください</p-->
-                        <label class="sns">
-                          <span>連携済み</span>
-                        </label>
+                        <p class="facebook-message">※facebook側の連携を外す場合は<a class="" href="https://www.facebook.com/help/170585223002660?helpref=related" target="_blank">こちら</a>をご確認ください</p>
                       <?php else: ?>
                         <label class="sns">
                           <span class="btn btn-info btn-md pull-right dev_facebook_regist">連携する</span>
@@ -131,6 +129,7 @@
             </div>
           </div>
         </div>
+        <?php endif;?>
         <?php if (!$customer->isPrivateCustomer()):?>
         <div class="panel panel-default">
           <div class="panel-body">
