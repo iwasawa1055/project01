@@ -156,6 +156,12 @@ class InfoBox extends ApiCachedModel
             }
         }
 
+        // お預かり順ソートは最終入庫日を見るように修正
+        if (isset($sortKey['inbound_date'])) {
+            $sortKey['last_inbound_date'] = $sortKey['inbound_date'];
+            unset($sortKey['inbound_date']);
+        }
+
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
         return $list;
     }
