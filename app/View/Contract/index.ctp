@@ -121,6 +121,8 @@
                       <?php else: ?>
                         <label class="sns">
                           <span class="btn btn-info btn-md pull-right dev_facebook_regist">連携する</span>
+                          <?php $amazon_pay_access_token = $this->Flash->render('facebook_error'); ?>
+                          <?php echo (!is_null($amazon_pay_access_token))? '<p class="error-message">' . $amazon_pay_access_token . '</p>' : ""; ?>
                         </label>
                       <?php endif; ?>
                   </p>
