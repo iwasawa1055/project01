@@ -3,301 +3,325 @@
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/input_amazon_pay_dev.css', ['block' => 'css']); ?>
-<?php $this->validationErrors['OrderKit'] = $validErrors; ?>
 
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+  <?php echo $this->Form->create('PaymentAmazonKitAmazonPay', ['url' => ['controller' => 'order', 'action' => 'input_amazon_pay'], 'novalidate' => true]); ?>
+
+    <div id="page-wrapper" class="lineup wrapper">
+      <?php echo $this->Flash->render(); ?>
+
+      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+
+      <?php echo $this->element('Order/breadcrumb_list'); ?>
+
+      <div class="head_validation">
+        <?php echo $this->Flash->render('customer_amazon_pay_info');?>
       </div>
-    </div>
-    <div class="row">
-      <form method="post" class="select-add-address-form" action="/order/confirm_amazon_pay" novalidate>
-        <div class="col-lg-12">
-          <div class="panel panel-default">
-            <section id="dsn-pagenation">
-                <ul>
-                    <li class="dsn-on">
-                        <i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
-                    </li>
-                    <li>
-                        <i class="fa fa-check"></i><span>確認</span>
-                    </li>
-                    <li>
-                        <i class="fa fa-truck"></i><span>完了</span>
-                    </li>
-                </ul>
-            </section>
 
-            <!-- LINEUP -->
-            <section id="dsn-lineup">
-              <div class="dsn-form dev-form">
-                <?php echo $this->Flash->render('customer_amazon_pay_info');?>
-                <?php echo $this->Flash->render('customer_address_info');?>
-              </div>
-              <div class="dsn-wrapper">
-                <!-- HAKO -->
-                <div id="dsn-hako" class="dsn-lineup-box">
-                  <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
-                  <div class="dsn-box-hako dev-box-hako"> <img src="/images/order/box_hako@1x.png" srcset="/images/order/box_hako@1x.png 1x, /images/order/box_hako@2x.png 2x" alt="minikuraHAKO"> </div>
-                  <div class="dsn-caption">
-                    <p class="dsn-price">月額保管料<span>200円</span>
-                    </p>
-                    <p class="dsn-price">ボックス代金<span>200円</span>
-                    </p>
-                    <p class="dsn-select-number" id="select_hako"><?php if (CakeSession::read('OrderTotal.hako_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.hako_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-                  </div>
-                  <a href="#" class="dsn-btn-select" data-remodal-target="modal-hako"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-                  <div class="dsn-form">
-                    <?php echo $this->Flash->render('select_oreder_hako'); ?>
-                  </div>
-                </div>
-                <!-- MONO -->
-                <div id="dsn-mono" class="dsn-lineup-box">
-                  <h3><span>1 点ごとのアイテム管理</span>minikuraMONO</h3>
-                  <div class="dsn-box-mono dev-box-mono"><img src="/images/order/box_mono@1x.png" srcset="/images/order/box_mono@1x.png 1x, /images/order/box_mono@2x.png 2x" alt="minikuraMONO">
-                  </div>
-                  <div class="dsn-caption">
-                    <p class="dsn-price">月額保管料<span>250円</span>
-                    </p>
-                    <p class="dsn-price">ボックス代金<span>250円</span>
-                    </p>
-                    <p class="dsn-select-number" id="select_mono"><?php if (CakeSession::read('OrderTotal.mono_num') > 0) : ?><span><?php echo h(CakeSession::read('OrderTotal.mono_num')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-                  </div>
-                  <a href="#" class="dsn-btn-select" data-remodal-target="modal-mono"><i class="fa fa-chevron-circle-down"></i> 種類と個数を選ぶ</a>
-                  <div class="dsn-form">
-                    <?php echo $this->Flash->render('select_oreder_mono'); ?>
-                  </div>
-                </div>
-                <!-- CLEANING -->
-                <div id="dsn-cleaning" class="dsn-lineup-box">
-                  <h3><span>衣類 10 点</span>クリーニングパック</h3>
-                  <div class="dsn-box-cleaning dev-box-cleaning"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikuraクリーニングパック"> </div>
-                  <div class="dsn-caption">
-                    <p class="dsn-price">6ヶ月保管＋クリーニング料セット</p>
-                    <p class="dsn-price">ボックス代金<span>12,000円</span>
-                    </p>
-                    <p class="dsn-select-number" id="select_cleaning"><?php if (CakeSession::read('Order.cleaning.cleaning') > 0) : ?><span><?php echo h(CakeSession::read('Order.cleaning.cleaning')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-                  </div>
-                  <a href="#" class="dsn-btn-select" data-remodal-target="modal-cleaning"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
-                  <div class="dsn-form">
-                    <?php echo $this->Flash->render('select_oreder_cleaning'); ?>
-                  </div>
-                </div>
-                <!-- minikuraLibrary -->
-                <div id="dsn-library" class="dsn-lineup-box">
-                  <h3><span>書籍に最適</span>minikuraLibrary</h3>
-                  <div class="dsn-box-library dev-box-library"><img src="/images/order/box_library@1x.png" srcset="/images/order/box_library@1x.png 1x, /images/order/box_library@2x.png 2x" alt="minikuraクリーニングパック"> </div>
-                  <div class="dsn-caption">
-                    <p class="dsn-price">月額保管料<span>450円</p>
-                    <p class="dsn-price">ボックス代金<span>450円</span>
-                    </p>
-                    <p class="dsn-select-number" id="select_library"><?php if (CakeSession::read('Order.library.library') > 0) : ?><span><?php echo h(CakeSession::read('Order.library.library')) ?>個選択済み</span><?php else : ?>未選択<?php endif; ?></p>
-                  </div>
-                  <a href="#" class="dsn-btn-select" data-remodal-target="modal-library"><i class="fa fa-chevron-circle-down"></i> 個数を選ぶ</a>
-                  <div class="dsn-form">
-                    <?php echo $this->Flash->render('select_oreder_library'); ?>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section id="dsn-delivery">
-              <div class="dsn-wrapper">
-                <table class="accounting">
-                  <tr>
-                    <th>合計点数</th>
-                    <td id="js-item-total">0点</td>
-                  </tr>
-                </table>
-                
-                    <!-- AmazonPayment wedget表示処理 -->
-                <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                  <div class="dsn-adress">
-                    <div id="addressBookWidgetDiv">
-                    </div>
-                  </div>
-                  <div class="dsn-credit">
-                    <div id="walletWidgetDiv">
-                    </div>
-                  </div>
-                </div>
-                <div class="dsn-divider"></div>
-                <div class="dsn-form">
-                  <div class="dsn-form">
-                    <?php // アマゾンから取得した情報をバリデーション ?>
-                    <?php echo $this->Flash->render('customer_kit_card_info');?>
-                    <?php echo $this->Flash->render('customer_amazon_pay_info');?>
-                    <?php echo $this->Flash->render('postal');?>
-                    <?php echo $this->Flash->render('pref');?>
-                    <?php echo $this->Flash->render('address1');?>
-                    <?php echo $this->Flash->render('address2');?>
-                    <?php echo $this->Flash->render('tel1');?>
-                  </div>
-                </div>
-                <div class="dsn-form">
-                  <label>お届け希望日時</label>
-                  <input type="hidden" id="js-datetime_cd" value="<?php echo CakeSession::read('Address.datetime_cd');?>">
-                  <select name="datetime_cd" id="datetime_cd" class="dsn-delivery focused">
-                    <?php if (null !== CakeSession::read('Address.select_delivery_list')) : ?>
-                    <?php foreach (CakeSession::read('Address.select_delivery_list') as $key => $value) {?>
-                      <option value="<?php echo $value->datetime_cd;?>"<?php if ( $value->datetime_cd === CakeSession::read('Address.datetime_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                    <?php } ?>
-                    <?php endif; ?>
-                  </select>
-                  <div class="dsn-form">
-                    <?php echo $this->Flash->render('datetime_cd');?>
-                  </div>
-                  <input type="hidden" name="select_delivery" id="select_delivery" value="<?php if (!empty(CakeSession::read('Address.select_delivery'))) : ?><?php echo h(CakeSession::read('Address.select_delivery'))?><?php else : ?><?php endif; ?>">
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
-        <section class="dsn-nextback">
-          <button type="submit" class="dsn-btn-next-full js-btn-submit">確認へ <i class="fa fa-chevron-circle-right"></i></button>
-        </section>      
+      <div class="dsn-wrapper dev-wrapper"></div>
 
-        <input type="hidden" name="mono"          value="<?php echo h(CakeSession::read('Order.mono.mono')); ?>" />
-        <input type="hidden" name="mono_apparel"  value="<?php echo h(CakeSession::read('Order.mono.mono_apparel')); ?>" />
-        <input type="hidden" name="mono_book"     value="<?php echo h(CakeSession::read('Order.mono.mono_book')); ?>" />
-        <input type="hidden" name="hako"          value="<?php echo h(CakeSession::read('Order.hako.hako')); ?>" />
-        <input type="hidden" name="hako_apparel"  value="<?php echo h(CakeSession::read('Order.hako.hako_apparel')); ?>" />
-        <input type="hidden" name="hako_book"     value="<?php echo h(CakeSession::read('Order.hako.hako_book')); ?>" />
-        <input type="hidden" name="cleaning"      value="<?php echo h(CakeSession::read('Order.cleaning.cleaning')); ?>" />
-        <input type="hidden" name="library"       value="<?php echo h(CakeSession::read('Order.library.library')); ?>" />
-      </form>
-      <!--MONO modal-->
-      <div class="remodal dsn-items" data-remodal-id="modal-mono" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
-        <div class="dsn-box">
-          <div class="dsn-pict-box">
-            <img src="/images/order/box_regular@1x.png" srcset="/images/order/box_regular@1x.png 1x, /images/order/box_regular@2x.png 2x" alt="">
+      <ul class="items">
+        <li id="hako" class="item type_other">
+          <p class="rib classic"></p>
+          <h3><span>箱を開けないタイプ</span>minikuraHAKO</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-hako@1x.jpg" srcset="/images/order/photo-hako@1x.jpg 1x, /images/order/photo-hako@2x.jpg 2x" alt="minikuraHAKO">
+            </picture>
           </div>
-          <div class="dsn-select-box">
-            <h3>レギュラーボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-mono" data-name="mono" data-box_type="mono">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++) : ?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">月額保管料<span class="price-hs">200</span>円
+                </p>
+                <p class="price">ボックス代金<span class="price-hb">200</span>円
+                </p>
+              </li>
+              <li class="option">
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">レギュラー</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W38cm×H38cm×D38cm</p>
+                <p class="caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">ワイド</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W60cm×H20cm×D38cm</p>
+                <p class="caption">薄手のジャケット約10着収納できる横長ワイドボックスです。</p>
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">ブック</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hako_book_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W42cm×H29cm×D33cm</p>
+                <p class="caption">文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="hako_total">0</span>個選択済み</p>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_appa_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.hako_book_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
-          <p class="dsn-size">W38cm×H38cm×D38cm</p>
-          <p class="dsn-caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
+        </li>
+        <li id="mono" class="item type_other">
+          <p class="rib best"></p>
+          <h3><span>1点ごとのアイテム管理</span>minikuraMONO</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-mono@1x.jpg" srcset="/images/order/photo-mono@1x.jpg 1x, /images/order/photo-mono@2x.jpg 2x" alt="minikuraMONO">
+            </picture>
+          </div>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">月額保管料<span class="price-ms">250</span>円
+                </p>
+                <p class="price">ボックス代金<span class="price-mb">250</span>円
+                </p>
+              </li>
+              <?php if (false): ?>
+              <!--TODO DASH実装時に外す-->
+              <li class="option">
+                <label class="dash">
+                  <input type="checkbox" class="cb" name="select-dash">
+                  <span class="button">DASHを申込む</span>
+                </label>
+              </li>
+              <div class="dash-caption">
+                <h4>DASHとは？</h4>
+                <p>文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+              </div>
+              <?php endif; ?>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">レギュラー<span class="select-dash">DASH</span></a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.mono_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_mono", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W38cm×H38cm×D38cm</p>
+                <p class="caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">ワイド<span class="select-dash">DASH</span></a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.mono_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_mono", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W60cm×H20cm×D38cm</p>
+                <p class="caption">薄手のジャケット約10着収納できる横長ワイドボックスです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="mono_total">0</span>個選択済み<?php if (false): ?><!--TODO DASH実装時に外す-->（DASH）<?php endif; ?></p>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.mono_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.mono_appa_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.mono_book_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          </div>
+        </li>
+        <li id="library" class="item type_other">
+          <p class="rib popular"></p>
+          <h3><span>書籍に最適</span>minikuraLibrary</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-library@1x.jpg" srcset="/images/order/photo-library@1x.jpg 1x, /images/order/photo-library@2x.jpg 2x" alt="minikuraLibrary">
+            </picture>
+          </div>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">月額保管料<span class="price-ls">450</span>円
+                </p>
+                <p class="price">ボックス代金<span class="price-lb">400</span>円
+                </p>
+              </li>
+              <li class="option">
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">専用ボックス</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.library_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_library", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W42cm×H29cm×D33cm</p>
+                <p class="caption">文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="library_total">0</span>個選択済み</p>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.library_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          </div>
+        </li>
+        <li id="closet" class="item type_hanger">
+          <p class="rib new"></p>
+          <h3><span>ハンガー保管</span>minikuraCloset</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-closet@1x.jpg" srcset="/images/order/photo-closet@1x.jpg 1x, /images/order/photo-closet@2x.jpg 2x" alt="minikuraCloset">
+            </picture>
+          </div>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">月額保管料<span class="price-hs">450</span>円</p>
+                <p class="price">ボックス代金<span class="price-hb">450</span>円</p>
+              </li>
+              <li class="option">
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">専用ボックス</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.hanger_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hanger", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W40cm×H40cm×D40cm</p>
+                <p class="caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="hanger_total">0</span>個選択済み</p>
+            <?php echo $this->Form->error('PaymentNekoposKitByCreditCard.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          </div>
+        </li>
+        <li id="cleaning" class="item type_other">
+          <p class="rib spring"></p>
+          <h3><span>衣類10点</span>クリーニングパック</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-cleaning@1x.jpg" srcset="/images/order/photo-cleaning@1x.jpg 1x, /images/order/photo-cleaning@2x.jpg 2x" alt="minikuraクリーニングパック">
+            </picture>
+          </div>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">6ヶ月保管＋クリーニング料セット</p>
+                <p class="price">ボックス代金<span class="price-cb">12,000円</span></p>
+              </li>
+              <li class="option">
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">専用ボックス</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentAmazonKitAmazonPay.cleaning_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_cleaning", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W40cm×H40cm×D40cm</p>
+                <p class="caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="cleaning_total">0</span>個選択済み</p>
+            <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.cleaning_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          </div>
+        </li>
+      </ul>
+      <div class="lead-time">
+        <div class="wrapper">
+          <h4>倉庫に到着したお荷物の預け入れ完了までの目安</h4>
+          <ul>
+            <li>minikuraHAKO：<?php echo EXPECTED_STORING_COMPLETE_DATE_HAKO; ?>営業日</li>
+            <li>minikuraMONO：<?php echo EXPECTED_STORING_COMPLETE_DATE_MONO; ?>営業日</li>
+            <?php if (false): ?>
+            <!--TODO DASH実装時に外す-->
+            <li>minikuraMONO DASH：<?php echo EXPECTED_STORING_COMPLETE_DATE_MONO_DASH; ?>営業日</li>
+            <?php endif; ?>
+            <li>minikuraLibrary：<?php echo EXPECTED_STORING_COMPLETE_DATE_LIBRARY; ?>営業日</li>
+            <li>minikuraCloset：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLOSET; ?>営業日</li>
+            <li>minikuraクリーニングパック：<?php echo EXPECTED_STORING_COMPLETE_DATE_CLEANING; ?>営業日</li>
+          </ul>
         </div>
-        <div class="dsn-box">
-          <div class="dsn-pict-box">
-            <img src="/images/order/box_apparel@1x.png" srcset="/images/order/box_apparel@1x.png 1x, /images/order/box_apparel@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>アパレルボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-mono" data-name="mono_apparel" data-box_type="mono">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono_apparel') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W60cm×H20cm×D38cm</p>
-          <p class="dsn-caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
-        </div>
-        <div class="dsn-box" style="display:none">
-          <div class="dsn-pict-box">
-            <img src="/images/order/box_book@1x.png" srcset="/images/order/box_book@1x.png 1x, /images/order/box_book@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>ブックボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-mono" data-name="mono_book" data-box_type="mono">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.mono.mono_book') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W42cm×H29cm×D33cm</p>
-          <p class="dsn-caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
-        </div>
-        <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
       </div>
-      <!--HAKO modal-->
-      <div class="remodal dsn-items" data-remodal-id="modal-hako" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
-        <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/images/order/box_regular@1x.png" srcset="/images/order/box_regular@1x.png 1x, /images/order/box_regular@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>レギュラーボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-hako" data-name="hako" data-box_type="hako">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako.hako') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W38cm×H38cm×D38cm</p>
-          <p class="dsn-caption">縦・横・高さが同じ長さで様々なアイテムにオールマイティに対応できるボックスです。</p>
-        </div>
-        <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/images/order/box_apparel@1x.png" srcset="/images/order/box_apparel@1x.png 1x, /images/order/box_apparel@2x.png 2x" alt="">
-          </div>
-          <div class="dsn-select-box">
-            <h3>アパレルボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-hako" data-name="hako_apparel" data-box_type="hako">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako.hako_apparel') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
+      <ul class="input-info">
+        <li>
+          <label class="headline">お客様情報</label>
+        </li>
+        <!-- AmazonPayment wedget表示処理 -->
+        <li id="dsn-amazon-pay">
+          <div class="dsn-adress">
+            <div id="addressBookWidgetDiv">
             </div>
-          <p class="dsn-size">W60cm×H20cm×D38cm</p>
-          <p class="dsn-caption">薄手のジャケット約10着収納できるアパレル専用ボックスです。</p>
-        </div>
-        <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/images/order/box_book@1x.png" srcset="/images/order/box_book@1x.png 1x, /images/order/box_book@2x.png 2x" alt="">
           </div>
-          <div class="dsn-select-box">
-            <h3>ブックボックス</h3>
-            <select class="dsn-item-number js-item-number js-item-hako" data-name="hako_book" data-box_type="hako">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.hako.hako_book') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
+          <div class="dsn-credit">
+            <div id="walletWidgetDiv">
+            </div>
           </div>
-          <p class="dsn-size">W42cm×H29cm×D33cm</p>
-          <p class="dsn-caption">文庫本で約100冊、A4サイズの書類で約30枚収納できる、底が2重になり耐荷重に優れたボックスです。</p>
-        </div>
-        <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-      </div>
-      <!--Cleaning modal-->
-      <div class="remodal dsn-items" data-remodal-id="modal-cleaning" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
-        <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/images/order/box_cleaning@1x.png" srcset="/images/order/box_cleaning@1x.png 1x, /images/order/box_cleaning@2x.png 2x" alt="minikura sneakers">
-          </div>
-          <div class="dsn-select-box">
-            <h3>クリーニングパック</h3>
-            <select class="dsn-item-number js-item-number js-item-cleaning" data-name="cleaning" data-box_type="cleaning">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.cleaning.cleaning') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W40cm×H40cm×D40cm</p>
-          <p class="dsn-caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
-        </div>
-        <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-      </div>
-      <!--Library modal-->
-      <div class="remodal dsn-items" data-remodal-id="modal-library" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc" data-remodal-options="hashTracking:false">
-        <div class="dsn-box">
-          <div class="dsn-pict-box"><img src="/images/order/box_library@1x.png" srcset="/images/order/box_library@1x.png 1x, /images/order/box_library@2x.png 2x" alt="minikura sneakers">
-          </div>
-          <div class="dsn-select-box">
-            <h3>minikuraLibrary</h3>
-            <select class="dsn-item-number js-item-number js-item-library" data-name="library" data-box_type="library">
-              <?php for ($i = 0; $i <= Configure::read('app.first_order.max_box'); $i++):?>
-              <option value="<?php echo $i;?>"<?php echo CakeSession::read('Order.library.library') == $i ? ' selected' : '' ;?>><?php echo h($i);?>箱</option>
-              <?php endfor;?>
-            </select>
-          </div>
-          <p class="dsn-size">W42cm×H29cm×D33cm</p>
-          <p class="dsn-caption">文庫本で約100冊、A4サイズのファイルで約30冊収納できる、底が2重になり耐荷重に優れたボックスです。</p>
-        </div>
-        <a class="dsn-btn-return" data-remodal-action="close" aria-label="Close"><i class="fa fa-chevron-circle-left"></i> 閉じる</a>
-      </div>
-    </div>
+        </li>
+        <div class="dsn-divider"></div>
 
+        <li class="select_other">
+          <label class="headline">お届けに上がる日時</label>
+          <?php echo $this->Form->select('PaymentAmazonKitAmazonPay.datetime_cd', $delivery_datetime_list, ['id' => 'datetime_cd', 'empty' => false, 'label' => false, 'error' => false, 'div' => false]); ?>
+          <?php echo $this->Form->error('PaymentAmazonKitAmazonPay.datetime_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+        </li>
+      </ul>
+    </div>
+    <div class="nav-fixed">
+      <ul>
+        <li>
+          <button class="btn-red js-btn-submit" type="button">ボックスの確認</button>
+        </li>
+      </ul>
+    </div>
+  <?php echo $this->Form->end(); ?>

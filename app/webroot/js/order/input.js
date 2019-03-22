@@ -1,128 +1,209 @@
 var AppInputOrder =
 {
-
   a: function () {
-    $('input[name="select-card"]#as-card').change(function () {
-      $('.dsn-input-security-code').toggle('slow');
-      $('.dsn-input-change-card').hide('slow');
-      $('.dsn-input-new-card').hide('slow');
-    });
-  },
-  b: function () {
-    $('input[name="select-card"]#change-card').change(function () {
-      $('.dsn-input-change-card').toggle('slow');
-      $('.dsn-input-security-code').hide('slow');
-      $('.dsn-input-new-card').hide('slow');
-    });
-  },
-  c: function () {
-    $('input[name="select_address"]#list_address').change(function () {
-      $('.dsn-input-new-adress').toggle('slow');
-    });
-  },
-  d: function () {
-    $('input[name="select_address"]#add_address').change(function () {
-      $('.dsn-input-new-adress').toggle('slow');
-    });
-  },
-  e: function () {
     $('#address_id').change(function () {
       AppInputOrder.getDatetime();
-      // $('.dsn-input-new-adress').hide('slow');
     });
   },
 
-  f: function () {
+  b: function () {
     $('#postal').change(function() {
       AppInputOrder.getDatetimePostal();
     });
   },
-  g: function()
+  c: function()
   {
-    // validation メッセージが表示される時に、ページ上部に表示する
-    if ($('span').hasClass('validation')) {
-      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
-    }
+    $('.execute').on('click', function (e) {
+      var is_update = $('#is_update').val();
+        // カード更新
+        if (is_update === '1') {
+            gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
+        // カード登録
+        } else {
+            gmoCreditCardPayment.setGMOTokenAndRegisterCreditCard();
+      }
+
+    });
+  },
+  d: function()
+  {
+      // 初回表示時
+      var address_id = $('#address_id').val();
+      if (address_id !== 'add') {
+          $('.order-input-address').hide();
+      }
+      // 選択住所変更時
+      $('#address_id').change(function() {
+          $('.order-input-address').hide();
+          if ($(this).val() === 'add') {
+              $('.order-input-address').slideDown(Speed, Ease);
+          } else {
+              $('.order-input-address').slideUp(Speed, Ease);
+          }
+      });
+  },
+  e: function()
+  {
+      var sc = $('#input-exist'); // 既存
+      var cc = $('#input-change'); // 変更
+      var nc = $('#input-new'); // 新規
+
+      var is_update = $('#is_update').val();
+      // カード更新
+      if (is_update === '1') {
+          var form_text = $('form').attr('id');
+          form_text = form_text.replace("InputCardForm", "");
+          var card_radio = $('input[name="data['+ form_text +'][select-card]"]:checked').val();
+          // 既存チェック時
+          if (card_radio == 'as-card') {
+            cc.hide();
+            nc.hide();
+          // 変更チェック時
+          } else {
+            sc.hide();
+            nc.hide();
+          }
+      // カード登録
+      } else {
+          cc.hide();
+          sc.hide();
+          $('.input-check-list').hide();
+      }
+
+      $('.card_check_type').change(function() {
+          if ($(this).val() === 'as-card') {
+              sc.slideDown(Speed, Ease);
+              cc.slideUp(Speed, Ease);
+              nc.slideUp(Speed, Ease);
+          }
+          if ($(this).val() === 'change-card') {
+              cc.slideDown(Speed, Ease);
+              sc.slideUp(Speed, Ease);
+              nc.slideUp(Speed, Ease);
+          }
+      });
+  },
+  f: function ()
+  {
+    $('.caution-box input').change(function () {
+      if ($(this).prop('checked')) {
+        var exe_flag = true;
+        $(".caution-box input").each(function(i) {
+          if ($(this).prop("checked") == false) {
+            exe_flag = false;
+            return false;
+          }
+        });
+        if (exe_flag) {
+          $('#execute').css("opacity", "1");
+        }
+      } else {
+        $('#execute').css("opacity", "0.5");
+      }
+    });
+  },
+  g: function ()
+  {
+    $('#execute').on('mouseup', function(){
+      var exe_flag = true;
+      $(".caution-box input").each(function(i) {
+        if (!$(this).prop("checked")) {
+          exe_flag = false;
+          return false;
+        }
+      });
+      if (exe_flag) {
+        $('.loader').airCenter();
+        $('.airloader-overlay').show();
+        $(this).closest("form").submit();
+      }
+    });
   },
   h: function()
   {
-    $('#execute').on('click', function (e) {
-      if ($('.dsn-select-cards').css('display') === 'none'){
-        gmoCreditCardPayment.setGMOTokenAndRegisterCreditCard();
-      } else {
-        gmoCreditCardPayment.setGMOTokenAndUpdateCreditCard();
-      }
-    });
+    // validation メッセージが表示される時に、ページ上部に表示する
+    if ($('p').hasClass('valid-il')) {
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
+    }
   },
 
-  init_disp1: function () {
-    // 合計点数の初期化
-    var total_number = Number(0);
-    $('.js-item-number').each(function () {
-      var set_number = $(this).val();
-      var selector_name = $(this).data("name");
-      $('input[name='+ selector_name + ']').val(set_number);
-      total_number += Number(set_number);
-      // console.log('number:' + number);
-    });
-
-    if (total_number === 0) {
-      $('#js-item-total').html('0点');
-    } else {
-      $('#js-item-total').html(total_number +'点');
+  init_disp1: function() {
+    // 初回表示時
+    if ($("#datetime_cd").val() === null) {
+      // お届け希望リスト生成
+      AppInputOrder.getDatetime();
     }
   },
   init_disp2: function () {
-    // 住所入力の場合
-    if ($('#address_id').val() == -99)
-    {
-      $('.dsn-input-new-adress').show('slow');
+    // タイプ別箱の合計値設定
+    var box_type_list = [
+      {class : 'box_type_hanger',   id : 'hanger_total'  , flag : 'hanger'},
+      {class : 'box_type_hako',     id : 'hako_total'    , flag : 'other'},
+      {class : 'box_type_mono',     id : 'mono_total'    , flag : 'other'},
+      {class : 'box_type_library',  id : 'library_total' , flag : 'other'},
+      {class : 'box_type_cleaning', id : 'cleaning_total', flag : 'other'},
+    ];
+    var flag_total = [];
+    flag_total['other']  = 0;
+    flag_total['hanger'] = 0;
+    $.each(box_type_list, function (index, box) {
+        var type_total = 0;
+        $('.' + box.class).each(function () {
+          var type_value = $(this).val();
+          if ($.isNumeric(type_value)) {
+            type_total += parseFloat(type_value);
+          }
+        });
+        // タイプ別箱合計値セット
+        $('#' + box.id).html(type_total);
+        // 購入タイプ(API)
+        flag_total[box.flag] += parseFloat(type_total);
+    });
+
+    // お届け日時
+    if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+      $('.select_other').hide();
     } else {
-      $('.dsn-input-new-adress').hide('slow');
+      $('.select_other').show();
     }
 
-  },
-  init_disp3: function () {
-    if ($('.dsn-select-cards').css('display') === 'none')
-    {
-      $('.dsn-input-security-code').hide('slow');
-      $('.dsn-input-change-card').show('slow');
-    } else if ($('input[name=select-card]:checked').val() === 'default') {
-      $('.dsn-input-security-code').show('slow');
-      $('.dsn-input-change-card').hide('slow');
-    } else {
-//      console.log('is change');
+    var valueStep = 1;
+    var minValue  = 0;
+    var maxValue  = 20;
+    // var flagType  = '';
+    $('.btn-spinner').on('mousedown', function() {
 
-      $('.dsn-input-security-code').hide('slow');
-      $('.dsn-input-change-card').show('slow');
-    }
-  },
-
-  init_disp4: function() {
-    // 住所デフォルトでお届け先が非表示になる場合
-    // 住所追加ではない場合
-    if($('#address_id').val() != -99 ){
-      // お届先が未選択状態
-      if ($("#datetime_cd").val() === null) {
-        // お届け希望リスト生成
-        AppInputOrder.getDatetime();
+      // ハンガー用出力エリア制御
+      if($(this).closest(".type_other").length > 0){
+        flagType = 'other';
+      } else {
+        flagType = 'hanger';
       }
-    }
-  },
-  init_disp5: function() {
-
-    // 住所追加の場合
-    if($('#address_id').val() == -99 ){
-
-      // 郵便番号入力済
-      if ($("#postal").val() !== '') {
-
-        // お届け先希望未指定
-        if ($("#datetime_cd").val() === null) {
-          // お届け先を追加
-          AppInputOrder.getDatetimePostal();
+      var itemValue  = parseInt($(this).parents('.spinner').find('.input-spinner').val());
+      var btnType  = $(this).attr('name');
+      if (btnType === 'spinner_down') {
+        if (itemValue > minValue) {
+          flag_total[flagType] = parseInt(flag_total[flagType]) - valueStep;
         }
       }
+      if (btnType === 'spinner_up') {
+        if (itemValue < maxValue) {
+          flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
+        }
+      }
+      // お届け日時
+      if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+        $('.select_other').hide('slow');
+      } else {
+        $('.select_other').show('slow');
+      }
+    });
+    return false;
+  },
+  init_disp3: function () {
+    // ハンガー時にボタンを薄くする
+    if ($('.caution-box').css('display') != 'none') {
+      $('#execute').css("opacity", "0.5");
     }
   },
 
@@ -130,39 +211,29 @@ var AppInputOrder =
     var elem_address = $('#address_id');
     var elem_datetime = $('#datetime_cd');
 
-    // 未選択また「追加」を選択
-    if (!elem_address.val() || elem_address.val() == -99) {
-      $('.dsn-input-new-adress').show('slow');
-      elem_datetime.empty();
-      return;
-    }
+    // 引数取得
+    var data = {
+      "address_id" : elem_address.val()
+    };
 
-    // アドレス入力を非表示
-    $('.dsn-input-new-adress').hide('slow');
-
-    $('option:first', elem_datetime).prop('selected', true);
-    elem_datetime.attr("disabled", "disabled");
-
-    $.post('/order/getAddressDatetime',
-      { address_id: elem_address.val() },
-      function(data){
-        if (data.result) {
-          elem_datetime.empty();
-          var optionItems = new Array();
-          $.each(data.result, function() {
-              optionItems.push(new Option(this.text, this.datetime_cd));
-          });
-          // 戻る対応でリストをpostする
-          $('#select_delivery').val(JSON.stringify(data.result));
-
-          elem_datetime.append(optionItems);
-        };
-      },
-      'json'
-    ).always(function() {
-      elem_datetime.removeAttr("disabled");
+    $.ajax({
+        url      : '/order/as_get_datetime_by_address_id',
+        cache    : false,
+        data     : data,
+        dataType : 'json',
+        type     : 'POST'
+    }).done(function (data, textStatus, jqXHR) {
+        elem_datetime.empty();
+        $.each(data.result.results, function (index, datatime) {
+            elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
+        });
+    }).fail(function (data, textStatus, errorThrown) {
+        // TODO どうするかな
+    }).always(function (data, textStatus, returnedObject) {
+        elem_datetime.removeAttr("disabled");
     });
   },
+
   getDatetimePostal: function (){
       var elem_postal = $('#postal');
       var elem_datetime = $('#datetime_cd');
@@ -171,88 +242,35 @@ var AppInputOrder =
       elem_datetime.attr("disabled", "disabled");
 
       // 引数取得
-      var params = {};
-      params.postal = elem_postal.val();
+      var data = {
+          "postal" : elem_postal.val()
+      };
 
       // API実行
-      if (params.postal != '') {
+      if (data.postal != '') {
         $.ajax({
-          url: '/order/as_get_address_datetime_by_postal',
-          cache: false,
-          data: params,
-          dataType: 'json',
-          type: 'POST'
+          url      : '/order/as_get_datetime_by_postal',
+          cache    : false,
+          data     : data,
+          dataType : 'json',
+          type     : 'POST'
         }).done(function (data, textStatus, jqXHR) {
-          $('#datetime_cd > option').remove();
-          // 成功時 お届け日時セット
-          elem_datetime.append($('<option>').html('以下からお選びください').val(''));
-          $.each(data.results, function (index, datatime) {
-            elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
-          });
-          // 戻る対応でリストをpostする
-          $('#select_delivery').val(JSON.stringify(data.results));
+            elem_datetime.empty();
+            $.each(data.result.results, function (index, datatime) {
+                elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
+            });
         }).fail(function (data, textStatus, errorThrown) {
-          // 失敗時 お届け日時リセット
-          $('#datetime_cd > option').remove();
-          $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
+            // TODO どうするかな
         }).always(function (data, textStatus, returnedObject) {
-          elem_datetime.removeAttr("disabled");
-          //  $('body').airLoader().end();
+            elem_datetime.removeAttr("disabled");
         });
       } else {
         // お届け日時リセット
         $('#datetime_cd > option').remove();
-        $('#datetime_cd').append($('<option>').html('以下からお選びください').val(''));
-        elem_datetime.removeAttr("disabled");
+        $('#datetime_cd').append($('<option>').html('住所設定をお願いします').val(''));
+        elem_datetime.attr("disabled");
       }
     },
-}
-
-// FirstOrderから移植
-var AppAddOrder =
-{
-  a: function () {
-    // ボックス数選択
-    $('.js-item-number').change(function () {
-      var selector = $(this).data("box_type");
-      var number = Number(0);
-      var total_number = Number(0);
-
-      $('.js-item-'+ selector).each(function () {
-        var set_number = $(this).val();
-        var selector_name = $(this).data("name");
-        $('input[name='+ selector_name + ']').val(set_number);
-        number += Number(set_number);
-        // console.log('number:' + number);
-      });
-
-      $('.js-item-number').each(function () {
-        var set_number = $(this).val();
-        var selector_name = $(this).data("name");
-        $('input[name='+ selector_name + ']').val(set_number);
-        total_number += Number(set_number);
-        // console.log('number:' + number);
-      });
-
-      if (number === 0) {
-        $('#select_' + selector).html('未選択');
-      } else {
-        $('#select_' + selector).html('<span>' +  number +'個選択済み</span>');
-      }
-
-      if (total_number === 0) {
-        $('#js-item-total').html('0点');
-      } else {
-        $('#js-item-total').html(total_number +'点');
-      }
-    });
-  },
-
-  b: function () {
-    $('.btn-submit').on('click', function (e) {
-      $('form').submit();
-    });
-  },
 }
 
 /*
@@ -271,9 +289,5 @@ $(function()
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppInputOrder.init_disp3();
-  AppInputOrder.init_disp4();
-  AppInputOrder.init_disp5();
-  AppAddOrder.a();
-  AppAddOrder.b();
 });
 

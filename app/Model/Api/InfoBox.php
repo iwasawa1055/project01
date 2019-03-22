@@ -124,6 +124,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_SNEAKERS];
         } elseif ($product === 'library') {
             $productCd = [PRODUCT_CD_LIBRARY];
+        } elseif ($product === 'closet') {
+            $productCd = [PRODUCT_CD_CLOSET];
         }
 
         $okStatus = [
@@ -152,6 +154,12 @@ class InfoBox extends ApiCachedModel
             if(!array_key_exists($value['product_cd'], PRODUCT_NAME)){
                 unset($list[$key]);
             }
+        }
+
+        // お預かり順ソートは最終入庫日を見るように修正
+        if (isset($sortKey['inbound_date'])) {
+            $sortKey['last_inbound_date'] = $sortKey['inbound_date'];
+            unset($sortKey['inbound_date']);
         }
 
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
@@ -195,6 +203,9 @@ class InfoBox extends ApiCachedModel
             case KIT_CD_LIBRARY_DEFAULT:
             case KIT_CD_LIBRARY_GVIDO:
                 $productCd = PRODUCT_CD_LIBRARY;
+                break;
+            case KIT_CD_CLOSET:
+                $productCd = PRODUCT_CD_CLOSET;
                 break;
             default:
                 break;

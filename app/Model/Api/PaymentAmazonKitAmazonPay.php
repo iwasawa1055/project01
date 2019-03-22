@@ -37,14 +37,11 @@ class PaymentAmazonKitAmazonPay extends ApiModel
                 'message' => ['format', 'kit_mono_num'],
             ],
         ],
-        'mono_book_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
-            ],
-        ],
         'hako_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
@@ -66,10 +63,25 @@ class PaymentAmazonKitAmazonPay extends ApiModel
             ],
         ],
         'cleaning_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
                 'message' => ['format', 'kit_cleaning_num'],
+            ],
+        ],
+        'library_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => ['format', 'kit_library_num'],
             ],
         ],
         'access_token' => [
@@ -177,6 +189,7 @@ class PaymentAmazonKitAmazonPay extends ApiModel
             !empty($this->data[$this->model_name]['hako_num']) ||
             !empty($this->data[$this->model_name]['hako_appa_num']) ||
             !empty($this->data[$this->model_name]['hako_book_num']) ||
+            !empty($this->data[$this->model_name]['library_num']) ||
             !empty($this->data[$this->model_name]['cleaning_num'])) {
             return true;
         } else {

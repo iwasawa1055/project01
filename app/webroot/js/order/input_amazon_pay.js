@@ -1,77 +1,122 @@
+var flag_total = [];
 var AppInputOrder =
 {
-  g: function()
+  a: function ()
+  {
+    $('.caution-box input').change(function () {
+      if ($(this).prop('checked')) {
+        var exe_flag = true;
+        $(".caution-box input").each(function(i) {
+          if ($(this).prop("checked") == false) {
+            exe_flag = false;
+            return false;
+          }
+        });
+        if (exe_flag) {
+          $('#execute').css("opacity", "1");
+        }
+      } else {
+        $('#execute').css("opacity", "0.5");
+      }
+    });
+  },
+  b: function ()
+  {
+    $('#execute').on('mouseup', function(){
+      var exe_flag = true;
+      $(".caution-box input").each(function(i) {
+        if (!$(this).prop("checked")) {
+          exe_flag = false;
+          return false;
+        }
+      });
+      if (exe_flag) {
+        $('.loader').airCenter();
+        $('.airloader-overlay').show();
+        $(this).closest("form").submit();
+      }
+    });
+  },
+  c: function()
   {
     // validation メッセージが表示される時に、ページ上部に表示する
-    if ($('span').hasClass('validation')) {
-      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-form');
+    if ($('p').hasClass('valid-il')) {
+      $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.head_validation');
     }
   },
+
   init_disp1: function () {
-    // 合計点数の初期化
-    var total_number = Number(0);
-    $('.js-item-number').each(function () {
-      var set_number = $(this).val();
-      var selector_name = $(this).data("name");
-      $('input[name='+ selector_name + ']').val(set_number);
-      total_number += Number(set_number);
-      // console.log('number:' + number);
+    // タイプ別箱の合計値設定
+    var box_type_list = [
+      {class : 'box_type_hanger',   id : 'hanger_total'  , flag : 'hanger'},
+      {class : 'box_type_hako',     id : 'hako_total'    , flag : 'other'},
+      {class : 'box_type_mono',     id : 'mono_total'    , flag : 'other'},
+      {class : 'box_type_library',  id : 'library_total' , flag : 'other'},
+      {class : 'box_type_cleaning', id : 'cleaning_total', flag : 'other'},
+    ];
+    flag_total['other']  = 0;
+    flag_total['hanger'] = 0;
+    $.each(box_type_list, function (index, box) {
+      var type_total = 0;
+      $('.' + box.class).each(function () {
+        var type_value = $(this).val();
+        if ($.isNumeric(type_value)) {
+          type_total += parseFloat(type_value);
+        }
+      });
+      // タイプ別箱合計値セット
+      $('#' + box.id).html(type_total);
+      // 購入タイプ(API)
+      flag_total[box.flag] += parseFloat(type_total);
     });
 
-    if (total_number === 0) {
-      $('#js-item-total').html('0点');
+    // お届け日時
+    if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+      $('.select_other').hide();
     } else {
-      $('#js-item-total').html(total_number +'点');
+      $('.select_other').show();
+    }
+
+    var valueStep = 1;
+    var minValue  = 0;
+    var maxValue  = 20;
+    // var flagType  = '';
+    $('.btn-spinner').on('mousedown', function() {
+
+      // ハンガー用出力エリア制御
+      if($(this).closest(".type_other").length > 0){
+        flagType = 'other';
+      } else {
+        flagType = 'hanger';
+      }
+      var itemValue  = parseInt($(this).parents('.spinner').find('.input-spinner').val());
+      var btnType  = $(this).attr('name');
+      if (btnType === 'spinner_down') {
+        if (itemValue > minValue) {
+          flag_total[flagType] = parseInt(flag_total[flagType]) - valueStep;
+        }
+      }
+      if (btnType === 'spinner_up') {
+        if (itemValue < maxValue) {
+          flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
+        }
+      }
+      // お届け日時
+      if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+        $('.select_other').hide('slow');
+      } else {
+        $('.select_other').show('slow');
+      }
+    });
+    return false;
+  },
+  init_disp2: function () {
+    // ハンガー時にボタンを薄くする
+    if ($('.caution-box').css('display') != 'none') {
+      $('#execute').css("opacity", "0.5");
     }
   },
 
-}
-
-// FirstOrderから移植
-var AppAddOrder =
-{
-  a: function () {
-    // ボックス数選択
-    $('.js-item-number').change(function () {
-      var selector = $(this).data("box_type");
-      var number = Number(0);
-      var total_number = Number(0);
-
-      $('.js-item-'+ selector).each(function () {
-        var set_number = $(this).val();
-        var selector_name = $(this).data("name");
-        $('input[name='+ selector_name + ']').val(set_number);
-        number += Number(set_number);
-        // console.log('number:' + number);
-      });
-
-      $('.js-item-number').each(function () {
-        var set_number = $(this).val();
-        var selector_name = $(this).data("name");
-        $('input[name='+ selector_name + ']').val(set_number);
-        total_number += Number(set_number);
-        // console.log('number:' + number);
-      });
-
-      if (number === 0) {
-        $('#select_' + selector).html('未選択');
-      } else {
-        $('#select_' + selector).html('<span>' +  number +'個選択済み</span>');
-      }
-
-      if (total_number === 0) {
-        $('#js-item-total').html('0点');
-      } else {
-        $('#js-item-total').html(total_number +'点');
-      }
-    });
-  },
-
-  b: function () {
-    $('.btn-submit').on('click', function (e) {
-      $('form').submit();
-    });
-  },
 }
 
 var AppAmazonPay =
@@ -81,20 +126,42 @@ var AppAmazonPay =
 
     a: function () {
         $('.js-btn-submit').on('click', function (e) {
+          // クローゼット未選択
+          if (flag_total['hanger'] == 0) {
             var self = $(this);
-            var add_billing  = $('<input type="hidden" name="amazon_order_reference_id">');
+            var add_billing  = $('<input type="hidden" name="PaymentAmazonKitAmazonPay[amazon_order_reference_id]">');
             add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
             add_billing.insertAfter(self);
 
             // サブミット前チェック確認
             // 定期購入未チェックでエラー
             if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
+              $('#payment_consent_alert').show();
+              return;
+            }
+            $(this).closest("form").submit();
+          // クローゼット選択
+          } else {
+            // クローゼットとその他を選択
+            if (flag_total['other'] > 0 && flag_total['hanger'] > 0) {
+              alert('クローゼットと他の商品は同時購入できません');
+              return false;
+            // クローゼットのみ選択
+            } else {
+              var self = $(this);
+              var add_billing  = $('<input type="hidden" name="PaymentAmazonKitAmazonPay[amazon_order_reference_id]">');
+              add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
+              add_billing.insertAfter(self);
+
+              // サブミット前チェック確認
+              // 定期購入未チェックでエラー
+              if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
                 $('#payment_consent_alert').show();
                 return;
+              }
+              $(this).closest("form").submit();
             }
-
-            $(this).closest("form").submit();
-
+          }
         });
     },
     b: function () {
@@ -163,20 +230,10 @@ var AppAmazonPay =
                 dataType: 'json',
                 type: 'POST'
             }).done(function (data, textStatus, jqXHR) {
-                $('#datetime_cd > option').remove();
-                // 成功時 お届け日時セット
-                elem_datetime.append($('<option>').html('以下からお選びください').val(''));
-                $.each(data.results, function (index, datatime) {
-                    elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
-                });
-
-                //選択済保持
-                if ($("#js-datetime_cd").val() != '') {
-                    $("#datetime_cd").val($("#js-datetime_cd").val());
-                }
-
-                // 戻る対応でリストをpostする
-                $('#select_delivery').val(JSON.stringify(data.results));
+              elem_datetime.empty();
+              $.each(data.result.results, function (index, datatime) {
+                elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
+              });
             }).fail(function (data, textStatus, errorThrown) {
                 // 失敗時 お届け日時リセット
                 $('#datetime_cd > option').remove();
@@ -266,10 +323,11 @@ AppAmazonPayWallet.a();
  * */
 $(function()
 {
-  AppInputOrder.g();
+  AppInputOrder.a();
+  AppInputOrder.b();
+  AppInputOrder.c();
   AppInputOrder.init_disp1();
-  AppAddOrder.a();
-  AppAddOrder.b();
+  AppInputOrder.init_disp2();
   AppAmazonPay.a();
   AppAmazonPay.b();
   AppAmazonPay.c();

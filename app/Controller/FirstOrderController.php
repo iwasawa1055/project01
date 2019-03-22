@@ -37,6 +37,23 @@ class FirstOrderController extends MinikuraController
      */
     public function index()
     {
+        //紹介コードの取得
+        $alliance_cd = '';
+        if (isset($_GET['alliance_cd'])) {
+            $alliance_cd = $_GET['alliance_cd'];
+        } elseif (CakeSession::read('app.data.alliance_cd')) {
+            $alliance_cd = CakeSession::read('app.data.alliance_cd');
+        }
+
+        //紹介コードの確認
+        if ($alliance_cd === '') {
+            #21226 初回登録導線の改修でこのページは会員登録にリダイレクト
+            $this->redirect('/customer/register/add');
+        } else {
+            #21226 初回登録導線の改修でこのページは会員登録にリダイレクト
+            $this->redirect('/customer/register/add?alliance_cd=' . $alliance_cd);
+        }
+
         // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookie()を削除します。
         // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
         setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
@@ -119,6 +136,23 @@ class FirstOrderController extends MinikuraController
      */
     public function add_order()
     {
+        //紹介コードの取得
+        $alliance_cd = '';
+        if (isset($_GET['alliance_cd'])) {
+            $alliance_cd = $_GET['alliance_cd'];
+        } elseif (CakeSession::read('app.data.alliance_cd')) {
+            $alliance_cd = CakeSession::read('app.data.alliance_cd');
+        }
+
+        //紹介コードの確認
+        if ($alliance_cd === '') {
+            #21226 初回登録導線の改修でこのページは会員登録にリダイレクト
+            $this->redirect('/customer/register/add');
+        } else {
+            #21226 初回登録導線の改修でこのページは会員登録にリダイレクト
+            $this->redirect('/customer/register/add?alliance_cd=' . $alliance_cd);
+        }
+
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/index', 'FirstOrder/add_order', 'FirstOrder/confirm_order', 'FirstOrder/add_address', 'FirstOrderDirectInbound/add_address'], true) === false) {
             //* NG redirect

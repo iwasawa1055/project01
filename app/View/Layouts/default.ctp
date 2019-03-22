@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="keywords" content="minikura,あずける,トラクルーム,収納スペース">
 <meta name="description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
-<meta property="og:locale" content="ja_JP" /> 
+<meta property="og:locale" content="ja_JP" />
 <meta property="og:site_name"  content="minikura" />
 <meta property="og:title" content="minikura" />
 <meta property="og:type" content="website" />
@@ -124,6 +124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   $this->Html->script('metisMenu.min', ['inline' => false]);
   $this->Html->script('animsition.min', ['inline' => false]);
   $this->Html->script('remodal.min', ['inline' => false]);
+  $this->Html->script('iziModal.min', ['inline' => false]);
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
   $this->Html->script('jquery.airCenter', ['inline' => false]);

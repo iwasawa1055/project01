@@ -46,6 +46,7 @@ $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
 $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
 $config['api.minikura.access_point.amazon_pay_v4'] = $url . '/v4/amazon_pay';
 $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
+$config['api.minikura.access_point.facebook_v5'] = $url . '/v5/facebook';
 
 //* strage server
 $config['api.strage.host'] = '192.168.16.124';
@@ -113,6 +114,12 @@ $config['app']['amazon_pay']['sandbox'] = 'true';
  */
 $config['app']['gmo']['token_url'] = 'https://pt01.mul-pay.jp/ext/js/token.js';
 $config['app']['gmo']['shop_id'] = 'tshop00019363';
+
+/**
+ * facebook 設定値
+ */
+$config['app']['facebook']['app_id'] = '382847972547430';
+$config['app']['facebook']['version'] = 'v3.2';
 
 /**
  * zendesk 設定値

@@ -12,6 +12,7 @@ App::uses('ContactUs', 'Model');
 App::uses('ContactUsCorporate', 'Model');
 App::uses('CustomerEmail', 'Model');
 App::uses('CustomerSales', 'Model');
+App::uses('CustomerFacebook', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');
@@ -168,6 +169,16 @@ class CustomerComponent extends Component
         return true;
     }
 
+    public function isFacebook()
+    {
+        $model = new CustomerFacebook();
+        $res = $model->apiGet();
+        if (isset($res->results[0])) {
+            return true;
+        }
+        return false;
+    }
+
     public function getName()
     {
         if ($this->isLogined()) {
@@ -318,7 +329,7 @@ class CustomerComponent extends Component
         if ($this->isLogined()) {
             $oem_cd = $this->getInfo()['oem_cd'];
             if ($oem_cd === Configure::read('api.sneakers.alliance_cd')) {
-                return true;    
+                return true;
             }
         }
         return false;

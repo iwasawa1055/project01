@@ -27,49 +27,61 @@ class PaymentGMOKitByCreditCard extends ApiModel
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
+                'message' => ['format', 'kit_mono_regular_num'],
             ],
         ],
         'mono_appa_num' => [
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
-            ],
-        ],
-        'mono_book_num' => [
-            'isStringInteger' => [
-                'rule' => 'isStringInteger',
-                'allowEmpty' => true,
-                'message' => ['format', 'kit_mono_num'],
+                'message' => ['format', 'kit_mono_wide_num'],
             ],
         ],
         'hako_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_num'],
+                'message' => ['format', 'kit_hako_regular_num'],
             ],
         ],
         'hako_appa_num' => [
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_num'],
+                'message' => ['format', 'kit_hako_wide_num'],
             ],
         ],
         'hako_book_num' => [
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
-                'message' => ['format', 'kit_hako_num'],
+                'message' => ['format', 'kit_hako_book_num'],
             ],
         ],
         'cleaning_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
             'isStringInteger' => [
                 'rule' => 'isStringInteger',
                 'allowEmpty' => true,
                 'message' => ['format', 'kit_cleaning_num'],
+            ],
+        ],
+        'library_num' => [
+            'checkNotEmpty' => [
+                'rule' => 'checkNotEmpty',
+                'message' => ['checkNotEmpty', 'box'],
+            ],
+            'isStringInteger' => [
+                'rule' => 'isStringInteger',
+                'allowEmpty' => true,
+                'message' => ['format', 'kit_library_num'],
             ],
         ],
         'card_seq' => [
@@ -116,6 +128,36 @@ class PaymentGMOKitByCreditCard extends ApiModel
                 'message' => ['notBlank', 'staff_name']
             ],
         ],
+        'lastname' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'lastname']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'lastname', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'firstname']
+            ],
+        ],
+        'firstname' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'firstname']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 29],
+                'message' => ['maxLength', 'firstname', 29]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'firstname']
+            ],
+        ],
         'tel1' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -153,6 +195,54 @@ class PaymentGMOKitByCreditCard extends ApiModel
                 'message' => ['notBlank', 'staff_name']
             ],
         ],
+        'pref' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'pref']
+            ],
+            'isPrefNameJp' => [
+                'rule' => 'isPrefNameJp',
+                'message' => ['format', 'pref']
+            ],
+        ],
+        'address1' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'address1']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 8],
+                'message' => ['maxLength', 'address1', 8]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'address1']
+            ],
+        ],
+        'address2' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'address2']
+            ],
+            'maxLength' => [
+                'rule' => ['maxLength', 18],
+                'message' => ['maxLength', 'address2', 18]
+            ],
+            'isNotOnlySpace' => [
+                'rule' => 'isNotOnlySpace',
+                'message' => ['notBlank', 'address2']
+            ],
+        ],
+        'address3' => [
+            'maxLength' => [
+                'rule' => ['maxLength', 30],
+                'allowEmpty' => true,
+                'message' => ['maxLength', 'address3', 30]
+            ],
+        ],
         'datetime_cd' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -181,6 +271,7 @@ class PaymentGMOKitByCreditCard extends ApiModel
             !empty($this->data[$this->model_name]['hako_num']) ||
             !empty($this->data[$this->model_name]['hako_appa_num']) ||
             !empty($this->data[$this->model_name]['hako_book_num']) ||
+            !empty($this->data[$this->model_name]['library_num']) ||
             !empty($this->data[$this->model_name]['cleaning_num'])) {
             return true;
         } else {

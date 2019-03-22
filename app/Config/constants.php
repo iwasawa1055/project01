@@ -62,7 +62,7 @@ const ACCOUNT_SITUATION_AMAZON_PAY = 'AmazonPay';
 const CORPORATE_PAYMENT_METHOD = [
     'unregistered' => '振替口座未登録',
     'registration' => '口座振替',
-    'credit_card' => 'クレジットカード', 
+    'credit_card' => 'クレジットカード',
 ];
 
 // 配送業者コード
@@ -103,6 +103,7 @@ const KIT_CD_STARTER_MONO_BOOK = '202';
 const KIT_CD_HAKO_LIMITED_VER1 = '203';
 const KIT_CD_LIBRARY_DEFAULT = '214';
 const KIT_CD_LIBRARY_GVIDO = '215';
+const KIT_CD_CLOSET = '216';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -114,6 +115,7 @@ const PRODUCT_CD_SHOES_PACK = '005000';
 const PRODUCT_CD_SNEAKERS = '005310';
 const PRODUCT_CD_DIRECT_INBOUND = '005003';
 const PRODUCT_CD_LIBRARY = '005004';
+const PRODUCT_CD_CLOSET = '005005';
 
 // box_status, item_status
 // キット購入・依頼
@@ -173,34 +175,44 @@ const KIT_OPTION = [
 
 const KIT_NAME = [
     KIT_CD_HAKO => 'minikuraHAKO（レギュラーボックス）',
-    KIT_CD_HAKO_APPAREL => 'minikuraHAKO（アパレルボックス）',
+    KIT_CD_HAKO_APPAREL => 'minikuraHAKO（ワイドボックス）',
     KIT_CD_HAKO_BOOK => 'minikuraHAKO（ブックボックス）',
     KIT_CD_MONO => 'minikuraMONO（レギュラーボックス）',
-    KIT_CD_MONO_APPAREL => 'minikuraMONO（アパレルボックス）',
+    KIT_CD_MONO_APPAREL => 'minikuraMONO（ワイドボックス）',
     KIT_CD_MONO_BOOK => 'minikuraMONO（ブックボックス）',
     KIT_CD_WINE_HAKO => 'minikuraWine-HAKO-',
     KIT_CD_WINE_MONO => 'minikuraWine-MONO-',
     KIT_CD_CLEANING_PACK => 'minikuraクリーニングパック',
     KIT_CD_SNEAKERS => 'minikura SNEAKERS KIT',
     KIT_CD_STARTER_MONO => 'スターターキット minikuraMONO（レギュラーボックス）',
-    KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（アパレルボックス）',
+    KIT_CD_STARTER_MONO_APPAREL => 'スターターキット minikuraMONO（ワイドボックス）',
     KIT_CD_STARTER_MONO_BOOK => 'スターターキット minikuraMONO（ブックボックス）',
     KIT_CD_HAKO_LIMITED_VER1 => 'minikura HAKOお片付けパック',
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
     KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
+    KIT_CD_CLOSET => 'minikuraCloset',
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
-    'mono'          => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
-    'mono_apparel'  => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO アパレルボックス'),
-    'mono_book'     => array('code' => KIT_CD_MONO_BOOK,        'name' => 'MONO ブックボックス'),
-    'hako'          => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
-    'hako_apparel'  => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO アパレルボックス'),
-    'hako_book'     => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
-    'cleaning'      => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
-    'sneaker'       => array('code' => KIT_CD_SNEAKERS,         'name' => 'SNEAKERS'),
-    'library'       => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Libraryボックス'),
-    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Libraryボックス'),
+    'mono_num'      => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
+    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO ワイドボックス'),
+    'hako_num'      => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
+    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO ワイドボックス'),
+    'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
+    'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
+    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Library ボックス'),
+    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Library ボックス'),
+    'hanger_num'    => array('code' => KIT_CD_CLOSET,           'name' => 'Closet ボックス'),
+];
+
+const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
+    'Name'          => 'name',
+    'PostalCode'    => 'postal',
+    'StateOrRegion' => 'pref',
+    'AddressLine1'  => 'address1',
+    'AddressLine2'  => 'address2',
+    'AddressLine3'  => 'address3',
+    'Phone'         => 'tel1',
 ];
 
 const PRODUCT_NAME = [
@@ -213,6 +225,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_SNEAKERS => 'minikura SNEAKERS',
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
     PRODUCT_CD_LIBRARY => 'minikuraLibrary',
+    PRODUCT_CD_CLOSET => 'minikuraCloset',
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -314,6 +327,12 @@ const IN_USE_SERVICE = [
             'product_cd' => PRODUCT_CD_LIBRARY,
             'name_mobile' => 'minikura<br />Library',
         ],
+        [
+            'product' => 'closet',
+            'name' => 'minikuraCloset',
+            'product_cd' => PRODUCT_CD_CLOSET,
+            'name_mobile' => 'minikura<br />Closet',
+        ],
     ],
     'sneakers' => [
         [
@@ -358,18 +377,18 @@ const NEWS_LASTEST_ARTICLE_LIMIT = 5;
 
 const SORT_ORDER = [
     'box' => [
-        'inbound_date' => 'お預かり日順 で', 
-        'box_id' => 'ボックスID順 で', 
+        'inbound_date' => 'お預かり日順 で',
+        'box_id' => 'ボックスID順 で',
         'box_name' => 'ボックス名順 で'
     ],
     'item' => [
-        'inbound_date' => 'お預かり日順 で', 
-        'item_id' => 'アイテムID順 で', 
+        'inbound_date' => 'お預かり日順 で',
+        'item_id' => 'アイテムID順 で',
         'item_name' => 'アイテム名順 で'
     ],
     'item_grid' => [
-        'inbound_date' => 'お預かり日順', 
-        'item_id' => 'アイテムID順', 
+        'inbound_date' => 'お預かり日順',
+        'item_id' => 'アイテムID順',
         'item_name' => 'アイテム名順'
     ],
 ];
@@ -392,7 +411,7 @@ const RANK_RATE = [
     'neary_num' => 5,
 ];
 // ニュース機能on off 切り替え
-// 1:稼働中 0:停止中 
+// 1:稼働中 0:停止中
 const NEWS_ACTIVE_FLAG = 1;
 
 // お知らせで表示しないメッセージに含まれる文字
@@ -436,3 +455,15 @@ const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しま
 const LIBRARY_OUTBOUND_BASIC_PRICE = 350; //出庫基本料金
 const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金
 const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 850; //1箱解約時出庫基本料金
+
+// REGISTER(会員登録)用
+const REGISTER_CUSTOMER_DEFAULT_BIRTH_START_YEAR = 1920;
+const REGISTER_CUSTOMER_DEFAULT_BIRTH_DEFAULT_YEAR = 1980;
+
+// 営業日
+const EXPECTED_STORING_COMPLETE_DATE_HAKO = 1;
+const EXPECTED_STORING_COMPLETE_DATE_MONO = 7;
+const EXPECTED_STORING_COMPLETE_DATE_MONO_DASH = 3;
+const EXPECTED_STORING_COMPLETE_DATE_LIBRARY = 7;
+const EXPECTED_STORING_COMPLETE_DATE_CLOSET = 7;
+const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 7   ;

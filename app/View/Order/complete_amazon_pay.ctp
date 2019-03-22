@@ -1,40 +1,76 @@
-<?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 
+  <?php echo $this->Form->create('PaymentAmazonKitAmazonPay', ['novalidate' => true]); ?>
 
-<div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
-      </div>
+    <div id="page-wrapper" class="lineup wrapper">
+      <?php echo $this->Flash->render(); ?>
+
+      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+
+      <?php echo $this->element('Order/breadcrumb_list'); ?>
+
+      <p class="page-caption">以下の内容でボックス購入手続きが完了しました。</p>
+
+      <ul class="input-info">
+        <?php $order_cnt = 1;?>
+        <?php foreach($order_list as $order_type => $order_data): ?>
+        <li>
+          <label class="headline">ご注文内容<?php echo $order_cnt; ?></label>
+          <table class="usage-details">
+            <thead>
+            <tr>
+              <th>商品名</th>
+              <td>個数</td>
+              <td>価格</td>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($order_data as $key => $item): ?>
+            <tr>
+              <th><?php echo $item['kit_name'] ?></th>
+              <td><?php echo $item['number'] ?></td>
+              <td></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tr>
+              <th>合計</th>
+              <td><?php echo $order_total_data[$order_type]['number'] ?></td>
+              <td><?php echo $order_total_data[$order_type]['price'] ?></td>
+            </tr>
+          </table>
+        </li>
+        <li>
+          <label class="headline">配送住所</label>
+          <ul class="li-address">
+            <li>〒<?php echo h($PaymentAmazonKitAmazonPay['postal']); ?></li>
+            <li><?php echo h($PaymentAmazonKitAmazonPay['address']); ?></li>
+            <li><?php echo h($PaymentAmazonKitAmazonPay['name']); ?></li>
+            <li><?php echo h($PaymentAmazonKitAmazonPay['tel1']); ?></li>
+          </ul>
+        </li>
+        <?php if($order_type === 'other') :?>
+        <li>
+          <label class="headline">お届け日時</label>
+          <ul class="li-address">
+            <li><?php echo h($PaymentAmazonKitAmazonPay['select_delivery_text']); ?></li>
+          </ul>
+        </li>
+        <?php endif; ?>
+        <li class="border_gray"></li>
+        <?php $order_cnt++;?>
+        <?php endforeach; ?>
+        <li>
+          <label class="headline">決済</label>
+          <ul class="li-credit">
+            <li>Amazon Pay</li>
+          </ul>
+        </li>
+      </ul>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <section id="dsn-pagenation">
-                  <ul>
-                      <li>
-                          <i class="fa fa-hand-o-right"></i><span>ボックス<br>選択</span>
-                      </li>
-                      <li>
-                          <i class="fa fa-check"></i><span>確認</span>
-                      </li>
-                      <li class="dsn-on">
-                          <i class="fa fa-truck"></i><span>完了</span>
-                      </li>
-                  </ul>
-                </section>
-                <section id="dsn-adress" class="dsn-complete">
-                    <h2>注文が完了しました。</h2>
-                    <div class="dsn-wrapper">
-                        <div class="dsn-form">
-                            <p class="dsn-dialog">専用ボックスのご注文ありがとうございました。</p>
-                            <p class="dsn-dialog">ご登録メールアドレスにお送りしました完了メールをご確認ください。</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <section class="dsn-nextback fix dev-forefront"><a href="/" class="dsn-btn-next-full">マイページトップへ進む <i class="fa fa-chevron-circle-right"></i></a>
-            </section>
-        </div>
+    <div class="nav-fixed">
+      <ul>
+        <li><a class="btn-red" href="/">トップへ</a>
+        </li>
+      </ul>
     </div>
+  <?php echo $this->Form->end(); ?>
