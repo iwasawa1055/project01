@@ -56,10 +56,11 @@ class OutboundController extends MinikuraController
      */
     public function getAddressDatetime()
     {
-        if (!$this->request->is('ajax')) {
-            return false;
-        }
         $this->autoRender = false;
+        if (!$this->request->is('ajax')) {
+            return $this->redirect('/');
+        }
+
         $addressId = $this->request->data['address_id'];
         $address = $this->Address->find($addressId);
         $result = $this->getDatetime($address['postal']);
@@ -72,7 +73,7 @@ class OutboundController extends MinikuraController
     {
         $this->autoRender = false;
         if (!$this->request->is('ajax')) {
-            return false;
+            return $this->redirect('/');
         }
 
         $postal = $this->request->data['postal'];
@@ -86,11 +87,10 @@ class OutboundController extends MinikuraController
      */
     public function getAddressDatetimeByAmazon()
     {
-        if (!$this->request->is('ajax')) {
-            return false;
-        }
-
         $this->autoRender = false;
+        if (!$this->request->is('ajax')) {
+            return $this->redirect('/');
+        }
 
         $amazon_order_reference_id = $this->request->data['amazon_order_reference_id'];
 
@@ -137,11 +137,11 @@ class OutboundController extends MinikuraController
      */
     public function getAmazonUserInfoDetail()
     {
+        $this->autoRender = false;
         if (!$this->request->is('ajax')) {
-            return false;
+            return $this->redirect('/');
         }
 
-        $this->autoRender = false;
         $amazon_order_reference_id = $this->request->data['amazon_order_reference_id'];
 
         $this->loadModel('AmazonPayModel');
