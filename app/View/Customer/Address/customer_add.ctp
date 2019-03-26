@@ -52,12 +52,12 @@ $return = Hash::get($this->request->query, 'return');
                 <?php echo $this->Form->error('CustomerAddress.lastname', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
-                <?php echo $this->Form->input('CustomerAddress.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
-                <?php echo $this->Form->error('CustomerAddress.lastname_kana', null, ['wrap' => 'p']) ?>
-            </div>
-            <div class="form-group col-lg-12">
                 <?php echo $this->Form->input('CustomerAddress.firstname', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名', 'error' => false]); ?>
                 <?php echo $this->Form->error('CustomerAddress.firstname', null, ['wrap' => 'p']) ?>
+            </div>
+            <div class="form-group col-lg-12">
+                <?php echo $this->Form->input('CustomerAddress.lastname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'姓（カナ）', 'error' => false]); ?>
+                <?php echo $this->Form->error('CustomerAddress.lastname_kana', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
                 <?php echo $this->Form->input('CustomerAddress.firstname_kana', ['class' => "form-control", 'maxlength' => 29, 'placeholder'=>'名（カナ）', 'error' => false]); ?>
