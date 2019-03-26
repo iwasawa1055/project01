@@ -126,6 +126,14 @@ var AppInputOrder =
       $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.dev-wrapper');
     }
   },
+  i: function()
+  {
+    var valid = $(".valid-il").get(0);
+    if (valid) {
+      var position = valid.offsetTop;
+      $('body,html').animate({scrollTop: position}, 'slow');
+    }
+  },
 
   init_disp1: function() {
     // 初回表示時
@@ -286,6 +294,7 @@ $(function()
   AppInputOrder.f();
   AppInputOrder.g();
   AppInputOrder.h();
+  AppInputOrder.i();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppInputOrder.init_disp3();
