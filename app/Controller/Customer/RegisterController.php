@@ -105,6 +105,9 @@ class RegisterController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $data = CakeSession::read(self::MODEL_NAME_REGIST);
+        if (empty($data)) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
         $to = $data['email'];
 
         /** send mail */
