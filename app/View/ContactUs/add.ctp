@@ -4,6 +4,8 @@
         <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> お問い合わせ</h1>
       </div>
     </div>
+    <?php $zendesk_error = $this->Flash->render('zendesk_error'); ?>
+    <?php echo (!is_null($zendesk_error))? '<br /><p class="error-message">' . nl2br($zendesk_error) . '</p>' : ""; ?>
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">

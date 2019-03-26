@@ -1,1 +1,1 @@
-<span class="validation"><?php echo h($message);?></span>
+<span class="validation"><?php echo nl2br($message);?></span>
