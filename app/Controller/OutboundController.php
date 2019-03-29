@@ -673,7 +673,7 @@ class OutboundController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
-        // $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
         CakeSession::delete(self::MODEL_NAME_POINT_USE);
 
         if (empty($data)) {
@@ -683,7 +683,7 @@ class OutboundController extends MinikuraController
 
         $this->Outbound->set($data);
         // 利用ポイント
-        // $this->PointUse->set($pointUse);
+        $this->PointUse->set($pointUse);
 
         $isIsolateIsland = false;
         if (!empty($this->Outbound->data['Outbound']['pref'])) {
@@ -699,9 +699,9 @@ class OutboundController extends MinikuraController
         }
 
         $validOutbound = $this->Outbound->validates();
-        // $validPointUse = $this->PointUse->validates();
+        $validPointUse = $this->PointUse->validates();
         // if ($this->Outbound->validates()) {
-        if ($validOutbound) {
+        if ($validOutbound && $validPointUse) {
             // api
             if ($existHazmat) {
                 $this->loadModel('ContactAny');
@@ -715,14 +715,14 @@ class OutboundController extends MinikuraController
                 return $this->redirect(['action' => 'index']);
             }
 
-            // if ($this->PointUse->verifyCallPointUse()) {
-            //     // ポイント消費
-            //     $res = $this->PointUse->apiPost($this->PointUse->toArray());
-            //     if (!empty($res->error_message)) {
-            //         $this->Flash->set($res->error_message);
-            //         return $this->redirect(['action' => 'index']);
-            //     }
-            // }
+            if ($this->PointUse->verifyCallPointUse()) {
+                // ポイント消費
+                $res = $this->PointUse->apiPost($this->PointUse->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'index']);
+                }
+            }
 
             // 取り出しリストクリア
             OutboundList::delete();
