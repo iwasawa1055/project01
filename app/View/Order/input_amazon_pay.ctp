@@ -1,4 +1,4 @@
-<?php $this->Html->script('/js/order/input_amazon_pay', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('/js/order/input_amazon_pay.js?'.time(), ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
@@ -176,7 +176,7 @@
               <li>
                 <p class="price">月額保管料<span class="price-ls">450</span>円
                 </p>
-                <p class="price">ボックス代金<span class="price-lb">400</span>円
+                <p class="price">ボックス代金<span class="price-lb">450</span>円
                 </p>
               </li>
               <li class="option">

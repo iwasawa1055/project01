@@ -42,10 +42,20 @@ class ContractController extends MinikuraController
         // FB連携
         $this->loadModel('CustomerFacebook');
         $this->CustomerFacebook->set(['facebook_user_id' => $data['facebook_user_id']]);
-        $this->CustomerFacebook->regist();
+        $res = $this->CustomerFacebook->regist();
 
-        // Facebook用access_tokenを保存
-        CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $data['access_token']);
+        if ($res->status == 0) {
+            if ($res->message == 'Record Already - facebook_user_id') {
+                $this->Flash->validation('お客様のFacebookアカウントは既に連携が登録されています。', ['key' => 'facebook_error']);
+            } elseif ($res->message == 'Record Already - token') {
+                $this->Flash->validation('お客様のMinikuraアカウントは既にFacebook連携登録されています。', ['key' => 'facebook_error']);
+            } else {
+                $this->Flash->validation('Facebook連携に失敗しました。', ['key' => 'facebook_error']);
+            }
+        } else {
+            // Facebook用access_tokenを保存
+            CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $data['access_token']);
+        }
 
         return $this->redirect(['controller' => 'contract', 'action' => 'index']);
     }

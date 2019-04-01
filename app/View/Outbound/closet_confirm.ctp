@@ -61,6 +61,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4MN3W"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+    <div class='airloader-overlay'>
+        <div class="loader">Loading...</div>
+    </div>
+
     <div id="wrapper">
         <!--nav-->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -76,68 +81,112 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <?php echo $this->element('navbar_right'); ?>
             <?php echo $this->element('sidebar'); ?>
         </nav>
-        <form method="POST" action="/outbound/library_select_item" name="form">
         <div id="page-wrapper" class="wrapper library">
-            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Library</h1>
+            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Closet</h1>
             <ul class="pagenation">
-                <li class="on"><span class="number">1</span><span class="txt">アイテム<br>選択</span>
+                <li><span class="number">1</span><span class="txt">アイテム<br>選択</span>
                 </li>
                 <li><span class="number">2</span><span class="txt">配送情報<br>入力</span>
                 </li>
-                <li><span class="number">3</span><span class="txt">確認</span>
+                <li class="on"><span class="number">3</span><span class="txt">確認</span>
                 </li>
                 <li><span class="number">4</span><span class="txt">完了</span>
                 </li>
             </ul>
-            <?php if (isset($complete_error)) : ?>
-            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i><?php echo $this->Flash->render('complete_error');?></div>
-            <?php endif; ?>
-            <?php if (isset($no_select_item_error)) : ?>
-            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> アイテムが選択されていません</div>
-            <?php endif; ?>
-            <?php if (isset($over_select_item_error)) : ?>
-            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 選択したアイテムの合計が300点を超えているので、分割をして出庫をしてください。</div>
-            <?php endif; ?>
-            <ul class="setting-switcher">
+            <p class="page-caption">以下の内容でminikura Closetの取り出し手続きを行います。</p>
+            <ul class="input-info">
+                <?php if (isset($outbound_item_list)) : ?>
                 <li>
-                    <label class="setting-switch">
-                        <input type="radio" class="ss" name="select-deposit" value="item" checked="">
-                        <span class="btn-ss"><span class="icon"></span>アイテムから選択</span>
-                    </label>
+                    <label class="headline">アイテムの取り出し</label>
+                    <ul class="li-libry-item">
+                        <?php foreach($outbound_item_list as $k => $v): ?>
+                        <li>
+                            <p class="li-libry-item-pict"><img src="<?php echo $v['image_first']['image_url']; ?>" alt="<?php echo $v['item_name']; ?>" class="li-libry-img"></p>
+                            <p class="li-libry-item-name"><?php echo $v['item_name']; ?><span><?php echo $v['item_id']; ?></span></p>
+                            <p class="li-libry-item-price"><?php echo CLOSET_OUTBOUND_PER_ITEM_PRICE; ?>円</p>
+                        </li>
+                        <?php endforeach; ?>
+                        <li>
+                            <p class="li-libry-item-pict"></p>
+                            <p class="li-libry-item-name">基本料金</p>
+                            <p class="li-libry-item-price"><?php echo CLOSET_OUTBOUND_BASIC_PRICE; ?>円</p>
+                        </li>
+                        <li>
+                            <p class="li-libry-item-pict"></p>
+                            <p class="li-libry-item-name">小計</p>
+                            <p class="li-libry-item-price"><?php echo $outbound_item_price; ?>円</p>
+                        </li>
+                    </ul>
+                </li>
+                <?php endif; ?>
+                <?php if (isset($outbound_box_list)) : ?>
+                <li>
+                    <label class="headline">解約の取り出し</label>
+                    <ul class="li-libry-box">
+                        <?php foreach($outbound_box_list as $k => $v): ?>
+                        <li>
+                            <p class="li-libry-box-id"><?php echo $v['box']['box_name']; ?><br><?php echo $k; ?></p>
+                            <ul class="li-libry-box-item">
+                                <?php foreach($v['item'] as $kk => $vv): ?>
+                                <li><?php echo $vv['item_name']; ?>(<?php echo $kk; ?>)</li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <p class="li-libry-box-price"><?php echo $v['price']; ?>円</p>
+                        </li>
+                        <?php endforeach; ?>
+                        <li>
+                            <p class="li-libry-box-id"></p>
+                            <p class="li-libry-box-item">小計</p>
+                            <p class="li-libry-box-price"><?php echo $outbound_box_price; ?>円</p>
+                        </li>
+                    </ul>
+                </li>
+                <?php endif; ?>
+                <li>
+                    <ul class="li-libry-box">
+                        <li>
+                            <p class="li-libry-box-id"></p>
+                            <p class="li-libry-box-item">総計(税込み)</p>
+                            <p class="li-libry-box-price"><?php echo $outbound_total_price; ?>円</p>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <label class="setting-switch">
-                        <input type="radio" class="ss" name="select-deposit" value="box">
-                        <span class="btn-ss"><span class="icon"></span>ボックスごと取り出す</span>
-                    </label>
+                    <label class="headline">配送住所</label>
+                    <ul class="li-address">
+                    <li>〒<?php echo h($address['postal']); ?></li>
+                        <li><?php echo h($address['pref'] . $address['address1'] . $address['address2'] . $address['address3']); ?></li>
+                        <li><?php echo h("{$address['lastname']} {$address['firstname']}"); ?></li>
+                        <li><?php echo h($address['tel1']); ?></li>
+                    </ul>
+                </li>
+                <li>
+                    <label class="headline">配送方法</label>
+                    <ul class="li-address">
+                        <li class="note">宅配便での配送</li>
+                        <li class="note"><?php echo $this->App->convDatetimeCode($datetime_cd); ?></li>
+                    </ul>
+                </li>
+                <li>
+                    <label class="headline">決済</label>
+                    <ul class="li-credit">
+                        <li>ご登録のクレジットカード</li>
+                        <li><?php echo $default_card['card_no']; ?></li>
+                        <li><?php echo $default_card['holder_name']; ?></li>
+                    </ul>
+                </li>
+                <li class="caution-box">
+                    <p class="title">minikuraの他の商品と異なり、<br class="sp">お申し込み完了と同時に決済完了となります。</p>
+                    <div class="content">
+                        <div id="check-error"></div>
+                        <label class="input-check">
+                            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
+                        内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。</span>
+                        </label>
+                    </div>
                 </li>
             </ul>
-            <ul class="item-search">
-                <li>
-                    <input type="search" placeholder="" class="search" id="search_txt">
-                </li>
-                <li>
-                    <!--<label class="cb-circle">
-                        <input type="checkbox" class="cb" id="all_select"><span class="icon-cb"></span><span class="txt-cb">すべて選択</span>
-                    </label>-->
-                    <label class="input-check">
-                        <input type="checkbox" class="cb-circle" id="all_select">
-                        <span class="icon"></span>
-                        <span class="label-txt">すべて選択</span>
-                    </label>
-                </li>
-            </ul>
-            <div class="item-content">
-                <!--<ul class="grid-view grid-library">
-                </ul>-->
-                <ul class="grid grid-lg">
-                </ul>
-            </div>
-
-            <input type="hidden" id="selected_item_ids" value="<?php echo $item_id; ?>">
-            <input type="hidden" id="selected_box_ids" value="<?php echo $box_id; ?>">
         </div>
-        </form>
         <!--footer-->
         <footer>
             <nav class="footer-nav">
@@ -158,7 +207,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </footer>
         <div class="nav-fixed">
             <ul>
-                <li><button class="btn-red" id="execute">配送先入力へ</button></li>
+                <li><a class="btn-d-gray" href="/outbound/closet_input_address">戻る</a></li>
+                <li><button class="btn-red" id="execute">この内容で取り出す</button></li>
             </ul>
         </div>
     </div>
@@ -172,7 +222,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       $this->Html->script('app', ['inline' => false]);
       $this->Html->script('app_dev', ['inline' => false]);
       $this->Html->script('jquery.airCenter', ['inline' => false]);
-      $this->Html->script('outbound/library', ['inline' => false]);
+      $this->Html->script('outbound/closet_confirm', ['inline' => false]);
 
       echo $this->fetch('script');
       echo $this->fetch('scriptMinikura');

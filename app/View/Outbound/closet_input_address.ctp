@@ -81,9 +81,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <?php echo $this->element('navbar_right'); ?>
             <?php echo $this->element('sidebar'); ?>
         </nav>
-        <form method="POST" action="/outbound/library_input_address" name="form">
+        <form method="POST" action="/outbound/closet_input_address" name="form">
         <div id="page-wrapper" class="wrapper library">
-            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Library</h1>
+            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Closet</h1>
             <ul class="pagenation">
                 <li><span class="number">1</span><span class="txt">アイテム<br>選択</span>
                 </li>
@@ -100,7 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <?php if (isset($datetime_cd_error)) : ?>
             <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i><?php echo $datetime_cd_error; ?></div>
             <?php endif; ?>
-            <p class="page-caption">minikura Libraryで取り出すアイテムの配送情報を入力します。</p>
+            <p class="page-caption">minikura Closetで取り出すアイテムの配送情報を入力します。</p>
             <ul class="input-info">
                 <li>
                     <label class="headline">配送住所</label>
@@ -172,21 +172,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </label>
                 </li>
 
-                <?php if ($yumail === true) : ?>
-                <li>
-                    <label class="headline">配送方法</label>
-                    <ul class="li-address">
-                        <li class="note">メール便での配送</li>
-                        <li>1冊のみのお取り出しの場合、メール便での配送となります。<br>お届け希望日時および伝票追跡ができません。</li>
-                    </ul>
-                </li>
-                <?php else : ?>
                 <li>
                     <label class="headline">お届け希望日時</label>
                     <select name="datetime_cd" data-datetime_cd='<?php echo isset($datetime_cd) ? $datetime_cd : '0000-00-00'; ?>' id="datetime_cd">
                     </select>
                 </li>
-                <?php endif; ?>
 
                 <?php if (is_array($default_card)) : ?>
                 <li>
@@ -341,7 +331,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </footer>
         <div class="nav-fixed">
             <ul>
-                <li><a class="btn-d-gray" href="/outbound/library_select_item">戻る</a></li>
+                <li><a class="btn-d-gray" href="/outbound/closet_select_item">戻る</a></li>
                 <li><button class="btn-red" id="execute">確認</button></li>
             </ul>
         </div>
@@ -363,7 +353,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       $this->Html->script(Configure::read("app.gmo.token_url"), ['inline' => false]);
       $this->Html->script('libGmoCreditCardPayment', ['inline' => false]);
-      $this->Html->script('outbound/library_input_address', ['inline' => false]);
+      $this->Html->script('outbound/closet_input_address', ['inline' => false]);
 
       echo $this->fetch('script');
       echo $this->fetch('scriptMinikura');

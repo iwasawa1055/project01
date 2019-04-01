@@ -56,10 +56,11 @@ class OutboundController extends MinikuraController
      */
     public function getAddressDatetime()
     {
-        if (!$this->request->is('ajax')) {
-            return false;
-        }
         $this->autoRender = false;
+        if (!$this->request->is('ajax')) {
+            return $this->redirect('/');
+        }
+
         $addressId = $this->request->data['address_id'];
         $address = $this->Address->find($addressId);
         $result = $this->getDatetime($address['postal']);
@@ -72,7 +73,7 @@ class OutboundController extends MinikuraController
     {
         $this->autoRender = false;
         if (!$this->request->is('ajax')) {
-            return false;
+            return $this->redirect('/');
         }
 
         $postal = $this->request->data['postal'];
@@ -86,11 +87,10 @@ class OutboundController extends MinikuraController
      */
     public function getAddressDatetimeByAmazon()
     {
-        if (!$this->request->is('ajax')) {
-            return false;
-        }
-
         $this->autoRender = false;
+        if (!$this->request->is('ajax')) {
+            return $this->redirect('/');
+        }
 
         $amazon_order_reference_id = $this->request->data['amazon_order_reference_id'];
 
@@ -137,11 +137,11 @@ class OutboundController extends MinikuraController
      */
     public function getAmazonUserInfoDetail()
     {
+        $this->autoRender = false;
         if (!$this->request->is('ajax')) {
-            return false;
+            return $this->redirect('/');
         }
 
-        $this->autoRender = false;
         $amazon_order_reference_id = $this->request->data['amazon_order_reference_id'];
 
         $this->loadModel('AmazonPayModel');
@@ -673,7 +673,7 @@ class OutboundController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
-        // $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+        $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
         CakeSession::delete(self::MODEL_NAME_POINT_USE);
 
         if (empty($data)) {
@@ -683,7 +683,7 @@ class OutboundController extends MinikuraController
 
         $this->Outbound->set($data);
         // 利用ポイント
-        // $this->PointUse->set($pointUse);
+        $this->PointUse->set($pointUse);
 
         $isIsolateIsland = false;
         if (!empty($this->Outbound->data['Outbound']['pref'])) {
@@ -699,9 +699,9 @@ class OutboundController extends MinikuraController
         }
 
         $validOutbound = $this->Outbound->validates();
-        // $validPointUse = $this->PointUse->validates();
+        $validPointUse = $this->PointUse->validates();
         // if ($this->Outbound->validates()) {
-        if ($validOutbound) {
+        if ($validOutbound && $validPointUse) {
             // api
             if ($existHazmat) {
                 $this->loadModel('ContactAny');
@@ -715,14 +715,14 @@ class OutboundController extends MinikuraController
                 return $this->redirect(['action' => 'index']);
             }
 
-            // if ($this->PointUse->verifyCallPointUse()) {
-            //     // ポイント消費
-            //     $res = $this->PointUse->apiPost($this->PointUse->toArray());
-            //     if (!empty($res->error_message)) {
-            //         $this->Flash->set($res->error_message);
-            //         return $this->redirect(['action' => 'index']);
-            //     }
-            // }
+            if ($this->PointUse->verifyCallPointUse()) {
+                // ポイント消費
+                $res = $this->PointUse->apiPost($this->PointUse->toArray());
+                if (!empty($res->error_message)) {
+                    $this->Flash->set($res->error_message);
+                    return $this->redirect(['action' => 'index']);
+                }
+            }
 
             // 取り出しリストクリア
             OutboundList::delete();
@@ -1308,6 +1308,408 @@ class OutboundController extends MinikuraController
         CakeSession::delete('app.data.library');
     }
 
+    public function closet_select_item()
+    {
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        // 初期表示
+        if ($this->request->is('get')) {
+            $item_id = CakeSession::read('app.data.closet.item_id');
+            $box_id = CakeSession::read('app.data.closet.box_id');
+
+            // アイテム詳細からの遷移
+            if (isset($_GET['item_id'])) {
+                $item_id = [$_GET['item_id']];
+            }
+
+            // ボックス詳細からの遷移
+            if (isset($_GET['box_id'])) {
+                $box_id = [$_GET['box_id']];
+            }
+
+            // 完了画面からエラーでの遷移
+            if (isset($_GET['error'])) {
+                $this->set('complete_error', true);
+            }
+
+            $this->set('item_id', is_null($item_id) ? '' : implode(',', $item_id));
+            $this->set('box_id', is_null($box_id) ? '' : implode(',', $box_id));
+
+        // 確認へ遷移する場合
+        } elseif ($this->request->is('post')) {
+            // セッションに格納されたitem, boxを削除
+            CakeSession::delete('app.data.closet.item_id');
+            CakeSession::delete('app.data.closet.box_id');
+
+            $item_id = isset($_POST['item_id']) ? $_POST['item_id'] : null;
+            $box_id = isset($_POST['box_id']) ? $_POST['box_id'] : null;
+            $this->set('item_id', is_null($item_id) ? '' : implode(',', $item_id));
+            $this->set('box_id', is_null($box_id) ? '' : implode(',', $box_id));
+
+            // 選択したアイテムの確認
+            if (isset($_POST['select-deposit']) && $_POST['select-deposit'] == 'item') {
+                CakeSession::Write('app.data.closet.select-deposit', $_POST['select-deposit']);
+
+                // item_idの確認
+                if (isset($_POST['item_id']) && !empty($_POST['item_id'])) {
+                    CakeSession::Write('app.data.closet.item_id', $_POST['item_id']);
+                } else {
+                    // 選択されたアイテムが存在しない
+                    $this->set('no_select_item_error', true);
+                    return $this->render('closet_select_item');
+                }
+            } elseif (isset($_POST['select-deposit']) && $_POST['select-deposit'] == 'box') {
+                CakeSession::Write('app.data.closet.select-deposit', $_POST['select-deposit']);
+
+                // box_idの確認
+                if (isset($_POST['box_id']) && !empty($_POST['box_id'])) {
+                    CakeSession::Write('app.data.closet.box_id', $_POST['box_id']);
+                } else {
+                    // 選択されたボックスが存在しない
+                    $this->set('no_select_item_error', true);
+                    return $this->render('closet_select_item');
+                }
+            } else {
+                $this->set('no_select_item_error', true);
+                return $this->render('closet_select_item');
+            }
+
+            // 選択したアイテムが300以上ないか確認
+            if (count($this->_getLibraryOutboundItemList()) > 300) {
+                $this->set('over_select_item_error', true);
+                return $this->render('closet_select_item');
+            }
+
+            if ($this->Customer->isAmazonPay()) {
+                return $this->redirect('/outbound/closet_input_address_amazon_pay');
+            } else {
+                return $this->redirect('/outbound/closet_input_address');
+            }
+        }
+    }
+
+    public function closet_input_address()
+    {
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        // デフォルトのクレカを取得
+        $this->loadModel('PaymentGMOCreditCard');
+        $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
+        $this->set('default_card', $default_card);
+
+        if ($this->request->is('get')) {
+            if (CakeSession::Read('app.data.closet.datetime_cd')) {
+                $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
+            }
+        } elseif ($this->request->is('post')) {
+            CakeSession::delete('app.data.closet.address');
+            CakeSession::delete('app.data.closet.datetime_cd');
+
+            $error = false;
+
+            $this->loadModel('CustomerAddress');
+            // 配送先を指定している場合
+            if (isset($_POST['address']) && $_POST['address'] == 'add') {
+                // 電話番号の全角許容
+                $this->request->data['CustomerAddress']['tel1'] = self::_wrapConvertKana($this->request->data['CustomerAddress']['tel1']);
+
+                $this->CustomerAddress->set($this->request->data);
+                // バリデーションエラー確認
+                if ($this->CustomerAddress->validates() === false) {
+                    $error = true;
+                }
+
+                // セッションに入力値を保存
+                CakeSession::write('CustomerAddress', $this->CustomerAddress->toArray());
+            }
+
+            CakeSession::Write('app.data.closet.address', $_POST['address']);
+
+            // クレジットカードの確認
+            if (isset($_POST['resister_credit']) && $_POST['resister_credit'] == '1') {
+                if (empty(filter_input(INPUT_POST, 'gmo_token'))) {
+                    $this->set('credit_error', 'クレジットカード情報の取得に失敗しました');
+                    $error = true;
+                }
+
+                $this->loadModel('PaymentGMOCreditCardCheck');
+                $res = $this->PaymentGMOCreditCardCheck->getCreditCardCheck(['gmo_token' => filter_input(INPUT_POST, 'gmo_token_for_check')]);
+
+                if (!empty($res->error_message)) {
+                    $this->set('credit_error', 'クレジットカードエラーが発生しました。　エラーコード:' . $res->message);
+                    $error = true;
+                }
+
+                $this->loadModel('PaymentGMOCreditCard');
+
+                // 新規カード登録
+                if (is_null($default_card)) {
+                    $this->PaymentGMOCreditCard->set(['PaymentGMOCreditCard' => ['gmo_token' => filter_input(INPUT_POST, 'gmo_token')]]);
+                    $res = $this->PaymentGMOCreditCard->apiPost($this->PaymentGMOCreditCard->toArray());
+                // カード変更
+                } else {
+                    $this->PaymentGMOCreditCard->set(['PaymentGMOCreditCard' => ['gmo_token' => filter_input(INPUT_POST, 'gmo_token')]]);
+                    $res = $this->PaymentGMOCreditCard->apiPut($this->PaymentGMOCreditCard->toArray());
+                }
+
+                if (!empty($res->error_message)) {
+                    $this->set('credit_error', 'クレジットカードエラーが発生しました。　エラーコード:' . $res->message);
+                    $error = true;
+                }
+            }
+
+            // 配送日時の確認
+            if (isset($_POST['datetime_cd']) && $_POST['datetime_cd'] == '0000-00-00') {
+                $this->set('datetime_cd_error', 'お届け希望日時を選択してください。');
+                $error = true;
+            }
+            $this->set('datetime_cd', $_POST['datetime_cd']);
+            CakeSession::Write('app.data.closet.datetime_cd', $_POST['datetime_cd']);
+
+            if ($error == true) {
+                return $this->render('closet_input_address');
+            }
+
+            return $this->redirect('/outbound/closet_confirm');
+        }
+    }
+
+    public function closet_confirm()
+    {
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        $this->_setClosetPriceAndItem();
+
+        // 配送先
+        if (CakeSession::Read('app.data.closet.address') == 'add') {
+            // 新規登録
+            $address = CakeSession::Read('CustomerAddress');
+        } else {
+            // アドレスリストから選択
+            foreach ($this->Address->get() as $a) {
+                if ($a['address_id'] == CakeSession::Read('app.data.closet.address')) {
+                    $address = $a;
+                }
+            }
+        }
+        $this->set('address', $address);
+
+        // 配送時間
+        $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
+
+        // デフォルトのクレカを取得
+        $this->loadModel('PaymentGMOCreditCard');
+        $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
+        $this->set('default_card', $default_card);
+    }
+
+    public function closet_complete()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+            'Outbound/closet_confirm',
+            ], true) === false ) {
+            $this->redirect('/outbound/closet_select_item');
+        }
+
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        $price = $this->_setClosetPriceAndItem();
+
+        // 配送先
+        if (CakeSession::Read('app.data.closet.address') == 'add') {
+            // 新規登録
+            $address = CakeSession::Read('CustomerAddress');
+        } else {
+            // アドレスリストから選択
+            foreach ($this->Address->get() as $a) {
+                if ($a['address_id'] == CakeSession::Read('app.data.closet.address')) {
+                    $address = $a;
+                }
+            }
+        }
+        $this->set('address', $address);
+
+        // 配送時間
+        $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
+
+        // デフォルトのクレカを取得
+        $this->loadModel('PaymentGMOCreditCard');
+        $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
+        $this->set('default_card', $default_card);
+
+        // 配送先を登録
+        if (isset($address['register_address_book'])) {
+            $this->loadModel('CustomerAddress');
+            $res = $this->CustomerAddress->apiPost($address);
+            if (!empty($res->error_message)) {
+                $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+                $this->redirect('/outbound/closet_select_item?error=1');
+            }
+        }
+
+        // 決済処理
+        $item_list = $this->_getClosetOutboundItemList();
+
+        // product作成
+        $product_list = [];
+        foreach ($item_list as $v) {
+            $product_list[] = $v["box"]["product_cd"] . ':' . $v["box"]["box_id"] . ':' . $v["item_id"];
+        }
+
+        $this->loadModel('OutboundCreditCard');
+        $request_params = [];
+        $request_params['OutboundCreditCard'] = [
+            'price'=>$price,
+            'product'=>implode(',', $product_list),
+            'lastname'=>$address['lastname'],
+            'firstname'=>$address['firstname'],
+            'pref'=>$address['pref'],
+            'address1'=>$address['address1'],
+            'address2'=>$address['address2'],
+            'address3'=>$address['address3'],
+            'postal'=>$address['postal'],
+            'tel1'=>$address['tel1'],
+        ];
+        $this->OutboundCreditCard->set($request_params);
+        $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+            $this->redirect('/outbound/closet_select_item?error=1');
+        }
+
+        CakeSession::delete('app.data.closet');
+    }
+
+    public function closet_input_address_amazon_pay()
+    {
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        if ($this->request->is('get')) {
+            if (CakeSession::Read('app.data.closet.datetime_cd')) {
+                $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
+            }
+        } elseif ($this->request->is('post')) {
+            CakeSession::delete('app.data.closet.address');
+            CakeSession::delete('app.data.closet.datetime_cd');
+
+            $error = false;
+
+            // amazon_order_reference_idの確認
+            if (isset($_POST['amazon_order_reference_id']) == false) {
+                $this->set('amazon_order_reference_id_error', 'Amazon Payの情報を取得できませんでした。');
+                $error = true;
+            }
+            CakeSession::Write('app.data.closet.amazon_order_reference_id', $_POST['amazon_order_reference_id']);
+
+            // amazonから配送情報の取得
+            $address = $this->_getAddressByAmazonOrderReferenceId($_POST['amazon_order_reference_id']);
+            if ($address == false) {
+                $this->set('amazon_order_reference_id_error', 'Amazon Payの情報を取得できませんでした。');
+                $error = true;
+            }
+
+            // 配送日時の確認
+            if (isset($_POST['datetime_cd']) && $_POST['datetime_cd'] == '0000-00-00') {
+                $this->set('datetime_cd_error', 'お届け希望日時を選択してください。');
+                $error = true;
+            }
+            $this->set('datetime_cd', $_POST['datetime_cd']);
+            CakeSession::Write('app.data.closet.datetime_cd', $_POST['datetime_cd']);
+
+            if ($error == true) {
+                return $this->render('closet_input_address_amazon_pay');
+            }
+
+            return $this->redirect('/outbound/closet_confirm_amazon_pay');
+        }
+    }
+
+    public function closet_confirm_amazon_pay()
+    {
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        $this->_setClosetPriceAndItem();
+
+        // 配送先
+        $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.closet.amazon_order_reference_id'));
+        $this->set('address', $address);
+
+        // 配送時間
+        if (CakeSession::Read('app.data.closet.datetime_cd')) {
+            $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
+        }
+    }
+
+    public function closet_complete_amazon_pay()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+            'Outbound/closet_confirm_amazon_pay',
+            ], true) === false ) {
+            $this->redirect('/outbound/closet_select_item');
+        }
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->layout = '';
+
+        $price = $this->_setClosetPriceAndItem();
+
+        // 配送先
+        $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.closet.amazon_order_reference_id'));
+        $this->set('address', $address);
+
+        // 配送時間
+        $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
+
+        // 決済処理
+        $item_list = $this->_getClosetOutboundItemList();
+
+        // product作成
+        $product_list = [];
+        foreach ($item_list as $v) {
+            $product_list[] = $v["box"]["product_cd"] . ':' . $v["box"]["box_id"] . ':' . $v["item_id"];
+        }
+
+        $this->loadModel('OutboundAmazonPay');
+        $request_params = [];
+        $request_params['OutboundAmazonPay'] = [
+            'amazon_order_reference_id'=>CakeSession::Read('app.data.closet.amazon_order_reference_id'),
+            'price'=>$price,
+            'product'=>implode(',', $product_list),
+            'lastname'=>$address['lastname'],
+            'firstname'=>$address['firstname'],
+            'pref'=>$address['pref'],
+            'address1'=>$address['address1'],
+            'address2'=>$address['address2'],
+            'address3'=>$address['address3'],
+            'postal'=>$address['postal'],
+            'tel1'=>$address['tel1'],
+        ];
+        $this->OutboundAmazonPay->set($request_params);
+        $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());
+
+        if (!empty($res->error_message)) {
+            $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+            $this->redirect('/outbound/closet_select_item?error=1');
+        }
+
+        CakeSession::delete('app.data.closet');
+    }
+
     public function as_get_library_box()
     {
         $this->autoRender = false;
@@ -1330,6 +1732,34 @@ class OutboundController extends MinikuraController
             'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
             'box.product_cd' => [
                 PRODUCT_CD_LIBRARY,
+            ]
+        ];
+        $list = $this->InfoItem->apiGetResultsWhere([], $where);
+        return json_encode($list);
+    }
+
+    public function as_get_closet_box()
+    {
+        $this->autoRender = false;
+
+        // 対象ボックス一覧
+        $where = [
+            'box_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'product_cd' => [PRODUCT_CD_CLOSET],
+        ];
+        $list = $this->InfoBox->apiGetResultsWhere([], $where);
+        return json_encode($list);
+    }
+
+    public function as_get_closet_item()
+    {
+        $this->autoRender = false;
+
+        // 対象アイテム一覧
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_CLOSET,
             ]
         ];
         $list = $this->InfoItem->apiGetResultsWhere([], $where);
@@ -1474,6 +1904,144 @@ class OutboundController extends MinikuraController
         return $outbound_total_price;
     }
 
+    private function _getClosetOutboundItemList()
+    {
+        $item_id = CakeSession::read('app.data.closet.item_id');
+        $box_id = CakeSession::read('app.data.closet.box_id');
+
+        // 保持しているアイテムすべての配列を作成
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_CLOSET,
+            ]
+        ];
+        $info_item_list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $item_list = [];
+        foreach ($info_item_list as $item) {
+            $item_list[$item['box']['box_id']][$item['item_id']] = $item;
+        }
+
+        $outbound_item_list = [];
+        if ($item_id) {
+            foreach ($item_list as $k => $v) {
+                foreach ($v as $kk => $vv) {
+                    if (in_array($kk, $item_id)) {
+                        $outbound_item_list[] = $vv;
+                    }
+                }
+            }
+        }
+
+        if ($box_id) {
+            foreach ($item_list as $k => $v) {
+                if (in_array($k, $box_id)) {
+                    foreach ($v as $kk => $vv) {
+                        $outbound_item_list[] = $vv;
+                    }
+                }
+            }
+        }
+
+        return $outbound_item_list;
+    }
+
+    private function _setClosetPriceAndItem()
+    {
+        $item_id = CakeSession::read('app.data.closet.item_id');
+        $box_id = CakeSession::read('app.data.closet.box_id');
+
+        // 保持しているアイテムすべての配列を作成
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_CLOSET,
+            ]
+        ];
+        $info_item_list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $item_list = [];
+        foreach ($info_item_list as $item) {
+            $item_list[$item['box']['box_id']][$item['item_id']] = $item;
+        }
+
+        // 金額を計算
+        $outbound_item_list = [];
+        $outbound_item_price = 0;
+        if ($item_id) {
+            // アイテムIDからアイテムを取得
+            foreach ($info_item_list as $item) {
+                if (in_array($item['item_id'], $item_id)) {
+                    $outbound_item_list[] = $item;
+                }
+            }
+
+            $outbound_box_id = [];
+            $tmp_item_list = $item_list;
+            foreach ($outbound_item_list as $oil) {
+                $outbound_box_id[] = $oil['box']['box_id'];
+                unset($tmp_item_list[$oil['box']['box_id']][$oil['item_id']]);
+            }
+
+            // 出庫するアイテムのbox_id
+            $outbound_box_id = array_unique($outbound_box_id);
+
+            // 全量出庫したboxを割り出す
+            $all_outbound_box_id = [];
+            foreach ($item_list as $ilk => $ilv) {
+                if (count($tmp_item_list[$ilk]) == 0) {
+                    $all_outbound_box_id[] = $ilk;
+                }
+            }
+
+            // 全量出庫したboxがあればbox_idに格納する
+            if (!empty($all_outbound_box_id)) {
+                $box_id = $all_outbound_box_id;
+
+                // 全量出庫するアイテムは$outbound_item_listから削除する
+                foreach ($outbound_item_list as $oilk => $oilv) {
+                    foreach ($box_id as $bi) {
+                        if ($oilv['box']['box_id'] == $bi) {
+                            unset($outbound_item_list[$oilk]);
+                        }
+                    }
+                }
+            }
+            // 歯抜けのキーを詰める
+            $outbound_item_list = array_values($outbound_item_list);
+
+            if (count($outbound_item_list) > 0) {
+                $outbound_item_price = (count($outbound_item_list) * CLOSET_OUTBOUND_PER_ITEM_PRICE) + CLOSET_OUTBOUND_BASIC_PRICE;
+                $this->set('outbound_item_price', $outbound_item_price);
+                $this->set('outbound_item_list', $outbound_item_list);
+            }
+        }
+
+        $outbound_box_list = [];
+        $outbound_box_price = 0;
+        if ($box_id) {
+            foreach ($box_id as $bi) {
+                $outbound_box_list[$bi]['item'] = $item_list[$bi];
+                $box = $this->_getClosetBoxByBoxId($bi);
+                $outbound_box_list[$bi]['box'] = $box[0];
+                if (date('Y-m-d', strtotime('16 month ago')) > $box[0]['last_inbound_date']) {
+                    $outbound_box_list[$bi]['price'] = 0;
+                } else {
+                    $outbound_box_list[$bi]['price'] = CLOSET_OUTBOUND_CANCELLATION_PRICE;
+                    $outbound_box_price += CLOSET_OUTBOUND_CANCELLATION_PRICE;
+                }
+            }
+            // 課金対象になるボックスを算出
+            $this->set('outbound_box_price', $outbound_box_price);
+            $this->set('outbound_box_list', $outbound_box_list);
+        }
+
+        // 総計
+        $outbound_total_price = $outbound_item_price + $outbound_box_price;
+        $this->set('outbound_total_price', $outbound_total_price);
+
+        return $outbound_total_price;
+    }
+
     private function _getLibraryBoxByBoxId($box_id)
     {
         // 対象アイテム一覧
@@ -1491,6 +2059,29 @@ class OutboundController extends MinikuraController
             'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
             'box.product_cd' => [
                 PRODUCT_CD_LIBRARY,
+            ],
+            'box.box_id' => $box_id,
+        ];
+        return $this->InfoItem->apiGetResultsWhere([], $where);
+    }
+
+    private function _getClosetBoxByBoxId($box_id)
+    {
+        // 対象アイテム一覧
+        $where = [
+            'product_cd' => [PRODUCT_CD_CLOSET],
+            'box_id' => $box_id,
+        ];
+        return $this->InfoBox->apiGetResultsWhere([], $where);
+    }
+
+    private function _getClosetItemByBoxId($box_id)
+    {
+        // 対象アイテム一覧
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_CLOSET,
             ],
             'box.box_id' => $box_id,
         ];

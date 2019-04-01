@@ -401,3 +401,7 @@ p.facebook-message a,
   padding: 0.5rem;
   font-size: 1.6rem;
 }
+
+.form-error {
+  border: .1rem solid red;
+}

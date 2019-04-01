@@ -76,9 +76,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <?php echo $this->element('navbar_right'); ?>
             <?php echo $this->element('sidebar'); ?>
         </nav>
-        <form method="POST" action="/outbound/library_select_item" name="form">
+        <form method="POST" action="/outbound/closet_select_item" name="form">
         <div id="page-wrapper" class="wrapper library">
-            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Library</h1>
+            <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> minikura Closet</h1>
             <ul class="pagenation">
                 <li class="on"><span class="number">1</span><span class="txt">アイテム<br>選択</span>
                 </li>
@@ -172,7 +172,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       $this->Html->script('app', ['inline' => false]);
       $this->Html->script('app_dev', ['inline' => false]);
       $this->Html->script('jquery.airCenter', ['inline' => false]);
-      $this->Html->script('outbound/library', ['inline' => false]);
+      $this->Html->script('outbound/closet', ['inline' => false]);
 
       echo $this->fetch('script');
       echo $this->fetch('scriptMinikura');

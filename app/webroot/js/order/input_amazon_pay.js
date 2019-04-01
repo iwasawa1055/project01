@@ -44,6 +44,14 @@ var AppInputOrder =
       $('<div class="dsn-form"><div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i> 入力内容をご確認ください</div></div>').insertBefore('div.head_validation');
     }
   },
+  d: function()
+  {
+    var valid = $(".valid-il").get(0);
+    if (valid) {
+      var position = valid.offsetTop;
+      $('body,html').animate({scrollTop: position}, 'slow');
+    }
+  },
 
   init_disp1: function () {
     // タイプ別箱の合計値設定
@@ -326,6 +334,7 @@ $(function()
   AppInputOrder.a();
   AppInputOrder.b();
   AppInputOrder.c();
+  AppInputOrder.d();
   AppInputOrder.init_disp1();
   AppInputOrder.init_disp2();
   AppAmazonPay.a();
