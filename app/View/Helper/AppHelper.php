@@ -131,4 +131,42 @@ class AppHelper extends Helper
         }
         return null;
     }
+
+    public function getProductImage($kit_cd)
+    {
+        switch ($kit_cd) {
+            // HAKO レギュラー
+            case '64':
+                return '/images/hako-regular.png';
+            // HAKO アパレル
+            case '65':
+                return '/images/hako-apparel.png';
+            // HAKO ブック
+            case '81':
+                return '/images/hako-book.png';
+
+            // MONO レギュラー
+            case '66':
+                return '/images/mono-regular.png';
+            // MONO アパレル
+            case '67':
+                return '/images/mono-apparel.png';
+            // MONO ブック
+            case '82':
+                return '/images/mono-regular.png';
+
+            // クリーニングパック
+            case '75':
+                return '/images/cleaning.png';
+
+            // Library
+            case '214':
+            case '215':
+                return '/images/library.png';
+
+            // closet
+            case '216':
+                return '/images/cleaning.png';
+        }
+    }
 }

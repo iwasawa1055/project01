@@ -132,15 +132,12 @@ $(function() {
 });
 
 $(function() {
+<<<<<<< Updated upstream
     $('[name=sns]').change(function() {
         if ($(this).val() === 'link') {
             window.location.href = 'fb-login.php';
         } else {}
-    });
-    return false;
-});
-
-$(function() {
+=======
     $('#existing').hide();
     $('[name=select-box]').change(function() {
 
@@ -151,10 +148,12 @@ $(function() {
             $('#new').slideToggle('fast');
             $('#existing').slideToggle('fast');
         }
+>>>>>>> Stashed changes
     });
     return false;
 });
 
+<<<<<<< Updated upstream
 $(function() {
     var cc = $('#input-cc');
     var sc = $('#input-sc');
@@ -177,10 +176,7 @@ $(function() {
             nc.slideDown(Speed, Ease);
             sc.slideUp(Speed, Ease);
             cc.slideUp(Speed, Ease);
-        }
-    });
-    return false;
-});
+=======
 
 $(function() {
     var valueStep = 1;
@@ -200,10 +196,12 @@ $(function() {
         $(this).prev('.input-spinner').val(spinnerValue += valueStep);
         if (spinnerValue > maxValue) {
             spinnerValue = maxValue;
+>>>>>>> Stashed changes
         }
     });
     return false;
 });
+<<<<<<< Updated upstream
 
 $('.guidance').iziModal({
     group: "group",
@@ -219,3 +217,5 @@ $('.guidance').iziModal({
     overlayColor: 'rgba(0, 0, 0, 0.8)',
     overlayClose: false,
 });
+=======
+>>>>>>> Stashed changes

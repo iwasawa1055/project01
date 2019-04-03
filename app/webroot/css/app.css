@@ -617,7 +617,7 @@ ul.tile li .sale-icon {
 }
 .photo-control {
 	font-size: 80%;
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 .acrobat-icon {
@@ -707,7 +707,7 @@ tfoot td {
 	border-color: #666666 !important;
 }
 .btn-yahoo {
-	background-color: #ffda45!important;
+	background-color: #ffda45! important;
 	border: none !important;
 }
 .lh25 {
@@ -729,8 +729,41 @@ tfoot td {
 .hako-box h3,
 .cleaning-box h3,
 .library-box h3 {
-	margin-top: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
+
+/** 20190122 **/
+
+.dash {
+    padding-top: .5rem;
+}
+
+.dash-confirm {
+    padding-top: .75rem;
+}
+
+.dash img {
+    width: 6rem;
+}
+
+#lead-time>div {
+    width: calc(100% - 3rem);
+    margin: 0 1.5rem;
+    padding: 1rem 1rem .5rem;
+    border: .1rem solid #dddddd;
+}
+
+#lead-time ul {
+    margin: 0 0 0 1rem;
+    padding-left: .5rem;
+}
+
+#lead-time li {
+    margin-bottom: .5rem;
+    list-style: circle;
+}
+
 .panel-body .btn-regist {
 	margin-top: 15px;
 	margin-bottom: 0;
@@ -1026,7 +1059,6 @@ div.panel-body .sp-navi a:hover {
 	width: 75px;
 }
 
-}
 
 .btn-contact {
 	position: absolute;
@@ -1044,4 +1076,27 @@ div.panel-body .sp-navi a:hover {
 	border: 1px solid #ff0000;
 	border-radius: 3px;
 	background: #ff0000;
+}
+
+    /** 20190122 **/
+
+    .mono-box h3,
+    .hako-box h3,
+    .cleaning-box h3,
+    .library-box h3 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .dash {
+        padding-top: 0;
+    }
+
+    .dash img {
+        width: 5rem;
+        padding-top: 0;
+        margin-right: .25rem;
+    }
+
 }

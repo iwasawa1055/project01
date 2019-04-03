@@ -5,6 +5,7 @@ App::uses('TimePickup', 'Model');
 App::uses('InboundManual', 'Model');
 App::uses('InboundPrivate', 'Model');
 App::uses('InboundYamato', 'Model');
+App::uses('ReInboundYamato', 'Model');
 App::uses('PickupYamatoDateTime', 'Model');
 
 class InboundComponent extends Component
@@ -16,7 +17,8 @@ class InboundComponent extends Component
         $data = $this->convertData($data);
         $carrierCd = $data['carrier_cd'];
         $deliveryType = $data['delivery_type'];
-        $this->set = InboundSet::create($carrierCd, $deliveryType);
+        $boxType = $data['box_type'];
+        $this->set = InboundSet::create($carrierCd, $deliveryType, $boxType);
     }
     private function convertData($data = [])
     {
@@ -53,7 +55,8 @@ class InboundComponent extends Component
         // 「半角コロンまたはカンマ」をそれぞれ全角に自動変換
         $title = InfoBox::replaceBoxtitleChar(self::getDefualt($item, 'title'));
         $option = self::getDefualt($item, 'option');
-        return "${productCd}:${boxId}:${title}:${option}";
+        $wrapping_type = self::getDefualt($item, 'wrapping_type');
+        return "${productCd}:${boxId}:${title}:${option}:${wrapping_type}";
     }
 
     public static function getDefualt($a, $k, $d = '')
@@ -72,12 +75,12 @@ abstract class InboundSet
     abstract public function getTime();
     abstract public function getDateTime();
     abstract public function getModel($data = []);
-    public static function create($carrierCd, $deliveryType)
+    public static function create($carrierCd, $deliveryType, $boxType = null)
     {
         $set = null;
         if ($deliveryType === INBOUND_DELIVERY_PICKUP) {
             if ($carrierCd === INBOUND_CARRIER_YAMAYO) {
-                $set = new SetInboundPrivateYamato();
+                $set = new SetInboundPrivateYamato($boxType);
             } elseif ($carrierCd === INBOUND_CARRIER_JPPOST) {
                 $set = new SetInboundPrivateJppost();
             }
@@ -119,7 +122,11 @@ class SetInboundPrivateYamato extends InboundSet
     }
     public function getModel($data = [])
     {
-        $model = new InboundYamato();
+        if ($data['box_type'] == 'old') {
+            $model = new ReInboundYamato();
+        } else {
+            $model = new InboundYamato();
+        }
         $model->set([$model->getModelName() => $data]);
         return $model;
     }

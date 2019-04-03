@@ -23,12 +23,11 @@ var PickupYamato =
                     if (!default_date) {
                         default_date = item;
                     }
-                    //console.log(new Date(item));
                     // 集荷日程をセット
                     var date_obj = new Date(item);
                     var week = date_obj.getDay();
                     var pickup_date_text = item.replace(/-/g, '/') + ' ' + week_text[week]; 
-                    $('#DayCd').append($('<option>').text(pickup_date_text).attr('value', item));
+                    $('#day_cd').append($('<option>').text(pickup_date_text).attr('value', item));
                 }
 
                 // 現在登録されている集荷依頼日
@@ -38,19 +37,19 @@ var PickupYamato =
                 } else {
                     pickup_date = default_date;
                 }
-                $("#DayCd").val(pickup_date);
+                $("#day_cd").val(pickup_date);
 
-                $('#TimeCd option').remove();
+                $('#time_cd option').remove();
                 for(var item in pickup_date_time[pickup_date]) {
                     var pickup_time_text = pickup_date_time[pickup_date][item];
-                    $('#TimeCd').append($('<option>').text(pickup_time_text).attr('value', item));
+                    $('#time_cd').append($('<option>').text(pickup_time_text).attr('value', item));
                 }
 
                 if ($('#pickup_time_code').val()) {
-                   $('#TimeCd').val($('#pickup_time_code').val());
+                   $('#time_cd').val($('#pickup_time_code').val());
                 } else {
-                    for(var item in pickup_date_time[$('#DayCd').val()]) {
-                        $('#TimeCd').val(item);
+                    for(var item in pickup_date_time[$('#day_cd').val()]) {
+                        $('#time_cd').val(item);
                         break;
                     }
                 }
@@ -66,13 +65,13 @@ var PickupYamato =
     },
     changeSelectPickup: function()
     {
-        $('#DayCd').change(function() {
-            var change_pickup_date = $('#DayCd option:selected').val();
-            $('#TimeCd option').remove();
+        $('#day_cd').change(function() {
+            var change_pickup_date = $('#day_cd option:selected').val();
+            $('#time_cd option').remove();
             console.log(change_pickup_date);
             for(var item in pickup_date_time[change_pickup_date]) {
                 var pickup_time_text = pickup_date_time[change_pickup_date][item];
-                $('#TimeCd').append($('<option>').text(pickup_time_text).attr('value', item));
+                $('#time_cd').append($('<option>').text(pickup_time_text).attr('value', item));
             }
         });
     }

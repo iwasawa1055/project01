@@ -69,12 +69,12 @@ $return = Hash::get($this->request->query, 'return');
             <?php echo $this->Form->hidden('PickupYamato.hidden_pickup_time_code', ['id' => 'pickup_time_code']); ?>
             <div class="form-group col-lg-12">
               <label>集荷の日程</label>
-              <?php echo $this->Form->select('PickupYamato.pickup_date', [], ['id' => 'DayCd', 'class' => 'form-control select-pickup-date', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php echo $this->Form->select('PickupYamato.pickup_date', [], ['id' => 'day_cd', 'class' => 'form-control select-pickup-date', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error('PickupYamato.pickup_date', null, ['wrap' => 'p']) ?>
             </div>
             <div class="form-group col-lg-12">
               <label>集荷の時間</label>
-              <?php echo $this->Form->select('PickupYamato.pickup_time', [], ['id' => 'TimeCd', 'class' => 'form-control select-pickup-time', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <?php echo $this->Form->select('PickupYamato.pickup_time', [], ['id' => 'time_cd', 'class' => 'form-control select-pickup-time', 'empty' => '以下からお選びください', 'error' => false]); ?>
               <?php echo $this->Form->error('PickupYamato.pickup_time', null, ['wrap' => 'p']) ?>
             </div>
             <span class="col-lg-6 col-md-6 col-xs-12">

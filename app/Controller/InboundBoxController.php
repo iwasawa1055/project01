@@ -10,6 +10,7 @@ App::uses('AmazonPayModel', 'Model');
 class InboundBoxController extends MinikuraController
 {
     const MODEL_NAME = 'Inbound';
+    public $layout = 'style';
 
     /**
      * 制御前段処理.
@@ -106,6 +107,11 @@ class InboundBoxController extends MinikuraController
         $data = Hash::get($this->request->data, self::MODEL_NAME);
         if (empty($data)) {
             return $this->render('add');
+        }
+
+        if (isset($data['box_type']) && $data['box_type'] == 'old') {
+            $list = $this->InfoBox->getListForInboundOldBox();
+            $this->set('boxList', $list);
         }
 
         // 届け先追加を選択の場合は追加画面へ遷移
@@ -311,6 +317,33 @@ class InboundBoxController extends MinikuraController
             return $this->redirect(['action' => 'add']);
         }
 
+        $post_data = Hash::get($this->request->data, self::MODEL_NAME);
+
+        // cleaning_pack
+        if (isset($post_data['keeping_type'])) {
+            if (isset($data['InboundManual'])) {
+                $model_name = "InboundManual";
+            } else {
+                if (isset($data['ReInboundYamato'])) {
+                    $model_name = "ReInboundYamato";
+                } else {
+                    $model_name = "InboundYamato";
+                }
+            }
+            $box_text = $data[$model_name]["box"];
+            $replace_box_text = '';
+            $arr_box_text = explode(',', $box_text);
+            foreach ($arr_box_text as $var) {
+                $arr_seperate_colon = explode(':', $var);
+                if ($arr_seperate_colon[0] == PRODUCT_CD_CLEANING_PACK) {
+                    $replace_box_text .= implode(':', $arr_seperate_colon) . ':' . $post_data['keeping_type'] . ',';
+                } else {
+                    $replace_box_text .= implode(':', $arr_seperate_colon) . ':,';
+                }
+            }
+            $data[$model_name]["box"] = rtrim($replace_box_text, ',');
+        }
+
         $data = current($data);
         $this->Inbound->init($data);
         $model = $this->Inbound->model($data);
@@ -449,6 +482,19 @@ class InboundBoxController extends MinikuraController
         return json_encode(compact('status', 'name'));
     }
 
+    public function as_get_new_box()
+    {
+        $this->autoRender = false;
+        $list = $this->InfoBox->getListForInbound();
+        return json_encode($list);
+    }
+
+    public function as_get_old_box()
+    {
+        $this->autoRender = false;
+        $list = $this->InfoBox->getListForInboundOldBox();
+        return json_encode($list);
+    }
 
     /**
      * ヤマト運輸の配送日情報取得

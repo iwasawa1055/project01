@@ -8,7 +8,7 @@ class InboundManual extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('InboundManual', '/inbound_manual');
+        parent::__construct('InboundManual', '/inbound_manual', 'minikura_v5');
     }
 
     protected function triggerDataChanged()
