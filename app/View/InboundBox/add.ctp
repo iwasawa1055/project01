@@ -98,7 +98,7 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
                             <select class="address" name="data[Inbound][address_id]">
                                 <?php foreach ($addressList as $data) : ?>
-                                  <option value="<?php echo $data['address_id']; ?>">
+                                  <option value="<?php echo $data['address_id']; ?> <?php echo (isset($_POST['data']['Inbound']['address_id']) && $_POST['data']['Inbound']['address_id'] == $data['address_id']) ? 'selected' : ''; ?>">
                                     <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
                                   </option>
                                 <?php endforeach; ?>;
@@ -111,40 +111,55 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                                 <li>
                                     <label>郵便番号</label>
                                     <input id="postal" name="data[CustomerAddress][postal]" type="tel" placeholder="例：140-0002" class='search_address_postal' value="<?php echo isset($this->request->data['CustomerAddress']['postal']) ? $this->request->data['CustomerAddress']['postal'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.postal", null, ['wrap' => 'p']) ?>
                                     <p class="txt-caption">入力すると住所が自動で反映されます。</p>
                                 </li>
                                 <li>
                                     <label>都道府県</label>
                                     <input name="data[CustomerAddress][pref]" type="text" placeholder="例：東京都" class='address_pref' value="<?php echo isset($this->request->data['CustomerAddress']['pref']) ? $this->request->data['CustomerAddress']['pref'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.pref", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
                                     <label>住所</label>
                                     <input name="data[CustomerAddress][address1]" type="text" placeholder="例：品川区東品川2" class='address_address1' value="<?php echo isset($this->request->data['CustomerAddress']['address1']) ? $this->request->data['CustomerAddress']['address1'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.address1", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
                                     <label>番地</label>
                                     <input name="data[CustomerAddress][address2]" type="text" placeholder="例：6-10" class='address_address2' value="<?php echo isset($this->request->data['CustomerAddress']['address2']) ? $this->request->data['CustomerAddress']['address2'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.address2", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
                                     <label>建物名</label>
                                     <input name="data[CustomerAddress][address3]" type="text" placeholder="例：Tビル" class='address_address3' value="<?php echo isset($this->request->data['CustomerAddress']['address3']) ? $this->request->data['CustomerAddress']['address3'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.address3", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
                                     <label>電話番号</label>
                                     <input name="data[CustomerAddress][tel1]" type="tel" placeholder="例：0312345678" value="<?php echo isset($this->request->data['CustomerAddress']['tel1']) ? $this->request->data['CustomerAddress']['tel1'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.tel1", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
                                     <label>お名前 姓</label>
                                     <input name="data[CustomerAddress][lastname]" class="lastname" type="text" placeholder="例：寺田" value="<?php echo isset($this->request->data['CustomerAddress']['lastname']) ? $this->request->data['CustomerAddress']['lastname'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.lastname", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
                                     <label>お名前 名</label>
                                     <input name="data[CustomerAddress][firstname]" class="firstname" type="text" placeholder="例：太郎" value="<?php echo isset($this->request->data['CustomerAddress']['firstname']) ? $this->request->data['CustomerAddress']['firstname'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.firstname", null, ['wrap' => 'p']) ?>
+                                </li>
+                                <li>
+                                    <label>お名前 姓 カナ</label>
+                                    <input name="data[CustomerAddress][lastname_kana]" class="lastname_kana" type="text" placeholder="例：テラダ" value="<?php echo isset($this->request->data['CustomerAddress']['lastname']) ? $this->request->data['CustomerAddress']['lastname_kana'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.lastname_kana", null, ['wrap' => 'p']) ?>
+                                </li>
+                                <li>
+                                    <label>お名前 名 カナ</label>
+                                    <input name="data[CustomerAddress][firstname_kana]" class="firstname_kana" type="text" placeholder="例：タロウ" value="<?php echo isset($this->request->data['CustomerAddress']['firstname']) ? $this->request->data['CustomerAddress']['firstname_kana'] : ''; ?>">
+                                    <?php echo $this->Form->error("CustomerAddress.firstname_kana", null, ['wrap' => 'p']) ?>
                                 </li>
                             </ul>
-                            <label class="input-check">
-                                <input type="checkbox" class="cb-square" name="data[CustomerAddress][register_address_book]" value="1"<?php echo isset($this->request->data['CustomerAddress']['register_address_book']) ? 'checked' : ''; ?>><span class="icon"></span><span class="label-txt">アドレスブックに登録する</span>
-                            </label>
                         </li>
                         <li>
                             <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['day_cd']) ?$this->request->data['Inbound']['day_cd'] : ""; ?>" id="pickup_date">

@@ -182,29 +182,6 @@ $(function() {
     return false;
 });
 
-$(function() {
-    var valueStep = 1;
-    var minValue = 1;
-    var maxValue = 100;
-    var spinnerValue = $(".input-spinner").val();
-    var spinnerValue = parseInt(spinnerValue);
-
-    $('.spinner-down').on('click', function() {
-        $(this).next('.input-spinner').val(spinnerValue -= valueStep);
-        if (spinnerValue < minValue) {
-            spinnerValue = minValue;
-        }
-    });
-
-    $('.spinner-up').on('click', function() {
-        $(this).prev('.input-spinner').val(spinnerValue += valueStep);
-        if (spinnerValue > maxValue) {
-            spinnerValue = maxValue;
-        }
-    });
-    return false;
-});
-
 $('.guidance').iziModal({
     group: "group",
     zindex: 100000,

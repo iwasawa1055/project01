@@ -152,7 +152,6 @@ var AppInboundBoxAdd =
       }
     },
     address: function() {
-      $('.input-address').hide();
       $('[name="data[Inbound][address_id]"]').change(function() {
           $('.input-address').hide();
           if ($(this).val() === 'add') {
@@ -244,6 +243,14 @@ $(function() {
         $("#dev-input-box-type-new").show();
       }
     });
+    return false;
+});
+
+$(function() {
+    var address_id = $('[name="data[Inbound][address_id]"]').val();
+    if (address_id == 'add') {
+      $('.input-address').show();
+    }
     return false;
 });
 

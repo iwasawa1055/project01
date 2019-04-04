@@ -6,10 +6,12 @@ App::uses('DatePrivate', 'Model');
 App::uses('TimePrivate', 'Model');
 App::uses('InboundSelectedBox', 'Model');
 App::uses('AmazonPayModel', 'Model');
+App::uses('CustomerAddress', 'Model');
 
 class InboundBoxController extends MinikuraController
 {
     const MODEL_NAME = 'Inbound';
+    const MODEL_NAME_CUSTOMER_ADDRESS = 'CustomerAddress';
     public $layout = 'style';
 
     /**
@@ -115,12 +117,18 @@ class InboundBoxController extends MinikuraController
         }
 
         // 届け先追加を選択の場合は追加画面へ遷移
-        if (Hash::get($data, 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
-            CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
-            return $this->redirect([
-                'controller' => 'address', 'action' => 'add', 'customer' => true,
-                '?' => ['return' => 'inboundbox']
-            ]);
+        if (Hash::get($data, 'address_id') === 'add') {
+            $this->loadModel('CustomerAddress');
+            $this->CustomerAddress->data['CustomerAddress'] = $this->request->data['CustomerAddress'];
+            if (!$this->CustomerAddress->validates()) {
+                return $this->render('add');
+            }
+            $this->CustomerAddress->apiPost($this->request->data['CustomerAddress']);
+            $list = $this->Address->get(true);
+
+            $data['address_id'] = end($list)['address_id'];
+            $this->request->data['Inbound']['address_id'] = end($list)['address_id'];
+            $this->set('addressList', $list);
         }
 
         $dataBoxList = $data['box_list'];
