@@ -98,7 +98,7 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
                             <select class="address" name="data[Inbound][address_id]">
                                 <?php foreach ($addressList as $data) : ?>
-                                  <option value="<?php echo $data['address_id']; ?> <?php echo (isset($_POST['data']['Inbound']['address_id']) && $_POST['data']['Inbound']['address_id'] == $data['address_id']) ? 'selected' : ''; ?>">
+                                  <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($_POST['data']['Inbound']['address_id']) && $_POST['data']['Inbound']['address_id'] == $data['address_id']) ? 'selected' : ''; ?>>
                                     <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
                                   </option>
                                 <?php endforeach; ?>;
