@@ -104,6 +104,7 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                                 <?php endforeach; ?>;
                                 <option value="add" <?php echo (isset($_POST['data']['Inbound']['address_id']) && $_POST['data']['Inbound']['address_id'] == 'add') ? 'selected' : ''; ?>>お届先を追加する</option>
                             </select>
+                            <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
                         </li>
                         <li class="input-address">
                             <ul class="add-address">
@@ -146,25 +147,18 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             </label>
                         </li>
                         <li>
-                            <input type="hidden" value="" id="pickup_date">
+                            <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['day_cd']) ?$this->request->data['Inbound']['day_cd'] : ""; ?>" id="pickup_date">
                             <label class="headline">集荷の日程</label>
                             <select id="day_cd" name="data[Inbound][day_cd]"></select>
                             <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
                         </li>
                         <li>
-                            <input type="hidden" value="" id="pickup_time_code">
+                        <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['time_cd']) ?$this->request->data['Inbound']['time_cd'] : ""; ?>" id="pickup_time_code">
                             <label class="headline">集荷の時間</label>
                             <select id="time_cd" name="data[Inbound][time_cd]"></select>
                             <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
                         </li>
                     </div>
-                    <!--li>
-                        <ul class="frequently">
-                            <li><a href="#">預け入れまでの流れはこちら</a></li>
-                            <li><a href="#">minikuraMONOの撮影についてはこちら</a></li>
-                            <li><a href="#">注意事項についてはこちら</a></li>
-                        </ul>
-                    </li-->
                 </ul>
             </form>
         </div>
