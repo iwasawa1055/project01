@@ -1,3 +1,5 @@
+<?php $this->Html->script('contact_us/input.js?'.time(), ['block' => 'scriptMinikura']); ?>
+
    <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> お問い合わせ</h1>
@@ -50,7 +52,12 @@
                 <?php else:?>
                 <div class="form-group col-lg-12">
                   <label>メッセージを送信</label>
-                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['class' => "form-control", 'rows' => 5, 'error' => false, 'placeholder' => 'お問い合わせ内容を入力してください']); ?>
+                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['id' => "contact_message", 'class' => "form-control", 'rows' => 5, 'error' => false, 'placeholder' => 'お問い合わせ内容を入力してください']); ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label>こちらではありませんか？</label>
+                  <dev id="help_link">
+                  </dev>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-primary btn-lg btn-block" href="/contact_us">戻る</a>

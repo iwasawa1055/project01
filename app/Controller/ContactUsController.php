@@ -328,6 +328,36 @@ class ContactUsController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME_ZENDESK_CONTACT_US);
     }
 
+    public function as_get_contact_help()
+    {
+        if (!$this->request->is('ajax')) {
+            return false;
+        }
+
+        $this->autoRender = false;
+
+        $result = [];
+
+        $contact_message = $this->request->data['contact_message'];
+        if (empty($contact_message)) {
+            return json_encode(compact('result'));
+        }
+
+        preg_match_all('/[一-龠]+|[ァ-ヴー]+|[a-zA-Z0-9]+|[ａ-ｚＡ-Ｚ０-９]+/u', $contact_message, $matches);
+
+        CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' $matches ' . print_r($matches, true));
+
+        if (empty($matches[0])) {
+            return json_encode(compact('result'));
+        }
+
+        $search_param = array(
+            'message' => implode(',', $matches[0])
+        );
+        $result = $this->ZendeskModel->getSearchHelpCenter($search_param);
+
+        return json_encode(compact('result'));
+    }
 
     /**
      * getAnnouncement

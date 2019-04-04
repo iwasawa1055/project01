@@ -301,6 +301,30 @@ class ZendeskModel extends AppModel
         return $results;
     }
 
+    /**
+     * ヘルプセンター検索
+     * @param array $_param
+     *         message 検索用メッセージ
+     * @return array
+     */
+    public function getSearchHelpCenter($_param)
+    {
+        $resource = '/v2/help_center/articles/search.json';
+        $url = Configure::read('app.zendesk.help_access_point') . $resource;
+        $method = 'GET';
+        $request_params = [
+            'query' => $_param['message']
+        ];
+
+        $response = $this->requestZendeskApi($url, $request_params, $method);
+        if (isset($response['body_parsed']['error'])) {
+            $this->error = $response['body_parsed'];
+        }
+
+        $results = !empty($response['body_parsed']['results']) ? $response['body_parsed']['results'] : [];
+
+        return $results;
+    }
 
     /**
      * チケット登録

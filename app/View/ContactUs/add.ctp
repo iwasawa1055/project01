@@ -1,3 +1,5 @@
+<?php $this->Html->script('contact_us/input.js?'.time(), ['block' => 'scriptMinikura']); ?>
+
     <?php if (!empty($validErrors)) { $this->validationErrors['ZendeskContactUs'] = $validErrors; } ?>
     <div class="row">
       <div class="col-lg-12">
@@ -42,8 +44,13 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>お問い合わせの内容</label>
-                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['class' => "form-control", 'rows' => 11, 'error' => false]); ?>
+                  <?php echo $this->Form->textarea('ZendeskContactUs.comment', ['id' => "contact_message", 'class' => "form-control", 'rows' => 11, 'error' => false]); ?>
                   <?php echo $this->Form->error('ZendeskContactUs.comment', null, ['wrap' => 'p']) ?>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label>こちらではありませんか？</label>
+                  <dev id="help_link">
+                  </dev>
                 </div>
 
                 <div id="bug_area">

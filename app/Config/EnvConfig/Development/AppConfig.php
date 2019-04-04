@@ -182,6 +182,7 @@ $config['app']['facebook']['version'] = 'v3.2';
  */
 $config['app']['zendesk']['env_type'] = 'dev';
 $config['app']['zendesk']['access_point'] = 'https://minikura1539678083.zendesk.com/api';
+$config['app']['zendesk']['help_access_point'] = 'https://minikura.zendesk.com/api';
 $config['app']['zendesk']['site_id'] = 'dev.minikura@terrada.co.jp/token';
 $config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0D38';
 
