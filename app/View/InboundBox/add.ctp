@@ -6,6 +6,30 @@ $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
 $this->Html->script('inbound_box/add', ['block' => 'scriptMinikura']);
 $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
 ?>
+<?php
+if (!empty($validErrors)) {
+    // Form->errorで使用できるようにする
+    $this->Form->validationErrors = $validErrors;
+    // 一覧表示のアイテム用にjsonでエラーを格納
+    if (isset($validErrors["box_list"])) {
+        echo "<input type='hidden' id='dev-box-list-errors' value='".json_encode($validErrors["box_list"])."'>";
+    }
+}
+// 選択したボックスの一覧
+if (isset($this->request->data['Inbound']['box_list'])) {
+    $selectedList = [];
+    foreach ($this->request->data['Inbound']['box_list'] as $k => $v) {
+        if ($v['checkbox'] == "1") {
+            $selectedList[$k] = $v;
+        }
+    }
+    echo "<input type='hidden' id='dev-box-list-selected' value='".json_encode($selectedList)."'>";
+}
+// 選択したボックスタイプ
+if (isset($this->request->data['Inbound']['box_type'])) {
+    echo "<input type='hidden' id='dev-selected-box_type' value='".$this->request->data['Inbound']['box_type']."'>";
+}
+?>
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="pagenation">
@@ -17,10 +41,11 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                 </li>
             </ul>
             <form name="form" action='/inbound/box/confirm' method="POST">
+                <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p']) ?>
                 <ul class="setting-switcher">
                     <li>
                         <label class="setting-switch">
-                            <input type="radio" class="ss" name="data[Inbound][box_type]" value="new" checked>
+                            <input type="radio" class="ss" name="data[Inbound][box_type]" value="new">
                             <span class="btn-ss"><span class="icon"></span>新規購入ボックス</span>
                         </label>
                     </li>
@@ -53,6 +78,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                 <ul class="input-info">
                     <li>
                         <label class="headline">ボックスの配送方法</label>
+                        <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
                         <ul class="delivery-method">
                             <li>
                                 <label class="input-check">
@@ -123,11 +149,13 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                             <input type="hidden" value="" id="pickup_date">
                             <label class="headline">集荷の日程</label>
                             <select id="day_cd" name="data[Inbound][day_cd]"></select>
+                            <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
                         </li>
                         <li>
                             <input type="hidden" value="" id="pickup_time_code">
                             <label class="headline">集荷の時間</label>
                             <select id="time_cd" name="data[Inbound][time_cd]"></select>
+                            <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
                         </li>
                     </div>
                     <!--li>

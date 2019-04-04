@@ -20,7 +20,6 @@ var AppInboundBoxAdd =
           // 通信成功
           function(jsonResponse){
             AppInboundBoxAdd.new_box = JSON.parse(jsonResponse);
-            console.log(AppInboundBoxAdd.new_box);
             d.resolve();
           },
           // 通信失敗
@@ -40,7 +39,6 @@ var AppInboundBoxAdd =
           // 通信成功
           function(jsonResponse){
             AppInboundBoxAdd.old_box = JSON.parse(jsonResponse);
-            console.log(AppInboundBoxAdd.old_box);
             d.resolve();
           },
           // 通信失敗
@@ -59,6 +57,26 @@ var AppInboundBoxAdd =
         var renderOldBox = AppInboundBoxAdd.createHtml(value);
         $('#dev-old-box-grid').append(renderOldBox);
       });
+
+      // error
+      if (typeof $("#dev-box-list-errors").val() !== 'undefined') {
+        var boxListErrors = JSON.parse($("#dev-box-list-errors").val());
+        $.each(boxListErrors, function(index, value){
+          $.each(value, function(i1, v1){
+            $.each(v1, function(i2, v2){
+              $('[name="data[Inbound][box_list]['+index+']['+i1+']"').after('<p class="valid-il">'+v2+'</p>');
+            });
+          });
+        });
+      }
+      // selected
+      if (typeof $("#dev-box-list-selected").val() !== 'undefined') {
+        var boxListSelected = JSON.parse($("#dev-box-list-selected").val());
+        $.each(boxListSelected, function(index, value){
+          $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+        });
+      }
       return new $.Deferred().resolve().promise();
     },
     createHtml: function(value) {
@@ -162,7 +180,31 @@ $(function()
   });
 
 $(function() {
-    $('#dev-old-box').hide();
+    // 初期表示
+    if (typeof $("#dev-selected-box_type").val() !== 'undefined') {
+      var box_type = $("#dev-selected-box_type").val();
+      if (box_type == "new") {
+        $('[name="data[Inbound][box_type]"]:eq(0)').prop('checked', true);
+        $('#dev-new-box').fadeIn(400, 'easeInOutExpo');
+        $('#dev-old-box').fadeOut(400, 'easeInOutExpo');
+        $("#dev-self-delivery").show();
+        $("#dev-input-box-type-new").show();
+      } else {
+        $('[name="data[Inbound][box_type]"]:eq(1)').prop('checked', true);
+        $("input[name='data[Inbound][delivery_carrier]']:eq(0)").prop('checked', true);
+        $("#dev-self-delivery").hide();
+        $("#dev-input-box-type-new").show();
+        $('#dev-new-box').fadeOut(400, 'easeInOutExpo');
+        $('#dev-old-box').fadeIn(400, 'easeInOutExpo');
+      }
+    } else {
+        $('[name="data[Inbound][box_type]"]:eq(0)').prop('checked', true);
+        $('#dev-new-box').fadeIn(400, 'easeInOutExpo');
+        $('#dev-old-box').fadeOut(400, 'easeInOutExpo');
+        $("#dev-self-delivery").show();
+        $("#dev-input-box-type-new").show();
+    }
+
     $('[name="data[Inbound][box_type]"]').change(function() {
       if ($('.dev-box-check:checked').length > 0) {
         var ret = window.confirm('現在ご選択中のボックスがクリアされます。よろしいですか？');
@@ -186,7 +228,7 @@ $(function() {
       } else if ($(this).val() === 'old') {
         $("input[name='data[Inbound][delivery_carrier]']:eq(0)").prop('checked', true);
         $("#dev-self-delivery").hide();
-        $("#dev-input-box-type-new").hide();
+        $("#dev-input-box-type-new").show();
         $('#dev-new-box').fadeOut(400, 'easeInOutExpo');
         $('#dev-old-box').fadeIn(400, 'easeInOutExpo');
       }
