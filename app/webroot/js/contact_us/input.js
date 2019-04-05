@@ -1,7 +1,7 @@
 var AppInputDetail =
 {
   a: function () {
-    $("#contact_message").each(function(){
+    $("#ZendeskContactUsComment").each(function(){
       $(this).bind('keyup', contact_target(this));
     });
     function contact_target(elm){
