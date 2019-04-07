@@ -196,6 +196,11 @@ class InboundBoxController extends MinikuraController
             return $this->render('add_amazon_pay');
         }
 
+        if (isset($data['box_type']) && $data['box_type'] == 'old') {
+            $list = $this->InfoBox->getListForInboundOldBox();
+            $this->set('boxList', $list);
+        }
+
         $dataBoxList = $data['box_list'];
         unset($data['box_list']);
 
@@ -251,8 +256,6 @@ class InboundBoxController extends MinikuraController
             $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
             // GetOrderReferenceDetails
             if($res['ResponseStatus'] != '200') {
-                // ↓AmazonPayのエラーがどのような頻度で起きるか様子見するためのログ。消さないでー！
-                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
                 $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
                 return $this->redirect(['action' => 'add_amazon_pay']);
             }

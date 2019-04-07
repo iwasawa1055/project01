@@ -61,6 +61,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                         <li><?php echo INBOUND_CARRIER_DELIVERY[$this->data['Inbound']['delivery_carrier']] ?></li>
                     </ul>
                 </li>
+                <?php if (strpos($this->Form->data['Inbound']['delivery_carrier'], INBOUND_DELIVERY_PICKUP) !== FALSE): ?>
                 <li>
                     <label class="headline">お預かりに上がる住所</label>
                     <ul class="li-address">
@@ -73,6 +74,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                         <li><?php echo $this->Order->echoOption($dateList, 'date_cd', 'text', $this->data['Inbound']['day_cd']) ?> <?php echo $this->Order->echoOption($timeList, 'time_cd', 'text', $this->data['Inbound']['time_cd']) ?></li>
                     </ul>
                 </li>
+                <?php endif; ?>
                 <?php if($cleaning) :?>
                 <li>
                     <label class="headline">クリーニングパックの保管</label>

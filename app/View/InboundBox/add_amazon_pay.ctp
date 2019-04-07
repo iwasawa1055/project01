@@ -1,149 +1,146 @@
 <?php
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); 
+$this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
+$this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
+$this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
+$this->Html->script('inbound_box/add_amazon_pay', ['block' => 'scriptMinikura']);
+// $this->Html->script('pickup/add_amazon_pay', ['block' => 'scriptMinikura']);
+$this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
+$this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']);
+$this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
+?>
+<?php
 if (!empty($validErrors)) {
+    // Form->errorで使用できるようにする
     $this->Form->validationErrors = $validErrors;
+    // 一覧表示のアイテム用にjsonでエラーを格納
+    if (isset($validErrors["box_list"])) {
+        echo "<input type='hidden' id='dev-box-list-errors' value='".json_encode($validErrors["box_list"])."'>";
+    }
+}
+// 選択したボックスの一覧
+if (isset($this->request->data['Inbound']['box_list'])) {
+    $selectedList = [];
+    foreach ($this->request->data['Inbound']['box_list'] as $k => $v) {
+        if ($v['checkbox'] == "1") {
+            $selectedList[$k] = $v;
+        }
+    }
+    echo "<input type='hidden' id='dev-box-list-selected' value='".json_encode($selectedList)."'>";
+}
+// 選択したボックスタイプ
+if (isset($this->request->data['Inbound']['box_type'])) {
+    echo "<input type='hidden' id='dev-selected-box_type' value='".$this->request->data['Inbound']['box_type']."'>";
 }
 ?>
-<?php $this->Html->script('minikura/inboundbox', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->script('inbound_box/add_amazon_pay', ['block' => 'scriptMinikura']); ?>
-<?php $this->Html->css('/css/app.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/app_dev.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']); ?>
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="panel panel-default">
-          <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/confirm_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true, 'class' => 'select-add-address-form']); ?>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-lg-12">
-                <h2>預け入れボックスを選択</h2>
-
-              <?php if (empty($boxList)) : ?>
-                <p class="form-control-static col-lg-12">ご購入済みのキットがございません。<br />
-                  預け入れの際はまず弊社指定の専用キットをご購入ください。</p>
-              <?php else: ?>
-                <p class="form-control-static col-lg-12">ご購入済みの専用ボックスの一覧です。<br />
-                  預け入れるボックスのタイトルを入力してボックスを選択しましたら「預け入れボックスの確認」にすすんでください。</p>
-              <?php endif; ?>
-                <div class="row box-list">
-                  <!--loop-->
-                  <?php foreach ($boxList as $box): ?>
-
-                  <?php
-                  $i = $box['box_id'];
-                  echo $this->Form->hidden("Inbound.box_list.${i}.box_id", ['value' => $box['box_id']]); ?>
-                  <?php echo $this->Form->hidden("Inbound.box_list.${i}.product_cd", ['value' => $box['product_cd']]); ?>
-                  <?php echo $this->Form->hidden("Inbound.box_list.${i}.product_name", ['value' => $box['product_name']]); ?>
-                  <?php echo $this->Form->hidden("Inbound.box_list.${i}.kit_cd", ['value' => $box['kit_cd']]); ?>
-                  <?php echo $this->Form->hidden("Inbound.box_list.${i}.box_id", ['value' => $box['box_id']]); ?>
-                  <div class="col-lg-12">
-                    <div class="panel panel-default">
-                      <div class="panel-body <?php echo $this->MyPage->boxClassName($box); ?>">
-                        <div class="row">
-                          <?php $kitCd = $box['kit_cd'];
-                          if (array_key_exists($kitCd, KIT_OPTION)) : ?>
-                              <div class="col-lg-5 col-md-5 col-sm-12">
-                                <?php echo $this->Form->text("Inbound.box_list.${i}.title", ['class' => 'form-control', 'error' => false, 'placeholder' => 'ボックスタイトルを入力してください']); ?>
-                                <?php echo $this->Form->error("Inbound.box_list.${i}.title", null, ['wrap' => 'p']) ?>
-                              </div>
-                              <div class="col-lg-4 col-md-4 col-sm-12">
-                                <?php echo $this->Form->select("Inbound.box_list.${i}.option", KIT_OPTION[$kitCd], ['class' => 'form-control', 'empty' => '選択してください', 'error' => false]); ?>
-                              </div>
-                          <?php else: ?>
-                              <div class="col-lg-9 col-md-9 col-xs-12">
-                                <?php echo $this->Form->text("Inbound.box_list.${i}.title", ['class' => 'form-control', 'error' => false, 'placeholder' => 'ボックスタイトルを入力してください']); ?>
-                                <?php echo $this->Form->error("Inbound.box_list.${i}.title", null, ['wrap' => 'p']) ?>
-                              </div>
-                          <?php endif; ?>
-                          <div class="col-lg-3 col-md-3 col-xs-12 inbound_box_select_checkbox">
-                              <?php echo $this->Form->checkbox("Inbound.box_list.${i}.checkbox"); ?>
-                              <button class="btn btn-danger btn-md btn-block btn-detail inbound-btn"></button>
-                          </div>
-                        </div>
-                        <?php echo $this->Form->error("box_list.${box['box_id']}.title", null, ['wrap' => 'p']) ?>
-                        <?php echo $this->Form->error("box_list.${box['box_id']}.option", null, ['wrap' => 'p']) ?>
-                      </div>
-                      <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
+        <div id="page-wrapper" class="wrapper inbound">
+            <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
+            <ul class="pagenation">
+                <li class="on"><span class="number">1</span><span class="txt">ボックス<br>選択</span>
+                </li>
+                <li><span class="number">2</span><span class="txt">確認</span>
+                </li>
+                <li><span class="number">3</span><span class="txt">完了</span>
+                </li>
+            </ul>
+            <form name="form" action='/inbound/box/confirm_amazon_pay' method="POST">
+                <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p']) ?>
+                <ul class="setting-switcher">
+                    <li>
+                        <label class="setting-switch">
+                            <input type="radio" class="ss" name="data[Inbound][box_type]" value="new">
+                            <span class="btn-ss"><span class="icon"></span>新規購入ボックス</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="setting-switch">
+                            <input type="radio" class="ss" name="data[Inbound][box_type]" value="old">
+                            <span class="btn-ss"><span class="icon"></span>取出し済ボックス</span>
+                        </label>
+                    </li>
+                </ul>
+                <div id="dev-new-box" class="item-content">
+                    <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg">ボックスIDについて</a>
+                    <ul id="dev-new-box-grid" class="grid grid-md">
+                    </ul>
+                </div>
+                <div id="dev-old-box" class="item-content">
+                    <p class="page-caption">minikuraHAKOのみ、再入庫を受け付けておりますが、ボックスの強度をご確認の上、ご利用ください。</p>
+                    <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg">ボックスIDについて</a>
+                    <!--ul class="id-search">
+                        <li>
+                            <input type="search" placeholder="ボックスのバーコード下4桁を入力" class="search">
+                        </li>
+                        <li>
+                            <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg"></a>
+                        </li>
+                    </ul-->
+                    <ul id="dev-old-box-grid" class="grid grid-md">
+                    </ul>
+                </div>
+                <ul class="input-info">
+                    <li>
+                        <label class="headline">ボックスの配送方法</label>
+                        <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
+                        <ul class="delivery-method">
+                            <li>
+                                <label class="input-check">
+                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="6_1" checked><span class="icon"></span>
+                                    <span class="label-txt">集荷を申し込む</span>
+                                </label>
+                            </li>
+                            <li id="dev-self-delivery"><label class="input-check">
+                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="7"><span class="icon"></span>
+                                    <span class="label-txt">自分で発送する</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </li>
+                    <div id="dev-input-box-type-new">
+                        <li>
+                            <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
+                                <div id="dsn-amazon-pay" class="form-group col-lg-12">
+                                  <div class="dsn-address">
+                                    <div id="addressBookWidgetDiv">
+                                    </div>
+                                  </div>
+                                </div>
+                            <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
+                        </li>
+                        <li class="name-form-group">
+                            <label class="headline">お名前 (姓)</label>
+                            <input type="text" class="lastname" name="lastname" placeholder="寺田" size="10" maxlength="30">
+                            <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
+                        </li>
+                        <li class="name-form-group">
+                            <label class="headline">お名前 (名)</label>
+                            <input type="text" class="firstname" name="firstname" placeholder="太郎" size="10" maxlength="30">
+                            <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
+                        </li>
+                        <li>
+                            <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['day_cd']) ?$this->request->data['Inbound']['day_cd'] : ""; ?>" id="pickup_date">
+                            <label class="headline">集荷の日程</label>
+                            <select id="day_cd" name="data[Inbound][day_cd]"></select>
+                            <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
+                        </li>
+                        <li>
+                        <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['time_cd']) ?$this->request->data['Inbound']['time_cd'] : ""; ?>" id="pickup_time_code">
+                            <label class="headline">集荷の時間</label>
+                            <select id="time_cd" name="data[Inbound][time_cd]"></select>
+                            <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
+                        </li>
                     </div>
-                  </div>
-                  <?php endforeach; ?>
-                  <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p']) ?>
-                  <!--loop end-->
-                </div>
-              </div>
-            </div>
-          <?php if (!empty($boxList)) : ?>
-            <div class="form-group col-lg-12">
-              <label>預け入れ方法</label>
-              <?php if($customer->isSneaker()):?>
-                <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY_SNEAKERS, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
-              <?php else:?>
-                <?php echo $this->Form->select("Inbound.delivery_carrier", INBOUND_CARRIER_DELIVERY, ['class' => 'form-control', 'empty' => '以下からお選びください', 'error' => false]); ?>
-              <?php endif;?>
-              <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
-            </div>
-            <div class="form-group col-lg-12 inbound_pickup_only">
-              <label>集荷の住所</label>
-
-              <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                <div class="dsn-address">
-                  <div id="addressBookWidgetDiv">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group col-lg-12 inbound_pickup_only">
-              <?php echo $this->Flash->render('customer_amazon_pay_info');?>
-              <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
-              <?php /* echo $this->Form->error('Inbound.lastname', __d('validation', 'format_address'), ['wrap' => 'p'])*/ ?>
-              <?php echo $this->Form->error('Inbound.lastname_kana', null, ['wrap' => 'p']) ?>
-              <?php /* echo $this->Form->error('Inbound.firstname', __d('validation', 'format_address'), ['wrap' => 'p'])*/ ?>
-              <?php echo $this->Form->error('Inbound.firstname_kana', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.tel1', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.postal', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.pref', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.address1', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.address2', null, ['wrap' => 'p']) ?>
-              <?php echo $this->Form->error('Inbound.address3', null, ['wrap' => 'p']) ?>
-            </div>
-
-            <div class="form-group col-lg-12 inbound_pickup_only name-form-group">
-              <label>お名前</label>
-              <div class="dsn-form">
-                <input type="text" name="lastname" class="dsn-name-last lastname focused" placeholder="寺田" size="10" maxlength="30">
-                <input type="text" name="firstname" class="dsn-name-first firstname focused" placeholder="太郎" size="10" maxlength="30">
-                <br>
-                <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
-                <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
-              </div>
-            </div>
-
-            <div class="form-group col-lg-12 inbound_pickup_only">
-              <label>集荷の日程</label>
-              <?php echo $this->Form->select("Inbound.day_cd", $this->Order->setOption($dateList, 'date_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
-              <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
-            </div>
-            <div class="form-group col-lg-12 inbound_pickup_only">
-              <label>集荷の時間</label>
-              <?php echo $this->Form->select("Inbound.time_cd", $this->Order->setOption($timeList, 'time_cd', 'text'), ['class' => 'form-control', 'empty' => false, 'error' => false]); ?>
-              <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
-            </div>
-            <div class="form-group col-lg-12" id="dev_inbound_notice">
-              <p style="color:red">現在、撮影の完了まで倉庫にお荷物が届いてから10日前後頂戴しております。<br>
-お荷物到着後、すぐの取り出しはできませんので、ご注意ください。</p>
-            </div>
-            <span class="col-lg-12 col-md-12 col-xs-12">
-                <button type="submit" class="btn btn-danger btn-lg btn-block js-btn-submit">預け入れボックスを確認する</button>
-            </span>
-          <?php endif; ?>
-          </div>
-          <?php echo $this->Form->end(); ?>
+                </ul>
+            </form>
         </div>
-      </div>
-    </div>
-
+        <div class="nav-fixed">
+            <ul>
+                <li><button id="execute" class="btn-red">ボックスの確認</button>
+                </li>
+            </ul>
+        </div>
+        <div class="remodal about-id" data-remodal-id="about-id">
+            <p class="page-caption">バーコード番号(ボックスID)はボックス側面にバーコードと共に記載されています。</p>
+            <img src="/images/about-id@2x.png" alt="">
+            <a class="btn-close" data-remodal-action="close">閉じる</a>
+        </div>

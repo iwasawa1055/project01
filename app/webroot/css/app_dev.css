@@ -409,3 +409,18 @@ p.facebook-message a,
 #dev-new-box-grid > li > div > input {
   font-size: 1rem;
 }
+#dev-new-box-grid > li > div > p.box-id{
+  font-size: 1rem;
+}
+#dev-new-box-grid > li > div > p.box-type{
+  font-size: 1rem;
+}
+#dev-old-box-grid > li > div > input {
+  font-size: 1rem;
+}
+#dev-old-box-grid > li > div > p.box-id{
+  font-size: 1rem;
+}
+#dev-old-box-grid > li > div > p.box-type{
+  font-size: 1rem;
+}

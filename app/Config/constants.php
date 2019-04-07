@@ -84,6 +84,7 @@ const ANNOUNCEMENT_CATEGORY_YAMATO = [
     'INF124',
     'INF125',
     'INF126',
+    'INF808',
 ];
 
 // キットコード
@@ -152,6 +153,14 @@ const BOX_STATUS_LIST = [
     '200' => 'お預かり中',
     '150' => '取り出し済み',
     '210' => '取り出し済み',
+];
+const BOX_WRAPPING_TYPE_LIST = [
+    '0' => '外装を外さない',
+    '1' => '外装を外す',
+];
+const BOX_KEEPING_TYPE_LIST = [
+    '10' => 'タタミ',
+    '20' => 'ハンガー',
 ];
 // 再入庫・依頼
 // 220	完了

@@ -113,6 +113,12 @@
       echo $this->fetch('script');
       echo $this->fetch('scriptMinikura');
     ?>
+    <?php // アマゾンペイメント対応 ?>
+    <?php if (!empty($customer) && $customer->isLogined()) : ?>
+    <?php if ($customer->isAmazonPay()):?>
+    <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+    <?php endif; ?>
+    <?php endif; ?>
 </body>
 
 </html>
