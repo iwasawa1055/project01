@@ -66,7 +66,6 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                     <label class="headline">お預かりに上がる住所</label>
                     <ul class="li-address">
                         <li>〒<?php echo CakeSession::read('InboundAddress.postal');?>&emsp;<?php echo CakeSession::read('InboundAddress.pref');?><?php echo CakeSession::read('InboundAddress.address1');?><?php echo CakeSession::read('InboundAddress.address2');?>&nbsp;<?php echo CakeSession::read('InboundAddress.address3');?>&emsp;<?php echo CakeSession::read('InboundAddress.lastname');?><?php echo CakeSession::read('InboundAddress.firstname');?></li>
-            〒<?php echo CakeSession::read('InboundAddress.postal');?>&emsp;<?php echo CakeSession::read('InboundAddress.pref');?><?php echo CakeSession::read('InboundAddress.address1');?><?php echo CakeSession::read('InboundAddress.address2');?>&nbsp;<?php echo CakeSession::read('InboundAddress.address3');?>&emsp;<?php echo CakeSession::read('InboundAddress.lastname');?><?php echo CakeSession::read('InboundAddress.firstname');?>
                     </ul>
                 </li>
                 <li>

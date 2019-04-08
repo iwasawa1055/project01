@@ -3,7 +3,7 @@ $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read
 $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
-$this->Html->script('inbound_box/add', ['block' => 'scriptMinikura']);
+$this->Html->script('inbound_box/add.js?'.time(), ['block' => 'scriptMinikura']);
 $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
 ?>
 <?php
