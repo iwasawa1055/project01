@@ -386,6 +386,33 @@ class InboundBoxController extends MinikuraController
             return $this->redirect(['action' => 'add_amazon_pay']);
         }
 
+        $post_data = Hash::get($this->request->data, self::MODEL_NAME);
+
+        // cleaning_pack
+        if (isset($post_data['keeping_type'])) {
+            if (isset($data['InboundManual'])) {
+                $model_name = "InboundManual";
+            } else {
+                if (isset($data['ReInboundYamato'])) {
+                    $model_name = "ReInboundYamato";
+                } else {
+                    $model_name = "InboundYamato";
+                }
+            }
+            $box_text = $data[$model_name]["box"];
+            $replace_box_text = '';
+            $arr_box_text = explode(',', $box_text);
+            foreach ($arr_box_text as $var) {
+                $arr_seperate_colon = explode(':', $var);
+                if ($arr_seperate_colon[0] == PRODUCT_CD_CLEANING_PACK) {
+                    $replace_box_text .= implode(':', $arr_seperate_colon) . ':' . $post_data['keeping_type'] . ',';
+                } else {
+                    $replace_box_text .= implode(':', $arr_seperate_colon) . ':,';
+                }
+            }
+            $data[$model_name]["box"] = rtrim($replace_box_text, ',');
+        }
+
         $data = current($data);
 
         $this->Inbound->init($data);

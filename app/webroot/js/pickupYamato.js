@@ -13,7 +13,6 @@ var PickupYamato =
           dataType: 'json',
           type: 'POST'
         }).done(function (data, textStatus, jqXHR) {
-            console.log(data);
             if (data.results) {
                 pickup_date_time = data.results;
                 $('#select-pickup-date option').remove();
@@ -53,14 +52,9 @@ var PickupYamato =
                         break;
                     }
                 }
-            };
-
+            }
         }).fail(function (data, textStatus, errorThrown) {
-            console.log(data);
-
         }).always(function (data, textStatus, returnedObject) {
-            console.log(data);
-
         });
     },
     changeSelectPickup: function()
@@ -68,7 +62,6 @@ var PickupYamato =
         $('#day_cd').change(function() {
             var change_pickup_date = $('#day_cd option:selected').val();
             $('#time_cd option').remove();
-            console.log(change_pickup_date);
             for(var item in pickup_date_time[change_pickup_date]) {
                 var pickup_time_text = pickup_date_time[change_pickup_date][item];
                 $('#time_cd').append($('<option>').text(pickup_time_text).attr('value', item));

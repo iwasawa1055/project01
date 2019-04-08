@@ -63,6 +63,13 @@ var AppInboundBoxAdd =
       }
     });
 
+    // 初期表示
+    if ($('[name="data[Inbound][delivery_carrier]"]:checked').val() === '7') {
+        $("#dev-input-box-type-new").hide();
+    } else {
+        $("#dev-input-box-type-new").show();
+    }
+
     $('[name="data[Inbound][delivery_carrier]"]').change(function() {
       if ($(this).val() === '7') {
         $("#dev-input-box-type-new").hide();
@@ -141,6 +148,9 @@ var AppInboundBoxAdd =
       $.each(boxListSelected, function(index, value){
         $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
         $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+        if (typeof value.wrapping_type !== 'undefined' && value.wrapping_type == 1) {
+          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"').prop('checked', true);
+        }
       });
     }
     return new $.Deferred().resolve().promise();
@@ -148,12 +158,12 @@ var AppInboundBoxAdd =
   createHtml: function(value) {
     var html = '';
     html += '<li>';
+    html += '    <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][box_id]" value="'+value.box_id+'" id="InboundBoxList'+value.box_id+'BoxId">';
+    html += '    <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][product_cd]" value="'+value.product_cd+'" id="InboundBoxList'+value.box_id+'ProductCd">';
+    html += '    <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][product_name]" value="'+value.product_name+'" id="InboundBoxList'+value.box_id+'ProductName">';
+    html += '    <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][kit_cd]" value="'+value.kit_cd+'" id="InboundBoxList'+value.box_id+'KitCd">';
+    html += '    <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][checkbox]" class="cb-circle dev-box-check" value="0">';
     html += '    <label class="input-check">';
-    html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][box_id]" value="'+value.box_id+'" id="InboundBoxList'+value.box_id+'BoxId">';
-    html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][product_cd]" value="'+value.product_cd+'" id="InboundBoxList'+value.box_id+'ProductCd">';
-    html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][product_name]" value="'+value.product_name+'" id="InboundBoxList'+value.box_id+'ProductName">';
-    html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][kit_cd]" value="'+value.kit_cd+'" id="InboundBoxList'+value.box_id+'KitCd">';
-    html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][checkbox]" class="cb-circle dev-box-check" value="0">';
     html += '        <input type="checkbox" name="data[Inbound][box_list]['+value.box_id+'][checkbox]" class="cb-circle dev-box-check" value="1"><span class="icon"></span>';
     html += '        <span class="item-img"><img src="'+AppInboundBoxAdd.getProductImage(value.kit_cd)+'" alt="'+value.kit_name+'" class="img-item"></span>';
     html += '    </label>';
@@ -163,8 +173,8 @@ var AppInboundBoxAdd =
     html += '        <input type="text" name="data[Inbound][box_list]['+value.box_id+'][title]" placeholder="ボックス名を記入してください" class="box-input-name">';
 
     if (value.kit_cd == '66' || value.kit_cd == '67' || value.kit_cd == '82') {
+      html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-circle dev-box-check" value="0">';
       html += '        <label class="input-check">';
-      html += '            <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-circle dev-box-check" value="0">';
       html += '            <input type="checkbox" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-square dev-box-check" value="1">';
       html += '            <span class="icon"></span>';
       html += '            <span class="label-txt">外装を除いて撮影</span>';

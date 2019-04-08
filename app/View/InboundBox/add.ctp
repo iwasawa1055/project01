@@ -1,5 +1,5 @@
 <?php
-$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); 
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
@@ -82,12 +82,12 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                         <ul class="delivery-method">
                             <li>
                                 <label class="input-check">
-                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="6_1" checked><span class="icon"></span>
+                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="6_1" <?php echo ((isset($this->request->data['Inbound']['delivery_carrier']) && $this->request->data['Inbound']['delivery_carrier'] == '6_1') || (isset($this->request->data['Inbound']['delivery_carrier']) === false)) ? 'checked' : ''; ?>><span class="icon"></span>
                                     <span class="label-txt">集荷を申し込む</span>
                                 </label>
                             </li>
                             <li id="dev-self-delivery"><label class="input-check">
-                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="7"><span class="icon"></span>
+                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="7" <?php echo (isset($this->request->data['Inbound']['delivery_carrier']) && $this->request->data['Inbound']['delivery_carrier'] == '7') ? 'checked' : ''; ?>><span class="icon"></span>
                                     <span class="label-txt">自分で発送する</span>
                                 </label>
                             </li>
