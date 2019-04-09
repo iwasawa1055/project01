@@ -128,6 +128,13 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             <select id="time_cd" name="data[Inbound][time_cd]"></select>
                             <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
                         </li>
+                        <li>
+                            <ul class="frequently">
+                                <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">預け入れまでの流れはこちら</a></li>
+                                <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/mono.html" target="_blank">minikuraMONOの撮影についてはこちら</a></li>
+                                <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/#attachment1" target="_blank">注意事項についてはこちら</a></li>
+                            </ul>
+                        </li>
                     </div>
                 </ul>
             </form>
