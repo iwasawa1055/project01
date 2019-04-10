@@ -16,6 +16,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
             <div class="item-content">
                 <ul class="grid grid-md">
                     <!--loop-->
+                    <?php $mono = false; ?>
                     <?php $library = false; ?>
                     <?php $closet = false; ?>
                     <?php $cleaning = false; ?>
@@ -29,6 +30,9 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                           $kitName = '';
                           if (!empty($formBox['option'])) {
                               $kitName = KIT_OPTION[$kitCd][$formBox['option']];
+                          }
+                          if ($box['kit_cd'] == KIT_CD_MONO || $box['kit_cd'] == KIT_CD_MONO_BOOK || $box['kit_cd'] == KIT_CD_MONO_APPAREL) {
+                              $mono = true;
                           }
                           if ($box['kit_cd'] == KIT_CD_LIBRARY_DEFAULT || $box['kit_cd'] == KIT_CD_LIBRARY_GVIDO) {
                               $library = true;
@@ -96,11 +100,23 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 <li class="caution-box">
                   <p class="title">注意事項(ご確認の上、チェックしてください)</p>
                   <div class="content">
+                    <?php if($mono || $closet || $library || $cleaning) :?>
                     <label id="confirm_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
-                        ご購入完了後、日時を含む内容の変更およびキャンセルはお受けすることができません。<br>
+                         現在、撮影の完了まで倉庫にお荷物が届いてから10営業日前後頂戴しております。<br>
+                         ※現在繁忙期につき、倉庫にお荷物が届いてから撮影の完了まで上記日数よりお時間を頂戴する可能性がございます。<br>
+                         お荷物到着後、すぐの取り出しはできませんので、ご注意ください。<br>
+                      </span>
+                    </label>
+                    <?php endif; ?>
+                    <label id="confirm_check" class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。<br>
+                        ※明らかに20kgを超えた場合はお預かりできない場合がございます。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。
                       </span>
                     </label>
                     <label id="confirm_check" class="input-check agree-before-submit">

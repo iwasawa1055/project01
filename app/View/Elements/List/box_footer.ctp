@@ -7,13 +7,13 @@
         <?php if (!empty($box['box_id'])) : ?>
         <p class="box-list-caption"><span>ボックスID</span><?php echo $box['box_id']; ?></p>
         <?php endif;?>
-        <p class="box-list-caption"><span>ステータス</span><?php echo BOX_STATUS_LIST[$box['box_status']];?></p>
-        <?php if (!empty($box['wrapping_type'])) : ?>
+        <?php if ($box['wrapping_type'] == '0' || !empty($box['wrapping_type'])) : ?>
         <p class="box-list-caption"><span>外装管理</span><?php echo BOX_WRAPPING_TYPE_LIST[$box['wrapping_type']];?></p>
         <?php endif;?>
         <?php if (!empty($box['keeping_type'])) : ?>
         <p class="box-list-caption"><span>保管方法</span><?php echo BOX_KEEPING_TYPE_LIST[$box['keeping_type']];?></p>
         <?php endif;?>
+        <p class="box-list-caption"><span>ステータス</span><?php echo BOX_STATUS_LIST[$box['box_status']];?></p>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-12">
         <?php if (!empty($box['last_inbound_date'])) : ?>
