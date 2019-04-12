@@ -57,6 +57,8 @@ class RegisterController extends MinikuraController
             $alliance_cd = '';
             if (isset($_GET['alliance_cd'])) {
                 $alliance_cd = $_GET['alliance_cd'];
+            } elseif ($_GET['code']) {
+                $alliance_cd = $_GET['code'];
             } elseif (CakeSession::read('app.data.alliance_cd')) {
                 $alliance_cd = CakeSession::read('app.data.alliance_cd');
             }
