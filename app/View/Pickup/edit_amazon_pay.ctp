@@ -10,7 +10,7 @@ $return = Hash::get($this->request->query, 'return');
 ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> 集荷日時変更</h1>
+    <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> 集荷情報変更</h1>
   </div>
 </div>
 <div class="row">
@@ -20,6 +20,7 @@ $return = Hash::get($this->request->query, 'return');
         <div class="row">
           <?php echo $this->Form->create('Pickup', ['url' => ['controller' => 'pickup', 'action' => 'edit_amazon_pay'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="col-lg-12 none-title">
+            <p class="form-control-static caution col-lg-12">注意：集荷情報変更で対応可能なのは住所・日程・時間のみとなり、ボックス内容や個数の変更等はお受けできかねます。</p>
             <div class="form-group col-lg-12">
               <label>集荷の住所</label>
               <div id="dsn-amazon-pay" class="form-group col-lg-12">

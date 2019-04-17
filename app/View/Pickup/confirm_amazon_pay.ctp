@@ -3,7 +3,7 @@ $return = Hash::get($this->request->query, 'return');
 ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> 集荷日時変更</h1>
+    <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> 集荷情報変更</h1>
   </div>
 </div>
 <div class="row">
@@ -16,25 +16,11 @@ $return = Hash::get($this->request->query, 'return');
             <div class="form-group col-lg-12">
               <label>集荷の住所</label>
               <p class="form-control-static">
-              <?php echo h($pickup_confirm['postal'].' '.$pickup_confirm['pref'].$pickup_confirm['address1'].$pickup_confirm['address2'].$pickup_confirm['address3']); ?>
-              </p>
-            </div>
-            <div class="form-group col-lg-12">
-              <label>集荷の電話番号</label>
-              <p class="form-control-static">
-              <?php echo h($pickup_confirm['tel1']); ?>
-              </p>
-            </div>
-            <div class="form-group col-lg-12">
-              <label>集荷のお名前</label>
-              <p class="form-control-static">
-              <?php echo h($pickup_confirm['name']); ?>
-              </p>
-            </div>
-            <div class="form-group col-lg-12">
-              <label>集荷のお名前(カナ)</label>
-              <p class="form-control-static">
-              <?php echo h($pickup_confirm['name_kana']); ?>
+                <?php echo '〒' . h($pickup_confirm['postal']); ?>
+                &nbsp;
+                <?php echo h($pickup_confirm['pref'].$pickup_confirm['address1'].$pickup_confirm['address2'].$pickup_confirm['address3']); ?>
+                &nbsp;
+                <?php echo h($pickup_confirm['name']); ?>
               </p>
             </div>
             <div class="form-group col-lg-12">

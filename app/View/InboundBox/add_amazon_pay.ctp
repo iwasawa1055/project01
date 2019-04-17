@@ -1,5 +1,5 @@
 <?php
-$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); 
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
@@ -48,23 +48,36 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     <li>
                         <label class="setting-switch">
                             <input type="radio" class="ss" name="data[Inbound][box_type]" value="new">
-                            <span class="btn-ss"><span class="icon"></span>新規購入ボックス</span>
+                            <span class="btn-ss"><span class="icon"></span>新しく購入した<br class="sp">ボックスを預ける</span>
                         </label>
                     </li>
                     <li>
                         <label class="setting-switch">
                             <input type="radio" class="ss" name="data[Inbound][box_type]" value="old">
-                            <span class="btn-ss"><span class="icon"></span>取出し済ボックス</span>
+                            <span class="btn-ss"><span class="icon"></span>取り出し済ボックスを<br class="sp">再度預ける</span>
                         </label>
                     </li>
                 </ul>
                 <div id="dev-new-box" class="item-content">
-                    <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg">ボックスIDについて</a>
+                    <ul class="l-caution">
+                        <li>
+                            <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
+                                <img src="/images/question.svg">ボックスIDについて
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" data-remodal-target="packaging" class="about-box-id title-caution">
+                                <img src="/images/question.svg">「外装を除いて撮影」について
+                            </a>
+                        </li>
+                    </ul>
                     <ul id="dev-new-box-grid" class="grid grid-md">
                     </ul>
                 </div>
                 <div id="dev-old-box" class="item-content">
-                    <p class="page-caption">minikuraHAKOのみ、再入庫を受け付けておりますが、ボックスの強度をご確認の上、ご利用ください。</p>
+                    <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
+                        ボックスの状態については十分ご確認の上、ご利用ください。<br>
+                        なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。</p>
                     <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg">ボックスIDについて</a>
                     <!--ul class="id-search">
                         <li>
@@ -76,8 +89,18 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     </ul-->
                     <ul id="dev-old-box-grid" class="grid grid-md">
                     </ul>
+                    <p class="page-caption not-applicable">ご入力いただいたバーコード番号の取り出し済みボックスは見つかりませんでした。<br>
+                        別のバーコード番号をご入力ください。</p>
                 </div>
                 <ul class="input-info">
+                    <li>
+                        <label class="headline">預け入れ・撮影についてのよくあるご質問</label>
+                        <ul class="frequently">
+                            <li>預け入れまでの流れについては<a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">専用ボックスの到着から預け入れまで</a></li>
+                            <li>minikuraMONOの撮影については<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/mono.html" target="_blank">撮影付き保管サービスの概要</a></li>
+                            <li>注意事項については<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/#attachment1" target="_blank">お取り出し・配送について</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <label class="headline">ボックスの配送方法</label>
                         <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
@@ -128,13 +151,6 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             <select id="time_cd" name="data[Inbound][time_cd]"></select>
                             <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
                         </li>
-                        <li>
-                            <ul class="frequently">
-                                <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">預け入れまでの流れはこちら</a></li>
-                                <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/mono.html" target="_blank">minikuraMONOの撮影についてはこちら</a></li>
-                                <li><a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/#attachment1" target="_blank">注意事項についてはこちら</a></li>
-                            </ul>
-                        </li>
                     </div>
                 </ul>
             </form>
@@ -148,5 +164,20 @@ if (isset($this->request->data['Inbound']['box_type'])) {
         <div class="remodal about-id" data-remodal-id="about-id">
             <p class="page-caption">バーコード番号(ボックスID)はボックス側面にバーコードと共に記載されています。</p>
             <img src="/images/about-id@2x.png" alt="">
+            <a class="btn-close" data-remodal-action="close">閉じる</a>
+        </div>
+        <div class="remodal l-packaging" data-remodal-id="packaging">
+            <h2 class="title-packaging"><img src="/images/title-packaging.svg" alt="minikuraMONOご利用の方"></h2>
+            <p class="text-packaging"><span>「外装を除いて撮影」</span>にチェックを入れると、複数点まとめた梱包や、アイテム保護のための緩衝材梱包等を取り外し撮影できます。</p>
+            <picture>
+                <source srcset="/images/packaging@1x.png 1x, /images/packaging@2x.png 2x">
+                <img src="/images/packaging@1x.png" alt="開封における例外ケース">
+            </picture>
+            <h3 class="title-note">開封における例外ケース</h3>
+            <ul class="l-note">
+                <li><span>写真付の商品パッケージ・透明なビニール(OPP袋)など</span>の商品箱から中身がわかるものはそのまま撮影に移ります。</li>
+                <li>商品箱から中身がわからないものは、箱を含め、中身一式全てを撮影します。ただし、<span>丸められた状態のポスター類、ラッピングされた箱など、</span>撮影後の原状回復ができないものは開封せず撮影します。</li>
+            </ul>
+            <p class="note-packaging">※再撮影はお断りしております。</p>
             <a class="btn-close" data-remodal-action="close">閉じる</a>
         </div>

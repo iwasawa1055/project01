@@ -7,7 +7,7 @@ $return = Hash::get($this->request->query, 'return');
 ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> 集荷日時変更</h1>
+    <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> 集荷情報変更</h1>
   </div>
 </div>
 <div class="row">
@@ -17,6 +17,7 @@ $return = Hash::get($this->request->query, 'return');
         <div class="row">
           <?php echo $this->Form->create('Pickup', ['url' => ['controller' => 'pickup', 'action' => 'edit'], 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="col-lg-12 none-title">
+            <p class="form-control-static caution col-lg-12">注意：集荷情報変更で対応可能なのは住所・日程・時間のみとなり、ボックス内容や個数の変更等はお受けできかねます。</p>
             <div class="form-group col-lg-12">
               <label>集荷の住所</label>
               <?php echo $this->Form->select("PickupYamato.address_id", $this->Order->setAddress($addressList), ['id' => 'select-add-address-pickup', 'class' => 'form-control select-add-address-pickup', 'empty' => '以下からお選びください', 'error' => false]); ?>
