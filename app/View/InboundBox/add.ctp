@@ -19,9 +19,7 @@ if (!empty($validErrors)) {
 if (isset($this->request->data['Inbound']['box_list'])) {
     $selectedList = [];
     foreach ($this->request->data['Inbound']['box_list'] as $k => $v) {
-        if ($v['checkbox'] == "1") {
-            $selectedList[$k] = $v;
-        }
+        $selectedList[$k] = $v;
     }
     echo "<input type='hidden' id='dev-box-list-selected' value='".json_encode($selectedList)."'>";
 }
@@ -76,7 +74,18 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
                       ボックスの状態については十分ご確認の上、ご利用ください。<br>
                       なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。</p>
-                    <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg">ボックスIDについて</a>
+                    <ul class="l-caution">
+                      <li>
+                        <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
+                          <img src="/images/question.svg">ボックスIDについて
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)" data-remodal-target="packaging" class="about-box-id title-caution">
+                          <img src="/images/question.svg">「外装を除いて撮影」について
+                        </a>
+                      </li>
+                    </ul>
                     <!--ul class="id-search">
                         <li>
                             <input type="search" placeholder="ボックスのバーコード下4桁を入力" class="search">
@@ -87,16 +96,14 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     </ul-->
                     <ul id="dev-old-box-grid" class="grid grid-md">
                     </ul>
-                    <p class="page-caption not-applicable">ご入力いただいたバーコード番号の取り出し済みボックスは見つかりませんでした。<br>
-                      別のバーコード番号をご入力ください。</p>
                 </div>
                 <ul class="input-info">
                     <li>
                         <label class="headline">預け入れ・撮影についてのよくあるご質問</label>
                         <ul class="frequently">
                             <li>預け入れまでの流れについては<a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">専用ボックスの到着から預け入れまで</a></li>
-                            <li>minikuraMONOの撮影については<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/mono.html" target="_blank">撮影付き保管サービスの概要</a></li>
-                            <li>注意事項については<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/#attachment1" target="_blank">お取り出し・配送について</a></li>
+                            <li>minikuraMONOの撮影については<a href="https://help.minikura.com/hc/ja/articles/221053727" target="_blank">撮影付き保管サービスの概要</a></li>
+                            <li>注意事項については<a href="https://help.minikura.com/hc/ja/articles/216414387" target="_blank">お取り出し・配送について</a></li>
                         </ul>
                     </li>
                     <li>
@@ -184,6 +191,9 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                                     <?php echo $this->Form->error("CustomerAddress.firstname_kana", null, ['wrap' => 'p']) ?>
                                 </li>
                             </ul>
+                            <label class="input-check">
+                                <input type="checkbox" class="cb-square" name="data[CustomerAddress][resister]" value="1" <?php echo (isset($this->request->data['CustomerAddress']['resister']) && $this->request->data['CustomerAddress']['resister'] == '1') ? 'checked' : ''; ?>><span class="icon"></span><span class="label-txt">アドレスブックに登録する</span>
+                            </label>
                         </li>
                         <li>
                             <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['day_cd']) ?$this->request->data['Inbound']['day_cd'] : ""; ?>" id="pickup_date">

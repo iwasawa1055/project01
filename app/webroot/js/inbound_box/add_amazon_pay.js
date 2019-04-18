@@ -81,6 +81,9 @@ var AppInboundBoxAdd =
         $("form").append(add_billing);
         document.form.submit();
     });
+
+    // modal表示
+    $("[data-remodal-id=packaging]").remodal().open();
   },
   getAllNewBox: function() {
     var d = new $.Deferred();
@@ -145,8 +148,10 @@ var AppInboundBoxAdd =
     if (typeof $("#dev-box-list-selected").val() !== 'undefined') {
       var boxListSelected = JSON.parse($("#dev-box-list-selected").val());
       $.each(boxListSelected, function(index, value){
+        if (value.checkbox == "1") {
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+        }
         $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
-        $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
         if (typeof value.wrapping_type !== 'undefined' && value.wrapping_type == 1) {
           $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"').prop('checked', true);
         }

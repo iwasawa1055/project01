@@ -21,9 +21,7 @@ if (!empty($validErrors)) {
 if (isset($this->request->data['Inbound']['box_list'])) {
     $selectedList = [];
     foreach ($this->request->data['Inbound']['box_list'] as $k => $v) {
-        if ($v['checkbox'] == "1") {
-            $selectedList[$k] = $v;
-        }
+        $selectedList[$k] = $v;
     }
     echo "<input type='hidden' id='dev-box-list-selected' value='".json_encode($selectedList)."'>";
 }

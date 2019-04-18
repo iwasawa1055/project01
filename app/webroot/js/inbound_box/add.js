@@ -8,7 +8,8 @@ var AppInboundBoxAdd =
     $.when(AppInboundBoxAdd.getAllNewBox(), AppInboundBoxAdd.getAllOldBox())
       .then(AppInboundBoxAdd.render)
       .then(AppInboundBoxAdd.submitForm)
-      .then(AppInboundBoxAdd.address);
+      .then(AppInboundBoxAdd.address)
+      .then(AppInboundBoxAdd.autoKana);
 
     // 初期表示
     if (typeof $("#dev-selected-box_type").val() !== 'undefined') {
@@ -82,6 +83,9 @@ var AppInboundBoxAdd =
     if (address_id == 'add') {
       $('.input-address').show();
     }
+
+    // modal表示
+    $("[data-remodal-id=packaging]").remodal().open();
   },
   getAllNewBox: function() {
     var d = new $.Deferred();
@@ -122,14 +126,23 @@ var AppInboundBoxAdd =
     return d.promise();
   },
   render: function() {
-    $.each(AppInboundBoxAdd.new_box, function(index, value){
-      var renderNewBox = AppInboundBoxAdd.createHtml(value);
-      $('#dev-new-box-grid').append(renderNewBox);
-    });
-    $.each(AppInboundBoxAdd.old_box, function(index, value){
-      var renderOldBox = AppInboundBoxAdd.createHtml(value);
-      $('#dev-old-box-grid').append(renderOldBox);
-    });
+    if (AppInboundBoxAdd.new_box.length > 0) {
+      $.each(AppInboundBoxAdd.new_box, function(index, value){
+        var renderNewBox = AppInboundBoxAdd.createHtml(value);
+        $('#dev-new-box-grid').append(renderNewBox);
+      });
+    } else {
+        $('#dev-new-box-grid').after("<p class='page-caption not-applicable'><br><br>新しく購入したボックスが存在しません。<br><br><br>");
+    }
+
+    if (AppInboundBoxAdd.old_box.length > 0) {
+      $.each(AppInboundBoxAdd.old_box, function(index, value){
+        var renderOldBox = AppInboundBoxAdd.createHtml(value);
+        $('#dev-old-box-grid').append(renderOldBox);
+      });
+    } else {
+        $('#dev-old-box-grid').after("<p class='page-caption not-applicable'><br><br>取り出し済ボックスが存在しません。<br><br><br>");
+    }
 
     // error
     if (typeof $("#dev-box-list-errors").val() !== 'undefined') {
@@ -146,8 +159,10 @@ var AppInboundBoxAdd =
     if (typeof $("#dev-box-list-selected").val() !== 'undefined') {
       var boxListSelected = JSON.parse($("#dev-box-list-selected").val());
       $.each(boxListSelected, function(index, value){
+        if (value.checkbox == "1") {
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+        }
         $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
-        $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
         if (typeof value.wrapping_type !== 'undefined' && value.wrapping_type == 1) {
           $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"').prop('checked', true);
         }
@@ -237,7 +252,21 @@ var AppInboundBoxAdd =
         }
     });
     return false;
-  }
+  },
+  autoKana: function () {
+      //** Auto Kana
+      $('input.lastname').airAutoKana(
+      {
+          dest: 'input.lastname_kana',
+          katakana: true
+      });
+
+      $('input.firstname').airAutoKana(
+      {
+          dest: 'input.firstname_kana',
+          katakana: true
+      });
+  },
 }
 
 /*

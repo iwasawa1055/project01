@@ -123,12 +123,14 @@ class InboundBoxController extends MinikuraController
             if (!$this->CustomerAddress->validates()) {
                 return $this->render('add');
             }
-            $this->CustomerAddress->apiPost($this->request->data['CustomerAddress']);
-            $list = $this->Address->get(true);
+            if (isset($this->CustomerAddress->data['CustomerAddress']['resister']) && $this->CustomerAddress->data['CustomerAddress']['resister'] == '1') {
+                $this->CustomerAddress->apiPost($this->request->data['CustomerAddress']);
+                $list = $this->Address->get(true);
 
-            $data['address_id'] = end($list)['address_id'];
-            $this->request->data['Inbound']['address_id'] = end($list)['address_id'];
-            $this->set('addressList', $list);
+                $data['address_id'] = end($list)['address_id'];
+                $this->request->data['Inbound']['address_id'] = end($list)['address_id'];
+                $this->set('addressList', $list);
+            }
         }
 
         $dataBoxList = $data['box_list'];
@@ -165,7 +167,20 @@ class InboundBoxController extends MinikuraController
 
             // モデル取得
             $data = $this->Address->merge($data['address_id'], $data);
+            if (Hash::get($data, 'address_id') === 'add') {
+                $data["lastname"]       = $this->request->data['CustomerAddress']["lastname"];
+                $data["lastname_kana"]  = $this->request->data['CustomerAddress']["lastname_kana"];
+                $data["firstname"]      = $this->request->data['CustomerAddress']["firstname"];
+                $data["firstname_kana"] = $this->request->data['CustomerAddress']["firstname_kana"];
+                $data["tel1"]           = $this->request->data['CustomerAddress']["tel1"];
+                $data["postal"]         = $this->request->data['CustomerAddress']["postal"];
+                $data["pref"]           = $this->request->data['CustomerAddress']["pref"];
+                $data["address1"]       = $this->request->data['CustomerAddress']["address1"];
+                $data["address2"]       = $this->request->data['CustomerAddress']["address2"];
+                $data["address3"]       = $this->request->data['CustomerAddress']["address3"];
+            }
             $model = $this->Inbound->model($data);
+
             if (empty($model)) {
                 $this->Flash->set(__('empty_session_data'));
                 return $this->redirect(['action' => 'add']);

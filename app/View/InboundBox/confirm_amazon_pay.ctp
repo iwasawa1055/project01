@@ -80,19 +80,21 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 </li>
                 <?php endif; ?>
                 <?php if($cleaning) :?>
-                <li>
+                <li class="cleaning">
                     <label class="headline">クリーニングパックの保管</label>
-                    <ul class="li-address">
-                        <li>
-                            <label class="input-check">
-                                <input type="radio" class="rb" name="data[Inbound][keeping_type]" value="1" checked><span class="icon"></span>
-                                <span class="label-txt">タタミ保管</span>
+                    <ul class="grid grid-md">
+                        <li><label class="cleaning-check">
+                                <input type="radio" class="rb-circle" name="data[Inbound][keeping_type]" value="2"><span class="icon"></span>
+                                <span class="item-img"><img src="/images/select-hunger.png" alt="ハンガー保管" class="img-item"></span>
                             </label>
+                            <p class="cleaning-info">ハンガー保管</p>
                         </li>
-                        <li id="dev-self-delivery"><label class="input-check">
-                                <input type="radio" class="rb" name="data[Inbound][keeping_type]" value="2"><span class="icon"></span>
-                                <span class="label-txt">ハンガー保管</span>
+                        <li>
+                            <label class="cleaning-check">
+                                <input type="radio" class="rb-circle" name="data[Inbound][keeping_type]" value="1"><span class="icon"></span>
+                                <span class="item-img"><img src="/images/select-fold.png" alt="タタミ保管" class="img-item"></span>
                             </label>
+                            <p class="cleaning-info">タタミ保管</p>
                         </li>
                     </ul>
                 </li>
