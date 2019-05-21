@@ -231,6 +231,10 @@ class MinikuraController extends AppController
             'cleaning' => false,
             'travel' => false,
             'order' => false,
+            'gift' => [
+                'give' => false,
+                'receive' => false,
+            ],
         ];
 
         $active_status_tmp = [];
@@ -286,6 +290,13 @@ class MinikuraController extends AppController
         //     $active_status['travel'] = true;
         }  elseif (preg_match('/\/cleaning/', $url)) {
             $active_status['cleaning'] = true;
+        }  elseif (preg_match('/\/gift/', $url)) {
+            if (preg_match('/\/give/', $url)) {
+                $active_status['gift']['give'] = true;
+            }
+            if (preg_match('/\/receive/', $url)) {
+                $active_status['gift']['receive'] = true;
+            }
         }  elseif (preg_match('/\/order/', $url)) {
             $active_status['order'] = true;
         }
