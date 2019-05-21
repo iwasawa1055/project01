@@ -55,11 +55,13 @@ Cache::config('default', array('engine' => 'File'));
         'Controller' => array(
             ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'C2cSale' . DS,
             ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'Customer' . DS,
+            ROOT . DS . APP_DIR . DS . 'Controller' . DS . 'Gift' . DS,
             ROOT . DS . APP_DIR . DS . 'Controller' . DS,
         ),
         'View' => array(
             ROOT . DS . APP_DIR . DS . 'View' . DS . 'C2cSale' . DS,
             ROOT . DS . APP_DIR . DS . 'View' . DS . 'Customer' . DS,
+            ROOT . DS . APP_DIR . DS . 'View' . DS . 'Gift' . DS,
             ROOT . DS . APP_DIR . DS . 'View' . DS,
         ),
         'Model' => array(

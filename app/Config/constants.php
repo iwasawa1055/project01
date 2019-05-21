@@ -105,6 +105,8 @@ const KIT_CD_HAKO_LIMITED_VER1 = '203';
 const KIT_CD_LIBRARY_DEFAULT = '214';
 const KIT_CD_LIBRARY_GVIDO = '215';
 const KIT_CD_CLOSET = '216';
+// TODO キットコードは確定後に変更
+const KIT_CD_GIFT_CLEANING_PACK = '999';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -203,15 +205,18 @@ const KIT_NAME = [
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
-    'mono_num'      => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
-    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO ワイドボックス'),
-    'hako_num'      => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
-    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO ワイドボックス'),
-    'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
-    'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
-    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Library ボックス'),
-    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Library ボックス'),
-    'hanger_num'    => array('code' => KIT_CD_CLOSET,           'name' => 'Closet ボックス'),
+    'mono_num'          => array('code' => KIT_CD_MONO,               'name' => 'MONO レギュラーボックス'),
+    'mono_appa_num'     => array('code' => KIT_CD_MONO_APPAREL,       'name' => 'MONO ワイドボックス'),
+    'hako_num'          => array('code' => KIT_CD_HAKO,               'name' => 'HAKO レギュラーボックス'),
+    'hako_appa_num'     => array('code' => KIT_CD_HAKO_APPAREL,       'name' => 'HAKO ワイドボックス'),
+    'hako_book_num'     => array('code' => KIT_CD_HAKO_BOOK,          'name' => 'HAKO ブックボックス'),
+    'cleaning_num'      => array('code' => KIT_CD_CLEANING_PACK,      'name' => 'クリーニングパック'),
+    'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'name' => 'Library ボックス'),
+    'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'name' => 'Library ボックス'),
+    'hanger_num'        => array('code' => KIT_CD_CLOSET,             'name' => 'Closet ボックス'),
+    // TODO キットコード作成後にコメントアウトを外す
+//    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
+    'gift_cleaning_num' => array('code' => KIT_CD_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
