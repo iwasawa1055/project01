@@ -5,11 +5,6 @@ Router::connect('/customer/:controller', ['action' => 'index', 'customer' => tru
 Router::connect('/customer/:controller/:action', ['customer' => true]);
 Router::connect('/customer/:controller/:action/:step', ['customer' => true]);
 
-// gift
-Router::connect('/gift/:controller', ['action' => 'index', 'gift' => true]);
-Router::connect('/gift/:controller/:action', ['gift' => true]);
-Router::connect('/gift/:controller/:action/:step', ['gift' => true]);
-
 // paymentng
 Router::connect('/paymentng/:controller/:action', ['paymentng' => true]);
 Router::connect('/paymentng/:controller/:action/:step', ['paymentng' => true]);

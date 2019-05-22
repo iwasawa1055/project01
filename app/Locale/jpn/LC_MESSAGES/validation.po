@@ -269,18 +269,6 @@ msgstr "集荷時間"
 msgid "address_id"
 msgstr "集荷住所"
 
-msgid "gift_cd"
-msgstr "ギフトコード"
-
-msgid "sender_name"
-msgstr "送り主"
-
-msgid "email_message"
-msgstr "メッセージ"
-
-msgid "gift_cleaning_num"
-msgstr "ギフト数量"
-
 # Validation
 msgid "notBlank"
 msgstr "%sは必須です"
