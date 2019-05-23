@@ -151,13 +151,13 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                                     <?php echo $this->Form->error("CustomerAddress.pref", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
-                                    <label>住所</label>
-                                    <input name="data[CustomerAddress][address1]" type="text" placeholder="例：品川区東品川2" class='address_address1' value="<?php echo isset($this->request->data['CustomerAddress']['address1']) ? $this->request->data['CustomerAddress']['address1'] : ''; ?>">
+                                    <label>市区郡</label>
+                                    <input name="data[CustomerAddress][address1]" type="text" placeholder="例：品川区" class='address_address1' value="<?php echo isset($this->request->data['CustomerAddress']['address1']) ? $this->request->data['CustomerAddress']['address1'] : ''; ?>">
                                     <?php echo $this->Form->error("CustomerAddress.address1", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>
-                                    <label>番地</label>
-                                    <input name="data[CustomerAddress][address2]" type="text" placeholder="例：6-10" class='address_address2' value="<?php echo isset($this->request->data['CustomerAddress']['address2']) ? $this->request->data['CustomerAddress']['address2'] : ''; ?>">
+                                    <label>町域以降</label>
+                                    <input name="data[CustomerAddress][address2]" type="text" placeholder="例：東品川2-6-10" class='address_address2' value="<?php echo isset($this->request->data['CustomerAddress']['address2']) ? $this->request->data['CustomerAddress']['address2'] : ''; ?>">
                                     <?php echo $this->Form->error("CustomerAddress.address2", null, ['wrap' => 'p']) ?>
                                 </li>
                                 <li>

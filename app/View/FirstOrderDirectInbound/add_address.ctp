@@ -76,22 +76,22 @@
           </div>
           <div class="dsn-form">
             <label>都道府県<span class="dsn-required">※</span></label>
-            <input type="text" name="pref" class="dsn-adress1 address_pref focused" placeholder="東京都" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.pref');?>">
+            <input type="text" name="pref" class="dsn-adress1 address_pref focused" placeholder="東京都" size="28" value="<?php echo CakeSession::read('Address.pref');?>">
             <?php echo $this->Flash->render('pref');?>
           </div>
           <div class="dsn-form">
-            <label>住所<span class="dsn-required">※</span></label>
-            <input type="text" name="address1" class="dsn-adress1 address_address1 focused" placeholder="品川区" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address1');?>">
+            <label>市区郡<span class="dsn-required">※</span></label>
+            <input type="text" name="address1" class="dsn-adress1 address_address1 focused" placeholder="品川区" size="28" value="<?php echo CakeSession::read('Address.address1');?>">
             <?php echo $this->Flash->render('address1');?>
           </div>
           <div class="dsn-form">
-            <label>番地<span class="dsn-required">※</span></label>
-            <input type="text" name="address2" class="dsn-adress2 address_address2 focused" placeholder="東品川2-2-28" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address2');?>">
+            <label>町域以降<span class="dsn-required">※</span></label>
+            <input type="text" name="address2" class="dsn-adress2 address_address2 focused" placeholder="東品川2-2-28" size="28" value="<?php echo CakeSession::read('Address.address2');?>">
             <?php echo $this->Flash->render('address2');?>
           </div>
           <div class="dsn-form">
             <label>建物名</label>
-            <input type="text" name="address3" class="dsn-build focused" placeholder="Tビル" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address3');?>">
+            <input type="text" name="address3" class="dsn-build focused" placeholder="Tビル" size="28" value="<?php echo CakeSession::read('Address.address3');?>">
             <?php echo $this->Flash->render('address3');?>
           </div>
           <div class="dsn-divider"></div>
