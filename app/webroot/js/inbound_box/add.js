@@ -9,7 +9,8 @@ var AppInboundBoxAdd =
       .then(AppInboundBoxAdd.render)
       .then(AppInboundBoxAdd.submitForm)
       .then(AppInboundBoxAdd.address)
-      .then(AppInboundBoxAdd.autoKana);
+      .then(AppInboundBoxAdd.autoKana)
+      .then(AppInboundBoxAdd.scrollValidError);
 
     // 初期表示
     if (typeof $("#dev-selected-box_type").val() !== 'undefined') {
@@ -85,7 +86,9 @@ var AppInboundBoxAdd =
     }
 
     // modal表示
-    $("[data-remodal-id=packaging]").remodal().open();
+    if ( document.referrer.indexOf('/inbound/box/add') == -1 && document.referrer.indexOf('/inbound/box/confirm') == -1) {
+      $("[data-remodal-id=packaging]").remodal().open();
+    }
   },
   getAllNewBox: function() {
     var d = new $.Deferred();
@@ -267,6 +270,24 @@ var AppInboundBoxAdd =
           katakana: true
       });
   },
+  scrollValidError: function () {
+    var img_num = $('.img-item').length;
+    var img_counter = 0;
+    for (var i = 0; i < img_num; i++) {
+      var img = $('<img>');
+      img.load(function() {
+        img_counter++;
+        if (img_num == img_counter) {
+          var valid = $(".valid-il");
+          if (valid) {
+            var position = valid.parent().parent().offset().top;
+            $('body,html').animate({scrollTop: position}, 'slow');
+          }
+        }
+      });
+      img.attr('src', $('img').eq(i).attr('src'));
+    }
+  }
 }
 
 /*
