@@ -73,7 +73,7 @@
         </li>
         <li class="gift-info">
           <ul class="items">
-            <li id="kit_75" class="item" style="display:none">
+            <li id="kit_217" class="item" style="display:none">
               <div class="l-image-lineup">
                 <picture>
                   <img src="/images/order/photo-cleaning@1x.jpg" srcset="/images/order/photo-cleaning@1x.jpg 1x, /images/order/photo-cleaning@2x.jpg 2x" alt="クリーニングパック">

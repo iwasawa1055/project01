@@ -57,6 +57,11 @@ class ReceiveController extends MinikuraController
             return $this->redirect(['controller' => 'customer/register', 'action' => 'add_personal']);
         }
 
+        // gift_cd
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+        $data['gift_cd'] = CakeSession::read('app.data.gift_cd');
+        CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
+
         // amazon payment user
         if ($this->Customer->isAmazonPay()) {
             CakeSession::write('order_type', 'amazon');

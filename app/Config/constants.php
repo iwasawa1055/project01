@@ -105,8 +105,7 @@ const KIT_CD_HAKO_LIMITED_VER1 = '203';
 const KIT_CD_LIBRARY_DEFAULT = '214';
 const KIT_CD_LIBRARY_GVIDO = '215';
 const KIT_CD_CLOSET = '216';
-// TODO キットコードは確定後に変更
-const KIT_CD_GIFT_CLEANING_PACK = '999';
+const KIT_CD_GIFT_CLEANING_PACK = '217';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -214,9 +213,7 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'name' => 'Library ボックス'),
     'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'name' => 'Library ボックス'),
     'hanger_num'        => array('code' => KIT_CD_CLOSET,             'name' => 'Closet ボックス'),
-    // TODO キットコード作成後にコメントアウトを外す
-//    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
-    'gift_cleaning_num' => array('code' => KIT_CD_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
+    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[

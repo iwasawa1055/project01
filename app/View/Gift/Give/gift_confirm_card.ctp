@@ -47,19 +47,19 @@
             <ul class="input-info">
               <li>
                 <label class="headline">宛先</label>
-                <p class="text-confirm"><?php echo $data['email'] ?></p>
+                <p class="text-confirm"><?php echo h($data['email']) ?></p>
               </li>
               <li>
                 <label class="headline">贈り主</label>
-                <p class="text-confirm"><?php echo $data['sender_name'] ?></p>
+                <p class="text-confirm"><?php echo h($data['sender_name']) ?></p>
               </li>
               <li>
                 <label class="headline">メッセージ</label>
-                <p class="text-confirm"><?php echo $data['email_message'] ?></p>
+                <p class="text-confirm"><?php echo nl2br(h($data['email_message'])) ?></p>
               </li>
               <li>
                 <label class="headline">数量</label>
-                <p class="text-confirm"><?php echo $data['gift_cleaning_num'] ?></p>
+                <p class="text-confirm"><?php echo h($data['gift_cleaning_num']) ?></p>
               </li>
             </ul>
           </div>

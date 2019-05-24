@@ -63,28 +63,15 @@ class PaymentAmazonGiftAmazonPay extends ApiModel
             ],
         ],
         'gift_cleaning_num' => [
-            'checkNotEmpty' => [
-                'rule' => 'checkNotEmpty',
-                'message' => ['checkNotEmpty', 'box'],
-            ],
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
                 'message' => ['notBlank', 'gift_cleaning_num'],
             ],
             'range' => [
-                'rule' => ['range', 0, 200],
-                'message' => ['range', 'gift_cleaning_num', '1', '200']
+                'rule' => ['range', 0, 21],
+                'message' => ['range', 'gift_cleaning_num', '1', '20']
             ],
         ],
     ];
-
-    public function checkNotEmpty()
-    {
-        if (!empty($this->data[$this->model_name]['gift_cleaning_num'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

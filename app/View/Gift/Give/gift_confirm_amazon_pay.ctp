@@ -53,7 +53,7 @@
             </li>
             <li>
               <label class="headline">メッセージ</label>
-              <p class="text-confirm"><?php echo h($PaymentAmazonGiftAmazonPay['email_message']); ?></p>
+              <p class="text-confirm"><?php echo nl2br(h($PaymentAmazonGiftAmazonPay['email_message'])); ?></p>
             </li>
             <li>
               <label class="headline">数量</label>

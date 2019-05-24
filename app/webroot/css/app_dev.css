@@ -424,3 +424,8 @@ p.facebook-message a,
 #dev-old-box-grid > li > div > p.box-type{
   font-size: 1rem;
 }
+
+.l-present-mail textarea.form-error,
+.l-present-mail input.form-error {
+  border: .1rem solid red;
+}
