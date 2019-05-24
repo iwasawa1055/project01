@@ -29,7 +29,7 @@
               <?php echo $this->Form->input('CustomerRegistInfo.email', ['class' => "form-control", 'placeholder'=>'例：terrada@minikura.com', 'size' => '28', 'maxlength' => '50', 'error' => false, 'label' => false, 'div' => false]); ?>
               <p class="txt-caption">半角英数記号でご入力ください。</p>
               <?php echo $this->Form->error('CustomerRegistInfo.email', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-              <button type="submit" class="btn send-mail">送信する</button>
+              <button type="submit" class="btn send-mail">入力する</button>
               <?php echo $this->Form->end(); ?>
             </li>
           </ul>

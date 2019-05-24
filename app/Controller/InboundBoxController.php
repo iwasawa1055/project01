@@ -196,6 +196,8 @@ class InboundBoxController extends MinikuraController
 
         if (!empty($validErrors)) {
             $this->set('validErrors', $validErrors);
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' post params ' . print_r($_POST, true));
+            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' /inbound/box validation error ' . print_r($validErrors, true));
             return $this->render('add');
         }
     }
