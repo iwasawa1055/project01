@@ -49,7 +49,7 @@ class InfoItem extends ApiCachedModel
             BOXITEM_STATUS_OUTBOUND_START * 1,
             BOXITEM_STATUS_OUTBOUND_IN_PROGRESS * 1,
         ];
-        
+
         if ($withOutboundDone) {
             // 出庫済みのみフラグが立っている場合、出庫済み以外をunsetする
             if (!empty($outboundOnly)) {
@@ -59,7 +59,7 @@ class InfoItem extends ApiCachedModel
             $where['item_status'][] = BOXITEM_STATUS_OUTBOUND_DONE * 1;
         }
 
-		//* mock22  追加仕様、箱（商品）に紐づくアイテムを選択する 
+		//* mock22  追加仕様、箱（商品）に紐づくアイテムを選択する
 		$product = null;
 		if (! empty($where['product'])) {
 		    $product = $where['product'];
@@ -87,8 +87,10 @@ class InfoItem extends ApiCachedModel
 				$productCd = [PRODUCT_CD_SNEAKERS];
 			} elseif ($product === 'library') {
 				$productCd = [PRODUCT_CD_LIBRARY];
-			} elseif ($product === 'closet') {
-				$productCd = [PRODUCT_CD_CLOSET];
+            } elseif ($product === 'closet') {
+                $productCd = [PRODUCT_CD_CLOSET];
+            } elseif ($product === 'gift_cleaning') {
+                $productCd = [PRODUCT_CD_GIFT_CLEANING_PACK];
 			}
 		}
 
@@ -116,7 +118,7 @@ class InfoItem extends ApiCachedModel
     // 条件を指定してリストを取得する
     public function getListWhere($sortKey = [], $where = [], $priorities = [])
     {
-        
+
         if (!isset($where['item_status'])) {
             $where['item_status'] = [
                 BOXITEM_STATUS_INBOUND_IN_PROGRESS * 1,
@@ -140,7 +142,7 @@ class InfoItem extends ApiCachedModel
 
         // sort
         HashSorter::sort($list, ($sortKey + self::DEFAULTS_SORT_KEY));
-        
+
         //* 優先項目がある場合はトップに持ってくる
         if (count($priorities) > 0) {
             // 優先項目で指定されているキーを収取する
@@ -149,7 +151,7 @@ class InfoItem extends ApiCachedModel
             foreach ($priorities as $tmp) {
                 array_push($indexKeys, key($tmp));
             }
-            
+
             $indexKeys = array_unique($indexKeys);
 
             // Indexキーをもとにリストからインデックスを生成する
@@ -160,7 +162,7 @@ class InfoItem extends ApiCachedModel
                     }
                 }
             }
-            
+
             // 優先項目を取得する
             $priorityList = [];
 
@@ -176,17 +178,17 @@ class InfoItem extends ApiCachedModel
                     }
                 }
             }
-            
+
             // リストを結合する
             $list = array_merge($priorityList, $list);
-            
+
             // 空いている要素があるため、ソートする
             ksort($list);
         }
-        
+
         return $list;
     }
-    
+
     public function apiGetResults($data = [])
     {
         $imageModel = new ImageItem();
@@ -220,7 +222,7 @@ class InfoItem extends ApiCachedModel
                                 $sales_results_by_item_id[] = $val;
                             }
                         }
-                        $list[$index]['sales'] = $sales_results_by_item_id; 
+                        $list[$index]['sales'] = $sales_results_by_item_id;
                     }
                 }
             }
@@ -274,10 +276,10 @@ class InfoItem extends ApiCachedModel
 
         // ランク付け用にポイントをそれぞれ設定
         $columns = [
-            'item_name' => 100, 
-            'item_id' => 80, 
-            'item_note' => 60, 
-            'box_name' => 40, 
+            'item_name' => 100,
+            'item_id' => 80,
+            'item_note' => 60,
+            'box_name' => 40,
             'box_id' => 20,
         ];
 
@@ -291,7 +293,7 @@ class InfoItem extends ApiCachedModel
         }
 
         return $hits;
-    }    
+    }
 
     //* private
 

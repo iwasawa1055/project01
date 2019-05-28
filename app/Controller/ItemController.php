@@ -75,6 +75,8 @@ class ItemController extends MinikuraController
             $productName = 'minikura SNEAKERS';
         } else if ($_product === 'library') {
             $productName = 'minikuraLibrary';
+        } else if ($_product === 'gift_cleaning') {
+            $productName = 'ギフト クリーニングパック';
         }
         return $productName;
     }
@@ -116,7 +118,7 @@ class ItemController extends MinikuraController
         }
 
         return $results;
-    }    
+    }
 
     /**
      * 一覧.
@@ -129,8 +131,8 @@ class ItemController extends MinikuraController
         if (!empty(Hash::get($this->request->query, 'hide_outbound', 1))) {
             $withOutboundDone = false;
         }
-        
-        //*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示) 
+
+        //*  mockv22にあわせたmenu改修(アイテムも商品毎にリスト表示)
         // 商品指定
         $product = $this->request->query('product');
 
@@ -170,7 +172,7 @@ class ItemController extends MinikuraController
         $this->set('order', $query_params['order']);
         $this->set('direction', $query_params['direction']);
 
-        // product_name  
+        // product_name
         $productName = $this->getProductName($product);
         $this->set('product', $product);
         $this->set('productName', $productName);
@@ -193,7 +195,7 @@ class ItemController extends MinikuraController
             $button_status['shoes'] = ' on';
         }
 
-        $this->set('button_status', $button_status);        
+        $this->set('button_status', $button_status);
     }
 
     private function getRequestSortKey()
@@ -217,7 +219,7 @@ class ItemController extends MinikuraController
 
         $box = $item['box'];
         $this->set('box', $box);
-        
+
         // クリーニングリンク生成
         $linkToCleaning = null;
         $cleaningConfig = Configure::read('app.kit.cleaning.item_group_cd');
@@ -226,7 +228,8 @@ class ItemController extends MinikuraController
             $linkToCleaning = "/cleaning/input?id=" . urlencode($item['item_id']);
         }
         $this->set('linkToCleaning', $linkToCleaning);
-        
+
+        // TODO ここに追加すべき？
         $linkToAuction = null;
         if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_LIBRARY, PRODUCT_CD_CLOSET], true)) {
             $linkToAuction = "/mini_auction/lite/item/${item['box_id']}/${item['item_id']}";

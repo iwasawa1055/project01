@@ -40,7 +40,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                           if ($box['kit_cd'] == KIT_CD_CLOSET) {
                               $closet = true;
                           }
-                          if ($box['kit_cd'] == KIT_CD_CLEANING_PACK) {
+                          if ($box['kit_cd'] == KIT_CD_CLEANING_PACK || $box['kit_cd'] == KIT_CD_GIFT_CLEANING_PACK) {
                               $cleaning = true;
                           }
                       ?>

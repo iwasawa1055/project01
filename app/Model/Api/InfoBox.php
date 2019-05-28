@@ -15,7 +15,7 @@ class InfoBox extends ApiCachedModel
         'box_name' => true,
         'box_status' => true,
     ];
-	
+
     //* 入庫・出庫ページ用sort #8679
     const INBOUND_OUTBOUND_SORT_KEY = [
         'product_cd' => true,
@@ -79,6 +79,7 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_BUYKIT_IN_PROGRESS,
             BOXITEM_STATUS_BUYKIT_DONE,
         ];
+        // TODO 未使用？
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
 
@@ -107,6 +108,7 @@ class InfoBox extends ApiCachedModel
         $okStatus = [
             BOXITEM_STATUS_OUTBOUND_DONE,
         ];
+        // TODO 未使用？
         $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
 
@@ -153,6 +155,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_LIBRARY];
         } elseif ($product === 'closet') {
             $productCd = [PRODUCT_CD_CLOSET];
+        } elseif ($product === 'gift_cleaning') {
+            $productCd = [PRODUCT_CD_GIFT_CLEANING_PACK];
         }
 
         $okStatus = [
@@ -234,6 +238,9 @@ class InfoBox extends ApiCachedModel
             case KIT_CD_CLOSET:
                 $productCd = PRODUCT_CD_CLOSET;
                 break;
+            case KIT_CD_GIFT_CLEANING_PACK:
+                $productCd = PRODUCT_CD_GIFT_CLEANING_PACK;
+                break;
             default:
                 break;
         }
@@ -289,10 +296,10 @@ class InfoBox extends ApiCachedModel
 
         // ランク付け用にポイントをそれぞれ設定
         $columns = [
-            'box_name' => 100, 
-            'box_id' => 80, 
-            'product_name' => 60, 
-            'box_note' => 40, 
+            'box_name' => 100,
+            'box_id' => 80,
+            'product_name' => 60,
+            'box_note' => 40,
             'kit_name' => 20,
         ];
 
@@ -323,7 +330,7 @@ class InfoBox extends ApiCachedModel
      *    - 連続文字列は出てこない
      * 例)A OR B C OR D
      *  - A OR (B AND C) OR D となる
-     *  - A, D は単体での検索, BDは連続文字列として検索もある 
+     *  - A, D は単体での検索, BDは連続文字列として検索もある
      * マイナス検索
      *  - 「a -b」 とすると aを含み、かつbを含まない含まないリストを作る
      *  - 「a b -c」
@@ -422,7 +429,7 @@ class InfoBox extends ApiCachedModel
                 $unique_count = count($unique);
 
                 for ($unique_count;0 < $unique_count;$unique_count--) {
-                    $rank += RANK_RATE['match_num'] * $unique_count;               
+                    $rank += RANK_RATE['match_num'] * $unique_count;
                 }
 
                 // ニアリーマッチ
@@ -458,7 +465,7 @@ class InfoBox extends ApiCachedModel
         } else {
             foreach ($tmp as $rank => $list) {
                 foreach($list as $k => $v) {
-                    $hits[] = $v;                
+                    $hits[] = $v;
                 }
             }
         }

@@ -223,6 +223,10 @@ var AppInboundBoxAdd =
       // closet
       case '216':
         return '/images/cleaning.png';
+
+      // ギフト クリーニングパック
+      case '217':
+        return '/images/cleaning.png';
     }
   },
 }

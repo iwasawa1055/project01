@@ -118,6 +118,7 @@ const PRODUCT_CD_SNEAKERS = '005310';
 const PRODUCT_CD_DIRECT_INBOUND = '005003';
 const PRODUCT_CD_LIBRARY = '005004';
 const PRODUCT_CD_CLOSET = '005005';
+const PRODUCT_CD_GIFT_CLEANING_PACK = '005006';
 
 // box_status, item_status
 // キット購入・依頼
@@ -201,6 +202,8 @@ const KIT_NAME = [
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
     KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
     KIT_CD_CLOSET => 'minikuraCloset',
+    // TODO 正式名称が決まり次第変更
+    KIT_CD_GIFT_CLEANING_PACK => '(仮)Giftクリーニングパック	',
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
@@ -213,7 +216,7 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'name' => 'Library ボックス'),
     'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'name' => 'Library ボックス'),
     'hanger_num'        => array('code' => KIT_CD_CLOSET,             'name' => 'Closet ボックス'),
-    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
+    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'name' => '(仮)ギフト クリーニングパック'),
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
@@ -237,6 +240,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
     PRODUCT_CD_LIBRARY => 'minikuraLibrary',
     PRODUCT_CD_CLOSET => 'minikuraCloset',
+    PRODUCT_CD_GIFT_CLEANING_PACK => '(仮)minikuraGiftクリーニングパック'
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -343,6 +347,12 @@ const IN_USE_SERVICE = [
             'name' => 'minikuraCloset',
             'product_cd' => PRODUCT_CD_CLOSET,
             'name_mobile' => 'minikura<br />Closet',
+        ],
+        [
+            'product' => 'gift_cleaning',
+            'name' => 'minikuraGiftクリーニングパック',
+            'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK,
+            'name_mobile' => 'minikuraGift<br />クリーニングパック',
         ],
     ],
     'sneakers' => [

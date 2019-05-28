@@ -549,7 +549,7 @@ class OutboundController extends MinikuraController
                 'firstname'         => filter_input(INPUT_POST, 'firstname'),
                 'firstname_kana'    => '　',
                 'lastname'          => filter_input(INPUT_POST, 'lastname'),
-                'lastname_kana'     => '　',   
+                'lastname_kana'     => '　',
             ];
 
             // amazon pay 情報取得
@@ -1738,6 +1738,7 @@ class OutboundController extends MinikuraController
         return json_encode($list);
     }
 
+    // TODO これのギフト版を作る必要ある？
     public function as_get_closet_box()
     {
         $this->autoRender = false;

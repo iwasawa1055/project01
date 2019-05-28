@@ -64,6 +64,8 @@ class BoxController extends MinikuraController
             $productName = 'シューズパック';
         } else if ($_product === 'sneakers') {
             $productName = 'minikura SNEAKERS';
+        } else if ($_product === 'gift_cleaning') {
+            $productName = 'ギフト クリーニングパック';
         }
         return $productName;
     }
@@ -150,7 +152,7 @@ class BoxController extends MinikuraController
         $this->set('order', $query_params['order']);
         $this->set('direction', $query_params['direction']);
 
-        // product_name  
+        // product_name
         $productName = $this->getProductName($product);
         $this->set('productName', $productName);
 
