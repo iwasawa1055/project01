@@ -7,12 +7,6 @@ App::uses('PaymentGMOPurchaseGift', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('PaymentAmazonGiftAmazonPay', 'Model');
 
-//App::uses('AppValid', 'Lib');
-//App::uses('KitDeliveryDatetime', 'Model');
-//App::uses('EmailModel', 'Model');
-//App::uses('FirstKitPrice', 'Model');
-//App::uses('AppCode', 'Lib');
-
 class GiveController extends MinikuraController
 {
     const MODEL_NAME_GIFT_BY_CREDIT_CARD = 'PaymentGMOPurchaseGift';
@@ -50,7 +44,6 @@ class GiveController extends MinikuraController
      */
     protected function isAccessDeny()
     {
-        // TODO 中身をちゃんと見ないといけない。。。
         if (!$this->Customer->canOrderKit() && ($this->action === 'complete_card' || $this->action === 'complete_bank')) {
             return true;
         }
@@ -142,7 +135,7 @@ class GiveController extends MinikuraController
             $validation_item = [
                 'security_cd',
                 'cleaning_num',
-                'email',
+                'receiver_email',
                 'sender_name',
                 'email_message',
                 'gift_cleaning_num',
@@ -262,7 +255,7 @@ class GiveController extends MinikuraController
             $validation_item = [
                 'access_token',
                 'amazon_order_reference_id',
-                'email',
+                'receiver_email',
                 'sender_name',
                 'email_message',
                 'gift_cleaning_num',
@@ -313,7 +306,7 @@ class GiveController extends MinikuraController
             'Give/gift_confirm_amazon_pay',
         ];
         if (in_array(CakeSession::read('app.data.session_referer'), $allow_action_list, true) === false) {
-            $this->redirect(['controller' => 'order', 'action' => 'add']);
+            $this->redirect(['controller' => 'give', 'action' => 'gift_add']);
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
@@ -414,7 +407,7 @@ class GiveController extends MinikuraController
         if($result['ResponseStatus'] != '200') {
             CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($result, true));
             $this->Flash->validation('Amazon Pay からの情報取得に失敗しました。再度お試し下さい。', ['key' => 'customer_amazon_pay_info']);
-            $this->redirect('/give/input_amazon_pay');
+            $this->redirect(['controller' => 'give', 'action' => 'gift_add']);
         }
 
         // Amazonより個人情報を取得
@@ -444,13 +437,11 @@ class GiveController extends MinikuraController
         // データ整形
         $_data['security_cd'] = self::_wrapConvertKana($_data['security_cd']);
 
-//        $this->PaymentGMOPurchaseGift->set($_data);
-//        $result_kit_card = $this->PaymentGMOPurchaseGift->apiPost($this->PaymentGMOPurchaseGift->toArray());
-//
-//        if ($result_kit_card->status !== '1') {
-//            $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
-//            return $this->redirect(['controller' => 'order', 'action' => 'input_card']);
-//        }
+        $result_kit_card = $this->PaymentGMOPurchaseGift->apiPost($_data);
+        if ($result_kit_card->status !== '1') {
+            $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
+            return $this->redirect(['controller' => 'give', 'action' => 'gift_add']);
+        }
     }
 
     /**
@@ -471,7 +462,7 @@ class GiveController extends MinikuraController
             } else {
                 $this->Flash->validation($result_kit_amazon_pay->message, ['key' => 'customer_kit_card_info']);
             }
-            $this->redirect('/give/input_amazon_pay');
+            $this->redirect(['controller' => 'give', 'action' => 'gift_add']);
         }
     }
 
@@ -511,6 +502,8 @@ class GiveController extends MinikuraController
                 }
             }
         }
+
+        $_data['kit'] = implode(',', $kit_param_list);
 
         $r = $kit_price->apiGet(['kit' => implode(',', $kit_param_list)]);
         if ($r->isSuccess()) {

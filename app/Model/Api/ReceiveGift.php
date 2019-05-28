@@ -91,17 +91,6 @@ class ReceiveGift extends ApiModel
                 'message' => ['maxLength', 'address3', 30]
             ],
         ],
-//        'datetime_cd' => [
-//            'notBlank' => [
-//                'rule' => 'notBlank',
-//                'required' => true,
-//                'message' => ['notBlank', 'kit_datetime']
-//            ],
-//            'isDatetimeDelivery' => [
-//                'rule' => 'isDatetimeDelivery',
-//                'message' => ['format', 'kit_datetime']
-//            ],
-//        ],
         'address_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',

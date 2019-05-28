@@ -8,7 +8,7 @@ class PaymentAmazonGiftAmazonPay extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentAmazonGiftAmazonPay', '/purchase_gift', 'amazon_pay_v5');
+        parent::__construct('PaymentAmazonGiftAmazonPay', '/purchase_gift_amazon_pay', 'amazon_pay_v5');
     }
 
     protected function triggerDataChanged()
@@ -37,7 +37,7 @@ class PaymentAmazonGiftAmazonPay extends ApiModel
                 'message' => ['notBlank', 'kit'],
             ],
         ],
-        'email' => [
+        'receiver_email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,

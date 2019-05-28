@@ -122,8 +122,8 @@
         <ul class="input-info">
           <li>
             <label class="headline">宛先</label>
-            <?php echo $this->Form->input("PaymentGMOPurchaseGift.email", ['id' => 'email', 'class' => "cb-square", 'placeholder'=>'受け取る人のメールアドレスを入力ください', 'size' => '28', 'maxlength' => '50', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
-            <?php echo $this->Form->error("PaymentGMOPurchaseGift.email", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->input("PaymentGMOPurchaseGift.receiver_email", ['id' => 'receiver_email', 'class' => "cb-square", 'placeholder'=>'受け取る人のメールアドレスを入力ください', 'size' => '28', 'maxlength' => '50', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
+            <?php echo $this->Form->error("PaymentGMOPurchaseGift.receiver_email", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             <p class="txt-caption">半角英数記号でご入力ください。</p>
           </li>
           <li>

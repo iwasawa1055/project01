@@ -47,7 +47,7 @@
             <ul class="input-info">
               <li>
                 <label class="headline">宛先</label>
-                <p class="text-confirm"><?php echo h($data['email']) ?></p>
+                <p class="text-confirm"><?php echo h($data['receiver_email']) ?></p>
               </li>
               <li>
                 <label class="headline">贈り主</label>

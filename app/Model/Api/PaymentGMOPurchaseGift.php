@@ -8,7 +8,7 @@ class PaymentGMOPurchaseGift extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('PaymentGMOPurchaseGift', '/purchase_gift', 'gmopayment_v5');
+        parent::__construct('PaymentGMOPurchaseGift', '/purchase_gift_credit_card', 'gmopayment_v5');
     }
 
     protected function triggerDataChanged()
@@ -37,7 +37,7 @@ class PaymentGMOPurchaseGift extends ApiModel
                 'message' => ['notBlank', 'kit'],
             ],
         ],
-        'email' => [
+        'receiver_email' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,
