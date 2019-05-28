@@ -129,11 +129,11 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             <select class="address" name="data[Inbound][address_id]">
                                 <?php foreach ($addressList as $data) : ?>
 
-                                  <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($this->request->data['Inbound']['address_id']) && $this->request->data['Inbound']['address_id'] == $data['address_id']) ? 'selected' : ''; ?>>
+                                <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($this->request->data['Inbound']['address_id']) && $this->request->data['Inbound']['address_id'] == $data['address_id']) ? 'selected' : ''; ?> data-address-name="<?php echo h("${data['lastname']}${data['firstname']}"); ?>">
                                     <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
                                   </option>
                                 <?php endforeach; ?>;
-                                <option value="add" <?php echo (isset($this->request->data['Inbound']['address_id']) && $this->request->data['Inbound']['address_id'] == 'add') ? 'selected' : ''; ?>>お届先を追加する</option>
+                                <option value="add" <?php echo (isset($this->request->data['Inbound']['address_id']) && $this->request->data['Inbound']['address_id'] == 'add') ? 'selected' : ''; ?> data-address-name="">お届先を追加する</option>
                             </select>
                             <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
                         </li>

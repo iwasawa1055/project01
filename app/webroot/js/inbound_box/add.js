@@ -9,7 +9,9 @@ var AppInboundBoxAdd =
       .then(AppInboundBoxAdd.render)
       .then(AppInboundBoxAdd.submitForm)
       .then(AppInboundBoxAdd.address)
-      .then(AppInboundBoxAdd.autoKana);
+      .then(AppInboundBoxAdd.autoKana)
+      .then(AppInboundBoxAdd.checkNameLength)
+      .then(AppInboundBoxAdd.checkInputNameLength);
 
     // 初期表示
     if (typeof $("#dev-selected-box_type").val() !== 'undefined') {
@@ -267,6 +269,68 @@ var AppInboundBoxAdd =
           katakana: true
       });
   },
+  checkInputNameLength: function () {
+      console.log("aaa");
+      $('.lastname, .firstname').blur(function () {
+          AppInboundBoxAdd.execCheckInputNameLength();
+      });
+  },
+  execCheckInputNameLength: function () {
+      var count = AppInboundBoxAdd.strLength($('.lastname').val()+$('.firstname').val());
+      if (count > 49) {
+          $('.dev-name-length-error').remove();
+          $('.firstname').after("<p class='error-message dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が切れてしまいます。</p>");
+      } else {
+          $('.dev-name-length-error').remove();
+      }
+  },
+  checkNameLength: function () {
+      AppInboundBoxAdd.execCheckNameLength();
+      $('.address').on('change', function () {
+          AppInboundBoxAdd.execCheckNameLength();
+      });
+  },
+  execCheckNameLength: function () {
+      var count = AppInboundBoxAdd.strLength($('.address :selected').data('address-name'));
+      console.log(count);
+      if (count > 49) {
+          $('.dev-name-length-error').remove();
+          $('.address').after("<p class='error-message dev-name-length-error'>お名前が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が切れてしまいます。</p>");
+      } else {
+          $('.dev-name-length-error').remove();
+      }
+  },
+  strLength: function(str, encode) {
+    var count     = 0,
+        setEncode = 'Shift_JIS',
+        c         = '';
+
+    if (encode && encode !== '') {
+        if (encode.match(/^(SJIS|Shift[_\-]JIS)$/i)) {
+            setEncode = 'Shift_JIS';
+        } else if (encode.match(/^(UTF-?8)$/i)) {
+            setEncode = 'UTF-8';
+        }
+    }
+
+    for (var i = 0, len = str.length; i < len; i++) {
+        c = str.charCodeAt(i);
+        if (setEncode === 'UTF-8') {
+            if ((c >= 0x0 && c < 0x81) || (c == 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
+                count += 1;
+            } else {
+                count += 2;
+            }
+        } else if (setEncode === 'Shift_JIS') {
+            if ((c >= 0x0 && c < 0x81) || (c == 0xa0) || (c >= 0xa1 && c < 0xdf) || (c >= 0xfd && c < 0xff)) {
+                count += 1;
+            } else {
+                count += 2;
+            }
+        }
+    }
+    return count;
+  }
 }
 
 /*
