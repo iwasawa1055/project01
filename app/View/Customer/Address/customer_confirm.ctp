@@ -27,13 +27,13 @@ if ($action === 'customer_edit') {
               </p>
             </div>
             <div class="form-group col-lg-12">
-              <label>住所</label>
+              <label>都道府県市区郡</label>
               <p>
                   <?php echo h($this->Form->data['CustomerAddress']['pref'] . $this->Form->data['CustomerAddress']['address1']); ?>
               </p>
             </div>
             <div class="form-group col-lg-12">
-              <label>番地</label>
+              <label>町域以降</label>
               <p>
                   <?php echo h($this->Form->data['CustomerAddress']['address2']); ?>
               </p>

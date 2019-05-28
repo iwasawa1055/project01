@@ -37,19 +37,19 @@ $return = Hash::get($this->request->query, 'return');
                     <?php echo $this->Form->error('CustomerAddress.postal', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.pref', ['class' => "form-control address_pref", 'maxlength' => 4, 'placeholder'=>'都道府県', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.pref', ['class' => "form-control address_pref", 'placeholder'=>'都道府県', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.pref', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.address1', ['class' => "form-control address_address1", 'maxlength' => 8, 'placeholder'=>'住所', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.address1', ['class' => "form-control address_address1", 'placeholder'=>'市区郡', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.address1', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.address2', ['class' => "form-control address_address2", 'maxlength' => 18, 'placeholder'=>'番地', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.address2', ['class' => "form-control address_address2", 'placeholder'=>'町域以降', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.address2', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.address3', ['class' => "form-control", 'maxlength' => 30, 'placeholder'=>'建物名', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.address3', ['class' => "form-control", 'placeholder'=>'建物名', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.address3', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
