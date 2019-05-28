@@ -270,7 +270,6 @@ var AppInboundBoxAdd =
       });
   },
   checkInputNameLength: function () {
-      console.log("aaa");
       $('.lastname, .firstname').blur(function () {
           AppInboundBoxAdd.execCheckInputNameLength();
       });
@@ -279,7 +278,7 @@ var AppInboundBoxAdd =
       var count = AppInboundBoxAdd.strLength($('.lastname').val()+$('.firstname').val());
       if (count > 49) {
           $('.dev-name-length-error').remove();
-          $('.firstname').after("<p class='error-message dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が切れてしまいます。</p>");
+          $('.firstname').after("<p class='error-message dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が途中で切れてしまいますので、ご変更をお願いいたします</p>");
       } else {
           $('.dev-name-length-error').remove();
       }
@@ -292,10 +291,9 @@ var AppInboundBoxAdd =
   },
   execCheckNameLength: function () {
       var count = AppInboundBoxAdd.strLength($('.address :selected').data('address-name'));
-      console.log(count);
       if (count > 49) {
           $('.dev-name-length-error').remove();
-          $('.address').after("<p class='error-message dev-name-length-error'>お名前が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が切れてしまいます。</p>");
+          $('.address').after("<p class='error-message dev-name-length-error'>お名前が全角で25文字または半角で50文字以上入力されています。集荷時の伝票のお名前が途中で切れてしまいますので、新たにご登録をお願いいたします。</p>");
       } else {
           $('.dev-name-length-error').remove();
       }
