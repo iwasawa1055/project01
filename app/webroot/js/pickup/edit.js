@@ -5,7 +5,6 @@ var AppPickupEdit =
     AppPickupEdit.checkInputNameLength();
   },
   checkInputNameLength: function () {
-      console.log("aaa");
       $('.lastname, .firstname').blur(function () {
           AppPickupEdit.execCheckInputNameLength();
       });
@@ -14,7 +13,7 @@ var AppPickupEdit =
       var count = AppPickupEdit.strLength($('.lastname').val()+$('.firstname').val());
       if (count > 49) {
           $('.dev-name-length-error').remove();
-          $('.firstname').after("<p class='error-message dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が切れてしまいます。</p>");
+          $('.firstname').after("<p class='error-message dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上入力されています。集荷時の伝票のお名前が途中で切れてしまいます。</p>");
       } else {
           $('.dev-name-length-error').remove();
       }
@@ -27,10 +26,9 @@ var AppPickupEdit =
   },
   execCheckNameLength: function () {
       var count = AppPickupEdit.strLength($('[name="data[PickupYamato][address_id]"] :selected').data('address-name'));
-      console.log(count);
       if (count > 49) {
           $('.dev-name-length-error').remove();
-          $('.address').after("<p class='error-message dev-name-length-error'>お名前が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が切れてしまいます。</p>");
+          $('.address').after("<p class='error-message dev-name-length-error'>お名前が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が途中で切れてしまいます。</p>");
       } else {
           $('.dev-name-length-error').remove();
       }
