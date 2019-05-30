@@ -314,8 +314,7 @@ class GiveController extends MinikuraController
         $data = CakeSession::read(self::MODEL_NAME_GIFT_BY_AMAZON);
 
         /** 決済 */
-        // TODO API作成後に通す
-//        $this->_postPaymentAmazon($data);
+        $this->_postPaymentAmazon($data);
 
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set(self::MODEL_NAME_GIFT_BY_AMAZON, CakeSession::read(self::MODEL_NAME_GIFT_BY_AMAZON));

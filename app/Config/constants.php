@@ -202,7 +202,6 @@ const KIT_NAME = [
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
     KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
     KIT_CD_CLOSET => 'minikuraCloset',
-    // TODO 正式名称が決まり次第変更
     KIT_CD_GIFT_CLEANING_PACK => '(仮)Giftクリーニングパック	',
 ];
 
@@ -352,7 +351,7 @@ const IN_USE_SERVICE = [
             'product' => 'gift_cleaning',
             'name' => 'minikuraGiftクリーニングパック',
             'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK,
-            'name_mobile' => 'minikuraGift<br />クリーニングパック',
+            'name_mobile' => '(仮)minikuraGift<br />クリーニングパック',
         ],
     ],
     'sneakers' => [

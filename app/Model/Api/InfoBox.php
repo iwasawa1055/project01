@@ -79,8 +79,6 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_BUYKIT_IN_PROGRESS,
             BOXITEM_STATUS_BUYKIT_DONE,
         ];
-        // TODO 未使用？
-        $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
 
         // キットコードが定義されていない場合、除外する。
@@ -108,8 +106,6 @@ class InfoBox extends ApiCachedModel
         $okStatus = [
             BOXITEM_STATUS_OUTBOUND_DONE,
         ];
-        // TODO 未使用？
-        $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
 
         // HAKO以外除外する。

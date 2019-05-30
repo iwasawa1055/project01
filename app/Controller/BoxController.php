@@ -65,7 +65,7 @@ class BoxController extends MinikuraController
         } else if ($_product === 'sneakers') {
             $productName = 'minikura SNEAKERS';
         } else if ($_product === 'gift_cleaning') {
-            $productName = 'ギフト クリーニングパック';
+            $productName = '(仮)ギフト クリーニングパック';
         }
         return $productName;
     }

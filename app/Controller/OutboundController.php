@@ -1738,7 +1738,6 @@ class OutboundController extends MinikuraController
         return json_encode($list);
     }
 
-    // TODO これのギフト版を作る必要ある？
     public function as_get_closet_box()
     {
         $this->autoRender = false;
