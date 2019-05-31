@@ -39,7 +39,7 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                 </li>
             </ul>
             <form name="form" action='/inbound/box/confirm' method="POST">
-                <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p']) ?>
+                <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 <ul class="setting-switcher">
                     <li>
                         <label class="setting-switch">
@@ -108,7 +108,7 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     </li>
                     <li>
                         <label class="headline">ボックスの配送方法</label>
-                        <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
+                        <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         <ul class="delivery-method">
                             <li>
                                 <label class="input-check">
@@ -135,60 +135,60 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                                 <?php endforeach; ?>;
                                 <option value="add" <?php echo (isset($this->request->data['Inbound']['address_id']) && $this->request->data['Inbound']['address_id'] == 'add') ? 'selected' : ''; ?> data-address-name="">お届先を追加する</option>
                             </select>
-                            <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
+                            <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         </li>
                         <li class="input-address">
                             <ul class="add-address">
                                 <li>
                                     <label>郵便番号</label>
                                     <input id="postal" name="data[CustomerAddress][postal]" type="tel" placeholder="例：140-0002" class='search_address_postal' value="<?php echo isset($this->request->data['CustomerAddress']['postal']) ? $this->request->data['CustomerAddress']['postal'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.postal", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.postal", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                     <p class="txt-caption">入力すると住所が自動で反映されます。</p>
                                 </li>
                                 <li>
                                     <label>都道府県</label>
                                     <input name="data[CustomerAddress][pref]" type="text" placeholder="例：東京都" class='address_pref' value="<?php echo isset($this->request->data['CustomerAddress']['pref']) ? $this->request->data['CustomerAddress']['pref'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.pref", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.pref", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>市区郡</label>
                                     <input name="data[CustomerAddress][address1]" type="text" placeholder="例：品川区" class='address_address1' value="<?php echo isset($this->request->data['CustomerAddress']['address1']) ? $this->request->data['CustomerAddress']['address1'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.address1", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.address1", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>町域以降</label>
                                     <input name="data[CustomerAddress][address2]" type="text" placeholder="例：東品川2-6-10" class='address_address2' value="<?php echo isset($this->request->data['CustomerAddress']['address2']) ? $this->request->data['CustomerAddress']['address2'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.address2", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.address2", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>建物名</label>
                                     <input name="data[CustomerAddress][address3]" type="text" placeholder="例：Tビル" class='address_address3' value="<?php echo isset($this->request->data['CustomerAddress']['address3']) ? $this->request->data['CustomerAddress']['address3'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.address3", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.address3", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>電話番号</label>
                                     <input name="data[CustomerAddress][tel1]" type="tel" placeholder="例：0312345678" value="<?php echo isset($this->request->data['CustomerAddress']['tel1']) ? $this->request->data['CustomerAddress']['tel1'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.tel1", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.tel1", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>お名前 姓</label>
                                     <input name="data[CustomerAddress][lastname]" class="lastname" type="text" placeholder="例：寺田" value="<?php echo isset($this->request->data['CustomerAddress']['lastname']) ? $this->request->data['CustomerAddress']['lastname'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.lastname", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.lastname", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>お名前 名</label>
                                     <input name="data[CustomerAddress][firstname]" class="firstname" type="text" placeholder="例：太郎" value="<?php echo isset($this->request->data['CustomerAddress']['firstname']) ? $this->request->data['CustomerAddress']['firstname'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.firstname", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.firstname", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>お名前 姓 カナ</label>
                                     <input name="data[CustomerAddress][lastname_kana]" class="lastname_kana" type="text" placeholder="例：テラダ" value="<?php echo isset($this->request->data['CustomerAddress']['lastname']) ? $this->request->data['CustomerAddress']['lastname_kana'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.lastname_kana", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.lastname_kana", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                                 <li>
                                     <label>お名前 名 カナ</label>
                                     <input name="data[CustomerAddress][firstname_kana]" class="firstname_kana" type="text" placeholder="例：タロウ" value="<?php echo isset($this->request->data['CustomerAddress']['firstname']) ? $this->request->data['CustomerAddress']['firstname_kana'] : ''; ?>">
-                                    <?php echo $this->Form->error("CustomerAddress.firstname_kana", null, ['wrap' => 'p']) ?>
+                                    <?php echo $this->Form->error("CustomerAddress.firstname_kana", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 </li>
                             </ul>
                             <label class="input-check">
@@ -199,13 +199,13 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                             <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['day_cd']) ?$this->request->data['Inbound']['day_cd'] : ""; ?>" id="pickup_date">
                             <label class="headline">集荷の日程</label>
                             <select id="day_cd" name="data[Inbound][day_cd]"></select>
-                            <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
+                            <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         </li>
                         <li>
                         <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['time_cd']) ?$this->request->data['Inbound']['time_cd'] : ""; ?>" id="pickup_time_code">
                             <label class="headline">集荷の時間</label>
                             <select id="time_cd" name="data[Inbound][time_cd]"></select>
-                            <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
+                            <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         </li>
                     </div>
                 </ul>

@@ -11,7 +11,8 @@ var AppInboundBoxAdd =
       .then(AppInboundBoxAdd.address)
       .then(AppInboundBoxAdd.autoKana)
       .then(AppInboundBoxAdd.checkNameLength)
-      .then(AppInboundBoxAdd.checkInputNameLength);
+      .then(AppInboundBoxAdd.checkInputNameLength)
+      .then(AppInboundBoxAdd.scrollValidError);
 
     // 初期表示
     if (typeof $("#dev-selected-box_type").val() !== 'undefined') {
@@ -87,7 +88,9 @@ var AppInboundBoxAdd =
     }
 
     // modal表示
-    $("[data-remodal-id=packaging]").remodal().open();
+    if ( document.referrer.indexOf('/inbound/box/add') == -1 && document.referrer.indexOf('/inbound/box/confirm') == -1) {
+      $("[data-remodal-id=packaging]").remodal().open();
+    }
   },
   getAllNewBox: function() {
     var d = new $.Deferred();
@@ -278,7 +281,7 @@ var AppInboundBoxAdd =
       var count = AppInboundBoxAdd.strLength($('.lastname').val()+$('.firstname').val());
       if (count > 49) {
           $('.dev-name-length-error').remove();
-          $('.firstname').after("<p class='error-message dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が途中で切れてしまいますので、ご変更をお願いいたします</p>");
+          $('.firstname').after("<p class='valid-il dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が途中で切れてしまいますので、ご変更をお願いいたします</p>");
       } else {
           $('.dev-name-length-error').remove();
       }
@@ -293,7 +296,7 @@ var AppInboundBoxAdd =
       var count = AppInboundBoxAdd.strLength($('.address :selected').data('address-name'));
       if (count > 49) {
           $('.dev-name-length-error').remove();
-          $('.address').after("<p class='error-message dev-name-length-error'>お名前が全角で25文字または半角で50文字以上入力されています。集荷時の伝票のお名前が途中で切れてしまいますので、新たにご登録をお願いいたします。</p>");
+          $('.address').after("<p class='valid-il dev-name-length-error'>お名前が全角で25文字または半角で50文字以上入力されています。集荷時の伝票のお名前が途中で切れてしまいますので、新たにご登録をお願いいたします。</p>");
       } else {
           $('.dev-name-length-error').remove();
       }
@@ -328,6 +331,31 @@ var AppInboundBoxAdd =
         }
     }
     return count;
+  },
+  scrollValidError: function () {
+    var img_num = $('.img-item').length;
+    var img_counter = 0;
+    for (var i = 0; i < img_num; i++) {
+      var img = $('<img>');
+      img.load(function() {
+        img_counter++;
+        // 全てのボックス画像を出力し終えた際に実施
+        if (img_num == img_counter) {
+          var valid = $(".valid-il");
+          if (valid.length > 0) {
+            if ($(valid).closest('div.box-info').length > 0) {
+              // ボックス系のエラー
+              var position = valid.parent().parent().offset().top;
+            } else {
+              // 入力系のエラー
+              var position = valid.parent().offset().top;
+            }
+            $('body,html').animate({scrollTop: position}, 'slow');
+          }
+        }
+      });
+      img.attr('src', $('img').eq(i).attr('src'));
+    }
   }
 }
 
