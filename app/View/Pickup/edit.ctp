@@ -1,4 +1,4 @@
-<?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/pickup', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('pickup/edit', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('jquery.airAutoKana', ['block' => 'scriptMinikura']); ?>
