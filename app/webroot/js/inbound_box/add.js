@@ -280,7 +280,7 @@ var AppInboundBoxAdd =
         // 全てのボックス画像を出力し終えた際に実施
         if (img_num == img_counter) {
           var valid = $(".valid-il");
-          if (valid) {
+          if (valid.length > 0) {
             if ($(valid).closest('div.box-info').length > 0) {
               // ボックス系のエラー
               var position = valid.parent().parent().offset().top;
