@@ -1,5 +1,5 @@
 <?php
-$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); 
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
 $this->Html->script('customer/gvido/add', ['block' => 'scriptMinikura']);
@@ -81,22 +81,22 @@ $this->Html->script('customer/gvido/add', ['block' => 'scriptMinikura']);
                 </li>
                 <li>
                     <label>都道府県<span class="required">必須</span></label>
-                    <?php echo $this->Form->input('CustomerRegistInfo.pref', ['size' => 16, 'maxlength' => 16, 'placeholder'=>'例：東京都', 'class' => 'address_pref', 'label' => false, 'error' => false, 'div' => false]); ?>
+                    <?php echo $this->Form->input('CustomerRegistInfo.pref', ['size' => 16, 'placeholder'=>'例：東京都', 'class' => 'address_pref', 'label' => false, 'error' => false, 'div' => false]); ?>
                     <?php echo $this->Form->error('CustomerRegistInfo.pref', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>
-                    <label>市区郡（町村）<span class="required">必須</span></label>
-                    <?php echo $this->Form->input('CustomerRegistInfo.address1', ['size' => 16, 'maxlength' => 16, 'placeholder'=>'例：品川区東品川', 'class' => 'address_address1', 'label' => false, 'error' => false, 'div' => false]); ?>
+                    <label>市区郡<span class="required">必須</span></label>
+                    <?php echo $this->Form->input('CustomerRegistInfo.address1', ['size' => 16, 'placeholder'=>'例：品川区', 'class' => 'address_address1', 'label' => false, 'error' => false, 'div' => false]); ?>
                     <?php echo $this->Form->error('CustomerRegistInfo.address1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>
-                    <label>丁目以降<span class="required">必須</span></label>
-                    <?php echo $this->Form->input('CustomerRegistInfo.address2', ['size' => 10, 'maxlength' => 10, 'placeholder'=>'例：2-6-10', 'class' => 'address_address2', 'label' => false, 'error' => false, 'div' => false]); ?>
+                    <label>町域以降<span class="required">必須</span></label>
+                    <?php echo $this->Form->input('CustomerRegistInfo.address2', ['size' => 10, 'placeholder'=>'例：東品川2-6-10', 'class' => 'address_address2', 'label' => false, 'error' => false, 'div' => false]); ?>
                     <?php echo $this->Form->error('CustomerRegistInfo.address2', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>
                     <label>建物名以降</label>
-                    <?php echo $this->Form->input('CustomerRegistInfo.address3', ['size' => 23, 'maxlength' => 23, 'placeholder'=>'建物名・部屋番号をご入力ください。', 'label' => false, 'error' => false, 'div' => false]); ?>
+                    <?php echo $this->Form->input('CustomerRegistInfo.address3', ['size' => 23, 'placeholder'=>'建物名・部屋番号をご入力ください。', 'label' => false, 'error' => false, 'div' => false]); ?>
                     <?php echo $this->Form->error('CustomerRegistInfo.address3', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>

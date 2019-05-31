@@ -51,10 +51,10 @@ msgid "pref"
 msgstr "都道府県"
 
 msgid "address1"
-msgstr "住所"
+msgstr "市区郡"
 
 msgid "address2"
-msgstr "番地"
+msgstr "町域以降"
 
 msgid "address3"
 msgstr "建物名"
@@ -153,10 +153,10 @@ msgid "kit_pref"
 msgstr "お届け先都道府県"
 
 msgid "kit_address1"
-msgstr "お届け先住所"
+msgstr "お届け先市区郡"
 
 msgid "kit_address2"
-msgstr "お届け先番地"
+msgstr "お届け先町域以降"
 
 msgid "kit_address3"
 msgstr "お届け先建物名"

@@ -18,11 +18,11 @@
                 <p><?php echo $this->CustomerInfo->setPrefAddress1($this->Form->data['CustomerRegistInfo']); ?></p>
               </div>
               <div class="form-group">
-                <label>番地</label>
+                <label>都道府県市区郡</label>
                 <p><?php echo h($this->Form->data['CustomerRegistInfo']['address2']); ?></p>
               </div>
               <div class="form-group">
-                <label>建物名</label>
+                <label>町域以降</label>
                 <p><?php echo h($this->Form->data['CustomerRegistInfo']['address3']); ?></p>
               </div>
               <div class="form-group">

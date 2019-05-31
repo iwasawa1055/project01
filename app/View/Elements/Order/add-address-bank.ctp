@@ -11,13 +11,13 @@
     <?php echo $this->Form->error('PaymentAccountTransferKit.pref', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
   </li>
   <li>
-    <label class="headline">住所</label>
-    <?php echo $this->Form->input('PaymentAccountTransferKit.address1', ['id' => 'address1', 'class' => 'address_address1', 'type' => 'text', 'placeholder'=>'例：品川区東品川2', 'autocomplete' => "address-level2", 'error' => false, 'label' => false, 'div' => false]); ?>
+    <label class="headline">市区郡</label>
+    <?php echo $this->Form->input('PaymentAccountTransferKit.address1', ['id' => 'address1', 'class' => 'address_address1', 'type' => 'text', 'placeholder'=>'例：品川区', 'autocomplete' => "address-level2", 'error' => false, 'label' => false, 'div' => false]); ?>
     <?php echo $this->Form->error('PaymentAccountTransferKit.address1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
   </li>
   <li>
-    <label class="headline">番地</label>
-    <?php echo $this->Form->input('PaymentAccountTransferKit.address2', ['id' => 'address2', 'class' => 'address_address2', 'type' => 'text', 'placeholder'=>'例：6-10', 'autocomplete' => "address-line1", 'error' => false, 'label' => false, 'div' => false]); ?>
+    <label class="headline">町域以降</label>
+    <?php echo $this->Form->input('PaymentAccountTransferKit.address2', ['id' => 'address2', 'class' => 'address_address2', 'type' => 'text', 'placeholder'=>'例：東品川2-6-10', 'autocomplete' => "address-line1", 'error' => false, 'label' => false, 'div' => false]); ?>
     <?php echo $this->Form->error('PaymentAccountTransferKit.address2', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
   </li>
   <li>

@@ -26,11 +26,11 @@
                     <p class="confirm"><?php echo h($CustomerRegistInfo['postal']); ?></p>
                 </li>
                 <li>
-                    <label>都道府県市区郡（町村）</label>
+                    <label>都道府県市区郡</label>
                     <p class="confirm"><?php echo h($CustomerRegistInfo['pref']); ?><?php echo h($CustomerRegistInfo['address1']); ?></p>
                 </li>
                 <li>
-                    <label>丁目以降</label>
+                    <label>町域以降</label>
                     <p class="confirm"><?php echo h($CustomerRegistInfo['address2']); ?></p>
                 </li>
                 <li>
