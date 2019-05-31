@@ -121,10 +121,8 @@ class RegisterController extends MinikuraController
         $key_file_path = self::REGISTER_EMAIL_FILE_DIR . DS . $filename;
         $key_file = new File($key_file_path, true);
         $key_file->append($to);
-
-        // #24132 会員登録時のメールアドレス認証を一時的にやめる
-        // $mail = new AppMail();
-        // $mail->sendRegisterEmail($to, $key);
+        $mail = new AppMail();
+        $mail->sendRegisterEmail($to, $key);
 
         if (CakeSession::Read('app.data.alliance_cd')) {
             // alliance_cdをキーファイル作成
@@ -138,8 +136,6 @@ class RegisterController extends MinikuraController
 
         CakeSession::delete(self::MODEL_NAME_REGIST);
 
-        // #24132 会員登録時のメールアドレス認証を一時的にやめる
-        return $this->redirect('/customer/register/add_personal?hash='.$key);
     }
 
     /**
