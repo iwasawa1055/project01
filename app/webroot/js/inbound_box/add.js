@@ -277,10 +277,17 @@ var AppInboundBoxAdd =
       var img = $('<img>');
       img.load(function() {
         img_counter++;
+        // 全てのボックス画像を出力し終えた際に実施
         if (img_num == img_counter) {
           var valid = $(".valid-il");
           if (valid) {
-            var position = valid.parent().parent().offset().top;
+            if ($(valid).closest('div.box-info').length > 0) {
+              // ボックス系のエラー
+              var position = valid.parent().parent().offset().top;
+            } else {
+              // 入力系のエラー
+              var position = valid.parent().offset().top;
+            }
             $('body,html').animate({scrollTop: position}, 'slow');
           }
         }

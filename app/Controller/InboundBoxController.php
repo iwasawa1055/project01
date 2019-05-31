@@ -117,11 +117,12 @@ class InboundBoxController extends MinikuraController
         }
 
         // 届け先追加を選択の場合は追加画面へ遷移
+        $is_address_error = false;
         if (Hash::get($data, 'address_id') === 'add') {
             $this->loadModel('CustomerAddress');
             $this->CustomerAddress->data['CustomerAddress'] = $this->request->data['CustomerAddress'];
             if (!$this->CustomerAddress->validates()) {
-                return $this->render('add');
+                $is_address_error = false;
             }
             if (isset($this->CustomerAddress->data['CustomerAddress']['resister']) && $this->CustomerAddress->data['CustomerAddress']['resister'] == '1') {
                 $this->CustomerAddress->apiPost($this->request->data['CustomerAddress']);
@@ -194,10 +195,12 @@ class InboundBoxController extends MinikuraController
             }
         }
 
-        if (!empty($validErrors)) {
-            $this->set('validErrors', $validErrors);
-            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' post params ' . print_r($_POST, true));
-            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' /inbound/box validation error ' . print_r($validErrors, true));
+        if (!empty($validErrors) || $is_address_error) {
+            if (!empty($validErrors)) {
+                $this->set('validErrors', $validErrors);
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' post params ' . print_r($_POST, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' /inbound/box validation error ' . print_r($validErrors, true));
+            }
             return $this->render('add');
         }
     }

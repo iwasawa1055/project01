@@ -424,3 +424,7 @@ p.facebook-message a,
 #dev-old-box-grid > li > div > p.box-type{
   font-size: 1rem;
 }
+
+input:-ms-input-placeholder {
+  color: #a9a9a9;
+}
