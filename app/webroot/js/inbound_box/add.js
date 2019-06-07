@@ -135,6 +135,20 @@ var AppInboundBoxAdd =
       $.each(AppInboundBoxAdd.new_box, function(index, value){
         var renderNewBox = AppInboundBoxAdd.createHtml(value);
         $('#dev-new-box-grid').append(renderNewBox);
+
+        // bind event
+        $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+        $('.remove-package').addClass('input-disabled');
+
+        $('[name="data[Inbound][box_list]['+value.box_id+'][checkbox]"]').change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+                $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+            } else {
+                $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+                $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);
+            }
+        });
       });
     } else {
         $('#dev-new-box-grid').after("<p class='page-caption not-applicable'><br><br>新しく購入したボックスが存在しません。<br><br><br>");
@@ -144,6 +158,20 @@ var AppInboundBoxAdd =
       $.each(AppInboundBoxAdd.old_box, function(index, value){
         var renderOldBox = AppInboundBoxAdd.createHtml(value);
         $('#dev-old-box-grid').append(renderOldBox);
+
+        // bind event
+        $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+        $('.remove-package').addClass('input-disabled');
+
+        $('[name="data[Inbound][box_list]['+value.box_id+'][checkbox]"]').change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+                $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+            } else {
+                $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+                $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);
+            }
+        });
       });
     } else {
         $('#dev-old-box-grid').after("<p class='page-caption not-applicable'><br><br>取り出し済ボックスが存在しません。<br><br><br>");
@@ -155,24 +183,28 @@ var AppInboundBoxAdd =
       $.each(boxListErrors, function(index, value){
         $.each(value, function(i1, v1){
           $.each(v1, function(i2, v2){
-            $('[name="data[Inbound][box_list]['+index+']['+i1+']"').after('<p class="valid-il">'+v2+'</p>');
+            $('[name="data[Inbound][box_list]['+index+']['+i1+']"]').after('<p class="valid-il">'+v2+'</p>');
           });
         });
       });
     }
+
     // selected
     if (typeof $("#dev-box-list-selected").val() !== 'undefined') {
       var boxListSelected = JSON.parse($("#dev-box-list-selected").val());
       $.each(boxListSelected, function(index, value){
         if (value.checkbox == "1") {
-          $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
         }
-        $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
+        $('[name="data[Inbound][box_list]['+index+'][title]"]').val(value.title);
         if (typeof value.wrapping_type !== 'undefined' && value.wrapping_type == 1) {
-          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"]').prop('checked', true);
         }
       });
     }
+
     return new $.Deferred().resolve().promise();
   },
   createHtml: function(value) {
@@ -194,7 +226,7 @@ var AppInboundBoxAdd =
 
     if (value.kit_cd == '66' || value.kit_cd == '67' || value.kit_cd == '82') {
       html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-circle dev-box-check" value="0">';
-      html += '        <label class="input-check">';
+      html += '        <label class="input-check remove-package">';
       html += '            <input type="checkbox" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-square dev-box-check" value="1">';
       html += '            <span class="icon"></span>';
       html += '            <span class="label-txt">外装を除いて撮影</span>';
@@ -207,6 +239,34 @@ var AppInboundBoxAdd =
   },
   submitForm: function() {
     $("#execute").click("on", function(){
+      var error = 0;
+      var box_type = $('[name="data[Inbound][box_type]"]:checked').val();
+      if (typeof box_type === 'undefined' || box_type == "new") {
+        $('#dev-new-box-grid > li').each(function(i1, v1){
+          // チェックが付いている
+          if ($(v1).children(".input-check").children('.cb-circle:checked').val() == 1) {
+            if ($(v1).children(".box-info").children('.box-input-name').val() == '') {
+              error = 1;
+            }
+          }
+        });
+      } else {
+        $('#dev-old-box-grid > li').each(function(i1, v1){
+          // チェックが付いている
+          if ($(v1).children(".input-check").children('.cb-circle:checked').val() == 1) {
+            if ($(v1).children(".box-info").children('.box-input-name').val() == '') {
+              error = 1;
+            }
+          }
+        });
+      }
+
+      // 選択済みでボックスタイトルが設定されていない
+      if (error === 1) {
+        alert('選択されたボックスにタイトルが入力されていません。');
+        return false;
+      }
+
       document.form.submit();
     });
     return new $.Deferred().resolve().promise();
