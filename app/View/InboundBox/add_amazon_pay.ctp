@@ -87,8 +87,6 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     </ul-->
                     <ul id="dev-old-box-grid" class="grid grid-md">
                     </ul>
-                    <p class="page-caption not-applicable">ご入力いただいたバーコード番号の取り出し済みボックスは見つかりませんでした。<br>
-                        別のバーコード番号をご入力ください。</p>
                 </div>
                 <ul class="input-info">
                     <li>

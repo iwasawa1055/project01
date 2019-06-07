@@ -76,6 +76,34 @@ var AppInboundBoxAdd =
     });
 
     $("#execute").click("on", function(){
+      var error = 0;
+      var box_type = $('[name="data[Inbound][box_type]"]:checked').val();
+      if (typeof box_type === 'undefined' || box_type == "new") {
+        $('#dev-new-box-grid > li').each(function(i1, v1){
+          // チェックが付いている
+          if ($(v1).children(".input-check").children('.cb-circle:checked').val() == 1) {
+            if ($(v1).children(".box-info").children('.box-input-name').val() == '') {
+              error = 1;
+            }
+          }
+        });
+      } else {
+        $('#dev-old-box-grid > li').each(function(i1, v1){
+          // チェックが付いている
+          if ($(v1).children(".input-check").children('.cb-circle:checked').val() == 1) {
+            if ($(v1).children(".box-info").children('.box-input-name').val() == '') {
+              error = 1;
+            }
+          }
+        });
+      }
+
+      // 選択済みでボックスタイトルが設定されていない
+      if (error === 1) {
+        alert('選択されたボックスにタイトルが入力されていません。');
+        return false;
+      }
+
         var add_billing  = $('<input type="hidden" name="amazon_order_reference_id">');
         add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
         $("form").append(add_billing);
@@ -127,10 +155,37 @@ var AppInboundBoxAdd =
     $.each(AppInboundBoxAdd.new_box, function(index, value){
       var renderNewBox = AppInboundBoxAdd.createHtml(value);
       $('#dev-new-box-grid').append(renderNewBox);
+
+        $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+        $('.remove-package').addClass('input-disabled');
+
+        $('[name="data[Inbound][box_list]['+value.box_id+'][checkbox]"]').change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+                $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+            } else {
+                $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+                $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);
+            }
+        });
     });
     $.each(AppInboundBoxAdd.old_box, function(index, value){
       var renderOldBox = AppInboundBoxAdd.createHtml(value);
       $('#dev-old-box-grid').append(renderOldBox);
+
+        // bind event
+        $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+        $('.remove-package').addClass('input-disabled');
+
+        $('[name="data[Inbound][box_list]['+value.box_id+'][checkbox]"]').change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+                $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+            } else {
+                $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+                $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);
+            }
+        });
     });
 
     // error
@@ -149,11 +204,13 @@ var AppInboundBoxAdd =
       var boxListSelected = JSON.parse($("#dev-box-list-selected").val());
       $.each(boxListSelected, function(index, value){
         if (value.checkbox == "1") {
-          $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
         }
-        $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
+        $('[name="data[Inbound][box_list]['+index+'][title]"]').val(value.title);
         if (typeof value.wrapping_type !== 'undefined' && value.wrapping_type == 1) {
-          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"]').prop('checked', true);
         }
       });
     }
@@ -178,7 +235,7 @@ var AppInboundBoxAdd =
 
     if (value.kit_cd == '66' || value.kit_cd == '67' || value.kit_cd == '82') {
       html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-circle dev-box-check" value="0">';
-      html += '        <label class="input-check">';
+      html += '        <label class="input-check remove-package">';
       html += '            <input type="checkbox" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-square dev-box-check" value="1">';
       html += '            <span class="icon"></span>';
       html += '            <span class="label-txt">外装を除いて撮影</span>';
