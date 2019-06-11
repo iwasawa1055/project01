@@ -1,3 +1,5 @@
+<?php $this->Html->css('/css/style.css', ['block' => 'css']); ?>
+
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header"><i class="fa fa-home"></i> マイページ</h1>
