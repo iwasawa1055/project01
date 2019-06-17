@@ -151,7 +151,7 @@ var AppInboundBoxAdd =
         });
       });
     } else {
-        $('#dev-new-box-grid').after("<p class='page-caption not-applicable'><br><br>新しく購入したボックスが存在しません。<br><br><br>");
+        $('#dev-new-box-grid').after("<p class='page-caption not-applicable'><br><br>新しいボックスが存在しません。<br><br><br>");
     }
 
     if (AppInboundBoxAdd.old_box.length > 0) {

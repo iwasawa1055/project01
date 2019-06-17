@@ -5,11 +5,11 @@
   <div id="page-wrapper" class="lineup wrapper">
     <?php echo $this->Flash->render(); ?>
 
-    <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+    <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
 
     <?php echo $this->element('Order/breadcrumb_list'); ?>
 
-    <p class="page-caption">以下の内容でボックス購入手続きを行います。</p>
+    <p class="page-caption">以下の内容でサービスの申し込み手続きを行います。</p>
 
     <ul class="input-info">
       <?php foreach($order_list as $order_type => $order_data): ?>
@@ -71,7 +71,7 @@
             <input type="checkbox" class="cb-square">
             <span class="icon"></span>
             <span class="label-txt">
-                ご購入完了後、日時を含む内容の変更およびキャンセルはお受けすることができません。<br>
+                サービスの申し込み完了後、日時を含む内容の変更およびキャンセルはお受けすることができません。<br>
               </span>
           </label>
           <label id="confirm_check" class="input-check">
@@ -125,7 +125,7 @@
       <li><a class="btn-d-gray" href="/order/add">戻る</a>
       </li>
       <li>
-        <button id="execute" class="btn-red" type="button">ボックスを購入</button>
+        <button id="execute" class="btn-red" type="button">サービスの申し込み</button>
       </li>
     </ul>
   </div>

@@ -134,7 +134,10 @@ class InboundBoxController extends MinikuraController
             }
         }
 
-        $dataBoxList = $data['box_list'];
+        $dataBoxList = [];
+        if (isset($data['box_list'])) {
+            $dataBoxList = $data['box_list'];
+        }
         unset($data['box_list']);
 
         $validErrors = [];
@@ -581,39 +584,4 @@ class InboundBoxController extends MinikuraController
 
         return $result;
     }
-
-    /**
-     * Direct Inbound set
-     */
-    private function _setDirectInbound($Order)
-    {
-        $Order['direct_inbound']['direct_inbound'] = (int)filter_input(INPUT_POST, 'direct_inbound');
-        return $Order;
-    }
-
-    // 日付CD変換
-    private function _convDatetimeCode ( $data_code ){
-
-        // 時間CODE変換表
-        $timeList = array( 2 => '午前中',
-            //3 => '12～14時',
-            4 => '14～16時',
-            5 => '16～18時',
-            6 => '18～20時',
-            7 => '19～21時' );
-
-
-        // 日付
-        $date = substr( $data_code, 0, 10 );
-
-        // 時間
-        $time = substr( $data_code, 11, 1 );
-
-        // 戻り値
-        $datetime = date( "Y年m月d日", strtotime( $date ) );
-
-        if( isset( $timeList[$time] )  ) $datetime .= ' '.$timeList[$time];
-        return $datetime;
-    }
-
 }

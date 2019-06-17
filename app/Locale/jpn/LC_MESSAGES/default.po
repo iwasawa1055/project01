@@ -6,13 +6,13 @@ msgid "empty_session_data"
 msgstr "もう一度実施してください。"
 
 msgid "boxitem_status_10"
-msgstr "キット購入済"
+msgstr "キットサービス申し込み済"
 
 msgid "boxitem_status_20"
-msgstr "キット購入済"
+msgstr "キットサービス申し込み済"
 
 msgid "boxitem_status_30"
-msgstr "キット購入済"
+msgstr "キットサービス申し込み済"
 
 msgid "boxitem_status_40"
 msgstr "預け入れ申込済"
@@ -75,7 +75,7 @@ msgid "sales_status_1"
 msgstr "販売中"
 
 msgid "sales_status_2"
-msgstr "購入手続き中"
+msgstr "サービスの申し込み手続き中"
 
 msgid "sales_status_3"
 msgstr "振り込み可能中"
@@ -90,13 +90,13 @@ msgid "sales_status_6"
 msgstr "送金済み"
 
 msgid "sales_status_7"
-msgstr "購入キャンセル"
+msgstr "サービスの申し込みキャンセル"
 
 msgid "sales_status_8"
 msgstr "販売キャンセル"
 
 msgid "can_not_sales"
-msgstr "購入できません"
+msgstr "サービスの申し込みができません"
 
 msgid "can_not_yahoo_auction"
 msgstr "出品できません"

@@ -119,7 +119,7 @@ const PRODUCT_CD_LIBRARY = '005004';
 const PRODUCT_CD_CLOSET = '005005';
 
 // box_status, item_status
-// キット購入・依頼
+// キットサービスの申し込み・依頼
 const BOXITEM_STATUS_BUYKIT_START = '10';
 const BOXITEM_STATUS_BUYKIT_IN_PROGRESS = '20';
 const BOXITEM_STATUS_BUYKIT_DONE = '30';
@@ -140,9 +140,9 @@ const BOXITEM_STATUS_OUTBOUND_IN_PROGRESS = '200';
 const BOXITEM_STATUS_OUTBOUND_DONE = '210';
 
 const BOX_STATUS_LIST = [
-    '10' => '購入依頼中',
-    '20' => '購入依頼中',
-    '30' => '購入依頼中',
+    '10' => 'サービスの申し込み依頼中',
+    '20' => 'サービスの申し込み依頼中',
+    '30' => 'サービスの申し込み依頼中',
     '40' => 'お預かり中',
     '60' => '倉庫作業中',
     '70' => 'お預かり中',
@@ -434,12 +434,12 @@ const BANK_ACCOUNT_TYPE = [
 
 //* 販売機能 ステータス
 const SALES_STATUS_ON_SALE = '1'; // 販売中
-const SALES_STATUS_IN_PURCHASE = '2'; // 購入手続き中
+const SALES_STATUS_IN_PURCHASE = '2'; // サービスの申し込み手続き中
 const SALES_STATUS_TRANSFER_ALLOWED = '3'; // 振込可能
 const SALES_STATUS_IN_ORDER = '4'; // 送金依頼中
 const SALES_STATUS_PENDING = '5'; // 送金保留
 const SALES_STATUS_REMITTANCE_COMPLETED = '6'; // 送金済み
-const SALES_STATUS_PURCHASE_CANCEL = '7'; // 購入キャンセル
+const SALES_STATUS_PURCHASE_CANCEL = '7'; // サービスの申し込みキャンセル
 const SALES_STATUS_SALES_CANCEL = '8'; // 販売キャンセル
 
 /**

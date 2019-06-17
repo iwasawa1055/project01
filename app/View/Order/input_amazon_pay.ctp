@@ -11,7 +11,7 @@
     <div id="page-wrapper" class="lineup wrapper">
       <?php echo $this->Flash->render(); ?>
 
-      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
 
       <?php echo $this->element('Order/breadcrumb_list'); ?>
 

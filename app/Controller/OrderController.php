@@ -35,9 +35,8 @@ class OrderController extends MinikuraController
         parent::beforeFilter();
 
         // 法人口座未登録用遷移
-        $actionCannot = 'cannot';
-        if ($this->action !== $actionCannot && !$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
-            return $this->redirect(['action' => $actionCannot]);
+        if (!$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
+            new AppTerminalError(AppE::NOT_FOUND, 404);
         }
 
         $this->Order = $this->Components->load('Order');
@@ -175,7 +174,7 @@ class OrderController extends MinikuraController
 
             $error_flag = false;
 
-            /** 購入者情報バリデーション */
+            /** サービスの申し込み者情報バリデーション */
             $validation_item = [
                 'security_cd',
                 'address_id',
@@ -429,7 +428,7 @@ class OrderController extends MinikuraController
 
             $this->PaymentAccountTransferKit->set($data);
 
-            /** 購入者情報バリデーション */
+            /** サービスの申し込み者情報バリデーション */
             $validation_item = [
                 'mono_num',
                 'mono_appa_num',
@@ -611,7 +610,7 @@ class OrderController extends MinikuraController
 
             $error_flag = false;
 
-            /** 購入者情報バリデーション */
+            /** サービスの申し込み者情報バリデーション */
             $validation_item = [
                 'access_token',
                 'amazon_user_id',
@@ -1071,7 +1070,7 @@ class OrderController extends MinikuraController
         $result_kit_payment_transfer = $this->PaymentAccountTransferKit->apiPost($this->PaymentAccountTransferKit->toArray());
         if ($result_kit_payment_transfer->status !== '1') {
             if ($result_kit_payment_transfer->http_code === 400) {
-                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+                $this->Flash->validation('サービスの申し込みエラー', ['key' => 'customer_kit_card_info']);
             } else {
                 $this->Flash->validation($result_kit_payment_transfer->message, ['key' => 'customer_kit_card_info']);
             }

@@ -4,11 +4,11 @@
     <div id="page-wrapper" class="lineup wrapper">
       <?php echo $this->Flash->render(); ?>
 
-      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
 
       <?php echo $this->element('Order/breadcrumb_list'); ?>
 
-      <p class="page-caption">以下の内容でボックス購入手続きが完了しました。</p>
+      <p class="page-caption">以下の内容でサービスの申し込み手続きが完了しました。</p>
 
       <ul class="input-info">
         <?php $order_cnt = 1;?>
