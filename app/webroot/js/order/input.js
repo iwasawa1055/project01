@@ -108,6 +108,7 @@ var AppInputOrder =
       var exe_flag = true;
       $(".caution-box input").each(function(i) {
         if (!$(this).prop("checked")) {
+          alert('注意事項をご確認ください');
           exe_flag = false;
           return false;
         }

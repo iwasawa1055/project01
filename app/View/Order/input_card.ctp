@@ -14,6 +14,21 @@
       <?php echo $this->Flash->render(); ?>
 
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <ul class="l-collected-day">
+            <li>
+              <a href="#">
+                <picture>
+                  <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
+                  <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
+                  <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
+                </picture>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <?php echo $this->element('Order/breadcrumb_list'); ?>
 
@@ -31,9 +46,11 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-hs">200</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-hb">200</span>円
+                <p class="price">月額保管料<span class="price-hs">200</span>円/箱</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
                 </p>
               </li>
               <li class="option">
@@ -104,9 +121,11 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ms">250</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-mb">250</span>円
+                <p class="price">月額保管料<span class="price-ms">250</span>円</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
                 </p>
               </li>
               <?php if (false): ?>
@@ -172,9 +191,11 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ls">450</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-lb">450</span>円
+                <p class="price">月額保管料<span class="price-ls">450</span>円</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
                 </p>
               </li>
               <li class="option">
@@ -212,7 +233,11 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-hs">450</span>円</p>
-                <p class="price">ボックス代金<span class="price-hb">450</span>円</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
+                </p>
               </li>
               <li class="option">
               </li>
@@ -249,7 +274,11 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">6ヶ月保管＋クリーニング料セット</p>
-                <p class="price">ボックス代金<span class="price-cb">12,000円</span></p>
+                <p class="price">サービス申し込み料<span class="price-lb">12,000</span>円</p>
+                <a class="application">※サービス申し込み料とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービスを申し込む際に必要なボックスや、アイテム撮影等に含まれる料金です。
+                </p>
               </li>
               <li class="option">
               </li>

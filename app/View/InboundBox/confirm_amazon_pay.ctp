@@ -16,6 +16,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
             <div class="item-content">
                 <ul class="grid grid-md">
                     <!--loop-->
+                    <?php $hako = false; ?>
                     <?php $mono = false; ?>
                     <?php $library = false; ?>
                     <?php $closet = false; ?>
@@ -30,6 +31,9 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                           $kitName = '';
                           if (!empty($formBox['option'])) {
                               $kitName = KIT_OPTION[$kitCd][$formBox['option']];
+                          }
+                          if ($box['kit_cd'] == KIT_CD_HAKO || $box['kit_cd'] == KIT_CD_HAKO_BOOK || $box['kit_cd'] == KIT_CD_HAKO_APPAREL) {
+                              $hako = true;
                           }
                           if ($box['kit_cd'] == KIT_CD_MONO || $box['kit_cd'] == KIT_CD_MONO_BOOK || $box['kit_cd'] == KIT_CD_MONO_APPAREL) {
                               $mono = true;
@@ -102,6 +106,15 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 <li class="caution-box">
                   <p class="title">注意事項(ご確認の上、チェックしてください)</p>
                   <div class="content">
+                    <?php if($hako || $mono || $closet || $library) :?>
+                    <label id="confirm_check" class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        預け入れから1ヶ月以内の場合は月額保管料の2ヶ月分、2ヶ月以内の場合は月額保管料の1ヶ月分が早期の取り出し料金として発生いたします。<br>個品のお取り出しがある場合は適用致しません。<a class="link-charge" href="#">詳しくはこちら</a>
+                      </span>
+                    </label>
+                    <?php endif; ?>
                     <?php if($mono || $closet || $library || $cleaning) :?>
                     <label id="confirm_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">

@@ -32,8 +32,12 @@
                 <h2>取り出すボックス</h2>
                 <?php endif; ?>
                 <div class="row box-list">
+                  <?php $early_retrieval_flag = false?>
                   <?php foreach ($boxList as $box): ?>
                   <?php $url = '/box/detail/' . $box['box_id']; ?>
+                  <?php if($box['product_cd'] === PRODUCT_CD_MONO || $box['product_cd'] === PRODUCT_CD_HAKO): ?>
+                      <?php $early_retrieval_flag = true?>
+                  <?php endif;?>
                   <!--loop-->
                   <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -91,8 +95,17 @@
               <div class="panel panel-red">
                 <div class="panel-heading">
                   <label>ご注意ください</label>
-                  <p>お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
-                  内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。</p>
+                  <ul>
+                    <li>
+                      お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
+                      内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。
+                    </li>
+                    <?php if($early_retrieval_flag): ?>
+                    <li>
+                      早期の取り出しについて、預け入れから1ヶ月以内の場合は月額保管料の2ヶ月分。2ヶ月以内の場合は月額保管料の1ヶ月分が料金として発生いたします。個品のお取り出しがある場合は適用致しません。<a class="link-charge" href="#">詳しくはこちら</a>
+                    </li>
+                    <?php endif;?>
+                  </ul>
                 </div>
               </div>
             </div>

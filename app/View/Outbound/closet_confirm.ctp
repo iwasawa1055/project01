@@ -185,6 +185,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </label>
                     </div>
                 </li>
+                <li>
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <label>ご注意ください</label>
+                            <ul>
+                                <li>
+                                    早期の取り出しについて、預け入れから1ヶ月以内の場合は月額保管料の2ヶ月分。2ヶ月以内の場合は月額保管料の1ヶ月分が料金として発生いたします。個品のお取り出しがある場合は適用致しません。<a class="link-charge" href="#">詳しくはこちら</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
         <!--footer-->

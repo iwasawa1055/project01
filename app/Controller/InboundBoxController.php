@@ -547,6 +547,26 @@ class InboundBoxController extends MinikuraController
     {
         $this->autoRender = false;
         $list = $this->InfoBox->getListForInbound();
+
+        foreach ($list as &$data) {
+            $data['free_limit_date'] = '';
+            $current_time = time();
+            $limit_time   = strtotime($this->Common->getServiceFreeLimit($data['order_date'], 'Y-m-d h:m:s'));
+            $start_time   = strtotime(START_BOX_FREE);
+            $order_time   = strtotime($data['order_date']);
+
+            // 購入日とサービス開始日時
+            if ($start_time > $order_time) {
+               continue;
+            }
+            // 現在日時と無料期限
+            if ($current_time > $limit_time) {
+                continue;
+            }
+
+            $data['free_limit_date'] = $this->Common->getServiceFreeLimit($data['order_date'], 'Y/m/d');
+        }
+
         return json_encode($list);
     }
 

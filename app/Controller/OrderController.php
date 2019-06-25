@@ -293,6 +293,10 @@ class OrderController extends MinikuraController
             $this->set($key, $data);
         }
 
+        // サービス無料期限
+        $free_limit_date = $this->Common->getServiceFreeLimit(date('Y-m-d'));
+
+        $this->set('free_limit_date', $free_limit_date);
         $this->set('card_data', CakeSession::read('card_data'));
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
@@ -502,6 +506,10 @@ class OrderController extends MinikuraController
         }
         $this->set(self::MODEL_NAME_KIT_BY_BANK, $data);
 
+        // サービス無料期限
+        $free_limit_date = $this->Common->getServiceFreeLimit(date('Y-m-d'));
+
+        $this->set('free_limit_date', $free_limit_date);
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
     }
@@ -686,6 +694,10 @@ class OrderController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // サービス無料期限
+        $free_limit_date = $this->Common->getServiceFreeLimit(date('Y-m-d'));
+
+        $this->set('free_limit_date', $free_limit_date);
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
         $this->set(self::MODEL_NAME_KIT_BY_AMAZON, CakeSession::read(self::MODEL_NAME_KIT_BY_AMAZON));
@@ -1132,17 +1144,15 @@ class OrderController extends MinikuraController
         // 金額取得API
         $kit_price = new CustomerKitPrice();
         // 決済時に使用するkitパラメータ
-        $kit_param_list = array();
+        $kit_param_list = [];
         // 金額集計
-        $order_list = array();
+        $order_list = [];
         // 合計情報
-        $_order_total_data['other']['number'] = 0;
-        $_order_total_data['other']['price']  = 0;
-        $_order_total_data['hanger']['number'] = 0;
-        $_order_total_data['hanger']['price']  = 0;
+        $_order_total_data['number'] = 0;
+        $_order_total_data['price']  = 0;
         // kit情報
-        $_kit_list['hanger'] = array();
-        $_kit_list['other'] = array();
+        $_kit_list['other'] = [];
+        $_kit_list['hanger'] = [];
 
         foreach ($_data as $key => $value) {
             if (array_key_exists ($key, $kit_code)) {
@@ -1159,24 +1169,28 @@ class OrderController extends MinikuraController
                     $order_type = 'other';
                     if ($code === KIT_CD_CLOSET) {
                         $order_type = 'hanger';
+                    } elseif ($code === KIT_CD_CLEANING_PACK) {
+                        $order_type = 'cleaning';
+                    }
+                    $order_list[$order_type][$kit_code[$key]['product_cd']][$code] = [
+                        'number'   => $value,
+                        'kit_name' => $kit_code[$key]['name']
+                    ];
+                    $_order_total_data['number']  += $value;
+                    $kit_param_list[] = $code . ':' .$value;
+                    // クリーニングはネコポスでないのでここでまとめる
+                    if ($code === KIT_CD_CLEANING_PACK) {
+                        $order_type = 'other';
                     }
                     $_kit_list[$order_type][$code] = $value;
-                    $order_list[$order_type][$code]['number']   = $value;
-                    $order_list[$order_type][$code]['kit_name'] = $kit_code[$key]['name'];
-                    $order_list[$order_type][$code]['price']    = 0;
-                    $_order_total_data[$order_type]['number']  += $value;
-                    $kit_param_list[$order_type][] = $code . ':' .$value;
                 }
             }
         }
 
         // 合計金額
-        foreach ($kit_param_list as $key => $kit_params) {
-            $r = $kit_price->apiGet(['kit' => implode(',', $kit_params)]);
-            if ($r->isSuccess()) {
-                $price = $r->results[0]['total_price'] * 1;
-                $_order_total_data[$key]['price'] += $price;
-            }
+        $r = $kit_price->apiGet(['kit' => implode(',', $kit_param_list)]);
+        if ($r->isSuccess()) {
+            $_order_total_data['price'] = $r->results[0]['total_price'] * 1;
         }
 
         return $order_list;

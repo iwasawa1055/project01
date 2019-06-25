@@ -203,15 +203,42 @@ const KIT_NAME = [
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
-    'mono_num'      => array('code' => KIT_CD_MONO,             'name' => 'MONO レギュラーボックス'),
-    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,     'name' => 'MONO ワイドボックス'),
-    'hako_num'      => array('code' => KIT_CD_HAKO,             'name' => 'HAKO レギュラーボックス'),
-    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,     'name' => 'HAKO ワイドボックス'),
-    'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,        'name' => 'HAKO ブックボックス'),
-    'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,    'name' => 'クリーニングパック'),
-    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT,  'name' => 'Library ボックス'),
-    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,    'name' => 'Library ボックス'),
-    'hanger_num'    => array('code' => KIT_CD_CLOSET,           'name' => 'Closet ボックス'),
+    'mono_num'      => array('code' => KIT_CD_MONO,            'product_cd' => PRODUCT_CD_MONO,          'name' => 'MONO レギュラーボックス'),
+    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,    'product_cd' => PRODUCT_CD_MONO,          'name' => 'MONO ワイドボックス'),
+    'hako_num'      => array('code' => KIT_CD_HAKO,            'product_cd' => PRODUCT_CD_HAKO,          'name' => 'HAKO レギュラーボックス'),
+    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,    'product_cd' => PRODUCT_CD_HAKO,          'name' => 'HAKO ワイドボックス'),
+    'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,       'product_cd' => PRODUCT_CD_HAKO,          'name' => 'HAKO ブックボックス'),
+    'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,   'product_cd' => PRODUCT_CD_CLEANING_PACK, 'name' => 'クリーニングパック'),
+    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT, 'product_cd' => PRODUCT_CD_LIBRARY,       'name' => 'Library ボックス'),
+    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,   'product_cd' => PRODUCT_CD_LIBRARY,       'name' => 'Library ボックス'),
+    'hanger_num'    => array('code' => KIT_CD_CLOSET,          'product_cd' => PRODUCT_CD_CLOSET,        'name' => 'Closet ボックス'),
+];
+
+const PRODUCT_DATA_ARRAY = [
+    PRODUCT_CD_MONO => [
+        'photo_name'    => 'mono',
+        'box_price'     => 0,
+        'monthly_price' => 250,
+    ],
+    PRODUCT_CD_HAKO => [
+        'photo_name'    => 'hako',
+        'box_price'     => 0,
+        'monthly_price' => 200,
+    ],
+    PRODUCT_CD_CLEANING_PACK => [
+        'photo_name'    => 'cleaning',
+        'box_price'     => 12000,
+    ],
+    PRODUCT_CD_LIBRARY => [
+        'photo_name'    => 'library',
+        'box_price'     => 0,
+        'monthly_price' => 450,
+    ],
+    PRODUCT_CD_CLOSET => [
+        'photo_name'    => 'closet',
+        'box_price'     => 0,
+        'monthly_price' => 450,
+    ],
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
@@ -481,3 +508,6 @@ const EXPECTED_STORING_COMPLETE_DATE_MONO_DASH = 3;
 const EXPECTED_STORING_COMPLETE_DATE_LIBRARY = 10;
 const EXPECTED_STORING_COMPLETE_DATE_CLOSET = 10;
 const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 10;
+
+// 無料BOXサービス開始日時
+const START_BOX_FREE = '2019-07-01 00:00:00';

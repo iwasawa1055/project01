@@ -7,7 +7,7 @@ class MinikuraController extends AppController
 {
     public $helpers = ['Html', 'Title'];
     public $uses = ['CustomerLogin', 'Announcement', 'InfoBox'];
-    public $components = ['Customer', 'Address'];
+    public $components = ['Customer', 'Address', 'Common'];
 
     // アクセス許可
     protected $checkLogined = true;
