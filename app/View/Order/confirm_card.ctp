@@ -87,7 +87,7 @@
             <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">6ヶ月を超えて保管をする場合、1パックにつき、月額500円で保管ができます。</span>
           </label>
           <label class="input-check">
-            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">高級衣類のクリーニングについて、特別料金がかかります。<a class="link-charge" href="#">一覧はこちら</a></span>
+            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">高級衣類のクリーニングについて、特別料金がかかります。<a class="link-charge" href="https://minikura.com/help/special_cleaning_charge.html" target="_blank">一覧はこちら</a></span>
           </label>
           <?php endif; ?>
         </div>
