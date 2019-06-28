@@ -45,7 +45,7 @@
                 <dt class="items">サービス申し込み料</dt>
                 <dd class="value">
                   <?php if($order_type === 'cleaning') :?>
-                  <?php echo number_format($order_total_data['price']); ?>
+                  <?php echo number_format($order_total_data['price']); ?>円
                   <?php else:?>
                   0円
                   <?php endif; ?>
