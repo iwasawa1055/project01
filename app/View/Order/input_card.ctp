@@ -50,7 +50,7 @@
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
-                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
+                  サービス申し込みから3ヶ月以内にボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <li class="option">
@@ -125,7 +125,7 @@
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
-                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
+                  サービス申し込みから3ヶ月以内にボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <?php if (false): ?>
@@ -195,7 +195,7 @@
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
-                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
+                  サービス申し込みから3ヶ月以内にボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <li class="option">
@@ -236,7 +236,7 @@
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
-                  サービス申し込みから3ヶ月以内にボックスを預け入れいただけると、サービスを申し込む際に必要なボックスや、アイテム撮影等を含む初期費用が無料となります。
+                  サービス申し込みから3ヶ月以内にボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <li class="option">
@@ -320,83 +320,85 @@
           </ul>
         </div>
       </div>
-      <div class="input-card">
-        <ul class="input-check-list">
-          <h4>クレジットカード情報の入力</h4>
-          <li>
-            <label class="input-check">
-              <?php
-                echo $this->Form->input(
-                  'PaymentGMOKitByCreditCard.select-card',
-                  [
-                    'id'    => '',
-                    'class' => 'cb-square card_check_type',
-                    'label' => false,
-                    'error' => false,
-                    'options' => [
-                      'as-card' => '<span class="icon"></span><span class="label-txt">登録済みのカードを使用する</span>' . '[' . '<label for="as-card" class="dsn-select-card">' . $card_data['card_no'] . '</label>' . ']'
-                    ],
-                    'type' => 'radio',
-                    'div' => false,
-                    'hiddenField' => false,
-                    'checked' => 'checked'
-                  ]
-                );
-              ?>
-            </label>
-          </li>
-          <li>
-            <label class="input-check">
-              <?php
-                echo $this->Form->input(
-                  'PaymentGMOKitByCreditCard.select-card',
-                  [
-                    'id'    => '',
-                    'class' => 'cb-square card_check_type',
-                    'label' => false,
-                    'error' => false,
-                    'options' => [
-                      'change-card' => '<span class="icon"></span><span class="label-txt">登録したカードを変更する</span>'
-                    ],
-                    'type' => 'radio',
-                    'div' => false,
-                    'hiddenField' => false
-                  ]
-                );
-              ?>
-            </label>
-          </li>
-        </ul>
-      </div>
-      <div id="gmo_validate_error"></div>
-      <div id="gmo_credit_card_info"></div>
-      <div class="dsn-form card_error">
-        <?php echo $this->Flash->render('customer_kit_card_info');?>
-      </div>
-      <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-      <div id="input-exist" class="input-card">
-        <h4>登録済みのカードを使用する</h4>
-        <p class="page-caption">セキュリティコードをご入力ください。</p>
-        <ul class="input-info add-credit">
-          <li>
-            <label class="headline">セキュリティコード<span class="required">※</span></label>
-            <?php echo $this->Form->input('PaymentGMOKitByCreditCard.security_cd', ['id' => 'security_cd', 'class' => "cb-square", 'placeholder'=>'例：0123', 'size' => '6', 'maxlength' => '6', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
-            <p class="txt-caption">カード裏面に記載された3〜4桁の番号をご入力ください。</p>
-            <?php echo $this->Form->error('PaymentGMOKitByCreditCard.security_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-          </li>
-        </ul>
-      </div>
-      <div id="input-change" class="input-card">
-        <h4>登録したカードを変更する</h4>
-        <p class="page-caption">利用するカード情報をご入力ください。</p>
-        <?php echo $this->element('Order/add-credit'); ?>
-        <a class="btn-red dsn-btn-credit execute" href="javascript:void(0)">このカードに変更する</a>
-      </div>
-      <div id="input-new" class="input-card">
-        <h4>カードを新規登録する</h4>
-        <p class="page-caption">利用するカード情報をご入力ください。</p>
-        <?php echo $this->element('Order/add-credit-new'); ?>
-        <a class="btn-red dsn-btn-credit execute" href="javascript:void(0)">このカードを登録する</a>
+      <div class="select_card"<?php if (!$card_flag): ?> style="display:none"<?php endif; ?>>
+        <div class="input-card">
+          <ul class="input-check-list">
+            <h4>クレジットカード情報の入力</h4>
+            <li>
+              <label class="input-check">
+                <?php
+                  echo $this->Form->input(
+                    'PaymentGMOKitByCreditCard.select-card',
+                    [
+                      'id'    => '',
+                      'class' => 'cb-square card_check_type',
+                      'label' => false,
+                      'error' => false,
+                      'options' => [
+                        'as-card' => '<span class="icon"></span><span class="label-txt">登録済みのカードを使用する</span>' . '[' . '<label for="as-card" class="dsn-select-card">' . $card_data['card_no'] . '</label>' . ']'
+                      ],
+                      'type' => 'radio',
+                      'div' => false,
+                      'hiddenField' => false,
+                      'checked' => 'checked'
+                    ]
+                  );
+                ?>
+              </label>
+            </li>
+            <li>
+              <label class="input-check">
+                <?php
+                  echo $this->Form->input(
+                    'PaymentGMOKitByCreditCard.select-card',
+                    [
+                      'id'    => '',
+                      'class' => 'cb-square card_check_type',
+                      'label' => false,
+                      'error' => false,
+                      'options' => [
+                        'change-card' => '<span class="icon"></span><span class="label-txt">登録したカードを変更する</span>'
+                      ],
+                      'type' => 'radio',
+                      'div' => false,
+                      'hiddenField' => false
+                    ]
+                  );
+                ?>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div id="gmo_validate_error"></div>
+        <div id="gmo_credit_card_info"></div>
+        <div class="dsn-form card_error">
+          <?php echo $this->Flash->render('customer_kit_card_info');?>
+        </div>
+        <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+        <div id="input-exist" class="input-card">
+          <h4>登録済みのカードを使用する</h4>
+          <p class="page-caption">セキュリティコードをご入力ください。</p>
+          <ul class="input-info add-credit">
+            <li>
+              <label class="headline">セキュリティコード<span class="required">※</span></label>
+              <?php echo $this->Form->input('PaymentGMOKitByCreditCard.security_cd', ['id' => 'security_cd', 'class' => "cb-square", 'placeholder'=>'例：0123', 'size' => '6', 'maxlength' => '6', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
+              <p class="txt-caption">カード裏面に記載された3〜4桁の番号をご入力ください。</p>
+              <?php echo $this->Form->error('PaymentGMOKitByCreditCard.security_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            </li>
+          </ul>
+        </div>
+        <div id="input-change" class="input-card">
+          <h4>登録したカードを変更する</h4>
+          <p class="page-caption">利用するカード情報をご入力ください。</p>
+          <?php echo $this->element('Order/add-credit'); ?>
+          <a class="btn-red dsn-btn-credit execute" href="javascript:void(0)">このカードに変更する</a>
+        </div>
+        <div id="input-new" class="input-card">
+          <h4>カードを新規登録する</h4>
+          <p class="page-caption">利用するカード情報をご入力ください。</p>
+          <?php echo $this->element('Order/add-credit-new'); ?>
+          <a class="btn-red dsn-btn-credit execute" href="javascript:void(0)">このカードを登録する</a>
+        </div>
       </div>
       <ul class="input-info">
         <li>

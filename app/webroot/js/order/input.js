@@ -200,6 +200,16 @@ var AppInputOrder =
           flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
         }
       }
+
+      // カード
+      if($(this).closest("#cleaning").length > 0){
+        if (flag_total[flagType] > minValue) {
+          $('.select_card').show('slow');
+        } else {
+          $('.select_card').hide('slow');
+        }
+      }
+
       // お届け日時
       if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
         $('.select_other').hide('slow');

@@ -132,6 +132,15 @@ class OrderController extends MinikuraController
 
         $this->set('delivery_datetime_list', CakeSession::read('delivery_datetime_list'));
 
+        // カードエリア出力
+        $card_flag = false;
+        $order_total_data = CakeSession::read('order_total_data');
+        $card_data = CakeSession::read('card_data');
+        if (!empty($order_total_data['price']) || empty($card_data)) {
+            $card_flag = true;
+        }
+        $this->set('card_flag', $card_flag);
+
         if ($this->request->is('get')) {
 
             $this->request->data[self::MODEL_NAME_KIT_BY_CREDIT_CARD] = CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD);
@@ -175,10 +184,10 @@ class OrderController extends MinikuraController
             $error_flag = false;
 
             /** サービスの申し込み者情報バリデーション */
-            $validation_item = [
-                'security_cd',
-                'address_id',
-            ];
+            $validation_item[] = 'address_id';
+            if (!empty($order_total_data['price'])) {
+                $validation_item[] = 'security_cd';
+            }
             // お届け先入力時
             if ($data['address_id'] == 'add') {
                 $validation_item[] = 'lastname';
@@ -1236,6 +1245,7 @@ class OrderController extends MinikuraController
         CakeSession::delete('card_data');
         CakeSession::delete('order_list');
         CakeSession::delete('address_list');
+        CakeSession::delete('order_total_data');
         CakeSession::delete('delivery_datetime_list');
     }
 

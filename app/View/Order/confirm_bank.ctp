@@ -74,7 +74,7 @@
         <div class="content">
           <?php if($order_type !== 'cleaning') :?>
           <label class="input-check">
-            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt"><span class="txt-date"><?php echo $free_limit_date; ?></span>までに倉庫に到着すると、お申し込み代金が無料でご利用いただけます。<br>その日付を超えて預け入れをする場合は料金が発生します。</span>
+            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt"><span class="txt-date"><?php echo $free_limit_date; ?></span>までに倉庫に到着すると、お申し込み代金が無料でご利用いただけます。<br>その日付を超えてお荷物が到着した場合は　保管料金１ヶ月分の初期費用が発生します。</span>
           </label>
           <?php endif; ?>
           <?php if($order_type === 'cleaning') :?>
@@ -82,7 +82,7 @@
             <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">6ヶ月を超えて保管をする場合、1パックにつき、月額500円で保管ができます。</span>
           </label>
           <label class="input-check">
-            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">高級衣類のクリーニングについて、特別料金がかかります。<a class="link-charge" href="#">一覧はこちら</a></span>
+            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">衣類の洗濯タグが全て不可になっているものはクリーニングできません。また、高級衣類についてはクリーニング不可または別途見積もりになります。<a class="link-charge" href="#">一覧はこちら</a></span>
           </label>
           <?php endif; ?>
         </div>
