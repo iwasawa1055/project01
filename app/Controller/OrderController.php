@@ -173,6 +173,14 @@ class OrderController extends MinikuraController
             $kit_list = array();
             $order_total_data = array();
             $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
+            CakeSession::write('order_total_data', $order_total_data);
+
+            // カードエリア出力
+            $card_flag = false;
+            if (!empty($order_total_data['price']) || empty($card_data)) {
+                $card_flag = true;
+            }
+            $this->set('card_flag', $card_flag);
 
             /** セッションデータ */
             CakeSession::write(self::MODEL_NAME_KIT_BY_CREDIT_CARD, $data);
@@ -250,7 +258,6 @@ class OrderController extends MinikuraController
             }
 
             CakeSession::write('order_list', $order_list);
-            CakeSession::write('order_total_data', $order_total_data);
 
             return $this->redirect(['controller' => 'order', 'action' => 'confirm_card']);
 

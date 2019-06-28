@@ -201,9 +201,20 @@ var AppInputOrder =
         }
       }
 
-      // カード
+      // カードエリア出力
       if($(this).closest("#cleaning").length > 0){
-        if (flag_total[flagType] > minValue) {
+        var cleaningValue  = parseInt($("#cleaning").find('.input-spinner').val());
+        if (btnType === 'spinner_down') {
+          if (itemValue > minValue) {
+            cleaningValue = cleaningValue - valueStep;
+          }
+        }
+        if (btnType === 'spinner_up') {
+          if (itemValue < maxValue) {
+            cleaningValue = cleaningValue + valueStep;
+          }
+        }
+        if (cleaningValue > 0) {
           $('.select_card').show('slow');
         } else {
           $('.select_card').hide('slow');

@@ -14,8 +14,8 @@
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
       <div class="row">
         <div class="col-lg-12 col-xs-12">
-          <ul class="l-collected-day">
-            <li>
+          <ul class="l-banner">
+            <li class="l-free-box">
               <a href="#">
                 <picture>
                   <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
