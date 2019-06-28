@@ -120,7 +120,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
-                        2019年8月1日預け入れ完了から1ヶ月以内の取り出しの場合は月額保管料の2ヶ月分、2ヶ月以内の取り出しの場合は月額保管料の1ヶ月分が早期の取り出し料金として発生いたします。<br>なお、該当のボックスに個品のお取り出しがある場合は適用致しません。<a class="link-charge" href="#">詳しくはこちら</a>
+                        2019年8月1日預け入れ完了から1ヶ月以内の取り出しの場合は月額保管料の2ヶ月分、2ヶ月以内の取り出しの場合は月額保管料の1ヶ月分が早期の取り出し料金として発生いたします。<br>なお、該当のボックスに個品のお取り出しがある場合は適用致しません。
                       </span>
                     </label>
                     <label class="input-check agree-before-submit">
