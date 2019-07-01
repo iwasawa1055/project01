@@ -7,9 +7,18 @@
   </div>
   <div class="row">
     <div class="col-lg-12 col-xs-12">
-      <ul class="l-collected-day">
-        <li>
-          <a href="/inbound/box/add" class="test">
+      <ul class="l-banner">
+        <li class="l-free-box">
+          <a href="/order/add">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
+              <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
+            </picture>
+          </a>
+        </li>
+        <li class="l-collected-day">
+          <a href="/inbound/box/add">
             <picture>
               <source media="(min-width: 768px)" srcset="/images/collected-day-pc@1x.png 1x, /images/collected-day-pc@2x.png 2x">
               <source media="(min-width: 1px)" srcset="/images/collected-day-sp@1x.png 1x, /images/collected-day-sp@2x.png 2x">

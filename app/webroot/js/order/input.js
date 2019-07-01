@@ -108,6 +108,7 @@ var AppInputOrder =
       var exe_flag = true;
       $(".caution-box input").each(function(i) {
         if (!$(this).prop("checked")) {
+          alert('注意事項をご確認ください');
           exe_flag = false;
           return false;
         }
@@ -199,6 +200,27 @@ var AppInputOrder =
           flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
         }
       }
+
+      // カードエリア出力
+      if($(this).closest("#cleaning").length > 0){
+        var cleaningValue  = parseInt($("#cleaning").find('.input-spinner').val());
+        if (btnType === 'spinner_down') {
+          if (itemValue > minValue) {
+            cleaningValue = cleaningValue - valueStep;
+          }
+        }
+        if (btnType === 'spinner_up') {
+          if (itemValue < maxValue) {
+            cleaningValue = cleaningValue + valueStep;
+          }
+        }
+        if (cleaningValue > 0) {
+          $('.select_card').show('slow');
+        } else {
+          $('.select_card').hide('slow');
+        }
+      }
+
       // お届け日時
       if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
         $('.select_other').hide('slow');

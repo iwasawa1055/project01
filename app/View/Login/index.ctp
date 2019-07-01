@@ -26,7 +26,7 @@
                   <button type="submit" class="btn btn-danger btn-md btn-block">ログイン</button>
                 </span>
                 <span class="col-sm-6 col-xs-12">
-                  <a class="btn btn-primary btn-md btn-block" href="/customer/register/add" target="_blank">はじめて購入するかたはこちら</a>
+                  <a class="btn btn-primary btn-md btn-block" href="/customer/register/add" target="_blank">会員登録</a>
                 </span>
                 <span class="col-sm-6 col-xs-12">
                   <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset">パスワードを忘れた方はこちら</a>

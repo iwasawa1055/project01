@@ -4,7 +4,7 @@ var AppEditAmazonPay =
     ClientId:'amzn1.application-oa2-client.9c0c92c3175948e3a4fd09147734998e',
     AmazonBillingAgreementId: '',
     buyerBillingAgreementConsentStatus: false,
-    ErrorMessage: '一時的に Amazon Pay がご利用いただけません。「戻る」ボタンより前の画面へ戻り、再度お試しください。何度もこのメッセージが表示される場合はクレジットカードでご購入ください。',
+    ErrorMessage: '一時的に Amazon Pay がご利用いただけません。「戻る」ボタンより前の画面へ戻り、再度お試しください。何度もこのメッセージが表示される場合はクレジットカードでサービスを申し込みください。',
     AmazonWidgetReadyFlag: false,
     a: function () {
         $('#amazonPayLogout').on('click', function (e) {
@@ -48,9 +48,9 @@ var AppEditAmazonPay =
                         designMode: 'responsive'
                     },
                     onReady: function() {
-                        //　初回のみ定期購入チェックのウィジェットを表示
+                        //　初回のみ定期サービスの申し込みチェックのウィジェットを表示
                         if($('#regist_user_flg').val() == '1') {
-                            // 定期購入チェックを確認
+                            // 定期サービスの申し込みチェックを確認
                             new OffAmazonPayments.Widgets.Consent({
                                 sellerId: AppEditAmazonPay.SELLER_ID,
                                 amazonBillingAgreementId: AppEditAmazonPay.AmazonBillingAgreementId,

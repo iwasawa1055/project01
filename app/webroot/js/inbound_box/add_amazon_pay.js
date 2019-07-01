@@ -229,7 +229,12 @@ var AppInboundBoxAdd =
     html += '        <span class="item-img"><img src="'+AppInboundBoxAdd.getProductImage(value.kit_cd)+'" alt="'+value.kit_name+'" class="img-item"></span>';
     html += '    </label>';
     html += '    <div class="box-info">';
-    html += '        <p class="box-id">'+value.box_id+'</p>';
+    html += '        <p class="l-box-id">';
+    html += '            <span class="txt-box-id">'+value.box_id+'</span>';
+    if (value.free_limit_date) {
+      html += '            <span class="txt-free-limit">無料期限<span class="date">' + value.free_limit_date + '</span></span>';
+    }
+    html += '        </p>';
     html += '        <p class="box-type">'+value.kit_name+'</p>';
     html += '        <input type="text" name="data[Inbound][box_list]['+value.box_id+'][title]" placeholder="ボックス名を記入してください" class="box-input-name">';
 

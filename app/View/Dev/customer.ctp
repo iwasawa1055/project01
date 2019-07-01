@@ -136,7 +136,7 @@ dd {
 <div class="boxitem row">
 <?php
 $a = [
-    BOXITEM_STATUS_BUYKIT_START => 'キット購入',
+    BOXITEM_STATUS_BUYKIT_START => 'キットサービスの申し込み',
     BOXITEM_STATUS_BUYKIT_DONE => 'キット発送',
     BOXITEM_STATUS_INBOUND_START => '入庫受付',
     // BOXITEM_STATUS_INBOUND_IN_PROGRESS => '入庫進行中',

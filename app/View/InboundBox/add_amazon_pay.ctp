@@ -46,7 +46,7 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     <li>
                         <label class="setting-switch">
                             <input type="radio" class="ss" name="data[Inbound][box_type]" value="new">
-                            <span class="btn-ss"><span class="icon"></span>新しく購入した<br class="sp">ボックスを預ける</span>
+                            <span class="btn-ss"><span class="icon"></span>新しい<br class="sp">ボックスを預ける</span>
                         </label>
                     </li>
                     <li>
