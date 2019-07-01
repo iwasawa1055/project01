@@ -9,7 +9,7 @@
     <div class="col-lg-12 col-xs-12">
       <ul class="l-banner">
         <li class="l-free-box">
-          <a href="/order/add">
+          <a href="https://minikura.com/info/news/414">
             <picture>
               <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
               <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
