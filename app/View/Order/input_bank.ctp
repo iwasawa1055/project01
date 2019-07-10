@@ -6,6 +6,7 @@
 <?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/order.css', ['block' => 'css']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
 
   <?php echo $this->Form->create('PaymentAccountTransferKit', ['url' => ['controller' => 'order', 'action' => 'input_bank'], 'novalidate' => true]); ?>
@@ -181,7 +182,7 @@
           </div>
         </li>
         <li id="cleaning" class="item type_other">
-          <p class="rib spring"></p>
+          <!--p class="rib spring"></p-->
           <h3><span>衣類10点</span>クリーニングパック</h3>
           <div class="lineup-pict">
             <picture>
