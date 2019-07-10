@@ -80,7 +80,7 @@ abstract class InboundSet
         $set = null;
         if ($deliveryType === INBOUND_DELIVERY_PICKUP) {
             if ($carrierCd === INBOUND_CARRIER_YAMAYO) {
-                $set = new SetInboundPrivateYamato($boxType);
+                $set = new SetInboundPrivateYamato();
             } elseif ($carrierCd === INBOUND_CARRIER_JPPOST) {
                 $set = new SetInboundPrivateJppost();
             }

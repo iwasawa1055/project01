@@ -47,7 +47,7 @@ function getDatetime(day_cd) {
     if (!elem_deca.val() || elem_deca.val().indexOf(DELIVERY_ID_PICKUP) === -1) {
       return;
     }
-    $.post('/inbound/box/getInboundDatetime', {
+    $.post('/inbound/box/as_get_inbound_datetime', {
             Inbound: {delivery_carrier: elem_deca.val()}
         },
         function(data) {
@@ -112,7 +112,7 @@ function changeSelectPickup() {
                 $('#InboundTimeCd').append($('<option>').text(pickup_time_text).attr('value', item));
             }
         } else {
-            getDatetime(change_pickup_date);           
+            getDatetime(change_pickup_date);
         }
     });
 }
