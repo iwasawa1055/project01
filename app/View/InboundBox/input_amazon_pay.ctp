@@ -8,28 +8,6 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
 $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']);
 $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
 ?>
-<?php
-if (!empty($validErrors)) {
-    // Form->errorで使用できるようにする
-    $this->Form->validationErrors = $validErrors;
-    // 一覧表示のアイテム用にjsonでエラーを格納
-    if (isset($validErrors["box_list"])) {
-        echo "<input type='hidden' id='dev-box-list-errors' value='".json_encode($validErrors["box_list"])."'>";
-    }
-}
-// 選択したボックスの一覧
-if (isset($this->request->data['Inbound']['box_list'])) {
-    $selectedList = [];
-    foreach ($this->request->data['Inbound']['box_list'] as $k => $v) {
-        $selectedList[$k] = $v;
-    }
-    echo "<input type='hidden' id='dev-box-list-selected' value='".json_encode($selectedList)."'>";
-}
-// 選択したボックスタイプ
-if (isset($this->request->data['Inbound']['box_type'])) {
-    echo "<input type='hidden' id='dev-selected-box_type' value='".$this->request->data['Inbound']['box_type']."'>";
-}
-?>
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="pagenation">
@@ -40,21 +18,23 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                 <li><span class="number">3</span><span class="txt">完了</span>
                 </li>
             </ul>
-            <form name="form" action='/inbound/box/confirm_amazon_pay' method="POST">
-                <?php echo $this->Form->error("Inbound.box", null, ['wrap' => 'p']) ?>
+            <?php echo $this->Flash->render(); ?>
+            <form name="form" action='/inbound/box/input_amazon_pay' method="POST">
+                <?php echo $this->Form->error("InboundBase.box", null, ['wrap' => 'p']) ?>
                 <ul class="setting-switcher">
                     <li>
                         <label class="setting-switch">
-                            <input type="radio" class="ss" name="data[Inbound][box_type]" value="new">
-                            <span class="btn-ss"><span class="icon"></span>新しい<br class="sp">ボックスを預ける</span>
+                            <input type="radio" class="ss" name="data[InboundBase][box_type]" value="new" <?php echo (!isset($this->request->data['InboundBase']['box_type']) || $this->request->data['InboundBase']['box_type'] == 'new') ? 'checked' : ''; ?>>
+                            <span class="btn-ss"><span class="icon"></span>新しく購入した<br class="sp">ボックスを預ける</span>
                         </label>
                     </li>
                     <li>
                         <label class="setting-switch">
-                            <input type="radio" class="ss" name="data[Inbound][box_type]" value="old">
+                            <input type="radio" class="ss" name="data[InboundBase][box_type]" value="old" <?php echo ($this->request->data['InboundBase']['box_type'] == 'old') ? 'checked' : ''; ?>>
                             <span class="btn-ss"><span class="icon"></span>取り出し済ボックスを<br class="sp">再度預ける</span>
                         </label>
                     </li>
+                    <input type='hidden' id='dev-selected-box_type' value="<?php echo $this->request->data['InboundBase']['box_type']?>">
                 </ul>
                 <div id="dev-new-box" class="item-content">
                     <ul class="l-caution">
@@ -70,23 +50,68 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                         </li>
                     </ul>
                     <ul id="dev-new-box-grid" class="grid grid-md">
+                        <?php foreach ($new_box_list as $key => $new_box): ?>
+                        <li>
+                            <label class="input-check">
+                                <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
+                                <span class="icon"></span>
+                                <span class="item-img">
+                                  <img src="<?php echo KIT_IMAGE[$new_box['kit_cd']] ?>" alt="<?php echo $new_box['kit_name']; ?>" class="img-item">
+                                </span>
+                            </label>
+                            <div class="box-info">
+                                <p class="box-id"><?php echo $new_box['box_id']; ?></p>
+                                <p class="box-type"><?php echo $new_box['kit_name']; ?></p>
+                                <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
+                                <?php if($new_box['product_cd'] === PRODUCT_CD_MONO): ?>
+                                <label class="input-check">
+                                    <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
+                                    <span class="icon"></span>
+                                    <span class="label-txt">外装を除いて撮影</span>
+                                </label>
+                                <?php endif;?>
+                                <?php echo $this->Form->error("InboundBase.box_list.new." . $new_box['box_id'] . '.title', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+                            </div>
+                        </li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
                 <div id="dev-old-box" class="item-content">
                     <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
                         ボックスの状態については十分ご確認の上、ご利用ください。<br>
                         なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。</p>
-                    <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg">ボックスIDについて</a>
-                    <!--ul class="id-search">
+                    <ul class="l-caution">
                         <li>
-                            <input type="search" placeholder="ボックスのバーコード下4桁を入力" class="search">
+                            <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
+                                <img src="/images/question.svg">ボックスIDについて
+                            </a>
                         </li>
                         <li>
-                            <a href="#" data-remodal-target="about-id" class="about-box-id"><img src="/images/question.svg"></a>
+                            <a href="javascript:void(0)" data-remodal-target="packaging" class="about-box-id title-caution">
+                                <img src="/images/question.svg">「外装を除いて撮影」について
+                            </a>
                         </li>
-                    </ul-->
-                    <ul id="dev-old-box-grid" class="grid grid-md">
                     </ul>
+                    <ul id="dev-old-box-grid" class="grid grid-md">
+                        <?php foreach ($old_box_list as $key => $old_box): ?>
+                        <li>
+                            <label class="input-check">
+                                <input type="checkbox" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['old'][$old_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
+                                <span class="icon"></span>
+                                <span class="item-img">
+                            <img src="<?php echo KIT_IMAGE[$old_box['kit_cd']] ?>" alt="<?php echo $old_box['kit_name']; ?>" class="img-item">
+                          </span>
+                            </label>
+                            <div class="box-info">
+                                <p class="box-id"><?php echo $old_box['box_id']; ?></p>
+                                <p class="box-type"><?php echo $old_box['kit_name']; ?></p>
+                                <input type="text" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php echo $box_list_data['old'][$old_box['box_id']]['title']; ?>">
+                            </div>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <p class="page-caption not-applicable">ご入力いただいたバーコード番号の取り出し済みボックスは見つかりませんでした。<br>
+                        別のバーコード番号をご入力ください。</p>
                 </div>
                 <ul class="input-info">
                     <li>
@@ -99,16 +124,16 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                     </li>
                     <li>
                         <label class="headline">ボックスの配送方法</label>
-                        <?php echo $this->Form->error("Inbound.delivery_carrier", null, ['wrap' => 'p']) ?>
+                        <?php echo $this->Form->error("InboundBase.delivery_carrier", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         <ul class="delivery-method">
                             <li>
                                 <label class="input-check">
-                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="6_1" <?php echo (isset($this->request->data['Inbound']['delivery_carrier']) && $this->request->data['Inbound']['delivery_carrier'] == '6_1' || (isset($this->request->data['Inbound']['delivery_carrier']) === false)) ? 'checked' : ''; ?>><span class="icon"></span>
+                                    <input type="radio" class="rb" name="data[InboundBase][delivery_carrier]" value="6_1" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '6_1' || (isset($this->request->data['InboundBase']['delivery_carrier']) === false)) ? 'checked' : ''; ?>><span class="icon"></span>
                                     <span class="label-txt">集荷を申し込む</span>
                                 </label>
                             </li>
                             <li id="dev-self-delivery"><label class="input-check">
-                                    <input type="radio" class="rb" name="data[Inbound][delivery_carrier]" value="7" <?php echo (isset($this->request->data['Inbound']['delivery_carrier']) && $this->request->data['Inbound']['delivery_carrier'] == '7') ? 'checked' : ''; ?>><span class="icon"></span>
+                                    <input type="radio" class="rb" name="data[InboundBase][delivery_carrier]" value="7" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'checked' : ''; ?>><span class="icon"></span>
                                     <span class="label-txt">自分で発送する</span>
                                 </label>
                             </li>
@@ -123,29 +148,21 @@ if (isset($this->request->data['Inbound']['box_type'])) {
                                     </div>
                                   </div>
                                 </div>
-                            <?php echo $this->Form->error("Inbound.address_id", null, ['wrap' => 'p']) ?>
+                            <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p']) ?>
                         </li>
-                        <li class="name-form-group">
-                            <label class="headline">お名前 (姓)</label>
-                            <input type="text" class="lastname" name="lastname" placeholder="寺田" size="10" maxlength="30">
-                            <?php echo $this->Form->error("Inbound.lastname", null, ['wrap' => 'p']) ?>
-                        </li>
-                        <li class="name-form-group">
-                            <label class="headline">お名前 (名)</label>
-                            <input type="text" class="firstname" name="firstname" placeholder="太郎" size="10" maxlength="30">
-                            <?php echo $this->Form->error("Inbound.firstname", null, ['wrap' => 'p']) ?>
-                        </li>
+                        <input type="hidden" id="firstname" name="data[InboundBase][firstname]">
+                        <input type="hidden" id="lastname"  name="data[InboundBase][lastname]">
                         <li>
-                            <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['day_cd']) ?$this->request->data['Inbound']['day_cd'] : ""; ?>" id="pickup_date">
+                            <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['day_cd']) ?$this->request->data['InboundBase']['day_cd'] : ""; ?>" id="pickup_date">
                             <label class="headline">集荷の日程</label>
-                            <select id="day_cd" name="data[Inbound][day_cd]"></select>
-                            <?php echo $this->Form->error("Inbound.day_cd", null, ['wrap' => 'p']) ?>
+                            <select id="day_cd" name="data[InboundBase][day_cd]"></select>
+                            <?php echo $this->Form->error("InboundBase.day_cd", null, ['wrap' => 'p']) ?>
                         </li>
                         <li>
-                        <input type="hidden" value="<?php echo isset($this->request->data['Inbound']['time_cd']) ?$this->request->data['Inbound']['time_cd'] : ""; ?>" id="pickup_time_code">
+                        <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['time_cd']) ?$this->request->data['InboundBase']['time_cd'] : ""; ?>" id="pickup_time_code">
                             <label class="headline">集荷の時間</label>
-                            <select id="time_cd" name="data[Inbound][time_cd]"></select>
-                            <?php echo $this->Form->error("Inbound.time_cd", null, ['wrap' => 'p']) ?>
+                            <select id="time_cd" name="data[InboundBase][time_cd]"></select>
+                            <?php echo $this->Form->error("InboundBase.time_cd", null, ['wrap' => 'p']) ?>
                         </li>
                     </div>
                 </ul>

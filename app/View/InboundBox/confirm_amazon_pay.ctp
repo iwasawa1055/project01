@@ -12,52 +12,21 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 </li>
             </ul>
             <p class="page-caption">以下の内容でボックスの預け入れ手続きを行います。</p>
-            <?php echo $this->Form->create('Inbound', ['url' => '/inbound/box/complete_amazon_pay', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php echo $this->Form->create('InboundBase', ['url' => '/inbound/box/complete_amazon_pay', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="item-content">
                 <ul class="grid grid-md">
                     <!--loop-->
-                    <?php $hako = false; ?>
-                    <?php $mono = false; ?>
-                    <?php $library = false; ?>
-                    <?php $closet = false; ?>
-                    <?php $cleaning = false; ?>
-                    <?php foreach ($boxList as $i => $box): ?>
-                    <?php
-                          $formBox = $this->data['Inbound']['box_list'][$box['box_id']];
-                          if (empty($formBox) || $formBox['checkbox'] === '0') {
-                              continue;
-                          }
-                          $kitCd = $box['kit_cd'];
-                          $kitName = '';
-                          if (!empty($formBox['option'])) {
-                              $kitName = KIT_OPTION[$kitCd][$formBox['option']];
-                          }
-                          if ($box['kit_cd'] == KIT_CD_HAKO || $box['kit_cd'] == KIT_CD_HAKO_BOOK || $box['kit_cd'] == KIT_CD_HAKO_APPAREL) {
-                              $hako = true;
-                          }
-                          if ($box['kit_cd'] == KIT_CD_MONO || $box['kit_cd'] == KIT_CD_MONO_BOOK || $box['kit_cd'] == KIT_CD_MONO_APPAREL) {
-                              $mono = true;
-                          }
-                          if ($box['kit_cd'] == KIT_CD_LIBRARY_DEFAULT || $box['kit_cd'] == KIT_CD_LIBRARY_GVIDO) {
-                              $library = true;
-                          }
-                          if ($box['kit_cd'] == KIT_CD_CLOSET) {
-                              $closet = true;
-                          }
-                          if ($box['kit_cd'] == KIT_CD_CLEANING_PACK || $box['kit_cd'] == KIT_CD_GIFT_CLEANING_PACK) {
-                              $cleaning = true;
-                          }
-                      ?>
-                        <li>
-                            <label>
-                                <span class="item-img"><img src="<?php echo h($this->Html->getProductImage($box['kit_cd'])); ?>" alt="<?php echo h($box['product_name']); ?>" class="img-item"></span>
-                            </label>
-                            <div class="box-info">
-                                <p class="box-id"><?php echo $box['box_id']; ?></p>
-                                <p class="box-type"><?php echo h($box['product_name']); ?></p>
-                                <p class="box-name"><?php echo h($this->Html->replaceBoxtitleChar($formBox['title'])); ?></p>
-                            </div>
-                        </li>
+                    <?php foreach ($box_list as $box): ?>
+                    <li>
+                        <label>
+                            <span class="item-img"><img src="<?php echo h($this->Html->getProductImage($box['kit_cd'])); ?>" alt="<?php echo h($box['product_name']); ?>" class="img-item"></span>
+                        </label>
+                        <div class="box-info">
+                            <p class="box-id"><?php echo $box['box_id']; ?></p>
+                            <p class="box-type"><?php echo h($box['product_name']); ?></p>
+                            <p class="box-name"><?php echo h($this->Html->replaceBoxtitleChar($box['title'])); ?></p>
+                        </div>
+                    </li>
                     <?php endforeach; ?>
                     <!--loop end-->
                 </ul>
@@ -66,36 +35,41 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 <li>
                     <label class="headline">ボックスの発送方法</label>
                     <ul class="li-address">
-                        <li><?php echo INBOUND_CARRIER_DELIVERY[$this->data['Inbound']['delivery_carrier']] ?></li>
+                        <li><?php echo INBOUND_CARRIER_DELIVERY[$data['delivery_carrier']] ?></li>
                     </ul>
                 </li>
-                <?php if (strpos($this->Form->data['Inbound']['delivery_carrier'], INBOUND_DELIVERY_PICKUP) !== FALSE): ?>
+                <?php if (strpos($data['delivery_carrier'], INBOUND_DELIVERY_PICKUP) !== FALSE): ?>
                 <li>
                     <label class="headline">お預かりに上がる住所</label>
                     <ul class="li-address">
-                        <li>〒<?php echo CakeSession::read('InboundAddress.postal');?>&emsp;<?php echo CakeSession::read('InboundAddress.pref');?><?php echo CakeSession::read('InboundAddress.address1');?><?php echo CakeSession::read('InboundAddress.address2');?>&nbsp;<?php echo CakeSession::read('InboundAddress.address3');?>&emsp;<?php echo CakeSession::read('InboundAddress.lastname');?><?php echo CakeSession::read('InboundAddress.firstname');?></li>
+                        <li>
+                            〒<?php echo $data['postal']; ?>&nbsp;
+                            <?php echo $data['pref']; ?><?php echo $data['address1']; ?><?php echo $data['address2']; ?><?php echo $data['address3']; ?>&nbsp;
+                            <?php echo $data['lastname']; ?>
+                            <?php echo $data['firstname']; ?>
+                        </li>
                     </ul>
                 </li>
                 <li>
                     <label class="headline">お預かりに上がる日時</label>
                     <ul class="li-address">
-                        <li><?php echo $this->Order->echoOption($dateList, 'date_cd', 'text', $this->data['Inbound']['day_cd']) ?> <?php echo $this->Order->echoOption($timeList, 'time_cd', 'text', $this->data['Inbound']['time_cd']) ?></li>
+                        <li><?php echo $this->Order->echoOption($dateList, 'date_cd', 'text', $data['day_cd']) ?> <?php echo $this->Order->echoOption($timeList, 'time_cd', 'text', $data['time_cd']) ?></li>
                     </ul>
                 </li>
                 <?php endif; ?>
-                <?php if($cleaning) :?>
+                <?php if($box_use_flag[PRODUCT_CD_CLEANING_PACK]) :?>
                 <li class="cleaning">
                     <label class="headline">クリーニングパックの保管</label>
                     <ul class="grid grid-md">
                         <li><label class="cleaning-check">
-                                <input type="radio" class="rb-circle" name="data[Inbound][keeping_type]" value="2"><span class="icon"></span>
+                                <input type="radio" class="rb-circle" name="data[InboundBase][keeping_type]" value="2"><span class="icon"></span>
                                 <span class="item-img"><img src="/images/select-hunger.png" alt="ハンガー保管" class="img-item"></span>
                             </label>
                             <p class="cleaning-info">ハンガー保管</p>
                         </li>
                         <li>
                             <label class="cleaning-check">
-                                <input type="radio" class="rb-circle" name="data[Inbound][keeping_type]" value="1"><span class="icon"></span>
+                                <input type="radio" class="rb-circle" name="data[InboundBase][keeping_type]" value="1"><span class="icon"></span>
                                 <span class="item-img"><img src="/images/select-fold.png" alt="タタミ保管" class="img-item"></span>
                             </label>
                             <p class="cleaning-info">タタミ保管</p>
@@ -106,24 +80,8 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 <li class="caution-box">
                   <p class="title">注意事項(ご確認の上、チェックしてください)</p>
                   <div class="content">
-                    <?php if($hako || $mono || $closet || $library) :?>
-                    <label class="input-check agree-before-submit">
-                      <input type="checkbox" class="cb-square">
-                      <span class="icon"></span>
-                      <span class="label-txt">
-                        2019年8月1日預け入れ完了から1ヶ月以内の取り出しの場合は月額保管料の2ヶ月分、2ヶ月以内の取り出しの場合は月額保管料の1ヶ月分が早期の取り出し料金として通常の取り出し料金の価格に加えて発生いたします。<br>なお、該当のボックスに個品のお取り出しがある場合は適用致しません。
-                      </span>
-                    </label>
-                    <label class="input-check agree-before-submit">
-                      <input type="checkbox" class="cb-square">
-                      <span class="icon"></span>
-                      <span class="label-txt">
-                        初期費用無料期間までに倉庫に到着すると、サービスお申し込み代金が無料でご利用いただけます。<br>その日付を超えてお荷物が到着した場合は　保管料金１ヶ月分の初期費用が発生します。
-                      </span>
-                    </label>
-                    <?php endif; ?>
-                    <?php if($mono || $closet || $library || $cleaning) :?>
-                    <label class="input-check agree-before-submit">
+                    <?php if($box_use_flag[PRODUCT_CD_MONO] || $box_use_flag[PRODUCT_CD_CLOSET] || $box_use_flag[PRODUCT_CD_LIBRARY] || $box_use_flag[PRODUCT_CD_CLEANING_PACK]) :?>
+                    <label id="confirm_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
@@ -133,15 +91,15 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                       </span>
                     </label>
                     <?php endif; ?>
-                    <label class="input-check agree-before-submit">
+                    <label id="confirm_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
                         重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。<br>
-                        <span class="txt-strong">※明らかに20kgを超えた場合はお預かりできない場合がございます。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。</span>
+                        ※明らかに20kgを超えた場合はお預かりできない場合がございます。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。
                       </span>
                     </label>
-                    <label class="input-check agree-before-submit">
+                    <label id="confirm_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
@@ -163,7 +121,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                         <strong style="font-weight:bold">上記に該当するお荷物が弊社に届いた場合、お預かりができません。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。</strong><br />
                       </span>
                     </label>
-                    <label class="input-check agree-before-submit">
+                    <label id="confirm_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
@@ -173,46 +131,21 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                         保管中のお荷物に万一の事故や弊社の過失によって損害が発生した場合などで保証できる金額の上限（時価額）となります。<br />
                       </span>
                     </label>
-                    <?php if($closet) :?>
-                    <label class="input-check agree-before-submit">
+                    <?php if($box_use_flag[PRODUCT_CD_CLOSET]) :?>
+                    <label id="hanger_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
-                        minikuraClosetは、ハンガーで保管できる衣類以外はお預かりできません。
-                      </span>
-                    </label>
-                    <label class="input-check agree-before-submit">
-                      <input type="checkbox" class="cb-square">
-                      <span class="icon"></span>
-                      <span class="label-txt">
-                        minikuraClosetはお預かりの際、畳まれて袋に入っているものや、新品でビニールに包まれているものでも袋から取り出してハンガーで吊り保管を致します。取り出しの際には、元に戻してお渡しすることができませんのでご了承ください。
+                        Closet ボックスは、衣類および布製品以外はお預かりできません。
                       </span>
                     </label>
                     <?php endif; ?>
-                    <?php if($library) :?>
-                    <label class="input-check agree-before-submit">
+                    <?php if($box_use_flag[PRODUCT_CD_LIBRARY]) :?>
+                    <label id="hanger_check" class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
-                        minikuraLibraryのアイテム撮影は点数上限がございませんが、紙一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
-                      </span>
-                    </label>
-                    <?php endif; ?>
-                    <?php if($closet || $cleaning) :?>
-                    <label class="input-check agree-before-submit">
-                      <input type="checkbox" class="cb-square">
-                      <span class="icon"></span>
-                      <span class="label-txt">
-                        点数の数え方として、スーツ上下セットの場合、上下それぞれ1着ずつとカウントするため、2点でのお取扱いとなります。
-                      </span>
-                    </label>
-                    <?php endif; ?>
-                    <?php if($cleaning) :?>
-                    <label class="input-check agree-before-submit">
-                      <input type="checkbox" class="cb-square">
-                      <span class="icon"></span>
-                      <span class="label-txt">
-                        minikuraクリーニングパックは、6ヶ月を超えて保管をする場合、1パックにつき、月額500円で保管ができます。
+                        minikuraLibraryは開封・アイテム撮影するサービスですが、一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
                       </span>
                     </label>
                     <?php endif; ?>
@@ -223,7 +156,8 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
         </div>
         <div class="nav-fixed">
             <ul>
-                <li><a class="btn-d-gray" href="/inbound/box/add_amazon_pay?back=true">戻る</a>
+                <li>
+                  <a class="btn-d-gray" href="/inbound/box/add">戻る</a>
                 </li>
                 <li><button class="btn-red" id="execute">この内容で預ける</button>
                 </li>
