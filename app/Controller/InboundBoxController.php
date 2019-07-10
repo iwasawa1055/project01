@@ -117,11 +117,12 @@ class InboundBoxController extends MinikuraController
         }
 
         // 届け先追加を選択の場合は追加画面へ遷移
+        $is_address_error = false;
         if (Hash::get($data, 'address_id') === 'add') {
             $this->loadModel('CustomerAddress');
             $this->CustomerAddress->data['CustomerAddress'] = $this->request->data['CustomerAddress'];
             if (!$this->CustomerAddress->validates()) {
-                return $this->render('add');
+                $is_address_error = false;
             }
             if (isset($this->CustomerAddress->data['CustomerAddress']['resister']) && $this->CustomerAddress->data['CustomerAddress']['resister'] == '1') {
                 $this->CustomerAddress->apiPost($this->request->data['CustomerAddress']);
@@ -133,7 +134,10 @@ class InboundBoxController extends MinikuraController
             }
         }
 
-        $dataBoxList = $data['box_list'];
+        $dataBoxList = [];
+        if (isset($data['box_list'])) {
+            $dataBoxList = $data['box_list'];
+        }
         unset($data['box_list']);
 
         $validErrors = [];
@@ -194,10 +198,12 @@ class InboundBoxController extends MinikuraController
             }
         }
 
-        if (!empty($validErrors)) {
-            $this->set('validErrors', $validErrors);
-            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' post params ' . print_r($_POST, true));
-            CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' /inbound/box validation error ' . print_r($validErrors, true));
+        if (!empty($validErrors) || $is_address_error) {
+            if (!empty($validErrors)) {
+                $this->set('validErrors', $validErrors);
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' post params ' . print_r($_POST, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' /inbound/box validation error ' . print_r($validErrors, true));
+            }
             return $this->render('add');
         }
     }
@@ -541,6 +547,26 @@ class InboundBoxController extends MinikuraController
     {
         $this->autoRender = false;
         $list = $this->InfoBox->getListForInbound();
+
+        foreach ($list as &$data) {
+            $data['free_limit_date'] = '';
+            $current_time = time();
+            $limit_time   = strtotime($this->Common->getServiceFreeLimit($data['order_date'], 'Y-m-d h:m:s'));
+            $start_time   = strtotime(START_BOX_FREE);
+            $order_time   = strtotime($data['order_date']);
+
+            // 購入日とサービス開始日時
+            if ($start_time > $order_time) {
+               continue;
+            }
+            // 現在日時と無料期限
+            if ($current_time > $limit_time) {
+                continue;
+            }
+
+            $data['free_limit_date'] = $this->Common->getServiceFreeLimit($data['order_date'], 'Y/m/d');
+        }
+
         return json_encode($list);
     }
 
@@ -578,39 +604,4 @@ class InboundBoxController extends MinikuraController
 
         return $result;
     }
-
-    /**
-     * Direct Inbound set
-     */
-    private function _setDirectInbound($Order)
-    {
-        $Order['direct_inbound']['direct_inbound'] = (int)filter_input(INPUT_POST, 'direct_inbound');
-        return $Order;
-    }
-
-    // 日付CD変換
-    private function _convDatetimeCode ( $data_code ){
-
-        // 時間CODE変換表
-        $timeList = array( 2 => '午前中',
-            //3 => '12～14時',
-            4 => '14～16時',
-            5 => '16～18時',
-            6 => '18～20時',
-            7 => '19～21時' );
-
-
-        // 日付
-        $date = substr( $data_code, 0, 10 );
-
-        // 時間
-        $time = substr( $data_code, 11, 1 );
-
-        // 戻り値
-        $datetime = date( "Y年m月d日", strtotime( $date ) );
-
-        if( isset( $timeList[$time] )  ) $datetime .= ' '.$timeList[$time];
-        return $datetime;
-    }
-
 }

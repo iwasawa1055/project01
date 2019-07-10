@@ -9,7 +9,10 @@ var AppInboundBoxAdd =
       .then(AppInboundBoxAdd.render)
       .then(AppInboundBoxAdd.submitForm)
       .then(AppInboundBoxAdd.address)
-      .then(AppInboundBoxAdd.autoKana);
+      .then(AppInboundBoxAdd.autoKana)
+      .then(AppInboundBoxAdd.checkNameLength)
+      .then(AppInboundBoxAdd.checkInputNameLength)
+      .then(AppInboundBoxAdd.scrollValidError);
 
     // 初期表示
     if (typeof $("#dev-selected-box_type").val() !== 'undefined') {
@@ -85,7 +88,9 @@ var AppInboundBoxAdd =
     }
 
     // modal表示
-    $("[data-remodal-id=packaging]").remodal().open();
+    if ( document.referrer.indexOf('/inbound/box/add') == -1 && document.referrer.indexOf('/inbound/box/confirm') == -1) {
+      $("[data-remodal-id=packaging]").remodal().open();
+    }
   },
   getAllNewBox: function() {
     var d = new $.Deferred();
@@ -130,15 +135,43 @@ var AppInboundBoxAdd =
       $.each(AppInboundBoxAdd.new_box, function(index, value){
         var renderNewBox = AppInboundBoxAdd.createHtml(value);
         $('#dev-new-box-grid').append(renderNewBox);
+
+        // bind event
+        $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+        $('.remove-package').addClass('input-disabled');
+
+        $('[name="data[Inbound][box_list]['+value.box_id+'][checkbox]"]').change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+                $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+            } else {
+                $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+                $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);
+            }
+        });
       });
     } else {
-        $('#dev-new-box-grid').after("<p class='page-caption not-applicable'><br><br>新しく購入したボックスが存在しません。<br><br><br>");
+        $('#dev-new-box-grid').after("<p class='page-caption not-applicable'><br><br>新しいボックスが存在しません。<br><br><br>");
     }
 
     if (AppInboundBoxAdd.old_box.length > 0) {
       $.each(AppInboundBoxAdd.old_box, function(index, value){
         var renderOldBox = AppInboundBoxAdd.createHtml(value);
         $('#dev-old-box-grid').append(renderOldBox);
+
+        // bind event
+        $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+        $('.remove-package').addClass('input-disabled');
+
+        $('[name="data[Inbound][box_list]['+value.box_id+'][checkbox]"]').change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+                $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+            } else {
+                $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+                $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);
+            }
+        });
       });
     } else {
         $('#dev-old-box-grid').after("<p class='page-caption not-applicable'><br><br>取り出し済ボックスが存在しません。<br><br><br>");
@@ -150,24 +183,28 @@ var AppInboundBoxAdd =
       $.each(boxListErrors, function(index, value){
         $.each(value, function(i1, v1){
           $.each(v1, function(i2, v2){
-            $('[name="data[Inbound][box_list]['+index+']['+i1+']"').after('<p class="valid-il">'+v2+'</p>');
+            $('[name="data[Inbound][box_list]['+index+']['+i1+']"]').after('<p class="valid-il">'+v2+'</p>');
           });
         });
       });
     }
+
     // selected
     if (typeof $("#dev-box-list-selected").val() !== 'undefined') {
       var boxListSelected = JSON.parse($("#dev-box-list-selected").val());
       $.each(boxListSelected, function(index, value){
         if (value.checkbox == "1") {
-          $('[name="data[Inbound][box_list]['+index+'][checkbox]"').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+          $('[name="data[Inbound][box_list]['+index+'][checkbox]"]').parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
         }
-        $('[name="data[Inbound][box_list]['+index+'][title]"').val(value.title);
+        $('[name="data[Inbound][box_list]['+index+'][title]"]').val(value.title);
         if (typeof value.wrapping_type !== 'undefined' && value.wrapping_type == 1) {
-          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"').prop('checked', true);
+          $('[name="data[Inbound][box_list]['+index+'][wrapping_type]"]').prop('checked', true);
         }
       });
     }
+
     return new $.Deferred().resolve().promise();
   },
   createHtml: function(value) {
@@ -183,13 +220,18 @@ var AppInboundBoxAdd =
     html += '        <span class="item-img"><img src="'+AppInboundBoxAdd.getProductImage(value.kit_cd)+'" alt="'+value.kit_name+'" class="img-item"></span>';
     html += '    </label>';
     html += '    <div class="box-info">';
-    html += '        <p class="box-id">'+value.box_id+'</p>';
+    html += '        <p class="l-box-id">';
+    html += '            <span class="txt-box-id">'+value.box_id+'</span>';
+    if (value.free_limit_date) {
+      html += '            <span class="txt-free-limit">無料期限<span class="date">' + value.free_limit_date + '</span></span>';
+    }
+    html += '        </p>';
     html += '        <p class="box-type">'+value.kit_name+'</p>';
     html += '        <input type="text" name="data[Inbound][box_list]['+value.box_id+'][title]" placeholder="ボックス名を記入してください" class="box-input-name">';
 
     if (value.kit_cd == '66' || value.kit_cd == '67' || value.kit_cd == '82') {
       html += '        <input type="hidden" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-circle dev-box-check" value="0">';
-      html += '        <label class="input-check">';
+      html += '        <label class="input-check remove-package">';
       html += '            <input type="checkbox" name="data[Inbound][box_list]['+value.box_id+'][wrapping_type]" class="cb-square dev-box-check" value="1">';
       html += '            <span class="icon"></span>';
       html += '            <span class="label-txt">外装を除いて撮影</span>';
@@ -202,6 +244,34 @@ var AppInboundBoxAdd =
   },
   submitForm: function() {
     $("#execute").click("on", function(){
+      var error = 0;
+      var box_type = $('[name="data[Inbound][box_type]"]:checked').val();
+      if (typeof box_type === 'undefined' || box_type == "new") {
+        $('#dev-new-box-grid > li').each(function(i1, v1){
+          // チェックが付いている
+          if ($(v1).children(".input-check").children('.cb-circle:checked').val() == 1) {
+            if ($(v1).children(".box-info").children('.box-input-name').val() == '') {
+              error = 1;
+            }
+          }
+        });
+      } else {
+        $('#dev-old-box-grid > li').each(function(i1, v1){
+          // チェックが付いている
+          if ($(v1).children(".input-check").children('.cb-circle:checked').val() == 1) {
+            if ($(v1).children(".box-info").children('.box-input-name').val() == '') {
+              error = 1;
+            }
+          }
+        });
+      }
+
+      // 選択済みでボックスタイトルが設定されていない
+      if (error === 1) {
+        alert('選択されたボックスにボックス名が入力されていません。');
+        return false;
+      }
+
       document.form.submit();
     });
     return new $.Deferred().resolve().promise();
@@ -271,6 +341,91 @@ var AppInboundBoxAdd =
           katakana: true
       });
   },
+  checkInputNameLength: function () {
+      $('.lastname, .firstname').blur(function () {
+          AppInboundBoxAdd.execCheckInputNameLength();
+      });
+  },
+  execCheckInputNameLength: function () {
+      var count = AppInboundBoxAdd.strLength($('.lastname').val()+$('.firstname').val());
+      if (count > 49) {
+          $('.dev-name-length-error').remove();
+          $('.firstname').after("<p class='valid-il dev-name-length-error'>姓名の合計が全角で25文字または半角で50文字以上の名前が設定されています。集荷時の伝票のお名前が途中で切れてしまいますので、ご変更をお願いいたします</p>");
+      } else {
+          $('.dev-name-length-error').remove();
+      }
+  },
+  checkNameLength: function () {
+      AppInboundBoxAdd.execCheckNameLength();
+      $('.address').on('change', function () {
+          AppInboundBoxAdd.execCheckNameLength();
+      });
+  },
+  execCheckNameLength: function () {
+      var count = AppInboundBoxAdd.strLength($('.address :selected').data('address-name'));
+      if (count > 49) {
+          $('.dev-name-length-error').remove();
+          $('.address').after("<p class='valid-il dev-name-length-error'>お名前が全角で25文字または半角で50文字以上入力されています。集荷時の伝票のお名前が途中で切れてしまいますので、新たにご登録をお願いいたします。</p>");
+      } else {
+          $('.dev-name-length-error').remove();
+      }
+  },
+  strLength: function(str, encode) {
+    var count     = 0,
+        setEncode = 'Shift_JIS',
+        c         = '';
+
+    if (encode && encode !== '') {
+        if (encode.match(/^(SJIS|Shift[_\-]JIS)$/i)) {
+            setEncode = 'Shift_JIS';
+        } else if (encode.match(/^(UTF-?8)$/i)) {
+            setEncode = 'UTF-8';
+        }
+    }
+
+    for (var i = 0, len = str.length; i < len; i++) {
+        c = str.charCodeAt(i);
+        if (setEncode === 'UTF-8') {
+            if ((c >= 0x0 && c < 0x81) || (c == 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
+                count += 1;
+            } else {
+                count += 2;
+            }
+        } else if (setEncode === 'Shift_JIS') {
+            if ((c >= 0x0 && c < 0x81) || (c == 0xa0) || (c >= 0xa1 && c < 0xdf) || (c >= 0xfd && c < 0xff)) {
+                count += 1;
+            } else {
+                count += 2;
+            }
+        }
+    }
+    return count;
+  },
+  scrollValidError: function () {
+    var img_num = $('.img-item').length;
+    var img_counter = 0;
+    for (var i = 0; i < img_num; i++) {
+      var img = $('<img>');
+      img.load(function() {
+        img_counter++;
+        // 全てのボックス画像を出力し終えた際に実施
+        if (img_num == img_counter) {
+          var valid = $(".valid-il");
+          if (valid.length > 0) {
+            if ($(valid).closest('div.box-info').length > 0) {
+              // ボックス系のエラー
+              var position = valid.parent().parent().offset().top;
+            } else {
+              // 入力系のエラー
+              var position = valid.parent().offset().top;
+            }
+            $('body,html').animate({scrollTop: position}, 'slow');
+          }
+        }
+      });
+      img.attr('src', $('img').eq(i).attr('src'));
+    }
+  }
 }
 
 /*

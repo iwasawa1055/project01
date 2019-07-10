@@ -26,6 +26,7 @@ var AppInputOrder =
       var exe_flag = true;
       $(".caution-box input").each(function(i) {
         if (!$(this).prop("checked")) {
+          alert('注意事項をご確認ください');
           exe_flag = false;
           return false;
         }
@@ -74,7 +75,7 @@ var AppInputOrder =
       });
       // タイプ別箱合計値セット
       $('#' + box.id).html(type_total);
-      // 購入タイプ(API)
+      // サービスの申し込みタイプ(API)
       flag_total[box.flag] += parseFloat(type_total);
     });
 
@@ -142,7 +143,7 @@ var AppAmazonPay =
             add_billing.insertAfter(self);
 
             // サブミット前チェック確認
-            // 定期購入未チェックでエラー
+            // 定期サービスの申し込み未チェックでエラー
             if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
               $('#payment_consent_alert').show();
               return;
@@ -152,7 +153,7 @@ var AppAmazonPay =
           } else {
             // クローゼットとその他を選択
             if (flag_total['other'] > 0 && flag_total['hanger'] > 0) {
-              alert('クローゼットと他の商品は同時購入できません');
+              alert('クローゼットと他の商品は同時にサービスの申し込みはできません');
               return false;
             // クローゼットのみ選択
             } else {
@@ -162,7 +163,7 @@ var AppAmazonPay =
               add_billing.insertAfter(self);
 
               // サブミット前チェック確認
-              // 定期購入未チェックでエラー
+              // 定期サービスの申し込み未チェックでエラー
               if(AppAmazonPayWallet.buyerBillingAgreementConsentStatus == 'false') {
                 $('#payment_consent_alert').show();
                 return;

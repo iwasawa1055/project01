@@ -484,8 +484,8 @@ class PickupController extends MinikuraController
             $pickup['address2'] = $customer_address['address2'];
             $pickup['address3'] = $customer_address['address3'];
             $pickup['tel1'] = $customer_address['tel1'];
-            $pickup['name'] = $customer_address['lastname'].' '.$customer_address['firstname'];
-            $pickup['name_kana'] = $customer_address['lastname_kana'].' '.$customer_address['firstname_kana'];
+            $pickup['name'] = $customer_address['lastname'].$customer_address['firstname'];
+            $pickup['name_kana'] = $customer_address['lastname_kana'].$customer_address['firstname_kana'];
             $pickup['lastname'] = $customer_address['lastname'];
             $pickup['lastname_kana'] = $customer_address['lastname_kana'];
             $pickup['firstname'] = $customer_address['firstname'];
@@ -501,8 +501,8 @@ class PickupController extends MinikuraController
             $pickup['address2'] = $select_address['address2'];
             $pickup['address3'] = $select_address['address3'];
             $pickup['tel1'] = $select_address['tel1'];
-            $pickup['name'] = $select_address['lastname'].' '.$select_address['firstname'];
-            $pickup['name_kana'] = $select_address['lastname_kana'].' '.$select_address['firstname_kana'];
+            $pickup['name'] = $select_address['lastname'].$select_address['firstname'];
+            $pickup['name_kana'] = $select_address['lastname_kana'].$select_address['firstname_kana'];
             $pickup['lastname'] = $select_address['lastname'];
             $pickup['lastname_kana'] = $select_address['lastname_kana'];
             $pickup['firstname'] = $select_address['firstname'];

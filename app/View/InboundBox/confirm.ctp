@@ -16,6 +16,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
             <div class="item-content">
                 <ul class="grid grid-md">
                     <!--loop-->
+                    <?php $hako = false; ?>
                     <?php $mono = false; ?>
                     <?php $library = false; ?>
                     <?php $closet = false; ?>
@@ -30,6 +31,9 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                           $kitName = '';
                           if (!empty($formBox['option'])) {
                               $kitName = KIT_OPTION[$kitCd][$formBox['option']];
+                          }
+                          if ($box['kit_cd'] == KIT_CD_HAKO || $box['kit_cd'] == KIT_CD_HAKO_BOOK || $box['kit_cd'] == KIT_CD_HAKO_APPAREL) {
+                              $hako = true;
                           }
                           if ($box['kit_cd'] == KIT_CD_MONO || $box['kit_cd'] == KIT_CD_MONO_BOOK || $box['kit_cd'] == KIT_CD_MONO_APPAREL) {
                               $mono = true;
@@ -111,8 +115,24 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                 <li class="caution-box">
                   <p class="title">注意事項(ご確認の上、チェックしてください)</p>
                   <div class="content">
+                    <?php if($hako || $mono || $closet || $library) :?>
+                    <label class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        2019年8月1日預け入れ完了から1ヶ月以内の取り出しの場合は月額保管料の2ヶ月分、2ヶ月以内の取り出しの場合は月額保管料の1ヶ月分が早期の取り出し料金として通常の取り出し料金の価格に加えて発生いたします。<br>なお、該当のボックスに個品のお取り出しがある場合は適用致しません。
+                      </span>
+                    </label>
+                    <label class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        初期費用無料期間までに倉庫に到着すると、サービスお申し込み代金が無料でご利用いただけます。<br>その日付を超えてお荷物が到着した場合は　保管料金１ヶ月分の初期費用が発生します。
+                      </span>
+                    </label>
+                    <?php endif; ?>
                     <?php if($mono || $closet || $library || $cleaning) :?>
-                    <label id="confirm_check" class="input-check agree-before-submit">
+                    <label class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
@@ -122,15 +142,15 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                       </span>
                     </label>
                     <?php endif; ?>
-                    <label id="confirm_check" class="input-check agree-before-submit">
+                    <label class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
                         重量は20kg（おおよそ1人で持ち運びできる程度）までを目安に梱包してください。<br>
-                        ※明らかに20kgを超えた場合はお預かりできない場合がございます。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。
+                        <span class="txt-strong">※明らかに20kgを超えた場合はお預かりできない場合がございます。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。</span>
                       </span>
                     </label>
-                    <label id="confirm_check" class="input-check agree-before-submit">
+                    <label class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
@@ -152,7 +172,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                         <strong style="font-weight:bold">上記に該当するお荷物が弊社に届いた場合、お預かりができません。1390円にて返送またはお荷物を受領できず運送会社にて持ち帰りになります。その場合、往復の送料はお客様の負担となります。</strong><br />
                       </span>
                     </label>
-                    <label id="confirm_check" class="input-check agree-before-submit">
+                    <label class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
@@ -163,20 +183,45 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                       </span>
                     </label>
                     <?php if($closet) :?>
-                    <label id="hanger_check" class="input-check agree-before-submit">
+                    <label class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
-                        Closet ボックスは、衣類および布製品以外はお預かりできません。
+                        minikuraClosetは、ハンガーで保管できる衣類以外はお預かりできません。
+                      </span>
+                    </label>
+                    <label class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        minikuraClosetはお預かりの際、畳まれて袋に入っているものや、新品でビニールに包まれているものでも袋から取り出してハンガーで吊り保管を致します。取り出しの際には、元に戻してお渡しすることができませんのでご了承ください。
                       </span>
                     </label>
                     <?php endif; ?>
                     <?php if($library) :?>
-                    <label id="hanger_check" class="input-check agree-before-submit">
+                    <label class="input-check agree-before-submit">
                       <input type="checkbox" class="cb-square">
                       <span class="icon"></span>
                       <span class="label-txt">
-                        minikuraLibraryは開封・アイテム撮影するサービスですが、一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
+                        minikuraLibraryのアイテム撮影は点数上限がございませんが、紙一枚単位の撮影はお断りしております。お客様が管理しやすい単位でおまとめをお願いいたします。
+                      </span>
+                    </label>
+                    <?php endif; ?>
+                    <?php if($closet || $cleaning) :?>
+                    <label class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        点数の数え方として、スーツ上下セットの場合、上下それぞれ1着ずつとカウントするため、2点でのお取扱いとなります。
+                      </span>
+                    </label>
+                    <?php endif; ?>
+                    <?php if($cleaning) :?>
+                    <label class="input-check agree-before-submit">
+                      <input type="checkbox" class="cb-square">
+                      <span class="icon"></span>
+                      <span class="label-txt">
+                        minikuraクリーニングパックは、6ヶ月を超えて保管をする場合、1パックにつき、月額500円で保管ができます。
                       </span>
                     </label>
                     <?php endif; ?>

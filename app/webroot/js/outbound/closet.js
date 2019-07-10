@@ -60,7 +60,7 @@ var AppOutboundCloset =
       if (AppOutboundCloset.item.length == 0) {
           var html = '';
           html += '<p class="form-control-static col-lg-12">ただ今、お預かりしているお品物はございません。<br />';
-          html += '梱包キットをお持ちでない方は、弊社指定の専用キットをご購入ください。<br />';
+          html += '梱包キットをお持ちでない方は、弊社指定の専用キットのサービスを申し込みください。<br />';
           html += '梱包キットをお持ちの方は、預け入れのお手続きにすすんでください。</p>';
           $('.grid').empty();
           $('.grid').append(html);

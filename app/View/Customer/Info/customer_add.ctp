@@ -21,19 +21,19 @@
                   <?php echo $this->Form->error('CustomerInfo.postal', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.pref', ['class' => "form-control address_pref", 'maxlength' => 4, 'placeholder'=>'都道府県', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.pref', ['class' => "form-control address_pref", 'placeholder'=>'都道府県', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.pref', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.address1', ['class' => "form-control address_address1", 'maxlength' => 8, 'placeholder'=>'住所', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.address1', ['class' => "form-control address_address1", 'placeholder'=>'市区郡', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.address1', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.address2', ['class' => "form-control address_address2", 'maxlength' => 18, 'placeholder'=>'番地', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.address2', ['class' => "form-control address_address2", 'placeholder'=>'町域以降', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.address2', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">
-                  <?php echo $this->Form->input('CustomerInfo.address3', ['class' => "form-control", 'maxlength' => 30, 'placeholder'=>'建物名', 'error' => false]); ?>
+                  <?php echo $this->Form->input('CustomerInfo.address3', ['class' => "form-control", 'placeholder'=>'建物名', 'error' => false]); ?>
                   <?php echo $this->Form->error('CustomerInfo.address3', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group col-lg-12">

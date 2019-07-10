@@ -425,6 +425,10 @@ p.facebook-message a,
   font-size: 1rem;
 }
 
+input:-ms-input-placeholder {
+  color: #a9a9a9;
+}
+
 .l-present-mail textarea.form-error,
 .l-present-mail input.form-error {
   border: .1rem solid red;

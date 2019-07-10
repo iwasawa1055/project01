@@ -1,6 +1,32 @@
+<?php $this->Html->css('/css/style.css', ['block' => 'css']); ?>
+
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header"><i class="fa fa-home"></i> マイページ</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 col-xs-12">
+      <ul class="l-banner">
+        <li class="l-free-box">
+          <a href="https://mypage.minikura.com/news/detail/414">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
+              <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
+            </picture>
+          </a>
+        </li>
+        <li class="l-collected-day">
+          <a href="/inbound/box/add">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/collected-day-pc@1x.png 1x, /images/collected-day-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/collected-day-sp@1x.png 1x, /images/collected-day-sp@2x.png 2x">
+              <img src="/images/collected-day-pc@1x.png" alt="13時までのお預け入れ申込で当日にお荷物の受取に伺います">
+            </picture>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="row">
@@ -75,7 +101,7 @@
 				<h2>契約情報一覧</h2>
 				<div class="col-lg-12 col-xs-12 agreement">
 				  <div class="form-group col-lg-12">
-					<?php 
+					<?php
 					if($customer->isSneaker()):
 					  $productCdList = [PRODUCT_CD_SNEAKERS];
 					else:
@@ -99,6 +125,6 @@
 			</div>
 		  </div>
 		</div>
-	  </div>	
+	  </div>
     <?php endif; ?>
   </div>

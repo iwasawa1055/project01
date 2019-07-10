@@ -1,5 +1,6 @@
-<?php $this->Html->script('https://maps.google.com/maps/api/js?libraries=places', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/pickup', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('pickup/edit', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('jquery.airAutoKana', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']); ?>
 <?php
@@ -20,7 +21,14 @@ $return = Hash::get($this->request->query, 'return');
             <p class="form-control-static caution col-lg-12">注意：集荷情報変更で対応可能なのは住所・日程・時間のみとなり、ボックス内容や個数の変更等はお受けできかねます。</p>
             <div class="form-group col-lg-12">
               <label>集荷の住所</label>
-              <?php echo $this->Form->select("PickupYamato.address_id", $this->Order->setAddress($addressList), ['id' => 'select-add-address-pickup', 'class' => 'form-control select-add-address-pickup', 'empty' => '以下からお選びください', 'error' => false]); ?>
+              <select class="address select-add-address-pickup" name="data[PickupYamato][address_id]">
+                  <?php foreach ($addressList as $data) : ?>
+                  <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($this->request->data['PickupYamato']['address_id']) && $this->request->data['PickupYamato']['address_id'] == $data['address_id']) ? 'selected' : ''; ?> data-address-name="<?php echo h("${data['lastname']}${data['firstname']}"); ?>">
+                      <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
+                    </option>
+                  <?php endforeach; ?>;
+                  <option value="-99" <?php echo (isset($this->request->data['PickupYamato']['address_id']) && $this->request->data['PickupYamato']['address_id'] == 'add') ? 'selected' : ''; ?> data-address-name="">お届先を追加する</option>
+              </select>
               <?php echo $this->Form->error('PickupYamato.address_id', null, ['wrap' => 'p']) ?>
               <div class="input-address">
                 <label>お届け先追加</label>
@@ -29,19 +37,19 @@ $return = Hash::get($this->request->query, 'return');
                     <?php echo $this->Form->error('CustomerAddress.postal', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.pref', ['class' => "form-control address_pref", 'maxlength' => 4, 'placeholder'=>'都道府県', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.pref', ['class' => "form-control address_pref", 'placeholder'=>'都道府県', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.pref', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.address1', ['class' => "form-control address_address1", 'maxlength' => 8, 'placeholder'=>'住所', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.address1', ['class' => "form-control address_address1", 'placeholder'=>'市区郡', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.address1', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.address2', ['class' => "form-control address_address2", 'maxlength' => 18, 'placeholder'=>'番地', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.address2', ['class' => "form-control address_address2", 'placeholder'=>'町域以降', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.address2', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $this->Form->input('CustomerAddress.address3', ['class' => "form-control", 'maxlength' => 30, 'placeholder'=>'建物名', 'error' => false]); ?>
+                    <?php echo $this->Form->input('CustomerAddress.address3', ['class' => "form-control", 'placeholder'=>'建物名', 'error' => false]); ?>
                     <?php echo $this->Form->error('CustomerAddress.address3', null, ['wrap' => 'p']) ?>
                 </div>
                 <div class="form-group">

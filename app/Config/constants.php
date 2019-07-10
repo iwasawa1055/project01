@@ -121,7 +121,7 @@ const PRODUCT_CD_CLOSET = '005005';
 const PRODUCT_CD_GIFT_CLEANING_PACK = '005006';
 
 // box_status, item_status
-// キット購入・依頼
+// キットサービスの申し込み・依頼
 const BOXITEM_STATUS_BUYKIT_START = '10';
 const BOXITEM_STATUS_BUYKIT_IN_PROGRESS = '20';
 const BOXITEM_STATUS_BUYKIT_DONE = '30';
@@ -142,9 +142,9 @@ const BOXITEM_STATUS_OUTBOUND_IN_PROGRESS = '200';
 const BOXITEM_STATUS_OUTBOUND_DONE = '210';
 
 const BOX_STATUS_LIST = [
-    '10' => '購入依頼中',
-    '20' => '購入依頼中',
-    '30' => '購入依頼中',
+    '10' => 'サービスの申し込み依頼中',
+    '20' => 'サービスの申し込み依頼中',
+    '30' => 'サービスの申し込み依頼中',
     '40' => 'お預かり中',
     '60' => '倉庫作業中',
     '70' => 'お預かり中',
@@ -206,16 +206,43 @@ const KIT_NAME = [
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
-    'mono_num'          => array('code' => KIT_CD_MONO,               'name' => 'MONO レギュラーボックス'),
-    'mono_appa_num'     => array('code' => KIT_CD_MONO_APPAREL,       'name' => 'MONO ワイドボックス'),
-    'hako_num'          => array('code' => KIT_CD_HAKO,               'name' => 'HAKO レギュラーボックス'),
-    'hako_appa_num'     => array('code' => KIT_CD_HAKO_APPAREL,       'name' => 'HAKO ワイドボックス'),
-    'hako_book_num'     => array('code' => KIT_CD_HAKO_BOOK,          'name' => 'HAKO ブックボックス'),
-    'cleaning_num'      => array('code' => KIT_CD_CLEANING_PACK,      'name' => 'クリーニングパック'),
-    'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'name' => 'Library ボックス'),
-    'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'name' => 'Library ボックス'),
-    'hanger_num'        => array('code' => KIT_CD_CLOSET,             'name' => 'Closet ボックス'),
-    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'name' => '(仮)ギフト クリーニングパック'),
+    'mono_num'          => array('code' => KIT_CD_MONO,               'product_cd' => PRODUCT_CD_MONO,               'name' => 'MONO レギュラーボックス'),
+    'mono_appa_num'     => array('code' => KIT_CD_MONO_APPAREL,       'product_cd' => PRODUCT_CD_MONO,               'name' => 'MONO ワイドボックス'),
+    'hako_num'          => array('code' => KIT_CD_HAKO,               'product_cd' => PRODUCT_CD_HAKO,               'name' => 'HAKO レギュラーボックス'),
+    'hako_appa_num'     => array('code' => KIT_CD_HAKO_APPAREL,       'product_cd' => PRODUCT_CD_HAKO,               'name' => 'HAKO ワイドボックス'),
+    'hako_book_num'     => array('code' => KIT_CD_HAKO_BOOK,          'product_cd' => PRODUCT_CD_HAKO,               'name' => 'HAKO ブックボックス'),
+    'cleaning_num'      => array('code' => KIT_CD_CLEANING_PACK,      'product_cd' => PRODUCT_CD_CLEANING_PACK,      'name' => 'クリーニングパック'),
+    'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'product_cd' => PRODUCT_CD_LIBRARY,            'name' => 'Library ボックス'),
+    'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'product_cd' => PRODUCT_CD_LIBRARY,            'name' => 'Library ボックス'),
+    'hanger_num'        => array('code' => KIT_CD_CLOSET,             'product_cd' => PRODUCT_CD_CLOSET,             'name' => 'Closet ボックス'),
+    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK, 'name' => '(仮)ギフト クリーニングパック'),
+];
+
+const PRODUCT_DATA_ARRAY = [
+    PRODUCT_CD_MONO => [
+        'photo_name'    => 'mono',
+        'box_price'     => 0,
+        'monthly_price' => 250,
+    ],
+    PRODUCT_CD_HAKO => [
+        'photo_name'    => 'hako',
+        'box_price'     => 0,
+        'monthly_price' => 200,
+    ],
+    PRODUCT_CD_CLEANING_PACK => [
+        'photo_name'    => 'cleaning',
+        'box_price'     => 12000,
+    ],
+    PRODUCT_CD_LIBRARY => [
+        'photo_name'    => 'library',
+        'box_price'     => 0,
+        'monthly_price' => 450,
+    ],
+    PRODUCT_CD_CLOSET => [
+        'photo_name'    => 'closet',
+        'box_price'     => 0,
+        'monthly_price' => 450,
+    ],
 ];
 
 const AMAZON_CHANGE_PHYSICALDESTINATION_NAME_ARRAY =[
@@ -266,7 +293,6 @@ const CONTACT_DIVISION_OTHER = '12'; // その他
 const CONTACT_DIVISION_BUG = '15'; // 不具合報告
 const CONTACT_DIVISION_OPINION = '16'; // minikuraへのご意見・ご感想
 const CONTACT_DIVISION_DISSOLUTION = '17'; //溶解の申し込みについて
-const CONTACT_DIVISION_DATA = '18'; //データ化のお申込みについて
 
 
 const CONTACTUS_DIVISION = [
@@ -274,7 +300,6 @@ const CONTACTUS_DIVISION = [
     CONTACT_DIVISION_RESIGN => '退会について',
     CONTACT_DIVISION_OPINION => 'minikuraへのご意見・ご相談',
     CONTACT_DIVISION_DISSOLUTION => '溶解の申し込みについて',
-    CONTACT_DIVISION_DATA => 'データ化のお申込みについて',
     CONTACT_DIVISION_BUG => '不具合報告',
     CONTACT_DIVISION_OTHER => 'その他',
 ];
@@ -445,12 +470,12 @@ const BANK_ACCOUNT_TYPE = [
 
 //* 販売機能 ステータス
 const SALES_STATUS_ON_SALE = '1'; // 販売中
-const SALES_STATUS_IN_PURCHASE = '2'; // 購入手続き中
+const SALES_STATUS_IN_PURCHASE = '2'; // サービスの申し込み手続き中
 const SALES_STATUS_TRANSFER_ALLOWED = '3'; // 振込可能
 const SALES_STATUS_IN_ORDER = '4'; // 送金依頼中
 const SALES_STATUS_PENDING = '5'; // 送金保留
 const SALES_STATUS_REMITTANCE_COMPLETED = '6'; // 送金済み
-const SALES_STATUS_PURCHASE_CANCEL = '7'; // 購入キャンセル
+const SALES_STATUS_PURCHASE_CANCEL = '7'; // サービスの申し込みキャンセル
 const SALES_STATUS_SALES_CANCEL = '8'; // 販売キャンセル
 
 /**
@@ -492,3 +517,6 @@ const EXPECTED_STORING_COMPLETE_DATE_MONO_DASH = 3;
 const EXPECTED_STORING_COMPLETE_DATE_LIBRARY = 10;
 const EXPECTED_STORING_COMPLETE_DATE_CLOSET = 10;
 const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 10;
+
+// 無料BOXサービス開始日時
+const START_BOX_FREE = '2019-07-01 00:00:00';
