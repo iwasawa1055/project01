@@ -51,6 +51,7 @@ class InboundBoxController extends MinikuraController
             'InboundBox/input',
             'InboundBox/input_amazon_pay',
             'InboundBox/attention',
+            'InboundBox/attention_amazon_pay',
             'InboundBox/confirm',
             'InboundBox/confirm_amazon_pay',
         ];
@@ -95,23 +96,8 @@ class InboundBoxController extends MinikuraController
         if ($this->request->is('get')) {
 
             $this->request->data[self::MODEL_NAME_INBOUND_BASE] = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-
-            // 住所一覧
-            $address_list = $this->Address->get();
-            $set_address_list = array();
-            if (is_array($address_list)) {
-                foreach ($address_list as $address) {
-                    $set_address_list[$address['address_id']]  = h("〒{$address['postal']}");
-                    $set_address_list[$address['address_id']] .= h(" {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}");
-                    $set_address_list[$address['address_id']] .= h("　{$address['lastname']}　{$address['firstname']}");
-                }
-                // 新規住所追加用
-                $set_address_list['add']  = 'お届先を追加する';
-            }
-            CakeSession::write('address_list', $set_address_list);
             $this->InboundBase->set($this->request->data);
             $this->set('box_list_data', CakeSession::read('box_list_data'));
-            $this->set('address_list', CakeSession::read('address_list'));
 
         } elseif ($this->request->is('post')) {
             $validErrors = [];
@@ -142,6 +128,7 @@ class InboundBoxController extends MinikuraController
             // ボックスタイプ別遷移先変更
             $attention_prefix_list = [
                 'MC',
+                'MG',
                 'CL',
             ];
             foreach ($attention_prefix_list as $prefix) {
@@ -174,62 +161,70 @@ class InboundBoxController extends MinikuraController
         // 確認画面から戻る際のフラグ
         CakeSession::write('attention_flag', true);
 
-        // TODO 点数超過で使用する
-        // TODO POST GETで分岐させるか。。。
-        $data = $this->request->data['InboundBase'];
+        $item_excess_list = CakeSession::read('item_excess_list');
 
-        // 選択ボックス
-        $gift_flag = false;
-        $target_box_list = [];
-        $other_box_list  = [];
-        $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-        $box_list_data = CakeSession::read('box_list_data');
-        if ($data['box_type'] == 'new') {
-            $tmp_box_list = $this->InfoBox->getListForInbound();
-        } else {
-            $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-        }
-        foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-            if (isset($item['checkbox'])) {
-                // 存在チェック
-                $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                if ($key_index === false) {
-                    $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                    break;
-                } else {
-                    $tmp_box_list[$key_index]['title'] = $item['title'];
-                    if (in_array($tmp_box_list[$key_index]['product_cd'], EXCESS_ATTENTION_PRODUCT_CD)) {
-
-
-
-                        // TODO ギフト組み込み時に置き換える
-                        if ($tmp_box_list[$key_index]['product_cd'] === 'TODO GIFT PRODUCT CD') {
-                            $gift_flag = true;
-                            // TODO ここに点数超過の内容を入れる
-                        }
-
-
-
-                        $target_box_list[] = $tmp_box_list[$key_index];
+        if ($this->request->is('get')) {
+            // 選択ボックス
+            $gift_flag = false;
+            $target_box_list = [];
+            $other_box_list  = [];
+            $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
+            $box_list_data = CakeSession::read('box_list_data');
+            if ($data['box_type'] == 'new') {
+                $tmp_box_list = $this->InfoBox->getListForInbound();
+            } else {
+                $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
+            }
+            foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
+                if (isset($item['checkbox'])) {
+                    // 存在チェック
+                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
+                    if ($key_index === false) {
+                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
+                        break;
                     } else {
-                        $other_box_list[] = $tmp_box_list[$key_index];
+                        $tmp_box_list[$key_index]['title'] = $item['title'];
+                        if (in_array($tmp_box_list[$key_index]['product_cd'], EXCESS_ATTENTION_PRODUCT_CD)) {
+                            if ($tmp_box_list[$key_index]['product_cd'] === PRODUCT_CD_GIFT_CLEANING_PACK) {
+                                $tmp_box_list[$key_index]['excess_flag'] = false;
+                                if (isset($item_excess_list[$box_id])) {
+                                    $tmp_box_list[$key_index]['excess_flag'] = $item_excess_list[$box_id];
+                                }
+                                $gift_flag = true;
+                            }
+                            $target_box_list[] = $tmp_box_list[$key_index];
+                        } else {
+                            $other_box_list[] = $tmp_box_list[$key_index];
+                        }
                     }
                 }
             }
+
+            CakeSession::write('gift_flag', $gift_flag);
+
+            // クレジットカードエリア出力制御
+            $card_flag = false;
+            $card_data = $this->Customer->getDefaultCard();
+            if ($gift_flag && empty($card_data)) {
+                $card_flag = true;
+            }
+
+            // set data
+            $this->set('target_box_list', $target_box_list);
+            $this->set('other_box_list', $other_box_list);
+            $this->set('card_data', $card_data);
+            $this->set('card_flag', $card_flag);
+
+        } elseif ($this->request->is('post')) {
+
+            $gift_flag = CakeSession::read('gift_flag');
+            if ($gift_flag) {
+                $data = $this->request->data['InboundBase'];
+                CakeSession::write('item_excess_list', $data['item_excess_list']);
+            }
+            return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm']);
         }
 
-        // クレジットカードエリア出力制御
-        $card_flag = false;
-        $card_data = $this->Customer->getDefaultCard();
-        if ($gift_flag && empty($card_data)) {
-            $card_flag = true;
-        }
-
-        // set data
-        $this->set('target_box_list', $target_box_list);
-        $this->set('other_box_list', $other_box_list);
-        $this->set('card_data', $card_data);
-        $this->set('card_flag', $card_flag);
     }
 
     /**
@@ -260,6 +255,7 @@ class InboundBoxController extends MinikuraController
 
         $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
         $box_list_data = CakeSession::read('box_list_data');
+        $item_excess_list = CakeSession::read('item_excess_list');
 
         // 選択ボックスタイプ別情報取得
         if ($data['box_type'] == 'new') {
@@ -278,6 +274,9 @@ class InboundBoxController extends MinikuraController
                     break;
                 } else {
                     $tmp_box_list[$key_index]['title'] = $item['title'];
+                    if ($tmp_box_list[$key_index]['product_cd'] == PRODUCT_CD_GIFT_CLEANING_PACK) {
+                        $tmp_box_list[$key_index]['excess_flag'] = $item_excess_list[$box_id];
+                    }
                     $box_list[] = $tmp_box_list[$key_index];
                     $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
                 }
@@ -356,6 +355,9 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // 確認画面から戻る際のフラグ
+        CakeSession::write('attention_flag', false);
+
         $this->loadModel(self::MODEL_NAME_INBOUND_BASE);
 
         // view data
@@ -365,7 +367,6 @@ class InboundBoxController extends MinikuraController
         if ($this->request->is('get')) {
 
             $this->request->data[self::MODEL_NAME_INBOUND_BASE] = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-
             $this->InboundBase->set($this->request->data);
             $this->set('box_list_data', CakeSession::read('box_list_data'));
 
@@ -374,10 +375,13 @@ class InboundBoxController extends MinikuraController
             $validErrors = [];
 
             $data = $this->request->data['InboundBase'];
-            $box_list_data = $this->request->data['BoxList'];
 
-            // ボックス情報
-            $this->_setSelectedBoxList($data, $box_list_data, $validErrors);
+            $box_list_data = [];
+            if (isset($this->request->data['BoxList'])) {
+                // ボックス情報
+                $box_list_data = $this->request->data['BoxList'];
+                $this->_setSelectedBoxList($data, $box_list_data, $validErrors);
+            }
 
             /** データ整形 */
             // Amazonより取得した個人情報よりデータ整形
@@ -396,8 +400,96 @@ class InboundBoxController extends MinikuraController
                 return $this->render('input_amazon_pay');
             }
 
+            // ボックスタイプ別遷移先変更
+            $attention_prefix_list = [
+                'MC',
+                'MG',
+                'CL',
+            ];
+            foreach ($attention_prefix_list as $prefix) {
+                if(strpos($data['box'], $prefix) !== false){
+                    return $this->redirect(['controller' => 'InboundBox', 'action' => 'attention_amazon_pay']);
+                }
+            }
             return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm_amazon_pay']);
         }
+    }
+
+    /*
+     * ボックス超過確認
+     * ※クローゼット、クリーニング、ギフトの場合のみ
+     */
+    public function attention_amazon_pay()
+    {
+        // check access source actions
+        $allow_action_list = [
+            'InboundBox/input_amazon_pay',
+            'InboundBox/attention_amazon_pay',
+            'InboundBox/confirm_amazon_pay',
+        ];
+        if (in_array(CakeSession::read('app.data.session_referer'), $allow_action_list, true) === false) {
+            $this->redirect(['controller' => 'inbound_box', 'action' => 'add']);
+        }
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // 確認画面から戻る際のフラグ
+        CakeSession::write('attention_flag', true);
+
+        $item_excess_list = CakeSession::read('item_excess_list');
+
+        if ($this->request->is('get')) {
+            // 選択ボックス
+            $gift_flag = false;
+            $target_box_list = [];
+            $other_box_list  = [];
+            $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
+            $box_list_data = CakeSession::read('box_list_data');
+            if ($data['box_type'] == 'new') {
+                $tmp_box_list = $this->InfoBox->getListForInbound();
+            } else {
+                $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
+            }
+            foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
+                if (isset($item['checkbox'])) {
+                    // 存在チェック
+                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
+                    if ($key_index === false) {
+                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
+                        break;
+                    } else {
+                        $tmp_box_list[$key_index]['title'] = $item['title'];
+                        if (in_array($tmp_box_list[$key_index]['product_cd'], EXCESS_ATTENTION_PRODUCT_CD)) {
+                            if ($tmp_box_list[$key_index]['product_cd'] === PRODUCT_CD_GIFT_CLEANING_PACK) {
+                                $tmp_box_list[$key_index]['excess_flag'] = false;
+                                if (isset($item_excess_list[$box_id])) {
+                                    $tmp_box_list[$key_index]['excess_flag'] = $item_excess_list[$box_id];
+                                }
+                                $gift_flag = true;
+                            }
+                            $target_box_list[] = $tmp_box_list[$key_index];
+                        } else {
+                            $other_box_list[] = $tmp_box_list[$key_index];
+                        }
+                    }
+                }
+            }
+
+            CakeSession::write('gift_flag', $gift_flag);
+
+            // set data
+            $this->set('target_box_list', $target_box_list);
+            $this->set('other_box_list', $other_box_list);
+
+        } elseif ($this->request->is('post')) {
+
+            $gift_flag = CakeSession::read('gift_flag');
+            if ($gift_flag) {
+                $data = $this->request->data['InboundBase'];
+                CakeSession::write('item_excess_list', $data['item_excess_list']);
+            }
+            return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm_amazon_pay']);
+        }
+
     }
 
     /**
@@ -409,6 +501,7 @@ class InboundBoxController extends MinikuraController
         // check access source actions
         $allow_action_list = [
             'InboundBox/input_amazon_pay',
+            'InboundBox/attention_amazon_pay',
             'InboundBox/confirm_amazon_pay',
         ];
         if (in_array(CakeSession::read('app.data.session_referer'), $allow_action_list, true) === false) {
@@ -428,6 +521,7 @@ class InboundBoxController extends MinikuraController
 
         $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
         $box_list_data = CakeSession::read('box_list_data');
+        $item_excess_list = CakeSession::read('item_excess_list');
 
         // 選択ボックスタイプ別情報取得
         if ($data['box_type'] == 'new') {
@@ -446,6 +540,9 @@ class InboundBoxController extends MinikuraController
                     break;
                 } else {
                     $tmp_box_list[$key_index]['title'] = $item['title'];
+                    if ($tmp_box_list[$key_index]['product_cd'] == PRODUCT_CD_GIFT_CLEANING_PACK) {
+                        $tmp_box_list[$key_index]['excess_flag'] = $item_excess_list[$box_id];
+                    }
                     $box_list[] = $tmp_box_list[$key_index];
                     $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
                 }
@@ -464,6 +561,7 @@ class InboundBoxController extends MinikuraController
         $this->set('data', $data);
         $this->set('box_list', $box_list);
         $this->set('box_use_flag', $box_use_flag);
+        $this->set('attention_flag', CakeSession::read('attention_flag'));
     }
 
     /**
@@ -471,44 +569,22 @@ class InboundBoxController extends MinikuraController
      */
     public function complete_amazon_pay()
     {
-        $data = CakeSession::read(self::MODEL_NAME);
-        CakeSession::delete(self::MODEL_NAME);
-        CakeSession::delete(self::MODEL_NAME . 'FORM');
-        CakeSession::delete('InboundAddress');
-
-        if (empty($data)) {
-            $this->Flash->set(__('empty_session_data'));
-            return $this->redirect(['action' => 'add_amazon_pay']);
+        // check access source actions
+        $allow_action_list = [
+            'InboundBox/confirm_amazon_pay',
+        ];
+        if (in_array(CakeSession::read('app.data.session_referer'), $allow_action_list, true) === false) {
+            $this->redirect(['controller' => 'inbound_box', 'action' => 'add']);
         }
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $post_data = Hash::get($this->request->data, self::MODEL_NAME);
+        $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
 
         // cleaning_pack
-        if (isset($post_data['keeping_type'])) {
-            if (isset($data['InboundManual'])) {
-                $model_name = "InboundManual";
-            } else {
-                if (isset($data['ReInboundYamato'])) {
-                    $model_name = "ReInboundYamato";
-                } else {
-                    $model_name = "InboundYamato";
-                }
-            }
-            $box_text = $data[$model_name]["box"];
-            $replace_box_text = '';
-            $arr_box_text = explode(',', $box_text);
-            foreach ($arr_box_text as $var) {
-                $arr_seperate_colon = explode(':', $var);
-                if ($arr_seperate_colon[0] == PRODUCT_CD_CLEANING_PACK) {
-                    $replace_box_text .= implode(':', $arr_seperate_colon) . ':' . $post_data['keeping_type'] . ',';
-                } else {
-                    $replace_box_text .= implode(':', $arr_seperate_colon) . ':,';
-                }
-            }
-            $data[$model_name]["box"] = rtrim($replace_box_text, ',');
+        $post_data = $this->request->data;
+        if (isset($post_data['InboundBase'])) {
+            $this->_setCleaningPack($data, $post_data['InboundBase']);
         }
-
-        $data = current($data);
 
         $this->Inbound->init($data);
         $model = $this->Inbound->model($data);
@@ -600,8 +676,6 @@ class InboundBoxController extends MinikuraController
             $box_list = $this->InfoBox->getListForInboundOldBox();
         }
 
-        // TODO エラーについて要確認
-
         // 選択ボックスの設定
         foreach ($_box_list_data[$_data['box_type']] as $box_id => $item) {
             if (isset($item['checkbox'])) {
@@ -672,18 +746,8 @@ class InboundBoxController extends MinikuraController
      */
     private function _setCleaningPack(&$_data, $_post_data)
     {
-        if (isset($_data['InboundManual'])) {
-            $model_name = "InboundManual";
-        } else {
-            if (isset($_data['ReInboundYamato'])) {
-                $model_name = "ReInboundYamato";
-            } else {
-                $model_name = "InboundYamato";
-            }
-        }
-        $box_text = $_data[$model_name]["box"];
         $replace_box_text = '';
-        $arr_box_text = explode(',', $box_text);
+        $arr_box_text = explode(',', $_data["box"]);
         foreach ($arr_box_text as $var) {
             $arr_seperate_colon = explode(':', $var);
             if ($arr_seperate_colon[0] == PRODUCT_CD_CLEANING_PACK) {
@@ -692,7 +756,7 @@ class InboundBoxController extends MinikuraController
                 $replace_box_text .= implode(':', $arr_seperate_colon) . ':,';
             }
         }
-        $_data[$model_name]["box"] = rtrim($replace_box_text, ',');
+        $_data["box"] = rtrim($replace_box_text, ',');
     }
 
     /**
@@ -759,5 +823,6 @@ class InboundBoxController extends MinikuraController
         CakeSession::delete(self::MODEL_NAME_INBOUND_BASE);
         CakeSession::delete('box_list_data');
         CakeSession::delete('address_list');
+        CakeSession::delete('item_excess_list');
     }
 }

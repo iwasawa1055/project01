@@ -206,21 +206,23 @@ const KIT_NAME = [
 ];
 
 const KIT_IMAGE = [
-    KIT_CD_HAKO            => '/images/hako-regular.png',
-    KIT_CD_HAKO_APPAREL    => '/images/hako-apparel.png',
-    KIT_CD_HAKO_BOOK       => '/images/hako-book.png',
-    KIT_CD_MONO            => '/images/mono-regular.png',
-    KIT_CD_MONO_APPAREL    => '/images/mono-apparel.png',
-    KIT_CD_MONO_BOOK       => '/images/mono-regular.png',
-    KIT_CD_CLEANING_PACK   => '/images/cleaning.png',
-    KIT_CD_LIBRARY_DEFAULT => '/images/library.png',
-    KIT_CD_LIBRARY_GVIDO   => '/images/library.png',
-    KIT_CD_CLOSET          => '/images/cleaning.png',
+    KIT_CD_HAKO               => '/images/hako-regular.png',
+    KIT_CD_HAKO_APPAREL       => '/images/hako-apparel.png',
+    KIT_CD_HAKO_BOOK          => '/images/hako-book.png',
+    KIT_CD_MONO               => '/images/mono-regular.png',
+    KIT_CD_MONO_APPAREL       => '/images/mono-apparel.png',
+    KIT_CD_MONO_BOOK          => '/images/mono-regular.png',
+    KIT_CD_CLEANING_PACK      => '/images/cleaning.png',
+    KIT_CD_LIBRARY_DEFAULT    => '/images/library.png',
+    KIT_CD_LIBRARY_GVIDO      => '/images/library.png',
+    KIT_CD_CLOSET             => '/images/cleaning.png',
+    KIT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
 ];
 
 const EXCESS_ATTENTION_PRODUCT_CD = [
     PRODUCT_CD_CLOSET,
     PRODUCT_CD_CLEANING_PACK,
+    PRODUCT_CD_GIFT_CLEANING_PACK,
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[

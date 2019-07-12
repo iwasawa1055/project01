@@ -9,6 +9,13 @@ class ReceiveGift extends ApiModel
         parent::__construct('ReceiveGift', '/receive_gift', 'minikura_v5');
     }
 
+    protected function triggerDataChanged()
+    {
+        parent::triggerDataChanged();
+        (new Announcement())->deleteCache();
+        (new InfoBox())->deleteCache();
+    }
+
     public $validate = [
         'gift_cd' => [
             'notBlank' => [

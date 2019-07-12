@@ -4,12 +4,14 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="pagenation">
-                <li><span class="number">1</span><span class="txt">ボックス<br>選択</span>
-                </li>
-                <li class="on"><span class="number">2</span><span class="txt">確認</span>
-                </li>
-                <li><span class="number">3</span><span class="txt">完了</span>
-                </li>
+              <li><span class="number">1</span><span class="txt">ボックス<br>選択</span>
+              </li>
+              <li><span class="number">2</span><span class="txt">個数入力</span>
+              </li>
+              <li class="on"><span class="number">3</span><span class="txt">確認</span>
+              </li>
+              <li><span class="number">4</span><span class="txt">完了</span>
+              </li>
             </ul>
             <p class="page-caption">以下の内容でボックスの預け入れ手続きを行います。</p>
             <?php echo $this->Form->create('InboundBase', ['url' => '/inbound/box/complete_amazon_pay', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
@@ -25,6 +27,13 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                             <p class="box-id"><?php echo $box['box_id']; ?></p>
                             <p class="box-type"><?php echo h($box['product_name']); ?></p>
                             <p class="box-name"><?php echo h($this->Html->replaceBoxtitleChar($box['title'])); ?></p>
+                            <?php if(isset($box['excess_flag'])) :?>
+                            <?php if($box['excess_flag']) :?>
+                            <p class="txt-slct-num">預け入れ点数<span class="var-slct-num">5点超</span></p>
+                            <?php else: ?>
+                            <p class="txt-slct-num">預け入れ点数<span class="var-slct-num">5点以内</span></p>
+                            <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </li>
                     <?php endforeach; ?>
@@ -157,7 +166,11 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
         <div class="nav-fixed">
             <ul>
                 <li>
+                  <?php if($attention_flag) :?>
+                  <a class="btn-d-gray" href="/inbound/box/attention_amazon_pay">戻る</a>
+                  <?php else: ?>
                   <a class="btn-d-gray" href="/inbound/box/add">戻る</a>
+                  <?php endif; ?>
                 </li>
                 <li><button class="btn-red" id="execute">この内容で預ける</button>
                 </li>

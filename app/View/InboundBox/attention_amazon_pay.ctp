@@ -1,9 +1,9 @@
-<?php $this->Html->script('inbound_box/attention', ['block' => 'scriptMinikura']); ?>
+<?php $this->Html->script('inbound_box/attention_amazon_pay', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script(Configure::read("app.gmo.token_url"), ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 
-        <?php echo $this->Form->create('InboundBase', ['url' => '/inbound/box/attention', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+        <?php echo $this->Form->create('InboundBase', ['url' => '/inbound/box/attention_amazon_pay', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="pagenation">

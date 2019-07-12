@@ -2,7 +2,6 @@
 $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
-$this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
 $this->Html->script('inbound_box/add.js?'.time(), ['block' => 'scriptMinikura']);
 $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
 ?>
@@ -52,7 +51,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                   <ul id="dev-new-box-grid" class="grid grid-md">
                     <?php foreach ($new_box_list as $key => $new_box): ?>
                     <li>
-                      <label class="input-check">
+                      <label class="input-check box-img-area">
                         <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
                         <span class="icon"></span>
                         <span class="item-img">
@@ -75,6 +74,9 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                     </li>
                     <?php endforeach; ?>
                   </ul>
+                  <?php if(empty($new_box_list)): ?>
+                    <p class="page-caption not-applicable"><br><br>新しいボックスが存在しません。<br><br><br></p>
+                  <?php endif; ?>
                 </div>
                 <div id="dev-old-box" class="item-content" <?php echo ($this->request->data['InboundBase']['box_type'] == 'old') ? '' : 'style="display:none"'; ?>>
                     <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
@@ -95,7 +97,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                     <ul id="dev-old-box-grid" class="grid grid-md">
                       <?php foreach ($old_box_list as $key => $old_box): ?>
                       <li>
-                        <label class="input-check">
+                        <label class="input-check box-img-area">
                           <input type="checkbox" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['old'][$old_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
                           <span class="icon"></span>
                           <span class="item-img">
@@ -110,6 +112,9 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                       </li>
                       <?php endforeach; ?>
                     </ul>
+                  <?php if(empty($old_box_list)): ?>
+                  <p class="page-caption not-applicable"><br><br>取り出し済ボックスが存在しません。<br><br><br></p>
+                  <?php endif; ?>
                 </div>
                 <ul class="input-info">
                     <li>
@@ -141,7 +146,14 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                         <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         <li>
                           <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
-                          <?php echo $this->Form->select('InboundBase.address_id', $address_list, ['id' => 'address_id', 'class' => 'dsn-adress select-delivery focused', 'empty' => false, 'label' => false, 'error' => false, 'div' => false]); ?>
+                          <select id="address_id" class="address dsn-adress select-delivery focused" name="data[InboundBase][address_id]">
+                            <?php foreach ($addressList as $data) : ?>
+                            <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($this->request->data['InboundBase']['address_id']) && $this->request->data['InboundBase']['address_id'] == $data['address_id']) ? 'selected' : ''; ?> data-address-name="<?php echo h("${data['lastname']}${data['firstname']}"); ?>">
+                            <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
+                            </option>
+                            <?php endforeach; ?>
+                            <option value="add" <?php echo (isset($this->request->data['InboundBase']['address_id']) && $this->request->data['InboundBase']['address_id'] == 'add') ? 'selected' : ''; ?> data-address-name="">お届先を追加する</option>
+                          </select>
                         </li>
                         <li class="inbound-input-address">
                             <ul class="add-address">
@@ -178,12 +190,12 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                               </li>
                               <li>
                                 <label class="headline">お名前<span class="required">※</span></label>
-                                <ul class="col-name">
+                                <ul class="col-name input-name-area">
                                   <li>
-                                    <?php echo $this->Form->input('InboundBase.lastname', ['type' => 'text', 'placeholder'=>'例：寺田', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "family-name", 'error' => false, 'label' => false, 'div' => false]); ?>
+                                    <?php echo $this->Form->input('InboundBase.lastname', ['class'=> 'lastname', 'type' => 'text', 'placeholder'=>'例：寺田', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "family-name", 'error' => false, 'label' => false, 'div' => false]); ?>
                                   </li>
                                   <li>
-                                    <?php echo $this->Form->input('InboundBase.firstname', ['type' => 'text', 'placeholder'=>'例：太郎', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "given-name", 'error' => false, 'label' => false, 'div' => false]); ?>
+                                    <?php echo $this->Form->input('InboundBase.firstname', ['class'=> 'firstname', 'type' => 'text', 'placeholder'=>'例：太郎', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "given-name", 'error' => false, 'label' => false, 'div' => false]); ?>
                                   </li>
                                 </ul>
                                 <?php echo $this->Form->error('InboundBase.lastname', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>

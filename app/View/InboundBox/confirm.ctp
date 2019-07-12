@@ -27,6 +27,13 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                             <p class="box-id"><?php echo $box['box_id']; ?></p>
                             <p class="box-type"><?php echo h($box['product_name']); ?></p>
                             <p class="box-name"><?php echo h($this->Html->replaceBoxtitleChar($box['title'])); ?></p>
+                            <?php if(isset($box['excess_flag'])) :?>
+                            <?php if($box['excess_flag']) :?>
+                            <p class="txt-slct-num">預け入れ点数<span class="var-slct-num">5点超</span></p>
+                            <?php else: ?>
+                            <p class="txt-slct-num">預け入れ点数<span class="var-slct-num">5点以内</span></p>
+                            <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </li>
                     <?php endforeach; ?>

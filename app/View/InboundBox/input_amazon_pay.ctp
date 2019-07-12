@@ -2,7 +2,6 @@
 $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
-$this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
 $this->Html->script('inbound_box/add_amazon_pay.js?'.time(), ['block' => 'scriptMinikura']);
 $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
 $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']);
@@ -13,9 +12,11 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
             <ul class="pagenation">
                 <li class="on"><span class="number">1</span><span class="txt">ボックス<br>選択</span>
                 </li>
-                <li><span class="number">2</span><span class="txt">確認</span>
+                <li><span class="number">2</span><span class="txt">個数入力</span>
                 </li>
-                <li><span class="number">3</span><span class="txt">完了</span>
+                <li><span class="number">3</span><span class="txt">確認</span>
+                </li>
+                <li><span class="number">4</span><span class="txt">完了</span>
                 </li>
             </ul>
             <?php echo $this->Flash->render(); ?>
@@ -52,7 +53,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     <ul id="dev-new-box-grid" class="grid grid-md">
                         <?php foreach ($new_box_list as $key => $new_box): ?>
                         <li>
-                            <label class="input-check">
+                            <label class="input-check box-img-area">
                                 <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
                                 <span class="icon"></span>
                                 <span class="item-img">
@@ -62,7 +63,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                             <div class="box-info">
                                 <p class="box-id"><?php echo $new_box['box_id']; ?></p>
                                 <p class="box-type"><?php echo $new_box['kit_name']; ?></p>
-                                <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
+                                <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['new'][$new_box['box_id']]['title'])) echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
                                 <?php if($new_box['product_cd'] === PRODUCT_CD_MONO): ?>
                                 <label class="input-check">
                                     <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
@@ -95,7 +96,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     <ul id="dev-old-box-grid" class="grid grid-md">
                         <?php foreach ($old_box_list as $key => $old_box): ?>
                         <li>
-                            <label class="input-check">
+                            <label class="input-check box-img-area">
                                 <input type="checkbox" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['old'][$old_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
                                 <span class="icon"></span>
                                 <span class="item-img">
@@ -105,13 +106,11 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                             <div class="box-info">
                                 <p class="box-id"><?php echo $old_box['box_id']; ?></p>
                                 <p class="box-type"><?php echo $old_box['kit_name']; ?></p>
-                                <input type="text" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php echo $box_list_data['old'][$old_box['box_id']]['title']; ?>">
+                                <input type="text" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['old'][$old_box['box_id']]['title'])) echo $box_list_data['old'][$old_box['box_id']]['title']; ?>">
                             </div>
                         </li>
                         <?php endforeach; ?>
                     </ul>
-                    <p class="page-caption not-applicable">ご入力いただいたバーコード番号の取り出し済みボックスは見つかりませんでした。<br>
-                        別のバーコード番号をご入力ください。</p>
                 </div>
                 <ul class="input-info">
                     <li>

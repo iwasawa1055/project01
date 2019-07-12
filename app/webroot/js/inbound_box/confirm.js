@@ -19,8 +19,8 @@ var AppInboundConfirm =
     },
     execute: function() {
         $('#execute').on('click', function (e) {
-            if ($('[name="data[Inbound][keeping_type]"]').length > 0) {
-                if ($('[name="data[Inbound][keeping_type]"]:checked').length == 0) {
+            if ($('[name="data[InboundBase][keeping_type]"]').length > 0) {
+                if ($('[name="data[InboundBase][keeping_type]"]:checked').length == 0) {
                     if($('#cleaning-error').length == 0) {
                         $('.cleaning > .headline').after('<p class="valid-il" id="cleaning-error">保管方法を選択してください。</p>')
                     }
