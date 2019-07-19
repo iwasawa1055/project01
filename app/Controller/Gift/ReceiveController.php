@@ -3,13 +3,15 @@
 App::uses('MinikuraController', 'Controller');
 
 App::uses('UnusedGiftInfo', 'Model');
-App::uses('ReceiveGift', 'Model');
+App::uses('ReceiveGiftByCreditCard', 'Model');
+App::uses('ReceiveGiftByAmazonPay', 'Model');
 App::uses('AmazonPayModel', 'Model');
 
 class ReceiveController extends MinikuraController
 {
-    const MODEL_NAME_RECEIVE_GIFT = 'ReceiveGift';
-    const MODEL_NAME_CHECK_GIFT   = 'UnusedGiftInfo';
+    const MODEL_NAME_RECEIVE_GIFT_BY_CARD   = 'ReceiveGiftByCreditCard';
+    const MODEL_NAME_RECEIVE_GIFT_BY_AMAZON = 'ReceiveGiftByAmazonPay';
+    const MODEL_NAME_CHECK_GIFT             = 'UnusedGiftInfo';
 
     /** layout */
     public $layout = 'order';
@@ -57,23 +59,28 @@ class ReceiveController extends MinikuraController
             return $this->redirect(['controller' => 'customer/register', 'action' => 'add_personal']);
         }
 
-        // gift_cd
-        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
-        $data['gift_cd'] = CakeSession::read('app.data.gift_cd');
-        CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
-
-        // amazon payment user
-        if ($this->Customer->isAmazonPay()) {
-            CakeSession::write('order_type', 'amazon');
-            $this->redirect('/gift/receive/input_amazon_pay');
-        }
-
         // corporate user
         if (!$this->Customer->isPrivateCustomer()) {
             return $this->redirect('/');
         }
 
-        // normal user
+        // amazon payment user
+        if ($this->Customer->isAmazonPay()) {
+            // gift_cd
+            $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
+            $data['gift_cd'] = CakeSession::read('app.data.gift_cd');
+            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
+
+            CakeSession::write('order_type', 'amazon');
+            $this->redirect('/gift/receive/input_amazon_pay');
+        }
+
+        // gift_cd
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
+        $data['gift_cd'] = CakeSession::read('app.data.gift_cd');
+        CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $data);
+
+        // credit card user
         CakeSession::write('order_type', 'card');
         $this->redirect('/gift/receive/input_card');
     }
@@ -94,11 +101,11 @@ class ReceiveController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT);
+        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
 
         if ($this->request->is('get')) {
 
-            $this->request->data[self::MODEL_NAME_RECEIVE_GIFT] = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+            $this->request->data[self::MODEL_NAME_RECEIVE_GIFT_BY_CARD] = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
 
             // 住所一覧
             $address_list = $this->Address->get();
@@ -117,16 +124,16 @@ class ReceiveController extends MinikuraController
 
             $this->set('address_list', CakeSession::read('address_list'));
 
-            $this->set(self::MODEL_NAME_RECEIVE_GIFT, $this->request->data);
+            $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $this->request->data);
 
         } elseif ($this->request->is('post')) {
 
-            $data = $this->request->data[self::MODEL_NAME_RECEIVE_GIFT];
+            $data = $this->request->data[self::MODEL_NAME_RECEIVE_GIFT_BY_CARD];
 
             /** セッションデータ */
-            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
+            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $data);
 
-            $this->ReceiveGift->set($data);
+            $this->ReceiveGiftByCreditCard->set($data);
 
             /** 受け取り情報バリデーション */
             $error_flag = false;
@@ -145,7 +152,7 @@ class ReceiveController extends MinikuraController
                 $validation_item[] = 'address2';
                 $validation_item[] = 'address3';
             }
-            if (!$this->ReceiveGift->validates(['fieldList' => $validation_item])) {
+            if (!$this->ReceiveGiftByCreditCard->validates(['fieldList' => $validation_item])) {
                 $error_flag = true;
             }
 
@@ -158,7 +165,7 @@ class ReceiveController extends MinikuraController
                    $result_gift_data = json_decode(json_encode($result_gift_data), true);
                    if (empty($result_gift_data['results'])) {
                        $error_flag = true;
-                       $this->ReceiveGift->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
+                       $this->ReceiveGiftByCreditCard->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
                    } else {
                        foreach ($result_gift_data['results'] as $gift_data) {
                            $data['kit_list'][] = [
@@ -177,7 +184,7 @@ class ReceiveController extends MinikuraController
                 return $this->render('gift_input_card');
             }
 
-            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
+            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $data);
 
             return $this->redirect(['controller' => 'receive', 'action' => 'confirm_card']);
 
@@ -200,7 +207,7 @@ class ReceiveController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
 
         // 既存アドレス使用時
         if ($data['address_id'] !== 'add') {
@@ -217,9 +224,9 @@ class ReceiveController extends MinikuraController
             $data['address'] = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
         }
 
-        CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
+        CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $data);
 
-        $this->set(self::MODEL_NAME_RECEIVE_GIFT, $data);
+        $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $data);
     }
 
     /**
@@ -236,9 +243,9 @@ class ReceiveController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT);
+        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
 
-        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
 
         /** ギフトを受け取り */
         $tmp_kit = [];
@@ -257,14 +264,14 @@ class ReceiveController extends MinikuraController
             'address2'      => $data['address2'],
             'address3'      => $data['address3'],
         ];
-        $result_gift_data = $this->ReceiveGift->apiPost($api_parm);
+        $result_gift_data = $this->ReceiveGiftByCreditCard->apiPost($api_parm);
         if (!$result_gift_data->isSuccess()) {
-            $this->ReceiveGift->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
+            $this->ReceiveGiftByCreditCard->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
             $this->set('address_list', CakeSession::read('address_list'));
             return $this->render('gift_input_card');
         }
 
-        $this->set(self::MODEL_NAME_RECEIVE_GIFT, $data);
+        $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD, $data);
 
         $this->_cleanKitOrderSession();
     }
@@ -285,26 +292,26 @@ class ReceiveController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT);
+        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
 
         if ($this->request->is('get')) {
 
-            $this->request->data[self::MODEL_NAME_RECEIVE_GIFT] = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+            $this->request->data[self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON] = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
 
-            $this->set(self::MODEL_NAME_RECEIVE_GIFT, $this->request->data);
+            $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $this->request->data);
 
         } elseif ($this->request->is('post')) {
 
-            $data = $this->request->data[self::MODEL_NAME_RECEIVE_GIFT];
+            $data = $this->request->data[self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON];
 
             /** データ整形 */
             // Amazonより取得した個人情報よりデータ整形
             $this->_setAmazonCustomerData($data);
 
             /** セッションデータ */
-            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
+            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
 
-            $this->ReceiveGift->set($data);
+            $this->ReceiveGiftByAmazonPay->set($data);
 
             /** 受け取り情報バリデーション */
             $validation_item[] = 'gift_cd';
@@ -318,7 +325,7 @@ class ReceiveController extends MinikuraController
             $validation_item[] = 'address3';
 
             $error_flag = false;
-            if (!$this->ReceiveGift->validates(['fieldList' => $validation_item])) {
+            if (!$this->ReceiveGiftByAmazonPay->validates(['fieldList' => $validation_item])) {
                 $error_flag = true;
             }
 
@@ -331,7 +338,7 @@ class ReceiveController extends MinikuraController
                     $result_gift_data = json_decode(json_encode($result_gift_data), true);
                     if (empty($result_gift_data['results'])) {
                         $error_flag = true;
-                        $this->ReceiveGift->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
+                        $this->ReceiveGiftByAmazonPay->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
                     } else {
                         foreach ($result_gift_data['results'] as $gift_data) {
                             $data['kit_list'][] = [
@@ -350,7 +357,7 @@ class ReceiveController extends MinikuraController
                 return $this->render('gift_input_amazon_pay');
             }
 
-            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT, $data);
+            CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
 
             return $this->redirect(['controller' => 'receive', 'action' => 'confirm_amazon_pay']);
 
@@ -373,11 +380,13 @@ class ReceiveController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
 
         $data['address'] = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
 
-        $this->set(self::MODEL_NAME_RECEIVE_GIFT, $data);
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
+
+        $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
     }
 
     /**
@@ -394,19 +403,18 @@ class ReceiveController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT);
+        $this->loadModel(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
 
-        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT);
+        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
 
         /** ギフトを受け取り */
         $tmp_kit = [];
         foreach ($data['kit_list'] as $kit_data) {
             $tmp_kit[] = $kit_data['kit_cd'] . ':' . $kit_data['kit_cnt'];
         }
-        $kit = implode(",", $tmp_kit);
         $api_parm = [
             'gift_cd'       => $data['gift_cd'],
-            'kit'           => $kit,
+            'kit'           => implode(",", $tmp_kit),
             'delivery_name' => $data['name'],
             'tel1'          => $data['tel1'],
             'postal'        => $data['postal'],
@@ -415,13 +423,15 @@ class ReceiveController extends MinikuraController
             'address2'      => $data['address2'],
             'address3'      => $data['address3'],
         ];
-        $result_gift_data = $this->ReceiveGift->apiPost($api_parm);
+
+        $result_gift_data = $this->ReceiveGiftByAmazonPay->apiPost($api_parm);
+
         if (!$result_gift_data->isSuccess()) {
-            $this->ReceiveGift->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
+            $this->ReceiveGiftByAmazonPay->validationErrors['gift_cd'][0] = '該当するギフトコードが存在しません';
             return $this->render('gift_input_amazon_pay');
         }
 
-        $this->set(self::MODEL_NAME_RECEIVE_GIFT, $data);
+        $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
 
         $this->_cleanKitOrderSession();
     }
@@ -503,7 +513,8 @@ class ReceiveController extends MinikuraController
      */
     private function _cleanKitOrderSession()
     {
-        CakeSession::delete(self::MODEL_NAME_RECEIVE_GIFT);
+        CakeSession::delete(self::MODEL_NAME_RECEIVE_GIFT_BY_CARD);
+        CakeSession::delete(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
         CakeSession::delete('address_list');
     }
 

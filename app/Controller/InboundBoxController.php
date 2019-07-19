@@ -221,6 +221,23 @@ class InboundBoxController extends MinikuraController
             if ($gift_flag) {
                 $data = $this->request->data['InboundBase'];
                 CakeSession::write('item_excess_list', $data['item_excess_list']);
+
+                // カード登録チェック
+                $excess_flag = false;
+                foreach ($data['item_excess_list'] as $item_excess_data) {
+                    if ($item_excess_data === '1') {
+                        $excess_flag = true;
+                        break;
+                    }
+                }
+                if ($excess_flag) {
+                    $card_data = $this->Customer->getDefaultCard();
+                    if (empty($card_data)) {
+                        $this->set('card_flag', true);
+                        $this->Flash->validation('預け入れ上限を超える場合はカード情報を登録してください。', ['key' => 'item_excess']);
+                        return $this->redirect(['controller' => 'InboundBox', 'action' => 'attention']);
+                    }
+                }
             }
             return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm']);
         }

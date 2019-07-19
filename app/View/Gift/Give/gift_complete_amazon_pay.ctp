@@ -56,7 +56,7 @@
           </li>
           <li>
             <label class="headline">数量</label>
-            <p class="text-confirm"><?php echo h($PaymentAmazonGiftAmazonPay['gift_cleaning_num']); ?></p>
+            <p class="text-confirm"><?php echo h($PaymentAmazonGiftAmazonPay['gift_cleaning_num']); ?>個</p>
           </li>
         </ul>
       </div>

@@ -201,7 +201,7 @@ var AppAmazonPay =
           });
           if (exe_flag) {
             var self = $(this);
-            var add_billing  = $('<input type="hidden" name="ReceiveGift[amazon_order_reference_id]">');
+            var add_billing  = $('<input type="hidden" name="ReceiveGiftByAmazonPay[amazon_order_reference_id]">');
             add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
             add_billing.insertAfter(self);
 

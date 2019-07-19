@@ -4,7 +4,7 @@
 
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 
-  <?php echo $this->Form->create('ReceiveGift', ['url' => ['controller' => 'receive', 'action' => 'complete_card'], 'novalidate' => true]); ?>
+  <?php echo $this->Form->create('ReceiveGiftByCreditCard', ['url' => ['controller' => 'receive', 'action' => 'complete_card'], 'novalidate' => true]); ?>
 
     <div id="page-wrapper" class="l-detail-gift wrapper">
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ギフトをもらう</h1>
@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($ReceiveGift['kit_list'] as $kit_data): ?>
+            <?php foreach ($ReceiveGiftByCreditCard['kit_list'] as $kit_data): ?>
             <tr>
               <th><?php echo KIT_NAME[$kit_data['kit_cd']]; ?></th>
               <td><?php echo $kit_data['kit_cnt']; ?></td>
@@ -40,10 +40,10 @@
         <li>
           <label class="headline">配送住所</label>
           <ul class="li-address">
-            <li>〒<?php echo h($ReceiveGift['postal']); ?></li>
-            <li><?php echo h($ReceiveGift['address']); ?></li>
-            <li><?php echo h($ReceiveGift['name']); ?></li>
-            <li><?php echo h($ReceiveGift['tel1']); ?></li>
+            <li>〒<?php echo h($ReceiveGiftByCreditCard['postal']); ?></li>
+            <li><?php echo h($ReceiveGiftByCreditCard['address']); ?></li>
+            <li><?php echo h($ReceiveGiftByCreditCard['name']); ?></li>
+            <li><?php echo h($ReceiveGiftByCreditCard['tel1']); ?></li>
           </ul>
         </li>
       </ul>

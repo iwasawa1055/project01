@@ -6,7 +6,7 @@
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/input_amazon_pay_dev.css', ['block' => 'css']); ?>
 
-  <?php echo $this->Form->create('ReceiveGift', ['url' => ['controller' => 'receive', 'action' => 'input_amazon_pay'], 'novalidate' => true]); ?>
+  <?php echo $this->Form->create('ReceiveGiftByAmazonPay', ['url' => ['controller' => 'receive', 'action' => 'input_amazon_pay'], 'novalidate' => true]); ?>
 
     <div id="page-wrapper" class="l-detail-gift wrapper">
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ギフトをもらう</h1>
@@ -71,11 +71,11 @@
           <h4>ご利用になるギフトコードを入力してください。</h4>
           <ul class="l-input-cord">
             <li>
-              <?php echo $this->Form->input('ReceiveGift.gift_cd', ['id' => 'gift_cd', 'class' => "cb-square", 'placeholder'=>'例：0123', 'size' => '6', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('ReceiveGiftByAmazonPay.gift_cd', ['id' => 'gift_cd', 'class' => "cb-square", 'placeholder'=>'例：1234567890123456', 'size' => '6', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
             </li>
             <li><a id="check_gift_cd" class="btn-red" href="javascript:void(0)">確認する</a>
           </ul>
-          <?php echo $this->Form->error('ReceiveGift.gift_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          <?php echo $this->Form->error('ReceiveGiftByAmazonPay.gift_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
         </li>
         <li class="gift-info">
           <ul class="items">

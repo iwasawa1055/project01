@@ -5,6 +5,11 @@
 
         <?php echo $this->Form->create('InboundBase', ['url' => '/inbound/box/attention', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
         <div id="page-wrapper" class="wrapper inbound">
+            <?php $error_item_excess = $this->Flash->render('item_excess');?>
+            <?php if (!empty($error_item_excess)) :?>
+            <br>
+            <div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle"></i><?php echo $error_item_excess;?></div>
+            <?php endif;?>
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="pagenation">
                 <li><span class="number">1</span><span class="txt">ボックス<br>選択</span>
@@ -99,8 +104,8 @@
                 </ul>
             </div>
             <?php endif;?>
-            <?php if(!empty($card_flag)): ?>
-            <section class="l-select-payment" <?php if (!$card_flag): ?> style="display:none"<?php endif; ?>>
+            <?php if($card_flag): ?>
+            <section class="l-select-payment">
                 <div class="input-card">
                     <ul class="input-check-list">
                         <h4>クレジットカード情報の入力</h4>

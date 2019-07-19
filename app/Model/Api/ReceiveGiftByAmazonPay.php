@@ -2,11 +2,11 @@
 
 App::uses('ApiModel', 'Model');
 
-class ReceiveGift extends ApiModel
+class ReceiveGiftByAmazonPay extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('ReceiveGift', '/receive_gift', 'minikura_v5');
+        parent::__construct('ReceiveGiftByAmazonPay', '/receive_gift_by_amazon_pay', 'amazon_pay_v5');
     }
 
     protected function triggerDataChanged()

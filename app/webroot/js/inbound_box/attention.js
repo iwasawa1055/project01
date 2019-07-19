@@ -101,6 +101,14 @@ var AppInboundAttention =
   e: function () {
     // カードエリア出力
     $('.l-select-payment').hide();
+    $('.list-slct-num input:radio').each(function(i) {
+      if($(this).val() == 1){
+        if ($(this).prop('checked')) {
+          $('.l-select-payment').show();
+          return false;
+        }
+      }
+    });
     $('.list-slct-num input:radio').change(function () {
       var card_flag = false;
       $('.list-slct-num input:radio').each(function(i) {

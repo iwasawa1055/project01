@@ -4,7 +4,7 @@
 
 <?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 
-  <?php echo $this->Form->create('ReceiveGift', ['url' => ['controller' => 'receive', 'action' => 'input_card'], 'novalidate' => true]); ?>
+  <?php echo $this->Form->create('ReceiveGiftByCreditCard', ['url' => ['controller' => 'receive', 'action' => 'input_card'], 'novalidate' => true]); ?>
 
     <div id="page-wrapper" class="l-detail-gift wrapper">
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ギフトをもらう</h1>
@@ -64,12 +64,12 @@
           <h4>ご利用になるギフトコードを入力してください。</h4>
           <ul class="l-input-cord">
             <li>
-              <?php echo $this->Form->input('ReceiveGift.gift_cd', ['id' => 'gift_cd', 'class' => "cb-square", 'placeholder'=>'例：0123', 'size' => '6', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
+              <?php echo $this->Form->input('ReceiveGiftByCreditCard.gift_cd', ['id' => 'gift_cd', 'class' => "cb-square", 'placeholder'=>'例：1234567890123456', 'size' => '6', 'autocomplete' => "cc-csc", 'error' => false, 'label' => false, 'div' => false]); ?>
             </li>
             <li><a id="check_gift_cd" class="btn-red" href="javascript:void(0)">確認する</a>
             </li>
           </ul>
-          <?php echo $this->Form->error('ReceiveGift.gift_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          <?php echo $this->Form->error('ReceiveGiftByCreditCard.gift_cd', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
         </li>
         <li class="gift-info">
           <ul class="items">
@@ -111,7 +111,7 @@
         </li>
         <li>
           <label class="headline">お届けに上がる住所<span class="note">配送業者がお届けに伺います。</span></label>
-          <?php echo $this->Form->select('ReceiveGift.address_id', $address_list, ['id' => 'address_id', 'class' => 'dsn-adress select-delivery focused', 'empty' => false, 'label' => false, 'error' => false, 'div' => false]); ?>
+          <?php echo $this->Form->select('ReceiveGiftByCreditCard.address_id', $address_list, ['id' => 'address_id', 'class' => 'dsn-adress select-delivery focused', 'empty' => false, 'label' => false, 'error' => false, 'div' => false]); ?>
         </li>
         <li class="order-input-address">
           <?php echo $this->element('Order/add-address-card'); ?>
