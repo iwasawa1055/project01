@@ -6,8 +6,14 @@
       <?php echo $this->Flash->render(); ?>
 
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ギフトを贈る</h1>
-
-      <?php echo $this->element('Order/breadcrumb_list'); ?>
+      <ul class="pagenation">
+        <li><span class="number">1</span><span class="txt">ギフト<br>選択</span>
+        </li>
+        <li class="on"><span class="number">2</span><span class="txt">確認</span>
+        </li>
+        <li><span class="number">3</span><span class="txt">完了</span>
+        </li>
+      </ul>
 
       <p class="page-caption">以下の内容でギフト購入手続きを行います。</p>
 

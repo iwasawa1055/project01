@@ -202,7 +202,7 @@ const KIT_NAME = [
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
     KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
     KIT_CD_CLOSET => 'minikuraCloset',
-    KIT_CD_GIFT_CLEANING_PACK => '(仮)Giftクリーニングパック	',
+    KIT_CD_GIFT_CLEANING_PACK => 'ギフト クリーニングパック',
 ];
 
 const KIT_IMAGE = [
@@ -235,7 +235,7 @@ const KIT_CODE_DISP_NAME_ARRAY =[
     'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'product_cd' => PRODUCT_CD_LIBRARY,            'name' => 'Library ボックス'),
     'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'product_cd' => PRODUCT_CD_LIBRARY,            'name' => 'Library ボックス'),
     'hanger_num'        => array('code' => KIT_CD_CLOSET,             'product_cd' => PRODUCT_CD_CLOSET,             'name' => 'Closet ボックス'),
-    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK, 'name' => '(仮)ギフト クリーニングパック'),
+    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
 ];
 
 const PRODUCT_DATA_ARRAY = [

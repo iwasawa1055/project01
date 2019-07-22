@@ -76,7 +76,7 @@ class ItemController extends MinikuraController
         } else if ($_product === 'library') {
             $productName = 'minikuraLibrary';
         } else if ($_product === 'gift_cleaning') {
-            $productName = '(仮)ギフト クリーニングパック';
+            $productName = 'ギフト クリーニングパック';
         }
         return $productName;
     }

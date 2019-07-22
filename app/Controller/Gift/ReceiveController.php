@@ -384,7 +384,7 @@ class ReceiveController extends MinikuraController
 
         $data['address'] = $data['pref'] . $data['address1'] . $data['address2'] . $data['address3'];
 
-        $data = CakeSession::read(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON);
+        CakeSession::write(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
 
         $this->set(self::MODEL_NAME_RECEIVE_GIFT_BY_AMAZON, $data);
     }
