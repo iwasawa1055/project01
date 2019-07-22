@@ -59,7 +59,12 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                         </span>
                       </label>
                       <div class="box-info">
-                        <p class="box-id"><?php echo $new_box['box_id']; ?></p>
+                        <p class="l-box-id">
+                            <span class="txt-box-id"><?php echo $new_box['box_id']; ?></span>
+                            <?php if(!empty($new_box['free_limit_date'])):?>
+                            <span class="txt-free-limit">無料期限<span class="date"><?php echo $new_box['free_limit_date']; ?></span></span>
+                            <?php endif;?>
+                        </p>
                         <p class="box-type"><?php echo $new_box['kit_name']; ?></p>
                         <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['new'][$new_box['box_id']]['title'])) echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
                         <?php if($new_box['product_cd'] === PRODUCT_CD_MONO): ?>
@@ -105,7 +110,12 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                           </span>
                         </label>
                         <div class="box-info">
-                          <p class="box-id"><?php echo $old_box['box_id']; ?></p>
+                          <p class="l-box-id">
+                            <span class="txt-box-id"><?php echo $old_box['box_id']; ?></span>
+                            <?php if(!empty($old_box['free_limit_date'])):?>
+                            <span class="txt-free-limit">無料期限<span class="date"><?php echo $old_box['free_limit_date']; ?></span></span>
+                            <?php endif;?>
+                          </p>
                           <p class="box-type"><?php echo $old_box['kit_name']; ?></p>
                           <input type="text" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['old'][$old_box['box_id']]['title'])) echo $box_list_data['old'][$old_box['box_id']]['title']; ?>">
                         </div>

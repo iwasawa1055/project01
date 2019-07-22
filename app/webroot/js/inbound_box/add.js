@@ -26,9 +26,8 @@ var AppInboundBaseBoxAdd =
       }
     });
 
-    // TODO 後で戻す
     // modal表示
-    // $("[data-remodal-id=packaging]").remodal().open();
+    $("[data-remodal-id=packaging]").remodal().open();
   },
 
   checkSelectBox: function() {
@@ -188,6 +187,5 @@ $(function()
   PickupYamato.getDateTime();
 });
 
-// TODO 後で戻す
 // モーダルでエラーが発生するので打ち消し
-// function scrollTo(_target,_correction,_speed) {}
+function scrollTo(_target,_correction,_speed) {}

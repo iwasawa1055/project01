@@ -62,7 +62,7 @@ var AppInboundBaseBoxAdd =
     });
 
     // modal表示
-    // $("[data-remodal-id=packaging]").remodal().open();
+    $("[data-remodal-id=packaging]").remodal().open();
   },
 
   checkSelectBox: function() {
@@ -190,4 +190,4 @@ $(function()
 AppAmazonPayWallet.a();
 
 // モーダルでエラーが発生するので打ち消し
-// function scrollTo(_target,_correction,_speed) {}
+function scrollTo(_target,_correction,_speed) {}

@@ -89,9 +89,19 @@ class InboundBoxController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_INBOUND_BASE);
 
+        $new_box_list = $this->InfoBox->getListForInbound();
+        $old_box_list = $this->InfoBox->getListForInboundOldBox();
+        // 無料期限
+        foreach ($new_box_list as &$box_info) {
+            $this->_setFreeLimitDate($box_info);
+        }
+        foreach ($old_box_list as &$box_info) {
+            $this->_setFreeLimitDate($box_info);
+        }
+
         // view data
-        $this->set('new_box_list', $this->InfoBox->getListForInbound());
-        $this->set('old_box_list', $this->InfoBox->getListForInboundOldBox());
+        $this->set('new_box_list', $new_box_list);
+        $this->set('old_box_list', $old_box_list);
 
         if ($this->request->is('get')) {
 
@@ -377,9 +387,19 @@ class InboundBoxController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_INBOUND_BASE);
 
+        $new_box_list = $this->InfoBox->getListForInbound();
+        $old_box_list = $this->InfoBox->getListForInboundOldBox();
+        // 無料期限
+        foreach ($new_box_list as &$box_info) {
+            $this->_setFreeLimitDate($box_info);
+        }
+        foreach ($old_box_list as &$box_info) {
+            $this->_setFreeLimitDate($box_info);
+        }
+
         // view data
-        $this->set('new_box_list', $this->InfoBox->getListForInbound());
-        $this->set('old_box_list', $this->InfoBox->getListForInboundOldBox());
+        $this->set('new_box_list', $new_box_list);
+        $this->set('old_box_list', $old_box_list);
 
         if ($this->request->is('get')) {
 
@@ -830,6 +850,39 @@ class InboundBoxController extends MinikuraController
                     break;
             }
         }
+    }
+
+    /**
+     * 無料期限設定
+     */
+    private function _setFreeLimitDate(&$_box_info)
+    {
+        $_box_info['free_limit_date'] = '';
+        $current_time = time();
+        $limit_time   = strtotime($this->Common->getServiceFreeLimit($_box_info['order_date'], 'Y-m-d h:m:s'));
+        $start_time   = strtotime(START_BOX_FREE);
+        $order_time   = strtotime($_box_info['order_date']);
+
+        // 有料購入プロダクト除去
+        $paid_product_cd_list = [
+            PRODUCT_CD_CLEANING_PACK,
+            PRODUCT_CD_GIFT_CLEANING_PACK
+        ];
+        if (in_array($_box_info['product_cd'], $paid_product_cd_list)) {
+            return;
+        }
+
+        // 購入日とサービス開始日時
+        if ($start_time > $order_time) {
+            return;
+        }
+
+        // 現在日時と無料期限
+        if ($current_time > $limit_time) {
+            return;
+        }
+
+        $_box_info['free_limit_date'] = $this->Common->getServiceFreeLimit($_box_info['order_date'], 'Y/m/d');
     }
 
     /**
