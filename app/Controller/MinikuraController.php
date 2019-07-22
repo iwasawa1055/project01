@@ -213,6 +213,7 @@ class MinikuraController extends AppController
                 'sneakers' => false,
                 'library' => false,
                 'closet' => false,
+                'gift_cleaning' => false,
             ],
             'box' => [
                 'toggle' => false,
@@ -227,6 +228,7 @@ class MinikuraController extends AppController
                 'sneakers' => false,
                 'library' => false,
                 'closet' => false,
+                'gift_cleaning' => false,
             ],
             'cleaning' => false,
             'travel' => false,
