@@ -27,7 +27,7 @@
         <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-storage-term" class="link">最低保管期間</a></span><?php echo $box['min_keep_date']; ?>まで</p>
         <?php else : ?>
         <?php if (!empty($box['take_out_free_date'])) : ?>
-        <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-fee-free" class="link">取り出し料金無料</a></span><?php echo $box['take_out_free_date']; ?></p>
+        <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-fee-free" class="link">取り出し料金無料</a></span><?php echo $box['take_out_free_date']; ?>から</p>
         <?php else : ?>
         <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-fee-free" class="link">取り出し料金無料</a></span>無料</p>
         <?php endif;?>
