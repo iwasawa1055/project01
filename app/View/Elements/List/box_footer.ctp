@@ -22,6 +22,15 @@
         <?php if (!empty($box['outbound_date']) && $box['box_status'] == BOXITEM_STATUS_OUTBOUND_DONE) : ?>
         <p class="box-list-caption"><span>出庫日</span><?php echo $this->Html->formatYmdKanji($box['outbound_date']); ?></p>
         <?php endif;?>
+        <?php if (!empty($box['min_keep_date'])) : ?>
+        <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-storage-term" class="link">最低保管期間</a></span><?php echo $box['min_keep_date']; ?>まで</p>
+        <?php else : ?>
+        <?php if (!empty($box['take_out_free_date'])) : ?>
+        <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-fee-free" class="link">取り出し料金無料</a></span><?php echo $box['take_out_free_date']; ?></p>
+        <?php else : ?>
+        <p class="box-list-caption"><span><a href="#" data-remodal-target="modal-fee-free" class="link">取り出し料金無料</a></span>無料</p>
+        <?php endif;?>
+        <?php endif;?>
       </div>
     </div>
 </div>

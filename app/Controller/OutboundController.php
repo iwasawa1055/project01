@@ -22,6 +22,9 @@ class OutboundController extends MinikuraController
 
     private $outboundList = [];
 
+    /** layout */
+    public $layout = 'outbound';
+
     /**
      * 制御前段処理.
      */
@@ -432,6 +435,10 @@ class OutboundController extends MinikuraController
     public function confirm()
     {
         $boxList = $this->outboundList->getBoxList();
+        foreach ($boxList as &$box_info) {
+            $box_info['min_keep_date']      = $this->Common->getMinimumKeepDate($box_info['inbound_date']);
+            $box_info['take_out_free_date'] = $this->Common->getTakeOutFreeDate($box_info['inbound_date']);
+        }
         HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
 
@@ -526,6 +533,10 @@ class OutboundController extends MinikuraController
     public function confirm_amazon_pay()
     {
         $boxList = $this->outboundList->getBoxList();
+        foreach ($boxList as &$box_info) {
+            $box_info['min_keep_date']      = $this->Common->getMinimumKeepDate($box_info['inbound_date']);
+            $box_info['take_out_free_date'] = $this->Common->getTakeOutFreeDate($box_info['inbound_date']);
+        }
         HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
 
@@ -549,7 +560,7 @@ class OutboundController extends MinikuraController
                 'firstname'         => filter_input(INPUT_POST, 'firstname'),
                 'firstname_kana'    => '　',
                 'lastname'          => filter_input(INPUT_POST, 'lastname'),
-                'lastname_kana'     => '　',   
+                'lastname_kana'     => '　',
             ];
 
             // amazon pay 情報取得

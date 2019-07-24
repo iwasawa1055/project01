@@ -428,3 +428,8 @@ p.facebook-message a,
 input:-ms-input-placeholder {
   color: #a9a9a9;
 }
+
+.outbound_select_checkbox > input[type="checkbox"],
+box_select_checkbox{
+  display: block;
+}
