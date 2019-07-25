@@ -65,6 +65,11 @@ class MinikuraController extends AppController
                     }
                 }
 
+                // 階層化されている例外のコントローラー
+                if ($set_controller === "/gift/") {
+                    $set_action = substr($set_action, 0, strcspn($set_action, '?'));
+                }
+
                 $set_param = [
                     'c' => $set_controller,
                     'a' => $set_action,

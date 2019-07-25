@@ -29,7 +29,6 @@ class ReceiveController extends MinikuraController
      */
     protected function isAccessDeny()
     {
-        // TODO 中身をちゃんと見ないといけない。。。
         if (!$this->Customer->canOrderKit() && ($this->action === 'complete_card' || $this->action === 'complete_bank')) {
             return true;
         }
@@ -53,6 +52,15 @@ class ReceiveController extends MinikuraController
             $this->_cleanKitOrderSession();
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        // ギフトコード
+        $gift_cd = '';
+        if (isset($_GET['gift_cd'])) {
+            $gift_cd = $_GET['gift_cd'];
+        } elseif (CakeSession::read('app.data.gift_cd')) {
+            $gift_cd = CakeSession::read('app.data.gift_cd');
+        }
+        CakeSession::Write('app.data.gift_cd', $gift_cd);
 
         // entry user
         if ($this->Customer->isEntry()) {
