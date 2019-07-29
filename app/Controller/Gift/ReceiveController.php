@@ -150,7 +150,6 @@ class ReceiveController extends MinikuraController
             $validation_item[] = 'address_id';
             // お届け先入力時
             if ($data['address_id'] == 'add') {
-                // TODO lastnameないよ
                 $validation_item[] = 'lastname';
                 $validation_item[] = 'firstname';
                 $validation_item[] = 'tel1';
@@ -182,8 +181,6 @@ class ReceiveController extends MinikuraController
                            ];
                        }
                    }
-               } else {
-                   // TODO どうする？
                }
            }
 
@@ -355,8 +352,6 @@ class ReceiveController extends MinikuraController
                             ];
                         }
                     }
-                } else {
-                    // TODO どうする？
                 }
             }
 

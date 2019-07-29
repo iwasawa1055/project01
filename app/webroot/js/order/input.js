@@ -258,7 +258,6 @@ var AppInputOrder =
             elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
         });
     }).fail(function (data, textStatus, errorThrown) {
-        // TODO どうするかな
     }).always(function (data, textStatus, returnedObject) {
         elem_datetime.removeAttr("disabled");
     });
@@ -290,7 +289,6 @@ var AppInputOrder =
                 elem_datetime.append($('<option>').html(datatime.text).val(datatime.datetime_cd));
             });
         }).fail(function (data, textStatus, errorThrown) {
-            // TODO どうするかな
         }).always(function (data, textStatus, returnedObject) {
             elem_datetime.removeAttr("disabled");
         });
