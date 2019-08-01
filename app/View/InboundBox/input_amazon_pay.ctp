@@ -69,7 +69,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                                 </p>
                                 <p class="box-type"><?php echo $new_box['kit_name']; ?></p>
                                 <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['new'][$new_box['box_id']]['title'])) echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
-                                <?php if($new_box['product_cd'] === PRODUCT_CD_MONO): ?>
+                                <?php if($new_box['product_cd'] === PRODUCT_CD_MONO || $new_box['product_cd'] === PRODUCT_CD_CLOSET || $new_box['product_cd'] === PRODUCT_CD_LIBRARY || $new_box['product_cd'] === PRODUCT_CD_CLEANING_PACK || $new_box['product_cd'] === PRODUCT_CD_GIFT_CLEANING_PACK): ?>
                                 <label class="input-check">
                                     <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
                                     <span class="icon"></span>
