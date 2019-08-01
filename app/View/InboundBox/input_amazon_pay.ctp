@@ -37,7 +37,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     </li>
                     <input type='hidden' id='dev-selected-box_type' value="<?php echo $this->request->data['InboundBase']['box_type']?>">
                 </ul>
-                <div id="dev-new-box" class="item-content">
+                <div id="dev-new-box" class="item-content" <?php echo (!isset($this->request->data['InboundBase']['box_type']) || $this->request->data['InboundBase']['box_type'] == 'new') ? '' : 'style="display:none"'; ?>>
                     <ul class="l-caution">
                         <li>
                             <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
@@ -82,7 +82,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                         <?php endforeach; ?>
                     </ul>
                 </div>
-                <div id="dev-old-box" class="item-content">
+                <div id="dev-old-box" class="item-content" <?php echo ($this->request->data['InboundBase']['box_type'] == 'old') ? '' : 'style="display:none"'; ?>>
                     <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
                         ボックスの状態については十分ご確認の上、ご利用ください。<br>
                         なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。</p>
