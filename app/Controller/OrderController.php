@@ -207,8 +207,8 @@ class OrderController extends MinikuraController
                 $validation_item[] = 'address2';
                 $validation_item[] = 'address3';
             }
-            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
-            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
+            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施(ハンガー3つ以上の場合はdatetime_cdチェック対象)
+            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger'])) || (isset($kit_list['hanger']) && $kit_list['hanger'] > 2)) {
                 $validation_item[] = 'datetime_cd';
             }
             if (!$this->PaymentGMOKitByCreditCard->validates(['fieldList' => $validation_item])) {
@@ -379,7 +379,12 @@ class OrderController extends MinikuraController
             // API用にデータを整形
             unset($data_list['hanger']['address1'], $data_list['hanger']['address2'], $data_list['hanger']['address3']);
 
-            $this->_postPaymentNekoposCreditCard($data_list['hanger']);
+            if ($data_list['hanger']['hanger_num'] > 2) {
+                $this->_postPaymentCreditCard($data_list['hanger']);
+            } else {
+                $this->_postPaymentNekoposCreditCard($data_list['hanger']);
+            }
+
         }
 
         $this->set('card_data', CakeSession::read('card_data'));
