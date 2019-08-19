@@ -35,8 +35,8 @@ class OrderController extends MinikuraController
         parent::beforeFilter();
 
         // 法人口座未登録用遷移
-        if (!$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
-            new AppTerminalError(AppE::NOT_FOUND, 404);
+        if ($this->action !== 'cannot' && !$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
+            return $this->redirect(['action' => 'cannot']);
         }
 
         $this->Order = $this->Components->load('Order');
@@ -752,6 +752,13 @@ class OrderController extends MinikuraController
         $this->set(self::MODEL_NAME_KIT_BY_AMAZON, CakeSession::read(self::MODEL_NAME_KIT_BY_AMAZON));
 
         $this->_cleanKitOrderSession();
+    }
+
+    /**
+     * 口座申請中(KE)の状態のユーザー
+     * */
+    public function cannot()
+    {
     }
 
     public function as_register_credit_card()
