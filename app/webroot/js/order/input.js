@@ -180,7 +180,7 @@ var AppInputOrder =
     var minValue  = 0;
     var maxValue  = 20;
     // var flagType  = '';
-    $('.btn-spinner').on('click', function() {
+    $('.btn-spinner').on('mousedown', function() {
 
       // ハンガー用出力エリア制御
       if($(this).closest(".type_other").length > 0){
