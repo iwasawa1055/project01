@@ -44,5 +44,11 @@ class MyPageController extends MinikuraController
 
         $this->set('notice_announcements', $ret);
 
+        // ご利用中サービスの集計
+        $this->set('product_summary', []);
+        if (!$this->Customer->isEntry()) {
+            $summary = $this->InfoBox->getKitCdSummary(false);
+            $this->set('kit_cd_summary', $summary);
+        }
     }
 }
