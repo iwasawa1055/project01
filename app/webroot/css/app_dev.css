@@ -428,3 +428,7 @@ p.facebook-message a,
 input:-ms-input-placeholder {
   color: #a9a9a9;
 }
+
+label.reset_label {
+  display: block;
+}
