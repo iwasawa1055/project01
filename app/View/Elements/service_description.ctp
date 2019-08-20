@@ -1,18 +1,18 @@
     <ul class="l-guide-menu">
       <li class="l-guide-dtl">
-        <label>
+        <label class="reset_label">
           <input type="radio" class="ss" name="guide" value="5to30">
           <span class="btn">サービス申し込みのやり方</span>
         </label>
       </li>
       <li class="l-guide-dtl">
-        <label>
+        <label class="reset_label">
           <input type="radio" class="ss" name="guide" value="5to30">
           <span class="btn">預け入れのやり方</span>
         </label>
       </li>
       <li class="l-guide-dtl">
-        <label>
+        <label class="reset_label">
           <input type="radio" class="ss" name="guide" value="5to30">
           <span class="btn">取り出しのやり方</span>
         </label>
