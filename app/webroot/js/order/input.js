@@ -180,7 +180,7 @@ var AppInputOrder =
     var minValue  = 0;
     var maxValue  = 20;
     // var flagType  = '';
-    $('.btn-spinner').on('mousedown', function() {
+    $('.dsn-btn-spinner').on('click', function() {
 
       // ハンガー用出力エリア制御
       if($(this).closest(".type_other").length > 0){
@@ -189,14 +189,19 @@ var AppInputOrder =
         flagType = 'hanger';
       }
       var itemValue  = parseInt($(this).parents('.spinner').find('.input-spinner').val());
+      var totalValue = parseInt($(this).parents('.lineup-caption').find('p[class=select-num]').children('span').text());
       var btnType  = $(this).attr('name');
       if (btnType === 'spinner_down') {
         if (itemValue > minValue) {
+          $(this).parents('.spinner').find('.input-spinner').val(itemValue-valueStep);
+          $(this).parents('.lineup-caption').find('p[class=select-num]').children('span').text(totalValue-valueStep);
           flag_total[flagType] = parseInt(flag_total[flagType]) - valueStep;
         }
       }
       if (btnType === 'spinner_up') {
         if (itemValue < maxValue) {
+          $(this).parents('.spinner').find('.input-spinner').val(itemValue+valueStep);
+          $(this).parents('.lineup-caption').find('p[class=select-num]').children('span').text(totalValue+valueStep);
           flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
         }
       }
