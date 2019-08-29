@@ -3,6 +3,7 @@ App::uses('MinikuraController', 'Controller');
 App::uses('PickupYamato', 'Model');
 App::uses('CustomerAddress', 'Model');
 App::uses('PickupYamatoDateTime', 'Model');
+App::uses('MtYmstpost', 'Model');
 
 class PickupController extends MinikuraController
 {
@@ -110,6 +111,19 @@ class PickupController extends MinikuraController
                 if (!$this->PickupYamato->validates()) {
                     return $this->render('edit');
                 }
+            }
+
+            // 郵便番号チェックを行う
+            $pickup_detail = $this->_getPickupDetail();
+            $postal = $pickup_detail['postal'];
+            $this->loadModel('MtYmstpost');
+            $res = $this->MtYmstpost->getPostal(['postal' => $postal]);
+
+            if ($res->status == 0 || count($res->results) == 0) {
+                $this->Flash->set(__('集荷依頼ができない郵便番号を入力されています。お問い合わせください。'));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($postal, true));
+                return $this->render('edit');
             }
 
             // 日付のチェックを行う
@@ -330,6 +344,27 @@ class PickupController extends MinikuraController
                 $this->Flash->set(__('選択した集荷日又は集荷時間は締め切られました。集荷日、集荷時間を選択し直してください。'));
                 // redirect
                 return $this->render('edit_amazon_pay');
+            }
+
+            // 郵便番号チェックを行う
+            $this->loadModel('AmazonPayModel');
+            $set_param = array();
+            $set_param['amazon_order_reference_id'] = $params['amazon_order_reference_id'];
+            $set_param['address_consent_token'] = CakeSession::read(CustomerLogin::SESSION_AMAZON_PAY_ACCESS_KEY);
+            $set_param['mws_auth_token'] = Configure::read('app.amazon_pay.client_id');
+            $res = $this->AmazonPayModel->getOrderReferenceDetails($set_param);
+            $physicaldestination = $res['GetOrderReferenceDetailsResult']['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+            $physicaldestination = $this->AmazonPayModel->wrapPhysicalDestination($physicaldestination);
+            $postal = $this->_editPostalFormat($physicaldestination['PostalCode']);
+            $this->loadModel('MtYmstpost');
+            $res = $this->MtYmstpost->getPostal(['postal' => $postal]);
+
+            if ($res->status == 0 || count($res->results) == 0) {
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($postal, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' set_param ' . print_r($set_param, true));
+                $this->Flash->set(__('集荷依頼ができない郵便番号を入力されています。お問い合わせください。'));
+                return $this->render('edit');
             }
 
             $this->redirect('/pickup/confirm_amazon_pay');
