@@ -24,8 +24,8 @@
         </a>
       </li>
     </ul>
-    <ul class="l-info">
-      <li class="l-info-blk">
+    <ul id="top-notice" class="l-info">
+      <li class="l-info-blk left">
         <h2 class="ttl-info">メッセージ</h2>
         <ul class="l-info-lst">
           <?php foreach ($notice_announcements as $data): ?>
@@ -41,7 +41,7 @@
         </ul>
         <a class="btn" href="/announcement/">メッセージ一覧を見る</a>
       </li>
-      <li class="l-info-blk">
+      <li class="l-info-blk right">
         <h2 class="ttl-info">ニュース</h2>
         <ul class="l-info-lst">
           <?php if(empty($newsList)) :?>
@@ -63,6 +63,7 @@
     <?php if (!$customer->isEntry()) : ?>
     <div class="l-plan">
       <h2 class="ttl-info">お申し込みのプラン</h2>
+      <?php if (empty(!$kit_cd_summary)): ?>
       <ul class="grid grid-md">
         <?php foreach ($kit_cd_summary as $kit_cd => $count): ?>
         <li>
@@ -74,5 +75,10 @@
         </li>
         <?php endforeach; ?>
       </ul>
+      <?php else: ?>
+      <p>
+        現在お申し込みいただいているプランはありません。お申し込みは<a class="red-link" href="/order/add">こちら</a>
+      </p>
+      <?php endif; ?>
     </div>
     <?php endif; ?>
