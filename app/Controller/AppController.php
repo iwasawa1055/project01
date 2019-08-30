@@ -286,8 +286,5 @@ class AppController extends Controller
                 return $this->redirect(['controller' => 'inbound', 'action' => 'box/add']);
             }
         }
-
-        // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl None-aggressive user');
-        return $this->redirect(['controller' => 'order', 'action' => 'add']);
     }
 }
