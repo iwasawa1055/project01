@@ -266,10 +266,10 @@ class AppController extends Controller
                 //     $is_order_redirct = true;
                 // }
 
-                // monoがない場合でオプションページから遷移してきた場合、TOPに遷移
+                // monoがない場合でオプションページから遷移してきた場合、ボックス購入に遷移
                 if ($is_order_redirct) {
                     // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl not mono  referer option ');
-                    return $this->redirect('/');
+                    return $this->redirect(['controller' => 'order', 'action' => 'add']);
                 }
             }
 
@@ -286,8 +286,5 @@ class AppController extends Controller
                 return $this->redirect(['controller' => 'inbound', 'action' => 'box/add']);
             }
         }
-
-        // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl None-aggressive user');
-        return $this->redirect(['controller' => 'order', 'action' => 'add']);
     }
 }
