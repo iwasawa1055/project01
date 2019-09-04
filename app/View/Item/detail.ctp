@@ -41,13 +41,25 @@
                       <div class="col-lg-6 col-md-6 col-xs-12">
                         <?php /*取出し*/ ?>
                         <?php if ($item['box']['product_cd'] == PRODUCT_CD_LIBRARY) : ?>
+                            <?php if ($item['item_status'] == BOXITEM_STATUS_INBOUND_DONE) : ?>
                             <span class="col-xs-12 col-lg-12">
                                 <a href="/outbound/library_select_item?item_id=<?php echo $item['item_id']; ?>"><button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" onclick="">取り出しリスト登録</button></a>
                             </span>
+                            <?php else : ?>
+                            <span class="col-xs-12 col-lg-12">
+                                <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" onclick="" disabled="disabled">取り出しリスト登録</button>
+                            </span>
+                            <?php endif; ?>
                         <?php elseif ($item['box']['product_cd'] == PRODUCT_CD_CLOSET) : ?>
+                            <?php if ($item['item_status'] == BOXITEM_STATUS_INBOUND_DONE) : ?>
                             <span class="col-xs-12 col-lg-12">
                                 <a href="/outbound/closet_select_item?item_id=<?php echo $item['item_id']; ?>"><button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" onclick="">取り出しリスト登録</button></a>
                             </span>
+                            <?php else : ?>
+                            <span class="col-xs-12 col-lg-12">
+                                <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" onclick="" disabled="disabled">取り出しリスト登録</button>
+                            </span>
+                            <?php endif; ?>
                         <?php else : ?>
                             <?php if (empty($denyOutboundList)) : ?>
                             <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>

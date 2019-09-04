@@ -62,7 +62,7 @@
               </div>
             </div>
 
-            <?php if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_SNEAKERS, PRODUCT_CD_DIRECT_INBOUND], true)): ?>
+            <?php if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_SNEAKERS, PRODUCT_CD_DIRECT_INBOUND, PRODUCT_CD_LIBRARY, PRODUCT_CD_CLOSET], true)): ?>
             <div class="col-lg-12">
               <div class="col-lg-9">
                 <h3>ボックスの内容</h3>
