@@ -403,6 +403,10 @@ const POINT_TYPE = [
     POINT_TYPE_GETU => '月額保管',
 ];
 
+const POINT_STATUS_CANCEL = 'CAN';
+
+
+
 const ISOLATE_ISLANDS = [
     '沖縄県',
 ];
