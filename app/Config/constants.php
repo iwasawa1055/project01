@@ -405,8 +405,6 @@ const POINT_TYPE = [
 
 const POINT_STATUS_CANCEL = 'CAN';
 
-
-
 const ISOLATE_ISLANDS = [
     '沖縄県',
 ];
