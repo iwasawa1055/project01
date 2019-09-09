@@ -75,7 +75,7 @@ class AppHelper extends Helper
 
     public function formatPointType($history)
     {
-        $pointType = Hash::get(POINT_TYPE, $history['point_type']);
+        $pointType = $history['cpss_type_name'];
         if (empty($pointType)) {
             return '';
         }

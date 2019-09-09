@@ -1130,6 +1130,7 @@ class OutboundController extends MinikuraController
                 'address3'=>$address['address3'],
                 'postal'=>$address['postal'],
                 'tel1'=>$address['tel1'],
+                'datetime_cd'=>CakeSession::Read('app.data.library.datetime_cd'),
             ];
             $this->OutboundCreditCard->set($request_params);
             $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
@@ -1296,6 +1297,7 @@ class OutboundController extends MinikuraController
                 'address3'=>$address['address3'],
                 'postal'=>$address['postal'],
                 'tel1'=>$address['tel1'],
+                'datetime_cd'=>CakeSession::Read('app.data.library.datetime_cd'),
             ];
             $this->OutboundAmazonPay->set($request_params);
             $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());
@@ -1578,6 +1580,7 @@ class OutboundController extends MinikuraController
             'address3'=>$address['address3'],
             'postal'=>$address['postal'],
             'tel1'=>$address['tel1'],
+            'datetime_cd'=>CakeSession::Read('app.data.closet.datetime_cd'),
         ];
         $this->OutboundCreditCard->set($request_params);
         $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
@@ -1698,6 +1701,7 @@ class OutboundController extends MinikuraController
             'address3'=>$address['address3'],
             'postal'=>$address['postal'],
             'tel1'=>$address['tel1'],
+            'datetime_cd'=>CakeSession::Read('app.data.closet.datetime_cd'),
         ];
         $this->OutboundAmazonPay->set($request_params);
         $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());

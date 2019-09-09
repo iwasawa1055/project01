@@ -71,6 +71,36 @@ class InfoBox extends ApiCachedModel
         return $summary;
     }
 
+    // 購入済みキット一覧
+    // 利用中のBOX一覧　と　並び替え
+    // kit_cd別集計
+    public function getKitCdSummary($outboundOnly = true, $key = 'kit_cd_summary')
+    {
+        $summary = $this->readCache($key, []);
+        if (!empty($summary)) {
+            return $summary;
+        }
+
+        // サイドバーに出庫済みの数字を含めない
+        $all = $this->getListForServiced(null, [], $outboundOnly);
+
+        $summary = [];
+        foreach ($all as $a) {
+            $kit_cd = $a['kit_cd'];
+            if (empty($kit_cd)) {
+                continue;
+            }
+            if (empty($summary[$kit_cd])) {
+                $summary[$kit_cd] = 1;
+            } else {
+                $summary[$kit_cd]++;
+            }
+        }
+        $this->writeCache($key, [], $summary);
+
+        return $summary;
+    }
+
     // 入庫画面で表示
     public function getListForInbound()
     {

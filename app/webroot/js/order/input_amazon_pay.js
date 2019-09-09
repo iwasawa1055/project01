@@ -80,7 +80,7 @@ var AppInputOrder =
     });
 
     // お届け日時
-    if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+    if (flag_total['other'] == 0 && (flag_total['hanger'] > 0 && flag_total['hanger'] < 3)) {
       $('.select_other').hide();
     } else {
       $('.select_other').show();
@@ -111,7 +111,7 @@ var AppInputOrder =
         }
       }
       // お届け日時
-      if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+      if (flag_total['other'] == 0 && (flag_total['hanger'] > 0 && flag_total['hanger'] < 3)) {
         $('.select_other').hide('slow');
       } else {
         $('.select_other').show('slow');

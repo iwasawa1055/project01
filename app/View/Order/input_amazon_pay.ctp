@@ -2,10 +2,9 @@
 <?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
-<?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/input_amazon_pay_dev.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/order.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 
   <?php echo $this->Form->create('PaymentAmazonKitAmazonPay', ['url' => ['controller' => 'order', 'action' => 'input_amazon_pay'], 'novalidate' => true]); ?>
 
