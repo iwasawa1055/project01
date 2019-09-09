@@ -56,6 +56,8 @@
         </li>
         <?php endif; ?>
 
+        <?php if (false):?>
+        <?php // TODO ギフトリリースまで非表示 ?>
         <li class="separator<?php if($active_status['gift']['give'] || $active_status['gift']['receive']):?> active<?php endif;?>">
           <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ギフト<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
@@ -67,6 +69,7 @@
             </li>
           </ul>
         </li>
+        <?php endif; ?>
 
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li<?php if($active_status['cleaning']):?> class="active"<?php endif;?>>

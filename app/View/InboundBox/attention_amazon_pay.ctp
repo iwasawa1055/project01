@@ -29,10 +29,13 @@
                         <th class="th">minikura<br class="sp">クリーニングパック</th>
                         <td class="td"> 上限10点。<br class="sp">11点から900円</td>
                     </tr>
+                    <?php if (false): ?>
+                    <?php // TODO ギフトリリースまで非表示?>
                     <tr>
                         <th class="th">minikuraギフト <br class="sp">クリーニングパック5</th>
                         <td class="td">上限5点。<br class="sp">6点から900円</td>
                     </tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>

@@ -22,6 +22,9 @@ class GiveController extends MinikuraController
      */
     public function beforeFilter()
     {
+        // TODO ギフトリリースまで遷移させない
+        new AppTerminalError(AppE::NOT_FOUND, 404);
+
         parent::beforeFilter();
 
         // 法人口座未登録用遷移
