@@ -114,3 +114,22 @@
       </ul>
     </div>
   <?php echo $this->Form->end(); ?>
+  <input type='hidden' id='order_id' value='<?php echo $order_id; ?>'>
+  <input type='hidden' id='order_list_criteo_json' value='<?php echo $order_list_criteo_json; ?>'>
+  <input type='hidden' id='order_list_a8_json' value='<?php echo $order_list_a8_json; ?>'>
+  <input type='hidden' id='order_total_price' value='<?php echo $order_total_data['price']; ?>'>
+
+  <!-- A8 コンバージョン設定 -->
+  <span id="a8sales"></span>
+  <script src="//statics.a8.net/a8sales/a8sales.js"></script>
+  <script>
+  var a8_item_json = document.getElementById('order_list_a8_json').value;
+  var a8_params = {
+    "pid": '<?php echo Configure::read("app.a8.pid"); ?>',
+    "order_number": document.getElementById('order_id').value,
+    "currency": "JPY",
+    "items": JSON.parse(a8_item_json),
+    "total_price": document.getElementById('order_total_price').value
+  };
+  a8sales(a8_params);
+  </script>

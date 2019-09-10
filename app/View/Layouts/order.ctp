@@ -90,6 +90,7 @@
         </li>
       </nav>
       <p class="copyright">© Warehouse TERRADA</p>
+      <input type='hidden' id='hashed_email' value='<?php echo $this->App->getHashedEmail($customer); ?>'>
     </footer>
   </div>
 

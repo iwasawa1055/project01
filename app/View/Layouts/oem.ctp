@@ -76,6 +76,7 @@
         </ul>
         <p class="copyright futura"> &copy; Warehouse TERRADA</p>
         <p id="pagetop"><a href="#header" data-scroll><span></span></a></p>
+        <input type='hidden' id='hashed_email' value='<?php echo $this->App->getHashedEmail($customer); ?>'>
     </footer>
     <?php
       $this->Html->script('jquery.min', ['inline' => false]);
