@@ -141,7 +141,7 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
             <li>
               <label class="headline">パスワード<span class="required">※</span></label>
               <?php echo $this->Form->input('CustomerRegistInfo.password', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcDeF12', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
-              <p class="txt-caption">半角英数記号8文字以上でご入力ください。</p>
+              <p class="txt-caption">半角英数記号6文字以上でご入力ください。</p>
               <?php echo $this->Form->error('CustomerRegistInfo.password', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>

@@ -249,3 +249,11 @@ section.dsn-nextback {
     animation: fadeIn 1s ease 0s 1 normal;
 }
 }
+
+.spinner .dsn-btn-spinner {
+	width: 4rem;
+	height: 4rem;
+	margin-bottom: 0;
+	padding: 1rem 1.5rem;
+	border: 1px solid #dddddd;
+}

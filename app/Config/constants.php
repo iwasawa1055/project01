@@ -202,6 +202,19 @@ const KIT_NAME = [
     KIT_CD_CLOSET => 'minikuraCloset',
 ];
 
+const KIT_IMAGE = [
+    KIT_CD_HAKO               => '/images/hako-regular.png',
+    KIT_CD_HAKO_APPAREL       => '/images/hako-apparel.png',
+    KIT_CD_HAKO_BOOK          => '/images/hako-book.png',
+    KIT_CD_MONO               => '/images/mono-regular.png',
+    KIT_CD_MONO_APPAREL       => '/images/mono-apparel.png',
+    KIT_CD_MONO_BOOK          => '/images/mono-regular.png',
+    KIT_CD_CLEANING_PACK      => '/images/cleaning.png',
+    KIT_CD_LIBRARY_DEFAULT    => '/images/library.png',
+    KIT_CD_LIBRARY_GVIDO      => '/images/library.png',
+    KIT_CD_CLOSET             => '/images/cleaning.png',
+];
+
 const KIT_CODE_DISP_NAME_ARRAY =[
     'mono_num'      => array('code' => KIT_CD_MONO,            'product_cd' => PRODUCT_CD_MONO,          'name' => 'MONO レギュラーボックス'),
     'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,    'product_cd' => PRODUCT_CD_MONO,          'name' => 'MONO ワイドボックス'),
@@ -389,6 +402,10 @@ const POINT_TYPE = [
     'CPC1' => '初回ポイントプレゼント',
     POINT_TYPE_GETU => '月額保管',
 ];
+
+const POINT_STATUS_CANCEL = 'CAN';
+
+
 
 const ISOLATE_ISLANDS = [
     '沖縄県',
