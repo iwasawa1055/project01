@@ -387,28 +387,29 @@ class OrderController extends MinikuraController
 
         }
 
-        // Criteo用のコンバージョン測定用json
+        // CriteoとA8用のコンバージョン測定用json
+        $tmp_order_list_criteo_array = [];
         $order_list_criteo_array = [];
+        $order_list_a8_array = [];
         $order_list = CakeSession::read('order_list');
+
         foreach ($order_list as $key => $val) {
             foreach ($val as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
                     $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $order_list_criteo_array[] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
                 }
             }
         }
-
-        // A8用のコンバージョン測定用json
-        $order_list_a8_array = [];
-        $order_list = CakeSession::read('order_list');
-        foreach ($order_list as $key => $val) {
-            foreach ($val as $k1 => $v1) {
-                foreach ($v1 as $k2 => $v2) {
-                    $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $order_list_a8_array[] = ['code' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
-                }
+        foreach ($tmp_order_list_criteo_array as $tk => $tv) {
+            $num = 0;
+            foreach ($tv as $tk1 => $tv1) {
+                $num += $tv1['quantity'];
             }
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => (int)$tv[0]['price'], 'quantity' => (int)$num];
+        }
+        foreach ($order_list_criteo_array as $key => $var) {
+            $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
         }
 
         $this->set('order_id', $result->results['order_id']);
@@ -603,29 +604,31 @@ class OrderController extends MinikuraController
         }
         $result = $this->_postPaymentBank($data);
 
-        // Criteo用のコンバージョン測定用json
+        // CriteoとA8用のコンバージョン測定用json
+        $tmp_order_list_criteo_array = [];
         $order_list_criteo_array = [];
-        $order_list = CakeSession::read('order_list');
-        foreach ($order_list as $key => $val) {
-            foreach ($val as $k1 => $v1) {
-                foreach ($v1 as $k2 => $v2) {
-                    $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $order_list_criteo_array[] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
-                }
-            }
-        }
-
-        // A8用のコンバージョン測定用json
         $order_list_a8_array = [];
         $order_list = CakeSession::read('order_list');
+
         foreach ($order_list as $key => $val) {
             foreach ($val as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
                     $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $order_list_a8_array[] = ['code' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
                 }
             }
         }
+        foreach ($tmp_order_list_criteo_array as $tk => $tv) {
+            $num = 0;
+            foreach ($tv as $tk1 => $tv1) {
+                $num += $tv1['quantity'];
+            }
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => (int)$tv[0]['price'], 'quantity' => (int)$num];
+        }
+        foreach ($order_list_criteo_array as $key => $var) {
+            $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
+        }
+
         $this->set('order_id', $result->results[0]['order_id']);
         $this->set('order_list_criteo_json', json_encode($order_list_criteo_array));
         $this->set('order_list_a8_json', json_encode($order_list_a8_array));
@@ -810,29 +813,31 @@ class OrderController extends MinikuraController
             }
         }
 
-        // Criteo用のコンバージョン測定用json
+        // CriteoとA8用のコンバージョン測定用json
+        $tmp_order_list_criteo_array = [];
         $order_list_criteo_array = [];
-        $order_list = CakeSession::read('order_list');
-        foreach ($order_list as $key => $val) {
-            foreach ($val as $k1 => $v1) {
-                foreach ($v1 as $k2 => $v2) {
-                    $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $order_list_criteo_array[] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
-                }
-            }
-        }
-
-        // A8用のコンバージョン測定用json
         $order_list_a8_array = [];
         $order_list = CakeSession::read('order_list');
+
         foreach ($order_list as $key => $val) {
             foreach ($val as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
                     $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $order_list_a8_array[] = ['code' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
                 }
             }
         }
+        foreach ($tmp_order_list_criteo_array as $tk => $tv) {
+            $num = 0;
+            foreach ($tv as $tk1 => $tv1) {
+                $num += $tv1['quantity'];
+            }
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => (int)$tv[0]['price'], 'quantity' => (int)$num];
+        }
+        foreach ($order_list_criteo_array as $key => $var) {
+            $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
+        }
+
         $this->set('order_id', $result->results['order_id']);
         $this->set('order_list_criteo_json', json_encode($order_list_criteo_array));
         $this->set('order_list_a8_json', json_encode($order_list_a8_array));
