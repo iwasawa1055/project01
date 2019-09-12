@@ -169,4 +169,22 @@ class AppHelper extends Helper
                 return '/images/cleaning.png';
         }
     }
+
+    public function getHashedEmail($customer)
+    {
+        $info = $customer->getInfo();
+
+        $email = '';
+        if (count($info)) {
+            if (isset($info['email'])) {
+                $email = $info['email'];
+                $processed_address = strtolower($email);
+                $processed_address = trim($processed_address);
+                $processed_address = mb_convert_encoding($processed_address, "UTF-8", "ISO-8859-1");
+                $email = md5($processed_address);
+            }
+        }
+
+        return $email;
+    }
 }
