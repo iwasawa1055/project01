@@ -1080,8 +1080,6 @@ class OutboundController extends MinikuraController
 
         $this->layout = '';
 
-        $price = $this->_setLibraryPriceAndItem();
-
         // 配送先
         if (CakeSession::Read('app.data.library.address') == 'add') {
             // 新規登録
@@ -1127,6 +1125,13 @@ class OutboundController extends MinikuraController
         $point_data = $this->_getPointData();
         $this->set('use_point', $point_data['use_point']);
 
+        /** 価格 */
+        $total_price = $this->_setLibraryPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         // 1個の場合はゆうメール便
         if (count($product_list) == 1) {
             $this->loadModel('OutboundCreditCardYumail');
@@ -1142,6 +1147,7 @@ class OutboundController extends MinikuraController
                 'address3'=>$address['address3'],
                 'postal'=>$address['postal'],
                 'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundCreditCardYumail->set($request_params);
             $res = $this->OutboundCreditCardYumail->apiPost($this->OutboundCreditCardYumail->toArray());
@@ -1165,6 +1171,7 @@ class OutboundController extends MinikuraController
                 'tel1'=>$address['tel1'],
                 'datetime_cd'=>CakeSession::Read('app.data.library.datetime_cd'),
                 'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundCreditCard->set($request_params);
             $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
@@ -1304,8 +1311,6 @@ class OutboundController extends MinikuraController
 
         $this->layout = '';
 
-        $price = $this->_setLibraryPriceAndItem();
-
         // 配送先
         $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.library.amazon_order_reference_id'));
         $this->set('address', $address);
@@ -1326,6 +1331,13 @@ class OutboundController extends MinikuraController
         $point_data = $this->_getPointData();
         $this->set('use_point', $point_data['use_point']);
 
+        /** 価格 */
+        $total_price = $this->_setLibraryPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         // 1個の場合はゆうメール便
         if (count($product_list) == 1) {
             $this->loadModel('OutboundAmazonPayYumail');
@@ -1342,6 +1354,7 @@ class OutboundController extends MinikuraController
                 'address3'=>$address['address3'],
                 'postal'=>$address['postal'],
                 'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundAmazonPayYumail->set($request_params);
             $res = $this->OutboundAmazonPayYumail->apiPost($this->OutboundAmazonPayYumail->toArray());
@@ -1366,6 +1379,7 @@ class OutboundController extends MinikuraController
                 'tel1'=>$address['tel1'],
                 'datetime_cd'=>CakeSession::Read('app.data.library.datetime_cd'),
                 'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundAmazonPay->set($request_params);
             $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());
@@ -1619,8 +1633,6 @@ class OutboundController extends MinikuraController
 
         $this->layout = '';
 
-        $price = $this->_setClosetPriceAndItem();
-
         // 配送先
         if (CakeSession::Read('app.data.closet.address') == 'add') {
             // 新規登録
@@ -1666,6 +1678,13 @@ class OutboundController extends MinikuraController
         $point_data = $this->_getPointData();
         $this->set('use_point', $point_data['use_point']);
 
+        /** 価格 */
+        $total_price = $this->_setClosetPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         /** 取り出し(クレジットカード) */
         $this->loadModel('OutboundCreditCard');
         $request_params = [];
@@ -1682,6 +1701,7 @@ class OutboundController extends MinikuraController
             'tel1'=>$address['tel1'],
             'datetime_cd'=>CakeSession::Read('app.data.closet.datetime_cd'),
             'point'=>$point_data['use_point'],
+            'total_price'=>$total_price,
         ];
         $this->OutboundCreditCard->set($request_params);
         $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
@@ -1797,8 +1817,6 @@ class OutboundController extends MinikuraController
 
         $this->layout = '';
 
-        $price = $this->_setClosetPriceAndItem();
-
         // 配送先
         $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.closet.amazon_order_reference_id'));
         $this->set('address', $address);
@@ -1819,6 +1837,13 @@ class OutboundController extends MinikuraController
         $point_data = $this->_getPointData();
         $this->set('use_point', $point_data['use_point']);
 
+        /** 価格 */
+        $total_price = $this->_setClosetPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         $this->loadModel('OutboundAmazonPay');
         $request_params = [];
         $request_params['OutboundAmazonPay'] = [
@@ -1835,6 +1860,7 @@ class OutboundController extends MinikuraController
             'tel1'=>$address['tel1'],
             'datetime_cd'=>CakeSession::Read('app.data.closet.datetime_cd'),
             'point'=>$point_data['use_point'],
+            'total_price'=>$total_price,
         ];
         $this->OutboundAmazonPay->set($request_params);
         $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());
