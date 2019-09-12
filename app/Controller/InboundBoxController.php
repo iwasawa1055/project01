@@ -7,6 +7,7 @@ App::uses('TimePrivate', 'Model');
 App::uses('InboundSelectedBox', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('CustomerAddress', 'Model');
+App::uses('MtYmstpost', 'Model');
 
 class InboundBoxController extends MinikuraController
 {
@@ -195,6 +196,19 @@ class InboundBoxController extends MinikuraController
                 CakeSession::write(self::MODEL_NAME . 'FORM', $this->request->data);
             } else {
                 $validErrors['Inbound'] = $model->validationErrors;
+            }
+        }
+
+        // 集荷依頼を頼んでいる場合
+        if (explode("_", $data['delivery_carrier'])[0] == DELIVERY_ID_PICKUP) {
+            // 郵便番号チェック
+            $this->loadModel('MtYmstpost');
+            $res = $this->MtYmstpost->getPostal(['postal' => $data["postal"]]);
+
+            if ($res->status == 0 || count($res->results) == 0) {
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($data['postal'], true));
+                $validErrors['Inbound']['address_id'] = ['集荷依頼ができない郵便番号を入力されています。お問い合わせください。'];
             }
         }
 

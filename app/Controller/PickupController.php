@@ -3,6 +3,7 @@ App::uses('MinikuraController', 'Controller');
 App::uses('PickupYamato', 'Model');
 App::uses('CustomerAddress', 'Model');
 App::uses('PickupYamatoDateTime', 'Model');
+App::uses('MtYmstpost', 'Model');
 
 class PickupController extends MinikuraController
 {
@@ -110,6 +111,19 @@ class PickupController extends MinikuraController
                 if (!$this->PickupYamato->validates()) {
                     return $this->render('edit');
                 }
+            }
+
+            // 郵便番号チェックを行う
+            $pickup_detail = $this->_getPickupDetail();
+            $postal = $pickup_detail['postal'];
+            $this->loadModel('MtYmstpost');
+            $res = $this->MtYmstpost->getPostal(['postal' => $postal]);
+
+            if ($res->status == 0 || count($res->results) == 0) {
+                $this->Flash->set(__('集荷依頼ができない郵便番号を入力されています。お問い合わせください。'));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($postal, true));
+                return $this->render('edit');
             }
 
             // 日付のチェックを行う
