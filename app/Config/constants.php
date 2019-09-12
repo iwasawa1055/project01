@@ -524,3 +524,7 @@ const EXPECTED_STORING_COMPLETE_DATE_CLEANING = 10;
 
 // 無料BOXサービス開始日時
 const START_BOX_FREE = '2019-07-01 00:00:00';
+
+// ポイント使用内容タイプ
+//minikuraCLEANING＋
+const USE_POINT_CONTENTS_TYPE_CLEANING_PLUS = '2';

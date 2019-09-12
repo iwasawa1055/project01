@@ -243,6 +243,7 @@ class CleaningController extends MinikuraController
             $this->PointUse->set($point_data);
             $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $point_balance;
             $this->PointUse->data[self::MODEL_NAME_POINT_USE]['subtotal'] = $cleaning_data['subtotal'];
+            $this->PointUse->data[self::MODEL_NAME_POINT_USE]['contents_type'] = USE_POINT_CONTENTS_TYPE_CLEANING_PLUS;
             // validation
             if (!$this->PointUse->validates()) {
                 $this->Flash->validation('データに不備がありました。', ['key' => 'invalid_data']);
