@@ -120,7 +120,7 @@ class PickupController extends MinikuraController
             $res = $this->MtYmstpost->getPostal(['postal' => $postal]);
 
             if ($res->status == 0 || count($res->results) == 0) {
-                $this->Flash->set(__('集荷依頼ができない郵便番号を入力されています。お問い合わせください。'));
+                $this->Flash->set(__('ヤマト運輸社で集荷申し込みできない郵便番号を入力されています。下の住所選択から「お届先を追加する」を選択し、再度集荷先の追加を入力ください。'));
                 CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
                 CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($postal, true));
                 return $this->render('edit');
