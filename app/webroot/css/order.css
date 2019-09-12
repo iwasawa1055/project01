@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+.lineup .items #hako {
+  order: 1;
+}
+
+.lineup .items #mono {
+  order: 2;
+}
+
+.lineup .items #closet {
+  order: 4;
+}
+
+.lineup .items #library {
+  order: 3;
+}
+
+.lineup .items #cleaning {
+  order: 5;
+}

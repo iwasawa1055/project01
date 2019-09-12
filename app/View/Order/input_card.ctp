@@ -5,7 +5,7 @@
 <?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 
-<?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
 
   <?php echo $this->Form->create('PaymentGMOKitByCreditCard', ['url' => ['controller' => 'order', 'action' => 'input_card'], 'novalidate' => true]); ?>
@@ -62,9 +62,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hako_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -78,9 +78,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hako_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -94,9 +94,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hako_book_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -148,9 +148,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.mono_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_mono", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -164,9 +164,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.mono_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_mono", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -207,9 +207,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.library_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_library", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -248,9 +248,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hanger_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hanger", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -263,7 +263,7 @@
           </div>
         </li>
         <li id="cleaning" class="item type_other">
-          <p class="rib spring"></p>
+          <!--p class="rib spring"></p-->
           <h3><span>衣類10点</span>クリーニングパック</h3>
           <div class="lineup-pict">
             <picture>
@@ -289,9 +289,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.cleaning_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_cleaning", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
