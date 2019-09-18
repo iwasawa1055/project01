@@ -17,11 +17,11 @@
           <h2 class="page-title">登録完了</h2>
           <p class="page-description">お客さま情報の登録が完了しました。</p>
           <p class="dialog">minikuraへのご登録ありがとうございました。
-            <br>まずは用途に合ったボックスを購入して<br class="sp">minikuraを始めましょう。</p>
+            <br>まずは用途に合ったサービスの申し込みをして<br class="sp">minikuraを始めましょう。</p>
         </div>
         <ul class="nextback">
           <li>
-            <a href="/order/add" class="btn next">ボックス購入へ進む</a>
+            <a href="/order/add" class="btn next">サービスの申し込みへ進む</a>
           </li>
         </ul>
       </div>

@@ -61,7 +61,7 @@ class TitleHelper extends AppHelper {
             'index' => 'マイページ',
         ],
         'order' => [
-            'index' => 'ボックス購入',
+            'index' => 'サービスの申し込み',
         ],
         'outbound' => [
             'index' => '取り出し',

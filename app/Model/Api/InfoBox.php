@@ -15,7 +15,7 @@ class InfoBox extends ApiCachedModel
         'box_name' => true,
         'box_status' => true,
     ];
-	
+
     //* 入庫・出庫ページ用sort #8679
     const INBOUND_OUTBOUND_SORT_KEY = [
         'product_cd' => true,
@@ -64,6 +64,36 @@ class InfoBox extends ApiCachedModel
                 $summary[$productCd] = 1;
             } else {
                 $summary[$productCd]++;
+            }
+        }
+        $this->writeCache($key, [], $summary);
+
+        return $summary;
+    }
+
+    // 購入済みキット一覧
+    // 利用中のBOX一覧　と　並び替え
+    // kit_cd別集計
+    public function getKitCdSummary($outboundOnly = true, $key = 'kit_cd_summary')
+    {
+        $summary = $this->readCache($key, []);
+        if (!empty($summary)) {
+            return $summary;
+        }
+
+        // サイドバーに出庫済みの数字を含めない
+        $all = $this->getListForServiced(null, [], $outboundOnly);
+
+        $summary = [];
+        foreach ($all as $a) {
+            $kit_cd = $a['kit_cd'];
+            if (empty($kit_cd)) {
+                continue;
+            }
+            if (empty($summary[$kit_cd])) {
+                $summary[$kit_cd] = 1;
+            } else {
+                $summary[$kit_cd]++;
             }
         }
         $this->writeCache($key, [], $summary);
@@ -289,10 +319,10 @@ class InfoBox extends ApiCachedModel
 
         // ランク付け用にポイントをそれぞれ設定
         $columns = [
-            'box_name' => 100, 
-            'box_id' => 80, 
-            'product_name' => 60, 
-            'box_note' => 40, 
+            'box_name' => 100,
+            'box_id' => 80,
+            'product_name' => 60,
+            'box_note' => 40,
             'kit_name' => 20,
         ];
 
@@ -323,7 +353,7 @@ class InfoBox extends ApiCachedModel
      *    - 連続文字列は出てこない
      * 例)A OR B C OR D
      *  - A OR (B AND C) OR D となる
-     *  - A, D は単体での検索, BDは連続文字列として検索もある 
+     *  - A, D は単体での検索, BDは連続文字列として検索もある
      * マイナス検索
      *  - 「a -b」 とすると aを含み、かつbを含まない含まないリストを作る
      *  - 「a b -c」
@@ -422,7 +452,7 @@ class InfoBox extends ApiCachedModel
                 $unique_count = count($unique);
 
                 for ($unique_count;0 < $unique_count;$unique_count--) {
-                    $rank += RANK_RATE['match_num'] * $unique_count;               
+                    $rank += RANK_RATE['match_num'] * $unique_count;
                 }
 
                 // ニアリーマッチ
@@ -458,7 +488,7 @@ class InfoBox extends ApiCachedModel
         } else {
             foreach ($tmp as $rank => $list) {
                 foreach($list as $k => $v) {
-                    $hits[] = $v;                
+                    $hits[] = $v;
                 }
             }
         }

@@ -721,7 +721,9 @@ ul.tile li .sale-icon {
 }
 
 .announcement .btn {
+    display: inline-block;
     margin: 3px 0 5px 0;
+    padding: 2px 5px;
 }
 
 .announcement .date,

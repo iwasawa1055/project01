@@ -287,6 +287,13 @@ class AppController extends Controller
             }
         }
 
+        // TODO leeap用に暫定処理
+        $referer = $_SERVER['HTTP_REFERER'];
+        $static_content_url_mono = Configure::read('site.static_content_url') . '/leeap/';
+        if (strpos($referer, $static_content_url_mono) !== false) {
+            return $this->redirect('/');
+        }
+
         // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl None-aggressive user');
         return $this->redirect(['controller' => 'order', 'action' => 'add']);
     }

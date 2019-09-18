@@ -108,6 +108,7 @@ var AppInputOrder =
       var exe_flag = true;
       $(".caution-box input").each(function(i) {
         if (!$(this).prop("checked")) {
+          alert('注意事項をご確認ください');
           exe_flag = false;
           return false;
         }
@@ -169,7 +170,7 @@ var AppInputOrder =
     });
 
     // お届け日時
-    if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+    if (flag_total['other'] == 0 && (flag_total['hanger'] > 0 && flag_total['hanger'] < 3)) {
       $('.select_other').hide();
     } else {
       $('.select_other').show();
@@ -179,7 +180,7 @@ var AppInputOrder =
     var minValue  = 0;
     var maxValue  = 20;
     // var flagType  = '';
-    $('.btn-spinner').on('mousedown', function() {
+    $('.dsn-btn-spinner').on('click', function() {
 
       // ハンガー用出力エリア制御
       if($(this).closest(".type_other").length > 0){
@@ -188,19 +189,45 @@ var AppInputOrder =
         flagType = 'hanger';
       }
       var itemValue  = parseInt($(this).parents('.spinner').find('.input-spinner').val());
+      var totalValue = parseInt($(this).parents('.lineup-caption').find('p[class=select-num]').children('span').text());
       var btnType  = $(this).attr('name');
       if (btnType === 'spinner_down') {
         if (itemValue > minValue) {
+          $(this).parents('.spinner').find('.input-spinner').val(itemValue-valueStep);
+          $(this).parents('.lineup-caption').find('p[class=select-num]').children('span').text(totalValue-valueStep);
           flag_total[flagType] = parseInt(flag_total[flagType]) - valueStep;
         }
       }
       if (btnType === 'spinner_up') {
         if (itemValue < maxValue) {
+          $(this).parents('.spinner').find('.input-spinner').val(itemValue+valueStep);
+          $(this).parents('.lineup-caption').find('p[class=select-num]').children('span').text(totalValue+valueStep);
           flag_total[flagType] = parseInt(flag_total[flagType]) + valueStep;
         }
       }
+
+      // カードエリア出力
+      if($(this).closest("#cleaning").length > 0){
+        var cleaningValue  = parseInt($("#cleaning").find('.input-spinner').val());
+        if (btnType === 'spinner_down') {
+          if (itemValue > minValue) {
+            cleaningValue = cleaningValue - valueStep;
+          }
+        }
+        if (btnType === 'spinner_up') {
+          if (itemValue < maxValue) {
+            cleaningValue = cleaningValue + valueStep;
+          }
+        }
+        if (cleaningValue > 0) {
+          $('.select_card').show('slow');
+        } else {
+          $('.select_card').hide('slow');
+        }
+      }
+
       // お届け日時
-      if (flag_total['other'] == 0 && flag_total['hanger'] > 0) {
+      if (flag_total['other'] == 0 && (flag_total['hanger'] > 0 && flag_total['hanger'] < 3)) {
         $('.select_other').hide('slow');
       } else {
         $('.select_other').show('slow');

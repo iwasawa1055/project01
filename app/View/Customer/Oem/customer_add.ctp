@@ -120,7 +120,7 @@ $this->Html->script('customer/oem/add', ['block' => 'scriptMinikura']);
                 <li>
                     <label>パスワード<span class="required">必須</span></label>
                     <?php echo $this->Form->input('CustomerRegistInfo.password', ['placeholder'=>'例：aBcD1234', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
-                    <p class="description">半角英数記号8文字以上でご入力ください。</p>
+                    <p class="description">半角英数記号6文字以上でご入力ください。</p>
                     <?php echo $this->Form->error('CustomerRegistInfo.password', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                 </li>
                 <li>
