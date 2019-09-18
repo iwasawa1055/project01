@@ -135,3 +135,18 @@
   };
   a8sales(a8_params);
   </script>
+
+  <script type="text/javascript">
+      window.onload = function () {
+          var products_list = JSON.parse(document.getElementById('order_list_criteo_json').value);
+          var hashed_email = document.getElementById('hashed_email').value;
+          var transaction_id = document.getElementById('order_id').value;
+          var dataLayer = dataLayer || [];
+          dataLayer.push({
+              'PageType': 'Transactionpage',
+              'HashedEmail': hashed_email,
+              'ProductTransactionProducts': products_list,
+              'TransactionID': transaction_id
+          });
+      };
+  </script>

@@ -75,7 +75,6 @@
       <div class="col-xs-12">
         <p>© 2012 Warehouse TERRADA</p>
       </div>
-      <input type='hidden' id='hashed_email' value='<?php echo $this->App->getHashedEmail($customer); ?>'>
     </div>
     <?php
       $this->Html->script('jquery.min', ['inline' => false]);

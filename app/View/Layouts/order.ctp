@@ -116,7 +116,14 @@
   <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
   <?php endif; ?>
   <?php endif; ?>
-
+  <!-- Criteo -->
+  <script type="text/javascript">
+      var dataLayer = dataLayer || [];
+      dataLayer.push({
+          'PageType': 'Homepage',
+          'HashedEmail': document.getElementById('hashed_email').value
+      });
+  </script>
 
 </body>
 
