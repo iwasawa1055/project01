@@ -172,6 +172,10 @@ class AppHelper extends Helper
 
     public function getHashedEmail($customer)
     {
+        if (is_object($customer) == false) {
+            return '';
+        }
+
         $info = $customer->getInfo();
 
         $email = '';
