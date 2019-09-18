@@ -132,7 +132,7 @@ $config['app']['googlemap']['api']['key'] = 'AIzaSyDxi2OvmjkJZZlH6dPjzByrluQqAuM
 /**
  * A8 コンバージョンタグ
  */
-$config['app']['a8']['pid'] = 's00000000062001';
+$config['app']['a8']['pid'] = 's00000020401001';
 
 //*** Log
 // 不要なログはDropします。
