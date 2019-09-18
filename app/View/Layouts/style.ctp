@@ -39,6 +39,14 @@
 <![endif]-->
     <!-- title -->
     <title><?php $this->Title->p(); ?></title>
+    <!-- Criteo -->
+    <script type="text/javascript">
+        var dataLayer = dataLayer || [];
+        dataLayer.push({
+            'PageType': 'Homepage',
+            'HashedEmail': '<?php echo $this->App->getHashedEmail($customer); ?>'
+        });
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -120,14 +128,6 @@
     <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
     <?php endif; ?>
     <?php endif; ?>
-    <!-- Criteo -->
-    <script type="text/javascript">
-        var dataLayer = dataLayer || [];
-        dataLayer.push({
-            'PageType': 'Homepage',
-            'HashedEmail': document.getElementById('hashed_email').value
-        });
-    </script>
 </body>
 
 </html>
