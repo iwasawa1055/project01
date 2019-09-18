@@ -117,6 +117,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <p class="li-libry-item-name">小計</p>
                             <p class="li-libry-item-price"><?php echo $outbound_item_price; ?>円</p>
                         </li>
+                        <?php if(!empty($use_point)) : ?>
+                        <li>
+                            <p class="li-libry-item-pict"></p>
+                            <p class="li-libry-item-name">ポイントご利用</p>
+                            <p class="li-libry-item-price">-<?php echo $use_point;?>円</p>
+                        </li>
+                        <?php endif;?>
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -148,7 +155,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <li>
                             <p class="li-libry-box-id"></p>
                             <p class="li-libry-box-item">総計(税込み)</p>
-                            <p class="li-libry-box-price"><?php echo $outbound_total_price; ?>円</p>
+                            <p class="li-libry-box-price"><?php echo number_format($outbound_total_price - $use_point); ?>円</p>
                         </li>
                     </ul>
                 </li>
@@ -178,6 +185,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <li>Amazon Pay</li>
                     </ul>
                 </li>
+                <?php if(!empty($use_point)) : ?>
+                <li>
+                    <label class="headline">ご利用されたポイント</label>
+                    <ul class="li-address">
+                        <li><?php echo $use_point; ?>ポイント</li>
+                    </ul>
+                </li>
+                <?php endif;?>
             </ul>
         </div>
         <!--footer-->
