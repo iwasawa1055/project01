@@ -123,6 +123,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <select name="datetime_cd" data-datetime_cd='<?php echo isset($datetime_cd) ? $datetime_cd : '0000-00-00'; ?>' id="datetime_cd">
                     </select>
                 </li>
+                <li>
+                    <section class="l-input-pnt">
+                        <label class="headline">ポイントのご利用</label>
+                        <ul class="l-pnt-detail">
+                            <li>
+                                <p class="txt-pnt">お持ちのポイントをご利用料金に割り当てることが出来ます。<br>
+                                    1ポイント1円として100ポイント以上の残高から10ポイント単位でご利用いただけます。</p>
+                            </li>
+                            <li>
+                              <h3 class="title-pnt-sub">今回のご利用料金合計<span class="val"><?php echo number_format($outbound_total_price);?></span>円</h3>
+                            </li>
+                            <li>
+                              <h3 class="title-pnt-sub">現在のお持ちのポイント<span class="val"><?php echo number_format($point_balance);?></span>ポイント</h3>
+                            </li>
+                            <li>
+                              <h3 class="title-pnt-sub">ご利用可能ポイント<span class="val"><?php echo number_format($use_possible_point);?></span>ポイント</h3>
+                            </li>
+                            <li>
+                                <p class="txt-pnt">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。<br>取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。
+                                </p>
+                            </li>
+                            <li>
+                                <label class="headline">ご利用になるポイントを入力ください</label>
+                                <?php echo $this->Form->input('PointUseImmediate.use_point', ['id' => 'use_point', 'class' => 'use_point', 'type' => 'text', 'placeholder'=>'例：100', 'error' => false, 'label' => false, 'div' => false]); ?>
+                                <?php echo $this->Form->error('PointUseImmediate.use_point', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+                            </li>
+                        </ul>
+                    </section>
+                </li>
             </div>
         </form>
         <!--footer-->

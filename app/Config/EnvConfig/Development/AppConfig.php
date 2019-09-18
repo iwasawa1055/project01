@@ -158,6 +158,11 @@ $config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0
 $config['app']['googlemap']['api']['key'] = 'AIzaSyDTUsXrnbPBzq2PQ58FcU5XJ53d417ZxEI';
 
 /**
+ * A8 コンバージョンタグ
+ */
+$config['app']['a8']['pid'] = 's00000000062001';
+
+/**
  * エラー表示
  */
 // CakePHP Debug Level
