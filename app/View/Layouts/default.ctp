@@ -150,4 +150,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <?php endif; ?>
 
 </body>
+<!-- Criteo -->
+<script type="text/javascript">
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'PageType': 'Homepage',
+        'HashedEmail': document.getElementById('hashed_email').value
+    });
+</script>
 </html>
