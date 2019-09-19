@@ -32,6 +32,17 @@ if (isset($this->request->data['Inbound']['box_type'])) {
 ?>
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
+            <ul class="l-banner">
+              <li class="l-banner-dtl">
+                <a href="/news/detail/417">
+                  <picture>
+                    <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
+                    <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
+                    <img src="/images/price-revision-pc@1x.png" alt="2019年10月1日よりご利用料金が変更になります 詳しくはこちら">
+                  </picture>
+                </a>
+              </li>
+            </ul>
             <ul class="pagenation">
                 <li class="on"><span class="number">1</span><span class="txt">ボックス<br>選択</span>
                 </li>
