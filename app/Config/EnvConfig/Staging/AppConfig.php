@@ -134,6 +134,11 @@ $config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0
  */
 $config['app']['googlemap']['api']['key'] = 'AIzaSyDxi2OvmjkJZZlH6dPjzByrluQqAuMMqDk';
 
+/**
+ * A8 コンバージョンタグ
+ */
+$config['app']['a8']['pid'] = 's00000000062001';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');

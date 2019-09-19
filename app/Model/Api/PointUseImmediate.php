@@ -2,7 +2,7 @@
 
 App::uses('ApiModel', 'Model');
 
-class PointUse extends ApiModel
+class PointUseImmediate extends ApiModel
 {
     const POINT_USE_AVAILABLE_OR_MORE = 100;
     const POINT_USE_AVAILABLE_UNIT = 10;
@@ -12,7 +12,7 @@ class PointUse extends ApiModel
 
     public function __construct()
     {
-        parent::__construct('PointUse', '/point_use', 'cpss_v5');
+        parent::__construct('PointUseImmediate', '/point_use_immediate', 'cpss_v5');
     }
 
     public function verifyCallPointUse()

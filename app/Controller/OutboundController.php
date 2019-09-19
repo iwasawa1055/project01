@@ -19,6 +19,7 @@ class OutboundController extends MinikuraController
     const MODEL_NAME = 'Outbound';
     const MODEL_NAME_POINT_BALANCE = 'PointBalance';
     const MODEL_NAME_POINT_USE = 'PointUse';
+    const MODEL_NAME_POINT_USE_IMMEDIATE = 'PointUseImmediate';
 
     private $outboundList = [];
 
@@ -38,6 +39,7 @@ class OutboundController extends MinikuraController
         $this->loadModel('Outbound');
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
         $this->loadModel(self::MODEL_NAME_POINT_USE);
+        $this->loadModel(self::MODEL_NAME_POINT_USE_IMMEDIATE);
 
         // 配送先
         $this->set('addressList', $this->Address->get());
@@ -930,6 +932,23 @@ class OutboundController extends MinikuraController
         $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
         $this->set('default_card', $default_card);
 
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('point_balance', $point_data['point_balance']);
+        $this->request->data['PointUseImmediate'] = $point_data;
+        $this->PointUseImmediate->set($this->request->data);
+        // 合計金額取得
+        $outbound_total_price = $this->_setLibraryPriceAndItem();
+        // 使用可能ポイント
+        $use_possible_point = $point_data['point_balance'];
+        if (!empty($use_possible_point)) {
+            if ($use_possible_point > $outbound_total_price) {
+                $use_possible_point = $outbound_total_price;
+            }
+            $use_possible_point = floor(($use_possible_point/10))*10;
+        }
+        $this->set('use_possible_point', $use_possible_point);
+
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.library.datetime_cd')) {
                 $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
@@ -1008,6 +1027,12 @@ class OutboundController extends MinikuraController
                 CakeSession::Write('app.data.library.datetime_cd', $_POST['datetime_cd']);
             }
 
+            // ポイントの確認
+            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+            if (!$this->PointUseImmediate->validates()) {
+                $error = true;
+            }
+
             if ($error == true) {
                 return $this->render('library_input_address');
             }
@@ -1047,6 +1072,10 @@ class OutboundController extends MinikuraController
         $this->loadModel('PaymentGMOCreditCard');
         $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
         $this->set('default_card', $default_card);
+
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
     }
 
     public function library_complete()
@@ -1061,8 +1090,6 @@ class OutboundController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->layout = '';
-
-        $price = $this->_setLibraryPriceAndItem();
 
         // 配送先
         if (CakeSession::Read('app.data.library.address') == 'add') {
@@ -1105,6 +1132,17 @@ class OutboundController extends MinikuraController
             $product_list[] = $v["box"]["product_cd"] . ':' . $v["box"]["box_id"] . ':' . $v["item_id"];
         }
 
+        /** ポイント */
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
+
+        /** 価格 */
+        $total_price = $this->_setLibraryPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         // 1個の場合はゆうメール便
         if (count($product_list) == 1) {
             $this->loadModel('OutboundCreditCardYumail');
@@ -1119,10 +1157,11 @@ class OutboundController extends MinikuraController
                 'address2'=>$address['address2'],
                 'address3'=>$address['address3'],
                 'postal'=>$address['postal'],
+                'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundCreditCardYumail->set($request_params);
             $res = $this->OutboundCreditCardYumail->apiPost($this->OutboundCreditCardYumail->toArray());
-
             if (!empty($res->error_message)) {
                 $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
                 $this->redirect('/outbound/library_select_item?error=1');
@@ -1142,6 +1181,8 @@ class OutboundController extends MinikuraController
                 'postal'=>$address['postal'],
                 'tel1'=>$address['tel1'],
                 'datetime_cd'=>CakeSession::Read('app.data.library.datetime_cd'),
+                'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundCreditCard->set($request_params);
             $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
@@ -1151,7 +1192,9 @@ class OutboundController extends MinikuraController
                 $this->redirect('/outbound/library_select_item?error=1');
             }
         }
+
         CakeSession::delete('app.data.library');
+        CakeSession::delete('app.data.outbound.use_point');
     }
 
 
@@ -1179,6 +1222,23 @@ class OutboundController extends MinikuraController
             $yumail = false;
         }
         $this->set('yumail', $yumail);
+
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('point_balance', $point_data['point_balance']);
+        $this->request->data['PointUseImmediate'] = $point_data;
+        $this->PointUseImmediate->set($this->request->data);
+        // 合計金額取得
+        $outbound_total_price = $this->_setLibraryPriceAndItem();
+        // 使用可能ポイント
+        $use_possible_point = $point_data['point_balance'];
+        if (!empty($use_possible_point)) {
+            if ($use_possible_point > $outbound_total_price) {
+                $use_possible_point = $outbound_total_price;
+            }
+            $use_possible_point = floor(($use_possible_point/10))*10;
+        }
+        $this->set('use_possible_point', $use_possible_point);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.library.datetime_cd')) {
@@ -1214,6 +1274,12 @@ class OutboundController extends MinikuraController
                 CakeSession::Write('app.data.library.datetime_cd', $_POST['datetime_cd']);
             }
 
+            // ポイントの確認
+            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+            if (!$this->PointUseImmediate->validates()) {
+                $error = true;
+            }
+
             if ($error == true) {
                 return $this->render('library_input_address_amazon_pay');
             }
@@ -1238,6 +1304,10 @@ class OutboundController extends MinikuraController
         if (CakeSession::Read('app.data.library.datetime_cd')) {
             $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
         }
+
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
     }
 
     public function library_complete_amazon_pay()
@@ -1251,8 +1321,6 @@ class OutboundController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->layout = '';
-
-        $price = $this->_setLibraryPriceAndItem();
 
         // 配送先
         $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.library.amazon_order_reference_id'));
@@ -1270,6 +1338,17 @@ class OutboundController extends MinikuraController
             $product_list[] = $v["box"]["product_cd"] . ':' . $v["box"]["box_id"] . ':' . $v["item_id"];
         }
 
+        /** ポイント */
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
+
+        /** 価格 */
+        $total_price = $this->_setLibraryPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         // 1個の場合はゆうメール便
         if (count($product_list) == 1) {
             $this->loadModel('OutboundAmazonPayYumail');
@@ -1285,10 +1364,11 @@ class OutboundController extends MinikuraController
                 'address2'=>$address['address2'],
                 'address3'=>$address['address3'],
                 'postal'=>$address['postal'],
+                'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundAmazonPayYumail->set($request_params);
             $res = $this->OutboundAmazonPayYumail->apiPost($this->OutboundAmazonPayYumail->toArray());
-
             if (!empty($res->error_message)) {
                 $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
                 $this->redirect('/outbound/library_select_item?error=1');
@@ -1309,16 +1389,18 @@ class OutboundController extends MinikuraController
                 'postal'=>$address['postal'],
                 'tel1'=>$address['tel1'],
                 'datetime_cd'=>CakeSession::Read('app.data.library.datetime_cd'),
+                'point'=>$point_data['use_point'],
+                'total_price'=>$total_price,
             ];
             $this->OutboundAmazonPay->set($request_params);
             $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());
-
             if (!empty($res->error_message)) {
                 $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
                 $this->redirect('/outbound/library_select_item?error=1');
             }
         }
         CakeSession::delete('app.data.library');
+        CakeSession::delete('app.data.outbound.use_point');
     }
 
     public function closet_select_item()
@@ -1414,6 +1496,23 @@ class OutboundController extends MinikuraController
         $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
         $this->set('default_card', $default_card);
 
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('point_balance', $point_data['point_balance']);
+        $this->request->data['PointUseImmediate'] = $point_data;
+        $this->PointUseImmediate->set($this->request->data);
+        // 合計金額取得
+        $outbound_total_price = $this->_setClosetPriceAndItem();
+        // 使用可能ポイント
+        $use_possible_point = $point_data['point_balance'];
+        if (!empty($use_possible_point)) {
+            if ($use_possible_point > $outbound_total_price) {
+                $use_possible_point = $outbound_total_price;
+            }
+            $use_possible_point = floor(($use_possible_point/10))*10;
+        }
+        $this->set('use_possible_point', $use_possible_point);
+
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.closet.datetime_cd')) {
                 $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
@@ -1483,6 +1582,12 @@ class OutboundController extends MinikuraController
             $this->set('datetime_cd', $_POST['datetime_cd']);
             CakeSession::Write('app.data.closet.datetime_cd', $_POST['datetime_cd']);
 
+            // ポイントの確認
+            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+            if (!$this->PointUseImmediate->validates()) {
+                $error = true;
+            }
+
             if ($error == true) {
                 return $this->render('closet_input_address');
             }
@@ -1520,6 +1625,10 @@ class OutboundController extends MinikuraController
         $this->loadModel('PaymentGMOCreditCard');
         $default_card = $this->PaymentGMOCreditCard->apiGetDefaultCard();
         $this->set('default_card', $default_card);
+
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
     }
 
     public function closet_complete()
@@ -1534,8 +1643,6 @@ class OutboundController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->layout = '';
-
-        $price = $this->_setClosetPriceAndItem();
 
         // 配送先
         if (CakeSession::Read('app.data.closet.address') == 'add') {
@@ -1578,6 +1685,18 @@ class OutboundController extends MinikuraController
             $product_list[] = $v["box"]["product_cd"] . ':' . $v["box"]["box_id"] . ':' . $v["item_id"];
         }
 
+        /** ポイント */
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
+
+        /** 価格 */
+        $total_price = $this->_setClosetPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
+        /** 取り出し(クレジットカード) */
         $this->loadModel('OutboundCreditCard');
         $request_params = [];
         $request_params['OutboundCreditCard'] = [
@@ -1592,16 +1711,18 @@ class OutboundController extends MinikuraController
             'postal'=>$address['postal'],
             'tel1'=>$address['tel1'],
             'datetime_cd'=>CakeSession::Read('app.data.closet.datetime_cd'),
+            'point'=>$point_data['use_point'],
+            'total_price'=>$total_price,
         ];
         $this->OutboundCreditCard->set($request_params);
         $res = $this->OutboundCreditCard->apiPost($this->OutboundCreditCard->toArray());
-
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
             $this->redirect('/outbound/closet_select_item?error=1');
         }
 
         CakeSession::delete('app.data.closet');
+        CakeSession::delete('app.data.outbound.use_point');
     }
 
     public function closet_input_address_amazon_pay()
@@ -1609,6 +1730,23 @@ class OutboundController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->layout = '';
+
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('point_balance', $point_data['point_balance']);
+        $this->request->data['PointUseImmediate'] = $point_data;
+        $this->PointUseImmediate->set($this->request->data);
+        // 合計金額取得
+        $outbound_total_price = $this->_setClosetPriceAndItem();
+        // 使用可能ポイント
+        $use_possible_point = $point_data['point_balance'];
+        if (!empty($use_possible_point)) {
+            if ($use_possible_point > $outbound_total_price) {
+                $use_possible_point = $outbound_total_price;
+            }
+            $use_possible_point = floor(($use_possible_point/10))*10;
+        }
+        $this->set('use_possible_point', $use_possible_point);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.closet.datetime_cd')) {
@@ -1642,6 +1780,12 @@ class OutboundController extends MinikuraController
             $this->set('datetime_cd', $_POST['datetime_cd']);
             CakeSession::Write('app.data.closet.datetime_cd', $_POST['datetime_cd']);
 
+            // ポイントの確認
+            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+            if (!$this->PointUseImmediate->validates()) {
+                $error = true;
+            }
+
             if ($error == true) {
                 return $this->render('closet_input_address_amazon_pay');
             }
@@ -1666,6 +1810,10 @@ class OutboundController extends MinikuraController
         if (CakeSession::Read('app.data.closet.datetime_cd')) {
             $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
         }
+
+        // ポイント情報
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
     }
 
     public function closet_complete_amazon_pay()
@@ -1679,8 +1827,6 @@ class OutboundController extends MinikuraController
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
         $this->layout = '';
-
-        $price = $this->_setClosetPriceAndItem();
 
         // 配送先
         $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.closet.amazon_order_reference_id'));
@@ -1698,6 +1844,17 @@ class OutboundController extends MinikuraController
             $product_list[] = $v["box"]["product_cd"] . ':' . $v["box"]["box_id"] . ':' . $v["item_id"];
         }
 
+        /** ポイント */
+        $point_data = $this->_getPointData();
+        $this->set('use_point', $point_data['use_point']);
+
+        /** 価格 */
+        $total_price = $this->_setClosetPriceAndItem();
+        $price = intval($total_price);
+        if (!empty($point_data['use_point'])) {
+            $price -= intval($point_data['use_point']);
+        }
+
         $this->loadModel('OutboundAmazonPay');
         $request_params = [];
         $request_params['OutboundAmazonPay'] = [
@@ -1713,16 +1870,18 @@ class OutboundController extends MinikuraController
             'postal'=>$address['postal'],
             'tel1'=>$address['tel1'],
             'datetime_cd'=>CakeSession::Read('app.data.closet.datetime_cd'),
+            'point'=>$point_data['use_point'],
+            'total_price'=>$total_price,
         ];
         $this->OutboundAmazonPay->set($request_params);
         $res = $this->OutboundAmazonPay->apiPost($this->OutboundAmazonPay->toArray());
-
         if (!empty($res->error_message)) {
             $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
             $this->redirect('/outbound/closet_select_item?error=1');
         }
 
         CakeSession::delete('app.data.closet');
+        CakeSession::delete('app.data.outbound.use_point');
     }
 
     public function as_get_library_box()
@@ -2145,5 +2304,30 @@ class OutboundController extends MinikuraController
         $address['firstname'] = $name['firstname'];
 
         return $address;
+    }
+
+    private function _getPointData()
+    {
+        // 保有ポイント
+        $point_balance = '';
+        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+        $res = $this->PointBalance->apiGet();
+        if (empty($res->error_message)) {
+            $point_balance = $res->results[0]['point_balance'];
+        }
+
+        // 使用ポイント
+        $use_point = CakeSession::Read('app.data.outbound.use_point');
+        if ($this->request->is('post')) {
+            $use_point = $this->request->data['PointUseImmediate']['use_point'];
+            CakeSession::write('app.data.outbound.use_point', $use_point);
+        }
+
+        $point_data = [
+            'use_point'     => $use_point,
+            'point_balance' => $point_balance,
+        ];
+
+        return $point_data;
     }
 }
