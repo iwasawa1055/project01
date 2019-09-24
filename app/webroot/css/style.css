@@ -6053,10 +6053,12 @@ footer .copyright {
   font-size: 1.4rem;
 }
 
+.library .li-libry-item,
 .inbound .li-libry-item {
   margin: 1rem 0;
 }
 
+.library .li-libry-item li,
 .inbound .li-libry-item li {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6072,20 +6074,24 @@ footer .copyright {
   border-top: 0.1rem solid #dddddd;
 }
 
+.library .li-libry-item li:last-child,
 .inbound .li-libry-item li:last-child {
   border-bottom: 0.2rem solid #dddddd;
 }
 
+.library .li-libry-item li .li-libry-item-pict,
 .inbound .li-libry-item li .li-libry-item-pict {
   width: 100%;
   max-width: 10rem;
 }
 
+.library .li-libry-item li .li-libry-item-name,
 .inbound .li-libry-item li .li-libry-item-name {
   width: calc(100% - 26rem);
   margin-left: 1rem;
 }
 
+.library .li-libry-item li .li-libry-item-name span,
 .inbound .li-libry-item li .li-libry-item-name span {
   display: block;
   font-size: 10px;
@@ -6093,6 +6099,7 @@ footer .copyright {
   color: #666666;
 }
 
+.library .li-libry-item li .li-libry-item-price,
 .inbound .li-libry-item li .li-libry-item-price {
   width: calc(100% - 1rem);
   max-width: 15rem;
@@ -6100,10 +6107,12 @@ footer .copyright {
   text-align: right;
 }
 
+.library .li-libry-box,
 .inbound .li-libry-box {
   margin: 1rem 0;
 }
 
+.library .li-libry-box li,
 .inbound .li-libry-box li {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6119,15 +6128,18 @@ footer .copyright {
   border-top: 0.1rem solid #dddddd;
 }
 
+.library .li-libry-box li:last-child,
 .inbound .li-libry-box li:last-child {
   border-bottom: 0.2rem solid #dddddd;
 }
 
+.library .li-libry-box li .li-libry-box-id,
 .inbound .li-libry-box li .li-libry-box-id {
   width: 100%;
   max-width: 10rem;
 }
 
+.library .li-libry-box li .li-libry-box-item,
 .inbound .li-libry-box li .li-libry-box-item {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6144,6 +6156,7 @@ footer .copyright {
   margin-left: 1rem;
 }
 
+.library .li-libry-box li .li-libry-box-item li,
 .inbound .li-libry-box li .li-libry-box-item li {
   display: block;
   margin-right: 1rem;
@@ -6154,6 +6167,7 @@ footer .copyright {
   border: none;
 }
 
+.library .li-libry-box li .li-libry-box-price,
 .inbound .li-libry-box li .li-libry-box-price {
   width: calc(100% - 1rem);
   max-width: 15rem;
@@ -6161,6 +6175,7 @@ footer .copyright {
   text-align: right;
 }
 
+.library .l-desc-num-input .ttl-desc-num-input,
 .inbound .l-desc-num-input .ttl-desc-num-input {
   margin-bottom: 1rem;
   font-size: 20px;
@@ -6168,28 +6183,34 @@ footer .copyright {
   font-weight: bold;
 }
 
+.library .l-desc-num-input .txt-desc-num-input,
 .inbound .l-desc-num-input .txt-desc-num-input {
   margin-bottom: 1rem;
   font-size: 14px;
   font-size: 1.4rem;
 }
 
+.library .l-desc-num-input .tbl-desc-num-input,
 .inbound .l-desc-num-input .tbl-desc-num-input {
   width: auto;
   margin-bottom: 2rem;
 }
 
+.library .l-desc-num-input .tbl-desc-num-input .th,
+.library .l-desc-num-input .tbl-desc-num-input .td,
 .inbound .l-desc-num-input .tbl-desc-num-input .th,
 .inbound .l-desc-num-input .tbl-desc-num-input .td {
   padding: 1rem;
 }
 
+.library .l-chk-price-chk,
 .inbound .l-chk-price-chk {
   margin-bottom: 2rem;
   padding: 2rem;
   border: 0.1rem solid #dddddd;
 }
 
+.library .ttl-box-others,
 .inbound .ttl-box-others {
   margin-bottom: 0.5rem;
   font-size: 16px;
@@ -6252,42 +6273,52 @@ footer .copyright {
     width: 100%;
     margin-bottom: 0.5rem;
   }
+  .library .li-libry-item li,
   .inbound .li-libry-item li {
     padding: 0.5rem 0;
   }
+  .library .li-libry-item li .li-libry-item-pict,
   .inbound .li-libry-item li .li-libry-item-pict {
     max-width: 5rem;
   }
+  .library .li-libry-item li .li-libry-item-name,
   .inbound .li-libry-item li .li-libry-item-name {
     width: calc(100% - 6rem);
     font-size: 10px;
     font-size: 1rem;
   }
+  .library .li-libry-item li .li-libry-item-name span,
   .inbound .li-libry-item li .li-libry-item-name span {
     font-size: 10px;
     font-size: 1rem;
   }
+  .library .li-libry-item li .li-libry-item-price,
   .inbound .li-libry-item li .li-libry-item-price {
     font-size: 10px;
     font-size: 1rem;
   }
+  .library .li-libry-box li,
   .inbound .li-libry-box li {
     padding: 0.5rem 0;
   }
+  .library .li-libry-box li .li-libry-box-id,
   .inbound .li-libry-box li .li-libry-box-id {
     max-width: 5rem;
     font-size: 10px;
     font-size: 1rem;
   }
+  .library .li-libry-box li .li-libry-box-item,
   .inbound .li-libry-box li .li-libry-box-item {
     width: calc(100% - 6rem);
     font-size: 10px;
     font-size: 1rem;
   }
+  .library .li-libry-box li .li-libry-box-item li,
   .inbound .li-libry-box li .li-libry-box-item li {
     font-size: 8px;
     font-size: 0.8rem;
   }
+  .library .li-libry-box li .li-libry-box-price,
   .inbound .li-libry-box li .li-libry-box-price {
     font-size: 10px;
     font-size: 1rem;
