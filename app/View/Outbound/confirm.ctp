@@ -96,6 +96,12 @@
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
             </div>
             <div class="form-group col-lg-12">
+              <?php echo $this->element('keeping-period'); ?>
+            </div>
+            <div class="form-group col-lg-12">
+                <?php echo $this->element('about-fee'); ?>
+            </div>
+            <div class="form-group col-lg-12">
               <div class="panel panel-red">
                 <div class="panel-heading">
                   <label>ご注意ください</label>

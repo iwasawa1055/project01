@@ -824,8 +824,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         // 初期表示
         if ($this->request->is('get')) {
             $item_id = CakeSession::read('app.data.library.item_id');
@@ -905,8 +903,6 @@ class OutboundController extends MinikuraController
     public function library_input_address()
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->layout = '';
 
         // メール便の確認 itemが1個の場合
         $item_id = CakeSession::read('app.data.library.item_id');
@@ -1045,8 +1041,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         $this->_setLibraryPriceAndItem();
 
         // 配送先
@@ -1088,8 +1082,6 @@ class OutboundController extends MinikuraController
         }
 
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->layout = '';
 
         // 配送先
         if (CakeSession::Read('app.data.library.address') == 'add') {
@@ -1202,8 +1194,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         // メール便の確認 itemが1個の場合
         $item_id = CakeSession::read('app.data.library.item_id');
         $box_id = CakeSession::read('app.data.library.box_id');
@@ -1292,8 +1282,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         $this->_setLibraryPriceAndItem();
 
         // 配送先
@@ -1319,8 +1307,6 @@ class OutboundController extends MinikuraController
             $this->redirect('/outbound/library_select_item');
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->layout = '';
 
         // 配送先
         $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.library.amazon_order_reference_id'));
@@ -1407,8 +1393,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         // 初期表示
         if ($this->request->is('get')) {
             $item_id = CakeSession::read('app.data.closet.item_id');
@@ -1488,8 +1472,6 @@ class OutboundController extends MinikuraController
     public function closet_input_address()
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->layout = '';
 
         // デフォルトのクレカを取得
         $this->loadModel('PaymentGMOCreditCard');
@@ -1600,8 +1582,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         $this->_setClosetPriceAndItem();
 
         // 配送先
@@ -1641,8 +1621,6 @@ class OutboundController extends MinikuraController
         }
 
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->layout = '';
 
         // 配送先
         if (CakeSession::Read('app.data.closet.address') == 'add') {
@@ -1729,8 +1707,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         // ポイント情報
         $point_data = $this->_getPointData();
         $this->set('point_balance', $point_data['point_balance']);
@@ -1798,8 +1774,6 @@ class OutboundController extends MinikuraController
     {
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $this->layout = '';
-
         $this->_setClosetPriceAndItem();
 
         // 配送先
@@ -1825,8 +1799,6 @@ class OutboundController extends MinikuraController
             $this->redirect('/outbound/closet_select_item');
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
-
-        $this->layout = '';
 
         // 配送先
         $address = $this->_getAddressByAmazonOrderReferenceId(CakeSession::Read('app.data.closet.amazon_order_reference_id'));

@@ -235,6 +235,15 @@ $(function () {
     });
     return false;
 });
+
+$(function () {
+    $('.l-slide-down').hide();
+    $('.link-slide').click(function () {
+        $(this).next('.l-slide-down').slideToggle(Speed, Ease);
+    });
+    return false;
+});
+
 $('.guidance').iziModal({
     group: "group",
     zindex: 100000,
