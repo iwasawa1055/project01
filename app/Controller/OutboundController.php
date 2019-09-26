@@ -4,6 +4,7 @@ App::uses('AppValid', 'Lib');
 App::uses('MinikuraController', 'Controller');
 App::uses('OutboundList', 'Model');
 App::uses('Outbound', 'Model');
+App::uses('OutboundBank', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('InfoItem', 'Model');
 App::uses('AmazonPayModel', 'Model');
@@ -17,6 +18,9 @@ App::uses('OutboundCreditCardYumail', 'Model');
 class OutboundController extends MinikuraController
 {
     const MODEL_NAME = 'Outbound';
+    const MODEL_NAME_OUTBOUND_BANK = 'OutboundBank';
+    const MODEL_NAME_OUTBOUND_CREDIT_CARD = 'OutboundCreditCard';
+    const MODEL_NAME_OUTBOUND_AMAZON_PAY = 'OutboundAmazonPay';
     const MODEL_NAME_POINT_BALANCE = 'PointBalance';
     const MODEL_NAME_POINT_USE = 'PointUse';
     const MODEL_NAME_POINT_USE_IMMEDIATE = 'PointUseImmediate';
@@ -33,7 +37,10 @@ class OutboundController extends MinikuraController
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
         $this->loadModel('DatetimeDeliveryOutbound');
-        $this->loadModel('Outbound');
+        $this->loadModel(self::MODEL_NAME);
+        $this->loadModel(self::MODEL_NAME_OUTBOUND_BANK);
+        $this->loadModel(self::MODEL_NAME_OUTBOUND_CREDIT_CARD);
+        $this->loadModel(self::MODEL_NAME_OUTBOUND_AMAZON_PAY);
         $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
         $this->loadModel(self::MODEL_NAME_POINT_USE);
         $this->loadModel(self::MODEL_NAME_POINT_USE_IMMEDIATE);
@@ -709,7 +716,14 @@ class OutboundController extends MinikuraController
                 $this->loadModel('ContactAny');
                 $res = $this->ContactAny->apiPostIsolateIsland($this->Outbound->data['Outbound']);
             } else {
-                $res = $this->Outbound->apiPost($this->Outbound->toArray());
+                $this->Outbound->data['Outbound']['price'] = 0;
+                if ($this->Customer->isPrivateCustomer()) {
+                    // 一般ユーザ
+                    $res = $this->OutboundCreditCard->apiPost($this->Outbound->toArray());
+                } else {
+                    // 法人ユーザ
+                    $res = $this->OutboundBank->apiPost($this->Outbound->toArray());
+                }
             }
 
             if (!empty($res->error_message)) {
@@ -781,7 +795,9 @@ class OutboundController extends MinikuraController
                 $this->loadModel('ContactAny');
                 $res = $this->ContactAny->apiPostIsolateIsland($this->Outbound->data['Outbound']);
             } else {
-                $res = $this->Outbound->apiPost($this->Outbound->toArray());
+                $this->Outbound->data['Outbound']['price'] = 0;
+                $this->Outbound->data['Outbound']['amazon_order_reference_id'] = DUMMY_AMAZON_ORDER_REFERENCE_ID;
+                $res = $this->OutboundAmazonPay->apiPost($this->Outbound->toArray());
             }
 
             if (!empty($res->error_message)) {

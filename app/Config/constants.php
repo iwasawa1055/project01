@@ -528,3 +528,6 @@ const START_BOX_FREE = '2019-07-01 00:00:00';
 // ポイント使用内容タイプ
 //minikuraCLEANING＋
 const USE_POINT_CONTENTS_TYPE_CLEANING_PLUS = '2';
+
+/* dummy amazon_order_reference_id */
+const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';
