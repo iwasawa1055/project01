@@ -45,7 +45,7 @@
                 <dt class="items">サービス申し込み料</dt>
                 <dd class="value">
                   <?php if($order_type === 'cleaning') :?>
-                  <?php echo number_format($order_total_data['price']); ?>円(税抜)
+                  <?php echo number_format($order_total_data['price']); ?>円(税込)
                   <?php else:?>
                   0円
                   <?php endif; ?>
@@ -105,7 +105,7 @@
           <li class="body">
             <dl class="content">
               <dt class="items">初月合計金額</dt>
-              <dd class="value"><span class="txt-value"><?php echo number_format($order_total_data['price']); ?></span>円(税抜)</dd>
+              <dd class="value"><span class="txt-value"><?php echo number_format($order_total_data['price']); ?></span>円(税込)</dd>
             </dl>
           </li>
         </ul>
