@@ -121,8 +121,6 @@
   $this->Html->script('app', ['inline' => false]);
   $this->Html->script('app_dev', ['inline' => false]);
   $this->Html->script('jquery.airCenter', ['inline' => false]);
-  $this->Html->script('jquery-ui.min', ['inline' => false]);
-  $this->Html->script('jquery.easing', ['inline' => false]);
 
   echo $this->fetch('script');
   echo $this->fetch('scriptMinikura');

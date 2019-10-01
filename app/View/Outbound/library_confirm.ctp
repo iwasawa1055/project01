@@ -1,4 +1,6 @@
     <?php
+    $this->Html->script('jquery-ui.min', ['block' => 'scriptMinikura']);
+    $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
     $this->Html->script('outbound/library_confirm', ['block' => 'scriptMinikura']);
     ?>
 
