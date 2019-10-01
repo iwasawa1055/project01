@@ -152,83 +152,100 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                             </li>
                         </ul>
                     </li>
-                    <div id="dev-input-box-type-new" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'style="display:none"' : ''; ?>>
+                    <li>
+                      <ul class="input-info" id="dev_collect" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'style="display:none"' : ''; ?>>
                         <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         <li>
                           <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
                           <select id="address_id" class="address dsn-adress select-delivery focused" name="data[InboundBase][address_id]">
-                            <?php foreach ($addressList as $data) : ?>
-                            <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($this->request->data['InboundBase']['address_id']) && $this->request->data['InboundBase']['address_id'] == $data['address_id']) ? 'selected' : ''; ?> data-address-name="<?php echo h("${data['lastname']}${data['firstname']}"); ?>">
-                            <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
-                            </option>
-                            <?php endforeach; ?>
+                              <?php foreach ($addressList as $data) : ?>
+                                <option value="<?php echo $data['address_id']; ?>" <?php echo (isset($this->request->data['InboundBase']['address_id']) && $this->request->data['InboundBase']['address_id'] == $data['address_id']) ? 'selected' : ''; ?> data-address-name="<?php echo h("${data['lastname']}${data['firstname']}"); ?>">
+                                    <?php echo h("〒${data['postal']} ${data['pref']}${data['address1']}${data['address2']}${data['address3']}　${data['lastname']}${data['firstname']}"); ?>
+                                </option>
+                              <?php endforeach; ?>
                             <option value="add" <?php echo (isset($this->request->data['InboundBase']['address_id']) && $this->request->data['InboundBase']['address_id'] == 'add') ? 'selected' : ''; ?> data-address-name="">お届先を追加する</option>
                           </select>
                         </li>
                         <li class="inbound-input-address">
-                            <ul class="add-address">
-                              <li>
-                                <label class="headline">郵便番号</label>
+                          <ul class="add-address">
+                            <li>
+                              <label class="headline">郵便番号</label>
                                 <?php echo $this->Form->input('InboundBase.postal', ['id' => 'postal', 'class' => 'search_address_postal', 'type' => 'tel', 'placeholder'=>'例：140-0002', 'autocomplete' => "postal-code", 'error' => false, 'label' => false, 'div' => false]); ?>
-                                <p class="txt-caption">入力すると住所が自動で反映されます。</p>
+                              <p class="txt-caption">入力すると住所が自動で反映されます。</p>
                                 <?php echo $this->Form->error('InboundBase.postal', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                              <li>
-                                <label class="headline">都道府県</label>
+                            </li>
+                            <li>
+                              <label class="headline">都道府県</label>
                                 <?php echo $this->Form->input('InboundBase.pref', ['id' => 'pref', 'class' => 'address_pref', 'type' => 'text', 'placeholder'=>'例：東京都', 'autocomplete' => "address-level1", 'error' => false, 'label' => false, 'div' => false]); ?>
                                 <?php echo $this->Form->error('InboundBase.pref', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                              <li>
-                                <label class="headline">市区郡</label>
+                            </li>
+                            <li>
+                              <label class="headline">市区郡</label>
                                 <?php echo $this->Form->input('InboundBase.address1', ['id' => 'address1', 'class' => 'address_address1', 'type' => 'text', 'placeholder'=>'例：品川区', 'autocomplete' => "address-level2", 'error' => false, 'label' => false, 'div' => false]); ?>
                                 <?php echo $this->Form->error('InboundBase.address1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                              <li>
-                                <label class="headline">町域以降</label>
+                            </li>
+                            <li>
+                              <label class="headline">町域以降</label>
                                 <?php echo $this->Form->input('InboundBase.address2', ['id' => 'address2', 'class' => 'address_address2', 'type' => 'text', 'placeholder'=>'例：東品川2-6-10', 'autocomplete' => "address-line1", 'error' => false, 'label' => false, 'div' => false]); ?>
                                 <?php echo $this->Form->error('InboundBase.address2', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                              <li>
-                                <label class="headline">建物名</label>
+                            </li>
+                            <li>
+                              <label class="headline">建物名</label>
                                 <?php echo $this->Form->input('InboundBase.address3', ['id' => 'address3', 'type' => 'text', 'placeholder'=>'例：Tビル', 'autocomplete' => "address-line2", 'error' => false, 'label' => false, 'div' => false]); ?>
                                 <?php echo $this->Form->error('InboundBase.address3', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                              <li>
-                                <label class="headline">電話番号</label>
+                            </li>
+                            <li>
+                              <label class="headline">電話番号</label>
                                 <?php echo $this->Form->input('InboundBase.tel1', ['id' => 'tel1', 'type' => 'tel', 'placeholder'=>'例：0312345678', 'autocomplete' => "tel", 'error' => false, 'label' => false, 'div' => false]); ?>
                                 <?php echo $this->Form->error('InboundBase.tel1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                              <li>
-                                <label class="headline">お名前<span class="required">※</span></label>
-                                <ul class="col-name input-name-area">
-                                  <li>
+                            </li>
+                            <li>
+                              <label class="headline">お名前<span class="required">※</span></label>
+                              <ul class="col-name input-name-area">
+                                <li>
                                     <?php echo $this->Form->input('InboundBase.lastname', ['class'=> 'lastname', 'type' => 'text', 'placeholder'=>'例：寺田', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "family-name", 'error' => false, 'label' => false, 'div' => false]); ?>
-                                  </li>
-                                  <li>
+                                </li>
+                                <li>
                                     <?php echo $this->Form->input('InboundBase.firstname', ['class'=> 'firstname', 'type' => 'text', 'placeholder'=>'例：太郎', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "given-name", 'error' => false, 'label' => false, 'div' => false]); ?>
-                                  </li>
-                                </ul>
+                                </li>
+                              </ul>
                                 <?php echo $this->Form->error('InboundBase.lastname', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                                 <?php echo $this->Form->error('InboundBase.firstname', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                              </li>
-                            </ul>
-                            <label class="input-check">
-                              <input type="checkbox" class="cb-square" name="data[InboundBase][resister]" value="1" <?php echo (isset($this->request->data['InboundBase']['resister']) && $this->request->data['InboundBase']['resister'] == '1') ? 'checked' : ''; ?>><span class="icon"></span><span class="label-txt">アドレスブックに登録する</span>
-                            </label>
+                            </li>
+                          </ul>
+                          <label class="input-check">
+                            <input type="checkbox" class="cb-square" name="data[InboundBase][resister]" value="1" <?php echo (isset($this->request->data['InboundBase']['resister']) && $this->request->data['InboundBase']['resister'] == '1') ? 'checked' : ''; ?>><span class="icon"></span><span class="label-txt">アドレスブックに登録する</span>
+                          </label>
                         </li>
                         <li>
-                            <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['day_cd']) ?$this->request->data['InboundBase']['day_cd'] : ""; ?>" id="pickup_date">
-                            <label class="headline">集荷の日程</label>
-                            <select id="day_cd" name="data[InboundBase][day_cd]"></select>
+                          <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['day_cd']) ?$this->request->data['InboundBase']['day_cd'] : ""; ?>" id="pickup_date">
+                          <label class="headline">集荷の日程</label>
+                          <select id="day_cd" name="data[InboundBase][day_cd]"></select>
                             <?php echo $this->Form->error("InboundBase.day_cd", null, ['wrap' => 'p']) ?>
                         </li>
                         <li>
-                            <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['time_cd']) ?$this->request->data['InboundBase']['time_cd'] : ""; ?>" id="pickup_time_code">
-                            <label class="headline">集荷の時間</label>
-                            <select id="time_cd" name="data[InboundBase][time_cd]"></select>
+                          <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['time_cd']) ?$this->request->data['InboundBase']['time_cd'] : ""; ?>" id="pickup_time_code">
+                          <label class="headline">集荷の時間</label>
+                          <select id="time_cd" name="data[InboundBase][time_cd]"></select>
                             <?php echo $this->Form->error("InboundBase.time_cd", null, ['wrap' => 'p']) ?>
                         </li>
-                    </div>
+                      </ul>
+                    </li>
+                    <li>
+                      <ul class="input-info" id="dev_self" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? '' : 'style="display:none"'; ?>>
+                        <li class="l-mtd-desc">
+                          <p>自分で発送する際は、以下の2つから送ることができます。</p>
+                        </li>
+                        <li class="l-mtd-dtl">
+                          <label class="headline">コンビニエンスストアで発送</label>
+                          <p class="txt-desc">専用ボックスに同梱されている宅配伝票を専用ボックスに貼り、お近くのコンビニエンスストアからお荷物をお送りください。<br>
+                            取扱店：セブン-イレブン、ファミリーマート、サークルKサンクス、デイリーヤマザキ、スリーエフ、ポプラ、ニューデイズなど</p>
+                          <label class="headline">自分でヤマト運輸へ集荷の依頼</label>
+                          <p class="txt-desc">専用ボックスに同梱されている宅配伝票を専用ボックスに貼り、ヤマト運輸のインターネットまたはお電話で集荷の依頼をすることでお荷物を送ることができます。<br>
+                            直接の申し込みは<a class="link" href="http://www.kuronekoyamato.co.jp/ytc/customer/send/" target="_blank">こちら</a></p>
+                        </li>
+                      </ul>
+                    </li>
                 </ul>
             </form>
         </div>
