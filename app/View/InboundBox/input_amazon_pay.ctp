@@ -48,7 +48,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     </li>
                     <input type='hidden' id='dev-selected-box_type' value="<?php echo $this->request->data['InboundBase']['box_type']?>">
                 </ul>
-                <div id="dev-new-box" class="item-content">
+                <div id="dev-new-box" class="item-content" <?php echo (!isset($this->request->data['InboundBase']['box_type']) || $this->request->data['InboundBase']['box_type'] == 'new') ? '' : 'style="display:none"'; ?>>
                     <ul class="l-caution">
                         <li>
                             <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
@@ -80,7 +80,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                                 </p>
                                 <p class="box-type"><?php echo $new_box['kit_name']; ?></p>
                                 <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['new'][$new_box['box_id']]['title'])) echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
-                                <?php if($new_box['product_cd'] === PRODUCT_CD_MONO): ?>
+                                <?php if($new_box['product_cd'] === PRODUCT_CD_MONO || $new_box['product_cd'] === PRODUCT_CD_CLOSET || $new_box['product_cd'] === PRODUCT_CD_LIBRARY || $new_box['product_cd'] === PRODUCT_CD_CLEANING_PACK || $new_box['product_cd'] === PRODUCT_CD_GIFT_CLEANING_PACK): ?>
                                 <label class="input-check">
                                     <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
                                     <span class="icon"></span>
@@ -93,7 +93,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                         <?php endforeach; ?>
                     </ul>
                 </div>
-                <div id="dev-old-box" class="item-content">
+                <div id="dev-old-box" class="item-content" <?php echo ($this->request->data['InboundBase']['box_type'] == 'old') ? '' : 'style="display:none"'; ?>>
                     <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
                         ボックスの状態については十分ご確認の上、ご利用ください。<br>
                         なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。</p>
