@@ -396,8 +396,7 @@ class OrderController extends MinikuraController
         foreach ($order_list as $key => $val) {
             foreach ($val as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
-                    $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => '', 'quantity' => (int)$v2['number']];
                 }
             }
         }
@@ -406,7 +405,8 @@ class OrderController extends MinikuraController
             foreach ($tv as $tk1 => $tv1) {
                 $num += $tv1['quantity'];
             }
-            $order_list_criteo_array[] = ['id' => $tk, 'price' => (int)$tv[0]['price'], 'quantity' => (int)$num];
+            $price = ($tv[0]['id'] == KIT_CD_CLEANING_PACK) ? (PRODUCT_DATA_ARRAY[$tk]['box_price']): PRODUCT_DATA_ARRAY[$tk]['monthly_price'];
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => $price, 'quantity' => (int)$num];
         }
         foreach ($order_list_criteo_array as $key => $var) {
             $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
@@ -613,8 +613,7 @@ class OrderController extends MinikuraController
         foreach ($order_list as $key => $val) {
             foreach ($val as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
-                    $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => '', 'quantity' => (int)$v2['number']];
                 }
             }
         }
@@ -623,7 +622,8 @@ class OrderController extends MinikuraController
             foreach ($tv as $tk1 => $tv1) {
                 $num += $tv1['quantity'];
             }
-            $order_list_criteo_array[] = ['id' => $tk, 'price' => (int)$tv[0]['price'], 'quantity' => (int)$num];
+            $price = ($tv[0]['id'] == KIT_CD_CLEANING_PACK) ? (PRODUCT_DATA_ARRAY[$tk]['box_price']): PRODUCT_DATA_ARRAY[$tk]['monthly_price'];
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => $price, 'quantity' => (int)$num];
         }
         foreach ($order_list_criteo_array as $key => $var) {
             $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
@@ -822,8 +822,7 @@ class OrderController extends MinikuraController
         foreach ($order_list as $key => $val) {
             foreach ($val as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
-                    $price = ($k2 == KIT_CD_CLEANING_PACK) ? (CakeSession::read('order_total_data')['price'] / $v2['number']): 0;
-                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => (int)$price, 'quantity' => (int)$v2['number']];
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => '', 'quantity' => (int)$v2['number']];
                 }
             }
         }
@@ -832,7 +831,8 @@ class OrderController extends MinikuraController
             foreach ($tv as $tk1 => $tv1) {
                 $num += $tv1['quantity'];
             }
-            $order_list_criteo_array[] = ['id' => $tk, 'price' => (int)$tv[0]['price'], 'quantity' => (int)$num];
+            $price = ($tv[0]['id'] == KIT_CD_CLEANING_PACK) ? (PRODUCT_DATA_ARRAY[$tk]['box_price']): PRODUCT_DATA_ARRAY[$tk]['monthly_price'];
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => $price, 'quantity' => (int)$num];
         }
         foreach ($order_list_criteo_array as $key => $var) {
             $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];

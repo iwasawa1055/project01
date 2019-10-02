@@ -501,14 +501,14 @@ const POINT_BALANCE_ERROR = 'ポイント残高の情報の取得に失敗しま
 const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しました。';
 
 // LIBRARY出庫金額
-const LIBRARY_OUTBOUND_BASIC_PRICE = 350; //出庫基本料金
-const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金
-const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 850; //1箱解約時出庫基本料金
+const LIBRARY_OUTBOUND_BASIC_PRICE = 356; //出庫基本料金(税込)
+const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金(税込)
+const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 935; //1箱解約時出庫基本料金(税込)
 
 // CLOSET出庫金額
-const CLOSET_OUTBOUND_BASIC_PRICE = 450; //出庫基本料金
-const CLOSET_OUTBOUND_PER_ITEM_PRICE = 50; //1アイテムあたり出庫基本料金
-const CLOSET_OUTBOUND_CANCELLATION_PRICE = 850; //1箱解約時出庫基本料金
+const CLOSET_OUTBOUND_BASIC_PRICE = 458; //出庫基本料金(税込)
+const CLOSET_OUTBOUND_PER_ITEM_PRICE = 50; //1アイテムあたり出庫基本料金(税込)
+const CLOSET_OUTBOUND_CANCELLATION_PRICE = 935; //1箱解約時出庫基本料金(税込)
 
 // REGISTER(会員登録)用
 const REGISTER_CUSTOMER_DEFAULT_BIRTH_START_YEAR = 1920;
@@ -528,3 +528,6 @@ const START_BOX_FREE = '2019-07-01 00:00:00';
 // ポイント使用内容タイプ
 //minikuraCLEANING＋
 const USE_POINT_CONTENTS_TYPE_CLEANING_PLUS = '2';
+
+/* dummy amazon_order_reference_id */
+const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';

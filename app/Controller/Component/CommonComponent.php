@@ -22,7 +22,7 @@ class CommonComponent extends Component
 
         // 日曜日の場合は前日に変更
         $targetTime = strtotime($free_limit_date);
-        $week = date('w', $targetTime);
+        $week = (int) date('w', $targetTime);
         if ($week === 0) {
             $free_limit_date = date('Y-m-d', strtotime('-1 day', $targetTime));
         }
