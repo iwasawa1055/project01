@@ -5,8 +5,8 @@
 <?php echo $this->element('service_description'); ?>
 
     <ul class="l-banner">
-      <li class="l-free-box">
-        <a href="https://mypage.minikura.com/news/detail/414">
+      <li class="l-banner-dtl">
+        <a href="/news/detail/414">
           <picture>
             <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
             <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
@@ -14,7 +14,7 @@
           </picture>
         </a>
       </li>
-      <li class="l-collected-day">
+      <li class="l-banner-dtl">
         <a href="/inbound/box/add">
           <picture>
             <source media="(min-width: 768px)" srcset="/images/collected-day-pc@1x.png 1x, /images/collected-day-pc@2x.png 2x">

@@ -48,6 +48,14 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<!-- Criteo -->
+<script type="text/javascript">
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'PageType': 'Homepage',
+        'HashedEmail': '<?php echo $this->App->getHashedEmail($customer); ?>'
+    });
+</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -115,7 +123,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="col-xs-12">
       <p>© 2012 Warehouse TERRADA</p>
     </div>
-    <input type='hidden' id='hashed_email' value='<?php echo $this->App->getHashedEmail($customer); ?>'>
   </div>
 </div>
 
@@ -150,12 +157,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <?php endif; ?>
 
 </body>
-<!-- Criteo -->
-<script type="text/javascript">
-    var dataLayer = dataLayer || [];
-    dataLayer.push({
-        'PageType': 'Homepage',
-        'HashedEmail': document.getElementById('hashed_email').value
-    });
-</script>
 </html>

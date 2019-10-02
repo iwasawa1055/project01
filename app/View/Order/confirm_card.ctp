@@ -45,7 +45,7 @@
                 <dt class="items">サービス申し込み料</dt>
                 <dd class="value">
                   <?php if($order_type === 'cleaning') :?>
-                  <?php echo number_format($order_total_data['price']); ?>円
+                  <?php echo number_format($order_total_data['price']); ?>円(税込)
                   <?php else:?>
                   0円
                   <?php endif; ?>
@@ -57,7 +57,7 @@
               <dl class="content">
                 <dt class="items">月額保管料</dt>
                 <dd class="value">
-                  <?php echo number_format(PRODUCT_DATA_ARRAY[$product_cd]['monthly_price'] * $kit_data['number']); ?>円
+                  <?php echo number_format(PRODUCT_DATA_ARRAY[$product_cd]['monthly_price'] * $kit_data['number']); ?>円(税抜)
                 </dd>
               </dl>
             </li>
@@ -105,7 +105,7 @@
           <li class="body">
             <dl class="content">
               <dt class="items">初月合計金額</dt>
-              <dd class="value"><span class="txt-value"><?php echo number_format($order_total_data['price']); ?></span>円</dd>
+              <dd class="value"><span class="txt-value"><?php echo number_format($order_total_data['price']); ?></span>円(税込)</dd>
             </dl>
           </li>
         </ul>
