@@ -21,6 +21,9 @@ class ReceiveController extends MinikuraController
      */
     public function beforeFilter()
     {
+        // TODO ギフトリリースまで遷移させない
+        new AppTerminalError(AppE::NOT_FOUND, 404);
+
         parent::beforeFilter();
     }
 

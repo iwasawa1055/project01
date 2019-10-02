@@ -32,7 +32,16 @@ class PointController extends MinikuraController
             CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res (PointHistory) ' . print_r($res, true));
             $this->set('point_history_error', POINT_HISTORY_ERROR);
         } else {
-            $histories = $res->results;
+            $histories = [];
+            foreach ($res->results as $result) {
+                if ($result['status'] === POINT_STATUS_CANCEL) {
+                    // 不具合修正：意図しない資源元からのキャンセル項目は非表示
+                    if ($result['point_source'] === 'terrada:GRP') {
+                        continue;
+                    }
+                }
+                $histories[] = $result;
+            }
         }
         $list = $this->paginate($histories);
         $this->set('histories', $list);

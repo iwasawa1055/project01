@@ -45,7 +45,7 @@
                 <dt class="items">サービス申し込み料</dt>
                 <dd class="value">
                   <?php if($order_type === 'cleaning') :?>
-                  <?php echo number_format($order_total_data['price']); ?>円
+                  <?php echo number_format($order_total_data['price']); ?>円(税込)
                   <?php else:?>
                   0円
                   <?php endif; ?>
@@ -57,7 +57,7 @@
               <dl class="content">
                 <dt class="items">月額保管料</dt>
                 <dd class="value">
-                  <?php echo number_format(PRODUCT_DATA_ARRAY[$product_cd]['monthly_price'] * $kit_data['number']); ?>円
+                  <?php echo number_format(PRODUCT_DATA_ARRAY[$product_cd]['monthly_price'] * $kit_data['number']); ?>円(税抜)
                 </dd>
               </dl>
             </li>
@@ -79,7 +79,11 @@
           <?php endif; ?>
           <?php if($order_type === 'hanger') :?>
           <label class="input-check">
+            <?php if($order_kit_list[KIT_CD_CLOSET]['number'] > 2) : ?>
+            <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">Closetボックスを３箱以上でお申し込みの場合、宅配便でのお届けになります。</span>
+            <?php else: ?>
             <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">minikuraClosetはminikuraの他の商品と異なり、お届け日時が選べません。<br>ネコポスでの配送となりお客さまのポストに直接投函・配達します。<br>注文内容にお間違いないか再度ご確認の上、「ボックスの確認」にお進みください。</span>
+            <?php endif; ?>
           </label>
           <?php endif; ?>
           <?php if($order_type === 'cleaning') :?>
@@ -101,7 +105,7 @@
           <li class="body">
             <dl class="content">
               <dt class="items">初月合計金額</dt>
-              <dd class="value"><span class="txt-value"><?php echo number_format($order_total_data['price']); ?></span>円</dd>
+              <dd class="value"><span class="txt-value"><?php echo number_format($order_total_data['price']); ?></span>円(税込)</dd>
             </dl>
           </li>
         </ul>

@@ -9,6 +9,17 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
 ?>
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
+            <ul class="l-banner">
+              <li class="l-banner-dtl">
+                <a href="/news/detail/417">
+                  <picture>
+                    <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
+                    <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
+                    <img src="/images/price-revision-pc@1x.png" alt="2019年10月1日よりご利用料金が変更になります 詳しくはこちら">
+                  </picture>
+                </a>
+              </li>
+            </ul>
             <ul class="pagenation">
                 <li class="on"><span class="number">1</span><span class="txt">ボックス<br>選択</span>
                 </li>
@@ -148,32 +159,49 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                             </li>
                         </ul>
                     </li>
-                    <div id="dev-input-box-type-new">
-                        <li>
-                            <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
-                                <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                                  <div class="dsn-address">
-                                    <div id="addressBookWidgetDiv">
-                                    </div>
+                  <li>
+                    <ul class="input-info" id="dev_collect" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'style="display:none"' : ''; ?>>
+                      <li>
+                          <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
+                              <div id="dsn-amazon-pay" class="form-group col-lg-12">
+                                <div class="dsn-address">
+                                  <div id="addressBookWidgetDiv">
                                   </div>
                                 </div>
-                            <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p']) ?>
-                        </li>
-                        <input type="hidden" id="firstname" name="data[InboundBase][firstname]">
-                        <input type="hidden" id="lastname"  name="data[InboundBase][lastname]">
-                        <li>
-                            <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['day_cd']) ?$this->request->data['InboundBase']['day_cd'] : ""; ?>" id="pickup_date">
-                            <label class="headline">集荷の日程</label>
-                            <select id="day_cd" name="data[InboundBase][day_cd]"></select>
-                            <?php echo $this->Form->error("InboundBase.day_cd", null, ['wrap' => 'p']) ?>
-                        </li>
-                        <li>
-                        <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['time_cd']) ?$this->request->data['InboundBase']['time_cd'] : ""; ?>" id="pickup_time_code">
-                            <label class="headline">集荷の時間</label>
-                            <select id="time_cd" name="data[InboundBase][time_cd]"></select>
-                            <?php echo $this->Form->error("InboundBase.time_cd", null, ['wrap' => 'p']) ?>
-                        </li>
-                    </div>
+                              </div>
+                          <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p']) ?>
+                      </li>
+                      <input type="hidden" id="firstname" name="data[InboundBase][firstname]">
+                      <input type="hidden" id="lastname"  name="data[InboundBase][lastname]">
+                      <li>
+                          <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['day_cd']) ?$this->request->data['InboundBase']['day_cd'] : ""; ?>" id="pickup_date">
+                          <label class="headline">集荷の日程</label>
+                          <select id="day_cd" name="data[InboundBase][day_cd]"></select>
+                          <?php echo $this->Form->error("InboundBase.day_cd", null, ['wrap' => 'p']) ?>
+                      </li>
+                      <li>
+                      <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['time_cd']) ?$this->request->data['InboundBase']['time_cd'] : ""; ?>" id="pickup_time_code">
+                          <label class="headline">集荷の時間</label>
+                          <select id="time_cd" name="data[InboundBase][time_cd]"></select>
+                          <?php echo $this->Form->error("InboundBase.time_cd", null, ['wrap' => 'p']) ?>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <ul class="input-info" id="dev_self" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? '' : 'style="display:none"'; ?>>
+                      <li class="l-mtd-desc">
+                        <p>自分で発送する際は、以下の2つから送ることができます。</p>
+                      </li>
+                      <li class="l-mtd-dtl">
+                        <label class="headline">コンビニエンスストアで発送</label>
+                        <p class="txt-desc">専用ボックスに同梱されている宅配伝票を専用ボックスに貼り、お近くのコンビニエンスストアからお荷物をお送りください。<br>
+                          取扱店：セブン-イレブン、ファミリーマート、サークルKサンクス、デイリーヤマザキ、スリーエフ、ポプラ、ニューデイズなど</p>
+                        <label class="headline">自分でヤマト運輸へ集荷の依頼</label>
+                        <p class="txt-desc">専用ボックスに同梱されている宅配伝票を専用ボックスに貼り、ヤマト運輸のインターネットまたはお電話で集荷の依頼をすることでお荷物を送ることができます。<br>
+                          直接の申し込みは<a class="link" href="http://www.kuronekoyamato.co.jp/ytc/customer/send/" target="_blank">こちら</a></p>
+                      </li>
+                    </ul>
+                  </li>
                 </ul>
             </form>
         </div>

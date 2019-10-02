@@ -75,7 +75,7 @@ class AppHelper extends Helper
 
     public function formatPointType($history)
     {
-        $pointType = Hash::get(POINT_TYPE, $history['point_type']);
+        $pointType = $history['cpss_type_name'];
         if (empty($pointType)) {
             return '';
         }
@@ -172,5 +172,27 @@ class AppHelper extends Helper
             case '217':
                 return '/images/cleaning.png';
         }
+    }
+
+    public function getHashedEmail($customer)
+    {
+        if (is_object($customer) == false) {
+            return '';
+        }
+
+        $info = $customer->getInfo();
+
+        $email = '';
+        if (count($info)) {
+            if (isset($info['email'])) {
+                $email = $info['email'];
+                $processed_address = strtolower($email);
+                $processed_address = trim($processed_address);
+                $processed_address = mb_convert_encoding($processed_address, "UTF-8", "ISO-8859-1");
+                $email = md5($processed_address);
+            }
+        }
+
+        return $email;
     }
 }

@@ -7,6 +7,7 @@ App::uses('TimePrivate', 'Model');
 App::uses('InboundSelectedBox', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('CustomerAddress', 'Model');
+App::uses('MtYmstpost', 'Model');
 App::uses('InboundBase', 'Model');
 
 class InboundBoxController extends MinikuraController
@@ -769,6 +770,18 @@ class InboundBoxController extends MinikuraController
             }
             if (!$model->validates()) {
                 $_validErrors = array_merge($_validErrors, $model->validationErrors);
+            }
+
+            // 集荷依頼を頼んでいる場合
+            if (explode("_", $_data['delivery_carrier'])[0] == DELIVERY_ID_PICKUP) {
+                // 郵便番号チェック
+                $this->loadModel('MtYmstpost');
+                $res = $this->MtYmstpost->getPostal(['postal' => $_data["postal"]]);
+                if ($res->status == 0 || count($res->results) == 0) {
+                    CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
+                    CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($_data['postal'], true));
+                    $_validErrors['postal'] = ['ヤマト運輸社で集荷申し込みできない郵便番号を入力されています。上の住所選択から「お届先を追加する」を選択し、再度集荷先の追加を入力ください。'];
+                }
             }
         }
     }

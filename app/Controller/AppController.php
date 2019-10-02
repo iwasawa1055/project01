@@ -287,6 +287,12 @@ class AppController extends Controller
             }
         }
 
+        $referer = $_SERVER['HTTP_REFERER'];
+        $static_content_url = Configure::read('site.static_content_url');
+        if (strpos($referer, $static_content_url) !== false) {
+            return $this->redirect('/');
+        }
+
         // CakeLog::write(DEBUG_LOG, '_switchRedirctUrl None-aggressive user');
         return $this->redirect(['controller' => 'order', 'action' => 'add']);
     }

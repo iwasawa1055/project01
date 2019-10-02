@@ -12,15 +12,6 @@
             <div class="row">
               <div class="col-lg-12">
                 <h2>ポイント</h2>
-                <p class="form-control-point col-lg-12">minikuraポイントサービスの新規付与は休止しております。<br />
-                  <a href="https://minikura.com/info/news/389" class="animsition-link">▶minikuraポイントサービスの新規付与の休止について</a><br /><br />
-                  ポイントの利用については以下のサービスの取り出し料金にご利用できます。<br />
-                  ・minikura HAKO <br>
-                  ・minikura MONO <br>
-                  ・minikura クリーニングパック <br>
-                  ・minikura ダイレクト <br>
-                  ・minikura CARGO <br>
-                </p>
                 <div class="form-group col-lg-12">
                   <?php if(isset($point['point_balance'])) : ?>
                   ただいま <span class="point"><?php echo $point['point_balance']; ?></span> ポイント

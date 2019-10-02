@@ -248,7 +248,7 @@ class InfoItem extends ApiCachedModel
         return $list;
     }
 
-    public function editBySearchTerm($results, $params)
+    public function editBySearchTerm($results, $params, $sort_flag = true)
     {
         if (empty($params['keyword'])) {
             return $results;
@@ -287,9 +287,11 @@ class InfoItem extends ApiCachedModel
         $hits = AppSearch::makeRank($results, $keywords, $columns, $all_minus_flag);
 
         // sort
-        if (!empty($params['order']) && !empty($params['direction'])) {
-            $sortKey = [$params['order'] => ($params['direction'] === 'asc')];
-            HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
+        if ($sort_flag) {
+            if (!empty($params['order']) && !empty($params['direction'])) {
+                $sortKey = [$params['order'] => ($params['direction'] === 'asc')];
+                HashSorter::sort($hits, ($sortKey + self::DEFAULTS_SORT_KEY));
+            }
         }
 
         return $hits;

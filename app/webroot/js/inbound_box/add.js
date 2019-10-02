@@ -7,11 +7,13 @@ var AppInboundBaseBoxAdd =
         $('#dev-new-box').fadeIn(400, 'easeInOutExpo');
         $('#dev-old-box').fadeOut(400, 'easeInOutExpo');
         $("#dev-self-delivery").show();
-        $("#dev-input-box-type-new").show();
+        $("#dev_collect").show();
+        $("#dev_self").hide();
       } else if ($(this).val() === 'old') {
         $("input[name='data[InboundBase][delivery_carrier]']:eq(0)").prop('checked', true);
         $("#dev-self-delivery").hide();
-        $("#dev-input-box-type-new").show();
+        $("#dev_collect").show();
+        $("#dev_self").hide();
         $('#dev-new-box').fadeOut(400, 'easeInOutExpo');
         $('#dev-old-box').fadeIn(400, 'easeInOutExpo');
       }
@@ -20,9 +22,11 @@ var AppInboundBaseBoxAdd =
     // 自分で発送する際は住所情報を非表示
     $('[name="data[InboundBase][delivery_carrier]"]').change(function() {
       if ($(this).val() === '7') {
-        $("#dev-input-box-type-new").hide();
+        $("#dev_collect").slideUp(300);
+        $("#dev_self").slideDown(300);
       } else {
-        $("#dev-input-box-type-new").show();
+        $("#dev_collect").slideDown(300);
+        $("#dev_self").slideUp(300);
       }
     });
 

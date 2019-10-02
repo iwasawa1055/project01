@@ -5,8 +5,7 @@
 <?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 
-<?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
-<?php $this->Html->css('/css/order.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 <?php $this->validationErrors['OrderKit'] = $validErrors; ?>
 
   <?php echo $this->Form->create('PaymentGMOKitByCreditCard', ['url' => ['controller' => 'order', 'action' => 'input_card'], 'novalidate' => true]); ?>
@@ -15,21 +14,35 @@
       <?php echo $this->Flash->render(); ?>
 
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
-      <div class="row">
-        <div class="col-lg-12 col-xs-12">
-          <ul class="l-banner">
-            <li class="l-free-box">
-              <a href="https://mypage.minikura.com/news/detail/414">
-                <picture>
-                  <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
-                  <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
-                  <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
-                </picture>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <ul class="l-banner">
+        <li class="l-banner-dtl">
+          <a href="/news/detail/417">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
+              <img src="/images/price-revision-pc@1x.png" alt="2019年10月1日よりご利用料金が変更になります 詳しくはこちら">
+            </picture>
+          </a>
+        </li>
+        <li class="l-banner-dtl">
+          <a href="/news/detail/414">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
+              <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
+            </picture>
+          </a>
+        </li>
+        <li class="l-banner-dtl">
+          <a href="/inbound/box/add">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/collected-day-pc@1x.png 1x, /images/collected-day-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/collected-day-sp@1x.png 1x, /images/collected-day-sp@2x.png 2x">
+              <img src="/images/collected-day-pc@1x.png" alt="13時までのお預け入れ申込で当日にお荷物の受取に伺います">
+            </picture>
+          </a>
+        </li>
+      </ul>
 
       <?php echo $this->element('Order/breadcrumb_list'); ?>
 
@@ -47,7 +60,7 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-hs">200</span>円/箱</p>
+                <p class="price">月額保管料<span class="price-hs">200</span>円(税抜)/箱</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -63,9 +76,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hako_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -79,9 +92,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hako_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -95,9 +108,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hako_book_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hako", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -122,7 +135,7 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ms">250</span>円</p>
+                <p class="price">月額保管料<span class="price-ms">250</span>円(税抜)</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -149,9 +162,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.mono_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_mono", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -165,9 +178,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.mono_appa_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_mono", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -192,7 +205,7 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ls">450</span>円</p>
+                <p class="price">月額保管料<span class="price-ls">450</span>円(税抜)</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -208,9 +221,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.library_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_library", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -233,7 +246,7 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-hs">450</span>円</p>
+                <p class="price">月額保管料<span class="price-hs">450</span>円(税抜)</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -249,9 +262,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hanger_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hanger", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">
@@ -275,7 +288,7 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">6ヶ月保管＋クリーニング料セット</p>
-                <p class="price">サービス申し込み料<span class="price-lb">12,000</span>円</p>
+                <p class="price">サービス申し込み料<span class="price-lb">11,000</span>円(税抜)</p>
                 <a class="application">※サービス申し込み料とは<img src="/images/question.svg"></a>
                 <p class="captions">
                   専用ボックス、預け入れ送料、半年間の保管料金、10点クリーニング、ボックスごとの取り出し料金が含まれます。
@@ -290,9 +303,9 @@
               </li>
               <li>
                 <div class="spinner">
-                  <input type="button" name="spinner_down" class="btn-spinner spinner-down">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
                   <?php echo $this->Form->input('PaymentGMOKitByCreditCard.cleaning_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_cleaning", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="btn-spinner spinner-up">
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
                 </div>
               </li>
               <li class="captions">

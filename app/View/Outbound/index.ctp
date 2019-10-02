@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col-lg-12">
             <h2>ポイントのご利用</h2>
-            <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
+            <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。
               <br />
               ※1ポイント＝1円換算<br />
               ※100ポイントから利用可能です。<br />

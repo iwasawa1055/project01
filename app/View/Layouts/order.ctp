@@ -32,6 +32,29 @@
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <?php # 完了画面なら以下を表示 ?>
+  <?php if ($_SERVER['REQUEST_URI'] == '/order/complete_card' || $_SERVER['REQUEST_URI'] == '/order/complete_bank' || $_SERVER['REQUEST_URI'] == '/order/complete_amazon_pay') : ?>
+  <script type="text/javascript">
+      var products_list = JSON.parse('<?php echo $order_list_criteo_json; ?>');
+      var hashed_email = '<?php echo $this->App->getHashedEmail($customer); ?>';
+      var transaction_id = '<?php echo $order_id; ?>';
+      var dataLayer = dataLayer || [];
+      dataLayer.push({
+          'PageType': 'Transactionpage',
+          'HashedEmail': hashed_email,
+          'ProductTransactionProducts': products_list,
+          'TransactionID': transaction_id
+      });
+  </script>
+  <?php else : ?>
+  <script type="text/javascript">
+      var dataLayer = dataLayer || [];
+      dataLayer.push({
+          'PageType': 'Homepage',
+          'HashedEmail': '<?php echo $this->App->getHashedEmail($customer); ?>'
+      });
+  </script>
+  <?php endif; ?>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -90,6 +113,7 @@
         </li>
       </nav>
       <p class="copyright">© Warehouse TERRADA</p>
+      <input type='hidden' id='hashed_email' value='<?php echo $this->App->getHashedEmail($customer); ?>'>
     </footer>
   </div>
 
@@ -115,7 +139,6 @@
   <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
   <?php endif; ?>
   <?php endif; ?>
-
 
 </body>
 

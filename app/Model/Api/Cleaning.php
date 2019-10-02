@@ -31,7 +31,7 @@ class Cleaning extends ApiModel
     public function buildParamProduct($itemList = []) {
         $list = [];
         foreach ($itemList as $item) {
-            $list[] = "${item['product_cd']}:${item['box_id']}:${item['item_id']}";
+            $list[] = "{$item['box']['product_cd']}:{$item['box_id']}:{$item['item_id']}";
         }
         return implode(',', $list);
     }
@@ -41,7 +41,7 @@ class Cleaning extends ApiModel
         // Worktypeを取得する
         // WorktypeはConfig/EnvConfig/[Development]/AppConfig.phpを参照
         $worktypes = Configure::read('app.kit.cleaning.work_type');
-        
+
         // Worktypesが設定されていればリターン
         if (isset($worktypes[$itemgroup_cd])) {
             return $worktypes[$itemgroup_cd];
