@@ -302,6 +302,7 @@ class InboundBoxController extends MinikuraController
                     break;
                 } else {
                     $tmp_box_list[$key_index]['title'] = $item['title'];
+                    $tmp_box_list[$key_index]['wrapping_type'] = (isset($item['wrapping_type']) && $item['wrapping_type'] == 1) ? 1 : 0;
                     if ($tmp_box_list[$key_index]['product_cd'] == PRODUCT_CD_GIFT_CLEANING_PACK) {
                         $tmp_box_list[$key_index]['excess_flag'] = $item_excess_list[$box_id];
                     }
@@ -578,6 +579,7 @@ class InboundBoxController extends MinikuraController
                     break;
                 } else {
                     $tmp_box_list[$key_index]['title'] = $item['title'];
+                    $tmp_box_list[$key_index]['wrapping_type'] = (isset($item['wrapping_type']) && $item['wrapping_type'] == 1) ? 1 : 0;
                     if ($tmp_box_list[$key_index]['product_cd'] == PRODUCT_CD_GIFT_CLEANING_PACK) {
                         $tmp_box_list[$key_index]['excess_flag'] = $item_excess_list[$box_id];
                     }
