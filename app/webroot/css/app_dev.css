@@ -446,3 +446,8 @@ label.reset_label {
 .l-plan p .red-link {
     color: red;
 }
+
+.outbound_select_checkbox > input[type="checkbox"],
+box_select_checkbox{
+  display: block;
+}

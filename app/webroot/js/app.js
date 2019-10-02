@@ -237,6 +237,15 @@ $(function () {
 });
 
 $(function () {
+    $('.l-slide-down').hide();
+    $('.link-slide').click(function () {
+        $(this).next('.l-slide-down').slideToggle(Speed, Ease);
+    });
+    return false;
+});
+
+
+$(function () {
 
     $('#collect,#self').hide();
     $('[name=delivery-method]').change(function () {
