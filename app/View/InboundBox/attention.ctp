@@ -211,7 +211,7 @@
                 <li>
                   <a class="btn-d-gray" href="/inbound/box/add">戻る</a>
                 </li>
-                <li><a class="btn-red" id="execute">この内容で預ける</a>
+                <li><a class="btn-red" id="execute">ボックスの確認</a>
                 </li>
             </ul>
         </div>
