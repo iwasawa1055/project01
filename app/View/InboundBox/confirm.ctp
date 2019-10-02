@@ -34,6 +34,9 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                             <p class="txt-slct-num">預け入れ点数<span class="var-slct-num">5点以内</span></p>
                             <?php endif; ?>
                             <?php endif; ?>
+                            <?php if ($box['wrapping_type'] == 1) :?>
+                              <p class="txt-remove-package">外装を除いて撮影</p>
+                            <?php endif; ?>
                         </div>
                     </li>
                     <?php endforeach; ?>
