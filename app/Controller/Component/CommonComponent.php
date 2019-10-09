@@ -20,6 +20,11 @@ class CommonComponent extends Component
         $datetime = new DateTime($date . ' +2 month');
         $free_limit = $datetime->format('Y-m-t');
 
+        // TODO 暫定処置として日付を指定する（2019年12月）
+        if ($free_limit == '2019-12-31') {
+            $free_limit = '2019-12-28';
+        }
+
         // 日曜日の場合は前日に変更
         $targetTime = strtotime($free_limit);
         $week = (int) date('w', $targetTime);
