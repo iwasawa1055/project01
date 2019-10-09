@@ -16,11 +16,6 @@
                 <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false, 'autocomplete' => 'off']); ?>
                 <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
               </div>
-              <div class="checkbox">
-                <label>
-                  <input name="remember" type="checkbox" value="1">
-                  ログイン状態を保持する  </label>
-              </div>
               <div class="row">
                 <span class="col-sm-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-md btn-block">ログイン</button>
