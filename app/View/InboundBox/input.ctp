@@ -165,7 +165,6 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                     </li>
                     <li>
                       <ul class="input-info" id="dev_collect" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'style="display:none"' : ''; ?>>
-                        <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         <li>
                           <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
                           <select id="address_id" class="address dsn-adress select-delivery focused" name="data[InboundBase][address_id]">
@@ -176,6 +175,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                               <?php endforeach; ?>
                             <option value="add" <?php echo (isset($this->request->data['InboundBase']['address_id']) && $this->request->data['InboundBase']['address_id'] == 'add') ? 'selected' : ''; ?> data-address-name="">お届先を追加する</option>
                           </select>
+                          <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         </li>
                         <li class="inbound-input-address">
                           <ul class="add-address">

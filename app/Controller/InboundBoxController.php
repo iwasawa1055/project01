@@ -120,32 +120,33 @@ class InboundBoxController extends MinikuraController
                 // ボックス情報
                 $box_list_data = $this->request->data['BoxList'];
                 $this->_setSelectedBoxList($data, $box_list_data, $validErrors);
-            }
 
-            // 使用選択ボックス
-            $box_use_flag = [
-                PRODUCT_CD_MONO          => false,
-                PRODUCT_CD_HAKO          => false,
-                PRODUCT_CD_CLEANING_PACK => false,
-                PRODUCT_CD_LIBRARY       => false,
-                PRODUCT_CD_CLOSET        => false,
-            ];
-            // 選択ボックスタイプ別情報取得
-            if ($data['box_type'] == 'new') {
-                $tmp_box_list = $this->InfoBox->getListForInbound();
-            } else {
-                $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-            }
-            // 選択ボックス
-            foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-                // 存在チェック
-                $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                if ($key_index === false) {
-                    $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                    break;
+                // 使用選択ボックス
+                $box_use_flag = [
+                    PRODUCT_CD_MONO          => false,
+                    PRODUCT_CD_HAKO          => false,
+                    PRODUCT_CD_CLEANING_PACK => false,
+                    PRODUCT_CD_LIBRARY       => false,
+                    PRODUCT_CD_CLOSET        => false,
+                ];
+                // 選択ボックスタイプ別情報取得
+                if ($data['box_type'] == 'new') {
+                    $tmp_box_list = $this->InfoBox->getListForInbound();
                 } else {
-                    $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
+                    $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
                 }
+                // 選択ボックス
+                foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
+                    // 存在チェック
+                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
+                    if ($key_index === false) {
+                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
+                        break;
+                    } else {
+                        $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
+                    }
+                }
+                CakeSession::write('box_use_flag', $box_use_flag);
             }
 
             // 配送関連情報
@@ -153,7 +154,6 @@ class InboundBoxController extends MinikuraController
 
             CakeSession::write(self::MODEL_NAME_INBOUND_BASE, $data);
             CakeSession::write('box_list_data', $box_list_data);
-            CakeSession::write('box_use_flag', $box_use_flag);
 
             if (!empty($validErrors)) {
                 $this->InboundBase->set($data);
@@ -392,32 +392,33 @@ class InboundBoxController extends MinikuraController
                 // ボックス情報
                 $box_list_data = $this->request->data['BoxList'];
                 $this->_setSelectedBoxList($data, $box_list_data, $validErrors);
-            }
 
-            // 使用選択ボックス
-            $box_use_flag = [
-                PRODUCT_CD_MONO          => false,
-                PRODUCT_CD_HAKO          => false,
-                PRODUCT_CD_CLEANING_PACK => false,
-                PRODUCT_CD_LIBRARY       => false,
-                PRODUCT_CD_CLOSET        => false,
-            ];
-            // 選択ボックスタイプ別情報取得
-            if ($data['box_type'] == 'new') {
-                $tmp_box_list = $this->InfoBox->getListForInbound();
-            } else {
-                $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-            }
-            // 選択ボックス
-            foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-                // 存在チェック
-                $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                if ($key_index === false) {
-                    $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                    break;
+                // 使用選択ボックス
+                $box_use_flag = [
+                    PRODUCT_CD_MONO          => false,
+                    PRODUCT_CD_HAKO          => false,
+                    PRODUCT_CD_CLEANING_PACK => false,
+                    PRODUCT_CD_LIBRARY       => false,
+                    PRODUCT_CD_CLOSET        => false,
+                ];
+                // 選択ボックスタイプ別情報取得
+                if ($data['box_type'] == 'new') {
+                    $tmp_box_list = $this->InfoBox->getListForInbound();
                 } else {
-                    $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
+                    $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
                 }
+                // 選択ボックス
+                foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
+                    // 存在チェック
+                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
+                    if ($key_index === false) {
+                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
+                        break;
+                    } else {
+                        $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
+                    }
+                }
+                CakeSession::write('box_use_flag', $box_use_flag);
             }
 
             /** データ整形 */
@@ -429,7 +430,6 @@ class InboundBoxController extends MinikuraController
 
             CakeSession::write(self::MODEL_NAME_INBOUND_BASE, $data);
             CakeSession::write('box_list_data', $box_list_data);
-            CakeSession::write('box_use_flag', $box_use_flag);
 
             if (!empty($validErrors)) {
                 $this->InboundBase->set($data);
