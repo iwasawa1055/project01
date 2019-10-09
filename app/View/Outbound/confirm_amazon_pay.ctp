@@ -1,3 +1,7 @@
+  <?php
+    $this->Html->script('jquery-ui.min', ['block' => 'scriptMinikura']);
+    $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
+  ?>
   <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
   <div id="page-wrapper" class="wrapper">
     <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し</h1>
@@ -96,6 +100,12 @@
             <div class="form-group col-lg-12">
               <label>お届け希望日時</label>
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
+            </div>
+            <div class="form-group col-lg-12">
+                <?php echo $this->element('keeping-period'); ?>
+            </div>
+            <div class="form-group col-lg-12">
+                <?php echo $this->element('about-fee'); ?>
             </div>
             <div class="form-group col-lg-12">
               <div class="panel panel-red">

@@ -1,3 +1,7 @@
+  <?php
+    $this->Html->script('jquery-ui.min', ['block' => 'scriptMinikura']);
+    $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
+  ?>
   <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
   <div id="page-wrapper" class="wrapper">
     <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> ボックス取り出し</h1>
