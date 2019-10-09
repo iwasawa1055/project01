@@ -80,6 +80,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                         <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['new'][$new_box['box_id']]['title'])) echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
                         <?php if($new_box['product_cd'] === PRODUCT_CD_MONO): ?>
                         <label class="input-check">
+                          <input type="hidden" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" value="0">
                           <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
                           <span class="icon"></span>
                           <span class="label-txt">外装を除いて撮影</span>
