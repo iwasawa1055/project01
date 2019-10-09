@@ -111,6 +111,10 @@
               </ul>
             </li>
           <?php endif;?>
+        <li>
+            <?php echo $this->element('keeping-period'); ?>
+            <?php echo $this->element('about-fee'); ?>
+        </li>
         <li class="caution-box">
           <p class="title">minikuraの他の商品と異なり、<br class="sp">お申し込み完了と同時に決済完了となります。</p>
           <div class="content">
