@@ -81,7 +81,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                         <?php if($new_box['product_cd'] === PRODUCT_CD_MONO || $new_box['product_cd'] === PRODUCT_CD_CLOSET || $new_box['product_cd'] === PRODUCT_CD_LIBRARY || $new_box['product_cd'] === PRODUCT_CD_CLEANING_PACK || $new_box['product_cd'] === PRODUCT_CD_GIFT_CLEANING_PACK): ?>
                         <label class="input-check">
                           <input type="hidden" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" value="0">
-                          <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
+                          <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type']) && $box_list_data['new'][$new_box['box_id']]['wrapping_type'] == '1'): ?>checked="checked"<?php endif; ?>>
                           <span class="icon"></span>
                           <span class="label-txt">外装を除いて撮影</span>
                         </label>
