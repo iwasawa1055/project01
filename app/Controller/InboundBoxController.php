@@ -675,7 +675,7 @@ class InboundBoxController extends MinikuraController
      *
      * @return array 選択済みリスト
      */
-    private function _setSelectedBoxList(&$_data, $_box_list_data, &$_validErrors)
+    private function _setSelectedBoxList(&$_data, &$_box_list_data, &$_validErrors)
     {
         $selectedList = [];
 
@@ -708,6 +708,8 @@ class InboundBoxController extends MinikuraController
                 }
 
                 $selectedList[] = InboundComponent::createBoxParam($item);
+            } else {
+                unset($_box_list_data[$_data['box_type']][$box_id]);
             }
         }
         $_data['box'] = implode(',', $selectedList);
