@@ -3,7 +3,7 @@
             <ul class="pagenation">
                 <li><span class="number">1</span><span class="txt">ボックス<br>選択</span>
                 </li>
-                <li><span class="number">2</span><span class="txt">個数入力</span>
+                <li><span class="number">2</span><span class="txt">ボックス<br>情報入力</span>
                 </li>
                 <li><span class="number">3</span><span class="txt">確認</span>
                 </li>

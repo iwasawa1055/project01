@@ -305,7 +305,7 @@ class MinikuraController extends AppController
             if (preg_match('/\/receive/', $url)) {
                 $active_status['gift']['receive'] = true;
             }
-        }  elseif (preg_match('/\/inbound_box/', $url)) {
+        }  elseif (preg_match('/\/inbound\/box/', $url)) {
             $active_status['inbound_box'] = true;
         }  elseif (preg_match('/\/order/', $url)) {
             $active_status['order'] = true;

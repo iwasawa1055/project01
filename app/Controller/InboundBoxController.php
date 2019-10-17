@@ -8,12 +8,9 @@ App::uses('InboundSelectedBox', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('CustomerAddress', 'Model');
 App::uses('MtYmstpost', 'Model');
-App::uses('InboundBase', 'Model');
 
 class InboundBoxController extends MinikuraController
 {
-    const MODEL_NAME_INBOUND_BASE = 'InboundBase';
-
     public $layout = 'style';
 
     /**
@@ -28,7 +25,7 @@ class InboundBoxController extends MinikuraController
         $list = $this->InfoBox->getListForInbound();
         $this->set('boxList', $list);
 
-        $this->set('addressList', $this->Address->get());
+        $this->set('address', $this->Address->get());
         $this->set('dateList', []);
         $this->set('timeList', []);
     }
@@ -63,11 +60,11 @@ class InboundBoxController extends MinikuraController
 
         // Amazon Payment user
         if ($this->Customer->isAmazonPay()) {
-            $this->redirect(['controller' => 'inbound_box', 'action'=>'input_amazon_pay']);
+            return $this->redirect(['controller' => 'InboundBox', 'action' => 'input_amazon_pay']);
         }
 
         // card or bank user
-        $this->redirect(['controller' => 'inbound_box', 'action'=>'input']);
+        return $this->redirect(['controller' => 'InboundBox', 'action' => 'input']);
     }
 
     /**
@@ -85,43 +82,45 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 確認画面から戻る際のフラグ
-        CakeSession::write('attention_flag', false);
-
-        $this->loadModel(self::MODEL_NAME_INBOUND_BASE);
-
-        $new_box_list = $this->InfoBox->getListForInbound();
-        $old_box_list = $this->InfoBox->getListForInboundOldBox();
+        /* 保持ボックスリスト */
+        $holding_box_list['new'] = $this->InfoBox->getListForInbound();
+        $holding_box_list['old'] = $this->InfoBox->getListForInboundOldBox();
         // 無料期限
-        foreach ($new_box_list as &$box_info) {
-            $this->_setFreeLimitDate($box_info);
+        foreach ($holding_box_list as &$box_list) {
+            foreach ($box_list as &$box_info) {
+                $this->_setFreeLimitDate($box_info);
+            }
         }
-        foreach ($old_box_list as &$box_info) {
-            $this->_setFreeLimitDate($box_info);
-        }
-
-        // view data
-        $this->set('new_box_list', $new_box_list);
-        $this->set('old_box_list', $old_box_list);
+        $this->set('holding_box_list', $holding_box_list);
+        CakeSession::write('holding_box_list', $holding_box_list);
 
         if ($this->request->is('get')) {
+            $inbound_base = CakeSession::read('inbound_base_data');
+            if (empty($inbound_base)) {
+                // 初回表示時は「新しく取り寄せしたボックス」を選択
+                $inbound_base['box_type'] = 'new';
+            }
 
-            $this->request->data[self::MODEL_NAME_INBOUND_BASE] = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-            $this->InboundBase->set($this->request->data);
-            $this->set('box_list_data', CakeSession::read('box_list_data'));
+            $select_box_list_data = CakeSession::read('select_box_list_data');
+
+            $this->request->data['InboundBase'] = $inbound_base;
+            $this->request->data['BoxList'][$inbound_base['box_type']] = $select_box_list_data;
 
         } elseif ($this->request->is('post')) {
             $validErrors = [];
 
-            $data = $this->request->data['InboundBase'];
+            /* 預け入れデータ */
+            $inbound_base_data = $this->request->data['InboundBase'];
+            CakeSession::write('inbound_base_data', $inbound_base_data);
 
-            $box_list_data = [];
-            if (isset($this->request->data['BoxList'])) {
-                // ボックス情報
-                $box_list_data = $this->request->data['BoxList'];
-                $this->_setSelectedBoxList($data, $box_list_data, $validErrors);
+            $box_type = $inbound_base_data['box_type'];
 
-                // 使用選択ボックス
+            /* 選択ボックス */
+            $select_box_list_data = [];
+            if (isset($this->request->data['BoxList']) && !empty($this->request->data['BoxList'][$box_type])) {
+                $select_box_list_data = $this->request->data['BoxList'][$box_type];
+
+                $target_box_list = [];
                 $box_use_flag = [
                     PRODUCT_CD_MONO          => false,
                     PRODUCT_CD_HAKO          => false,
@@ -129,59 +128,38 @@ class InboundBoxController extends MinikuraController
                     PRODUCT_CD_LIBRARY       => false,
                     PRODUCT_CD_CLOSET        => false,
                 ];
-                // 選択ボックスタイプ別情報取得
-                if ($data['box_type'] == 'new') {
-                    $tmp_box_list = $this->InfoBox->getListForInbound();
-                } else {
-                    $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-                }
-                // 選択ボックス
-                foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-                    // 存在チェック
-                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
+                $select_box_id_list = array_keys($select_box_list_data);
+                foreach ($select_box_id_list as $box_id) {
+                    $key_index = array_search($box_id, array_column($holding_box_list[$box_type], 'box_id'));
                     if ($key_index === false) {
-                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                        break;
+                        $this->Flash->validation('対象データに不備がありました。', ['key' => 'data_error']);
+                        $this->redirect(['controller' => 'InboundBox', 'action' => 'add']);
                     } else {
-                        $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
+                        $box_use_flag[$holding_box_list[$box_type][$key_index]['product_cd']] = true;
+                        $target_box_list[] = $holding_box_list[$box_type][$key_index];
                     }
                 }
                 CakeSession::write('box_use_flag', $box_use_flag);
+                CakeSession::write('target_box_list', $target_box_list);
+
+            } else {
+                $validErrors['BoxList'][$box_type]['box'][0] = 'ボックスが選択されていません';
             }
 
-            // 配送関連情報
-            $this->_setDeliveryData($data, $validErrors);
+            CakeSession::write('select_box_list_data', $select_box_list_data);
 
-            CakeSession::write(self::MODEL_NAME_INBOUND_BASE, $data);
-            CakeSession::write('box_list_data', $box_list_data);
-
+            // validation
             if (!empty($validErrors)) {
-                $this->InboundBase->set($data);
-                $this->InboundBase->validationErrors = $validErrors;
-                $this->set('box_list_data', CakeSession::read('box_list_data'));
-                $this->set('address_list', CakeSession::read('address_list'));
+                $this->set('validErrors', $validErrors);
                 return $this->render('input');
             }
 
-            // ボックスタイプ別遷移先変更
-            $attention_prefix_list = [
-                'MC',
-                'MG',
-                'CL',
-            ];
-            foreach ($attention_prefix_list as $prefix) {
-                if(strpos($data['box'], $prefix) !== false){
-                    return $this->redirect(['controller' => 'InboundBox', 'action' => 'attention']);
-                }
-            }
-            return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm']);
+            return $this->redirect(['controller' => 'InboundBox', 'action' => 'attention']);
         }
     }
 
-
     /*
-     * ボックス超過確認
-     * ※クローゼット、クリーニング、ギフトの場合のみ
+     * ボックス情報入力
      */
     public function attention()
     {
@@ -196,47 +174,82 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 確認画面から戻る際のフラグ
-        CakeSession::write('attention_flag', true);
+        // 預け入れ情報
+        $inbound_base_data = CakeSession::read('inbound_base_data');
+        // 選択ボックス設定情報
+        $select_box_list_data = CakeSession::read('select_box_list_data');
+        // 保持ボックスリスト
+        $holding_box_list = CakeSession::read('holding_box_list');
 
         if ($this->request->is('get')) {
-            // 選択ボックス
-            $target_box_list = [];
-            $other_box_list  = [];
-            $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-            $box_list_data = CakeSession::read('box_list_data');
-            if ($data['box_type'] == 'new') {
-                $tmp_box_list = $this->InfoBox->getListForInbound();
-            } else {
-                $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
+
+            // 住所一覧
+            $address_list = $this->Address->get();
+            $set_address_list = [];
+            if (is_array($address_list)) {
+                foreach ($address_list as $address) {
+                    $name  = h("〒{$address['postal']}");
+                    $name .= h(" {$address['pref']}{$address['address1']}{$address['address2']}{$address['address3']}");
+                    $name .= h("　{$address['lastname']}　{$address['firstname']}");
+                    $set_address_list[] = [
+                        'name' => $name,
+                        'value' => $address['address_id'],
+                        'data-address-name' => $address['lastname'] . $address['firstname']
+                    ];
+                }
+                // 新規住所追加用
+                $set_address_list[] = [
+                    'name' => 'お届先を追加する',
+                    'value' => 'add',
+                    'data-address-name' => ''
+                ];
             }
-            foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-                if (isset($item['checkbox'])) {
-                    // 存在チェック
-                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                    if ($key_index === false) {
-                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                        break;
-                    } else {
-                        $tmp_box_list[$key_index]['title'] = $item['title'];
-                        if (in_array($tmp_box_list[$key_index]['product_cd'], array_keys(EXCESS_ATTENTION_PRODUCT_CD))) {
-                            $target_box_list[] = $tmp_box_list[$key_index];
-                        } else {
-                            $other_box_list[] = $tmp_box_list[$key_index];
-                        }
-                    }
+            CakeSession::write('address_list', $set_address_list);
+
+            // set data
+            $this->set('inbound_base_data', $inbound_base_data);
+            $this->set('box_use_flag', CakeSession::read('box_use_flag'));
+            $this->set('address_list', CakeSession::read('address_list'));
+            $this->set('target_box_list', CakeSession::read('target_box_list'));
+
+            $this->request->data['InboundBase'] = $inbound_base_data;
+            $this->request->data['BoxList'][$inbound_base_data['box_type']] = $select_box_list_data;
+
+        } elseif ($this->request->is('post')) {
+            $validErrors = [];
+
+            // 預け入れ情報
+            $inbound_base_data = array_merge($inbound_base_data, $this->request->data['InboundBase']);
+
+            // ボックス情報
+            $select_box_list_data = $this->request->data['BoxList'][$inbound_base_data['box_type']];
+            $this->_setSelectedBoxList($inbound_base_data, $select_box_list_data, $holding_box_list[$inbound_base_data['box_type']]);
+            foreach ($select_box_list_data as $box_id => $box_data) {
+                $boxModel = new InboundSelectedBox();
+                $boxModel->set([$boxModel->getModelName() => $box_data]);
+                if (!$boxModel->validates()) {
+                    $validErrors['BoxList'][$inbound_base_data['box_type']][$box_id] = $boxModel->validationErrors;
                 }
             }
 
-            // set data
-            $this->set('target_box_list', $target_box_list);
-            $this->set('other_box_list', $other_box_list);
-            $this->set('box_use_flag', CakeSession::read('box_use_flag'));
+            // 配送関連情報
+            $this->_setDeliveryData($inbound_base_data, $validErrors);
 
-        } elseif ($this->request->is('post')) {
+            CakeSession::write('inbound_base_data', $inbound_base_data);
+            CakeSession::write('select_box_list_data', $select_box_list_data);
+
+            // validation
+            if (!empty($validErrors)) {
+                $this->set('validErrors', $validErrors);
+                $this->set('address_list', CakeSession::read('address_list'));
+                $this->set('inbound_base_data', $inbound_base_data);
+                $this->set('target_box_list', CakeSession::read('target_box_list'));
+                $this->set('box_use_flag', CakeSession::read('box_use_flag'));
+
+                return $this->render('attention');
+            }
             return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm']);
         }
-
     }
 
     /**
@@ -255,48 +268,16 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $validErrors = [];
-        $box_list = [];
-
-        $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-        $box_list_data = CakeSession::read('box_list_data');
-
-        // 選択ボックスタイプ別情報取得
-        if ($data['box_type'] == 'new') {
-            $tmp_box_list = $this->InfoBox->getListForInbound();
-        } else {
-            $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-        }
-
-        // 選択ボックス
-        foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-            if (isset($item['checkbox'])) {
-                // 存在チェック
-                $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                if ($key_index === false) {
-                    $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                    break;
-                } else {
-                    $tmp_box_list[$key_index]['title'] = $item['title'];
-                    $tmp_box_list[$key_index]['wrapping_type'] = (isset($item['wrapping_type']) && $item['wrapping_type'] == 1) ? 1 : 0;
-                    $box_list[] = $tmp_box_list[$key_index];
-                }
-            }
-        }
-
-        if (!empty($validErrors)) {
-            $this->set('validErrors', $validErrors);
-            $this->redirect('/inbound_box/add');
-        }
+        $inbound_base_data = CakeSession::read('inbound_base_data');
 
         // set data
-        $this->Inbound->init($data);
+        $this->Inbound->init($inbound_base_data);
         $this->set('dateList', $this->Inbound->date());
         $this->set('timeList', $this->Inbound->time());
-        $this->set('data', $data);
-        $this->set('box_list', $box_list);
+        $this->set('inbound_base_data', $inbound_base_data);
+        $this->set('target_box_list', CakeSession::read('target_box_list'));
+        $this->set('select_box_list_data', CakeSession::read('select_box_list_data'));
         $this->set('box_use_flag', CakeSession::read('box_use_flag'));
-        $this->set('attention_flag', CakeSession::read('attention_flag'));
     }
 
     /**
@@ -313,32 +294,47 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
+        $inbound_base_data = CakeSession::read('inbound_base_data');
+        $select_box_list_data = CakeSession::read('select_box_list_data');
+
+        /* 存在チェック */
+        $select_box_id_list = array_keys($select_box_list_data);
+        $box_type = $inbound_base_data['box_type'];
+        $holding_box_list['new'] = $this->InfoBox->getListForInbound();
+        $holding_box_list['old'] = $this->InfoBox->getListForInboundOldBox();
+        foreach ($select_box_id_list as $box_id) {
+            $key_index = array_search($box_id, array_column($holding_box_list[$box_type], 'box_id'));
+            if ($key_index === false) {
+                $this->Flash->validation('ボックス情報に不備があったために失敗しました。お手数ですが再度実施のほどよろしくお願いいたします。', ['key' => 'data_error']);
+                $this->redirect(['action' => 'add']);
+            }
+        }
 
         // insert address
-        if ($data['address_id'] == 'add' && isset($data['resister'])) {
-            $this->_postCustomerAddress($data, 'input_card');
+        if ($inbound_base_data['address_id'] == 'add' && isset($inbound_base_data['resister'])) {
+            $this->_postCustomerAddress($inbound_base_data, 'input_card');
         }
 
         // cleaning_pack
         $post_data = $this->request->data;
         if (isset($post_data['InboundBase'])) {
-            $this->_setCleaningPack($data, $post_data['InboundBase']);
+            $this->_setCleaningPack($inbound_base_data, $post_data['InboundBase']);
         }
 
-        $this->Inbound->init($data);
-        $model = $this->Inbound->model($data);
+        $this->Inbound->init($inbound_base_data);
+        $model = $this->Inbound->model($inbound_base_data);
         if (!empty($model) && $model->validates()) {
             // api
             $res = $model->apiPost($model->toArray());
             if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
+                $this->Flash->validation('ボックスの預け入れ処理に失敗しました。お手数ですが再度実施のほどよろしくお願いいたします。', ['key' => 'data_error']);
                 return $this->redirect(['action' => 'add']);
             }
         } else {
-            $this->Flash->set(__('empty_session_data'));
+            $this->Flash->validation('ボックスの預け入れ処理に失敗しました。お手数ですが再度実施のほどよろしくお願いいたします。', ['key' => 'data_error']);
             return $this->redirect(['action' => 'add']);
         }
+        $this->_cleanInboundBoxSession();
     }
 
     /**
@@ -356,44 +352,46 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 確認画面から戻る際のフラグ
-        CakeSession::write('attention_flag', false);
-
-        $this->loadModel(self::MODEL_NAME_INBOUND_BASE);
-
-        $new_box_list = $this->InfoBox->getListForInbound();
-        $old_box_list = $this->InfoBox->getListForInboundOldBox();
+        /* 保持ボックスリスト */
+        $holding_box_list['new'] = $this->InfoBox->getListForInbound();
+        $holding_box_list['old'] = $this->InfoBox->getListForInboundOldBox();
         // 無料期限
-        foreach ($new_box_list as &$box_info) {
-            $this->_setFreeLimitDate($box_info);
+        foreach ($holding_box_list as &$box_list) {
+            foreach ($box_list as &$box_info) {
+                $this->_setFreeLimitDate($box_info);
+            }
         }
-        foreach ($old_box_list as &$box_info) {
-            $this->_setFreeLimitDate($box_info);
-        }
-
-        // view data
-        $this->set('new_box_list', $new_box_list);
-        $this->set('old_box_list', $old_box_list);
+        $this->set('holding_box_list', $holding_box_list);
+        CakeSession::write('holding_box_list', $holding_box_list);
 
         if ($this->request->is('get')) {
 
-            $this->request->data[self::MODEL_NAME_INBOUND_BASE] = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-            $this->InboundBase->set($this->request->data);
-            $this->set('box_list_data', CakeSession::read('box_list_data'));
+            $inbound_base = CakeSession::read('inbound_base_data');
+            if (empty($inbound_base)) {
+                // 初回表示時は「新しく取り寄せしたボックス」を選択
+                $inbound_base['box_type'] = 'new';
+            }
+
+            $select_box_list_data = CakeSession::read('select_box_list_data');
+
+            $this->request->data['InboundBase'] = $inbound_base;
+            $this->request->data['BoxList'][$inbound_base['box_type']] = $select_box_list_data;
 
         } elseif ($this->request->is('post')) {
-
             $validErrors = [];
 
-            $data = $this->request->data['InboundBase'];
+            /* 預け入れデータ */
+            $inbound_base_data = $this->request->data['InboundBase'];
+            CakeSession::write('inbound_base_data', $inbound_base_data);
 
-            $box_list_data = [];
-            if (isset($this->request->data['BoxList'])) {
-                // ボックス情報
-                $box_list_data = $this->request->data['BoxList'];
-                $this->_setSelectedBoxList($data, $box_list_data, $validErrors);
+            $box_type = $inbound_base_data['box_type'];
 
-                // 使用選択ボックス
+            /* 選択ボックス */
+            $select_box_list_data = [];
+            if (isset($this->request->data['BoxList']) && !empty($this->request->data['BoxList'][$box_type])) {
+                $select_box_list_data = $this->request->data['BoxList'][$box_type];
+
+                $target_box_list = [];
                 $box_use_flag = [
                     PRODUCT_CD_MONO          => false,
                     PRODUCT_CD_HAKO          => false,
@@ -401,61 +399,38 @@ class InboundBoxController extends MinikuraController
                     PRODUCT_CD_LIBRARY       => false,
                     PRODUCT_CD_CLOSET        => false,
                 ];
-                // 選択ボックスタイプ別情報取得
-                if ($data['box_type'] == 'new') {
-                    $tmp_box_list = $this->InfoBox->getListForInbound();
-                } else {
-                    $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-                }
-                // 選択ボックス
-                foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-                    // 存在チェック
-                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
+                $select_box_id_list = array_keys($select_box_list_data);
+                foreach ($select_box_id_list as $box_id) {
+                    $key_index = array_search($box_id, array_column($holding_box_list[$box_type], 'box_id'));
                     if ($key_index === false) {
-                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                        break;
+                        $this->Flash->validation('対象データに不備がありました。', ['key' => 'data_error']);
+                        $this->redirect(['controller' => 'InboundBox', 'action' => 'add']);
                     } else {
-                        $box_use_flag[$tmp_box_list[$key_index]['product_cd']] = true;
+                        $box_use_flag[$holding_box_list[$box_type][$key_index]['product_cd']] = true;
+                        $target_box_list[] = $holding_box_list[$box_type][$key_index];
                     }
                 }
                 CakeSession::write('box_use_flag', $box_use_flag);
+                CakeSession::write('target_box_list', $target_box_list);
+
+            } else {
+                $validErrors['BoxList'][$box_type]['box'][0] = 'ボックスが選択されていません';
             }
 
-            /** データ整形 */
-            // Amazonより取得した個人情報よりデータ整形
-            $this->_setAmazonCustomerData($data);
-            $data['address_id'] = 'add';
-            // 配送関連情報
-            $this->_setDeliveryData($data, $validErrors);
+            CakeSession::write('select_box_list_data', $select_box_list_data);
 
-            CakeSession::write(self::MODEL_NAME_INBOUND_BASE, $data);
-            CakeSession::write('box_list_data', $box_list_data);
-
+            // validation
             if (!empty($validErrors)) {
-                $this->InboundBase->set($data);
-                $this->InboundBase->validationErrors = $validErrors;
-                $this->set('box_list_data', CakeSession::read('box_list_data'));
-                return $this->render('input_amazon_pay');
+                $this->set('validErrors', $validErrors);
+                return $this->render('input');
             }
 
-            // ボックスタイプ別遷移先変更
-            $attention_prefix_list = [
-                'MC',
-                'MG',
-                'CL',
-            ];
-            foreach ($attention_prefix_list as $prefix) {
-                if(strpos($data['box'], $prefix) !== false){
-                    return $this->redirect(['controller' => 'InboundBox', 'action' => 'attention_amazon_pay']);
-                }
-            }
-            return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm_amazon_pay']);
+            return $this->redirect(['controller' => 'InboundBox', 'action' => 'attention_amazon_pay']);
         }
     }
 
     /*
      * ボックス超過確認
-     * ※クローゼット、クリーニング、ギフトの場合のみ
      */
     public function attention_amazon_pay()
     {
@@ -470,44 +445,61 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        // 確認画面から戻る際のフラグ
-        CakeSession::write('attention_flag', true);
+        // 預け入れ情報
+        $inbound_base_data = CakeSession::read('inbound_base_data');
+        // 選択ボックス設定情報
+        $select_box_list_data = CakeSession::read('select_box_list_data');
+        // 保持ボックスリスト
+        $holding_box_list = CakeSession::read('holding_box_list');
 
         if ($this->request->is('get')) {
-            // 選択ボックス
-            $target_box_list = [];
-            $other_box_list  = [];
-            $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-            $box_list_data = CakeSession::read('box_list_data');
-            if ($data['box_type'] == 'new') {
-                $tmp_box_list = $this->InfoBox->getListForInbound();
-            } else {
-                $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-            }
-            foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-                if (isset($item['checkbox'])) {
-                    // 存在チェック
-                    $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                    if ($key_index === false) {
-                        $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                        break;
-                    } else {
-                        $tmp_box_list[$key_index]['title'] = $item['title'];
-                        if (in_array($tmp_box_list[$key_index]['product_cd'], array_keys(EXCESS_ATTENTION_PRODUCT_CD))) {
-                            $target_box_list[] = $tmp_box_list[$key_index];
-                        } else {
-                            $other_box_list[] = $tmp_box_list[$key_index];
-                        }
-                    }
+
+            // set data
+            $this->set('inbound_base_data', $inbound_base_data);
+            $this->set('box_use_flag', CakeSession::read('box_use_flag'));
+            $this->set('address_list', CakeSession::read('address_list'));
+            $this->set('target_box_list', CakeSession::read('target_box_list'));
+
+            $this->request->data['InboundBase'] = $inbound_base_data;
+            $this->request->data['BoxList'][$inbound_base_data['box_type']] = $select_box_list_data;
+
+        } elseif ($this->request->is('post')) {
+            $validErrors = [];
+
+            // 預け入れ情報
+            $inbound_base_data = array_merge($inbound_base_data, $this->request->data['InboundBase']);
+
+            // ボックス情報
+            $select_box_list_data = $this->request->data['BoxList'][$inbound_base_data['box_type']];
+            $this->_setSelectedBoxList($inbound_base_data, $select_box_list_data, $holding_box_list[$inbound_base_data['box_type']]);
+            foreach ($select_box_list_data as $box_id => $box_data) {
+                $boxModel = new InboundSelectedBox();
+                $boxModel->set([$boxModel->getModelName() => $box_data]);
+                if (!$boxModel->validates()) {
+                    $validErrors['BoxList'][$inbound_base_data['box_type']][$box_id] = $boxModel->validationErrors;
                 }
             }
 
-            // set data
-            $this->set('target_box_list', $target_box_list);
-            $this->set('other_box_list', $other_box_list);
-            $this->set('box_use_flag', CakeSession::read('box_use_flag'));
+            /** データ整形 */
+            // Amazonより取得した個人情報よりデータ整形
+            $this->_setAmazonCustomerData($inbound_base_data);
+            $inbound_base_data['address_id'] = 'add';
+            // 配送関連情報
+            $this->_setDeliveryData($inbound_base_data, $validErrors);
 
-        } elseif ($this->request->is('post')) {
+            CakeSession::write('inbound_base_data', $inbound_base_data);
+            CakeSession::write('select_box_list_data', $select_box_list_data);
+
+            // validation
+            if (!empty($validErrors)) {
+                $this->set('validErrors', $validErrors);
+                $this->set('inbound_base_data', $inbound_base_data);
+                $this->set('target_box_list', CakeSession::read('target_box_list'));
+                $this->set('box_use_flag', CakeSession::read('box_use_flag'));
+
+                return $this->render('attention');
+            }
+
             return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm_amazon_pay']);
         }
 
@@ -530,48 +522,16 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $validErrors = [];
-        $box_list = [];
-
-        $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
-        $box_list_data = CakeSession::read('box_list_data');
-
-        // 選択ボックスタイプ別情報取得
-        if ($data['box_type'] == 'new') {
-            $tmp_box_list = $this->InfoBox->getListForInbound();
-        } else {
-            $tmp_box_list = $this->InfoBox->getListForInboundOldBox();
-        }
-
-        // 選択ボックス
-        foreach ($box_list_data[$data['box_type']] as $box_id => $item) {
-            if (isset($item['checkbox'])) {
-                // 存在チェック
-                $key_index = array_search($box_id, array_column($tmp_box_list, 'box_id'));
-                if ($key_index === false) {
-                    $validErrors['Inbound']['box'] = '対象データに不備がありました。';
-                    break;
-                } else {
-                    $tmp_box_list[$key_index]['title'] = $item['title'];
-                    $tmp_box_list[$key_index]['wrapping_type'] = (isset($item['wrapping_type']) && $item['wrapping_type'] == 1) ? 1 : 0;
-                    $box_list[] = $tmp_box_list[$key_index];
-                }
-            }
-        }
-
-        if (!empty($validErrors)) {
-            $this->set('validErrors', $validErrors);
-            $this->redirect('/inbound_box/add');
-        }
+        $inbound_base_data = CakeSession::read('inbound_base_data');
 
         // set data
-        $this->Inbound->init($data);
+        $this->Inbound->init($inbound_base_data);
         $this->set('dateList', $this->Inbound->date());
         $this->set('timeList', $this->Inbound->time());
-        $this->set('data', $data);
-        $this->set('box_list', $box_list);
+        $this->set('inbound_base_data', $inbound_base_data);
+        $this->set('target_box_list', CakeSession::read('target_box_list'));
+        $this->set('select_box_list_data', CakeSession::read('select_box_list_data'));
         $this->set('box_use_flag', CakeSession::read('box_use_flag'));
-        $this->set('attention_flag', CakeSession::read('attention_flag'));
     }
 
     /**
@@ -588,44 +548,42 @@ class InboundBoxController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
-        $data = CakeSession::read(self::MODEL_NAME_INBOUND_BASE);
+        $inbound_base_data = CakeSession::read('inbound_base_data');
+        $select_box_list_data = CakeSession::read('select_box_list_data');
+
+        /* 存在チェック */
+        $select_box_id_list = array_keys($select_box_list_data);
+        $box_type = $inbound_base_data['box_type'];
+        $holding_box_list['new'] = $this->InfoBox->getListForInbound();
+        $holding_box_list['old'] = $this->InfoBox->getListForInboundOldBox();
+        foreach ($select_box_id_list as $box_id) {
+            $key_index = array_search($box_id, array_column($holding_box_list[$box_type], 'box_id'));
+            if ($key_index === false) {
+                $this->Flash->validation('ボックス情報に不備があったために失敗しました。お手数ですが再度実施のほどよろしくお願いいたします。', ['key' => 'data_error']);
+                $this->redirect(['action' => 'add']);
+            }
+        }
 
         // cleaning_pack
         $post_data = $this->request->data;
         if (isset($post_data['InboundBase'])) {
-            $this->_setCleaningPack($data, $post_data['InboundBase']);
+            $this->_setCleaningPack($inbound_base_data, $post_data['InboundBase']);
         }
 
-        $this->Inbound->init($data);
-        $model = $this->Inbound->model($data);
+        $this->Inbound->init($inbound_base_data);
+        $model = $this->Inbound->model($inbound_base_data);
         if (!empty($model) && $model->validates()) {
             // api
             $res = $model->apiPost($model->toArray());
             if (!empty($res->error_message)) {
-                $this->Flash->set($res->error_message);
+                $this->Flash->validation('ボックスの預け入れ処理に失敗しました。お手数ですが再度実施のほどよろしくお願いいたします。', ['key' => 'data_error']);
                 return $this->redirect(['action' => 'add']);
             }
         } else {
-            $this->Flash->set(__('empty_session_data'));
+            $this->Flash->validation('ボックスの預け入れ処理に失敗しました。お手数ですが再度実施のほどよろしくお願いいたします。', ['key' => 'data_error']);
             return $this->redirect(['action' => 'add']);
         }
-    }
-
-    /**
-     * 預け入れ日時情報取得
-     */
-    public function as_get_inbound_datetime()
-    {
-        $this->autoRender = false;
-        if (!$this->request->is('ajax')) {
-            return false;
-        }
-        $this->Inbound->init(Hash::get($this->request->data, self::MODEL_NAME));
-        $result['date'] = $this->Inbound->date();
-        $result['time'] = $this->Inbound->time();
-        $result['datetime'] = $this->Inbound->datetime();
-        $status = !empty($result);
-        return json_encode(compact('status', 'result'));
+        $this->_cleanInboundBoxSession();
     }
 
     /**
@@ -669,47 +627,25 @@ class InboundBoxController extends MinikuraController
     /**
      * 選択済みリストを設定
      *
-     * @param array $_data          入力データ
-     * @param array $_box_list_data ボックスデータ
-     * @param array $_validErrors   エラーリスト
+     * @param array $_data             入力データ
+     * @param array $_box_list_data    選択ボックスデータ
+     * @param array $_holding_box_list 保持ボックスデータ
      *
      * @return array 選択済みリスト
      */
-    private function _setSelectedBoxList(&$_data, &$_box_list_data, &$_validErrors)
+    private function _setSelectedBoxList(&$_data, &$_box_list_data, $_holding_box_list)
     {
         $selectedList = [];
 
-        // 選択ボックスタイプ別情報取得
-        if ($_data['box_type'] == 'new') {
-            $box_list = $this->InfoBox->getListForInbound();
-        } else {
-            $box_list = $this->InfoBox->getListForInboundOldBox();
-        }
-
         // 選択ボックスの設定
-        foreach ($_box_list_data[$_data['box_type']] as $box_id => $item) {
-            if (isset($item['checkbox'])) {
-                // 存在チェック
-                $key_index = array_search($box_id, array_column($box_list, 'box_id'));
-                if ($key_index !== false) {
-                    $item['box_id']       = $box_list[$key_index]['box_id'];
-                    $item['product_cd']   = $box_list[$key_index]['product_cd'];
-                    $item['product_name'] = $box_list[$key_index]['product_name'];
-                    $item['kit_cd']       = $box_list[$key_index]['kit_cd'];
-                } else {
-                    $_validErrors['box'][0] = '対象データに不備がありました。';
-                    break;
-                }
-
-                $boxModel = new InboundSelectedBox();
-                $boxModel->set([$boxModel->getModelName() => $item]);
-                if (!$boxModel->validates()) {
-                    $_validErrors['box_list'][$_data['box_type']][$item['box_id']] = $boxModel->validationErrors;
-                }
-
+        foreach ($_box_list_data as $box_id => $item) {
+            $key_index = array_search($box_id, array_column($_holding_box_list, 'box_id'));
+            if ($key_index !== false) {
+                $item['box_id']       = $_holding_box_list[$key_index]['box_id'];
+                $item['product_cd']   = $_holding_box_list[$key_index]['product_cd'];
+                $item['product_name'] = $_holding_box_list[$key_index]['product_name'];
+                $item['kit_cd']       = $_holding_box_list[$key_index]['kit_cd'];
                 $selectedList[] = InboundComponent::createBoxParam($item);
-            } else {
-                unset($_box_list_data[$_data['box_type']][$box_id]);
             }
         }
         $_data['box'] = implode(',', $selectedList);
@@ -726,7 +662,7 @@ class InboundBoxController extends MinikuraController
     private function _setDeliveryData(&$_data, &$_validErrors)
     {
         if (empty($_data['delivery_carrier'])) {
-            $_validErrors['delivery_carrier'][0] = __d('validation', 'notBlank', __d('validation', 'inbound_delivery_carrier'));
+            $_validErrors['InboundBase']['delivery_carrier'][0] = __d('validation', 'notBlank', __d('validation', 'inbound_delivery_carrier'));
         } else {
             $this->Inbound->init($_data);
 
@@ -736,6 +672,10 @@ class InboundBoxController extends MinikuraController
                 $_data['firstname_kana'] = '　';
                 $_data['lastname_kana']  = '　';
             }
+
+            $datetime_list = explode('-', $_data['datetime_cd']);
+            $_data['day_cd']  = $datetime_list[0] . '-' . $datetime_list[1] . '-' . $datetime_list[2];
+            $_data['time_cd'] = $datetime_list[3];
 
             $model = $this->Inbound->model($_data);
             if (empty($model)) {
@@ -749,7 +689,10 @@ class InboundBoxController extends MinikuraController
                         $model->validationErrors['address_id'] = '不正な形式の電話番号が設定されています。上の住所選択から「お届先を追加する」を選択し、再度集荷先の追加を入力ください。';
                     }
                 }
-                $_validErrors = array_merge($_validErrors, $model->validationErrors);
+                if (!isset($_validErrors['InboundBase'])) {
+                    $_validErrors['InboundBase'] = [];
+                }
+                $_validErrors['InboundBase'] = array_merge($_validErrors['InboundBase'], $model->validationErrors);
             }
 
             // 集荷依頼を頼んでいる場合
@@ -760,7 +703,7 @@ class InboundBoxController extends MinikuraController
                 if ($res->status == 0 || count($res->results) == 0) {
                     CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' res ' . print_r($res, true));
                     CakeLog::write(ERROR_LOG, $this->name . '::' . $this->action . ' postal ' . print_r($_data['postal'], true));
-                    $_validErrors['address_id'] = ['ヤマト運輸社で集荷申し込みできない郵便番号が設定されています。上の住所選択から「お届先を追加する」を選択し、再度集荷先の追加を入力ください。'];
+                    $_validErrors['InboundBase']['address_id'] = ['ヤマト運輸社で集荷申し込みできない郵便番号が設定されています。上の住所選択から「お届先を追加する」を選択し、再度集荷先の追加を入力ください。'];
                 }
             }
         }
@@ -883,9 +826,11 @@ class InboundBoxController extends MinikuraController
      */
     private function _cleanInboundBoxSession()
     {
-        CakeSession::delete(self::MODEL_NAME_INBOUND_BASE);
-        CakeSession::delete('box_list_data');
+        CakeSession::delete('box_use_flag');
         CakeSession::delete('address_list');
-        CakeSession::delete('item_excess_list');
+        CakeSession::delete('target_box_list');
+        CakeSession::delete('holding_box_list');
+        CakeSession::delete('inbound_base_data');
+        CakeSession::delete('select_box_list_data');
     }
 }

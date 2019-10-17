@@ -2,11 +2,12 @@
 $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']);
 $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
 $this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
-$this->Html->script('inbound_box/add_amazon_pay.js?'.time(), ['block' => 'scriptMinikura']);
+$this->Html->script('inbound_box/add.js?'.time(), ['block' => 'scriptMinikura']);
 $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
-$this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']);
-$this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
 ?>
+        <?php if (isset($validErrors['BoxList'])) { $this->validationErrors['BoxList'] = $validErrors['BoxList']; } ?>
+        <?php if (isset($validErrors['InboundBase'])) { $this->validationErrors['InboundBase'] = $validErrors['InboundBase']; } ?>
+
         <div id="page-wrapper" class="wrapper inbound">
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="l-banner">
@@ -23,7 +24,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
             <ul class="pagenation">
                 <li class="on"><span class="number">1</span><span class="txt">ボックス<br>選択</span>
                 </li>
-                <li><span class="number">2</span><span class="txt">個数入力</span>
+                <li><span class="number">2</span><span class="txt">ボックス<br>情報入力</span>
                 </li>
                 <li><span class="number">3</span><span class="txt">確認</span>
                 </li>
@@ -32,7 +33,10 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
             </ul>
             <?php echo $this->Flash->render(); ?>
             <form name="form" action='/inbound/box/input_amazon_pay' method="POST">
-                <?php echo $this->Form->error("InboundBase.box", null, ['wrap' => 'p']) ?>
+                <?php $data_error = $this->Flash->render('data_error');?>
+                <?php if (isset($data_error)) : ?>
+                  <p class="valid-bl"><?php echo $data_error; ?></p>
+                <?php endif; ?>
                 <ul class="setting-switcher">
                     <li>
                         <label class="setting-switch">
@@ -48,161 +52,81 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     </li>
                     <input type='hidden' id='dev-selected-box_type' value="<?php echo $this->request->data['InboundBase']['box_type']?>">
                 </ul>
-                <div id="dev-new-box" class="item-content" <?php echo (!isset($this->request->data['InboundBase']['box_type']) || $this->request->data['InboundBase']['box_type'] == 'new') ? '' : 'style="display:none"'; ?>>
+                <?php foreach ($holding_box_list as $box_type => $box_list): ?>
+                  <div id="dev-<?php echo $box_type; ?>-box" class="item-content" <?php echo $this->request->data['InboundBase']['box_type'] == $box_type ? '' : 'style="display:none"'; ?>>
+                      <?php if ($box_type == 'old'): ?>
+                        <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
+                          ボックスの状態については十分ご確認の上、ご利用ください。<br>
+                          なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。
+                        </p>
+                      <?php endif; ?>
                     <ul class="l-caution">
-                        <li>
-                            <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
-                                <img src="/images/question.svg">ボックスIDについて
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" data-remodal-target="packaging" class="about-box-id title-caution">
-                                <img src="/images/question.svg">「外装を除いて撮影」について
-                            </a>
-                        </li>
+                      <li>
+                        <a href="javascript:void(0)" data-remodal-target="about-id" class="title-caution">
+                          <img src="/images/question.svg">ボックスIDについて
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)" data-remodal-target="free-box" class="title-caution">
+                          <img src="/images/question.svg">無料期限について
+                        </a>
+                      </li>
                     </ul>
-                    <ul id="dev-new-box-grid" class="grid grid-md">
-                        <?php foreach ($new_box_list as $key => $new_box): ?>
-                        <li>
+                      <?php echo $this->Form->error("BoxList.{$box_type}.box", null, ['wrap' => 'p']) ?>
+                    <ul id="dev-<?php echo $box_type; ?>-box-grid" class="grid grid-md">
+                        <?php foreach ($box_list as $box): ?>
+                          <li>
                             <label class="input-check box-img-area">
-                                <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
-                                <span class="icon"></span>
-                                <span class="item-img">
-                                  <img src="<?php echo KIT_IMAGE[$new_box['kit_cd']] ?>" alt="<?php echo $new_box['kit_name']; ?>" class="img-item">
-                                </span>
+                                <?php
+                                echo $this->Form->input(
+                                    "BoxList.{$box_type}.{$box['box_id']}.checkbox",
+                                    [
+                                        'class'       => 'cb-circle dev-box-check',
+                                        'label'       => false,
+                                        'error'       => false,
+                                        'type'        => 'checkbox',
+                                        'div'         => false,
+                                        'value'       => '1',
+                                        'hiddenField' => false,
+                                    ]
+                                );
+                                ?>
+                              <span class="icon"></span>
+                              <span class="item-img">
+                          <img src="<?php echo KIT_IMAGE[$box['kit_cd']] ?>" alt="<?php echo $box['kit_name']; ?>" class="img-item">
+                        </span>
                             </label>
                             <div class="box-info">
-                                <p class="l-box-id">
-                                    <span class="txt-box-id"><?php echo $new_box['box_id']; ?></span>
-                                    <?php if(!empty($new_box['free_limit_date'])):?>
-                                    <span class="txt-free-limit">無料期限<span class="date"><?php echo $new_box['free_limit_date']; ?></span></span>
-                                    <?php endif;?>
-                                </p>
-                                <p class="box-type"><?php echo $new_box['kit_name']; ?></p>
-                                <input type="text" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['new'][$new_box['box_id']]['title'])) echo $box_list_data['new'][$new_box['box_id']]['title']; ?>">
-                                <?php if($new_box['product_cd'] === PRODUCT_CD_MONO || $new_box['product_cd'] === PRODUCT_CD_CLOSET || $new_box['product_cd'] === PRODUCT_CD_LIBRARY || $new_box['product_cd'] === PRODUCT_CD_CLEANING_PACK || $new_box['product_cd'] === PRODUCT_CD_GIFT_CLEANING_PACK): ?>
-                                <label class="input-check">
-                                    <input type="checkbox" name="data[BoxList][new][<?php echo $new_box['box_id']; ?>][wrapping_type]" class="cb-square" value="1" <?php if(isset($box_list_data['new'][$new_box['box_id']]['wrapping_type'])): ?>checked="checked"<?php endif; ?>>
-                                    <span class="icon"></span>
-                                    <span class="label-txt">外装を除いて撮影</span>
-                                </label>
-                                <?php endif;?>
-                                <?php echo $this->Form->error("InboundBase.box_list.new." . $new_box['box_id'] . '.title', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+                              <p class="l-box-id">
+                                <span class="txt-box-id"><?php echo $box['box_id']; ?></span>
+                                  <?php if(!empty($box['free_limit_date'])):?>
+                                    <span class="txt-free-limit">無料期限<span class="date"><?php echo $box['free_limit_date']; ?></span></span>
+                                  <?php endif;?>
+                              </p>
+                              <p class="box-type"><?php echo $box['kit_name']; ?></p>
                             </div>
-                        </li>
+                          </li>
                         <?php endforeach; ?>
                     </ul>
-                </div>
-                <div id="dev-old-box" class="item-content" <?php echo ($this->request->data['InboundBase']['box_type'] == 'old') ? '' : 'style="display:none"'; ?>>
-                    <p class="page-caption">minikuraHAKOのみ再度のお預け入れが可能でございます。<br>
-                        ボックスの状態については十分ご確認の上、ご利用ください。<br>
-                        なお、再度のお預け入れの場合、初月保管料金の無料は含まれておりません。</p>
-                    <ul class="l-caution">
-                        <li>
-                            <a href="javascript:void(0)" data-remodal-target="about-id" class="about-box-id title-caution">
-                                <img src="/images/question.svg">ボックスIDについて
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" data-remodal-target="packaging" class="about-box-id title-caution">
-                                <img src="/images/question.svg">「外装を除いて撮影」について
-                            </a>
-                        </li>
-                    </ul>
-                    <ul id="dev-old-box-grid" class="grid grid-md">
-                        <?php foreach ($old_box_list as $key => $old_box): ?>
-                        <li>
-                            <label class="input-check box-img-area">
-                                <input type="checkbox" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][checkbox]" class="cb-circle dev-box-check" value="1" <?php if(isset($box_list_data['old'][$old_box['box_id']]['checkbox'])): ?>checked="checked"<?php endif; ?>>
-                                <span class="icon"></span>
-                                <span class="item-img">
-                            <img src="<?php echo KIT_IMAGE[$old_box['kit_cd']] ?>" alt="<?php echo $old_box['kit_name']; ?>" class="img-item">
-                          </span>
-                            </label>
-                            <div class="box-info">
-                                <p class="l-box-id">
-                                    <span class="txt-box-id"><?php echo $old_box['box_id']; ?></span>
-                                    <?php if(!empty($old_box['free_limit_date'])):?>
-                                    <span class="txt-free-limit">無料期限<span class="date"><?php echo $old_box['free_limit_date']; ?></span></span>
-                                    <?php endif;?>
-                                </p>
-                                <p class="box-type"><?php echo $old_box['kit_name']; ?></p>
-                                <input type="text" name="data[BoxList][old][<?php echo $old_box['box_id']; ?>][title]" placeholder="ボックス名を記入してください" class="box-input-name" value="<?php if(isset($box_list_data['old'][$old_box['box_id']]['title'])) echo $box_list_data['old'][$old_box['box_id']]['title']; ?>">
-                            </div>
-                        </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <ul class="input-info">
-                    <li>
-                        <label class="headline">預け入れ・撮影についてのよくあるご質問</label>
-                        <ul class="frequently">
-                            <li>預け入れまでの流れについては<a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">専用ボックスの到着から預け入れまで</a></li>
-                            <li>minikuraMONOの撮影については<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/mono.html" target="_blank">撮影付き保管サービスの概要</a></li>
-                            <li>注意事項については<a href="<?php echo Configure::read('site.static_content_url'); ?>/use_agreement/#attachment1" target="_blank">お取り出し・配送について</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <label class="headline">ボックスの配送方法</label>
-                        <?php echo $this->Form->error("InboundBase.delivery_carrier", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                        <ul class="delivery-method">
-                            <li>
-                                <label class="input-check">
-                                    <input type="radio" class="rb" name="data[InboundBase][delivery_carrier]" value="6_1" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '6_1' || (isset($this->request->data['InboundBase']['delivery_carrier']) === false)) ? 'checked' : ''; ?>><span class="icon"></span>
-                                    <span class="label-txt">集荷を申し込む</span>
-                                </label>
-                            </li>
-                            <li id="dev-self-delivery"><label class="input-check">
-                                    <input type="radio" class="rb" name="data[InboundBase][delivery_carrier]" value="7" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'checked' : ''; ?>><span class="icon"></span>
-                                    <span class="label-txt">自分で発送する</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </li>
-                  <li>
-                    <ul class="input-info" id="dev_collect" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? 'style="display:none"' : ''; ?>>
-                      <li>
-                          <label class="headline">お預かりに上がる住所<span class="note">配送業者が荷物を受け取りに伺います。</span></label>
-                              <div id="dsn-amazon-pay" class="form-group col-lg-12">
-                                <div class="dsn-address">
-                                  <div id="addressBookWidgetDiv">
-                                  </div>
-                                </div>
-                              </div>
-                          <?php echo $this->Form->error("InboundBase.address_id", null, ['wrap' => 'p']) ?>
-                      </li>
-                      <input type="hidden" id="firstname" name="data[InboundBase][firstname]">
-                      <input type="hidden" id="lastname"  name="data[InboundBase][lastname]">
-                      <li>
-                          <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['day_cd']) ?$this->request->data['InboundBase']['day_cd'] : ""; ?>" id="pickup_date">
-                          <label class="headline">集荷の日程</label>
-                          <select id="day_cd" name="data[InboundBase][day_cd]"></select>
-                          <?php echo $this->Form->error("InboundBase.day_cd", null, ['wrap' => 'p']) ?>
-                      </li>
-                      <li>
-                      <input type="hidden" value="<?php echo isset($this->request->data['InboundBase']['time_cd']) ?$this->request->data['InboundBase']['time_cd'] : ""; ?>" id="pickup_time_code">
-                          <label class="headline">集荷の時間</label>
-                          <select id="time_cd" name="data[InboundBase][time_cd]"></select>
-                          <?php echo $this->Form->error("InboundBase.time_cd", null, ['wrap' => 'p']) ?>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <ul class="input-info" id="dev_self" <?php echo (isset($this->request->data['InboundBase']['delivery_carrier']) && $this->request->data['InboundBase']['delivery_carrier'] == '7') ? '' : 'style="display:none"'; ?>>
-                      <li class="l-mtd-desc">
-                        <p>自分で発送する際は、以下の2つから送ることができます。</p>
-                      </li>
-                      <li class="l-mtd-dtl">
-                        <label class="headline">コンビニエンスストアで発送</label>
-                        <p class="txt-desc">専用ボックスに同梱されている宅配伝票を専用ボックスに貼り、お近くのコンビニエンスストアからお荷物をお送りください。<br>
-                          取扱店：セブン-イレブン、ファミリーマート、サークルKサンクス、デイリーヤマザキ、スリーエフ、ポプラ、ニューデイズなど</p>
-                        <label class="headline">自分でヤマト運輸へ集荷の依頼</label>
-                        <p class="txt-desc">専用ボックスに同梱されている宅配伝票を専用ボックスに貼り、ヤマト運輸のインターネットまたはお電話で集荷の依頼をすることでお荷物を送ることができます。<br>
-                          直接の申し込みは<a class="link" href="http://www.kuronekoyamato.co.jp/ytc/customer/send/" target="_blank">こちら</a></p>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                    <p class="page-caption not-applicable dev-mb1">
+                        <?php if(empty($box_list) && $box_type == 'new'): ?>
+                          新しいボックスが存在しません。
+                        <?php elseif(empty($box_list) && $box_type == 'old'): ?>
+                          取り出し済ボックスが存在しません。
+                        <?php endif; ?>
+                    </p>
+                  </div>
+                <?php endforeach; ?>
+              <ul class="input-info">
+                <li>
+                  <label class="headline">預け入れ・撮影についてのよくあるご質問</label>
+                  <ul class="frequently">
+                    <li>預け入れまでの流れについては<a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">専用ボックスの到着から預け入れまで</a></li>
+                    <li>minikuraMONOの撮影については<a href="https://help.minikura.com/hc/ja/articles/221053727" target="_blank">撮影付き保管サービスの概要</a></li>
+                    <li>注意事項については<a href="https://help.minikura.com/hc/ja/articles/216414387" target="_blank">お取り出し・配送について</a></li>
+                  </ul>
+                </li>
+              </ul>
             </form>
         </div>
         <div class="nav-fixed">
@@ -211,23 +135,14 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                 </li>
             </ul>
         </div>
+
+        <!-- popup -->
         <div class="remodal about-id" data-remodal-id="about-id">
-            <p class="page-caption">バーコード番号(ボックスID)はボックス側面にバーコードと共に記載されています。</p>
-            <img src="/images/about-id@2x.png" alt="">
-            <a class="btn-close" data-remodal-action="close">閉じる</a>
+          <p class="page-caption">バーコード番号(ボックスID)はボックス側面にバーコードと共に記載されています。</p>
+          <img src="/images/about-id@2x.png" alt="">
+          <a class="btn-close" data-remodal-action="close">閉じる</a>
         </div>
-        <div class="remodal l-packaging" data-remodal-id="packaging">
-            <h2 class="title-packaging"><img src="/images/title-packaging.svg" alt="minikuraMONOご利用の方"></h2>
-            <p class="text-packaging"><span>「外装を除いて撮影」</span>にチェックを入れると、複数点まとめた梱包や、アイテム保護のための緩衝材梱包等を取り外し撮影できます。</p>
-            <picture>
-                <source srcset="/images/packaging@1x.png 1x, /images/packaging@2x.png 2x">
-                <img src="/images/packaging@1x.png" alt="開封における例外ケース">
-            </picture>
-            <h3 class="title-note">開封における例外ケース</h3>
-            <ul class="l-note">
-                <li><span>写真付の商品パッケージ・透明なビニール(OPP袋)など</span>の商品箱から中身がわかるものはそのまま撮影に移ります。</li>
-                <li>商品箱から中身がわからないものは、箱を含め、中身一式全てを撮影します。ただし、<span>丸められた状態のポスター類、ラッピングされた箱など、</span>撮影後の原状回復ができないものは開封せず撮影します。</li>
-            </ul>
-            <p class="note-packaging">※再撮影はお断りしております。</p>
-            <a class="btn-close" data-remodal-action="close">閉じる</a>
+        <div class="remodal about-id" data-remodal-id="free-box">
+          <p class="page-caption">無料期限とは、サービス申し込み代金の無料期限のことです。記載の日付までに倉庫に到着すると、お申し込み代金が無料でご利用いただけます。</p>
+          <a class="btn-close" data-remodal-action="close">閉じる</a>
         </div>

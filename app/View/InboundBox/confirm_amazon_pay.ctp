@@ -6,7 +6,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
             <ul class="pagenation">
               <li><span class="number">1</span><span class="txt">ボックス<br>選択</span>
               </li>
-              <li><span class="number">2</span><span class="txt">個数入力</span>
+              <li><span class="number">2</span><span class="txt">ボックス<br>情報入力</span>
               </li>
               <li class="on"><span class="number">3</span><span class="txt">確認</span>
               </li>
@@ -16,49 +16,49 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
             <p class="page-caption">以下の内容でボックスの預け入れ手続きを行います。</p>
             <?php echo $this->Form->create('InboundBase', ['url' => '/inbound/box/complete_amazon_pay', 'name' => 'form', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <div class="item-content">
-                <ul class="grid grid-md">
-                    <!--loop-->
-                    <?php foreach ($box_list as $box): ?>
-                    <li>
-                        <label>
-                            <span class="item-img"><img src="<?php echo h($this->Html->getProductImage($box['kit_cd'])); ?>" alt="<?php echo h($box['product_name']); ?>" class="img-item"></span>
-                        </label>
-                        <div class="box-info">
-                            <p class="box-id"><?php echo $box['box_id']; ?></p>
-                            <p class="box-type"><?php echo h($box['product_name']); ?></p>
-                            <p class="box-name"><?php echo h($this->Html->replaceBoxtitleChar($box['title'])); ?></p>
-                            <?php if ($box['wrapping_type'] == 1) :?>
-                              <p class="txt-remove-package">外装を除いて撮影</p>
-                            <?php endif; ?>
-                        </div>
-                    </li>
-                    <?php endforeach; ?>
-                    <!--loop end-->
-                </ul>
+              <ul class="grid grid-md">
+                <!--loop-->
+                  <?php foreach ($target_box_list as $box): ?>
+                  <li>
+                    <label>
+                      <span class="item-img"><img src="<?php echo h($this->Html->getProductImage($box['kit_cd'])); ?>" alt="<?php echo h($box['product_name']); ?>" class="img-item"></span>
+                    </label>
+                    <div class="box-info">
+                      <p class="box-id"><?php echo $box['box_id']; ?></p>
+                      <p class="box-type"><?php echo h($box['product_name']); ?></p>
+                      <p class="box-name"><?php echo h($this->Html->replaceBoxtitleChar($select_box_list_data[$box['box_id']]['title'])); ?></p>
+                        <?php if (isset($select_box_list_data[$box['box_id']]['wrapping_type']) && $select_box_list_data[$box['box_id']]['wrapping_type'] == 1) :?>
+                          <p class="txt-remove-package">外装を除いて撮影</p>
+                        <?php endif; ?>
+                    </div>
+                  </li>
+                  <?php endforeach; ?>
+                <!--loop end-->
+              </ul>
             </div>
             <ul class="input-info">
                 <li>
                     <label class="headline">ボックスの発送方法</label>
                     <ul class="li-address">
-                        <li><?php echo INBOUND_CARRIER_DELIVERY[$data['delivery_carrier']] ?></li>
+                        <li><?php echo INBOUND_CARRIER_DELIVERY[$inbound_base_data['delivery_carrier']] ?></li>
                     </ul>
                 </li>
-                <?php if (strpos($data['delivery_carrier'], INBOUND_DELIVERY_PICKUP) !== FALSE): ?>
+                <?php if (strpos($inbound_base_data['delivery_carrier'], INBOUND_DELIVERY_PICKUP) !== FALSE): ?>
                 <li>
                     <label class="headline">お預かりに上がる住所</label>
                     <ul class="li-address">
                         <li>
-                            〒<?php echo $data['postal']; ?>&nbsp;
-                            <?php echo $data['pref']; ?><?php echo $data['address1']; ?><?php echo $data['address2']; ?><?php echo $data['address3']; ?>&nbsp;
-                            <?php echo $data['lastname']; ?>
-                            <?php echo $data['firstname']; ?>
+                            〒<?php echo $inbound_base_data['postal']; ?>&nbsp;
+                            <?php echo $inbound_base_data['pref']; ?><?php echo $inbound_base_data['address1']; ?><?php echo $inbound_base_data['address2']; ?><?php echo $inbound_base_data['address3']; ?>&nbsp;
+                            <?php echo $inbound_base_data['lastname']; ?>
+                            <?php echo $inbound_base_data['firstname']; ?>
                         </li>
                     </ul>
                 </li>
                 <li>
                     <label class="headline">お預かりに上がる日時</label>
                     <ul class="li-address">
-                        <li><?php echo $this->Order->echoOption($dateList, 'date_cd', 'text', $data['day_cd']) ?> <?php echo $this->Order->echoOption($timeList, 'time_cd', 'text', $data['time_cd']) ?></li>
+                        <li><?php echo $this->Order->echoOption($dateList, 'date_cd', 'text', $inbound_base_data['day_cd']) ?> <?php echo $this->Order->echoOption($timeList, 'time_cd', 'text', $inbound_base_data['time_cd']) ?></li>
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -162,11 +162,7 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
         <div class="nav-fixed">
             <ul>
                 <li>
-                  <?php if($attention_flag) :?>
                   <a class="btn-d-gray" href="/inbound/box/attention_amazon_pay">戻る</a>
-                  <?php else: ?>
-                  <a class="btn-d-gray" href="/inbound/box/add">戻る</a>
-                  <?php endif; ?>
                 </li>
                 <li><button class="btn-red" id="execute">この内容で預ける</button>
                 </li>

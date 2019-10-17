@@ -451,3 +451,11 @@ label.reset_label {
 box_select_checkbox{
   display: block;
 }
+
+.dev-mbs5 {
+    margin-bottom: 0.5rem;
+}
+
+.dev-mb1 {
+    margin-bottom: 1rem;
+}
