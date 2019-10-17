@@ -140,9 +140,9 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
         <div class="remodal about-id" data-remodal-id="about-id">
           <p class="page-caption">バーコード番号(ボックスID)はボックス側面にバーコードと共に記載されています。</p>
           <img src="/images/about-id@2x.png" alt="">
-          <a class="btn-close" data-remodal-action="close">閉じる</a>
+          <a class="btn-d-gray" data-remodal-action="close">閉じる</a>
         </div>
         <div class="remodal about-id" data-remodal-id="free-box">
           <p class="page-caption">無料期限とは、サービス申し込み代金の無料期限のことです。記載の日付までに倉庫に到着すると、お申し込み代金が無料でご利用いただけます。</p>
-          <a class="btn-close" data-remodal-action="close">閉じる</a>
+          <a class="btn-d-gray" data-remodal-action="close">閉じる</a>
         </div>

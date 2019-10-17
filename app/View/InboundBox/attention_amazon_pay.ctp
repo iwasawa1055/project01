@@ -49,11 +49,13 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
 
           <div class="item-content">
             <ul class="l-caution">
-              <li>
+              <?php if($box_use_flag[PRODUCT_CD_MONO] || $box_use_flag[PRODUCT_CD_CLOSET] || $box_use_flag[PRODUCT_CD_LIBRARY] || $box_use_flag[PRODUCT_CD_CLEANING_PACK]) :?>
+              <li class="wrapping_modal">
                 <a href="javascript:void(0)" data-remodal-target="packaging" class="about-box-id title-caution">
                   <img src="/images/question.svg">「外装を除いて撮影」について
                 </a>
               </li>
+              <?php endif; ?>
             </ul>
             <ul class="grid grid-md">
                 <?php foreach ($target_box_list as $box_data): ?>

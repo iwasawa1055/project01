@@ -9,8 +9,10 @@ var AppInboundAttention =
     AppInboundAttention.scrollValidError();
 
     // modal表示
-    if ( document.referrer.indexOf('/inbound/box/attention_amazon_pay') == -1 && document.referrer.indexOf('/inbound/box/confirm_amazon_pay') == -1) {
-      $("[data-remodal-id=packaging]").remodal().open();
+    if ($('.wrapping_modal').length) {
+      if (document.referrer.indexOf('/inbound/box/attention_amazon_pay') == -1 && document.referrer.indexOf('/inbound/box/confirm_amazon_pay') == -1) {
+        $("[data-remodal-id=packaging]").remodal().open();
+      }
     }
   },
 
