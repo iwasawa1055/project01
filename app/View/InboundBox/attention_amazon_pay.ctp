@@ -30,7 +30,6 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
           </ul>
             <?php if($box_use_flag[PRODUCT_CD_CLEANING_PACK] || $box_use_flag[PRODUCT_CD_CLOSET]) :?>
               <div class="l-desc-num-input">
-                <h2 class="ttl-desc-num-input">預け入れ点数をお選びください</h2>
                 <p class="txt-desc-num-input">下記表に記載のサービスは預け入れの上限点数まで無料でお預かりができ、それを超えると以下の料金でご利用いただけます。（毎月の保管料は変わりません）</p>
                 <table class="tbl-desc-num-input">
                   <tbody>
