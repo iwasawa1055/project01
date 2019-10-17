@@ -85,7 +85,7 @@
                 <ul class="tile">
                   <!--loop-->
                   <?php foreach ($itemList as $item): ?>
-                  <li class="panel panel-default">
+                  <li class="panel panel-default" style='min-width: auto;'>
                     <?php echo $this->element('List/item_icon_body', ['item' => $item]); ?>
                     <?php echo $this->element('List/item_icon_footer', ['item' => $item]); ?>
                   </li>
