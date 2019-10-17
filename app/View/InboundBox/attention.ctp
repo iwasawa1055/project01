@@ -213,8 +213,8 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
         <?php echo $this->Form->end(); ?>
 
         <!-- popup -->
-        <div class="remodal l-packaging" data-remodal-id="packaging">
-          <h2 class="title-packaging"><img src="/images/title-packaging.svg" alt="minikuraMONOご利用の方"></h2>
+        <div class="remodal l-packaging" data-remodal-id="packaging" data-remodal-options="hashTracking:false">
+          <h2 class="title-packaging">minikuraMONO、<br class="sp">minikuraLibraryの<br>「外装を除いて撮影」について</h2>
           <p class="text-packaging"><span>「外装を除いて撮影」</span>にチェックを入れると、複数点まとめた梱包や、アイテム保護のための緩衝材梱包等を取り外し撮影できます。</p>
           <picture>
             <source srcset="/images/packaging@1x.png 1x, /images/packaging@2x.png 2x">

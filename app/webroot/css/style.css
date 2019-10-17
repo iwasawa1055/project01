@@ -817,6 +817,7 @@ button[class^="btn"] {
   color: white;
   background: red;
   border: 0.1rem solid red;
+  cursor: pointer;
 }
 
 .btn-red:hover {
@@ -827,6 +828,7 @@ button[class^="btn"] {
   color: white;
   background: #333333;
   border: 0.1rem solid #333333;
+  cursor: pointer;
 }
 
 .btn-d-gray:hover {
@@ -2010,7 +2012,8 @@ textarea:disabled {
 
 .about-id .btn-close {
   padding: 1rem;
-  background: #666666;
+  color: white;
+  background: #333333;
   cursor: pointer;
 }
 
@@ -2021,12 +2024,10 @@ textarea:disabled {
 }
 
 .l-packaging .title-packaging {
-  margin-bottom: 1rem;
-}
-
-.l-packaging .title-packaging img {
-  width: 100%;
-  max-width: 38rem;
+  margin-bottom: 1.5rem;
+  font-size: 22px;
+  font-size: 2.2rem;
+  line-height: 1.5;
 }
 
 .l-packaging .text-packaging {
@@ -2075,7 +2076,7 @@ textarea:disabled {
 .l-packaging .btn-close {
   padding: 1rem;
   color: white;
-  background: #666666;
+  background: #333333;
   cursor: pointer;
 }
 
@@ -2295,7 +2296,8 @@ textarea:disabled {
   }
   .about-id .btn-close {
     padding: 1rem;
-    background: #666666;
+    color: white;
+    background: #333333;
     cursor: pointer;
   }
   .register {
@@ -2319,6 +2321,12 @@ textarea:disabled {
   .register .content .dialog {
     font-size: 14px;
     font-size: 1.4rem;
+  }
+  .l-packaging .title-packaging {
+    margin-bottom: 1rem;
+    font-size: 18px;
+    font-size: 1.8rem;
+    font-weight: bold;
   }
 }
 
@@ -5115,6 +5123,24 @@ footer .copyright {
   max-width: 15rem;
   margin-left: 1rem;
   text-align: right;
+}
+
+.outbound .l-hunger-box {
+  padding: 1rem;
+  padding-bottom: 0;
+  border: 0.1rem solid #dddddd;
+}
+
+.outbound .l-hunger-box .headline {
+  margin-bottom: 1rem;
+}
+
+.outbound .l-hunger-box .ls-slct-hunger-box li {
+  margin-bottom: 1.5rem;
+}
+
+.outbound .l-hunger-box .ls-slct-hunger-box .img-hunger-box {
+  max-width: 25rem;
 }
 
 @media screen and (max-width: 48rem) {
