@@ -28,23 +28,6 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
             <li><span class="number">4</span><span class="txt">完了</span>
             </li>
           </ul>
-            <?php if($box_use_flag[PRODUCT_CD_CLEANING_PACK] || $box_use_flag[PRODUCT_CD_CLOSET]) :?>
-              <div class="l-desc-num-input">
-                <p class="txt-desc-num-input">下記表に記載のサービスは預け入れの上限点数まで無料でお預かりができ、それを超えると以下の料金でご利用いただけます。（毎月の保管料は変わりません）</p>
-                <table class="tbl-desc-num-input">
-                  <tbody>
-                  <tr>
-                    <th class="th">minikura Closet</th>
-                    <td class="td">上限<?php echo EXCESS_ATTENTION_PRODUCT_CD[PRODUCT_CD_CLOSET]; ?>点。<br class="sp">上限超過時＋91円(税抜)/1アイテム</td>
-                  </tr>
-                  <tr>
-                    <th class="th">minikura<br class="sp">クリーニングパック</th>
-                    <td class="td">上限<?php echo EXCESS_ATTENTION_PRODUCT_CD[PRODUCT_CD_CLEANING_PACK]; ?>点。<br class="sp">上限超過時＋850円(税抜)/1アイテム</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            <?php endif; ?>
 
           <div class="item-content">
             <ul class="l-caution">
@@ -75,6 +58,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     </div>
                       <?php if(in_array($box_data['product_cd'], EXTERIOR_REMOVAL_PRODUCT_CD, true)): ?>
                         <label class="input-check">
+                          <?php echo $this->Form->input("BoxList.{$inbound_base_data['box_type']}.{$box_data['box_id']}.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
                           <?php
                             echo $this->Form->input(
                               "BoxList.{$inbound_base_data['box_type']}.{$box_data['box_id']}.wrapping_type",
@@ -196,6 +180,21 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
             <li class="caution-box">
               <p class="title">注意事項（ご確認の上、チェックしてください）</p>
               <div class="content">
+                <div class="l-desc-num-input">
+                  <p class="txt-desc-num-input">下記表に記載のサービスは預け入れの上限点数まで無料でお預かりができ、それを超えると以下の料金でご利用いただけます。（毎月の保管料は変わりません）</p>
+                  <table class="tbl-desc-num-input">
+                    <tbody>
+                    <tr>
+                      <th class="th">minikura Closet</th>
+                      <td class="td">上限<?php echo EXCESS_ATTENTION_PRODUCT_CD[PRODUCT_CD_CLOSET]; ?>点。<br class="sp">上限超過時＋91円(税抜)/1アイテム</td>
+                    </tr>
+                    <tr>
+                      <th class="th">minikura<br class="sp">クリーニングパック</th>
+                      <td class="td">上限<?php echo EXCESS_ATTENTION_PRODUCT_CD[PRODUCT_CD_CLEANING_PACK]; ?>点。<br class="sp">上限超過時＋850円(税抜)/1アイテム</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <label class="input-check">
                   <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">倉庫でお預かり品を計測した際、点数に齟齬があった場合は、点数と料金表に基づいて実際の料金をご連絡させていただきます。</span>
                 </label>
@@ -204,9 +203,6 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                       <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">クリーニングパックを6ヶ月を超えて保管をする場合、1パックにつき、月額500円(税抜)で保管ができます。</span>
                     </label>
                   <?php endif; ?>
-                <label class="input-check">
-                  <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">衣類の洗濯タグが全て不可になっているものはクリーニングできません。また、高級衣類についてはクリーニング不可または別途見積もりになります。<a class="link-charge" href="https://minikura.com/help/special_cleaning_charge.html" target="_blank">一覧はこちら</a></span>
-                </label>
               </div>
             </li>
           </ul>

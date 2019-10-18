@@ -154,6 +154,11 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                       </span>
                     </label>
                     <?php endif; ?>
+                    <?php if($box_use_flag[PRODUCT_CD_CLEANING_PACK]) :?>
+                      <label class="input-check agree-before-submit">
+                        <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">衣類の洗濯タグが全て不可になっているものはクリーニングできません。また、高級衣類についてはクリーニング不可または別途見積もりになります。<a class="link-charge" href="https://minikura.com/help/special_cleaning_charge.html" target="_blank">一覧はこちら</a></span>
+                      </label>
+                    <?php endif; ?>
                   </div>
                 </li>
             </ul>
