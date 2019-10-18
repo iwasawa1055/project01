@@ -198,11 +198,6 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                 <label class="input-check">
                   <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">倉庫でお預かり品を計測した際、点数に齟齬があった場合は、点数と料金表に基づいて実際の料金をご連絡させていただきます。</span>
                 </label>
-                  <?php if($box_use_flag[PRODUCT_CD_CLEANING_PACK]) :?>
-                    <label class="input-check">
-                      <input type="checkbox" class="cb-square"><span class="icon"></span><span class="label-txt">クリーニングパックを6ヶ月を超えて保管をする場合、1パックにつき、月額500円(税抜)で保管ができます。</span>
-                    </label>
-                  <?php endif; ?>
               </div>
             </li>
           </ul>
