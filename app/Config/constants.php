@@ -145,7 +145,7 @@ const BOX_STATUS_LIST = [
     '10' => 'サービスの申し込み依頼中',
     '20' => 'サービスの申し込み依頼中',
     '30' => 'サービスの申し込み依頼中',
-    '40' => 'お預かり中',
+    '40' => '預け入れ申し込み依頼中',
     '60' => '倉庫作業中',
     '70' => 'お預かり中',
     '130' => 'お預かり中',
@@ -155,6 +155,8 @@ const BOX_STATUS_LIST = [
     '200' => 'お預かり中',
     '150' => '取り出し済み',
     '210' => '取り出し済み',
+    '220' => '預け入れ依頼中',
+    '230' => '預け入れ依頼中',
 ];
 const BOX_WRAPPING_TYPE_LIST = [
     '0' => '外装を外さない',
@@ -554,6 +556,39 @@ const START_BOX_FREE = '2019-07-01 00:00:00';
 // ポイント使用内容タイプ
 //minikuraCLEANING＋
 const USE_POINT_CONTENTS_TYPE_CLEANING_PLUS = '2';
+
+/* 入荷履歴ページ件数 */
+const INBOUND_HISTORY_PAGE_MAX_ITEM = 15;
+
+/* 出庫履歴ページ件数 */
+const OUTBOUND_HISTORY_PAGE_MAX_ITEM = 15;
+
+/* 集荷時間帯指定区分 */
+const INBOUND_PICKUP_TIME_CODE = [
+    '1' => '指定なし',
+    '2' => '午前',
+    '4' => '14時～16時',
+    '5' => '16時～18時',
+    '6' => '18時～21時',
+];
+
+const WARAPPING_TYPE_PRODUCT_CD_LIST = [
+    PRODUCT_CD_MONO,
+    PRODUCT_CD_CLEANING_PACK,
+    PRODUCT_CD_LIBRARY,
+    PRODUCT_CD_CLOSET,
+];
+
+const KEEPING_TYPE_PRODUCT_CD_LIST = [
+    PRODUCT_CD_CLEANING_PACK,
+];
+
+/* 基幹システム指示進捗区分(完了) */
+const WORKS_PROGRESS_TYPE_COMPLETE = '06';
+
+/* 配送方法 */
+// 自分で配送
+const BOX_DELIVERY_TYPE_YOURSELF = '7';
 
 /* dummy amazon_order_reference_id */
 const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';

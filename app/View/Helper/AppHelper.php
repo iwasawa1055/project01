@@ -68,6 +68,16 @@ class AppHelper extends Helper
         return "{$ymd[0]}年{$ymd[1]}月{$ymd[2]}日";
     }
 
+    public function formatYmdKanjiDatetime($datetime)
+    {
+        $ymd = preg_split('/[-\/\ ]/', $datetime);
+        if (count($ymd) !== 4) {
+            return $datetime;
+        }
+
+        return "{$ymd[0]}年{$ymd[1]}月{$ymd[2]}日 {$ymd[3]}";
+    }
+
     public function replaceBoxtitleChar($title)
     {
         return InfoBox::replaceBoxtitleChar($title);
