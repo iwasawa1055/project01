@@ -118,7 +118,8 @@ class InboundBoxController extends MinikuraController
             /* 選択ボックス */
             $select_box_list_data = [];
             if (isset($this->request->data['BoxList']) && !empty($this->request->data['BoxList'][$box_type])) {
-                $select_box_list_data = $this->request->data['BoxList'][$box_type];
+                $tmp_select_box_list_data = CakeSession::read('select_box_list_data');
+                $post_select_box_list_data = $this->request->data['BoxList'][$box_type];
 
                 $target_box_list = [];
                 $box_use_flag = [
@@ -128,7 +129,7 @@ class InboundBoxController extends MinikuraController
                     PRODUCT_CD_LIBRARY       => false,
                     PRODUCT_CD_CLOSET        => false,
                 ];
-                $select_box_id_list = array_keys($select_box_list_data);
+                $select_box_id_list = array_keys($post_select_box_list_data);
                 foreach ($select_box_id_list as $box_id) {
                     $key_index = array_search($box_id, array_column($holding_box_list[$box_type], 'box_id'));
                     if ($key_index === false) {
@@ -137,6 +138,11 @@ class InboundBoxController extends MinikuraController
                     } else {
                         $box_use_flag[$holding_box_list[$box_type][$key_index]['product_cd']] = true;
                         $target_box_list[] = $holding_box_list[$box_type][$key_index];
+                        if (isset($tmp_select_box_list_data[$box_id])) {
+                            $select_box_list_data[$box_id] = $tmp_select_box_list_data[$box_id];
+                        } else {
+                            $select_box_list_data[$box_id] = $post_select_box_list_data[$box_id];
+                        }
                     }
                 }
                 CakeSession::write('box_use_flag', $box_use_flag);
@@ -389,7 +395,8 @@ class InboundBoxController extends MinikuraController
             /* 選択ボックス */
             $select_box_list_data = [];
             if (isset($this->request->data['BoxList']) && !empty($this->request->data['BoxList'][$box_type])) {
-                $select_box_list_data = $this->request->data['BoxList'][$box_type];
+                $tmp_select_box_list_data = CakeSession::read('select_box_list_data');
+                $post_select_box_list_data = $this->request->data['BoxList'][$box_type];
 
                 $target_box_list = [];
                 $box_use_flag = [
@@ -399,7 +406,7 @@ class InboundBoxController extends MinikuraController
                     PRODUCT_CD_LIBRARY       => false,
                     PRODUCT_CD_CLOSET        => false,
                 ];
-                $select_box_id_list = array_keys($select_box_list_data);
+                $select_box_id_list = array_keys($post_select_box_list_data);
                 foreach ($select_box_id_list as $box_id) {
                     $key_index = array_search($box_id, array_column($holding_box_list[$box_type], 'box_id'));
                     if ($key_index === false) {
@@ -408,6 +415,11 @@ class InboundBoxController extends MinikuraController
                     } else {
                         $box_use_flag[$holding_box_list[$box_type][$key_index]['product_cd']] = true;
                         $target_box_list[] = $holding_box_list[$box_type][$key_index];
+                        if (isset($tmp_select_box_list_data[$box_id])) {
+                            $select_box_list_data[$box_id] = $tmp_select_box_list_data[$box_id];
+                        } else {
+                            $select_box_list_data[$box_id] = $post_select_box_list_data[$box_id];
+                        }
                     }
                 }
                 CakeSession::write('box_use_flag', $box_use_flag);
@@ -497,7 +509,7 @@ class InboundBoxController extends MinikuraController
                 $this->set('target_box_list', CakeSession::read('target_box_list'));
                 $this->set('box_use_flag', CakeSession::read('box_use_flag'));
 
-                return $this->render('attention');
+                return $this->render('attention_amazon_pay');
             }
 
             return $this->redirect(['controller' => 'InboundBox', 'action' => 'confirm_amazon_pay']);

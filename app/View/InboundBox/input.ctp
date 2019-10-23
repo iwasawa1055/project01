@@ -122,7 +122,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                         <label class="headline">預け入れ・撮影についてのよくあるご質問</label>
                         <ul class="frequently">
                             <li>預け入れまでの流れについては<a href="<?php echo Configure::read('site.static_content_url'); ?>/help/packing.html" target="_blank">専用ボックスの到着から預け入れまで</a></li>
-                            <li>minikuraMONOの撮影については<a href="https://help.minikura.com/hc/ja/articles/221053727" target="_blank">撮影付き保管サービスの概要</a></li>
+                            <li>撮影するサービスについては<a href="https://help.minikura.com/hc/ja/articles/221053727" target="_blank">撮影付き保管サービスの概要</a></li>
                             <li>注意事項については<a href="https://help.minikura.com/hc/ja/articles/216414387" target="_blank">お取り出し・配送について</a></li>
                         </ul>
                     </li>
