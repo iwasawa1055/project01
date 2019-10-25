@@ -1,4 +1,16 @@
 <?php $this->Html->script('minikura/item', ['block' => 'scriptMinikura']); ?>
+<style type="text/css">
+<!--
+#page-wrapper > div:nth-child(3) > div > div > div > div > div > div.col-lg-12.item-list > ul > li {
+    min-width: 0;
+}
+@media (max-width:768px) {
+    #page-wrapper > div:nth-child(3) > div > div > div > div > div > div.col-lg-12.item-list > ul > li {
+        min-width: 48%;
+    }
+}
+-->
+</style>
   <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-diamond"></i> アイテムリスト</h1>
@@ -85,7 +97,7 @@
                 <ul class="tile">
                   <!--loop-->
                   <?php foreach ($itemList as $item): ?>
-                  <li class="panel panel-default" style='min-width: auto;'>
+                  <li class="panel panel-default">
                     <?php echo $this->element('List/item_icon_body', ['item' => $item]); ?>
                     <?php echo $this->element('List/item_icon_footer', ['item' => $item]); ?>
                   </li>
