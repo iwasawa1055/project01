@@ -43,7 +43,12 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                     <li>
                         <label>
                             <span class="item-img">
+                                <?php // kit_cdがない場合のHAKOがあるので考慮 ?>
+                                <?php if (($box_data['kit_cd'] == null || $box_data['kit_cd'] == '') && preg_match('/^HK/u', $box_data['box_id'])) : ?>
+                                <img src="<?php echo KIT_IMAGE[KIT_CD_HAKO] ?>" alt="<?php echo $box_data['kit_name']; ?>" class="img-item">
+                                <?php else : ?>
                                 <img src="<?php echo KIT_IMAGE[$box_data['kit_cd']] ?>" alt="<?php echo $box_data['kit_name']; ?>" class="img-item">
+                                <?php endif; ?>
                             </span>
                         </label>
                         <div class="box-info">

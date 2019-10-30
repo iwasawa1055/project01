@@ -653,6 +653,10 @@ class InboundBoxController extends MinikuraController
         foreach ($_box_list_data as $box_id => $item) {
             $key_index = array_search($box_id, array_column($_holding_box_list, 'box_id'));
             if ($key_index !== false) {
+                if (($_holding_box_list[$key_index]['kit_cd'] == null || $_holding_box_list[$key_index]['kit_cd'] == "") && preg_match('/^HK/u', $_holding_box_list[$key_index]['box_id'])) {
+                    $_holding_box_list[$key_index]['kit_cd'] = KIT_CD_HAKO;
+                    $_holding_box_list[$key_index]['product_cd'] = PRODUCT_CD_HAKO;
+                }
                 $item['box_id']       = $_holding_box_list[$key_index]['box_id'];
                 $item['product_cd']   = $_holding_box_list[$key_index]['product_cd'];
                 $item['product_name'] = $_holding_box_list[$key_index]['product_name'];

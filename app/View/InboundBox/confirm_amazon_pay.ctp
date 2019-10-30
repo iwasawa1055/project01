@@ -21,7 +21,12 @@ $this->Html->script('inbound_box/confirm', ['block' => 'scriptMinikura']);
                   <?php foreach ($target_box_list as $box): ?>
                   <li>
                     <label>
+                      <?php // kit_cdがない場合のHAKOがあるので考慮 ?>
+                      <?php if (($box['kit_cd'] == null || $box['kit_cd'] == '') && preg_match('/^HK/u', $box['box_id'])) : ?>
+                      <span class="item-img"><img src="<?php echo h($this->Html->getProductImage(KIT_CD_HAKO)); ?>" alt="<?php echo h($box['product_name']); ?>" class="img-item"></span>
+                      <?php else : ?>
                       <span class="item-img"><img src="<?php echo h($this->Html->getProductImage($box['kit_cd'])); ?>" alt="<?php echo h($box['product_name']); ?>" class="img-item"></span>
+                      <?php endif; ?>
                     </label>
                     <div class="box-info">
                       <p class="box-id"><?php echo $box['box_id']; ?></p>
