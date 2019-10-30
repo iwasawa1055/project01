@@ -586,6 +586,9 @@ const KEEPING_TYPE_PRODUCT_CD_LIST = [
 /* 基幹システム指示進捗区分(完了) */
 const WORKS_PROGRESS_TYPE_COMPLETE = '06';
 
+/* 一時出庫連携情報連携ステータス(キャンセル) */
+const WORKS_LINKAGE_LINK_STATUS_CANCEL = '2';
+
 /* 配送方法 */
 // 自分で配送
 const BOX_DELIVERY_TYPE_YOURSELF = '7';

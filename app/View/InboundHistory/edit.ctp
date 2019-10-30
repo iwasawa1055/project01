@@ -38,6 +38,7 @@
                   <?php if(in_array($box['product_cd'], WARAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                   <li class="l-txt-box-outer">
                     <label class="headline">外装の取り外し</label>
+                      <?php echo $this->Form->input("V5Box.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
                     <label class="input-check">
                       <?php
                       echo $this->Form->input(

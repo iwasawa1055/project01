@@ -1,4 +1,8 @@
         <div id="page-wrapper" class="wrapper l-history-dtl">
+          <?php $data_error = $this->Flash->render('data_error');?>
+          <?php if (isset($data_error)) : ?>
+            <p class="valid-bl"><?php echo $data_error; ?></p>
+          <?php endif; ?>
           <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し履歴詳細</h1>
           <div class="l-deposit-info">
             <dl>
@@ -10,13 +14,26 @@
             <dl>
               <dt><label class="headline">ステータス</label></dt>
               <dd>
-                <?php if($outbound_data['works_progress_type'] == WORKS_PROGRESS_TYPE_COMPLETE): ?>
-                <p class="txt-detail">完了</p>
+                <?php if (isset($outbound_data['link_status'])) : ?>
+                    <?php if($outbound_data['link_status'] == WORKS_LINKAGE_LINK_STATUS_CANCEL): ?>
+                    <p class="txt-detail">キャンセル済み</p>
+                    <?php else: ?>
+                    <p class="txt-detail">出庫依頼中</p>
+                    <?php endif;?>
                 <?php else: ?>
-                <p class="txt-detail">出庫依頼中</p>
+                    <?php if($outbound_data['works_progress_type'] == WORKS_PROGRESS_TYPE_COMPLETE): ?>
+                    <p class="txt-detail">完了</p>
+                    <?php else: ?>
+                    <p class="txt-detail">出庫依頼中</p>
+                    <?php endif;?>
                 <?php endif;?>
               </dd>
             </dl>
+            <?php if (isset($outbound_data['link_status']) && $outbound_data['link_status'] === '0'): ?>
+            <div class="l-cancel">
+              <a class="btn-red-line" href="/outbound_history/cancel_confirm?announcement_id=<?php echo $outbound_data['announcement_id']; ?>">取り出しキャンセル</a>
+            </div>
+            <?php endif; ?>
           </div>
           <h2 class="ttl-dtl">取り出し内容</h2>
           <ul class="l-lst-dtl">

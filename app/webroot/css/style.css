@@ -7050,6 +7050,14 @@ li.l-mtd-desc {
   border-right: 0.1rem solid #dddddd;
 }
 
+.l-history-dtl .l-deposit-info .l-cancel {
+  margin-left: auto;
+}
+
+.l-history-dtl .l-deposit-info .l-cancel .btn-red-line {
+  padding: 0.5rem 1rem;
+}
+
 .l-history-dtl .l-caution-box {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -7317,6 +7325,9 @@ li.l-mtd-desc {
   }
   .l-history-dtl .l-deposit-info dl dd {
     text-align: right;
+  }
+  .l-history-dtl .l-deposit-info .l-cancel {
+    margin: 1rem 0 0 auto;
   }
   .l-history-dtl .l-caution-box {
     font-size: 12px;
