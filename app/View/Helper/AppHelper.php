@@ -74,8 +74,9 @@ class AppHelper extends Helper
         if (count($ymd) !== 4) {
             return $datetime;
         }
+        $time = explode(':', $ymd[3]);
 
-        return "{$ymd[0]}年{$ymd[1]}月{$ymd[2]}日 {$ymd[3]}";
+        return "{$ymd[0]}年{$ymd[1]}月{$ymd[2]}日 {$time[0]}:{$time[1]}";
     }
 
     public function replaceBoxtitleChar($title)

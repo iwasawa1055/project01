@@ -29,10 +29,21 @@
                 <?php endif;?>
               </dd>
             </dl>
-            <?php if (isset($outbound_data['link_status']) && $outbound_data['link_status'] === '0'): ?>
-            <div class="l-cancel">
-              <a class="btn-red-line" href="/outbound_history/cancel_confirm?announcement_id=<?php echo $outbound_data['announcement_id']; ?>">取り出しキャンセル</a>
-            </div>
+            <?php if (isset($outbound_data['link_status'])): ?>
+            <ul class="l-cancel">
+            <?php if ($outbound_data['link_status'] === '0'): ?>
+            <li class="l-btn-cancel">
+            <a class="btn-red-line" href="/outbound_history/cancel_confirm?wl_id=<?php echo $outbound_data['works_linkage_id']; ?>">取り出しキャンセル</a>
+            </li>
+            <?php else : ?>
+            <li class="l-txt-cancel">
+            <p class="txt-cancel">既にキャンセル済みのためキャンセルできません。</p>
+            </li>
+            <li class="l-btn-cancel">
+            <a class="btn-red-line btn-disabled" href="javascript:void(0)">取り出しキャンセル</a>
+            </li>
+            <?php endif; ?>
+            </ul>
             <?php endif; ?>
           </div>
           <h2 class="ttl-dtl">取り出し内容</h2>
@@ -41,7 +52,11 @@
             <li class="l-lst-item">
               <ul class="l-lst-item-upper">
                 <li class="l-img-item">
+                  <?php if (!empty($box['kit_cd'])): ?>
                   <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
+                  <?php else : ?>
+                  <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
+                  <?php endif; ?>
                 </li>
                 <li class="l-txt-box-name">
                   <label class="headline">ボックス名</label>

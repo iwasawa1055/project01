@@ -15,23 +15,23 @@
                   <ul class="l-lst-dtl">
                     <li class="l-data">預け入れ申込日</li>
                     <li class="l-method-dtl">入庫方法</li>
-                    <li class="l-status">ステータス</li>
+                    <li class="l-status l-left">ステータス</li>
                     <li class="l-view"></li>
                   </ul>
                 </li>
                 <?php foreach($inbound_history_list as $history_data): ?>
                 <li class="l-lst-itm">
                   <ul class="l-lst-dtl">
-                    <li class="l-data" title="預け入れ申込日"><?php echo $history_data['create_date']; ?></li>
+                    <li class="l-data" title="預け入れ申込日"><?php echo $this->Html->formatYmdKanjiDatetime($history_data['create_date']); ?></li>
                     <?php if($history_data['box_delivery_type'] == BOX_DELIVERY_TYPE_YOURSELF): ?>
                     <li class="l-method-dtl" title="入庫方法">自分で申込</li>
                     <?php else: ?>
                     <li class="l-method-dtl" title="入庫方法">集荷で申込</li>
                     <?php endif;?>
                     <?php if($history_data['works_progress_type'] == WORKS_PROGRESS_TYPE_COMPLETE): ?>
-                    <li class="l-status" title="ステータス">完了</li>
+                    <li class="l-status l-left" title="ステータス">完了</li>
                     <?php else: ?>
-                    <li class="l-status" title="ステータス">入庫依頼中</li>
+                    <li class="l-status l-left" title="ステータス">入庫依頼中</li>
                     <?php endif;?>
                     <li class="l-view"><a class="btn" href="/inbound_history/detail?announcement_id=<?php echo $history_data['announcement_id']; ?>">詳細を見る</a></li>
                   </ul>

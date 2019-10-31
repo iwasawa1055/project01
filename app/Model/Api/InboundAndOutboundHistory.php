@@ -38,16 +38,21 @@ class InboundAndOutboundHistory extends ApiModel
 
         // ランク付け用にポイントをそれぞれ設定
         $columns = [
-            'box_ids' => 100,
+            'delivery_name' => 100,
+            'box_ids' => 90,
             'item_ids' => 80,
-            'delivery_state' => 60,
+            'delivery_state' => 50,
             'delivery_city' => 40,
-            'delivery_street_address' => 20,
-            'delivery_suburb' => 10,
+            'delivery_street_address' => 30,
+            'delivery_suburb' => 20,
         ];
 
         // 検索
         $hits = AppSearch::makeRank($results, $keywords, $columns, $all_minus_flag);
+
+        // sort
+        $sort_key = ['create_date' => false];
+        HashSorter::sort($hits, $sort_key);
 
         return $hits;
     }
