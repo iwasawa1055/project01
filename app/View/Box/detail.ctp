@@ -7,24 +7,7 @@
           <?php if (!empty($box['kit_cd'])) : ?>
             <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
           <?php else : ?>
-
-
-
-
-
-
-
-            <!--TODO 履歴のPRODUCT_IMAGEをもってくる-->
-            <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_name']]; ?>" class="img-item">
-
-
-
-
-
-
-
-
-
+            <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_name']]; ?>" class="img-item">
           <?php endif; ?>
         </li>
         <li class="l-detail-desc">
@@ -108,19 +91,11 @@
             <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
             <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></span></span>
           </p>
-
-
-
-
-
-          <!-- TODO kit_cdがない場合の考慮を入れる -->
-          <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
-
-
-
-
-
-
+          <?php if (!empty($box['kit_cd'])) : ?>
+            <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
+          <?php else : ?>
+            <p class="box-type"><?php echo PRODUCT_NAME[$item['box']['product_cd']] ?></p>
+          <?php endif; ?>
           <p class="box-name"><?php echo $item['item_name']; ?></p>
         </div>
       </li>

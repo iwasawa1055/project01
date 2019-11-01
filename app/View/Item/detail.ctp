@@ -96,21 +96,6 @@
 <div class="nav-fixed">
   <ul>
     <li><a class="btn-d-gray" href="/item/">一覧に戻る</a></li>
-
-
-
-
-
-
-
-<!--    TODO 一度確認をする-->
-    <li><button class="btn-d-gray" onclick="location.href='/box/detail.php'">このボックスを見る</button></li>
-
-
-
-
-
-
-
+    <li><a href="/box/detail/<?php echo $item['box']['box_id'];?>" class="btn-d-gray">このボックスを見る</a></li>
   </ul>
 </div>

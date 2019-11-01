@@ -219,6 +219,15 @@ const KIT_IMAGE = [
     KIT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
 ];
 
+const PRODUCT_IMAGE = [
+    PRODUCT_CD_HAKO               => '/images/hako-regular.png',
+    PRODUCT_CD_MONO               => '/images/mono-regular.png',
+    PRODUCT_CD_CLEANING_PACK      => '/images/cleaning.png',
+    PRODUCT_CD_LIBRARY            => '/images/library.png',
+    PRODUCT_CD_CLOSET             => '/images/cleaning.png',
+    PRODUCT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
+];
+
 const EXCESS_ATTENTION_PRODUCT_CD = [
     PRODUCT_CD_CLOSET              => 10,
     PRODUCT_CD_CLEANING_PACK       => 10,
