@@ -37,6 +37,7 @@
               <p class="txt-status"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></p>
             </li>
           </ul>
+          <?php $attention_message_flag = false; ?>
           <ul class="ls-action-item">
             <?php /*ヤフオク*/ ?>
             <?php if (!empty($linkToAuction)): ?>
@@ -44,8 +45,8 @@
               <?php if (empty($denyOutboundList) && empty($sales)) : ?>
               <a class="btn-yellow" href="<?php echo $linkToAuction; ?>" target="_blank">ヤフオク!に出品</a>
               <?php else:?>
-              <button class="btn-yellow" disabled="disabled">ヤフオク!に出品</button>
-              <p class="error-message"><?php echo __('can_not_yahoo_auction'); ?></p>
+              <a class="btn-yellow btn-disabled" href="javascript:void(0)" target="_blank">ヤフオク!に出品</a>
+              <?php $attention_message_flag = true; ?>
               <?php endif;?>
             </li>
             <?php endif; ?>
@@ -53,10 +54,10 @@
             <?php if (!empty($linkToCleaning)): ?>
             <li class="l-action">
               <?php if ($flg_cleaning) :?>
-              <a class="btn-blue" href="/cleaning-plus/input.php">クリーニングを申し込む</a>
+              <a class="btn-blue" href="/cleaning/input?item_id=<?php echo h($item['item_id']); ?>">クリーニングを申し込む</a>
               <?php else : ?>
-              <a class="btn btn-info btn-md btn-block btn-detail btn-regist">クリーニングを申し込む</a>
-              <p class="error-message">販売アイテムは選択できません。</p>
+              <a class="btn-blue btn-disabled" href="javascript:void(0)" target="_blank">クリーニングを申し込む</a>
+              <?php $attention_message_flag = true; ?>
               <?php endif ?>
             </li>
             <?php endif; ?>
@@ -65,29 +66,35 @@
             <?php /*取出し*/ ?>
             <?php if ($item['box']['product_cd'] == PRODUCT_CD_LIBRARY) : ?>
               <?php if ($item['item_status'] == BOXITEM_STATUS_INBOUND_DONE) : ?>
-              <li class="l-action"><a class="btn-red" href="/outbound/library_select_item?item_id=<?php echo h($item['item_id']); ?>">取り出しリスト登録1</a></li>
+              <li class="l-action"><a class="btn-red" href="/outbound/library_select_item?item_id=<?php echo h($item['item_id']); ?>">取り出しリスト登録</a></li>
               <?php else : ?>
-              <li class="l-action"><a class="btn-red" href="javascript:void(0)">取り出しリスト登録2</a></li>
+              <li class="l-action"><a class="btn-red btn-disabled " href="javascript:void(0)">取り出しリスト登録</a></li>
+              <?php $attention_message_flag = true; ?>
               <?php endif; ?>
             <?php elseif ($item['box']['product_cd'] == PRODUCT_CD_CLOSET) : ?>
               <?php if ($item['item_status'] == BOXITEM_STATUS_INBOUND_DONE) : ?>
-                <li class="l-action"><a class="btn-red" href="/outbound/closet_select_item?item_id=<?php echo h($item['item_id']); ?>">取り出しリスト登録3</a></li>
+                <li class="l-action"><a class="btn-red" href="/outbound/closet_select_item?item_id=<?php echo h($item['item_id']); ?>">取り出しリスト登録</a></li>
               <?php else : ?>
-                <li class="l-action"><a class="btn-red" href="javascript:void(0)">取り出しリスト登録4</a></li>
+                <li class="l-action"><a class="btn-red btn-disabled" href="javascript:void(0)">取り出しリスト登録</a></li>
+                <?php $attention_message_flag = true; ?>
               <?php endif; ?>
             <?php else : ?>
               <?php if (empty($denyOutboundList)) : ?>
                 <li class="l-action">
                 <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '1']); ?>
-                <button type="submit" class="btn-red">取り出しリスト登録5</button>
+                <button type="submit" class="btn-red">取り出しリスト登録</button>
                 <?php echo $this->Form->end(); ?>
                 </li>
               <?php else : ?>
-                <li class="l-action"><a class="btn-red" href="javascript:void(0)">取り出しリスト登録6</a></li>
+                <li class="l-action"><a class="btn-red btn-disabled" href="javascript:void(0)">取り出しリスト登録</a></li>
+                <?php $attention_message_flag = true; ?>
               <?php endif; ?>
             <?php endif; ?>
           </ul>
+          <?php if ($attention_message_flag) : ?>
+          <p class="txt-cancel">現在作業中または配送中のため、サービスの一部がご利用できません。</p>
+          <?php endif; ?>
         </li>
       </ul>
     </li>

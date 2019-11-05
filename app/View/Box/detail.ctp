@@ -55,25 +55,30 @@
           <p class="txt-desc"><?php echo nl2br(h($box['box_note'])); ?></p>
         </li>
         <li class="l-detail-info">
+          <?php $attention_message_flag = false; ?>
           <ul class="ls-action-box">
             <li class="l-action"><a class="btn-red-line" href="/box/detail/<?php echo $box['box_id']; ?>/edit">情報を編集する</a></li>
             <?php if ($box['product_cd'] == PRODUCT_CD_LIBRARY) : ?>
-              <li class="l-action"><a class="btn-red" href="/outbound/library_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録1</a></li>
+              <li class="l-action"><a class="btn-red" href="/outbound/library_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録</a></li>
             <?php elseif ($box['product_cd'] == PRODUCT_CD_CLOSET) : ?>
-              <li class="l-action"><a class="btn-red" href="/outbound/closet_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録2</a></li>
+              <li class="l-action"><a class="btn-red" href="/outbound/closet_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録</a></li>
             <?php else : ?>
               <?php if (empty($denyOutboundList)) : ?>
                 <li class="l-action">
                 <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
-                <button type="submit" class="btn-red">取り出しリスト登録3</button>
+                <button type="submit" class="btn-red">取り出しリスト登録</button>
                 <?php echo $this->Form->end(); ?>
                 </li>
               <?php else : ?>
-                <li class="l-action"><a class="btn-red" href="javascript:void(0)">取り出しリスト登録4</a></li>
+                <li class="l-action"><a class="btn-red btn-disabled" href="javascript:void(0)">取り出しリスト登録</a></li>
+                <?php $attention_message_flag = true; ?>
               <?php endif; ?>
             <?php endif; ?>
           </ul>
+          <?php if ($attention_message_flag) : ?>
+            <p class="txt-cancel">現在作業中または配送中のため、サービスの一部がご利用できません。</p>
+          <?php endif; ?>
         </li>
       </ul>
     </li>
