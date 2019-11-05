@@ -12,11 +12,11 @@
       <ul class="ls-detail-info">
         <li class="l-detail-info">
           <label class="txt-hline">アイテム名</label>
-          <h2 class="ttl-item"><?php echo h($item['item_name']); ?></h2>
+          <h2 class="ttl-item"><?php echo nl2br(h($item['item_name'])); ?></h2>
         </li>
         <li class="l-detail-info">
           <label class="txt-hline">備考</label>
-          <p class="txt-desc"><?php echo h($item['item_note']); ?></p>
+          <p class="txt-desc"><?php echo nl2br(h($item['item_note'])); ?></p>
         </li>
         <li class="l-detail-info">
           <ul class="ls-status-item">

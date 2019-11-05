@@ -14,7 +14,7 @@
           <ul>
             <li class="l-detail-info">
               <label class="txt-hline">ボックス名</label>
-              <h2 class="ttl-item"><?php echo h($box['box_name']); ?></h2>
+              <h2 class="ttl-item"><?php echo nl2br(h($box['box_name'])); ?></h2>
             </li>
             <li class="l-detail-info">
               <ul class="ls-status-box">
