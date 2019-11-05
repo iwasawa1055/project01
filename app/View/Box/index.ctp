@@ -29,7 +29,7 @@
     </ul>
     <ul class="l-sort-item" id="dev-sort-item" <?php if (empty($order) && empty($direction)) : ?>style="display: none;"<?php endif; ?>>
       <li class="l-sort-date">
-        <?php echo $this->Form->select('order', SORT_ORDER['item'], ['empty' => false, 'error' => false, 'value' => $order]); ?>
+        <?php echo $this->Form->select('order', SORT_ORDER['box'], ['empty' => false, 'error' => false, 'value' => $order]); ?>
       </li>
       <li class="l-sort-az">
         <?php echo $this->Form->select('direction', SORT_DIRECTION, ['empty' => false, 'error' => false, 'value' => $direction]); ?>
