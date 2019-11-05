@@ -40,7 +40,11 @@
                 <?php endif; ?>
                 <li class="l-status">
                   <label class="txt-hline">入庫日</label>
+                  <?php if ($box['box_status'] >= BOXITEM_STATUS_INBOUND_DONE) : ?>
                   <p class="txt-status"><?php echo $this->Html->formatYmdKanji($box['inbound_date']); ?></p>
+                  <?php else : ?>
+                  <p class="txt-status">未入庫</p>
+                  <?php endif; ?>
                 </li>
               </ul>
             </li>

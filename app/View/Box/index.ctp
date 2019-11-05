@@ -61,7 +61,9 @@
                   <?php endif; ?>
                   <p class="l-box-id">
                     <span class="txt-box-id"><?php echo $box['box_id']; ?></span>
+                    <?php if ($box['box_status'] >= BOXITEM_STATUS_INBOUND_DONE) : ?>
                     <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($box['inbound_date']); ?></span></span>
+                    <?php endif; ?>
                   </p>
                   <?php if (!empty($box['kit_cd'])) : ?>
                   <p class="box-type"><?php echo KIT_NAME[$box['kit_cd']] ?></p>
