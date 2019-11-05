@@ -31,7 +31,7 @@
                 <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                 <li class="l-status">
                   <label class="txt-hline">外装の取り外し</label>
-                  <?php if (in_array($box['wrapping_type'], BOX_WRAPPING_TYPE_LIST, true)) : ?>
+                  <?php if (in_array($box['wrapping_type'] !== '' && $box['wrapping_type'], BOX_WRAPPING_TYPE_LIST)) : ?>
                   <p class="txt-status"><?php echo h(BOX_WRAPPING_TYPE_LIST[$box['wrapping_type']]);?></p>
                   <?php else : ?>
                   <p class="txt-status">-</p>
@@ -41,7 +41,7 @@
                 <?php if(in_array($box['product_cd'], KEEPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                 <li class="l-status">
                   <label class="txt-hline">保管方法</label>
-                  <?php if (in_array($box['keeping_type'], BOX_KEEPING_TYPE_LIST, true)) : ?>
+                  <?php if ($box['keeping_type'] !== '' && in_array($box['keeping_type'], BOX_KEEPING_TYPE_LIST)) : ?>
                   <p class="txt-status"><?php echo h(BOX_KEEPING_TYPE_LIST[$box['keeping_type']]);?></p>
                   <?php else : ?>
                   <p class="txt-status">-</p>
