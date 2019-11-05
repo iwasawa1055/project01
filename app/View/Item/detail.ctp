@@ -1,5 +1,3 @@
-<!-- TODO snsのjavascript消したことでヤフオクに影響が出ていないかを確認すること -->
-
 <div id="page-wrapper">
   <h1 class="page-header"><i class="fa fa-diamond"></i> アイテム</h1>
   <ul class="ls-detail-item">
@@ -34,7 +32,7 @@
             </li>
             <li class="l-status">
               <label class="txt-hline">入庫日</label>
-              <p class="txt-status"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></p>
+              <p class="txt-status"><?php echo $this->Html->formatYmdKanji($item['box']['last_inbound_date']); ?></p>
             </li>
           </ul>
           <?php $attention_message_flag = false; ?>

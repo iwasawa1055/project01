@@ -26,22 +26,30 @@
                   <label class="txt-hline">ステータス</label>
                   <p class="txt-status"><?php echo h(BOX_STATUS_LIST[$box['box_status']]); ?></p>
                 </li>
-                <?php if ($box['wrapping_type'] == '0' || !empty($box['wrapping_type'])) : ?>
+                <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                 <li class="l-status">
                   <label class="txt-hline">外装の取り外し</label>
+                  <?php if (in_array($box['wrapping_type'], BOX_WRAPPING_TYPE_LIST, true)) : ?>
                   <p class="txt-status"><?php echo h(BOX_WRAPPING_TYPE_LIST[$box['wrapping_type']]);?></p>
+                  <?php else : ?>
+                  <p class="txt-status">-</p>
+                  <?php endif; ?>
                 </li>
                 <?php endif; ?>
-                <?php if ($box['product_cd'] === PRODUCT_CD_CLEANING_PACK) : ?>
+                <?php if(in_array($box['product_cd'], KEEPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                 <li class="l-status">
                   <label class="txt-hline">保管方法</label>
+                  <?php if (in_array($box['keeping_type'], BOX_KEEPING_TYPE_LIST, true)) : ?>
                   <p class="txt-status"><?php echo h(BOX_KEEPING_TYPE_LIST[$box['keeping_type']]);?></p>
+                  <?php else : ?>
+                  <p class="txt-status">-</p>
+                  <?php endif; ?>
                 </li>
                 <?php endif; ?>
                 <li class="l-status">
                   <label class="txt-hline">入庫日</label>
                   <?php if ($box['box_status'] >= BOXITEM_STATUS_INBOUND_DONE) : ?>
-                  <p class="txt-status"><?php echo $this->Html->formatYmdKanji($box['inbound_date']); ?></p>
+                  <p class="txt-status"><?php echo $this->Html->formatYmdKanji($box['last_inbound_date']); ?></p>
                   <?php else : ?>
                   <p class="txt-status">未入庫</p>
                   <?php endif; ?>

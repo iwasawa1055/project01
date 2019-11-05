@@ -35,7 +35,7 @@
             </li>
             <li class="l-status">
               <label class="txt-hline">入庫日</label>
-              <p class="txt-status"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></p>
+              <p class="txt-status"><?php echo $this->Html->formatYmdKanji($item['box']['last_inbound_date']); ?></p>
             </li>
           </ul>
         </li>

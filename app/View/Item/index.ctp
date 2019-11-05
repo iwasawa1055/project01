@@ -25,7 +25,7 @@
         <label class="l-view-option">
           <input type="checkbox" class="cb-circle" name="dev-view-sort" <?php if (!empty($order) || !empty($direction)) : ?>checked="checked"<?php endif; ?>>
           <span class="icon"></span>
-          <span class="txt-option">表示オプションを表示</span>
+          <span class="txt-option">検索オプションを表示</span>
         </label>
       </li>
     </ul>
@@ -59,7 +59,7 @@
                   <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['image_first']['item_id']; ?>">
                   <p class="l-box-id">
                     <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
-                    <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></span></span>
+                    <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['last_inbound_date']); ?></span></span>
                   </p>
                   <?php if (!empty($box['kit_cd'])) : ?>
                     <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
