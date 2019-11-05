@@ -59,7 +59,7 @@
                       <label class="headline">ステータス</label>
                       <p class="txt-detail"><?php echo BOX_STATUS_LIST[$box['box_status']]; ?></p>
                     </li>
-                    <?php if(in_array($box['product_cd'], WARAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
+                    <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                     <li class="l-txt-box-outer">
                       <label class="headline">外装の取り外し</label>
                       <?php if(empty($box['wrapping_type'])): ?>

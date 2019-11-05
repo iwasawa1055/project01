@@ -35,7 +35,7 @@
                   <p class="txt-detail"><?php echo BOX_STATUS_LIST[$box['box_status']]; ?></p>
                 </li>
                 <?php if($box['box_status'] == BOXITEM_STATUS_INBOUND_START): ?>
-                  <?php if(in_array($box['product_cd'], WARAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
+                  <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                   <li class="l-txt-box-outer">
                     <label class="headline">外装の取り外し</label>
                       <?php echo $this->Form->input("V5Box.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
@@ -108,7 +108,7 @@
                   </li>
                   <?php endif;?>
                 <?php else:?>
-                  <?php if(in_array($box['product_cd'], WARAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
+                  <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                   <li class="l-txt-box-outer">
                     <label class="headline">外装の取り外し</label>
                     <?php if(empty($box['wrapping_type'])): ?>
