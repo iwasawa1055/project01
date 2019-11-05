@@ -107,6 +107,6 @@
 </div>
 <div class="nav-fixed">
   <ul>
-    <li><a class="btn-d-gray" href="/box">一覧に戻る</a></li>
+    <li><a class="btn-d-gray" href="javascript:history.back();">戻る</a></li>
   </ul>
 </div>
