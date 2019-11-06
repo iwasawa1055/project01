@@ -21,6 +21,20 @@ class CustomerAddress extends ApiCachedModel
         (new Announcement())->deleteCache();
     }
 
+    public function apiPost($array) {
+        // lastname_kana, firstname_kana に仮の文字列を追加
+        $array['firstname_kana'] = "　";
+        $array['lastname_kana'] = "　";
+        return parent::apiPost($array);
+    }
+
+    public function apiPut($array) {
+        // lastname_kana, firstname_kana に仮の文字列を追加
+        $array['firstname_kana'] = "　";
+        $array['lastname_kana'] = "　";
+        return parent::apiPut($array);
+    }
+
     public $validate = [
         'lastname' => [
             'notBlank' => [
@@ -37,21 +51,6 @@ class CustomerAddress extends ApiCachedModel
                 'message' => ['notBlank', 'lastname']
             ],
         ],
-        'lastname_kana' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'lastname_kana']
-            ],
-            'maxLength' => [
-                'rule' => ['maxLength', 29],
-                'message' => ['maxLength', 'lastname_kana', 29]
-            ],
-            'isFwKana' => [
-                'rule' => 'isFwKana',
-                'message' => ['isFwKana', 'lastname_kana']
-            ],
-        ],
         'firstname' => [
             'notBlank' => [
                 'rule' => 'notBlank',
@@ -65,21 +64,6 @@ class CustomerAddress extends ApiCachedModel
             'isNotOnlySpace' => [
                 'rule' => 'isNotOnlySpace',
                 'message' => ['notBlank', 'firstname']
-            ],
-        ],
-        'firstname_kana' => [
-            'notBlank' => [
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => ['notBlank', 'firstname_kana']
-            ],
-            'maxLength' => [
-                'rule' => ['maxLength', 29],
-                'message' => ['maxLength', 'firstname_kana', 29]
-            ],
-            'isFwKana' => [
-                'rule' => 'isFwKana',
-                'message' => ['isFwKana', 'firstname_kana']
             ],
         ],
         'tel1' => [
