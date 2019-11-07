@@ -8,7 +8,7 @@
           <?php if (!empty($box['kit_cd'])) : ?>
             <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
           <?php else : ?>
-            <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_name']]; ?>" class="img-item">
+            <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
           <?php endif; ?>
         </li>
         <li class="l-detail-desc">
