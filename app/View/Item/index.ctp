@@ -45,37 +45,29 @@
     </ul>
     <?php echo $this->Form->end(); ?>
   </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="item-content dev-item-content">
-            <ul class="grid grid-md">
-              <!--loop-->
-              <?php foreach ($itemList as $item): ?>
-              <li class="l-item-dtl">
-                <a href="/item/detail/<?php echo $item['item_id'];?>" class="link-dtl" ontouchstart></a>
-                <div class="l-item-info box-info">
-                  <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['image_first']['item_id']; ?>">
-                  <p class="l-box-id">
-                    <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
-                    <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['last_inbound_date']); ?></span></span>
-                  </p>
-                  <?php if (!empty($box['kit_cd'])) : ?>
-                    <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
-                  <?php else : ?>
-                    <p class="box-type"><?php echo PRODUCT_NAME[$item['box']['product_cd']] ?></p>
-                  <?php endif; ?>
-                  <p class="box-name"><?php echo $item['item_name']; ?></p>
-                </div>
-              </li>
-              <?php endforeach; ?>
-              <!--loop end-->
-            </ul>
-          </div>
-          <?php echo $this->element('paginator'); ?>
+  <div class="item-content dev-item-content">
+    <ul class="grid grid-md">
+      <!--loop-->
+      <?php foreach ($itemList as $item): ?>
+      <li class="l-item-dtl">
+        <a href="/item/detail/<?php echo $item['item_id'];?>" class="link-dtl" ontouchstart></a>
+        <div class="l-item-info box-info">
+          <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['image_first']['item_id']; ?>">
+          <p class="l-box-id">
+            <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
+            <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['last_inbound_date']); ?></span></span>
+          </p>
+          <?php if (!empty($box['kit_cd'])) : ?>
+            <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
+          <?php else : ?>
+            <p class="box-type"><?php echo PRODUCT_NAME[$item['box']['product_cd']] ?></p>
+          <?php endif; ?>
+          <p class="box-name"><?php echo $item['item_name']; ?></p>
         </div>
-      </div>
-    </div>
+      </li>
+      <?php endforeach; ?>
+      <!--loop end-->
+    </ul>
+    <?php echo $this->element('paginator_new'); ?>
   </div>
 </div>
