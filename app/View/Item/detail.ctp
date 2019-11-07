@@ -100,7 +100,7 @@
 </div>
 <div class="nav-fixed">
   <ul>
-    <li><a class="btn-d-gray" href="javascript:history.back();">戻る</a></li>
+    <li><a class="btn-d-gray" href="/item?product=">アイテム一覧へ戻る</a></li>
     <li><a href="/box/detail/<?php echo $item['box']['box_id'];?>" class="btn-d-gray">このボックスを見る</a></li>
   </ul>
 </div>
