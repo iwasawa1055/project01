@@ -124,6 +124,6 @@
 </div>
 <div class="nav-fixed">
   <ul>
-    <li><a class="btn-d-gray" href="javascript:history.back();">戻る</a></li>
+    <li><a class="btn-d-gray" href="/box?product=">ボックス一覧へ戻る</a></li>
   </ul>
 </div>
