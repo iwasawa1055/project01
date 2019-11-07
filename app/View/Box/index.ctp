@@ -43,43 +43,36 @@
     </ul>
     <?php echo $this->Form->end(); ?>
   </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="item-content dev-item-content">
-            <ul class="grid grid-md">
-              <!--loop-->
-              <?php foreach ($boxList as $box): ?>
-              <li class="l-item-dtl">
-                <a href="/box/detail/<?php echo $box['box_id'];?>" class="link-dtl" ontouchstart></a>
-                <div class="l-item-info box-info">
-                  <?php if (!empty($box['kit_cd'])) : ?>
-                  <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
-                  <?php else : ?>
-                  <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
-                  <?php endif; ?>
-                  <p class="l-box-id">
-                    <span class="txt-box-id"><?php echo $box['box_id']; ?></span>
-                    <?php if ($box['box_status'] >= BOXITEM_STATUS_INBOUND_DONE) : ?>
-                    <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($box['last_inbound_date']); ?></span></span>
-                    <?php endif; ?>
-                  </p>
-                  <?php if (!empty($box['kit_cd'])) : ?>
-                  <p class="box-type"><?php echo KIT_NAME[$box['kit_cd']] ?></p>
-                  <?php else : ?>
-                    <p class="box-type"><?php echo PRODUCT_NAME[$box['product_cd']] ?></p>
-                  <?php endif; ?>
-                  <p class="box-name"><?php echo $box['box_name']; ?></p>
-                </div>
-              </li>
-              <?php endforeach; ?>
-              <!--loop end-->
-            </ul>
-          </div>
-          <?php echo $this->element('paginator'); ?>
+
+  <div class="item-content dev-item-content">
+    <ul class="grid grid-md">
+      <!--loop-->
+      <?php foreach ($boxList as $box): ?>
+      <li class="l-item-dtl">
+        <a href="/box/detail/<?php echo $box['box_id'];?>" class="link-dtl" ontouchstart></a>
+        <div class="l-item-info box-info">
+          <?php if (!empty($box['kit_cd'])) : ?>
+          <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
+          <?php else : ?>
+          <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
+          <?php endif; ?>
+          <p class="l-box-id">
+            <span class="txt-box-id"><?php echo $box['box_id']; ?></span>
+            <?php if ($box['box_status'] >= BOXITEM_STATUS_INBOUND_DONE) : ?>
+            <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($box['last_inbound_date']); ?></span></span>
+            <?php endif; ?>
+          </p>
+          <?php if (!empty($box['kit_cd'])) : ?>
+          <p class="box-type"><?php echo KIT_NAME[$box['kit_cd']] ?></p>
+          <?php else : ?>
+            <p class="box-type"><?php echo PRODUCT_NAME[$box['product_cd']] ?></p>
+          <?php endif; ?>
+          <p class="box-name"><?php echo $box['box_name']; ?></p>
         </div>
-      </div>
-    </div>
+      </li>
+      <?php endforeach; ?>
+      <!--loop end-->
+    </ul>
+    <?php echo $this->element('paginator_new'); ?>
   </div>
 </div>
