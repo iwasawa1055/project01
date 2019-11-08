@@ -44,7 +44,13 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                   <li>
                     <label>
                       <span class="item-img">
-                          <img src="<?php echo KIT_IMAGE[$box_data['kit_cd']] ?>" alt="<?php echo $box_data['kit_name']; ?>" class="img-item">
+                        <?php if (!empty($box_data['kit_cd']) && in_array($box_data['kit_cd'], array_keys(KIT_IMAGE))) : ?>
+                        <img src="<?php echo KIT_IMAGE[$box_data['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box_data['kit_cd']]; ?>" class="img-item">
+                        <?php elseif (!empty($box_data['product_cd']) && in_array($box_data['product_cd'], array_keys(PRODUCT_IMAGE))) : ?>
+                        <img src="<?php echo PRODUCT_IMAGE[$box_data['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box_data['product_cd']]; ?>" class="img-item">
+                        <?php else : ?>
+                        <img src="/images/box-other.png" alt="その他の画像" class="img-item">
+                        <?php endif; ?>
                       </span>
                     </label>
                     <div class="box-info">

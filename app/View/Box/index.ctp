@@ -51,10 +51,12 @@
       <li class="l-item-dtl">
         <a href="/box/detail/<?php echo $box['box_id'];?>" class="link-dtl" ontouchstart></a>
         <div class="l-item-info box-info">
-          <?php if (!empty($box['kit_cd'])) : ?>
+          <?php if (!empty($box['kit_cd']) && in_array($box['kit_cd'], array_keys(KIT_IMAGE))) : ?>
           <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
-          <?php else : ?>
+          <?php elseif (!empty($box['product_cd']) && in_array($box['product_cd'], array_keys(PRODUCT_IMAGE))) : ?>
           <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
+          <?php else : ?>
+          <img src="/images/box-other.png" alt="その他の画像" class="img-item">
           <?php endif; ?>
           <p class="l-box-id">
             <span class="txt-box-id"><?php echo $box['box_id']; ?></span>
