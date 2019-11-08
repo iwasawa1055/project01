@@ -7,10 +7,12 @@ App::uses('InfoItem', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('DevOrderId', 'Model');
 App::uses('DevWorkId', 'Model');
+App::uses('DevWorkLinkageId', 'Model');
 App::uses('DevDeliVeryDone', 'Model');
 App::uses('DevDeliVeryCancel', 'Model');
 App::uses('DevInboundDone', 'Model');
 App::uses('DevOutboundDone', 'Model');
+App::uses('DevOutboundLingkageDone', 'Model');
 App::uses('DevBilling', 'Model');
 App::uses('DevUserApplying', 'Model');
 App::uses('DevUserDebt', 'Model');
@@ -95,7 +97,7 @@ class DevController extends MinikuraController
             $this->set('order_ids', $order->results);
             $work = (new DevWorkId())->apiGet(['work_type' => '001']);
             $this->set('work_ids_001', $work->results);
-            $work = (new DevWorkId())->apiGet(['work_type' => '003']);
+            $work = (new DevWorkLinkageId())->apiGet(['work_type' => '003']);
             $this->set('work_ids_003', $work->results);
             $work = (new DevWorkId())->apiGet(['work_type' => '006']);
             $this->set('work_ids_006', $work->results);
@@ -160,9 +162,9 @@ class DevController extends MinikuraController
     public function outbound_done()
     {
         $this->layout = "";
-        $id = Hash::get($this->request->query, 'work_id');
-        $dev = new DevOutboundDone();
-        $res = $dev->apiPatch(['work_id' => $id]);
+        $id = Hash::get($this->request->query, 'work_linkage_id');
+        $dev = new DevOutboundLingkageDone();
+        $res = $dev->apiPatch(['work_linkage_id' => $id]);
         return $this->after($res);
     }
     public function billing()

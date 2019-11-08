@@ -88,7 +88,10 @@ dd {
 <?php foreach ($order_ids as $data): ?>
 <dd>
     <span><?php echo $data['order_id']; ?></span>
+    <?php // TODO 一旦保留?>
+    <?php if (false) : ?>
     <a href="/dev/delivery_done?order_id=<?php echo $data['order_id']; ?>">done</a>
+    <?php endif; ?>
 </dd>
 <?php endforeach; ?>
 </dl>
@@ -122,8 +125,8 @@ dd {
 <dl><dt>作業ID（出庫）</dt>
 <?php foreach ($work_ids_003 as $data): ?>
 <dd>
-    <span><?php echo $data['work_id']; ?></span>
-    <a href="/dev/outbound_done?work_id=<?php echo $data['work_id']; ?>">done</a>
+    <span><?php echo $data['work_linkage_id']; ?></span>
+    <a href="/dev/outbound_done?work_linkage_id=<?php echo $data['work_linkage_id']; ?>">done</a>
 </dd>
 <?php endforeach; ?>
 </dl>
