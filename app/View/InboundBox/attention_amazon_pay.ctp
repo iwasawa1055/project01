@@ -45,7 +45,7 @@ $this->Html->css('/css/add_amazon_pay_dev.css', ['block' => 'css']);
                     <label>
                       <span class="item-img">
                           <?php // kit_cdがない場合のHAKOがあるので考慮 ?>
-                          <?php if (($box_data['kit_cd'] == null || $box_data['kit_cd'] == '') && preg_match('/^HK/u', $box_data['box_id'])) : ?>
+                          <?php if (($box_data['kit_cd'] == null || $box_data['kit_cd'] == '') && $box_data['product_cd'] == PRODUCT_CD_HAKO) : ?>
                           <img src="<?php echo KIT_IMAGE[KIT_CD_HAKO] ?>" alt="<?php echo $box_data['kit_name']; ?>" class="img-item">
                           <?php else : ?>
                           <img src="<?php echo KIT_IMAGE[$box_data['kit_cd']] ?>" alt="<?php echo $box_data['kit_name']; ?>" class="img-item">
