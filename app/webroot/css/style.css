@@ -2417,7 +2417,7 @@ textarea:disabled {
 
 @media screen and (max-width: 48rem) {
   [class^="grid"] li {
-    width: calc(100% / 2 - 2rem);
+    width: calc(100% / 2 - 1rem);
   }
 }
 
@@ -4990,6 +4990,18 @@ footer .copyright {
   margin-left: 0.5rem;
 }
 
+.outbound .grid .box-info .box-status {
+  margin: 0 0 0.5rem;
+  font-size: 10px;
+  font-size: 1rem;
+  color: #666666;
+}
+
+.outbound .grid .box-info .box-status .value {
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
 .outbound .grid .box-info .box-type {
   margin: 0 0 0.5rem;
   font-size: 10px;
@@ -5257,7 +5269,7 @@ footer .copyright {
     font-size: 1rem;
   }
   .outbound .grid li {
-    margin: 0 1rem 1rem;
+    margin: 0 0.5rem 1rem;
   }
   .outbound .grid li .item-name {
     font-size: 12px;
@@ -6830,9 +6842,9 @@ li.l-mtd-desc {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -6944,6 +6956,9 @@ li.l-mtd-desc {
   }
   .l-search-group .l-word-search li:last-child {
     width: 20%;
+  }
+  .l-search-group .l-option-group li:not(:last-child) {
+    margin-bottom: 0.5rem;
   }
   .l-search-group .l-option-group .l-view-option .txt-option {
     font-size: 12px;

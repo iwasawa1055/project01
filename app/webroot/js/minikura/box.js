@@ -17,3 +17,12 @@ $(function () {
   });
   return false;
 });
+
+$(function () {
+  $('.dev-outbound-flag').change(function () {
+
+    window.location.href = $("#hideOutboundUrl").val();
+
+  });
+  return false;
+});

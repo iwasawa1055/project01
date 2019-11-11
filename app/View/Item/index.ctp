@@ -28,6 +28,14 @@
           <span class="txt-option">検索オプションを表示</span>
         </label>
       </li>
+      <li>
+        <label class="l-view-option">
+          <input id="hideOutboundUrl" type="hidden" value="<?php echo $hideOutboundSwitchUrl; ?>">
+          <input type="checkbox" class="cb-circle dev-outbound-flag" name="view-takenout" <?php if ($hideOutbound): ?>checked="checked"<?php endif; ?>>
+          <span class="icon"></span>
+          <span class="txt-option">取り出し済みを表示</span>
+        </label>
+      </li>
     </ul>
     <ul class="l-sort-item" id="dev-sort-item" <?php if (empty($order) && empty($direction)) : ?>style="display: none;"<?php endif; ?>>
       <li class="l-sort-date">
@@ -57,6 +65,7 @@
             <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
             <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['last_inbound_date']); ?></span></span>
           </p>
+          <p class="box-status">ステータス<span class="value"><?php echo h(BOX_STATUS_LIST[$item['item_status']]); ?></span></p>
           <?php if (!empty($box['kit_cd'])) : ?>
             <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
           <?php else : ?>
