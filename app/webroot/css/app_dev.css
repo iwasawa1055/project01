@@ -463,3 +463,8 @@ box_select_checkbox{
 .panel-body .dev-item-content {
     border: none;
 }
+
+.dev-none-item {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}

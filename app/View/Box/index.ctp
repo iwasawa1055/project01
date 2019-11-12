@@ -53,6 +53,7 @@
   </div>
 
   <div class="item-content dev-item-content">
+    <?php if (!empty($boxList)) : ?>
     <ul class="grid grid-md">
       <!--loop-->
       <?php foreach ($boxList as $box): ?>
@@ -85,5 +86,8 @@
       <!--loop end-->
     </ul>
     <?php echo $this->element('paginator_new'); ?>
+    <?php else : ?>
+      <h2 class="dev-none-item">対象のボックスは存在いたしません。</h2>
+    <?php endif; ?>
   </div>
 </div>
