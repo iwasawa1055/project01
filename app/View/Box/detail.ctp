@@ -98,6 +98,7 @@
       </ul>
     </li>
   </ul>
+  <?php if ($box['product_cd'] !== PRODUCT_CD_HAKO) : ?>
   <div class="l-search-group">
     <ul class="l-option-group l-single-column">
       <li>
@@ -139,6 +140,7 @@
       <h2 class="dev-none-item">対象のアイテムは存在いたしません。</h2>
     <?php endif; ?>
   </div>
+  <?php endif; ?>
 </div>
 <div class="nav-fixed">
   <ul>
