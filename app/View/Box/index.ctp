@@ -46,7 +46,7 @@
         <button type="submit" class="btn-submit" value="sort">表示</button>
       </li>
       <li class="l-sort-clear">
-        <a href="/box/" class="btn-clear">クリア</a>
+        <a href="/box?product=<?php echo $product; ?>" class="btn-clear">クリア</a>
       </li>
     </ul>
     <?php echo $this->Form->end(); ?>
