@@ -81,7 +81,7 @@
                 <li class="l-action">
                 <?php echo $this->Form->create(false, ['url' => '/outbound/item', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <?php echo $this->Form->hidden("item_id.${item['item_id']}", ['value' => '1']); ?>
-                <button type="submit" class="btn-red">取り出しリスト登録</button>
+                <button type="submit" class="btn-red btn-block">取り出しリスト登録</button>
                 <?php echo $this->Form->end(); ?>
                 </li>
               <?php else : ?>

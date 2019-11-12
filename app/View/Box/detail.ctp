@@ -73,16 +73,16 @@
           <?php $attention_message_flag = false; ?>
           <ul class="ls-action-box">
             <li class="l-action"><a class="btn-red-line" href="/box/detail/<?php echo $box['box_id']; ?>/edit">情報を編集する</a></li>
-            <?php if ($box['product_cd'] == PRODUCT_CD_LIBRARY) : ?>
+            <?php if ($box['product_cd'] == PRODUCT_CD_LIBRARY && $box['box_status'] === BOXITEM_STATUS_INBOUND_DONE) : ?>
               <li class="l-action"><a class="btn-red" href="/outbound/library_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録</a></li>
-            <?php elseif ($box['product_cd'] == PRODUCT_CD_CLOSET) : ?>
+            <?php elseif ($box['product_cd'] == PRODUCT_CD_CLOSET && $box['box_status'] === BOXITEM_STATUS_INBOUND_DONE) : ?>
               <li class="l-action"><a class="btn-red" href="/outbound/closet_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録</a></li>
             <?php else : ?>
               <?php if (empty($denyOutboundList)) : ?>
                 <li class="l-action">
                 <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
                 <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
-                <button type="submit" class="btn-red">取り出しリスト登録</button>
+                <button type="submit" class="btn-red btn-block">取り出しリスト登録</button>
                 <?php echo $this->Form->end(); ?>
                 </li>
               <?php else : ?>
