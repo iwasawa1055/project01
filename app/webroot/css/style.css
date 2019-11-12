@@ -6855,6 +6855,27 @@ li.l-mtd-desc {
   border-top: 0.1rem solid #dddddd;
 }
 
+.l-search-group .l-option-group.l-single-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .l-search-group .l-option-group .l-view-option {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6956,6 +6977,23 @@ li.l-mtd-desc {
   }
   .l-search-group .l-word-search li:last-child {
     width: 20%;
+  }
+  .l-search-group .l-option-group.l-single-column {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
   }
   .l-search-group .l-option-group li:not(:last-child) {
     margin-bottom: 0.5rem;

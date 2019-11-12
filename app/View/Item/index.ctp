@@ -54,6 +54,7 @@
     <?php echo $this->Form->end(); ?>
   </div>
   <div class="item-content dev-item-content">
+    <?php if (!empty($itemList)) : ?>
     <ul class="grid grid-md">
       <!--loop-->
       <?php foreach ($itemList as $item): ?>
@@ -78,5 +79,8 @@
       <!--loop end-->
     </ul>
     <?php echo $this->element('paginator_new'); ?>
+    <?php else : ?>
+      <h2 class="dev-none-item">対象のアイテムは存在いたしません。</h2>
+    <?php endif; ?>
   </div>
 </div>

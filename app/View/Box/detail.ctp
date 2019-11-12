@@ -1,3 +1,4 @@
+<?php $this->Html->script('minikura/box', ['block' => 'scriptMinikura']); ?>
 <div id="page-wrapper" class="wrapper outbound">
   <h1 class="page-header"><i class="fa fa-cube"></i> ボックス</h1>
   <ul class="ls-detail-box">
@@ -97,8 +98,20 @@
       </ul>
     </li>
   </ul>
-  <?php if (!empty($itemList)) : ?>
+  <div class="l-search-group">
+    <ul class="l-option-group l-single-column">
+      <li>
+        <label class="l-view-option">
+          <input id="hideOutboundUrl" type="hidden" value="<?php echo $hideOutboundSwitchUrl; ?>">
+          <input type="checkbox" class="cb-circle dev-outbound-flag" name="view-takenout" <?php if ($hideOutbound): ?>checked="checked"<?php endif; ?>>
+          <span class="icon"></span>
+          <span class="txt-option">取り出し済みを表示</span>
+        </label>
+      </li>
+    </ul>
+  </div>
   <div class="item-content">
+    <?php if (!empty($itemList)) : ?>
     <ul class="grid grid-md">
       <!--loop-->
       <?php foreach($itemList as $item): ?>
@@ -110,6 +123,7 @@
             <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
             <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></span></span>
           </p>
+          <p class="box-status">ステータス<span class="value"><?php echo h(BOX_STATUS_LIST[$item['item_status']]); ?></span></p>
           <?php if (!empty($box['kit_cd'])) : ?>
             <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
           <?php else : ?>
@@ -121,8 +135,10 @@
       <?php endforeach; ?>
       <!--loop end-->
     </ul>
+    <?php else : ?>
+      <h2 class="dev-none-item">対象のアイテムは存在いたしません。</h2>
+    <?php endif; ?>
   </div>
-  <?php endif; ?>
 </div>
 <div class="nav-fixed">
   <ul>
