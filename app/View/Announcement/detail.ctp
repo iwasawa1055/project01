@@ -72,7 +72,7 @@
                         ※当データの著作権は寺田倉庫株式会社に帰属するものです。</small><br>
                         <br>
                         <a href="http://get.adobe.com/jp/reader/" target="_blank">
-                            <img src="/images/acrobat_reader.png">
+                            <img style="width: auto" src="/images/acrobat_reader.png">
                         </a>
                         </p>
                     </div>

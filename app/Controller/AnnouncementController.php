@@ -4,7 +4,6 @@ App::uses('MinikuraController', 'Controller');
 App::uses('Receipt', 'Model');
 App::uses('Billing', 'Model');
 App::uses('ReceiptDetail', 'Model');
-App::uses('ReceiptOrderDetail', 'Model');
 App::uses('PickupYamato', 'Model');
 
 class AnnouncementController extends MinikuraController
@@ -116,7 +115,8 @@ class AnnouncementController extends MinikuraController
                         $this->Flash->set($res->error_message);
                     }
                 }
-                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT) {
+                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT ||
+                    $data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_OUTBOUND) {
                     $receiptDetail = new ReceiptDetail();
                     $res = $receiptDetail->apiGet([
                         'announcement_id' => $id
@@ -132,24 +132,6 @@ class AnnouncementController extends MinikuraController
                         return;
                     } else {
                         // $this->Flash->set($res->error_message);
-                        $this->Flash->set('領収証を発行できません。お問い合わせフォームにて領収証発行をご依頼ください。');
-                    }
-                }
-                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_OUTBOUND) {
-                    $receiptOrderDetail = new ReceiptOrderDetail();
-                    $res = $receiptOrderDetail->apiGet([
-                        'announcement_id' => $id
-                    ]);
-                    if ($res->isSuccess() && count($res->results) === 1) {
-                        $timelyReceiptId = $res->results[0]['timely_receipt_id'];
-                        $name = "receipt{$timelyReceiptId}.pdf";
-                        $binary = base64_decode($res->results[0]['receipt_data']);
-                        $this->autoRender = false;
-                        $this->response->type('pdf');
-                        $this->response->download($name);
-                        $this->response->body($binary);
-                        return;
-                    } else {
                         $this->Flash->set('領収証を発行できません。お問い合わせフォームにて領収証発行をご依頼ください。');
                     }
                 }
