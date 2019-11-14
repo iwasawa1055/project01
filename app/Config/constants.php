@@ -605,10 +605,3 @@ const BOX_DELIVERY_TYPE_YOURSELF = '7';
 
 /* dummy amazon_order_reference_id */
 const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';
-
-const WRAPPING_TYPE_PRODUCT_CD_LIST = [
-    PRODUCT_CD_MONO,
-    PRODUCT_CD_CLEANING_PACK,
-    PRODUCT_CD_LIBRARY,
-    PRODUCT_CD_CLOSET,
-];
