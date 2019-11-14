@@ -1,98 +1,149 @@
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-tag"></i> ご利用中のサービス</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-lg-12">
-                <h2><?php echo h($box['product_name']); ?></h2>
-              </div>
-            </div>
-
-            <div class="col-lg-12">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-12">
-                      <h3 class="boxitem-name"><?php echo h($box['box_name']); ?></h3>
-                      <div class="box-list-caption">
-                        <!-- <span>写真撮影</span>あり -->
-                      </div>
-                      <span class="col-xs-12 col-lg-12">
-                          <a class="btn btn-warning btn-md btn-block btn-detail btn-regist disabled">
-                              <?php echo __('boxitem_status_' . $box['box_status']); ?>
-                          </a>
-                      </span>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-xs-12">
-                      <?php if ($box['product_cd'] == PRODUCT_CD_LIBRARY) : ?>
-                         <span class="col-xs-12 col-lg-12">
-                             <a href="/outbound/library_select_item?box_id=<?php echo $box['box_id']; ?>"><button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" onclick="">取り出しリスト登録</button></a>
-                         </span>
-                      <?php elseif ($box['product_cd'] == PRODUCT_CD_CLOSET) : ?>
-                         <span class="col-xs-12 col-lg-12">
-                             <a href="/outbound/closet_select_item?box_id=<?php echo $box['box_id']; ?>"><button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" onclick="">取り出しリスト登録</button></a>
-                         </span>
-                      <?php else : ?>
-                          <?php if (empty($denyOutboundList)) : ?>
-                          <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-                          <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
-                          <span class="col-xs-12 col-lg-12">
-                              <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist">取り出しリストに登録する</button>
-                          </span>
-                          <?php echo $this->Form->end(); ?>
-                          <?php else : ?>
-                            <span class="col-xs-12 col-lg-12">
-                              <button type="submit" class="btn btn-danger btn-md btn-block btn-detail btn-regist" disabled="disabled">取り出しリストに登録する</button>
-                              <p class="error-message"><?php echo $denyOutboundList; ?></p>
-                            </span>
-                          <?php endif; ?>
-                      <?php endif; ?>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12">
-                      <p class="box_note"><?php echo nl2br(h($box['box_note'])); ?></p>
-                    </div>
-                  </div>
-                </div>
-                <?php echo $this->element('List/box_footer', ['box' => $box]); ?>
-              </div>
-            </div>
-
-            <?php if (in_array($box['product_cd'], [PRODUCT_CD_MONO, PRODUCT_CD_CLEANING_PACK, PRODUCT_CD_SHOES_PACK, PRODUCT_CD_CARGO_JIBUN, PRODUCT_CD_CARGO_HITOMAKASE, PRODUCT_CD_SNEAKERS, PRODUCT_CD_DIRECT_INBOUND, PRODUCT_CD_LIBRARY, PRODUCT_CD_CLOSET], true)): ?>
-            <div class="col-lg-12">
-              <div class="col-lg-9">
-                <h3>ボックスの内容</h3>
-              </div>
-              <div class="col-lg-3">
-                <?php if ($hideOutbound): ?>
-                <?php echo $this->Html->link('出庫済み以外を表示する', $hideOutboundSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
-                <?php else: ?>
-                <?php echo $this->Html->link('出庫済みのみを表示する', $hideOutboundSwitchUrl, ['class' => 'btn btn-primary btn-block']); ?>
-                <?php endif; ?>
-              </div>
-              <ul class="tile">
-                <!--loop-->
-                <?php foreach($itemList as $item): ?>
-                <li class="panel panel-default" style='min-width: auto;'>
-                  <?php echo $this->element('List/item_icon_body', ['item' => $item]); ?>
-                  <?php echo $this->element('List/item_icon_footer', ['item' => $item]); ?>
+<?php $this->Html->script('minikura/box', ['block' => 'scriptMinikura']); ?>
+<div id="page-wrapper" class="wrapper outbound">
+  <h1 class="page-header"><i class="fa fa-cube"></i> ボックス</h1>
+  <ul class="ls-detail-box">
+    <li>
+      <ul class="l-detail-top">
+        <li class="l-detail-img">
+          <?php if (!empty($box['kit_cd']) && in_array($box['kit_cd'], array_keys(KIT_IMAGE))) : ?>
+          <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
+          <?php elseif (!empty($box['product_cd']) && in_array($box['product_cd'], array_keys(PRODUCT_IMAGE))) : ?>
+          <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
+          <?php else : ?>
+          <img src="/images/box-other.png" alt="その他の画像" class="img-item">
+          <?php endif; ?>
+        </li>
+        <li class="l-detail-desc">
+          <ul>
+            <li class="l-detail-info">
+              <label class="txt-hline">ボックス名</label>
+              <h2 class="ttl-item"><?php echo nl2br(h($box['box_name'])); ?></h2>
+            </li>
+            <li class="l-detail-info">
+              <ul class="ls-status-box">
+                <li class="l-status">
+                  <label class="txt-hline">ボックスID</label>
+                  <p class="txt-status"><?php echo h($box['box_id']); ?></p>
                 </li>
-                <?php endforeach; ?>
-                <!--loop end-->
+                <li class="l-status">
+                  <label class="txt-hline">ステータス</label>
+                  <p class="txt-status"><?php echo h(BOX_STATUS_LIST[$box['box_status']]); ?></p>
+                </li>
+                <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
+                <li class="l-status">
+                  <label class="txt-hline">外装の取り外し</label>
+                  <?php if ($box['wrapping_type'] !== '' && in_array($box['wrapping_type'], array_keys(BOX_WRAPPING_TYPE_LIST))) : ?>
+                  <p class="txt-status"><?php echo h(BOX_WRAPPING_TYPE_LIST[$box['wrapping_type']]);?></p>
+                  <?php else : ?>
+                  <p class="txt-status">-</p>
+                  <?php endif; ?>
+                </li>
+                <?php endif; ?>
+                <?php if(in_array($box['product_cd'], KEEPING_TYPE_PRODUCT_CD_LIST, true)): ?>
+                <li class="l-status">
+                  <label class="txt-hline">保管方法</label>
+                  <?php if ($box['keeping_type'] !== '' && in_array($box['keeping_type'], array_keys(BOX_KEEPING_TYPE_LIST))) : ?>
+                  <p class="txt-status"><?php echo h(BOX_KEEPING_TYPE_LIST[$box['keeping_type']]);?></p>
+                  <?php else : ?>
+                  <p class="txt-status">-</p>
+                  <?php endif; ?>
+                </li>
+                <?php endif; ?>
+                <li class="l-status">
+                  <label class="txt-hline">入庫日</label>
+                  <?php if ($box['box_status'] >= BOXITEM_STATUS_INBOUND_DONE) : ?>
+                  <p class="txt-status"><?php echo $this->Html->formatYmdKanji($box['last_inbound_date']); ?></p>
+                  <?php else : ?>
+                  <p class="txt-status">未入庫</p>
+                  <?php endif; ?>
+                </li>
               </ul>
-            </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <ul class="l-detail-bottom">
+        <li class="l-detail-info">
+          <label class="txt-hline">備考</label>
+          <p class="txt-desc"><?php echo nl2br(h($box['box_note'])); ?></p>
+        </li>
+        <li class="l-detail-info">
+          <?php $attention_message_flag = false; ?>
+          <ul class="ls-action-box">
+            <li class="l-action"><a class="btn-red-line" href="/box/detail/<?php echo $box['box_id']; ?>/edit">情報を編集する</a></li>
+            <?php if ($box['product_cd'] == PRODUCT_CD_LIBRARY && $box['box_status'] === BOXITEM_STATUS_INBOUND_DONE) : ?>
+              <li class="l-action"><a class="btn-red" href="/outbound/library_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録</a></li>
+            <?php elseif ($box['product_cd'] == PRODUCT_CD_CLOSET && $box['box_status'] === BOXITEM_STATUS_INBOUND_DONE) : ?>
+              <li class="l-action"><a class="btn-red" href="/outbound/closet_select_item?box_id=<?php echo $box['box_id']; ?>">取り出しリスト登録</a></li>
+            <?php else : ?>
+              <?php if (empty($denyOutboundList)) : ?>
+                <li class="l-action">
+                <?php echo $this->Form->create(false, ['url' => '/outbound/box', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+                <?php echo $this->Form->hidden("box_id.${box['box_id']}", ['value' => '1']); ?>
+                <button type="submit" class="btn-red btn-block">取り出しリスト登録</button>
+                <?php echo $this->Form->end(); ?>
+                </li>
+              <?php else : ?>
+                <li class="l-action"><a class="btn-red btn-disabled" href="javascript:void(0)">取り出しリスト登録</a></li>
+                <?php $attention_message_flag = true; ?>
+              <?php endif; ?>
             <?php endif; ?>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-primary btn-lg btn-block" href="/box">ボックスの一覧に戻る</a>
-            </span>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-              <a class="btn btn-danger btn-lg btn-block" href="/box/detail/<?php echo $box['box_id']; ?>/edit">ボックス情報を編集する</a>
-            </span>
-          </div>
+          </ul>
+          <?php if ($attention_message_flag) : ?>
+            <p class="txt-cancel">現在作業中または配送中のため、サービスの一部がご利用できません。</p>
+          <?php endif; ?>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <?php if ($box['product_cd'] !== PRODUCT_CD_HAKO) : ?>
+  <div class="l-search-group">
+    <ul class="l-option-group l-single-column">
+      <li>
+        <label class="l-view-option">
+          <input id="hideOutboundUrl" type="hidden" value="<?php echo $hideOutboundSwitchUrl; ?>">
+          <input type="checkbox" class="cb-circle dev-outbound-flag" name="view-takenout" <?php if ($hideOutbound): ?>checked="checked"<?php endif; ?>>
+          <span class="icon"></span>
+          <span class="txt-option">取り出し済みを表示</span>
+        </label>
+      </li>
+    </ul>
+  </div>
+  <div class="item-content">
+    <?php if (!empty($itemList)) : ?>
+    <ul class="grid grid-md">
+      <!--loop-->
+      <?php foreach($itemList as $item): ?>
+      <li class="l-item-dtl">
+        <a href="/item/detail/<?php echo $item['item_id'];?>" class="link-dtl" ontouchstart></a>
+        <div class="l-item-info box-info">
+          <img src="<?php echo $item['image_first']['image_url']; ?>" alt="<?php echo $item['image_first']['item_id']; ?>">
+          <p class="l-box-id">
+            <span class="txt-box-id"><?php echo $item['item_id']; ?></span>
+            <span class="txt-free-limit">入庫日<span class="date"><?php echo $this->Html->formatYmdKanji($item['box']['inbound_date']); ?></span></span>
+          </p>
+          <p class="box-status">ステータス<span class="value"><?php echo h(BOX_STATUS_LIST[$item['item_status']]); ?></span></p>
+          <?php if (!empty($box['kit_cd'])) : ?>
+            <p class="box-type"><?php echo KIT_NAME[$item['box']['kit_cd']] ?></p>
+          <?php else : ?>
+            <p class="box-type"><?php echo PRODUCT_NAME[$item['box']['product_cd']] ?></p>
+          <?php endif; ?>
+          <p class="box-name"><?php echo $item['item_name']; ?></p>
         </div>
-      </div>
-    </div>
+      </li>
+      <?php endforeach; ?>
+      <!--loop end-->
+    </ul>
+    <?php else : ?>
+      <h2 class="dev-none-item">対象のアイテムは存在いたしません。</h2>
+    <?php endif; ?>
+  </div>
+  <?php endif; ?>
+</div>
+<div class="nav-fixed">
+  <ul>
+    <li><a class="btn-d-gray" href="/box?product=">ボックス一覧へ戻る</a></li>
+  </ul>
+</div>

@@ -42,6 +42,22 @@ class AnnouncementController extends MinikuraController
     {
         $id = $this->params['id'];
         $data = $this->Announcement->apiGetResultsFind([], ['announcement_id' => $id]);
+
+        // 出庫レシート出力判定
+        $outbound_receipt_flag = false;
+        if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_OUTBOUND) {
+            $text = str_replace(array("\r\n", "\r", "\n"), '', $data['text']);
+            // Library
+            if (preg_match('/^.*ML-\d{4}-\d{3}.*$/u', $text)) {
+                $outbound_receipt_flag = true;
+            }
+            // Closet
+            if (preg_match('/^.*MC-\d{4}-\d{3}.*$/u', $text)) {
+                $outbound_receipt_flag = true;
+            }
+        }
+        $this->set('outbound_receipt_flag', $outbound_receipt_flag);
+
         if (!empty($data)) {
             $this->set('announcement', $data);
             $this->Announcement->apiPatch(['announcement_id' => $id]);
@@ -99,7 +115,8 @@ class AnnouncementController extends MinikuraController
                         $this->Flash->set($res->error_message);
                     }
                 }
-                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT) {
+                if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT ||
+                    $data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_OUTBOUND) {
                     $receiptDetail = new ReceiptDetail();
                     $res = $receiptDetail->apiGet([
                         'announcement_id' => $id
@@ -115,7 +132,7 @@ class AnnouncementController extends MinikuraController
                         return;
                     } else {
                         // $this->Flash->set($res->error_message);
-                        $this->Flash->set('領収証を発行できません。お問い合わせフォームにて領収証発行を依頼ください。');
+                        $this->Flash->set('領収証を発行できません。お問い合わせフォームにて領収証発行をご依頼ください。');
                     }
                 }
             }
@@ -139,7 +156,7 @@ class AnnouncementController extends MinikuraController
         // APIで取得した値
         $pickup_date = $api_res->results[0]['pickup_date'];
         $pickup_time_code = (int)$api_res->results[0]['pickup_time_code'];
-        $tracking_number = $api_res->results[0]['tracking_number']; 
+        $tracking_number = $api_res->results[0]['tracking_number'];
         $create_datetime = explode(' ', $api_res->results[0]['create_date']);
         $create_date = $create_datetime[0];
         $create_time = $create_datetime[1];
@@ -152,7 +169,7 @@ class AnnouncementController extends MinikuraController
         /** 集荷依頼変更できる条件
             締め切り時間は３回(07:00 13:00 21:00)ある。
             集荷依頼日が明日(含めて)以降の場合
-                ・集荷依頼日が明日かつ集荷依頼時刻が午前と指定希望なしの場合は変更出来ない。 
+                ・集荷依頼日が明日かつ集荷依頼時刻が午前と指定希望なしの場合は変更出来ない。
                 ・それ以外の条件は修正できる
             集荷依頼日が本日の場合
                 ・07:00の締め切りには集荷依頼は14時～18時を指定していた人で、ボタンを押せるタイミングは現在時刻が21時以降、07時以前の場合。
@@ -166,7 +183,7 @@ class AnnouncementController extends MinikuraController
         $change_flag = null;
         // 集荷情報変更可能日時
         $change_date = null;
-       
+
         /***  集荷依頼日が明日以降の場合 ***/
         if (strtotime(date('Ymd', strtotime('+1 day'))) <= strtotime($pickup_date)) {
             // AM指定 又は 指定希望なし
@@ -189,7 +206,7 @@ class AnnouncementController extends MinikuraController
 
             $change_flag = true;
             $pickup_yamato_change = [
-                'change_flag' => $change_flag, 
+                'change_flag' => $change_flag,
                 'change_date' => $change_date,
             ];
 
@@ -197,7 +214,7 @@ class AnnouncementController extends MinikuraController
         }
 
         /***  ユーザ締め切り時間(07:00) ***/
-        // 集荷依頼日が本日 かつ 現在時刻が21時以降 かつ 現在時刻が7時以前 
+        // 集荷依頼日が本日 かつ 現在時刻が21時以降 かつ 現在時刻が7時以前
         if (strtotime($current_date) === strtotime($pickup_date) && strtotime($current_time) > strtotime('21:00:00') && strtotime($current_time) < strtotime('07:00:00')) {
             // (集荷依頼時刻が14時～16時 16時～18時を指定)
             if ($pickup_time_code === $pickup_time_code_4 && $pickup_time_code === $pickup_time_code_5) {
@@ -246,7 +263,7 @@ class AnnouncementController extends MinikuraController
 
         if ($change_flag) {
             $pickup_yamato_change = [
-                'change_flag' => $change_flag, 
+                'change_flag' => $change_flag,
                 'change_date' => $change_date,
             ];
         }

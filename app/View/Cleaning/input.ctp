@@ -1,6 +1,4 @@
 <?php $this->Html->css('cleaning/app_dev', ['block' => 'css']); ?>
-
-<!--TODO どれが必要かは精査したほうがいい-->
 <?php $this->Html->script('/lib/jquery/js/jquery.infinitescroll.min', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('/lib/cookie/js/docCookies', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('remodal.min', ['block' => 'scriptMinikura']); ?>

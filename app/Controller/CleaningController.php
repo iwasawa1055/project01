@@ -63,6 +63,11 @@ class CleaningController extends MinikuraController
             $cleaning_data = $this->request->data[self::MODEL_NAME_CLEANING];
             CakeSession::write(self::MODEL_NAME_CLEANING, $cleaning_data);
         } else {
+            // アイテム詳細からの遷移
+            if (isset($_GET['item_id'])) {
+                $cleaning_data['selected_item_id_list'][$_GET['item_id']] = 1;
+                CakeSession::write(self::MODEL_NAME_CLEANING, $cleaning_data);
+            }
             $cleaning_data = CakeSession::read(self::MODEL_NAME_CLEANING);
 
             $this->request->data[self::MODEL_NAME_CLEANING] = $cleaning_data;

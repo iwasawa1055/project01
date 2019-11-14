@@ -98,7 +98,8 @@ class InfoItem extends ApiCachedModel
         $list = $this->apiGetResultsWhere([], $where);
 
         // 除外BOX プロダクト名が定義されていないプロダクトは表示BOXから除外
-        foreach($list as $key => $value) {
+        foreach($list as $key => &$value) {
+            $value['inbound_date'] = $value['box']['inbound_date'];
             if(!array_key_exists($value['box']['product_cd'], PRODUCT_NAME)){
                 unset($list[$key]);
             }
