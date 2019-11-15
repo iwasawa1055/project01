@@ -58,7 +58,8 @@ class InboundHistoryController extends MinikuraController
 
         // 預け入れ履歴取得
         $api_param = [
-            'works_type' => '001,002'
+            'works_type' => '001,002',
+            'works_progress_type' => '01,03,04'
         ];
         $result = $this->InboundAndOutboundHistory->apiGet($api_param);
         if ($result->isSuccess()) {
