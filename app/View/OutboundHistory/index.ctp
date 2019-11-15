@@ -7,10 +7,8 @@
       <div class="row">
         <div class="col-lg-12">
           <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し履歴</h1>
-          <p class="page-caption">3ヶ月以内の預け入れお申込み内容を表示しております。<br>
-            それ以前のお申込みについてはマイページTOPのメッセージよりご確認ください。<br>
-            また、詳細画面よりお荷物が倉庫に到着するまでの間、撮影方法および保管方法等の変更が可能です。<br>
-            集荷情報については、一部変更が可能ですが、処理状況によっては変更できませんのでご注意ください。
+          <p class="page-caption">3ヶ月以内の取り出しお申込み内容を表示しております。<br>
+            それ以前のお申込みについてはマイページTOPのメッセージよりご確認ください。
           </p>
         </div>
       </div>
@@ -22,7 +20,16 @@
               <div class="l-search-group l-search-history">
                 <ul class="l-word-search">
                   <li>
-                    <?php echo $this->Form->input('InboundAndOutboundHistory.keyword', ['type' => 'search', 'class' => "search", 'error' => false, 'label' => false, 'div' => false]); ?>
+                    <?php echo $this->Form->input(
+                      'InboundAndOutboundHistory.keyword',
+                      [
+                        'type' => 'search',
+                        'class' => "search",
+                        'placeholder' => '例）ボックスID、アイテムID、配送先名、配送先',
+                        'error' => false,
+                        'label' => false,
+                        'div' => false
+                      ]); ?>
                   </li>
                   <li>
                     <button class="btn-submit">検索</button>

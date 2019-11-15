@@ -150,6 +150,7 @@ class OutboundHistoryController extends MinikuraController
         $box_list = $this->_getBoxList($target_outbound_data['box_ids'], $target_outbound_data['item_ids']);
 
         CakeSession::write('outbound_data', $target_outbound_data);
+        CakeSession::write('box_list', $box_list);
 
         $this->set('outbound_data', $target_outbound_data);
         $this->set('box_list', $box_list);
@@ -196,6 +197,8 @@ class OutboundHistoryController extends MinikuraController
             return $this->redirect(['controller' => 'outbound_history', 'action' => "detail?wl_id='{$works_linkage_id}'"]);
         }
 
+        $this->set('outbound_data', CakeSession::read('outbound_data'));
+        $this->set('box_list', CakeSession::read('box_list'));
         $this->set('works_linkage_id', $works_linkage_id);
     }
 
