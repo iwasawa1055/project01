@@ -50,7 +50,12 @@
     </div>
     <div class="nav-fixed">
       <ul>
-        <li><a class="btn-d-gray" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&announcement_id=<?php echo h($announcement_id); ?>">戻る</a>
+        <li>
+        <?php if (isset($work_data['work_linkage_id'])) : ?>
+          <a class="btn-d-gray" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&wl_id=<?php echo $work_data['work_linkage_id']; ?>">戻る</a>
+        <?php else : ?>
+          <a class="btn-d-gray" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&w_id=<?php echo $work_data['work_id']; ?>">戻る</a>
+        <?php endif; ?>
         </li>
         <li><a class="btn-red" href="/inbound_history/complete">変更する</a>
         </li>

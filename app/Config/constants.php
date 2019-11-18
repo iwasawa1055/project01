@@ -222,6 +222,14 @@ const KIT_IMAGE = [
     KIT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
 ];
 
+const BOX_PREFIX_PRODUCT_CD = [
+    'HK' => PRODUCT_CD_HAKO,
+    'MN' => PRODUCT_CD_MONO,
+    'CL' => PRODUCT_CD_CLEANING_PACK,
+    'ML' => PRODUCT_CD_LIBRARY,
+    'MC' => PRODUCT_CD_CLOSET,
+];
+
 const PRODUCT_IMAGE = [
     PRODUCT_CD_HAKO               => '/images/hako-regular.png',
     PRODUCT_CD_MONO               => '/images/mono-regular.png',

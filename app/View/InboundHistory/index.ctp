@@ -15,7 +15,7 @@
           <ul class="l-lst-dtl">
             <li class="l-data">預け入れ申込日</li>
             <li class="l-method-dtl">入庫方法</li>
-            <li class="l-status l-left"></li>
+            <li class="l-status l-left">ボックス種別</li>
             <li class="l-view"></li>
           </ul>
         </li>
@@ -29,7 +29,20 @@
                     <li class="l-method-dtl" title="入庫方法">集荷で申込</li>
                   <?php endif;?>
                 <li class="l-status l-left">
-                <li class="l-view"><a class="btn" href="/inbound_history/detail?announcement_id=<?php echo $history_data['announcement_id']; ?>">詳細を見る</a></li>
+                <?php
+                  $prefix = substr($history_data['box_ids'], 0, 2);
+                  if (in_array($prefix, array_keys(BOX_PREFIX_PRODUCT_CD))) {
+                    echo PRODUCT_NAME[BOX_PREFIX_PRODUCT_CD[$prefix]];
+                  } else {
+                    echo 'その他';
+                  }
+                ?>
+                </li>
+                <?php if (isset($history_data['work_linkage_id'])) : ?>
+                  <li class="l-view"><a class="btn" href="/inbound_history/detail?wl_id=<?php echo $history_data['work_linkage_id']; ?>">詳細を見る</a></li>
+                <?php else : ?>
+                  <li class="l-view"><a class="btn" href="/inbound_history/detail?w_id=<?php echo $history_data['work_id']; ?>">詳細を見る</a></li>
+                <?php endif; ?>
               </ul>
             </li>
           <?php endforeach; ?>

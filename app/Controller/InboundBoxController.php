@@ -265,7 +265,6 @@ class InboundBoxController extends MinikuraController
     {
         // check access source actions
         $allow_action_list = [
-            'InboundBox/input',
             'InboundBox/attention',
             'InboundBox/confirm',
         ];

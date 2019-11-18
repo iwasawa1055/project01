@@ -76,7 +76,11 @@
                     </li>
                     <?php endif;?>
                     <li class="l-txt-box-action">
-                      <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&announcement_id=<?php echo h($announcement_data['announcement_id']); ?>">内容を変更する</a>
+                      <?php if (isset($inbound_data['work_linkage_id'])) : ?>
+                      <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&wl_id=<?php echo $inbound_data['work_linkage_id']; ?>">内容を変更する</a>
+                      <?php else : ?>
+                        <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&w_id=<?php echo $inbound_data['work_id']; ?>">内容を変更する</a>
+                      <?php endif; ?>
                     </li>
                   </ul>
                 </li>

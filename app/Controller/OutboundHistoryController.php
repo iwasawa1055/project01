@@ -96,7 +96,7 @@ class OutboundHistoryController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_OUTBOUND_HISTORY);
 
-        // 取り出しキャンセル対象情報取得
+        // 取り出し詳細情報取得
         $search_options = [];
         $api_param['works_type'] = '003';
         $api_param['interval_month'] = '3';
@@ -283,7 +283,6 @@ class OutboundHistoryController extends MinikuraController
             $keyIndex = array_search($box_id, array_column($box_results, 'box_id'));
             $box_list[] = $box_results[$keyIndex];
         }
-        CakeSession::write('box_list', $box_list);
 
         // 該当するアイテム情報を抽出
         $item_id_list = [];

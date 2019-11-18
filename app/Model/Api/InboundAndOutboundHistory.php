@@ -13,6 +13,9 @@ class InboundAndOutboundHistory extends ApiModel
     {
 
         if (empty($params['keyword'])) {
+            // sort
+            $sort_key = ['create_date' => false];
+            HashSorter::sort($results, $sort_key);
             return $results;
         }
 
