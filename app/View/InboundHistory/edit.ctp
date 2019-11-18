@@ -139,7 +139,7 @@
     </div>
     <div class="nav-fixed">
       <ul>
-        <li><a class="btn-d-gray" href="/inbound_history/">戻る</a>
+        <li><a class="btn-d-gray" href="/inbound_history/detail?announcement_id=<?php echo h($announcement_id); ?>">戻る</a>
         </li>
         <li><button class="btn-red" type="submit">内容を確認する</button>
         </li>

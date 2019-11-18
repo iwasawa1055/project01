@@ -50,7 +50,7 @@
     </div>
     <div class="nav-fixed">
       <ul>
-        <li><a class="btn-d-gray" href="/inbound_history/edit">戻る</a>
+        <li><a class="btn-d-gray" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&announcement_id=<?php echo h($announcement_id); ?>">戻る</a>
         </li>
         <li><a class="btn-red" href="/inbound_history/complete">変更する</a>
         </li>

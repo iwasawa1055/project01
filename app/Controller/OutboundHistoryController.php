@@ -66,6 +66,7 @@ class OutboundHistoryController extends MinikuraController
 
         /** 取り出し履歴取得 **/
         $api_param['works_type'] = '003';
+        $api_param['interval_month'] = '3';
         $outbound_history_list = $this->_getOutboundHistory($search_options, $api_param);
 
         // paginate
@@ -98,11 +99,12 @@ class OutboundHistoryController extends MinikuraController
         // 取り出しキャンセル対象情報取得
         $search_options = [];
         $api_param['works_type'] = '003';
+        $api_param['interval_month'] = '3';
         if(isset($this->request->query['w_id'])){
-            $api_param['works_info_id'] = $this->request->query['w_id'];
+            $api_param['work_id'] = $this->request->query['w_id'];
         }
         if(isset($this->request->query['wl_id'])){
-            $api_param['works_linkage_id'] = $this->request->query['wl_id'];
+            $api_param['work_linkage_id'] = $this->request->query['wl_id'];
         }
         $outbound_history_list = $this->_getOutboundHistory($search_options, $api_param);
         if (count($outbound_history_list) !== 1) {
@@ -137,8 +139,9 @@ class OutboundHistoryController extends MinikuraController
         // 取り出しキャンセル対象情報取得
         $search_options = [];
         $api_param['works_type'] = '003';
+        $api_param['interval_month'] = '3';
         if(isset($this->request->query['wl_id'])){
-            $api_param['works_linkage_id'] = $this->request->query['wl_id'];
+            $api_param['work_linkage_id'] = $this->request->query['wl_id'];
         }
         $outbound_history_list = $this->_getOutboundHistory($search_options, $api_param);
         if (count($outbound_history_list) !== 1) {
@@ -175,31 +178,32 @@ class OutboundHistoryController extends MinikuraController
 
         // 削除対象の取り出しID
         $outbound_data = CakeSession::read('outbound_data');
-        $works_linkage_id = $outbound_data['works_linkage_id'];
+        $work_linkage_id = $outbound_data['work_linkage_id'];
         // 取り出しキャンセル対象情報取得
         $search_options = [];
         $api_param['works_type'] = '003';
-        $api_param['works_linkage_id'] = $works_linkage_id;
+        $api_param['interval_month'] = '3';
+        $api_param['work_linkage_id'] = $work_linkage_id;
         $outbound_history_list = $this->_getOutboundHistory($search_options, $api_param);
         if (count($outbound_history_list) !== 1) {
             $this->Flash->validation('キャンセル対象のデータに不備があったために失敗しました。', ['key' => 'data_error']);
-            return $this->redirect(['controller' => 'outbound_history', 'action' => "detail?wl_id='{$works_linkage_id}'"]);
+            return $this->redirect(['controller' => 'outbound_history', 'action' => "detail?wl_id='{$work_linkage_id}'"]);
         }
 
         // キャンセル処理
         $this->request->data[self::MODEL_NAME_OUTBOUND_CANCEL] = [
-            'work_linkage_id' => $works_linkage_id,
+            'work_linkage_id' => $work_linkage_id,
         ];
         $this->OutboundCancel->set($this->request->data);
         $res = $this->OutboundCancel->apiPatch($this->OutboundCancel->toArray());
         if (!empty($res->error_message)) {
             $this->Flash->set($res->error_message);
-            return $this->redirect(['controller' => 'outbound_history', 'action' => "detail?wl_id='{$works_linkage_id}'"]);
+            return $this->redirect(['controller' => 'outbound_history', 'action' => "detail?wl_id='{$work_linkage_id}'"]);
         }
 
         $this->set('outbound_data', CakeSession::read('outbound_data'));
         $this->set('box_list', CakeSession::read('box_list'));
-        $this->set('works_linkage_id', $works_linkage_id);
+        $this->set('work_linkage_id', $work_linkage_id);
     }
 
     /*

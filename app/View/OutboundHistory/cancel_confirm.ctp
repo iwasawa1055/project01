@@ -69,7 +69,7 @@
     </div>
     <div class="nav-fixed">
       <ul>
-        <li><a class="btn-d-gray" href="/outbound_history/detail?wl_id=<?php echo $outbound_data['works_linkage_id']; ?>">戻る</a>
+        <li><a class="btn-d-gray" href="/outbound_history/detail?wl_id=<?php echo $outbound_data['work_linkage_id']; ?>">戻る</a>
         </li>
         <li><a class="btn-red" href="/outbound_history/cancel_complete">キャンセル</a>
         </li>

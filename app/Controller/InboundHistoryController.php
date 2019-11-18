@@ -83,7 +83,8 @@ class InboundHistoryController extends MinikuraController
         $allow_action_list = [
             'InboundHistory/index',
             'InboundHistory/detail',
-            'InboundHistory/change',
+            'InboundHistory/edit',
+            'InboundHistory/complete',
         ];
         if (in_array(CakeSession::read('app.data.session_referer'), $allow_action_list, true) === false) {
             $this->redirect(['controller' => 'inbound_history', 'action' => 'index']);
@@ -179,6 +180,9 @@ class InboundHistoryController extends MinikuraController
 
             $this->request->data[self::MODEL_NAME_V5_BOX] = CakeSession::read(self::MODEL_NAME_V5_BOX);
 
+            $announcement_id = $this->request->query('announcement_id');
+            CakeSession::write('announcement_id', $announcement_id);
+
             // 選択したbox_idを取得
             $selected_box_id = $this->request->query('box_id');
             CakeSession::write('selected_box_id', $selected_box_id);
@@ -197,6 +201,7 @@ class InboundHistoryController extends MinikuraController
             }
 
             $this->set('box', $box);
+            $this->set('announcement_id', $announcement_id);
             $this->V5Box->set($this->request->data);
         }
 
@@ -240,6 +245,7 @@ class InboundHistoryController extends MinikuraController
 
         // 該当するボックス情報
         $this->set('box', CakeSession::read('selected_box_data'));
+        $this->set('announcement_id', CakeSession::read('announcement_id'));
     }
 
     /**
@@ -267,6 +273,8 @@ class InboundHistoryController extends MinikuraController
             $this->Flash->set($res->error_message);
             return $this->redirect(['controller' => 'inbound_history', 'action' => 'edit']);
         }
+
+        $this->set('announcement_id', CakeSession::read('announcement_id'));
     }
 
 

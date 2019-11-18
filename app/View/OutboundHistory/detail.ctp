@@ -33,7 +33,7 @@
             <ul class="l-cancel">
             <?php if ($outbound_data['link_status'] === '0'): ?>
             <li class="l-btn-cancel">
-            <a class="btn-red-line" href="/outbound_history/cancel_confirm?wl_id=<?php echo $outbound_data['works_linkage_id']; ?>">取り出しキャンセル</a>
+            <a class="btn-red-line" href="/outbound_history/cancel_confirm?wl_id=<?php echo $outbound_data['work_linkage_id']; ?>">取り出しキャンセル</a>
             </li>
             <?php else : ?>
             <li class="l-txt-cancel">

@@ -59,10 +59,10 @@
                   <?php endif;?>
                 <li class="l-name" title="配送先名"><?php echo $history_data['delivery_name'];?></li>
                 <li class="l-address" title="配送先"><?php echo $history_data['delivery_state'] . $history_data['delivery_city'] . $history_data['delivery_street_address'] . ' ' . $history_data['delivery_suburb'];?></li>
-                  <?php if (isset($history_data['works_linkage_id'])) : ?>
-                    <li class="l-view"><a class="btn" href="/outbound_history/detail?wl_id=<?php echo $history_data['works_linkage_id']; ?>">詳細を見る</a></li>
+                  <?php if (isset($history_data['work_linkage_id'])) : ?>
+                    <li class="l-view"><a class="btn" href="/outbound_history/detail?wl_id=<?php echo $history_data['work_linkage_id']; ?>">詳細を見る</a></li>
                   <?php else : ?>
-                    <li class="l-view"><a class="btn" href="/outbound_history/detail?w_id=<?php echo $history_data['works_info_id']; ?>">詳細を見る</a></li>
+                    <li class="l-view"><a class="btn" href="/outbound_history/detail?w_id=<?php echo $history_data['work_id']; ?>">詳細を見る</a></li>
                   <?php endif; ?>
               </ul>
             </li>

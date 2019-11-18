@@ -4,7 +4,7 @@
     </div>
     <div class="nav-fixed">
       <ul>
-        <li><a class="btn-red" href="/inbound_history/">預け入れ履歴に戻る</a>
+        <li><a class="btn-red" href="/inbound_history/detail?announcement_id=<?php echo h($announcement_id); ?>">預け入れ詳細に戻る</a>
         </li>
       </ul>
     </div>

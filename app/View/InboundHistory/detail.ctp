@@ -76,7 +76,7 @@
                     </li>
                     <?php endif;?>
                     <li class="l-txt-box-action">
-                      <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>">内容を変更する</a>
+                      <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&announcement_id=<?php echo h($announcement_data['announcement_id']); ?>">内容を変更する</a>
                     </li>
                   </ul>
                 </li>
