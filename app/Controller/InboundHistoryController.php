@@ -54,7 +54,7 @@ class InboundHistoryController extends MinikuraController
 
         $this->loadModel(self::MODEL_NAME_INBOUND_HISTORY);
 
-        $inbound_history_list = [];
+        $tmp_inbound_history_list = [];
 
         // 預け入れ履歴取得
         $api_param = [
@@ -63,8 +63,9 @@ class InboundHistoryController extends MinikuraController
         ];
         $result = $this->InboundAndOutboundHistory->apiGet($api_param);
         if ($result->isSuccess()) {
-            $inbound_history_list = $result->results;
+            $tmp_inbound_history_list = $result->results;
         }
+        $inbound_history_list = $this->_changeFormatInboundHistoryList($tmp_inbound_history_list);
 
         // paginate
         $list = $this->paginate(self::MODEL_NAME_INBOUND_HISTORY, $inbound_history_list);
@@ -266,6 +267,30 @@ class InboundHistoryController extends MinikuraController
             $this->Flash->set($res->error_message);
             return $this->redirect(['controller' => 'inbound_history', 'action' => 'edit']);
         }
+    }
+
+
+    /**
+     * お預け入れ履歴のフォーマットを変更
+     */
+    private function _changeFormatInboundHistoryList($_tmp_inbound_history_list)
+    {
+        $index = 0;
+        $inbound_history_list = [];
+        $current_announcement_id = '';
+        foreach ($_tmp_inbound_history_list as $history) {
+            if ($history['announcement_id'] !== $current_announcement_id) {
+                if (!empty($inbound_history_list)) {
+                    $index++;
+                }
+                $inbound_history_list[$index] = $history;
+            } else {
+                $inbound_history_list[$index]['box_ids'] .= ',' . $history['box_ids'];
+            }
+            $current_announcement_id = $history['announcement_id'];
+        }
+
+        return $inbound_history_list;
     }
 
     /**
