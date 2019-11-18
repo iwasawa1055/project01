@@ -175,17 +175,14 @@ class InboundHistoryController extends MinikuraController
             CakeSession::write('selected_box_id', $selected_box_id);
 
             // 該当するボックス情報を取得
-            $box = CakeSession::read('selected_box_data');
-            if (empty($box)) {
-                $box_list = CakeSession::read('box_list');
-                $keyIndex = array_search($selected_box_id, array_column($box_list, 'box_id'));
-                $box = $box_list[$keyIndex];
-                CakeSession::write('selected_box_data', $box);
+            $box_list = CakeSession::read('box_list');
+            $keyIndex = array_search($selected_box_id, array_column($box_list, 'box_id'));
+            $box = $box_list[$keyIndex];
+            CakeSession::write('selected_box_data', $box);
 
-                $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
-                $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
-                $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
-            }
+            $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
+            $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
+            $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
 
             $this->set('box', $box);
             $this->set('work_data', $work_data);
