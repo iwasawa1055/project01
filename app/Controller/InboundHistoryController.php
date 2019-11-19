@@ -52,6 +52,8 @@ class InboundHistoryController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        CakeSession::delete('selected_box_data');
+
         $this->loadModel(self::MODEL_NAME_INBOUND_HISTORY);
 
         $inbound_history_list = [];
@@ -102,7 +104,7 @@ class InboundHistoryController extends MinikuraController
         $inbound_history_list = $this->_getInboundHistory($search_options, $api_param);
         if (count($inbound_history_list) !== 1) {
             $this->Flash->validation('該当するデータの取得に失敗しました。', ['key' => 'data_error']);
-            return $this->redirect('/outbound_history');
+            return $this->redirect('/inbound_history');
         }
         $target_inbound_data = $inbound_history_list[0];
         $box_list = $this->_getBoxList($target_inbound_data['box_ids']);
@@ -169,14 +171,26 @@ class InboundHistoryController extends MinikuraController
             CakeSession::write('selected_box_id', $selected_box_id);
 
             // 該当するボックス情報を取得
-            $box_list = CakeSession::read('box_list');
-            $keyIndex = array_search($selected_box_id, array_column($box_list, 'box_id'));
-            $box = $box_list[$keyIndex];
-            CakeSession::write('selected_box_data', $box);
+            $box = CakeSession::read('selected_box_data');
+            if (empty($box)) {
+                $box_list = CakeSession::read('box_list');
+                $keyIndex = array_search($selected_box_id, array_column($box_list, 'box_id'));
+                if ($keyIndex === false) {
+                    $this->Flash->validation('該当するデータの取得に失敗しました。', ['key' => 'data_error']);
+                    return $this->redirect('/inbound_history');
+                }
+                $box = $box_list[$keyIndex];
+                CakeSession::write('selected_box_data', $box);
 
-            $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
-            $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
-            $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
+                $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
+                $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
+                $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
+            } else {
+                if ($box['box_id'] !== $selected_box_id) {
+                    $this->Flash->validation('該当するデータの取得に失敗しました。', ['key' => 'data_error']);
+                    return $this->redirect('/inbound_history');
+                }
+            }
 
             $this->set('box', $box);
             $this->set('work_id', $work_id);
@@ -319,8 +333,11 @@ class InboundHistoryController extends MinikuraController
     private function _cleanInboundSession()
     {
         CakeSession::delete(self::MODEL_NAME_INBOUND_HISTORY);
-        CakeSession::delete('selected_announcement_id');
+        CakeSession::delete(self::MODEL_NAME_V5_BOX);
         CakeSession::delete('box_list');
+        CakeSession::delete('selected_box_data');
+        CakeSession::delete('inbound_data');
+        CakeSession::delete('work_id');
         CakeSession::delete('selected_box_id');
     }
 }
