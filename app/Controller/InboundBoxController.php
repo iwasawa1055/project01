@@ -524,7 +524,6 @@ class InboundBoxController extends MinikuraController
 
         // check access source actions
         $allow_action_list = [
-            'InboundBox/input_amazon_pay',
             'InboundBox/attention_amazon_pay',
             'InboundBox/confirm_amazon_pay',
         ];
