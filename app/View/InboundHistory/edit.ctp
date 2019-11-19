@@ -140,11 +140,7 @@
     <div class="nav-fixed">
       <ul>
         <li>
-        <?php if (isset($work_data['work_linkage_id'])) : ?>
-          <a class="btn-d-gray" href="/inbound_history/detail?wl_id=<?php echo $work_data['work_linkage_id']; ?>">戻る</a>
-        <?php else : ?>
-          <a class="btn-d-gray" href="/inbound_history/detail?w_id=<?php echo $work_data['work_id']; ?>">戻る</a>
-        <?php endif; ?>
+          <a class="btn-d-gray" href="/inbound_history/detail?w_id=<?php echo $work_id; ?>">戻る</a>
         </li>
         <li><button class="btn-red" type="submit">内容を確認する</button>
         </li>

@@ -76,11 +76,7 @@
                     </li>
                     <?php endif;?>
                     <li class="l-txt-box-action">
-                      <?php if (isset($inbound_data['work_linkage_id'])) : ?>
-                      <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&wl_id=<?php echo $inbound_data['work_linkage_id']; ?>">内容を変更する</a>
-                      <?php else : ?>
-                        <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&w_id=<?php echo $inbound_data['work_id']; ?>">内容を変更する</a>
-                      <?php endif; ?>
+                      <a class="btn" href="/inbound_history/edit?box_id=<?php echo h($box['box_id']); ?>&w_id=<?php echo $inbound_data['work_id']; ?>">内容を変更する</a>
                     </li>
                   </ul>
                 </li>

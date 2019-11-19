@@ -5,11 +5,7 @@
     <div class="nav-fixed">
       <ul>
         <li>
-        <?php if (isset($work_data['work_linkage_id'])) : ?>
-          <a class="btn-red" href="/inbound_history/detail?wl_id=<?php echo $work_data['work_linkage_id']; ?>">預け入れ詳細に戻る</a>
-        <?php else : ?>
-          <a class="btn-red" href="/inbound_history/detail?w_id=<?php echo $work_data['work_id']; ?>">預け入れ詳細に戻る</a>
-        <?php endif; ?>
+          <a class="btn-red" href="/inbound_history/detail?w_id=<?php echo $work_id; ?>">預け入れ詳細に戻る</a>
         </li>
       </ul>
     </div>

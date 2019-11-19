@@ -99,9 +99,6 @@ class InboundHistoryController extends MinikuraController
         if(isset($this->request->query['w_id'])){
             $api_param['work_id'] = $this->request->query['w_id'];
         }
-        if(isset($this->request->query['wl_id'])){
-            $api_param['work_linkage_id'] = $this->request->query['wl_id'];
-        }
         $inbound_history_list = $this->_getInboundHistory($search_options, $api_param);
         if (count($inbound_history_list) !== 1) {
             $this->Flash->validation('該当するデータの取得に失敗しました。', ['key' => 'data_error']);
@@ -161,14 +158,11 @@ class InboundHistoryController extends MinikuraController
 
             $this->request->data[self::MODEL_NAME_V5_BOX] = CakeSession::read(self::MODEL_NAME_V5_BOX);
 
-            $work_data = [];
+            $work_id = '';
             if(isset($this->request->query['w_id'])){
-                $work_data['work_id'] = $this->request->query['w_id'];
+                $work_id = $this->request->query['w_id'];
             }
-            if(isset($this->request->query['wl_id'])){
-                $work_data['work_linkage_id'] = $this->request->query['wl_id'];
-            }
-            CakeSession::write('work_data', $work_data);
+            CakeSession::write('work_id', $work_id);
 
             // 選択したbox_idを取得
             $selected_box_id = $this->request->query('box_id');
@@ -185,7 +179,7 @@ class InboundHistoryController extends MinikuraController
             $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
 
             $this->set('box', $box);
-            $this->set('work_data', $work_data);
+            $this->set('work_id', $work_id);
             $this->V5Box->set($this->request->data);
         }
 
@@ -229,7 +223,7 @@ class InboundHistoryController extends MinikuraController
 
         // 該当するボックス情報
         $this->set('box', CakeSession::read('selected_box_data'));
-        $this->set('work_data', CakeSession::read('work_data'));
+        $this->set('work_id', CakeSession::read('work_id'));
     }
 
     /**
@@ -258,7 +252,7 @@ class InboundHistoryController extends MinikuraController
             return $this->redirect(['controller' => 'inbound_history', 'action' => 'edit']);
         }
 
-        $this->set('work_data', CakeSession::read('work_data'));
+        $this->set('work_id', CakeSession::read('work_id'));
     }
 
     /*

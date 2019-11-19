@@ -38,11 +38,7 @@
                   }
                 ?>
                 </li>
-                <?php if (isset($history_data['work_linkage_id'])) : ?>
-                  <li class="l-view"><a class="btn" href="/inbound_history/detail?wl_id=<?php echo $history_data['work_linkage_id']; ?>">詳細を見る</a></li>
-                <?php else : ?>
-                  <li class="l-view"><a class="btn" href="/inbound_history/detail?w_id=<?php echo $history_data['work_id']; ?>">詳細を見る</a></li>
-                <?php endif; ?>
+                <li class="l-view"><a class="btn" href="/inbound_history/detail?w_id=<?php echo $history_data['work_id']; ?>">詳細を見る</a></li>
               </ul>
             </li>
           <?php endforeach; ?>
