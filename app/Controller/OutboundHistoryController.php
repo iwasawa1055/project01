@@ -197,7 +197,7 @@ class OutboundHistoryController extends MinikuraController
         $this->OutboundCancel->set($this->request->data);
         $res = $this->OutboundCancel->apiPatch($this->OutboundCancel->toArray());
         if (!empty($res->error_message)) {
-            $this->Flash->set($res->error_message);
+            $this->Flash->validation($res->error_message, ['key' => 'data_error']);
             return $this->redirect(['controller' => 'outbound_history', 'action' => "detail?wl_id='{$work_linkage_id}'"]);
         }
 
