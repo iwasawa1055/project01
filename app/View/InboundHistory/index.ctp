@@ -1,5 +1,9 @@
 
 <div id="page-wrapper" class="wrapper l-history">
+    <?php $data_error = $this->Flash->render('data_error');?>
+    <?php if (isset($data_error)) : ?>
+      <p class="valid-bl"><?php echo $data_error; ?></p>
+    <?php endif; ?>
   <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 預け入れ履歴</h1>
   <p class="page-caption">預け入れ申込み中の内容を確認できます。<br>
     預け入れ完了または、キャンセルしたものは反映されません。<br>
