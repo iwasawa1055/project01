@@ -3,7 +3,7 @@
           <?php if (isset($data_error)) : ?>
             <p class="valid-bl"><?php echo $data_error; ?></p>
           <?php endif; ?>
-          <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し履歴詳細</h1>
+          <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> お申し込み履歴詳細</h1>
           <div class="l-deposit-info">
             <dl>
               <dt><label class="headline">取り出し申込日</label></dt>
@@ -29,22 +29,29 @@
                 <?php endif;?>
               </dd>
             </dl>
-            <?php if (isset($outbound_data['link_status'])): ?>
             <ul class="l-cancel">
-            <?php if ($outbound_data['link_status'] === '0'): ?>
-            <li class="l-btn-cancel">
-            <a class="btn-red-line" href="/outbound_history/cancel_confirm?wl_id=<?php echo $outbound_data['work_linkage_id']; ?>">取り出しキャンセル</a>
-            </li>
-            <?php else : ?>
-            <li class="l-txt-cancel">
-            <p class="txt-cancel">既にキャンセル済みのためキャンセルできません。</p>
-            </li>
-            <li class="l-btn-cancel">
-            <a class="btn-red-line btn-disabled" href="javascript:void(0)">取り出しキャンセル</a>
-            </li>
-            <?php endif; ?>
+              <?php if (isset($outbound_data['link_status'])): ?>
+              <?php if ($outbound_data['link_status'] === LINKAGE_LINK_STATUS_NON): ?>
+              <li class="l-btn-cancel">
+                <a class="btn-red-line" href="/outbound_history/cancel_confirm?wl_id=<?php echo $outbound_data['work_linkage_id']; ?>">取り出しキャンセル</a>
+              </li>
+              <?php elseif ($outbound_data['link_status'] === LINKAGE_LINK_STATUS_CANCEL): ?>
+              <li class="l-btn-cancel">
+                <a class="btn-red-line btn-disabled" href="javascript:void(0)">取り出しキャンセル</a>
+              </li>
+              <li class="l-txt-cancel">
+                <p class="txt-cancel">キャンセル済みです。</p>
+              </li>
+              <?php endif; ?>
+              <?php else : ?>
+              <li class="l-btn-cancel">
+                <a class="btn-red-line btn-disabled" href="javascript:void(0)">取り出しキャンセル</a>
+              </li>
+              <li class="l-txt-cancel">
+                <p class="txt-cancel">作業中または発送完了しているため、キャンセルできません。</p>
+              </li>
+              <?php endif; ?>
             </ul>
-            <?php endif; ?>
           </div>
           <h2 class="ttl-dtl">取り出し内容</h2>
           <ul class="l-lst-dtl">

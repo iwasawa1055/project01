@@ -1,5 +1,5 @@
         <div id="page-wrapper" class="wrapper l-history-dtl">
-          <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 預け入れ履歴詳細</h1>
+          <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込み履歴詳細</h1>
           <div class="l-deposit-info">
             <dl>
               <dt><label class="headline">預け入れ申込日</label></dt>
@@ -128,14 +128,16 @@
             <li>
               <a class="btn-d-gray" href="/inbound_history/">戻る</a>
             </li>
-            <?php if(!empty($pickup_data)) : ?>
+            <?php if (!empty($pickup_data)) : ?>
+            <?php if (!empty($announcement_data)) : ?>
             <?php if (in_array($announcement_data['category_id'], ANNOUNCEMENT_CATEGORY_YAMATO)) : ?>
             <?php if (isset($pickup_yamato_change) && $pickup_yamato_change) : ?>
             <li>
               <a class="btn-red" href="/pickup/edit/<?php echo h($pickup_data['pickup_yamato_id']); ?>">集荷情報を変更する</a>
             </li>
-            <?php endif;?>
-            <?php endif;?>
-            <?php endif;?>
+            <?php endif; ?>
+            <?php endif; ?>
+            <?php endif; ?>
+            <?php endif; ?>
           </ul>
         </div>

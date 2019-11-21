@@ -1,5 +1,5 @@
     <div id="page-wrapper" class="wrapper l-history-dtl">
-      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 預け入れ内容変更</h1>
+      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込み内容変更</h1>
       <ul class="l-lst-dtl">
         <li class="l-lst-item">
           <ul class="l-lst-item-upper">

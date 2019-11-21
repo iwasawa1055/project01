@@ -38,7 +38,7 @@ class InboundHistoryController extends MinikuraController
     }
 
     /**
-     * 預け入れ履歴一覧
+     * お申し込み履歴一覧
      */
     public function index()
     {
@@ -58,7 +58,7 @@ class InboundHistoryController extends MinikuraController
 
         $inbound_history_list = [];
 
-        // 預け入れ履歴取得
+        // お申し込み履歴取得
         $api_param = [
             'works_type' => '001,002',
             'works_progress_type' => '01,03,04'
@@ -76,7 +76,7 @@ class InboundHistoryController extends MinikuraController
     }
 
     /**
-     * 預け入れ履歴詳細
+     * お申し込み履歴詳細
      */
     public function detail()
     {
@@ -270,7 +270,7 @@ class InboundHistoryController extends MinikuraController
     }
 
     /*
-     * お預け入れ履歴情報を取得
+     * お申し込み履歴情報を取得
      *
      * @param array  $_search_param 絞り込み条件
      * @param string $_api_param    APIパラメータ

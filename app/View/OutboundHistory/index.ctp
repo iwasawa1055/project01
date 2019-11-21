@@ -4,7 +4,7 @@
     <?php if (isset($data_error)) : ?>
       <p class="valid-bl"><?php echo $data_error; ?></p>
     <?php endif; ?>
-  <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し履歴</h1>
+  <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> お申し込み履歴</h1>
   <p class="page-caption">3ヶ月以内の取り出しお申込み内容を表示しております。<br>
     それ以前のお申込みについてはマイページTOPのメッセージよりご確認ください。
   </p>

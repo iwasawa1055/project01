@@ -1,6 +1,6 @@
   <?php echo $this->Form->create('V5Box', ['url' => ['controller' => 'inbound_history', 'action' => 'edit'], 'novalidate' => true]); ?>
     <div id="page-wrapper" class="wrapper l-history-dtl">
-      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 預け入れ内容変更</h1>
+      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込み内容変更</h1>
       <ul class="l-caution-box">
         <li class="l-ttl">注意：</li>
         <li class="l-content">ボックス名・外装の取り外し・保管方法のみ変更可能です。<br>

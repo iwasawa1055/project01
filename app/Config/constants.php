@@ -613,3 +613,11 @@ const BOX_DELIVERY_TYPE_YOURSELF = '7';
 
 /* dummy amazon_order_reference_id */
 const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';
+
+/* 連携ステータス */
+// 未連携
+const LINKAGE_LINK_STATUS_NON = '0';
+// 連携済み
+const LINKAGE_LINK_STATUS_DONE = '1';
+// キャンセル
+const LINKAGE_LINK_STATUS_CANCEL = '2';

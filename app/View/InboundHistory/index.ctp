@@ -4,7 +4,7 @@
     <?php if (isset($data_error)) : ?>
       <p class="valid-bl"><?php echo $data_error; ?></p>
     <?php endif; ?>
-  <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 預け入れ履歴</h1>
+  <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込み履歴</h1>
   <p class="page-caption">預け入れ申込み中の内容を確認できます。<br>
     預け入れ完了または、キャンセルしたものは反映されません。<br>
     （お預け入れ申込み後、お荷物が到着しない場合は自動でキャンセルする場合がございます。）<br>

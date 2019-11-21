@@ -39,7 +39,7 @@
             <li<?php if($active_status['inbound_box']):?> class="active"<?php endif;?>>
               <a class="<?php if($active_status['inbound_box']):?> active<?php endif;?>" href="/inbound/box/add"><i class="fa fa-arrow-circle-o-up fa-fw"></i> ボックス預け入れ</a>
             </li>
-            <li> <a class="animsition-link" href="/inbound_history/"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 預け入れ履歴</a> </li>
+            <li> <a class="animsition-link" href="/inbound_history/"><i class="fa fa-arrow-circle-o-down fa-fw"></i> お申し込み履歴</a> </li>
             <?php /* ダイレクトクローズ
             <li> <a class="animsition-link" href="/direct_inbound/input"><i class="fa fa-arrow-circle-o-up fa-fw"></i> minikuraダイレクト</a> </li>
              */ ?>
@@ -53,7 +53,7 @@
             <li> <a class="animsition-link" href="/outbound/box"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ボックスを取り出す</a> </li>
             <li> <a class="animsition-link" href="/outbound/library_select_item"><i class="fa fa-arrow-circle-o-down fa-fw"></i> minikura Libraryを取り出す</a> </li>
             <li> <a class="animsition-link" href="/outbound/closet_select_item"><i class="fa fa-arrow-circle-o-down fa-fw"></i> minikura Closetを取り出す</a> </li>
-            <li> <a class="animsition-link" href="/outbound_history/"><i class="fa fa-arrow-circle-o-down fa-fw"></i> 取り出し履歴</a> </li>
+            <li> <a class="animsition-link" href="/outbound_history/"><i class="fa fa-arrow-circle-o-down fa-fw"></i> お申し込み履歴</a> </li>
           </ul>
         </li>
         <?php endif; ?>

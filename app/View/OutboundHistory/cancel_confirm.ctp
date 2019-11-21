@@ -1,6 +1,6 @@
     <div id="page-wrapper" class="wrapper l-history-dtl">
-      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 取り出しキャンセル</h1>
-      <p class="page-caption">以下の取り出しのキャンセルをします。</p>
+      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込みキャンセル</h1>
+      <p class="page-caption">以下の取り出しのお申し込みをキャンセルをします。</p>
       <h2 class="ttl-dtl">取り出し内容</h2>
       <ul class="l-lst-dtl">
           <?php foreach($box_list as $box): ?>

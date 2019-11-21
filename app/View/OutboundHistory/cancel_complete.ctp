@@ -1,6 +1,6 @@
     <div id="page-wrapper" class="wrapper l-history-dtl">
-      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> 取り出しキャンセル</h1>
-      <p class="page-caption">取り出しのキャンセルが完了しました。</p>
+      <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込みキャンセル</h1>
+      <p class="page-caption">取り出しのお申し込みキャンセルが完了しました。</p>
       <h2 class="ttl-dtl">キャンセル内容</h2>
       <ul class="l-lst-dtl">
           <?php foreach($box_list as $box): ?>
@@ -69,7 +69,7 @@
     </div>
     <div class="nav-fixed">
       <ul>
-        <li><a class="btn-red" href="/outbound_history/detail?wl_id=<?php echo $work_linkage_id; ?>">戻る</a>
+        <li><a class="btn-red" href="/outbound_history/detail?wl_id=<?php echo $work_linkage_id; ?>">お申し込み履歴詳細へ戻る</a>
         </li>
       </ul>
     </div>
