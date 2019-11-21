@@ -107,7 +107,10 @@ dd {
     <a href="/dev/inbound_done?number=1&box_id=<?php echo $data['box_id']; ?>">done_1</a>
     <a href="/dev/inbound_done?number=5&box_id=<?php echo $data['box_id']; ?>">done_5</a>
     <a href="/dev/inbound_done?number=10&box_id=<?php echo $data['box_id']; ?>">done_10</a>
-    <?php if ($data['product_cd'] === PRODUCT_CD_MONO) : ?>
+    <a href="/dev/inbound_done?number=11&box_id=<?php echo $data['box_id']; ?>">done_11</a>
+    <a href="/dev/inbound_done?number=12&box_id=<?php echo $data['box_id']; ?>">done_12</a>
+    <a href="/dev/inbound_done?number=13&box_id=<?php echo $data['box_id']; ?>">done_13</a>
+      <?php if ($data['product_cd'] === PRODUCT_CD_MONO) : ?>
       <a href="/dev/inbound_done?number=25&box_id=<?php echo $data['box_id']; ?>">done_25</a>
     <?php endif; ?>
   <?php endif; ?>

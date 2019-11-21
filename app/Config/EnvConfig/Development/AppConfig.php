@@ -12,43 +12,10 @@ switch (true) {
         break;
 
     //**
-    //case $_SERVER['SERVER_NAME'] === 'goto-contents.minikura.com':
-    case $_SERVER['HTTP_HOST'] === 'osada-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'osada-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://osada-mypage.minikura.com';
-		$config['site.static_content_url'] = 'https://osada-contents.minikura.com';
-        break;
     case $_SERVER['HTTP_HOST'] === 'goto-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'goto-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://goto-mypage.minikura.com';
 		$config['site.static_content_url'] = 'https://goto-contents.minikura.com';
-        break;
-    case $_SERVER['HTTP_HOST'] === 'wada-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'wada-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://wada-mypage.minikura.com';
-        $config['site.static_content_url'] = 'https://wada-contents.minikura.com';
-
-        $url = 'https://wada-user-api.minikura.com';
-        $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
-        $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
-        $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
-        $config['api.minikura.access_point.minikura_v5'] = $url . '/v5/minikura';
-        $config['api.minikura.access_point.gmopayment_v4'] = $url . '/v4/gmo_payment';
-        $config['api.minikura.access_point.gmopayment_v5'] = $url . '/v5/gmo_payment';
-        $config['api.minikura.access_point.cpss_v5'] = $url . '/v5/cpss';
-        $config['api.minikura.access_point.amazon_pay_v3'] = $url . '/v3/payment/amazon_pay';
-        $config['api.minikura.access_point.amazon_pay_v4'] = $url . '/v4/amazon_pay';
-        $config['api.minikura.access_point.amazon_pay_v5'] = $url . '/v5/amazon_pay';
-        break;
-    case $_SERVER['HTTP_HOST'] === 'izumi-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'izumi-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://izumi-mypage.minikura.com';
-        $config['site.static_content_url'] = 'https://izumi-contents.minikura.com';
-        break;
-    case $_SERVER['HTTP_HOST'] === 'yamamjoto-contents.minikura.com':
-    case $_SERVER['SERVER_NAME'] === 'yamamoto-mypage.minikura.com':
-        $config['site.mypage.url'] = 'https://yamamoto-mypage.minikura.com';
-        $config['site.static_content_url'] = 'https://yamamoto-contents.minikura.com';
         break;
     case $_SERVER['HTTP_HOST'] === 'yoshida-www.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'yoshida-mypage.minikura.com':

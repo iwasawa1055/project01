@@ -109,7 +109,6 @@ class InfoBox extends ApiCachedModel
             BOXITEM_STATUS_BUYKIT_IN_PROGRESS,
             BOXITEM_STATUS_BUYKIT_DONE,
         ];
-        $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
 
         // キットコードが定義されていない場合、除外する。
@@ -137,7 +136,6 @@ class InfoBox extends ApiCachedModel
         $okStatus = [
             BOXITEM_STATUS_OUTBOUND_DONE,
         ];
-        $all = $this->apiGetResults();
         $list = $this->apiGetResultsWhere([], ['box_status' => $okStatus]);
 
         // HAKO以外除外する。
@@ -149,8 +147,14 @@ class InfoBox extends ApiCachedModel
 
         //* 預け入れ[入庫]ページ, ソート条件 #8697
         foreach ($list as $k => $v){
-            $list[$k]['product_cd'] = $this->kitCd2ProductCd($v['kit_cd']);
-            $list[$k]['product_name'] = !empty($v['kit_cd']) ? KIT_NAME[$v['kit_cd']] : '';
+            // KIT_CDが存在しない場合の考慮
+            if ($v['kit_cd'] == null || $v['kit_cd'] == '') {
+                $list[$k]['product_cd'] = $v['product_cd'];
+                $list[$k]['product_name'] = '';
+            } else {
+                $list[$k]['product_cd'] = $this->kitCd2ProductCd($v['kit_cd']);
+                $list[$k]['product_name'] = KIT_NAME[$v['kit_cd']];
+            }
         }
 
         //* 預け入れ[入庫]ページ, ソート条件 #8697
@@ -183,6 +187,8 @@ class InfoBox extends ApiCachedModel
             $productCd = [PRODUCT_CD_LIBRARY];
         } elseif ($product === 'closet') {
             $productCd = [PRODUCT_CD_CLOSET];
+        } elseif ($product === 'gift_cleaning') {
+            $productCd = [PRODUCT_CD_GIFT_CLEANING_PACK];
         }
 
         $okStatus = [
@@ -263,6 +269,9 @@ class InfoBox extends ApiCachedModel
                 break;
             case KIT_CD_CLOSET:
                 $productCd = PRODUCT_CD_CLOSET;
+                break;
+            case KIT_CD_GIFT_CLEANING_PACK:
+                $productCd = PRODUCT_CD_GIFT_CLEANING_PACK;
                 break;
             default:
                 break;

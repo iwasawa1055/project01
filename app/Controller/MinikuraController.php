@@ -65,6 +65,11 @@ class MinikuraController extends AppController
                     }
                 }
 
+                // 階層化されている例外のコントローラー
+                if ($set_controller === "/gift/") {
+                    $set_action = substr($set_action, 0, strcspn($set_action, '?'));
+                }
+
                 $set_param = [
                     'c' => $set_controller,
                     'a' => $set_action,
@@ -213,6 +218,7 @@ class MinikuraController extends AppController
                 'sneakers' => false,
                 'library' => false,
                 'closet' => false,
+                'gift_cleaning' => false,
             ],
             'box' => [
                 'toggle' => false,
@@ -227,10 +233,16 @@ class MinikuraController extends AppController
                 'sneakers' => false,
                 'library' => false,
                 'closet' => false,
+                'gift_cleaning' => false,
             ],
             'cleaning' => false,
             'travel' => false,
             'order' => false,
+            'gift' => [
+                'give' => false,
+                'receive' => false,
+            ],
+            'inbound_box' => false,
         ];
 
         $active_status_tmp = [];
@@ -286,6 +298,15 @@ class MinikuraController extends AppController
         //     $active_status['travel'] = true;
         }  elseif (preg_match('/\/cleaning/', $url)) {
             $active_status['cleaning'] = true;
+        }  elseif (preg_match('/\/gift/', $url)) {
+            if (preg_match('/\/give/', $url)) {
+                $active_status['gift']['give'] = true;
+            }
+            if (preg_match('/\/receive/', $url)) {
+                $active_status['gift']['receive'] = true;
+            }
+        }  elseif (preg_match('/\/inbound\/box/', $url)) {
+            $active_status['inbound_box'] = true;
         }  elseif (preg_match('/\/order/', $url)) {
             $active_status['order'] = true;
         }

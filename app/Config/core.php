@@ -48,7 +48,7 @@
  *
  * @see ErrorHandler for more information on error handling and configuration.
  */
- 
+
     Configure::write('Error', array(
         //'handler' => 'ErrorHandler::handleError',
         // custom Error Handler
@@ -163,7 +163,7 @@
  *	`manager_index()` and `/manager/controller/index`
  *
  */
-    Configure::write('Routing.prefixes', ['customer', 'paymentng', 'corporate']);
+    Configure::write('Routing.prefixes', ['customer', 'paymentng', 'corporate', 'gift']);
 
 /**
  * Turn off all caching application-wide.

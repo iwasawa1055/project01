@@ -78,6 +78,7 @@ const DELIVERY_ID_MANUAL = '7';
 
 // 通知カテゴリID
 const ANNOUNCEMENT_CATEGORY_ID_RECEIPT = 'INF283';
+const ANNOUNCEMENT_CATEGORY_ID_OUTBOUND = 'INF171';
 const ANNOUNCEMENT_CATEGORY_ID_BILLING = 'INF284';
 const ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT = 'INF080';
 const ANNOUNCEMENT_CATEGORY_YAMATO = [
@@ -105,6 +106,7 @@ const KIT_CD_HAKO_LIMITED_VER1 = '203';
 const KIT_CD_LIBRARY_DEFAULT = '214';
 const KIT_CD_LIBRARY_GVIDO = '215';
 const KIT_CD_CLOSET = '216';
+const KIT_CD_GIFT_CLEANING_PACK = '217';
 
 // 商品コード
 const PRODUCT_CD_MONO = '004025';
@@ -117,6 +119,7 @@ const PRODUCT_CD_SNEAKERS = '005310';
 const PRODUCT_CD_DIRECT_INBOUND = '005003';
 const PRODUCT_CD_LIBRARY = '005004';
 const PRODUCT_CD_CLOSET = '005005';
+const PRODUCT_CD_GIFT_CLEANING_PACK = '005006';
 
 // box_status, item_status
 // キットサービスの申し込み・依頼
@@ -200,6 +203,7 @@ const KIT_NAME = [
     KIT_CD_LIBRARY_DEFAULT => 'Libraryボックス',
     KIT_CD_LIBRARY_GVIDO => 'Libraryボックス',
     KIT_CD_CLOSET => 'minikuraCloset',
+    KIT_CD_GIFT_CLEANING_PACK => 'ギフト クリーニングパック',
 ];
 
 const KIT_IMAGE = [
@@ -213,18 +217,43 @@ const KIT_IMAGE = [
     KIT_CD_LIBRARY_DEFAULT    => '/images/library.png',
     KIT_CD_LIBRARY_GVIDO      => '/images/library.png',
     KIT_CD_CLOSET             => '/images/cleaning.png',
+    KIT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
+];
+
+const PRODUCT_IMAGE = [
+    PRODUCT_CD_HAKO               => '/images/hako-regular.png',
+    PRODUCT_CD_MONO               => '/images/mono-regular.png',
+    PRODUCT_CD_CLEANING_PACK      => '/images/cleaning.png',
+    PRODUCT_CD_LIBRARY            => '/images/library.png',
+    PRODUCT_CD_CLOSET             => '/images/cleaning.png',
+    PRODUCT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
+];
+
+const EXCESS_ATTENTION_PRODUCT_CD = [
+    PRODUCT_CD_CLOSET              => 10,
+    PRODUCT_CD_CLEANING_PACK       => 10,
+    PRODUCT_CD_GIFT_CLEANING_PACK  => 5,
+];
+
+const EXTERIOR_REMOVAL_PRODUCT_CD = [
+    PRODUCT_CD_MONO,
+    PRODUCT_CD_CLOSET,
+    PRODUCT_CD_LIBRARY,
+    PRODUCT_CD_CLEANING_PACK,
+    PRODUCT_CD_GIFT_CLEANING_PACK,
 ];
 
 const KIT_CODE_DISP_NAME_ARRAY =[
-    'mono_num'      => array('code' => KIT_CD_MONO,            'product_cd' => PRODUCT_CD_MONO,          'name' => 'MONO レギュラーボックス'),
-    'mono_appa_num' => array('code' => KIT_CD_MONO_APPAREL,    'product_cd' => PRODUCT_CD_MONO,          'name' => 'MONO ワイドボックス'),
-    'hako_num'      => array('code' => KIT_CD_HAKO,            'product_cd' => PRODUCT_CD_HAKO,          'name' => 'HAKO レギュラーボックス'),
-    'hako_appa_num' => array('code' => KIT_CD_HAKO_APPAREL,    'product_cd' => PRODUCT_CD_HAKO,          'name' => 'HAKO ワイドボックス'),
-    'hako_book_num' => array('code' => KIT_CD_HAKO_BOOK,       'product_cd' => PRODUCT_CD_HAKO,          'name' => 'HAKO ブックボックス'),
-    'cleaning_num'  => array('code' => KIT_CD_CLEANING_PACK,   'product_cd' => PRODUCT_CD_CLEANING_PACK, 'name' => 'クリーニングパック'),
-    'library_num'   => array('code' => KIT_CD_LIBRARY_DEFAULT, 'product_cd' => PRODUCT_CD_LIBRARY,       'name' => 'Library ボックス'),
-    'library_gvido' => array('code' => KIT_CD_LIBRARY_GVIDO,   'product_cd' => PRODUCT_CD_LIBRARY,       'name' => 'Library ボックス'),
-    'hanger_num'    => array('code' => KIT_CD_CLOSET,          'product_cd' => PRODUCT_CD_CLOSET,        'name' => 'Closet ボックス'),
+    'mono_num'          => array('code' => KIT_CD_MONO,               'product_cd' => PRODUCT_CD_MONO,               'name' => 'MONO レギュラーボックス'),
+    'mono_appa_num'     => array('code' => KIT_CD_MONO_APPAREL,       'product_cd' => PRODUCT_CD_MONO,               'name' => 'MONO ワイドボックス'),
+    'hako_num'          => array('code' => KIT_CD_HAKO,               'product_cd' => PRODUCT_CD_HAKO,               'name' => 'HAKO レギュラーボックス'),
+    'hako_appa_num'     => array('code' => KIT_CD_HAKO_APPAREL,       'product_cd' => PRODUCT_CD_HAKO,               'name' => 'HAKO ワイドボックス'),
+    'hako_book_num'     => array('code' => KIT_CD_HAKO_BOOK,          'product_cd' => PRODUCT_CD_HAKO,               'name' => 'HAKO ブックボックス'),
+    'cleaning_num'      => array('code' => KIT_CD_CLEANING_PACK,      'product_cd' => PRODUCT_CD_CLEANING_PACK,      'name' => 'クリーニングパック'),
+    'library_num'       => array('code' => KIT_CD_LIBRARY_DEFAULT,    'product_cd' => PRODUCT_CD_LIBRARY,            'name' => 'Library ボックス'),
+    'library_gvido'     => array('code' => KIT_CD_LIBRARY_GVIDO,      'product_cd' => PRODUCT_CD_LIBRARY,            'name' => 'Library ボックス'),
+    'hanger_num'        => array('code' => KIT_CD_CLOSET,             'product_cd' => PRODUCT_CD_CLOSET,             'name' => 'Closet ボックス'),
+    'gift_cleaning_num' => array('code' => KIT_CD_GIFT_CLEANING_PACK, 'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK, 'name' => 'ギフト クリーニングパック'),
 ];
 
 const PRODUCT_DATA_ARRAY = [
@@ -275,6 +304,7 @@ const PRODUCT_NAME = [
     PRODUCT_CD_DIRECT_INBOUND => 'minikuraダイレクト',
     PRODUCT_CD_LIBRARY => 'minikuraLibrary',
     PRODUCT_CD_CLOSET => 'minikuraCloset',
+    PRODUCT_CD_GIFT_CLEANING_PACK => '(仮)minikuraGiftクリーニングパック'
 ];
 
 const INBOUND_DELIVERY_PICKUP = '6';
@@ -379,6 +409,12 @@ const IN_USE_SERVICE = [
             'name' => 'minikuraCloset',
             'product_cd' => PRODUCT_CD_CLOSET,
             'name_mobile' => 'minikura<br />Closet',
+        ],
+        [
+            'product' => 'gift_cleaning',
+            'name' => 'minikuraGiftクリーニングパック',
+            'product_cd' => PRODUCT_CD_GIFT_CLEANING_PACK,
+            'name_mobile' => '(仮)minikuraGift<br />クリーニングパック',
         ],
     ],
     'sneakers' => [
@@ -531,3 +567,14 @@ const USE_POINT_CONTENTS_TYPE_CLEANING_PLUS = '2';
 
 /* dummy amazon_order_reference_id */
 const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';
+
+const WRAPPING_TYPE_PRODUCT_CD_LIST = [
+    PRODUCT_CD_MONO,
+    PRODUCT_CD_CLEANING_PACK,
+    PRODUCT_CD_LIBRARY,
+    PRODUCT_CD_CLOSET,
+];
+
+const KEEPING_TYPE_PRODUCT_CD_LIST = [
+    PRODUCT_CD_CLEANING_PACK,
+];

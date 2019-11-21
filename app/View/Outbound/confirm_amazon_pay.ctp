@@ -1,12 +1,22 @@
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し</h1>
-      </div>
-    </div>
+  <?php
+    $this->Html->script('jquery-ui.min', ['block' => 'scriptMinikura']);
+    $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
+  ?>
+  <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+  <div id="page-wrapper" class="wrapper">
+    <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し</h1>
+    <ul class="pagenation">
+      <li><span class="number">1</span><span class="txt">取り出し<br>選択</span>
+      </li>
+      <li><span class="number">2</span><span class="txt">配送情報<br>入力</span>
+      </li>
+      <li class="on"><span class="number">3</span><span class="txt">確認</span>
+      </li>
+      <li><span class="number">4</span><span class="txt">完了</span> </li>
+    </ul>
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -92,6 +102,12 @@
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
             </div>
             <div class="form-group col-lg-12">
+                <?php echo $this->element('keeping-period'); ?>
+            </div>
+            <div class="form-group col-lg-12">
+                <?php echo $this->element('about-fee'); ?>
+            </div>
+            <div class="form-group col-lg-12">
               <div class="panel panel-red">
                 <div class="panel-heading">
                   <label>ご注意ください</label>
@@ -110,14 +126,17 @@
               </div>
             </div>
             <?php endif; ?>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-primary btn-lg btn-block" href="/outbound/?back=true">戻る</a>
-            </span>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で取り出す</button>
-            </span>
           </div>
-          <?php echo $this->Form->end(); ?>
         </div>
       </div>
     </div>
+  </div>
+  <div class="nav-fixed">
+    <ul>
+      <li><a class="btn-d-gray"  href="/outbound/?back=true">配送先設定に戻る</a>
+      </li>
+      <li><button type="submit" class="btn-red">この内容で取り出す</button>
+      </li>
+    </ul>
+  </div>
+  <?php echo $this->Form->end(); ?>

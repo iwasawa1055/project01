@@ -20,6 +20,7 @@ class MyPageHelper extends AppHelper {
         KIT_CD_LIBRARY_DEFAULT => 'cleaning-box',
         KIT_CD_LIBRARY_GVIDO => 'cleaning-box',
         KIT_CD_CLOSET => 'cleaning-box',
+        PRODUCT_CD_GIFT_CLEANING_PACK => 'cleaning-box',
     ];
     private $productCdToClassName = [
         PRODUCT_CD_MONO => 'mono-box',
@@ -31,6 +32,7 @@ class MyPageHelper extends AppHelper {
         PRODUCT_CD_DIRECT_INBOUND => 'mono-box',
         PRODUCT_CD_LIBRARY => 'library-box',
         PRODUCT_CD_CLOSET => 'cleaning-box',
+        PRODUCT_CD_GIFT_CLEANING_PACK => 'cleaning-box',
     ];
 
     public function boxClassName($box) {

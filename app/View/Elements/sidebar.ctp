@@ -28,13 +28,17 @@
             <?php endforeach;?>
           </ul>
         </li>
-
         <?php endif; ?>
+
         <li> <a class="animsition-link<?php if($active_status['order']):?> active<?php endif;?>" href="/order/add"><i class="fa fa-shopping-cart fa-fw"></i> サービスの申し込み</a></li>
+
         <?php if (!empty($customer) && $customer->canInbound()) : ?>
-        <li> <a href="#"><i class="fa fa-arrow-circle-o-up fa-fw"></i> 預け入れ<span class="fa arrow"></span></a>
+        <li class="separator<?php if($active_status['inbound_box']):?> active<?php endif;?>">
+          <a href="#"><i class="fa fa-arrow-circle-o-up fa-fw"></i> 預け入れ<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
-            <li> <a class="animsition-link" href="/inbound/box/add"><i class="fa fa-arrow-circle-o-up fa-fw"></i> ボックス預け入れ</a> </li>
+            <li<?php if($active_status['inbound_box']):?> class="active"<?php endif;?>>
+              <a class="<?php if($active_status['inbound_box']):?> active<?php endif;?>" href="/inbound/box/add"><i class="fa fa-arrow-circle-o-up fa-fw"></i> ボックス預け入れ</a>
+            </li>
             <?php /* ダイレクトクローズ
             <li> <a class="animsition-link" href="/direct_inbound/input"><i class="fa fa-arrow-circle-o-up fa-fw"></i> minikuraダイレクト</a> </li>
              */ ?>
@@ -51,6 +55,22 @@
           </ul>
         </li>
         <?php endif; ?>
+
+        <?php if (false):?>
+        <?php // TODO ギフトリリースまで非表示 ?>
+        <li class="separator<?php if($active_status['gift']['give'] || $active_status['gift']['receive']):?> active<?php endif;?>">
+          <a href="#"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ギフト<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li<?php if($active_status['gift']['give']):?> class="active"<?php endif;?>>
+              <a class="<?php if($active_status['gift']['give']):?> active<?php endif;?>" href="/gift/give/add"><i class="fa fa-shopping-cart fa-fw"></i> ギフトを贈る</a>
+            </li>
+            <li<?php if($active_status['gift']['receive']):?> class="active"<?php endif;?>>
+              <a class="<?php if($active_status['gift']['receive']):?> active<?php endif;?>" href="/gift/receive/add"><i class="fa fa-arrow-circle-o-down fa-fw"></i> ギフトを受け取る</a>
+            </li>
+          </ul>
+        </li>
+        <?php endif; ?>
+
         <?php if (!empty($customer) && !$customer->isEntry()) : ?>
         <li<?php if($active_status['cleaning']):?> class="active"<?php endif;?>>
 	    <a href="/cleaning/input"<?php if($active_status['cleaning']):?> class="active"<?php endif;?>><i class="fa icon-cleaning fa-fw"></i> minikuraCLEANING＋</a>	</li>

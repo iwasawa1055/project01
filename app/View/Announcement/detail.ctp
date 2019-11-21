@@ -72,7 +72,7 @@
                         ※当データの著作権は寺田倉庫株式会社に帰属するものです。</small><br>
                         <br>
                         <a href="http://get.adobe.com/jp/reader/" target="_blank">
-                            <img src="/images/acrobat_reader.png">
+                            <img style="width: auto" src="/images/acrobat_reader.png">
                         </a>
                         </p>
                     </div>
@@ -98,10 +98,10 @@
                   </span>
                 <?php endif; ?>
             <?php endif; ?>
-            <?php if (($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT ||
+            <?php if ((($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_RECEIPT ||
                       $announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT)
-                      && !($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT && !empty($customer->getCorporatePayment()))
-                      ) : ?>
+                      && !($announcement['category_id'] === ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT && !empty($customer->getCorporatePayment())))
+                      || $outbound_receipt_flag) : ?>
             <?php echo $this->Form->create('Box', ['url' => '/announcement/'.$announcement['announcement_id'].'/receipt', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <span class="col-lg-12 col-md-12 col-xs-12">
                 <button type="submit" class="btn btn-danger btn-lg btn-block submit_after_restore js-none_loader">領収証発行</button>

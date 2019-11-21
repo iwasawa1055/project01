@@ -21,7 +21,11 @@
         </div>
         <ul class="nextback">
           <li>
+            <?php if(!empty(CakeSession::read('app.data.gift_cd'))): ?>
+            <a href="/gift/receive/add" class="btn next">ギフト受け取りへ進む</a>
+            <?php else: ?>
             <a href="/order/add" class="btn next">サービスの申し込みへ進む</a>
+            <?php endif; ?>
           </li>
         </ul>
       </div>
