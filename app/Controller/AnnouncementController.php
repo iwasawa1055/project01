@@ -62,7 +62,6 @@ class AnnouncementController extends MinikuraController
                 if (isset($outbound_history['link_status'])) {
                     if ($outbound_history['link_status'] !== LINKAGE_LINK_STATUS_CANCEL) {
                         $box_ids = explode(",", $outbound_history['box_ids']);
-                        $id = $this->params['id'];
                         $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $box_ids[0]]);
                         if ($box['product_cd'] === PRODUCT_CD_LIBRARY || $box['product_cd'] === PRODUCT_CD_CLOSET) {
                             $outbound_receipt_flag = true;
