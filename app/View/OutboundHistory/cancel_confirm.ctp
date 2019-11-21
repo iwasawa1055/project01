@@ -1,5 +1,11 @@
     <div id="page-wrapper" class="wrapper l-history-dtl">
       <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> お申し込みキャンセル</h1>
+      <ul class="pagenation">
+        <li class="on"><span class="number">1</span><span class="txt">キャンセル<br>内容確認</span>
+        </li>
+        <li><span class="number">2</span><span class="txt">キャンセル<br>完了</span>
+        </li>
+      </ul>
       <p class="page-caption">以下の取り出しのお申し込みをキャンセルをします。</p>
       <h2 class="ttl-dtl">取り出し内容</h2>
       <ul class="l-lst-dtl">
@@ -71,7 +77,7 @@
       <ul>
         <li><a class="btn-d-gray" href="/outbound_history/detail?wl_id=<?php echo $outbound_data['work_linkage_id']; ?>">戻る</a>
         </li>
-        <li><a class="btn-red" href="/outbound_history/cancel_complete">キャンセル</a>
+        <li><a class="btn-red" href="/outbound_history/cancel_complete">この内容でキャンセル</a>
         </li>
       </ul>
     </div>
