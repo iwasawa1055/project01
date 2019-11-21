@@ -321,8 +321,8 @@ class OutboundHistoryController extends MinikuraController
     private function _cleanOutboundSession()
     {
         CakeSession::delete(self::MODEL_NAME_OUTBOUND_HISTORY);
-        CakeSession::delete('app.data.session_order_history_search');
-        CakeSession::delete('cancel_announcement_id');
+        CakeSession::delete('outbound_data');
         CakeSession::delete('box_list');
+        CakeSession::delete('app.data.session_order_history_search');
     }
 }
