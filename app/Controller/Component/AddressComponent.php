@@ -16,12 +16,12 @@ class AddressComponent extends Component
         $this->Controller = $controller;
     }
 
-    public function get()
+    public function get($force = false)
     {
         if ($this->Controller->Customer->isEntry()) {
             return [];
         }
-        if (empty($this->list)) {
+        if (empty($this->list) || $force) {
             $ca = new CustomerAddress();
             $this->list = $ca->apiGetResults();
 

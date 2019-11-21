@@ -5,6 +5,11 @@ Router::connect('/customer/:controller', ['action' => 'index', 'customer' => tru
 Router::connect('/customer/:controller/:action', ['customer' => true]);
 Router::connect('/customer/:controller/:action/:step', ['customer' => true]);
 
+// gift
+Router::connect('/gift/:controller', ['action' => 'index', 'gift' => true]);
+Router::connect('/gift/:controller/:action', ['gift' => true]);
+Router::connect('/gift/:controller/:action/:step', ['gift' => true]);
+
 // paymentng
 Router::connect('/paymentng/:controller/:action', ['paymentng' => true]);
 Router::connect('/paymentng/:controller/:action/:step', ['paymentng' => true]);
@@ -22,6 +27,10 @@ Router::connect('/inbound/shoe/:action', ['controller' => 'InboundShoe']);
 Router::connect('/:controller/:id/:action', [], ['id' => '[A-Z\-0-9]+']);
 Router::connect('/:controller/detail/:id', ['action' => 'detail'], ['id' => '[A-Z\-0-9]+']);
 Router::connect('/:controller/detail/:id/:action', [], ['id' => '[A-Z\-0-9]+']);
+
+// pickup
+Router::connect('/pickup/edit/:id', ['controller' => 'Pickup', 'action' => 'edit']);
+Router::connect('/pickup/edit_amazon_pay/:id', ['controller' => 'Pickup', 'action' => 'edit_amazon_pay']);
 
 // top
 Router::connect('/', ['controller' => 'MyPage', 'action' => 'index']);

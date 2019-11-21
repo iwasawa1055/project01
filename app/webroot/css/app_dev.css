@@ -405,3 +405,66 @@ p.facebook-message a,
 .form-error {
   border: .1rem solid red;
 }
+
+#dev-new-box-grid > li > div > input {
+  font-size: 1rem;
+}
+#dev-new-box-grid > li > div > p.box-id{
+  font-size: 1rem;
+}
+#dev-new-box-grid > li > div > p.box-type{
+  font-size: 1rem;
+}
+#dev-old-box-grid > li > div > input {
+  font-size: 1rem;
+}
+#dev-old-box-grid > li > div > p.box-id{
+  font-size: 1rem;
+}
+#dev-old-box-grid > li > div > p.box-type{
+  font-size: 1rem;
+}
+
+input:-ms-input-placeholder {
+  color: #a9a9a9;
+}
+
+.l-present-mail textarea.form-error,
+.l-present-mail input.form-error {
+  border: .1rem solid red;
+}
+
+
+label.reset_label {
+  display: block;
+}
+
+#top-notice {
+    align-items: flex-start;
+}
+
+.l-plan p .red-link {
+    color: red;
+}
+
+.outbound_select_checkbox > input[type="checkbox"],
+box_select_checkbox{
+  display: block;
+}
+
+.dev-mbs5 {
+    margin-bottom: 0.5rem;
+}
+
+.dev-mb1 {
+    margin-bottom: 1rem;
+}
+
+.panel-body .dev-item-content {
+    border: none;
+}
+
+.dev-none-item {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}

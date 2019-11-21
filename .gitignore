@@ -8,6 +8,7 @@
 /app/tmp/reset_password
 /app/tmp/register_email
 /app/tmp/register_alliance_cd
+/app/tmp/register_gift_cd
 /app/tmp/gvido_coupon
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins

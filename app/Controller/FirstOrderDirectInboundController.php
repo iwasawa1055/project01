@@ -4,10 +4,13 @@ App::uses('MinikuraController', 'Controller');
 App::uses('KitDeliveryDatetime', 'Model');
 App::uses('EmailModel', 'Model');
 App::uses('InboundDirect', 'Model');
+App::uses('InboundDirectYamato', 'Model');
 App::uses('AmazonPayModel', 'Model');
 App::uses('AppCode', 'Lib');
 App::uses('PickupDate', 'Model');
 App::uses('PickupTime', 'Model');
+App::uses('PickupController', 'Controller');
+App::uses('PickupYamatoDateTime', 'Model');
 
 class FirstOrderDirectInboundController extends MinikuraController
 {
@@ -113,7 +116,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function add_address()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrder/add_order', 'FirstOrderDirectInbound/index', 'FirstOrderDirectInbound/add_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/confirm','FirstOrderDirectInbound/complete'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -138,13 +141,8 @@ class FirstOrderDirectInboundController extends MinikuraController
                     'address1'       => "",
                     'address2'       => "",
                     'address3'       => "",
-                    'day_cd'         => "",
+                    'date_cd'         => "",
                     'time_cd'        => "",
-                    'select_delivery_day'   => "",
-                    'select_delivery_time'  => "",
-                    'select_delivery_text'  => "",
-                    'select_delivery_day_list'      => array(),
-                    'select_delivery_time_list'     => array(),
                     'cargo'       => "ヤマト運輸",
                 );
 
@@ -344,7 +342,6 @@ class FirstOrderDirectInboundController extends MinikuraController
      */
     private function _confirm_amazon_pay()
     {
-
         //* session referer check
         if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/add_amazon_pay', 'FirstOrderDirectInbound/confirm_amazon_pay'], true) === false) {
 
@@ -456,8 +453,6 @@ class FirstOrderDirectInboundController extends MinikuraController
             'lastname_kana'         => filter_input(INPUT_POST, 'lastname_kana'),
             'date_cd'               => filter_input(INPUT_POST, 'date_cd'),
             'time_cd'               => filter_input(INPUT_POST, 'time_cd'),
-            'select_delivery_day'   => filter_input(INPUT_POST, 'select_delivery_day'),
-            'select_delivery_time'  => filter_input(INPUT_POST, 'select_delivery_time'),
             'cargo'                 => filter_input(INPUT_POST, 'cargo'),
         ];
 
@@ -471,27 +466,10 @@ class FirstOrderDirectInboundController extends MinikuraController
         $params_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
         $params_address_amazon_pay['tel1']     = $physicaldestination['Phone'];
 
-        //* Session write select_delivery_text
-        $params_address_form['select_delivery_day_list'] = json_decode($params_address_form['select_delivery_day']);
-
-        $params_address_form ['select_delivery_text'] = "";
-        if(!empty($params_address_form ['select_delivery_day_list'])) {
-            foreach ($params_address_form ['select_delivery_day_list'] as $key => $value) {
-                if ($value->date_cd === $params_address_form['date_cd']) {
-                    $params_address_form['select_delivery_text'] = $value->text;
-                }
-            }
-        }
-
-        $params_address_form['select_delivery_time_list'] = json_decode($params_address_form['select_delivery_time']);
-
-        if(!empty($params_address_form['select_delivery_time_list'])) {
-            foreach ($params_address_form['select_delivery_time_list'] as  $key => $value) {
-                if ($value->time_cd === $params_address_form['time_cd']) {
-                    $params_address_form['select_delivery_text'] .= ' ' . $value->text;
-                }
-            }
-        }
+        // 集荷日時
+        $params_address_form['select_delivery_text'] = date('Y年m月d日', strtotime($params_address_form['date_cd'])).PickupController::_getWeek($params_address_form['date_cd']);
+        $time_text = PickupController::getTimeText();
+        $params_address_form['select_delivery_text'] .=  ' ' . $time_text[$params_address_form['time_cd']];
 
         $params_address_tmp = array_merge($params_address_form, $params_address_amazon_pay);
         if (!empty($params_address))
@@ -643,8 +621,6 @@ class FirstOrderDirectInboundController extends MinikuraController
             'lastname_kana'         => $user_info['lastname_kana'],
             'date_cd'               => filter_input(INPUT_POST, 'date_cd'),
             'time_cd'               => filter_input(INPUT_POST, 'time_cd'),
-            'select_delivery_day'   => filter_input(INPUT_POST, 'select_delivery_day'),
-            'select_delivery_time'  => filter_input(INPUT_POST, 'select_delivery_time'),
             'cargo'                 => filter_input(INPUT_POST, 'cargo'),
         ];
 
@@ -658,27 +634,10 @@ class FirstOrderDirectInboundController extends MinikuraController
         $params_address_amazon_pay['address3'] = $physicaldestination['AddressLine3'];
         $params_address_amazon_pay['tel1']     = $physicaldestination['Phone'];
 
-        //* Session write select_delivery_text
-        $params_address_form['select_delivery_day_list'] = json_decode($params_address_form['select_delivery_day']);
-
-        $params_address_form ['select_delivery_text'] = "";
-        if(!empty($params_address_form ['select_delivery_day_list'])) {
-            foreach ($params_address_form ['select_delivery_day_list'] as $key => $value) {
-                if ($value->date_cd === $params_address_form['date_cd']) {
-                    $params_address_form['select_delivery_text'] = $value->text;
-                }
-            }
-        }
-
-        $params_address_form['select_delivery_time_list'] = json_decode($params_address_form['select_delivery_time']);
-
-        if(!empty($params_address_form['select_delivery_time_list'])) {
-            foreach ($params_address_form['select_delivery_time_list'] as  $key => $value) {
-                if ($value->time_cd === $params_address_form['time_cd']) {
-                    $params_address_form['select_delivery_text'] .= ' ' . $value->text;
-                }
-            }
-        }
+        // 集荷日時
+        $params_address_form['select_delivery_text'] = date('Y年m月d日', strtotime($params_address_form['date_cd'])).PickupController::_getWeek($params_address_form['date_cd']);
+        $time_text = PickupController::getTimeText();
+        $params_address_form['select_delivery_text'] .=  ' ' . $time_text[$params_address_form['time_cd']];
 
         $params_address_tmp = array_merge($params_address_form, $params_address_amazon_pay);
         if (!empty($params_address))
@@ -787,32 +746,13 @@ class FirstOrderDirectInboundController extends MinikuraController
             'address3'          => filter_input(INPUT_POST, 'address3'),
             'date_cd'            => filter_input(INPUT_POST, 'date_cd'),
             'time_cd'           => filter_input(INPUT_POST, 'time_cd'),
-            'select_delivery_day'   => filter_input(INPUT_POST, 'select_delivery_day'),
-            'select_delivery_time'   => filter_input(INPUT_POST, 'select_delivery_time'),
             'cargo'             => filter_input(INPUT_POST, 'cargo'),
         ];
 
-        //* Session write select_delivery_text
-        $params['select_delivery_day_list'] = json_decode($params['select_delivery_day']);
-
-        $params['select_delivery_text'] = "";
-        if(!empty($params['select_delivery_day_list'])) {
-            foreach ($params['select_delivery_day_list'] as $key => $value) {
-                if ($value->date_cd === $params['date_cd']) {
-                    $params['select_delivery_text'] = $value->text;
-                }
-            }
-        }
-
-        $params['select_delivery_time_list'] = json_decode($params['select_delivery_time']);
-
-        if(!empty($params['select_delivery_time_list'])) {
-            foreach ($params['select_delivery_time_list'] as  $key => $value) {
-                if ($value->time_cd === $params['time_cd']) {
-                    $params['select_delivery_text'] .= ' ' . $value->text;
-                }
-            }
-        }
+        // 集荷日時
+        $params['select_delivery_text'] = date('Y年m月d日', strtotime($params['date_cd'])).PickupController::_getWeek($params['date_cd']);
+        $time_text = PickupController::getTimeText();
+        $params['select_delivery_text'] .=  ' ' . $time_text[$params['time_cd']];
 
         CakeSession::write('Address', $params);
 
@@ -849,7 +789,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function add_email()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/add_credit'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_address', 'FirstOrderDirectInbound/add_email', 'FirstOrderDirectInbound/add_credit','FirstOrderDirectInbound/confirm'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1040,7 +980,7 @@ class FirstOrderDirectInboundController extends MinikuraController
     public function confirm()
     {
         //* session referer check
-        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_email', 'FirstOrderDirectInbound/confirm'], true) === false) {
+        if (in_array(CakeSession::read('app.data.session_referer'), ['FirstOrderDirectInbound/confirm_email', 'FirstOrderDirectInbound/confirm', 'FirstOrderDirectInbound/add_credit'], true) === false) {
             //* NG redirect
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
@@ -1107,6 +1047,9 @@ class FirstOrderDirectInboundController extends MinikuraController
             $this->redirect(['controller' => 'first_order', 'action' => 'index']);
         }
 
+        //* session referer set
+        CakeSession::write('app.data.session_referer', $this->name . '/' . $this->action);
+
         // 購入前にログインし、エントリユーザでない場合のチェック
         $is_logined = $this->_checkLogin();
         $this->set('is_logined', $is_logined);
@@ -1116,44 +1059,26 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 着払いでない場合
         if (CakeSession::read('Address.cargo') !== "着払い") {
 
-            $check_address_datetime_cd = false;
             $date_cd = CakeSession::read('Address.date_cd');
-
-            // 日付リストの確認
-            $date_list = $this->_getInboundDate();
-            foreach ($date_list->results as $key => $value) {
-                if ($value['date_cd'] === $date_cd) {
-                    $check_address_datetime_cd = true;
-                }
-            }
-
-            if (!$check_address_datetime_cd) {
-                $this->Flash->validation('集荷希望日をご確認ください。',
-                    ['key' => 'date_cd']);
-
-                CakeSession::delete('Address.date_cd');
-                CakeSession::delete('Address.select_delivery_day');
-
-                return $this->redirect('add_address');
-            }
-
             $time_cd = CakeSession::read('Address.time_cd');
 
-            // 時間リストの確認
-            $time_list = $this->_getInboundTime();
-            foreach ($time_list->results as $key => $value) {
-                if ($value['time_cd'] === $time_cd) {
-                    $check_address_datetime_cd = true;
-                }
-            }
+            // 集荷日の確認
+            $pickup_yamato_datetime = new PickupYamatoDateTime();
+            $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
 
-            if (!$check_address_datetime_cd) {
+            if (!array_key_exists($date_cd, $datetime->results)) {
+                $this->Flash->validation('集荷希望日をご確認ください。',
+                    ['key' => 'date_cd']);
+                CakeSession::delete('Address.date_cd');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
+                return;
+            }
+            if (!array_key_exists($time_cd, $datetime->results[$date_cd])) {
                 $this->Flash->validation('集荷希望時間をご確認ください。',
                     ['key' => 'time_cd']);
                 CakeSession::delete('Address.time_cd');
-                CakeSession::delete('Address.select_delivery_time');
-
-                return $this->redirect('add_address');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_address']);
+                return;
             }
         }
 
@@ -1191,11 +1116,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
         unset($data['select_delivery_list']);
-        unset($data['select_delivery_text']);
-        unset($data['select_delivery_day']);
-        unset($data['select_delivery_time']);
-        unset($data['select_delivery_day_list']);
-        unset($data['select_delivery_time_list']);
         unset($data['cargo']);
 
 
@@ -1309,13 +1229,13 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // 入庫
         $this->InboundDirect = new InboundDirect();
+        $this->InboundDirectYamato = new InboundDirectYamato();
 
         $inbound_direct = array();
-        $inbound_direct['box']          = $box;
+        $inbound_direct['box'] = $box;
 
         if (CakeSession::read('Address.cargo') !== "着払い") {
             // 集荷
-            $inbound_direct['direct_type'] = "0";
             $inbound_direct['lastname'] = CakeSession::read('Address.lastname');
             $inbound_direct['firstname'] = CakeSession::read('Address.firstname');
             $inbound_direct['tel1'] = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
@@ -1326,12 +1246,14 @@ class FirstOrderDirectInboundController extends MinikuraController
             $inbound_direct['address3'] = CakeSession::read('Address.address3');
             $inbound_direct['day_cd'] = CakeSession::read('Address.date_cd');
             $inbound_direct['time_cd'] = CakeSession::read('Address.time_cd');
+            // YAMATO集荷情報登録
+            $res = $this->InboundDirectYamato->postInboundDirectYamato($inbound_direct);
         } else {
             // 着払い
             $inbound_direct['direct_type']          = "1";
+            $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         }
 
-        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('confirm');
@@ -1378,47 +1300,26 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 着払いでない場合
         if (CakeSession::read('Address.cargo') !== "着払い") {
 
-            $check_address_datetime_cd = false;
             $date_cd = CakeSession::read('Address.date_cd');
-
-            // 日付リストの確認
-            $date_list = $this->_getInboundDate();
-            foreach ($date_list->results as $key => $value) {
-                if ($value['date_cd'] === $date_cd) {
-                    $check_address_datetime_cd = true;
-                }
-            }
-
-            if (!$check_address_datetime_cd) {
-                $this->Flash->validation('集荷希望日をご確認ください。',
-                    ['key' => 'date_cd']);
-
-                CakeSession::delete('Address.date_cd');
-                CakeSession::delete('Address.select_delivery_day');
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
-                return $this->redirect('add_address');
-            }
-
             $time_cd = CakeSession::read('Address.time_cd');
 
-            // 時間リストの確認
-            $time_list = $this->_getInboundTime();
-            foreach ($time_list->results as $key => $value) {
-                if ($value['time_cd'] === $time_cd) {
-                    $check_address_datetime_cd = true;
-                }
-            }
+            // 集荷日の確認
+            $pickup_yamato_datetime = new PickupYamatoDateTime();
+            $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
 
-            if (!$check_address_datetime_cd) {
+            if (!array_key_exists($date_cd, $datetime->results)) {
+                $this->Flash->validation('集荷希望日をご確認ください。',
+                    ['key' => 'date_cd']);
+                CakeSession::delete('Address.date_cd');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
+            }
+            if (!array_key_exists($time_cd, $datetime->results[$date_cd])) {
                 $this->Flash->validation('集荷希望時間をご確認ください。',
                     ['key' => 'time_cd']);
                 CakeSession::delete('Address.time_cd');
-                CakeSession::delete('Address.select_delivery_time');
-
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error');
-                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
         }
 
@@ -1426,11 +1327,6 @@ class FirstOrderDirectInboundController extends MinikuraController
         $data = array_merge_recursive(CakeSession::read('Address'), CakeSession::read('Email'));
         unset($data['select_delivery']);
         unset($data['select_delivery_list']);
-        unset($data['select_delivery_text']);
-        unset($data['select_delivery_day']);
-        unset($data['select_delivery_time']);
-        unset($data['select_delivery_day_list']);
-        unset($data['select_delivery_time_list']);
         unset($data['cargo']);
         $amazon_pay_user_info = CakeSession::read('FirstOrderDirectInbound.amazon_pay.user_info');
         $data['amazon_user_id'] = $amazon_pay_user_info['user_id'];
@@ -1560,13 +1456,13 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // 入庫
         $this->InboundDirect = new InboundDirect();
+        $this->InboundDirectYamato = new InboundDirectYamato();
 
         $inbound_direct = array();
         $inbound_direct['box']          = $box;
 
         if (CakeSession::read('Address.cargo') !== "着払い") {
             // 集荷
-            $inbound_direct['direct_type'] = "0";
             $inbound_direct['lastname'] = CakeSession::read('Address.lastname');
             $inbound_direct['firstname'] = CakeSession::read('Address.firstname');
             $inbound_direct['tel1'] = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
@@ -1577,13 +1473,15 @@ class FirstOrderDirectInboundController extends MinikuraController
             $inbound_direct['address3'] = CakeSession::read('Address.address3');
             $inbound_direct['day_cd'] = CakeSession::read('Address.date_cd');
             $inbound_direct['time_cd'] = CakeSession::read('Address.time_cd');
+            // YAMATO集荷情報登録
+            $res = $this->InboundDirectYamato->postInboundDirectYamato($inbound_direct);
         } else {
             // 着払い
             $inbound_direct['direct_type']          = "1";
+            $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         }
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' inbound_direct ' . print_r($inbound_direct, true));
-        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
@@ -1646,48 +1544,29 @@ class FirstOrderDirectInboundController extends MinikuraController
         // 発送日一覧のエラーチェック
         // 着払いでない場合
         if (CakeSession::read('Address.cargo') !== "着払い") {
-
-            $check_address_datetime_cd = false;
             $date_cd = CakeSession::read('Address.date_cd');
-
-            // 日付リストの確認
-            $date_list = $this->_getInboundDate();
-            foreach ($date_list->results as $key => $value) {
-                if ($value['date_cd'] === $date_cd) {
-                    $check_address_datetime_cd = true;
-                }
-            }
-
-            if (!$check_address_datetime_cd) {
-                $this->Flash->validation('集荷希望日をご確認ください。',
-                    ['key' => 'date_cd']);
-
-                CakeSession::delete('Address.date_cd');
-                CakeSession::delete('Address.select_delivery_day');
-                CakeLog::write(DEBUG_LOG,
-                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
-                return $this->redirect('add_address');
-            }
-
             $time_cd = CakeSession::read('Address.time_cd');
 
-            // 時間リストの確認
-            $time_list = $this->_getInboundTime();
-            foreach ($time_list->results as $key => $value) {
-                if ($value['time_cd'] === $time_cd) {
-                    $check_address_datetime_cd = true;
-                }
+            // 集荷日の確認
+            $pickup_yamato_datetime = new PickupYamatoDateTime();
+            $datetime = $pickup_yamato_datetime->getPickupYamatoDateTime();
+            if (!array_key_exists($date_cd, $datetime->results)) {
+                $this->Flash->validation('集荷希望日をご確認ください。',
+                    ['key' => 'date_cd']);
+                CakeSession::delete('Address.date_cd');
+                CakeLog::write(DEBUG_LOG,
+                    $this->name . '::' . $this->action . ' check_address_datetime_cd error ' . $date_cd);
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
-
-            if (!$check_address_datetime_cd) {
+            if (!array_key_exists($time_cd, $datetime->results[$date_cd])) {
                 $this->Flash->validation('集荷希望時間をご確認ください。',
                     ['key' => 'time_cd']);
                 CakeSession::delete('Address.time_cd');
-                CakeSession::delete('Address.select_delivery_time');
-
                 CakeLog::write(DEBUG_LOG,
                     $this->name . '::' . $this->action . ' check_address_datetime_cd error');
-                return $this->redirect('/first_order_direct_inbound/add_amazon_pay');
+                $this->redirect(['controller' => 'first_order_direct_inbound', 'action' => 'add_amazon_pay']);
+                return;
             }
         }
 
@@ -1749,13 +1628,13 @@ class FirstOrderDirectInboundController extends MinikuraController
 
         // 入庫
         $this->InboundDirect = new InboundDirect();
+        $this->InboundDirectYamato = new InboundDirectYamato();
 
         $inbound_direct = array();
         $inbound_direct['box']          = $box;
 
         if (CakeSession::read('Address.cargo') !== "着払い") {
             // 集荷
-            $inbound_direct['direct_type'] = "0";
             $inbound_direct['lastname'] = CakeSession::read('Address.lastname');
             $inbound_direct['firstname'] = CakeSession::read('Address.firstname');
             $inbound_direct['tel1'] = self::_wrapConvertKana(CakeSession::read('Address.tel1'));
@@ -1766,13 +1645,15 @@ class FirstOrderDirectInboundController extends MinikuraController
             $inbound_direct['address3'] = CakeSession::read('Address.address3');
             $inbound_direct['day_cd'] = CakeSession::read('Address.date_cd');
             $inbound_direct['time_cd'] = CakeSession::read('Address.time_cd');
+            // YAMATO集荷情報登録
+            $res = $this->InboundDirectYamato->postInboundDirectYamato($inbound_direct);
         } else {
             // 着払い
             $inbound_direct['direct_type']          = "1";
+            $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         }
 
         CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' inbound_direct ' . print_r($inbound_direct, true));
-        $res = $this->InboundDirect->postInboundDirect($inbound_direct);
         if (!empty($res->message)) {
             $this->Flash->validation('直接入庫処理エラー', ['key' => 'inbound_direct']);
             return $this->redirect('/first_order_direct_inbound/add_amazon_pay');

@@ -103,6 +103,14 @@ $(function() {
 });
 
 $(function() {
+    $('.captions').hide();
+    $('.application').click(function() {
+        $(this).next('.captions').slideToggle(Speed, Ease);
+    });
+    return false;
+});
+
+$(function() {
     var pms = $('.price-ms');
     var pmb = $('.price-mb');
     var sDash = $('.select-dash');
@@ -167,6 +175,93 @@ $(function() {
     return false;
 });
 
+$(function() {
+    $('.box-input-name ,[name=remove-package]').prop('disabled', true);
+    $('.remove-package').addClass('input-disabled');
+    $('[name=is-item-checked]').change(function() {
+        if ($(this).prop('checked')) {
+            $(this).parent().next().children('.box-input-name').addClass('item-checked').prop('disabled', false);
+            $(this).parent().next().children('.remove-package').removeClass('input-disabled').children('[name=remove-package]').prop('disabled', false);
+        } else {
+            $(this).parent().next().children('.box-input-name').removeClass('item-checked').prop('disabled', true);
+            $(this).parent().next().children('.remove-package').addClass('input-disabled').children('[name=remove-package]').prop('disabled', true);;
+
+        }
+    });
+    return false;
+});
+
+$(function () {
+    $('#sort-item').hide();
+    $('[name=view-sort]').change(function () {
+        if ($(this).is(':checked')) {
+            $('#sort-item').slideDown(300);
+        } else {
+            $('#sort-item').slideUp(300);
+        }
+    });
+    return false;
+});
+
+
+$(function () {
+
+    $('.l-guide-blk').hide();
+    $('[name=guide]').change(function () {
+
+        if ($('input[name=guide]:eq(0)').prop('checked')) {
+            $('#tgl-ctt1').slideDown(300);
+            $('#tgl-ctt2,#tgl-ctt3').slideUp(300);
+
+
+        }
+        if ($('input[name=guide]:eq(1)').prop('checked')) {
+            $('#tgl-ctt2').slideDown(300);
+            $('#tgl-ctt1,#tgl-ctt3').slideUp(300);
+
+        }
+        if ($('input[name=guide]:eq(2)').prop('checked')) {
+            $('#tgl-ctt3').slideDown(300);
+            $('#tgl-ctt1,#tgl-ctt2').slideUp(300);
+        }
+
+    });
+    return false;
+});
+$(function () {
+    $('.toggle-close').click(function () {
+        $(this).parent('.l-guide-blk').slideUp(300);
+        $('input[name=guide]').prop('checked', false);
+    });
+    return false;
+});
+
+$(function () {
+    $('.l-slide-down').hide();
+    $('.link-slide').click(function () {
+        $(this).next('.l-slide-down').slideToggle(Speed, Ease);
+    });
+    return false;
+});
+
+
+$(function () {
+
+    $('#collect,#self').hide();
+    $('[name=delivery-method]').change(function () {
+
+        if ($('[name=delivery-method]:eq(0)').prop('checked')) {
+            $('#collect').slideDown(300);
+            $('#self').slideUp(300);
+        }
+        if ($('[name=delivery-method]:eq(1)').prop('checked')) {
+            $('#self').slideDown(300);
+            $('#collect').slideUp(300);
+        }
+    });
+    return false;
+});
+
 $('.guidance').iziModal({
     group: "group",
     zindex: 100000,
@@ -178,6 +273,6 @@ $('.guidance').iziModal({
     arrowKeys: false,
     navigateCaption: false,
     navigateArrows: true,
-    overlayColor: 'rgba(0, 0, 0, 0.8)',
+    overlayColor: 'rgba(0, 0, 0, 0.5)',
     overlayClose: false,
 });

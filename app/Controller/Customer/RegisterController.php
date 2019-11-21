@@ -17,6 +17,7 @@ class RegisterController extends MinikuraController
     /** tmp file */
     const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
     const REGISTER_ALLIANCE_FILE_DIR   = TMP . 'register_alliance_cd';
+    const REGISTER_GIFT_FILE_DIR   = TMP . 'register_gift_cd';
     const REGISTER_EMAIL_MAIL_LIMIT = 60 * 30 * 24;
 
     /** layout */
@@ -57,10 +58,21 @@ class RegisterController extends MinikuraController
             $alliance_cd = '';
             if (isset($_GET['alliance_cd'])) {
                 $alliance_cd = $_GET['alliance_cd'];
+            } elseif (isset($_GET['code'])) {
+                $alliance_cd = $_GET['code'];
             } elseif (CakeSession::read('app.data.alliance_cd')) {
                 $alliance_cd = CakeSession::read('app.data.alliance_cd');
             }
             CakeSession::Write('app.data.alliance_cd', $alliance_cd);
+
+            // ギフトコード
+            $gift_cd = '';
+            if (isset($_GET['gift_cd'])) {
+                $gift_cd = $_GET['gift_cd'];
+            } elseif (CakeSession::read('app.data.gift_cd')) {
+                $gift_cd = CakeSession::read('app.data.gift_cd');
+            }
+            CakeSession::Write('app.data.gift_cd', $gift_cd);
 
         // 確認へ遷移する場合
         } elseif ($this->request->is('post')) {
@@ -127,6 +139,13 @@ class RegisterController extends MinikuraController
             $key_file_path = self::REGISTER_ALLIANCE_FILE_DIR . DS . $filename;
             $key_file = new File($key_file_path, true);
             $key_file->append(CakeSession::Read('app.data.alliance_cd'));
+        }
+
+        if (CakeSession::Read('app.data.gift_cd')) {
+            // gift_cdをキーファイル作成
+            $key_file_path = self::REGISTER_GIFT_FILE_DIR . DS . $filename;
+            $key_file = new File($key_file_path, true);
+            $key_file->append(CakeSession::Read('app.data.gift_cd'));
         }
 
         // セッションから入力値を取得しviewに渡す
@@ -216,6 +235,17 @@ class RegisterController extends MinikuraController
                         if ($file->exists()) {
                             $alliance_cd = $file->read();
                             $this->request->data[self::MODEL_NAME_REGIST]['alliance_cd'] = $alliance_cd;
+                        }
+                    }
+                    // GiftCdファイル取得
+                    $dir   = new Folder(self::REGISTER_GIFT_FILE_DIR);
+                    $files = $dir->find('[0-9]{8}_' . $key);
+                    // tmpファイル存在チェック
+                    if (isset($files) && count($files) == 1) {
+                        $file = new File(self::REGISTER_GIFT_FILE_DIR . DS . $files[0]);
+                        if ($file->exists()) {
+                            $gift_cd = $file->read();
+                            CakeSession::Write('app.data.gift_cd', $gift_cd);
                         }
                     }
                 }

@@ -105,64 +105,75 @@ var AppAmazonPay =
             });
     },
     ajax_dateime: function(amazon_billing_agreement_id){
+        var week_text = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)"];
 
-        var elem_day = $('#InboundDayCd');
-        var elem_time = $('#InboundTimeCd');
+        $.ajax({
+          url: '/ajax/as_getYamatoDatetime',
+          cache: false,
+          dataType: 'json',
+          type: 'POST'
+        }).done(function (data, textStatus, jqXHR) {
+            if (data.results) {
+                pickup_date_time = data.results;
+                $('#InboundDayCd option').remove();
+                $('#InboundTimeCd option').remove();
 
-        if(elem_day.val() === null) {
-            $('option:first', elem_day).prop('selected', true);
-            elem_day.attr("disabled", "disabled");
-            elem_day.empty();
-            $('option:first', elem_time).prop('selected', true);
-            elem_time.attr("disabled", "disabled");
-            elem_time.empty();
-
-            $.post('/FirstOrderDirectInbound/as_getInboundDatetime', {
-                    Inbound: {delivery_carrier: '6_1'}
-                },
-                function (data) {
-                    var pNotFound = '<p class="error-message search-address-error-message">集荷時間取得エラー。</p>';
-
-                    if (data.result.date) {
-
-                        var optionItems = new Array();
-                        if (data.status) {
-                            $.each(data.result.date, function () {
-                                optionItems.push(new Option(this.text, this.date_cd));
-                            });
-                            elem_day.append(optionItems);
-
-                            $('#select_delivery_day').val(JSON.stringify(data.result.date));
-                        } else {
-                            elem_day.after(pNotFound);
-                        }
+                var pickup_date = null;
+                // 集荷日をセット
+                for (var item in pickup_date_time) {
+                    // 最初の日付での時間を下でセットする
+                    if (pickup_date == null) {
+                        pickup_date = item;
                     }
-                    ;
-                    if (data.result.time) {
-                        var optionItems = new Array();
-                        if (data.status) {
-                            $.each(data.result.time, function () {
-                                optionItems.push(new Option(this.text, this.time_cd));
-                            });
-                            elem_time.append(optionItems);
 
-                            $('#select_delivery_time').val(JSON.stringify(data.result.time));
-                        } else {
-                            // dayで表示済
-                            //elem_day.after(pNotFound);
-                        }
-                    }
-                    ;
-                },
-                'json'
-            ).always(function () {
-                elem_day.removeAttr("disabled");
-                elem_time.removeAttr("disabled");
-            });
-        }
+                    // 集荷日程をセット
+                    var date_obj = new Date(item);
+                    var week = date_obj.getDay();
+                    var pickup_date_text = item.replace(/-/g, '/') + ' ' + week_text[week]; 
+
+                    $('#InboundDayCd').append($('<option>').text(pickup_date_text).attr('value', item));
+                }
+
+                // 戻るボタンで戻ってきた時は選択していた日付をselectedする
+                if ($('#select_delivery_day').val() != '') {
+                   $('#InboundDayCd').val($('#select_delivery_day').val());
+                    pickup_date = $('#select_delivery_day').val();
+                }
+
+                // 時間をセット
+                for(var item in pickup_date_time[pickup_date]) {
+                    var pickup_time_text = pickup_date_time[pickup_date][item];
+                    $('#InboundTimeCd').append($('<option>').text(pickup_time_text).attr('value', item));
+                }
+
+                // 戻るボタンで戻ってきた時は選択していた時間付をselectedする
+                if ($('#select_delivery_time').val() != '') {
+                   $('#InboundTimeCd').val($('#select_delivery_time').val());
+                }
+            }
+
+        }).fail(function (data, textStatus, errorThrown) {
+            console.log(data);
+            $('#InboundDayCd').removeAttr("disabled");
+            $('#InboundTimeCd').removeAttr("disabled");
+        }).always(function (data, textStatus, returnedObject) {
+            console.log(data);
+            $('#InboundDayCd').removeAttr("disabled");
+            $('#InboundTimeCd').removeAttr("disabled");
+        });
+    },
+    change_pickup_date: function(){
+        // 日付selectboxで変更した時
+        $('#InboundDayCd').change(function() {
+            var change_pickup_date = $('#InboundDayCd option:selected').val();
+            $('#InboundTimeCd option').remove();
+            for(var item in pickup_date_time[change_pickup_date]) {
+                var pickup_time_text = pickup_date_time[change_pickup_date][item];
+                $('#InboundTimeCd').append($('<option>').text(pickup_time_text).attr('value', item));
+            }
+        });
     }
 }
-
 
 var AppAmazonPayWallet =
 {
@@ -250,6 +261,7 @@ var AppAmazonPayWallet =
                 }).bind("walletWidgetDiv");
 
             },
+            /*
             // 住所選択変更時
             onAddressSelect: function () {
                 // do stuff here like recalculate tax and/or shipping
@@ -257,6 +269,7 @@ var AppAmazonPayWallet =
                 AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonBillingAgreementId);
 
             },
+            */
             design: {
                 designMode: 'responsive'
             },
@@ -280,4 +293,6 @@ $(function()
     AppAmazonPay.c();
     AppAmazonPay.d();
     AppAmazonPay.f();
+    PickupYamato.getDateTime();
+    PickupYamato.changeSelectPickup();
 });

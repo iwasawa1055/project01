@@ -48,6 +48,17 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<?php if ($this->Html->url('', false) !== '/') : ?>
+<!-- Criteo -->
+<script type="text/javascript">
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'PageType': 'Homepage',
+        'HashedEmail': '<?php echo $this->App->getHashedEmail($customer); ?>'
+    });
+</script>
+<?php endif; ?>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

@@ -209,8 +209,9 @@ class LoginController extends MinikuraController
         ApiCachedModel::deleteAllCache();
         OutboundList::delete();
         CustomerData::delete();
-        // ZENDESKユーザー削除
-        CakeSession::delete('app.data.contact_us');
+
+        // 全セッション削除
+        CakeSession::delete('app');
 
         // クッキー削除
         setcookie('token', '', time() - 1800, '/', '.' . $_SERVER['HTTP_HOST']);
@@ -302,6 +303,9 @@ class LoginController extends MinikuraController
             $this->_execLogin($res, true);
 
             // ユーザー環境値登録
+            if (empty($_SERVER['HTTP_REFERER'])) {
+                $_SERVER['HTTP_REFERER'] = 'https://' . $_SERVER['SERVER_NAME'] . '/login';
+            }
             $this->Customer->postEnvAuthed();
 
             // ログイン前のページに戻る
