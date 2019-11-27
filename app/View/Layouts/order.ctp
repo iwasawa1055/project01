@@ -34,6 +34,7 @@
   <![endif]-->
   <?php # 完了画面なら以下を表示 ?>
   <?php if ($_SERVER['REQUEST_URI'] == '/order/complete_card' || $_SERVER['REQUEST_URI'] == '/order/complete_bank' || $_SERVER['REQUEST_URI'] == '/order/complete_amazon_pay') : ?>
+  <script src="//statics.a8.net/a8sales/a8sales.js"></script>
   <script type="text/javascript">
       var products_list = JSON.parse('<?php echo $order_list_criteo_json; ?>');
       var hashed_email = '<?php echo $this->App->getHashedEmail($customer); ?>';
