@@ -100,6 +100,7 @@ var AppAmazonPayWallet =
             },
             // 住所選択変更時
             onAddressSelect: function () {
+                //$("#confirm").Attr("disabled");
                 // do stuff here like recalculate tax and/or shipping
                 // お届希望日を取得
                 //AppAmazonPay.ajax_dateime(AppAmazonPayWallet.AmazonOrderReferenceId);
@@ -109,7 +110,7 @@ var AppAmazonPayWallet =
                 designMode: 'responsive'
             },
             onError: function (error) {
-                JsError.a("/inbound_box/add_amazon_pay", error.getErrorCode() + error.getErrorMessage());
+                JsError.a("/pickup/add_amazon_pay", error.getErrorCode() + error.getErrorMessage());
                 if(error.getErrorCode() == 'BuyerSessionExpired') {
                     amazon.Login.logout();
                     location.href = '/login/logout';
@@ -123,11 +124,13 @@ var AppAmazonUserNameDevide =
 {
   a: function(amazon_order_reference_id)
   {
-    $.post('/InboundBox/getAmazonUserInfoDetail', {
+    $("#confirm").prop("disabled", true);
+    $.post('/pickup/getAmazonUserInfoDetail', {
               amazon_order_reference_id: amazon_order_reference_id
           },
 
           function (data) {
+            //$("#confirm").Attr("disabled");
             AppAmazonUserNameDevide.removeNameFormValue();
 
             if (data.status) {
@@ -156,6 +159,7 @@ var AppAmazonUserNameDevide =
   {
     $(".lastname").val(lastname);
     $(".firstname").val(firstname);
+    $("#confirm").prop("disabled", false);
     AppAmazonUserNameDevide.hideNameForm();
   },
   removeNameFormValue: function()

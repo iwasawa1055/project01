@@ -1,3 +1,9 @@
+<?php
+$this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); 
+$this->Html->script('minikura/address', ['block' => 'scriptMinikura']);
+$this->Html->script('jquery.airAutoKana.js', ['block' => 'scriptMinikura']);
+$this->Html->script('inbound_box/add', ['block' => 'scriptMinikura']);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -32,6 +38,14 @@
 <![endif]-->
     <!-- title -->
     <title><?php $this->Title->p(); ?></title>
+    <!-- Criteo -->
+    <script type="text/javascript">
+        var dataLayer = dataLayer || [];
+        dataLayer.push({
+            'PageType': 'Homepage',
+            'HashedEmail': ''
+        });
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

@@ -8,7 +8,7 @@ $box = $item['box'];
     <div class="col-lg-2 col-md-2 col-sm-12">
       <a href="<?php echo $url; ?>">
         <?php if (!empty(Hash::get($item, 'image_first.image_url'))) : ?>
-        <img src="<?php echo Hash::get($item, 'image_first.image_url'); ?>" alt="<?php echo $item['item_id']; ?>" width="100px" height="100px" class="item">
+        <img src="<?php echo Hash::get($item, 'image_first.image_url'); ?>" alt="<?php echo $item['item_id']; ?>" width="100px" height="100px" class="item" style="width:100px !important; height: 100px !important;">
         <?php endif; ?>
       </a>
     </div>

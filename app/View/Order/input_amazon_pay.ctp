@@ -2,16 +2,45 @@
 <?php $this->Html->script('https://maps.google.com/maps/api/js?key=' . Configure::read('app.googlemap.api.key') . '&libraries=places', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('minikura/address', ['block' => 'scriptMinikura']); ?>
 
-<?php $this->Html->css('/css/order/dsn-purchase.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/dsn-amazon-pay.css', ['block' => 'css']); ?>
 <?php $this->Html->css('/css/order/input_amazon_pay_dev.css', ['block' => 'css']); ?>
+<?php $this->Html->css('/css/order/order_dev.css', ['block' => 'css']); ?>
 
   <?php echo $this->Form->create('PaymentAmazonKitAmazonPay', ['url' => ['controller' => 'order', 'action' => 'input_amazon_pay'], 'novalidate' => true]); ?>
 
     <div id="page-wrapper" class="lineup wrapper">
       <?php echo $this->Flash->render(); ?>
 
-      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> ボックス購入</h1>
+      <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
+      <ul class="l-banner">
+        <li class="l-banner-dtl">
+          <a href="/news/detail/417">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
+              <img src="/images/price-revision-pc@1x.png" alt="2019年10月1日よりご利用料金が変更になります 詳しくはこちら">
+            </picture>
+          </a>
+        </li>
+        <li class="l-banner-dtl">
+          <a href="/news/detail/414">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
+              <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
+            </picture>
+          </a>
+        </li>
+        <li class="l-banner-dtl">
+          <a href="/inbound/box/add">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/collected-day-pc@1x.png 1x, /images/collected-day-pc@2x.png 2x">
+              <source media="(min-width: 1px)" srcset="/images/collected-day-sp@1x.png 1x, /images/collected-day-sp@2x.png 2x">
+              <img src="/images/collected-day-pc@1x.png" alt="13時までのお預け入れ申込で当日にお荷物の受取に伺います">
+            </picture>
+          </a>
+        </li>
+      </ul>
 
       <?php echo $this->element('Order/breadcrumb_list'); ?>
 
@@ -33,9 +62,11 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-hs">200</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-hb">200</span>円
+                <p class="price">月額保管料<span class="price-hs">200</span>円(税抜)/箱</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから翌々月の最終営業日までにボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <li class="option">
@@ -106,9 +137,11 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ms">250</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-mb">250</span>円
+                <p class="price">月額保管料<span class="price-ms">250</span>円(税抜)</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから翌々月の最終営業日までにボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <?php if (false): ?>
@@ -174,9 +207,11 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ls">450</span>円
-                </p>
-                <p class="price">ボックス代金<span class="price-lb">450</span>円
+                <p class="price">月額保管料<span class="price-ls">450</span>円(税抜)</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから翌々月の最終営業日までにボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
                 </p>
               </li>
               <li class="option">
@@ -213,8 +248,12 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-hs">450</span>円</p>
-                <p class="price">ボックス代金<span class="price-hb">450</span>円</p>
+                <p class="price">月額保管料<span class="price-hs">450</span>円(税抜)</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから翌々月の最終営業日までにボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
+                </p>
               </li>
               <li class="option">
               </li>
@@ -236,11 +275,11 @@
               </li>
             </ul>
             <p class="select-num"><span id="hanger_total">0</span>個選択済み</p>
-            <?php echo $this->Form->error('PaymentNekoposKitByCreditCard.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            <?php echo $this->Form->error('PaymentNekoposKitAmazonPay.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
         </li>
         <li id="cleaning" class="item type_other">
-          <p class="rib spring"></p>
+          <!--p class="rib spring"></p-->
           <h3><span>衣類10点</span>クリーニングパック</h3>
           <div class="lineup-pict">
             <picture>
@@ -251,7 +290,11 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">6ヶ月保管＋クリーニング料セット</p>
-                <p class="price">ボックス代金<span class="price-cb">12,000円</span></p>
+                <p class="price">サービス申し込み料<span class="price-lb">11,000</span>円(税抜)</p>
+                <a class="application">※サービス申し込み料とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  専用ボックス、預け入れ送料、半年間の保管料金、10点クリーニング、ボックスごとの取り出し料金が含まれます。
+                </p>
               </li>
               <li class="option">
               </li>

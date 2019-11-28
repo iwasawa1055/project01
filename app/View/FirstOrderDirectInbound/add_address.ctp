@@ -40,13 +40,11 @@
         <section id="dsn-signin-btns">
           <a class="dsn-btn dsn-btn-signin" href="#scroll" data-nav-section="scroll" data-scroll="50">minikuraで会員登録する <i class="fa fa-chevron-circle-right"></i></a>
           <?php if (!$customer->isEntry()): ?>
-          <div style="display:none">
           <a class="dsn-btn dsn-btn-amazon" href="#scroll" data-nav-section="scroll" data-scroll="50">
             <a id="AmazonPayButtonDirect" class="dsn-btn-amazon">
             </a>
             <a id="Logout" >Logout</a>
           </a>
-          </div>
           <?php endif; ?>
         </section>
 
@@ -78,22 +76,22 @@
           </div>
           <div class="dsn-form">
             <label>都道府県<span class="dsn-required">※</span></label>
-            <input type="text" name="pref" class="dsn-adress1 address_pref focused" placeholder="東京都" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.pref');?>">
+            <input type="text" name="pref" class="dsn-adress1 address_pref focused" placeholder="東京都" size="28" value="<?php echo CakeSession::read('Address.pref');?>">
             <?php echo $this->Flash->render('pref');?>
           </div>
           <div class="dsn-form">
-            <label>住所<span class="dsn-required">※</span></label>
-            <input type="text" name="address1" class="dsn-adress1 address_address1 focused" placeholder="品川区" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address1');?>">
+            <label>市区郡<span class="dsn-required">※</span></label>
+            <input type="text" name="address1" class="dsn-adress1 address_address1 focused" placeholder="品川区" size="28" value="<?php echo CakeSession::read('Address.address1');?>">
             <?php echo $this->Flash->render('address1');?>
           </div>
           <div class="dsn-form">
-            <label>番地<span class="dsn-required">※</span></label>
-            <input type="text" name="address2" class="dsn-adress2 address_address2 focused" placeholder="東品川2-2-28" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address2');?>">
+            <label>町域以降<span class="dsn-required">※</span></label>
+            <input type="text" name="address2" class="dsn-adress2 address_address2 focused" placeholder="東品川2-2-28" size="28" value="<?php echo CakeSession::read('Address.address2');?>">
             <?php echo $this->Flash->render('address2');?>
           </div>
           <div class="dsn-form">
             <label>建物名</label>
-            <input type="text" name="address3" class="dsn-build focused" placeholder="Tビル" size="28" maxlength="50" value="<?php echo CakeSession::read('Address.address3');?>">
+            <input type="text" name="address3" class="dsn-build focused" placeholder="Tビル" size="28" value="<?php echo CakeSession::read('Address.address3');?>">
             <?php echo $this->Flash->render('address3');?>
           </div>
           <div class="dsn-divider"></div>
@@ -109,25 +107,19 @@
             <div class="dsn-yamato">
               <div class="dsn-form">
                 <label>集荷希望日</label>
-                <select name="date_cd" id="InboundDayCd" class="dsn-select-delivery focused dev-input-form">
-                  <?php foreach ( CakeSession::read('Address.select_delivery_day_list') as $key => $value ) {?>
-                  <option value="<?php echo $value->date_cd;?>"<?php if ( $value->date_cd === CakeSession::read('Address.date_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                  <?php } ?>
+                <select name="date_cd" id="DayCd" class="dsn-select-delivery focused dev-input-form">
                 </select>
                 <br>
                 <?php echo $this->Flash->render('date_cd');?>
-                <input type="hidden" name="select_delivery_day" id="select_delivery_day" value="<?php if (!empty(CakeSession::read('Address.select_delivery_day'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_day'))?><?php else : ?><?php endif; ?>">
+                <input type="hidden" name="select_delivery_day" id="pickup_date" value="<?php echo !empty(CakeSession::read('Address.date_cd')) ? CakeSession::read('Address.date_cd') : ''; ?>">
               </div>
               <div class="dsn-form">
                 <label>集荷希望時間</label>
-                <select name="time_cd" id="InboundTimeCd" class="dsn-select-delivery focused dev-input-form">
-                  <?php foreach ( CakeSession::read('Address.select_delivery_time_list') as $key => $value ) {?>
-                  <option value="<?php echo $value->time_cd;?>"<?php if ( $value->time_cd === CakeSession::read('Address.time_cd') ) echo " selected";?>><?php echo $value->text;?></option>
-                  <?php } ?>
+                <select name="time_cd" id="TimeCd" class="dsn-select-delivery focused dev-input-form">
                 </select>
+                <input type="hidden" name="select_delivery_time" id="pickup_time_code" value="<?php echo !empty(CakeSession::read('Address.time_cd')) ?  CakeSession::read('Address.time_cd') : ''; ?>">
                 <br>
                 <?php echo $this->Flash->render('time_cd');?>
-                <input type="hidden" name="select_delivery_time" id="select_delivery_time" value="<?php if (!empty(CakeSession::read('Address.select_delivery_time'))) : ?><?php echo h(CakeSession::read('Address.select_delivery_time'))?><?php else : ?><?php endif; ?>">
               </div>
             </div>
             <label class="dsn-cargo-selected"><input type="radio" name="cargo" value="着払い" id="arrival" <?php if ( CakeSession::read('Address.cargo') === "着払い" ) echo " CHECKED";?>><span class="check-icon"></span> <label for="arrival" class="dsn-cargo-select"> 自分で送る（持ち込みで着払い）</label></label>
@@ -155,5 +147,6 @@
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_address.js"></script>
 <script src="/first_order_direct_inbound_file/js/first_order_direct_inbound/add_amazon_pay.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
+<script src="/js/pickupYamato.js"></script>
 
 <?php echo $this->element('FirstOrderDirectInbound/last'); ?>

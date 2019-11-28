@@ -5,11 +5,7 @@ var AppAmazonPay =
 
     a: function () {
         $('.js-btn-submit').on('click', function (e) {
-            var self = $(this);
-
-            var add_billing  = $('<input type="hidden" name="amazon_order_reference_id">');
-            add_billing.val(AppAmazonPayWallet.AmazonOrderReferenceId);
-            add_billing.insertAfter(self);
+            $("#amazon_id").val(AppAmazonPayWallet.AmazonOrderReferenceId);
 
             // サブミット前チェック確認
             // 定期購入未チェックでエラー
@@ -18,7 +14,7 @@ var AppAmazonPay =
                 return;
             }
 
-            $(this).closest("form").submit();
+            $("#target_form").submit();
         });
     },
     b: function () {

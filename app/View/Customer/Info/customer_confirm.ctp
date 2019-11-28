@@ -23,11 +23,11 @@ if ($action === 'customer_add') {
                   <p><?php echo $this->Form->data['CustomerInfo']['postal'] ?></p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <label>住所</label>
+                  <label>都道府県市区郡</label>
                   <p><?php echo $this->CustomerInfo->setPrefAddress1($this->Form->data['CustomerInfo']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">
-                  <label>番地</label>
+                  <label>町域以降</label>
                   <p><?php echo h($this->Form->data['CustomerInfo']['address2']); ?></p>
                 </div>
                 <div class="form-group col-lg-12">

@@ -7,6 +7,8 @@ class PointUse extends ApiModel
     const POINT_USE_AVAILABLE_OR_MORE = 100;
     const POINT_USE_AVAILABLE_UNIT = 10;
     const POINT_USE_VALID_MESSAGE = 'ポイントは %d ポイント以上の残高かつ %d ポイント単位からのご利用となります。';
+    const POINT_USE_VALID_MESSAGE_OVER_TOTAL = 'ご使用ポイント数が合計金額を超えています。';
+    const POINT_USE_VALID_MESSAGE_OVER_BALANCE = 'ご使用ポイント数が保持ポイントを超えています。';
 
     public function __construct()
     {
@@ -74,7 +76,16 @@ class PointUse extends ApiModel
         $available_point_balance = floor(($point_balance) / self::POINT_USE_AVAILABLE_UNIT) * self::POINT_USE_AVAILABLE_UNIT;
         // 利用可能なポイント残高を超える場合はバリデーションエラー
         if ($available_point_balance < $use_point) {
-            return $this->getValidMessage();
+            return self::POINT_USE_VALID_MESSAGE_OVER_BALANCE;
+        }
+
+        // 合計金額
+        if (isset($this->data[$this->model_name]['subtotal'])) {
+            $subtotal = $this->data[$this->model_name]['subtotal'];
+            // 合計金額超過
+            if ($use_point > $subtotal) {
+                return self::POINT_USE_VALID_MESSAGE_OVER_TOTAL;
+            }
         }
 
         return true;

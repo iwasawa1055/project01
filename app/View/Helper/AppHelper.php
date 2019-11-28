@@ -75,7 +75,7 @@ class AppHelper extends Helper
 
     public function formatPointType($history)
     {
-        $pointType = Hash::get(POINT_TYPE, $history['point_type']);
+        $pointType = $history['cpss_type_name'];
         if (empty($pointType)) {
             return '';
         }
@@ -130,5 +130,69 @@ class AppHelper extends Helper
             }
         }
         return null;
+    }
+
+    public function getProductImage($kit_cd)
+    {
+        switch ($kit_cd) {
+            // HAKO レギュラー
+            case '64':
+                return '/images/hako-regular.png';
+            // HAKO アパレル
+            case '65':
+                return '/images/hako-apparel.png';
+            // HAKO ブック
+            case '81':
+                return '/images/hako-book.png';
+
+            // MONO レギュラー
+            case '66':
+                return '/images/mono-regular.png';
+            // MONO アパレル
+            case '67':
+                return '/images/mono-apparel.png';
+            // MONO ブック
+            case '82':
+                return '/images/mono-regular.png';
+
+            // クリーニングパック
+            case '75':
+                return '/images/cleaning.png';
+
+            // Library
+            case '214':
+            case '215':
+                return '/images/library.png';
+
+            // closet
+            case '216':
+                return '/images/cleaning.png';
+
+            // ギフト クリーニングパック
+            case '217':
+                return '/images/cleaning.png';
+        }
+    }
+
+    public function getHashedEmail($customer)
+    {
+        if (is_object($customer) == false) {
+            return '';
+        }
+
+        $info = $customer->getInfo();
+
+        $email = '';
+        if (count($info)) {
+            if (isset($info['email'])) {
+                $email = $info['email'];
+                $processed_address = strtolower($email);
+                $processed_address = trim($processed_address);
+                $processed_address = mb_convert_encoding($processed_address, "UTF-8", "ISO-8859-1");
+                $email = md5($processed_address);
+            }
+        }
+
+        return $email;
     }
 }

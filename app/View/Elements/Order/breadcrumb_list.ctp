@@ -16,7 +16,7 @@
             'Order/complete_amazon_pay',
         );
       ?>
-      <li<?php if (in_array(CakeSession::read('app.data.session_referer'), $order_disp['input'], true)): ?> class="on"<?php endif; ?>><span class="number">1</span><span class="txt">ボックス<br>選択</span>
+      <li<?php if (in_array(CakeSession::read('app.data.session_referer'), $order_disp['input'], true)): ?> class="on"<?php endif; ?>><span class="number">1</span><span class="txt">プラン<br>選択</span>
       </li>
       <li<?php if (in_array(CakeSession::read('app.data.session_referer'), $order_disp['confirm'], true)): ?> class="on"<?php endif; ?>><span class="number">2</span><span class="txt">確認</span>
       </li>

@@ -1,22 +1,20 @@
-<div class="row">
-  <div class="col-lg-12">
-    <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-12">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-lg-12">
-            <h2>預け入れ完了</h2>
-            <p class="form-control-static col-lg-12">預け入れの手続きがが完了しました。</p>
-            <span class="col-lg-12 col-md-12 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block" href="/">マイページへ戻る</a>
-            </span>
-          </div>
+        <div id="page-wrapper" class="wrapper inbound">
+            <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
+            <ul class="pagenation">
+                <li><span class="number">1</span><span class="txt">ボックス<br>選択</span>
+                </li>
+                <li><span class="number">2</span><span class="txt">ボックス<br>情報入力</span>
+                </li>
+                <li><span class="number">3</span><span class="txt">確認</span>
+                </li>
+                <li class="on"><span class="number">4</span><span class="txt">完了</span>
+                </li>
+            </ul>
+            <p class="page-caption">ボックスの預け入れ手続きが完了しました。</p>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="nav-fixed">
+            <ul>
+                <li><button class="btn-red" onclick="location.href='/'">マイページへ戻る</button>
+                </li>
+            </ul>
+        </div>

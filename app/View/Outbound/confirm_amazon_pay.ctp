@@ -1,12 +1,22 @@
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し</h1>
-      </div>
-    </div>
+  <?php
+    $this->Html->script('jquery-ui.min', ['block' => 'scriptMinikura']);
+    $this->Html->script('jquery.easing', ['block' => 'scriptMinikura']);
+  ?>
+  <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+  <div id="page-wrapper" class="wrapper">
+    <h1 class="page-header"><i class="fa fa-arrow-circle-o-down"></i> 取り出し</h1>
+    <ul class="pagenation">
+      <li><span class="number">1</span><span class="txt">取り出し<br>選択</span>
+      </li>
+      <li><span class="number">2</span><span class="txt">配送情報<br>入力</span>
+      </li>
+      <li class="on"><span class="number">3</span><span class="txt">確認</span>
+      </li>
+      <li><span class="number">4</span><span class="txt">完了</span> </li>
+    </ul>
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <?php echo $this->Form->create('Outbound', ['url' => '/outbound/complete_amazon_pay', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
           <div class="panel-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -32,8 +42,12 @@
                 <h2>取り出すボックス</h2>
                 <?php endif; ?>
                 <div class="row box-list">
+                  <?php $early_retrieval_flag = false?>
                   <?php foreach ($boxList as $box): ?>
                   <?php $url = '/box/detail/' . $box['box_id']; ?>
+                  <?php if($box['product_cd'] === PRODUCT_CD_MONO || $box['product_cd'] === PRODUCT_CD_HAKO): ?>
+                      <?php $early_retrieval_flag = true?>
+                  <?php endif;?>
                   <!--loop-->
                   <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -88,23 +102,41 @@
               <p class="form-control-static"><?php echo $datetime_text; ?></p>
             </div>
             <div class="form-group col-lg-12">
+                <?php echo $this->element('keeping-period'); ?>
+            </div>
+            <div class="form-group col-lg-12">
+                <?php echo $this->element('about-fee'); ?>
+            </div>
+            <div class="form-group col-lg-12">
               <div class="panel panel-red">
                 <div class="panel-heading">
                   <label>ご注意ください</label>
-                  <p>お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
-                  内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。</p>
+                  <ul>
+                    <li>
+                      お申込み完了後、日時を含む内容の変更はお受けすることができません。<br>
+                      内容にお間違いないか再度ご確認の上、「この内容で取り出す」にお進みください。
+                    </li>
+                    <?php if($early_retrieval_flag): ?>
+                    <li>
+                      早期の取り出しについて、預け入れから1ヶ月以内の場合は月額保管料の2ヶ月分。2ヶ月以内の場合は月額保管料の1ヶ月分が料金として発生いたします。個品のお取り出しがある場合は適用致しません。
+                    </li>
+                    <?php endif;?>
+                  </ul>
                 </div>
               </div>
             </div>
             <?php endif; ?>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-            <a class="btn btn-primary btn-lg btn-block" href="/outbound/?back=true">戻る</a>
-            </span>
-            <span class="col-lg-6 col-md-6 col-xs-12">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">この内容で取り出す</button>
-            </span>
           </div>
-          <?php echo $this->Form->end(); ?>
         </div>
       </div>
     </div>
+  </div>
+  <div class="nav-fixed">
+    <ul>
+      <li><a class="btn-d-gray"  href="/outbound/?back=true">配送先設定に戻る</a>
+      </li>
+      <li><button type="submit" class="btn-red">この内容で取り出す</button>
+      </li>
+    </ul>
+  </div>
+  <?php echo $this->Form->end(); ?>

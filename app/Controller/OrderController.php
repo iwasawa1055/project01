@@ -35,9 +35,8 @@ class OrderController extends MinikuraController
         parent::beforeFilter();
 
         // 法人口座未登録用遷移
-        $actionCannot = 'cannot';
-        if ($this->action !== $actionCannot && !$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
-            return $this->redirect(['action' => $actionCannot]);
+        if ($this->action !== 'cannot' && !$this->Customer->isEntry() && !$this->Customer->canOrderKit()) {
+            return $this->redirect(['action' => 'cannot']);
         }
 
         $this->Order = $this->Components->load('Order');
@@ -133,6 +132,15 @@ class OrderController extends MinikuraController
 
         $this->set('delivery_datetime_list', CakeSession::read('delivery_datetime_list'));
 
+        // カードエリア出力
+        $card_flag = false;
+        $order_total_data = CakeSession::read('order_total_data');
+        $card_data = CakeSession::read('card_data');
+        if (!empty($order_total_data['price']) || empty($card_data)) {
+            $card_flag = true;
+        }
+        $this->set('card_flag', $card_flag);
+
         if ($this->request->is('get')) {
 
             $this->request->data[self::MODEL_NAME_KIT_BY_CREDIT_CARD] = CakeSession::read(self::MODEL_NAME_KIT_BY_CREDIT_CARD);
@@ -165,6 +173,14 @@ class OrderController extends MinikuraController
             $kit_list = array();
             $order_total_data = array();
             $order_list = $this->_setOrderList($data, $order_total_data, $kit_list);
+            CakeSession::write('order_total_data', $order_total_data);
+
+            // カードエリア出力
+            $card_flag = false;
+            if (!empty($order_total_data['price']) || empty($card_data)) {
+                $card_flag = true;
+            }
+            $this->set('card_flag', $card_flag);
 
             /** セッションデータ */
             CakeSession::write(self::MODEL_NAME_KIT_BY_CREDIT_CARD, $data);
@@ -175,11 +191,11 @@ class OrderController extends MinikuraController
 
             $error_flag = false;
 
-            /** 購入者情報バリデーション */
-            $validation_item = [
-                'security_cd',
-                'address_id',
-            ];
+            /** サービスの申し込み者情報バリデーション */
+            $validation_item[] = 'address_id';
+            if (!empty($order_total_data['price'])) {
+                $validation_item[] = 'security_cd';
+            }
             // お届け先入力時
             if ($data['address_id'] == 'add') {
                 $validation_item[] = 'lastname';
@@ -191,8 +207,8 @@ class OrderController extends MinikuraController
                 $validation_item[] = 'address2';
                 $validation_item[] = 'address3';
             }
-            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
-            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
+            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施(ハンガー3つ以上の場合はdatetime_cdチェック対象)
+            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger'])) || (isset($kit_list['hanger'][KIT_CD_CLOSET]) && $kit_list['hanger'][KIT_CD_CLOSET] > 2)) {
                 $validation_item[] = 'datetime_cd';
             }
             if (!$this->PaymentGMOKitByCreditCard->validates(['fieldList' => $validation_item])) {
@@ -242,7 +258,6 @@ class OrderController extends MinikuraController
             }
 
             CakeSession::write('order_list', $order_list);
-            CakeSession::write('order_total_data', $order_total_data);
 
             return $this->redirect(['controller' => 'order', 'action' => 'confirm_card']);
 
@@ -294,6 +309,10 @@ class OrderController extends MinikuraController
             $this->set($key, $data);
         }
 
+        // サービス無料期限
+        $free_limit_date = $this->Common->getServiceFreeLimit(date('Y-m-d'));
+
+        $this->set('free_limit_date', $free_limit_date);
         $this->set('card_data', CakeSession::read('card_data'));
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
@@ -349,7 +368,7 @@ class OrderController extends MinikuraController
             // API用にデータを整形
             unset($data_list['other']['address1'], $data_list['other']['address2'], $data_list['other']['address3']);
 
-            $this->_postPaymentCreditCard($data_list['other']);
+            $result = $this->_postPaymentCreditCard($data_list['other']);
         }
         // ハンガー
         if (isset($data_list['hanger']['kit'])) {
@@ -360,9 +379,42 @@ class OrderController extends MinikuraController
             // API用にデータを整形
             unset($data_list['hanger']['address1'], $data_list['hanger']['address2'], $data_list['hanger']['address3']);
 
-            $this->_postPaymentNekoposCreditCard($data_list['hanger']);
+            if ($data_list['hanger']['hanger_num'] > 2) {
+                $result = $this->_postPaymentCreditCard($data_list['hanger']);
+            } else {
+                $result = $this->_postPaymentNekoposCreditCard($data_list['hanger']);
+            }
+
         }
 
+        // CriteoとA8用のコンバージョン測定用json
+        $tmp_order_list_criteo_array = [];
+        $order_list_criteo_array = [];
+        $order_list_a8_array = [];
+        $order_list = CakeSession::read('order_list');
+
+        foreach ($order_list as $key => $val) {
+            foreach ($val as $k1 => $v1) {
+                foreach ($v1 as $k2 => $v2) {
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => '', 'quantity' => (int)$v2['number']];
+                }
+            }
+        }
+        foreach ($tmp_order_list_criteo_array as $tk => $tv) {
+            $num = 0;
+            foreach ($tv as $tk1 => $tv1) {
+                $num += $tv1['quantity'];
+            }
+            $price = ($tv[0]['id'] == KIT_CD_CLEANING_PACK) ? (PRODUCT_DATA_ARRAY[$tk]['box_price']): PRODUCT_DATA_ARRAY[$tk]['monthly_price'];
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => $price, 'quantity' => (int)$num];
+        }
+        foreach ($order_list_criteo_array as $key => $var) {
+            $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
+        }
+
+        $this->set('order_id', $result->results['order_id']);
+        $this->set('order_list_criteo_json', json_encode($order_list_criteo_array));
+        $this->set('order_list_a8_json', json_encode($order_list_a8_array));
         $this->set('card_data', CakeSession::read('card_data'));
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
@@ -429,7 +481,7 @@ class OrderController extends MinikuraController
 
             $this->PaymentAccountTransferKit->set($data);
 
-            /** 購入者情報バリデーション */
+            /** サービスの申し込み者情報バリデーション */
             $validation_item = [
                 'mono_num',
                 'mono_appa_num',
@@ -503,6 +555,10 @@ class OrderController extends MinikuraController
         }
         $this->set(self::MODEL_NAME_KIT_BY_BANK, $data);
 
+        // サービス無料期限
+        $free_limit_date = $this->Common->getServiceFreeLimit(date('Y-m-d'));
+
+        $this->set('free_limit_date', $free_limit_date);
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
     }
@@ -546,7 +602,36 @@ class OrderController extends MinikuraController
         if(mb_strlen($data['address']) === 12  && mb_substr($data['address'], 11, 1) === '　'){ //合計12文字で最後が全角スペースで終わる場合
             $data['address'] = mb_substr($data['address'], 0, 11); //12文字目の全角スペースを除いた先頭から11文字を返す
         }
-        $this->_postPaymentBank($data);
+        $result = $this->_postPaymentBank($data);
+
+        // CriteoとA8用のコンバージョン測定用json
+        $tmp_order_list_criteo_array = [];
+        $order_list_criteo_array = [];
+        $order_list_a8_array = [];
+        $order_list = CakeSession::read('order_list');
+
+        foreach ($order_list as $key => $val) {
+            foreach ($val as $k1 => $v1) {
+                foreach ($v1 as $k2 => $v2) {
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => '', 'quantity' => (int)$v2['number']];
+                }
+            }
+        }
+        foreach ($tmp_order_list_criteo_array as $tk => $tv) {
+            $num = 0;
+            foreach ($tv as $tk1 => $tv1) {
+                $num += $tv1['quantity'];
+            }
+            $price = ($tv[0]['id'] == KIT_CD_CLEANING_PACK) ? (PRODUCT_DATA_ARRAY[$tk]['box_price']): PRODUCT_DATA_ARRAY[$tk]['monthly_price'];
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => $price, 'quantity' => (int)$num];
+        }
+        foreach ($order_list_criteo_array as $key => $var) {
+            $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
+        }
+
+        $this->set('order_id', $result->results[0]['order_id']);
+        $this->set('order_list_criteo_json', json_encode($order_list_criteo_array));
+        $this->set('order_list_a8_json', json_encode($order_list_a8_array));
 
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
@@ -611,7 +696,7 @@ class OrderController extends MinikuraController
 
             $error_flag = false;
 
-            /** 購入者情報バリデーション */
+            /** サービスの申し込み者情報バリデーション */
             $validation_item = [
                 'access_token',
                 'amazon_user_id',
@@ -621,8 +706,8 @@ class OrderController extends MinikuraController
                 'postal',
                 'address',
             ];
-            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施
-            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger']))) {
+            // ハンガーのみ指定以外の場合はdatetime_cdのチェックを実施(ハンガー3つ以上の場合はdatetime_cdチェック対象)
+            if (!empty($kit_list['other']) || (empty($kit_list['other']) && empty($kit_list['hanger'])) || (isset($kit_list['hanger'][KIT_CD_CLOSET]) && $kit_list['hanger'][KIT_CD_CLOSET] > 2)) {
                 $validation_item[] = 'datetime_cd';
             }
             if (!$this->PaymentAmazonKitAmazonPay->validates(['fieldList' => $validation_item])) {
@@ -687,6 +772,10 @@ class OrderController extends MinikuraController
         }
         CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
 
+        // サービス無料期限
+        $free_limit_date = $this->Common->getServiceFreeLimit(date('Y-m-d'));
+
+        $this->set('free_limit_date', $free_limit_date);
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
         $this->set(self::MODEL_NAME_KIT_BY_AMAZON, CakeSession::read(self::MODEL_NAME_KIT_BY_AMAZON));
@@ -713,18 +802,58 @@ class OrderController extends MinikuraController
         /** 決済 */
         // 通常
         if (isset($other_data['kit'])) {
-            $this->_postPaymentAmazon($other_data);
+            $result = $this->_postPaymentAmazon($other_data);
         }
         // ハンガー
         if (isset($hanger_data['kit'])) {
-            $this->_postPaymentNekoposAmazon($hanger_data);
+            if ($hanger_data['hanger_num'] > 2) {
+                $result = $this->_postPaymentAmazon($hanger_data);
+            } else {
+                $result = $this->_postPaymentNekoposAmazon($hanger_data);
+            }
         }
+
+        // CriteoとA8用のコンバージョン測定用json
+        $tmp_order_list_criteo_array = [];
+        $order_list_criteo_array = [];
+        $order_list_a8_array = [];
+        $order_list = CakeSession::read('order_list');
+
+        foreach ($order_list as $key => $val) {
+            foreach ($val as $k1 => $v1) {
+                foreach ($v1 as $k2 => $v2) {
+                    $tmp_order_list_criteo_array[$k1][] = ['id' => $k2, 'price' => '', 'quantity' => (int)$v2['number']];
+                }
+            }
+        }
+        foreach ($tmp_order_list_criteo_array as $tk => $tv) {
+            $num = 0;
+            foreach ($tv as $tk1 => $tv1) {
+                $num += $tv1['quantity'];
+            }
+            $price = ($tv[0]['id'] == KIT_CD_CLEANING_PACK) ? (PRODUCT_DATA_ARRAY[$tk]['box_price']): PRODUCT_DATA_ARRAY[$tk]['monthly_price'];
+            $order_list_criteo_array[] = ['id' => $tk, 'price' => $price, 'quantity' => (int)$num];
+        }
+        foreach ($order_list_criteo_array as $key => $var) {
+            $order_list_a8_array[] = ['code' => $var['id'], 'price' => (int)$var['price'], 'quantity' => (int)$var['quantity']];
+        }
+
+        $this->set('order_id', $result->results['order_id']);
+        $this->set('order_list_criteo_json', json_encode($order_list_criteo_array));
+        $this->set('order_list_a8_json', json_encode($order_list_a8_array));
 
         $this->set('order_list', CakeSession::read('order_list'));
         $this->set('order_total_data', CakeSession::read('order_total_data'));
         $this->set(self::MODEL_NAME_KIT_BY_AMAZON, CakeSession::read(self::MODEL_NAME_KIT_BY_AMAZON));
 
         $this->_cleanKitOrderSession();
+    }
+
+    /**
+     * 口座申請中(KE)の状態のユーザー
+     * */
+    public function cannot()
+    {
     }
 
     public function as_register_credit_card()
@@ -1035,6 +1164,8 @@ class OrderController extends MinikuraController
             $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
             return $this->redirect(['controller' => 'order', 'action' => 'input_card']);
         }
+
+        return $result_kit_card;
     }
 
     /**
@@ -1055,6 +1186,8 @@ class OrderController extends MinikuraController
             $this->Flash->validation($result_kit_card->error_message, ['key' => 'customer_kit_card_info']);
             return $this->redirect(['controller' => 'order', 'action' => 'input_card']);
         }
+
+        return $result_kit_card;
     }
 
     /**
@@ -1071,13 +1204,15 @@ class OrderController extends MinikuraController
         $result_kit_payment_transfer = $this->PaymentAccountTransferKit->apiPost($this->PaymentAccountTransferKit->toArray());
         if ($result_kit_payment_transfer->status !== '1') {
             if ($result_kit_payment_transfer->http_code === 400) {
-                $this->Flash->validation('キット購入エラー', ['key' => 'customer_kit_card_info']);
+                $this->Flash->validation('サービスの申し込みエラー', ['key' => 'customer_kit_card_info']);
             } else {
                 $this->Flash->validation($result_kit_payment_transfer->message, ['key' => 'customer_kit_card_info']);
             }
             // 暫定
             return $this->redirect(['controller' => 'order', 'action' => 'input_bank']);
         }
+
+        return $result_kit_payment_transfer;
     }
 
     /**
@@ -1100,6 +1235,8 @@ class OrderController extends MinikuraController
             }
             $this->redirect('/order/input_amazon_pay');
         }
+
+        return $result_kit_amazon_pay;
     }
 
     /**
@@ -1122,6 +1259,8 @@ class OrderController extends MinikuraController
             }
             $this->redirect('/order/input_amazon_pay');
         }
+
+        return $result_kit_amazon_pay;
     }
     /**
      * 注文内容の作成
@@ -1133,17 +1272,15 @@ class OrderController extends MinikuraController
         // 金額取得API
         $kit_price = new CustomerKitPrice();
         // 決済時に使用するkitパラメータ
-        $kit_param_list = array();
+        $kit_param_list = [];
         // 金額集計
-        $order_list = array();
+        $order_list = [];
         // 合計情報
-        $_order_total_data['other']['number'] = 0;
-        $_order_total_data['other']['price']  = 0;
-        $_order_total_data['hanger']['number'] = 0;
-        $_order_total_data['hanger']['price']  = 0;
+        $_order_total_data['number'] = 0;
+        $_order_total_data['price']  = 0;
         // kit情報
-        $_kit_list['hanger'] = array();
-        $_kit_list['other'] = array();
+        $_kit_list['other'] = [];
+        $_kit_list['hanger'] = [];
 
         foreach ($_data as $key => $value) {
             if (array_key_exists ($key, $kit_code)) {
@@ -1160,24 +1297,28 @@ class OrderController extends MinikuraController
                     $order_type = 'other';
                     if ($code === KIT_CD_CLOSET) {
                         $order_type = 'hanger';
+                    } elseif ($code === KIT_CD_CLEANING_PACK) {
+                        $order_type = 'cleaning';
+                    }
+                    $order_list[$order_type][$kit_code[$key]['product_cd']][$code] = [
+                        'number'   => $value,
+                        'kit_name' => $kit_code[$key]['name']
+                    ];
+                    $_order_total_data['number']  += $value;
+                    $kit_param_list[] = $code . ':' .$value;
+                    // クリーニングはネコポスでないのでここでまとめる
+                    if ($code === KIT_CD_CLEANING_PACK) {
+                        $order_type = 'other';
                     }
                     $_kit_list[$order_type][$code] = $value;
-                    $order_list[$order_type][$code]['number']   = $value;
-                    $order_list[$order_type][$code]['kit_name'] = $kit_code[$key]['name'];
-                    $order_list[$order_type][$code]['price']    = 0;
-                    $_order_total_data[$order_type]['number']  += $value;
-                    $kit_param_list[$order_type][] = $code . ':' .$value;
                 }
             }
         }
 
         // 合計金額
-        foreach ($kit_param_list as $key => $kit_params) {
-            $r = $kit_price->apiGet(['kit' => implode(',', $kit_params)]);
-            if ($r->isSuccess()) {
-                $price = $r->results[0]['total_price'] * 1;
-                $_order_total_data[$key]['price'] += $price;
-            }
+        $r = $kit_price->apiGet(['kit' => implode(',', $kit_param_list)]);
+        if ($r->isSuccess()) {
+            $_order_total_data['price'] = $r->results[0]['total_price'] * 1;
         }
 
         return $order_list;
@@ -1223,6 +1364,7 @@ class OrderController extends MinikuraController
         CakeSession::delete('card_data');
         CakeSession::delete('order_list');
         CakeSession::delete('address_list');
+        CakeSession::delete('order_total_data');
         CakeSession::delete('delivery_datetime_list');
     }
 

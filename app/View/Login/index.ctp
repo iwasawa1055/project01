@@ -8,24 +8,20 @@
             <div class="col-lg-12 col-md-12 none-title">
             <?php echo $this->Form->create('CustomerLogin', ['url' => '/login', 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
               <div class="form-group">
-                <?php echo $this->Form->input('CustomerLogin.email', ['type' => 'url', 'class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false]); ?>
+                <?php echo $this->Form->input('CustomerLogin.email', ['type' => 'url', 'class' => "form-control", 'placeholder'=>'メールアドレス', 'error' => false, 'autocomplete' => 'off']); ?>
                 <?php echo $this->Form->error('CustomerLogin.email', null, ['wrap' => 'p']) ?>
               </div>
               <div class="form-group">
-                <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false]); ?>
+                <input type="password" name="dummy_password" disabled="disabled" style="width:2px;height:2px;position:absolute;opacity:0"/>
+                <?php echo $this->Form->password('CustomerLogin.password', ['class' => "form-control", 'placeholder'=>'パスワード', 'error' => false, 'autocomplete' => 'off']); ?>
                 <?php echo $this->Form->error('CustomerLogin.password', null, ['wrap' => 'p']) ?>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input name="remember" type="checkbox" value="1">
-                  ログイン状態を保持する  </label>
               </div>
               <div class="row">
                 <span class="col-sm-6 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-md btn-block">ログイン</button>
                 </span>
                 <span class="col-sm-6 col-xs-12">
-                  <a class="btn btn-primary btn-md btn-block" href="/customer/register/add" target="_blank">はじめて購入するかたはこちら</a>
+                  <a class="btn btn-primary btn-md btn-block" href="/customer/register/add" target="_blank">会員登録</a>
                 </span>
                 <span class="col-sm-6 col-xs-12">
                   <a class="btn btn-info btn-xs btn-block" href="/customer/password_reset">パスワードを忘れた方はこちら</a>

@@ -135,6 +135,11 @@ $config['app']['zendesk']['site_token'] = 'NJQzszGxSQlxySvenn6i2C0Cjgnnlweye4sR0
  */
 $config['app']['googlemap']['api']['key'] = 'AIzaSyDxi2OvmjkJZZlH6dPjzByrluQqAuMMqDk';
 
+/**
+ * A8 コンバージョンタグ
+ */
+$config['app']['a8']['pid'] = 's00000000062001';
+
 //*** Log
 // 不要なログはDropします。
 // CakeLog::drop('error');
@@ -156,16 +161,16 @@ $config['app.e.mail.sender.MAIL FROM DISP'] = 'MINIKURA検証';
 $config['app.e.mail.sender.USER'] = '';
 $config['app.e.mail.sender.PASS'] = '';
 // Receiver
-$config['app.e.mail.receiver.warning.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.warning.To'] = array('dev.minikura@terrada.co.jp');
 $config['app.e.mail.receiver.warning.Cc'] = array();
 $config['app.e.mail.receiver.warning.Bcc'] = array();
-$config['app.e.mail.receiver.defect.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.defect.To'] = array('dev.minikura@terrada.co.jp');
 $config['app.e.mail.receiver.defect.Cc'] = array();
 $config['app.e.mail.receiver.defect.Bcc'] = array();
-$config['app.e.mail.receiver.critical.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.critical.To'] = array('dev.minikura@terrada.co.jp');
 $config['app.e.mail.receiver.critical.Cc'] = array();
 $config['app.e.mail.receiver.critical.Bcc'] = array();
-$config['app.e.mail.receiver.fatal.To'] = array('minikura-kikaku@terrada.co.jp');
+$config['app.e.mail.receiver.fatal.To'] = array('dev.minikura@terrada.co.jp');
 $config['app.e.mail.receiver.fatal.Cc'] = array();
 $config['app.e.mail.receiver.fatal.Bcc'] = array();
 $config['app.e.mail.subject.default'] = '【 障害 】' . $config['app.e.mail.env_name'] . ' ' . $config['app.e.mail.service_name'] . ' システムエラー';

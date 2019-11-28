@@ -41,3 +41,14 @@
 .cleaning-attention {
 /*  font-size: 1.0rem;*/
 }
+
+#itemlist .l-search-group .l-sort-item .l-sort-az,
+#itemlist .l-search-group .l-sort-item .l-sort-date {
+  width: calc(50% - 1rem);
+}
+
+.item-content > .valid-il {
+  margin: initial;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
