@@ -10,10 +10,14 @@
             <dl>
               <dt><label class="headline">入庫方法</label></dt>
               <dd>
-                <?php if($inbound_data['box_delivery_type'] == BOX_DELIVERY_TYPE_YOURSELF): ?>
-                <p class="txt-detail">自分で申込</p>
+                <?php if(!empty($inbound_data['box_delivery_type'])): ?>
+                  <?php if($inbound_data['box_delivery_type'] == BOX_DELIVERY_TYPE_YOURSELF): ?>
+                  <p class="txt-detail">自分で申込</p>
+                  <?php else: ?>
+                  <p class="txt-detail">集荷で申込</p>
+                  <?php endif;?>
                 <?php else: ?>
-                <p class="txt-detail">集荷で申込</p>
+                  <p class="txt-detail">-</p>
                 <?php endif;?>
               </dd>
             </dl>
@@ -48,8 +52,10 @@
                 </li>
 
                 <li class="l-txt-trade-name">
+                  <?php if(!empty($box['kit_name'])): ?>
                   <label class="headline">商品名</label>
                   <p class="txt-detail"><?php echo h($box['kit_name']); ?></p>
+                  <?php endif;?>
                 </li>
                 <li class="l-lst-item-lower">
                   <ul class="l-lst-item-lower-dtl">
@@ -64,17 +70,21 @@
                     <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                     <li class="l-txt-box-outer">
                       <label class="headline">外装の取り外し</label>
-                      <?php if(empty($box['wrapping_type'])): ?>
-                      <p class="txt-detail"><?php echo BOX_WRAPPING_TYPE_LIST[0];?></p>
-                      <?php else:?>
-                      <p class="txt-detail"><?php echo BOX_WRAPPING_TYPE_LIST[1];?></p>
-                      <?php endif;?>
+                      <?php if ($box['wrapping_type'] !== '' && in_array($box['wrapping_type'], array_keys(BOX_WRAPPING_TYPE_LIST))) : ?>
+                      <p class="txt-detail"><?php echo h(BOX_WRAPPING_TYPE_LIST[$box['wrapping_type']]);?></p>
+                      <?php else : ?>
+                      <p class="txt-detail">-</p>
+                      <?php endif; ?>
                     </li>
                     <?php endif;?>
                     <?php if(in_array($box['product_cd'], KEEPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                     <li class="l-txt-box-storage">
                       <label class="headline">保管方法</label>
-                      <p class="txt-detail"><?php echo BOX_KEEPING_TYPE_LIST[$box['keeping_type']];?></p>
+                      <?php if ($box['keeping_type'] !== '' && in_array($box['keeping_type'], array_keys(BOX_KEEPING_TYPE_LIST))) : ?>
+                      <p class="txt-detail"><?php echo h(BOX_KEEPING_TYPE_LIST[$box['keeping_type']]);?></p>
+                      <?php else : ?>
+                      <p class="txt-status">-</p>
+                      <?php endif; ?>
                     </li>
                     <?php endif;?>
                     <li class="l-txt-box-action">
@@ -87,6 +97,7 @@
             <?php endforeach; ?>
           </ul>
           <ul class="input-info">
+            <?php if(!empty($inbound_data['box_delivery_type'])) : ?>
             <?php if(!empty($pickup_data)) : ?>
             <li>
               <label class="headline">ボックスの発送方法</label>
@@ -122,6 +133,7 @@
                 <li>自分で発送する</li>
               </ul>
             </li>
+            <?php endif; ?>
             <?php endif; ?>
           </ul>
         </div>

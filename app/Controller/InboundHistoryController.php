@@ -111,24 +111,26 @@ class InboundHistoryController extends MinikuraController
         CakeSession::write('inbound_data', $target_inbound_data);
         CakeSession::write('box_list', $box_list);
 
-        // お知らせカテゴリー取得
-        $announcement_data = [];
-        $announcement = new Announcement();
-        $res = $announcement->apiGetResultsFind([], ['announcement_id' => $target_inbound_data['announcement_id']]);
-        if (!empty($res)) {
-            $announcement_data =$res;
-        }
 
-        // 集荷情報
+        $announcement_data = [];
         $pickup_data = [];
-        $pickup_yamato = new PickupYamato();
-        $res = $pickup_yamato->apiGet([
-            'announcement_id' => $target_inbound_data['announcement_id'],
-        ]);
-        if (!empty($res->results)) {
-            $pickup_data =$res->results[0];
-            $pickup_yamato_change = $this->Common->pickupYamatoChangeFlag($res);
-            $this->set('pickup_yamato_change', $pickup_yamato_change);
+        if (!empty($target_inbound_data['announcement_id'])) {
+            // お知らせカテゴリー取得
+            $announcement = new Announcement();
+            $res = $announcement->apiGetResultsFind([], ['announcement_id' => $target_inbound_data['announcement_id']]);
+            if (!empty($res)) {
+                $announcement_data =$res;
+            }
+            // 集荷情報
+            $pickup_yamato = new PickupYamato();
+            $res = $pickup_yamato->apiGet([
+                'announcement_id' => $target_inbound_data['announcement_id'],
+            ]);
+            if (!empty($res->results)) {
+                $pickup_data =$res->results[0];
+                $pickup_yamato_change = $this->Common->pickupYamatoChangeFlag($res);
+                $this->set('pickup_yamato_change', $pickup_yamato_change);
+            }
         }
 
         $this->set('inbound_data', $target_inbound_data);
@@ -181,16 +183,15 @@ class InboundHistoryController extends MinikuraController
                 }
                 $box = $box_list[$keyIndex];
                 CakeSession::write('selected_box_data', $box);
-
-                $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
-                $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
-                $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
             } else {
                 if ($box['box_id'] !== $selected_box_id) {
                     $this->Flash->validation('該当するデータの取得に失敗しました。', ['key' => 'data_error']);
                     return $this->redirect('/inbound_history');
                 }
             }
+            $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
+            $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
+            $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
 
             $this->set('box', $box);
             $this->set('work_id', $work_id);
@@ -209,9 +210,10 @@ class InboundHistoryController extends MinikuraController
             }
 
             $box = CakeSession::read('selected_box_data');
-            $box['box_name']      = $data['box_name'];
-            $box['wrapping_type'] = $data['wrapping_type'];
-            $box['keeping_type']  = $data['keeping_type'];
+
+            $box['box_name']      = isset($data['box_name']) ? $data['box_name'] : '';
+            $box['wrapping_type'] = isset($data['wrapping_type']) ? $data['wrapping_type'] : '';
+            $box['keeping_type']  = isset($data['keeping_type']) ? $data['keeping_type'] : '';
 
             CakeSession::write('selected_box_data', $box);
             CakeSession::write(self::MODEL_NAME_V5_BOX, $data);
