@@ -11,7 +11,13 @@
         <li class="l-lst-item">
           <ul class="l-lst-item-upper">
             <li class="l-img-item">
-              <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
+              <?php if (!empty($box['kit_cd']) && in_array($box['kit_cd'], array_keys(KIT_IMAGE))) : ?>
+                <img src="<?php echo KIT_IMAGE[$box['kit_cd']]; ?>" alt="<?php echo KIT_NAME[$box['kit_cd']]; ?>" class="img-item">
+              <?php elseif (!empty($box['product_cd']) && in_array($box['product_cd'], array_keys(PRODUCT_IMAGE))) : ?>
+                <img src="<?php echo PRODUCT_IMAGE[$box['product_cd']]; ?>" alt="<?php echo PRODUCT_NAME[$box['product_cd']]; ?>" class="img-item">
+              <?php else : ?>
+                <img src="/images/box-other.png" alt="その他の画像" class="img-item">
+              <?php endif; ?>
             </li>
             <li class="l-txt-box-name">
               <label class="headline">ボックス名</label>
