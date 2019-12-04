@@ -46,6 +46,7 @@
           'TransactionID': transaction_id
       });
   </script>
+  <script src="//statics.a8.net/a8sales/a8sales.js"></script>
   <?php else : ?>
   <script type="text/javascript">
       var dataLayer = dataLayer || [];

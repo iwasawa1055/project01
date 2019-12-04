@@ -334,7 +334,8 @@
           </ul>
         </div>
       </div>
-      <div class="select_card"<?php if (!$card_flag): ?> style="display:none"<?php endif; ?>>
+      <?php $card_error = $this->Flash->render('customer_kit_card_info');?>
+      <div class="select_card"<?php if (!$card_flag && is_null($card_error)) : ?> style="display:none"<?php endif; ?>>
         <div class="input-card">
           <ul class="input-check-list">
             <h4>クレジットカード情報の入力</h4>
@@ -386,7 +387,7 @@
         <div id="gmo_validate_error"></div>
         <div id="gmo_credit_card_info"></div>
         <div class="dsn-form card_error">
-          <?php echo $this->Flash->render('customer_kit_card_info');?>
+          <?php echo $card_error;?>
         </div>
         <?php echo $this->Form->error('PaymentGMOKitByCreditCard.card_no', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
         <div id="input-exist" class="input-card">

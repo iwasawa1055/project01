@@ -19,13 +19,6 @@ class LoginController extends MinikuraController
      */
     public function index()
     {
-        // #14395 リダイレクトループの対策として以前に発行した「.minikura.com」ドメインのcookie()を削除します。
-        // 該当のcookieの最長の有効期限は2018/09/14となるので、それ以降に下の処理の削除をお願いします。
-        setcookie("WWWMINIKURACOM", "", time()-60, "", ".minikura.com");
-        setcookie("MINIKURACOM", "", time()-60, "", ".minikura.com");
-
-        $this->_checkLoginCookie();
-
         if ($this->request->is('post')) {
             $this->loadModel('CustomerLogin');
             $this->CustomerLogin->set($this->request->data);
@@ -222,7 +215,7 @@ class LoginController extends MinikuraController
     /**
      * ログイン時の共通処理
      */
-    private function _execLogin($_res, $_usecookie = false)
+    private function _execLogin($_res)
     {
         // セッション値をクリア
         ApiCachedModel::deleteAllCache();
@@ -247,77 +240,5 @@ class LoginController extends MinikuraController
                 }
             }
         }
-
-        // ログイン情報を暗号化してクッキーへ保存
-        if ( $_usecookie !== false ) {
-          $cookie_login_data = $this->request->data['CustomerLogin']['email'] . ' ' . $this->request->data['CustomerLogin']['password'];
-          $hash = AppCode::encodeLoginData($cookie_login_data);
-          $cookie_period = Configure::read( 'app.login_cookie.cookie_period' );
-
-          // 有効時間 (60秒 * 60分 * 24時 * 設定)
-          //   設定：AppConfig.php->app.login_cookie.cookie_period
-          $expired = time() + $cookie_period;
-          setcookie('token', $hash, $expired, '/', '.' . $_SERVER['HTTP_HOST']);
-        }
-    }
-
-    /**
-     * クッキー上のログイン情報のチェック
-     */
-    private function _checkLoginCookie()
-    {
-        // tokenが空の場合、処理終了
-        if (empty($_COOKIE['token'])) {
-            return false;
-        }
-
-        $cookie_login_param = AppCode::decodeLoginData($_COOKIE['token']);
-        $login_params = explode(' ', $cookie_login_param);
-
-        // 取得した配列のカウントが2ではない場合、処理終了
-        if (count($login_params) !== 2) {
-            return false;
-        }
-
-        $logout = filter_input(INPUT_GET,  Configure::read( 'app.login_cookie.param' ));
-        if($logout){
-            setcookie('token', '', time() - 1800, '/', '.' . $_SERVER['HTTP_HOST']);
-            return false;
-        }
-
-        // ログインパラメータセット
-        $this->request->data['CustomerLogin']['email'] = $login_params[0];
-        $this->request->data['CustomerLogin']['password'] = $login_params[1];
-
-        // ログイン処理
-        $this->loadModel('CustomerLogin');
-        $this->CustomerLogin->set($this->request->data);
-
-        if ($this->CustomerLogin->validates()) {
-            $res = $this->CustomerLogin->login();
-            if (!empty($res->error_message)) {
-                // パスワード不正などの場合、処理終了
-                return false;
-            }
-            // ログイン処理
-            $this->_execLogin($res, true);
-
-            // ユーザー環境値登録
-            if (empty($_SERVER['HTTP_REFERER'])) {
-                $_SERVER['HTTP_REFERER'] = 'https://' . $_SERVER['SERVER_NAME'] . '/login';
-            }
-            $this->Customer->postEnvAuthed();
-
-            // ログイン前のページに戻る
-            $this->_endJunction();
-
-            // ユーザの状態によってログイン先を変更
-            $this->_switchRedirct();
-        } else {
-            // バリデーションに引っかかる場合、処理終了
-            return false;
-        }
-
-        return true;
     }
 }
