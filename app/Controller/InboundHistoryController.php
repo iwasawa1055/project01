@@ -174,7 +174,7 @@ class InboundHistoryController extends MinikuraController
 
             // 該当するボックス情報を取得
             $box = CakeSession::read('selected_box_data');
-            if (empty($box)) {
+            if (empty($box) || $box['box_id'] !== $selected_box_id) {
                 $box_list = CakeSession::read('box_list');
                 $keyIndex = array_search($selected_box_id, array_column($box_list, 'box_id'));
                 if ($keyIndex === false) {
@@ -183,18 +183,21 @@ class InboundHistoryController extends MinikuraController
                 }
                 $box = $box_list[$keyIndex];
                 CakeSession::write('selected_box_data', $box);
-            } else {
-                if ($box['box_id'] !== $selected_box_id) {
-                    $this->Flash->validation('該当するデータの取得に失敗しました。', ['key' => 'data_error']);
-                    return $this->redirect('/inbound_history');
-                }
             }
             $this->request->data[self::MODEL_NAME_V5_BOX]['box_name'] = $box['box_name'];
             $this->request->data[self::MODEL_NAME_V5_BOX]['wrapping_type'] = $box['wrapping_type'];
             $this->request->data[self::MODEL_NAME_V5_BOX]['keeping_type'] = $box['keeping_type'];
 
+            // 代理入庫フラグ
+            $proxy_flag = false;
+            $inbound_data = CakeSession::read('inbound_data');
+            if (empty($inbound_data['orders_products_ids'])) {
+                $proxy_flag = true;
+            }
+
             $this->set('box', $box);
             $this->set('work_id', $work_id);
+            $this->set('proxy_flag', $proxy_flag);
             $this->V5Box->set($this->request->data);
         }
 

@@ -27,7 +27,7 @@
             <li class="l-lst-itm">
               <ul class="l-lst-dtl">
                 <li class="l-data" title="預け入れ申込日"><?php echo $this->Html->formatYmdKanjiDatetime($history_data['create_date']); ?></li>
-                  <?php if(!empty($history_data['box_delivery_type'])): ?>
+                  <?php if(!empty($history_data['orders_products_ids'])): ?>
                     <?php if($history_data['box_delivery_type'] == BOX_DELIVERY_TYPE_YOURSELF): ?>
                     <li class="l-method-dtl" title="入庫方法">自分で申込</li>
                     <?php else: ?>

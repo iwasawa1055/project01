@@ -46,7 +46,8 @@
                   <?php if(in_array($box['product_cd'], WRAPPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                   <li class="l-txt-box-outer">
                     <label class="headline">外装の取り外し</label>
-                      <?php echo $this->Form->input("V5Box.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
+                    <?php if(!$proxy_flag): ?>
+                    <?php echo $this->Form->input("V5Box.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
                     <label class="input-check">
                       <?php
                       echo $this->Form->input(
@@ -64,11 +65,15 @@
                       <span class="icon"></span>
                       <span class="label-txt">外装を外す</span>
                     </label>
+                    <?php else: ?>
+                    -
+                    <?php endif; ?>
                   </li>
                   <?php endif;?>
                   <?php if(in_array($box['product_cd'], KEEPING_TYPE_PRODUCT_CD_LIST, true)): ?>
                   <li class="l-txt-box-storage">
                     <label class="headline">保管方法</label>
+                    <?php if(!$proxy_flag): ?>
                     <ul class="list-slct-num">
                       <li>
                         <label class="input-check">
@@ -113,6 +118,9 @@
                         </label>
                       </li>
                     </ul>
+                    <?php else: ?>
+                      -
+                    <?php endif; ?>
                   </li>
                   <?php endif;?>
                 <?php else:?>
