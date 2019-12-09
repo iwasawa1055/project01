@@ -10,7 +10,7 @@
             <dl>
               <dt><label class="headline">入庫方法</label></dt>
               <dd>
-                <?php if(!empty($inbound_data['box_delivery_type'])): ?>
+                <?php if(!empty($inbound_data['orders_products_ids'])): ?>
                   <?php if($inbound_data['box_delivery_type'] == BOX_DELIVERY_TYPE_YOURSELF): ?>
                   <p class="txt-detail">自分で申込</p>
                   <?php else: ?>
@@ -97,7 +97,7 @@
             <?php endforeach; ?>
           </ul>
           <ul class="input-info">
-            <?php if(!empty($inbound_data['box_delivery_type'])) : ?>
+            <?php if(!empty($inbound_data['orders_products_ids'])) : ?>
             <?php if(!empty($pickup_data)) : ?>
             <li>
               <label class="headline">ボックスの発送方法</label>
@@ -110,7 +110,7 @@
               <ul class="li-address">
                 <li>〒<?php echo h($pickup_data['pickup_yamato_postcode']); ?></li>
                 <li><?php echo h($pickup_data['pickup_yamato_address1']); ?><?php echo h($pickup_data['pickup_yamato_address2']); ?></li>
-                <li><?php echo h($pickup_data['pickup_yamato_name']); ?></li>
+                <li><?php echo h($pickup_data['pickup_yamato_name']); ?> 様</li>
                 <li><?php echo h($pickup_data['pickup_yamato_telephone']); ?></li>
               </ul>
             </li>

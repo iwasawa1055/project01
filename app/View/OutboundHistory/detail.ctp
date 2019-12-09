@@ -110,7 +110,7 @@
             <li>
               <label class="headline">配送先名</label>
               <ul class="li-address">
-                <li><?php echo $outbound_data['delivery_name'];?></li>
+                <li><?php echo $outbound_data['delivery_name'];?> 様</li>
               </ul>
             </li>
             <li>
