@@ -100,6 +100,7 @@
             <?php endforeach; ?>
           </ul>
           <ul class="input-info">
+            <?php if (!empty($outbound_data['delivery_postcode'])) : ?>
             <li>
               <label class="headline">配送先</label>
               <ul class="li-address">
@@ -107,18 +108,23 @@
                 <li><?php echo $outbound_data['delivery_state'] . $outbound_data['delivery_city'] . $outbound_data['delivery_street_address'] . ' ' . $outbound_data['delivery_suburb'];?></li>
               </ul>
             </li>
+            <?php endif; ?>
+            <?php if (!empty($outbound_data['delivery_name'])) : ?>
             <li>
               <label class="headline">配送先名</label>
               <ul class="li-address">
                 <li><?php echo $outbound_data['delivery_name'];?> 様</li>
               </ul>
             </li>
+            <?php endif; ?>
+            <?php if (!empty($outbound_data['delivery_request_date']) && !empty($outbound_data['delivery_request_timezone'])) : ?>
             <li>
               <label class="headline">配送日時</label>
               <ul class="li-address">
                 <li><?php echo $this->Html->formatYmdKanji($outbound_data['delivery_request_date']) . '　' . $outbound_data['delivery_request_timezone'];?></li>
               </ul>
             </li>
+            <?php endif; ?>
           </ul>
         </div>
         <div class="nav-fixed">
