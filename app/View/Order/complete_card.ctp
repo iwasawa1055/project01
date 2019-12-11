@@ -125,7 +125,6 @@
   <span id="a8sales"></span>
   <script src="//statics.a8.net/a8sales/a8sales.js"></script>
   <script>
-  a8sales(a8_params);
   var a8_item_json = document.getElementById('order_list_a8_json').value;
   var a8_params = {
     "pid": '<?php echo Configure::read("app.a8.pid"); ?>',
@@ -134,4 +133,5 @@
     "items": JSON.parse(a8_item_json),
     "total_price": document.getElementById('order_total_price').value
   };
+  a8sales(a8_params);
   </script>
