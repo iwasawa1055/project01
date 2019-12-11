@@ -2427,7 +2427,7 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  font-family: Meiryo, メイリオ, 'MS Pgothic', 'ＭＳ Ｐゴシック', 'Hiragino Kaku Gothic', ヒラギノ角ゴ, Helvetica, Arial, sans-serif;
+  font-family: Meiryo, メイリオ, "MS Pgothic", "ＭＳ Ｐゴシック", "Hiragino Kaku Gothic", ヒラギノ角ゴ, Helvetica, Arial, sans-serif;
   background: red;
 }
 
@@ -2488,16 +2488,16 @@ header .wrapper .global-nav li a {
   font-size: 14px;
   font-size: 1.4rem;
   color: white;
-  letter-spacing: .1rem;
+  letter-spacing: 0.1rem;
 }
 
 header .wrapper .global-nav li a.login, header .wrapper .global-nav li a.signin {
-  padding: .6rem .8rem;
+  padding: 0.6rem 0.8rem;
   font-size: 12px;
   font-size: 1.2rem;
   background: #fff;
   color: red;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
 }
 
 header .wrapper .global-nav li a.login {
@@ -2505,7 +2505,7 @@ header .wrapper .global-nav li a.login {
 }
 
 header .wrapper .global-nav li a i {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 header .wrapper .nav-toggle {
@@ -2550,7 +2550,7 @@ header .wrapper .navbar-collapse {
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     width: 100%;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     background: red;
   }
   header .wrapper .global-nav li {
@@ -2581,7 +2581,7 @@ header .wrapper .navbar-collapse {
     padding-left: 1.5rem;
     font-size: 16px;
     font-size: 1.6rem;
-    letter-spacing: .1rem;
+    letter-spacing: 0.1rem;
   }
   header .wrapper .global-nav li a.login, header .wrapper .global-nav li a.signin {
     margin: 0;
@@ -2589,7 +2589,7 @@ header .wrapper .navbar-collapse {
     font-size: 16px;
     font-size: 1.6rem;
     color: white;
-    letter-spacing: .1rem;
+    letter-spacing: 0.1rem;
     background: transparent;
     border: none;
   }
@@ -2612,18 +2612,18 @@ header .wrapper .navbar-collapse {
         flex-wrap: wrap;
     width: 4.5rem;
     height: 3.4rem;
-    top: .75rem;
+    top: 0.75rem;
     right: 1.5rem;
-    padding: .9rem 1rem;
+    padding: 0.9rem 1rem;
     background: red;
     border: 0.1rem solid white;
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     cursor: pointer;
   }
   header .wrapper .nav-toggle span {
     display: block;
     width: 100%;
-    height: .2rem;
+    height: 0.2rem;
     left: 0;
     background: white;
   }
@@ -7218,18 +7218,25 @@ li.l-mtd-desc {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin-left: auto;
-}
-
-.l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel {
-  margin-right: 0.5rem;
 }
 
 .l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel .txt-cancel {
   margin-bottom: 0;
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #333333;
+}
+
+.l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel {
+  margin-bottom: 0.5rem;
 }
 
 .l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel .btn-red-line {
@@ -7512,15 +7519,14 @@ li.l-mtd-desc {
     margin: 1rem 0 0 auto;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel {
-    width: calc(100% / 2 - 0.5rem);
-    margin-right: 0.5rem;
+    width: 100%;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel .txt-cancel {
-    font-size: 12px;
-    font-size: 1.2rem;
+    font-size: 10px;
+    font-size: 1rem;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel {
-    width: calc(100% / 2);
+    width: 100%;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel .btn-red-line {
     font-size: 12px;

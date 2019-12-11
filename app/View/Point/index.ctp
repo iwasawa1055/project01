@@ -45,8 +45,10 @@
                         <?php else : ?>
                         <tr>
                           <td><?php echo empty($history['used_datetime']) ? '' : date('Y/m/d', strtotime($history['used_datetime'])); ?></td>
-                          <td><?php echo Hash::get(POINT_TYPE, $history['point_type']); ?></td>
-                          <td><?php echo '-' . $history['used_point']; ?></td>
+                          <td>
+                              <?php echo Hash::get(POINT_TYPE, $history['point_type']); ?>
+                          </td>
+                          <td><?php echo '-' . $history['used_point']; ?><?php if ($history['status'] === POINT_STATUS_CANCEL) : ?>(キャンセル)<?php endif; ?></td>
                           <td><?php echo empty($history['expire_datetime']) ? '' : date('Y/m/d', strtotime($history['expire_datetime'])); ?></td>
                         </tr>
                         <?php endif; ?>
