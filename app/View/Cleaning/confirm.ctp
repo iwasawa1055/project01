@@ -20,7 +20,7 @@
           <p class="txt-item-price"><?php echo number_format($price[$item['item_group_cd']]);?>円</p>
         </li>
         <?php endforeach;?>
-        <?php if(!empty($point_data['use_point'])) : ?>
+        <?php if(isset($point_data['use_point']) && !empty($point_data['use_point'])) : ?>
         <li>
           <p class="l-item-pict"></p>
           <p class="txt-item-name">小計</p>
@@ -35,7 +35,7 @@
         <li>
           <p class="l-item-pict"></p>
           <p class="txt-item-name">総計</p>
-          <?php if(!empty($point_data['use_point'])) : ?>
+          <?php if(isset($point_data['use_point']) && !empty($point_data['use_point'])) : ?>
           <p class="txt-item-price"><?php echo number_format($cleaning_data['subtotal'] - $point_data['use_point']);?>円</p>
           <?php else:?>
           <p class="txt-item-price"><?php echo number_format($cleaning_data['subtotal']);?>円</p>
