@@ -154,6 +154,7 @@
           </div>
           <input type="hidden" id="isolateIsland" value="<?php echo $isolateIsland; ?>">
         </div>
+        <input type="hidden" id="trunkCds" value='<?php echo json_encode($trunkCds); ?>'>
       </div>
       <?php echo $this->Form->end(); ?>
       <?php else:?>

@@ -75,10 +75,37 @@ class OutboundController extends MinikuraController
 
         $addressId = $this->request->data['address_id'];
         $address = $this->Address->find($addressId);
-        $result = $this->getDatetime($address['postal']);
+        $trunkCds = $this->request->data['trunk_cds'];
+        $slowest = [];
+        foreach ($trunkCds as $val) {
+            $result = $this->getDatetime($address['postal'], $val);
+            if (count($slowest) === 0) {
+                $slowest = [
+                  'datetime_cd' => $result[1]['datetime_cd'],
+                  'result' => $result,
+                ];
+            } else {
+                // 比較して遅い方を優先させる
+                $dtExp1 = explode('-', $slowest['datetime_cd']);
+                $dtExp2 = explode('-', $result[1]['datetime_cd']);
+                $dt1 = strtotime($dtExp1[0] . '-' . $dtExp1[1] . '-' . $dtExp1[2] . ' ' . $dtExp1[3] . ':00:00');
+                $dt2 = strtotime($dtExp2[0] . '-' . $dtExp2[1] . '-' . $dtExp2[2] . ' ' . $dtExp2[3] . ':00:00');
+                if ($dt1 <= $dt2) {
+                    $slowest = [
+                      'datetime_cd' => $result[1]['datetime_cd'],
+                      'result' => $result,
+                    ];
+                }
+            }
+        }
+
         $status = !empty($result);
         $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
-        return json_encode(compact('status', 'result', 'isIsolateIsland'));
+        return json_encode([
+          'status' => $status,
+          'result' => $slowest['result'],
+          'isIsolateIsland' => $isIsolateIsland,
+        ]);
     }
 
     public function getAddressDatetimeByPostal()
@@ -348,6 +375,20 @@ class OutboundController extends MinikuraController
         $itemList = $this->outboundList->getItemList();
         HashSorter::sort($itemList, InfoItem::DEFAULTS_SORT_KEY);
         $this->set('itemList', $itemList);
+
+        // 倉庫を確認
+        $tmpTrunkCds = [];
+        foreach ($boxList as $val) {
+            $tmpTrunkCds[$val["trunk_cd"]] = 1;
+        }
+        foreach ($itemList as $val) {
+            $tmpTrunkCds[$val["box"]["trunk_cd"]] = 1;
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
 
         // ポイント取得
         $pointBalance = [];

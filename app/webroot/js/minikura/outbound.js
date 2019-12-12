@@ -32,7 +32,8 @@ function getDatetime() {
   elem_datetime.empty();
 
   $.post('/outbound/getAddressDatetime', {
-          address_id: elem_address.val()
+          address_id: elem_address.val(),
+          trunk_cds: JSON.parse($('#trunkCds').val())
       },
       function(data) {
           if (data.result) {

@@ -16,5 +16,9 @@ class DatetimeDeliveryOutbound extends ApiModel
 			'rule' => '/^\d{3}\-\d{4}$/i',
 			'required' => true,
 		],
+		'calendar' => [
+			'rule' => '/^\d{2}$/i',
+			'required' => false,
+		],
 	];
 }
