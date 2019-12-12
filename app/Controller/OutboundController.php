@@ -503,7 +503,7 @@ class OutboundController extends MinikuraController
             } catch (Exception $e) {
                 $data['PointUse']['use_point'] = '0';
                 $pointBalance['point_balance'] = '0';
-                $this->set('pointErrorMessage', '現在ポイントを使用できません。');
+                $pointBalance['error_message'] = '現在ポイントを使用できません。';
             }
             $this->set('pointBalance', $pointBalance);
 
@@ -658,7 +658,7 @@ class OutboundController extends MinikuraController
             } catch (Exception $e) {
                 $data['PointUse']['use_point'] = '0';
                 $pointBalance['point_balance'] = '0';
-                $this->set('pointErrorMessage', '現在ポイントを使用できません。');
+                $pointBalance['error_message'] = '現在ポイントを使用できません。';
             }
             $this->set('pointBalance', $pointBalance);
 
@@ -1313,9 +1313,11 @@ class OutboundController extends MinikuraController
             }
 
             // ポイントの確認
-            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
-            if (!$this->PointUseImmediate->validates()) {
-                $error = true;
+            if (isset($outbound_total_price)) {
+                $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+                if (!$this->PointUseImmediate->validates()) {
+                    $error = true;
+                }
             }
 
             if ($error == true) {
@@ -1813,9 +1815,11 @@ class OutboundController extends MinikuraController
             CakeSession::Write('app.data.closet.datetime_cd', $_POST['datetime_cd']);
 
             // ポイントの確認
-            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
-            if (!$this->PointUseImmediate->validates()) {
-                $error = true;
+            if (isset($outbound_total_price)) {
+                $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+                if (!$this->PointUseImmediate->validates()) {
+                    $error = true;
+                }
             }
 
             if ($error == true) {
