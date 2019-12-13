@@ -459,3 +459,16 @@ box_select_checkbox{
 .dev-mb1 {
     margin-bottom: 1rem;
 }
+
+.dev-m1 {
+    margin: 1rem;
+}
+
+.panel-body .dev-item-content {
+    border: none;
+}
+
+.dev-none-item {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}

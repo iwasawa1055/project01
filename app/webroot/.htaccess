@@ -1,6 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Error Log Measures
+    RewriteRule ^apple-touch-icon-.*?\.png$ images/apple-touch-icon.png [L]
+    RewriteRule ^favicon.ico$ images/favicon.ico [L]
+
     # Standard
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

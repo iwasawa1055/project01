@@ -78,6 +78,7 @@ const DELIVERY_ID_MANUAL = '7';
 
 // 通知カテゴリID
 const ANNOUNCEMENT_CATEGORY_ID_RECEIPT = 'INF283';
+const ANNOUNCEMENT_CATEGORY_ID_OUTBOUND = 'INF171';
 const ANNOUNCEMENT_CATEGORY_ID_BILLING = 'INF284';
 const ANNOUNCEMENT_CATEGORY_ID_KIT_RECEIPT = 'INF080';
 const ANNOUNCEMENT_CATEGORY_YAMATO = [
@@ -145,7 +146,7 @@ const BOX_STATUS_LIST = [
     '10' => 'サービスの申し込み依頼中',
     '20' => 'サービスの申し込み依頼中',
     '30' => 'サービスの申し込み依頼中',
-    '40' => 'お預かり中',
+    '40' => '預け入れ申し込み依頼中',
     '60' => '倉庫作業中',
     '70' => 'お預かり中',
     '130' => 'お預かり中',
@@ -155,6 +156,8 @@ const BOX_STATUS_LIST = [
     '200' => 'お預かり中',
     '150' => '取り出し済み',
     '210' => '取り出し済み',
+    '220' => '預け入れ依頼中',
+    '230' => '預け入れ依頼中',
 ];
 const BOX_WRAPPING_TYPE_LIST = [
     '0' => '外装を外さない',
@@ -217,6 +220,23 @@ const KIT_IMAGE = [
     KIT_CD_LIBRARY_GVIDO      => '/images/library.png',
     KIT_CD_CLOSET             => '/images/cleaning.png',
     KIT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
+];
+
+const BOX_PREFIX_PRODUCT_CD = [
+    'HK' => PRODUCT_CD_HAKO,
+    'MN' => PRODUCT_CD_MONO,
+    'CL' => PRODUCT_CD_CLEANING_PACK,
+    'ML' => PRODUCT_CD_LIBRARY,
+    'MC' => PRODUCT_CD_CLOSET,
+];
+
+const PRODUCT_IMAGE = [
+    PRODUCT_CD_HAKO               => '/images/hako-regular.png',
+    PRODUCT_CD_MONO               => '/images/mono-regular.png',
+    PRODUCT_CD_CLEANING_PACK      => '/images/cleaning.png',
+    PRODUCT_CD_LIBRARY            => '/images/library.png',
+    PRODUCT_CD_CLOSET             => '/images/cleaning.png',
+    PRODUCT_CD_GIFT_CLEANING_PACK => '/images/cleaning.png',
 ];
 
 const EXCESS_ATTENTION_PRODUCT_CD = [
@@ -555,5 +575,49 @@ const START_BOX_FREE = '2019-07-01 00:00:00';
 //minikuraCLEANING＋
 const USE_POINT_CONTENTS_TYPE_CLEANING_PLUS = '2';
 
+/* 入荷履歴ページ件数 */
+const INBOUND_HISTORY_PAGE_MAX_ITEM = 15;
+
+/* 出庫履歴ページ件数 */
+const OUTBOUND_HISTORY_PAGE_MAX_ITEM = 15;
+
+/* 集荷時間帯指定区分 */
+const INBOUND_PICKUP_TIME_CODE = [
+    '1' => '指定なし',
+    '2' => '午前',
+    '4' => '14時～16時',
+    '5' => '16時～18時',
+    '6' => '18時～21時',
+];
+
+const WRAPPING_TYPE_PRODUCT_CD_LIST = [
+    PRODUCT_CD_MONO,
+    PRODUCT_CD_CLEANING_PACK,
+    PRODUCT_CD_LIBRARY,
+    PRODUCT_CD_CLOSET,
+];
+
+const KEEPING_TYPE_PRODUCT_CD_LIST = [
+    PRODUCT_CD_CLEANING_PACK,
+];
+
+/* 基幹システム指示進捗区分(完了) */
+const WORKS_PROGRESS_TYPE_COMPLETE = '06';
+
+/* 一時出庫連携情報連携ステータス(キャンセル) */
+const WORKS_LINKAGE_LINK_STATUS_CANCEL = '2';
+
+/* 配送方法 */
+// 自分で配送
+const BOX_DELIVERY_TYPE_YOURSELF = '7';
+
 /* dummy amazon_order_reference_id */
 const DUMMY_AMAZON_ORDER_REFERENCE_ID = 'dummy-amazon-order-reference-id';
+
+/* 連携ステータス */
+// 未連携
+const LINKAGE_LINK_STATUS_NON = '0';
+// 連携済み
+const LINKAGE_LINK_STATUS_DONE = '1';
+// キャンセル
+const LINKAGE_LINK_STATUS_CANCEL = '2';

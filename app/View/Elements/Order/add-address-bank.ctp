@@ -31,7 +31,7 @@
     <?php echo $this->Form->error('PaymentAccountTransferKit.tel1', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
   </li>
   <li>
-    <label class="headline">お名前<span class="required">※</span></label>
+    <label class="headline">お名前</label>
     <ul class="col-name">
       <li>
         <?php echo $this->Form->input('PaymentAccountTransferKit.lastname', ['type' => 'text', 'placeholder'=>'例：寺田', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "family-name", 'error' => false, 'label' => false, 'div' => false]); ?>

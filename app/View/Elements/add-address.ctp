@@ -31,7 +31,7 @@
     <?php echo $this->Form->error("{$model}.tel1", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
   </li>
   <li>
-    <label class="headline">お名前<span class="required">※</span></label>
+    <label class="headline">お名前</label>
     <ul class="col-name user_name">
       <li>
         <?php echo $this->Form->input("{$model}.lastname", ['type' => 'text', 'class' => 'lastname', 'placeholder'=>'例：寺田', 'size' => '10', 'maxlength' => '30', 'autocomplete' => "family-name", 'error' => false, 'label' => false, 'div' => false]); ?>
