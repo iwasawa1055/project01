@@ -58,6 +58,68 @@ dt {
 dd {
   margin-left:150px;
 }
+
+.border_top {
+  border-top: solid 2px #8491c3;
+  padding: 5px;
+}
+
+.box_area {
+  overflow:  hidden;
+}
+
+.box_status {
+  padding: 0.5em 1em;
+  margin: 1em 0;
+  background: #f4f4f4;
+  border-left: solid 6px #6cb362;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.33);
+}
+.box_status p {
+  margin: 0;
+  padding: 0;
+}
+
+.box_info {
+  float:  left;
+  margin: 0.5em auto;
+  margin-right: 0.5em;
+  padding: 0.5em;
+  width: 32%;
+  border: 5px double #8491c3; /*太さ・線種・色*/
+  color: #333; /* 文字色 */
+  background-color: #fff; /* 背景色 */
+  border-radius: 1px; /*角の丸み*/
+}
+
+.box_info p {
+  margin: 0px 0 4px;
+}
+
+.box_info a {
+  margin: 5px;
+}
+
+.item_info {
+  float:  left;
+  width: 49%;
+  padding: 0.5em 1em;
+  margin: 0.1em auto;
+  margin-right: 0.2em;
+  border: solid 2px #8491c3;
+}
+.item_info p {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 </style>
 
 <div class="container">
@@ -82,114 +144,74 @@ dd {
 
 <?php if (!$customer->isEntry()) : ?>
 <div class="container">
-<h2>注文ID、作業ID</h2>
-<div class="col-md-3 order_id">
-<dl><dt>注文ID</dt>
-<?php foreach ($order_ids as $data): ?>
-<dd>
-    <span><?php echo $data['order_id']; ?></span>
-    <?php // TODO 一旦保留?>
-    <?php if (false) : ?>
-    <a href="/dev/delivery_done?order_id=<?php echo $data['order_id']; ?>">done</a>
+  <h2>ボックスアイテム情報</h2>
+
+  <?php
+  $status_list = [
+      BOXITEM_STATUS_BUYKIT_START => 'キットサービスの申し込み済み',
+      BOXITEM_STATUS_BUYKIT_DONE => 'キット発送',
+      BOXITEM_STATUS_INBOUND_START => '入庫受付',
+      BOXITEM_STATUS_INBOUND_DONE => '入庫完了',
+      BOXITEM_STATUS_OUTBOUND_START => '出庫受付',
+      BOXITEM_STATUS_OUTBOUND_DONE => '出庫終了',
+  ];
+  ?>
+
+  <?php foreach ($status_list as $status => $status_name) : ?>
+  <div class="box_area" >
+    <div class="box_status"><p><?php echo $status . ' : ' . $status_name; ?></p></div>
+    <?php if ($status == BOXITEM_STATUS_OUTBOUND_START) : ?>
+      <p style="color:red;">※「work_linkage_id」押下で出庫完了処理を実行します。複数出庫場合は同時に出庫依頼をかけたボックスも出庫されます</p>
     <?php endif; ?>
-</dd>
-<?php endforeach; ?>
-</dl>
-</div>
+    <?php if (isset($boxData[$status])) : ?>
+    <?php foreach ($boxData[$status] as $box) : ?>
+    <div class="box_info">
+      <p><b>ボックス情報</b></p>
+      <p>kit_name : <?php echo $box['kit_name']; ?></p>
+      <p>box_name : <?php echo $box['box_name']; ?></p>
+      <p>box_id : <?php echo $box['box_id']; ?></p>
+      <p>kit_cd : <?php echo $box['kit_cd']; ?></p>
+      <?php if ($status == BOXITEM_STATUS_OUTBOUND_START) : ?>
+      <p class="border_top"><b>出庫</b></p>
+      <p>work_linkage_id : <a href="/dev/outbound_done?work_linkage_id=<?php echo $box['outbound_linkage_id']; ?>"><?php echo $box['outbound_linkage_id']; ?></a></p>
+      <?php endif; ?>
+      <!-- 入庫受付 -->
+      <?php if ($status == BOXITEM_STATUS_INBOUND_START) : ?>
+      <p class="border_top"><b>ボックス入庫</b></p>
+      <?php if ($box['product_cd'] === PRODUCT_CD_HAKO) : ?>
+      <a href="/dev/inbound_done?number=1&box_id=<?php echo $box['box_id']; ?>">done</a>
+      <?php else : ?>
+      <a href="/dev/inbound_done?number=1&box_id=<?php echo $box['box_id']; ?>">done_1</a>
+      <a href="/dev/inbound_done?number=5&box_id=<?php echo $box['box_id']; ?>">done_5</a>
+      <a href="/dev/inbound_done?number=10&box_id=<?php echo $box['box_id']; ?>">done_10</a>
+      <?php if ($box['product_cd'] === PRODUCT_CD_MONO) : ?>
+      <a href="/dev/inbound_done?number=25&box_id=<?php echo $box['box_id']; ?>">done_25</a>
+      <?php endif; ?>
+      <?php endif; ?>
+      <?php endif; ?>
 
-<div class="col-md-3 inbound_box_id">
-<dl><dt>入庫</dt>
-<?php if (array_key_exists(BOXITEM_STATUS_INBOUND_START, $boxData)): ?>
-<?php foreach ($boxData[BOXITEM_STATUS_INBOUND_START] as $data): ?>
-<dd>
-<?php //pr($data); ?>
-    <span><?php echo $data['box_id']; ?></span>
-  <?php if ($data['product_cd'] === PRODUCT_CD_HAKO) : ?>
-    <a href="/dev/inbound_done?number=1&box_id=<?php echo $data['box_id']; ?>">done</a>
-  <?php else : ?>
-    <a href="/dev/inbound_done?number=1&box_id=<?php echo $data['box_id']; ?>">done_1</a>
-    <a href="/dev/inbound_done?number=5&box_id=<?php echo $data['box_id']; ?>">done_5</a>
-    <a href="/dev/inbound_done?number=10&box_id=<?php echo $data['box_id']; ?>">done_10</a>
-    <a href="/dev/inbound_done?number=11&box_id=<?php echo $data['box_id']; ?>">done_11</a>
-    <a href="/dev/inbound_done?number=12&box_id=<?php echo $data['box_id']; ?>">done_12</a>
-    <a href="/dev/inbound_done?number=13&box_id=<?php echo $data['box_id']; ?>">done_13</a>
-      <?php if ($data['product_cd'] === PRODUCT_CD_MONO) : ?>
-      <a href="/dev/inbound_done?number=25&box_id=<?php echo $data['box_id']; ?>">done_25</a>
-    <?php endif; ?>
-  <?php endif; ?>
-</dd>
-<?php endforeach; ?>
-<?php endif; ?>
-</dl>
-</div>
-
-
-<div class="col-md-3 outbound_work_id">
-<dl><dt>作業ID（出庫）</dt>
-<?php foreach ($work_ids_003 as $data): ?>
-<dd>
-    <span><?php echo $data['work_linkage_id']; ?></span>
-    <a href="/dev/outbound_done?work_linkage_id=<?php echo $data['work_linkage_id']; ?>">done</a>
-</dd>
-<?php endforeach; ?>
-</dl>
-</div>
-
-</div>
-
-<div class="container">
-<h2>ボックスアイテム</h2>
-<div class="boxitem row">
-<?php
-$a = [
-    BOXITEM_STATUS_BUYKIT_START => 'キットサービスの申し込み',
-    BOXITEM_STATUS_BUYKIT_DONE => 'キット発送',
-    BOXITEM_STATUS_INBOUND_START => '入庫受付',
-    // BOXITEM_STATUS_INBOUND_IN_PROGRESS => '入庫進行中',
-    BOXITEM_STATUS_INBOUND_DONE => '入庫終了',
-    BOXITEM_STATUS_OUTBOUND_START => '出庫受付',
-    BOXITEM_STATUS_OUTBOUND_DONE => '出庫終了',
-];
-foreach ($a as $status => $label): ?>
-    <div class="col-md-2">
-        <?php if (!array_key_exists($status, $boxData)) {
-            $boxData[$status] = [];
-        } ?>
-    <p><?php echo $status . ' ' . $label . ' (' . count($boxData[$status]) . ')'; ?></p>
-        <?php foreach ($boxData[$status] as $box): ?>
-        <div class="col-md-12">
-            <div class="box">
-                <?php if (!array_key_exists($box['box_id'], $timeData)) {
-                        $timeData[$box['box_id']] = [];
-                    }  ?>
-                <p>
-                    <?php echo $box['product_cd']; ?>,
-                    <?php echo $box['kit_cd']; ?>,
-                    <?php echo $box['box_id'];  ?>
-                    <?php if (count($timeData[$box['box_id']]) !== 0) {
-                            echo ' (' . count($timeData[$box['box_id']]) . ')';
-                        }  ?>
-                    <br>
-                    <?php echo $box['box_name']; ?>
-                </p>
-                    <?php foreach ($timeData[$box['box_id']] as $item): ?>
-                        <div class="<?php echo (BOXITEM_STATUS_INBOUND_DONE < $item['item_status']) ? 'outbound' : 'item'; ?>">
-                            <p>
-                                <?php echo $item['item_status']; ?>,
-                                <?php echo $item['item_id']; ?><br>
-                                <?php echo $item['item_name']; ?>
-                            </p>
-                        </div>
-                    <?php endforeach; ?>
-
-            </div>
+      <!-- over 入庫完了 -->
+      <?php if ($status == BOXITEM_STATUS_INBOUND_DONE || $status == BOXITEM_STATUS_OUTBOUND_START || $status == BOXITEM_STATUS_OUTBOUND_DONE) : ?>
+      <?php if ($box['product_cd'] != PRODUCT_CD_HAKO) : ?>
+      <p class="border_top"><b>アイテム情報 (<?php echo count($timeData[$box['box_id']]); ?>)</b></p>
+      <div class="box_area" >
+      <?php foreach ($timeData[$box['box_id']] as $item) : ?>
+        <div class="item_info">
+          <p>item_status : <?php echo $item['item_status']; ?></p>
+          <p>item_id : <?php echo $item['item_id']; ?></p>
+          <p>item_name : <?php echo $item['item_name']; ?></p>
         </div>
-    <?php endforeach; ?>
+      <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
+      <?php endif; ?>
 
     </div>
-<?php endforeach; ?>
+    <?php endforeach; ?>
+    <?php endif; ?>
+  </div>
+  <?php endforeach; ?>
+</div>
 <?php endif; ?>
-</div>
-</div>
 </body>
 </html>
