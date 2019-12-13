@@ -116,9 +116,35 @@ class OutboundController extends MinikuraController
         }
 
         $postal = $this->request->data['postal'];
-        $result = $this->getDatetime($postal);
+        $trunkCds = $this->request->data['trunk_cds'];
+        $slowest = [];
+        foreach ($trunkCds as $val) {
+            $result = $this->getDatetime($postal, $val);
+            if (count($slowest) === 0) {
+                $slowest = [
+                  'datetime_cd' => $result[1]['datetime_cd'],
+                  'result' => $result,
+                ];
+            } else {
+                // 比較して遅い方を優先させる
+                $dtExp1 = explode('-', $slowest['datetime_cd']);
+                $dtExp2 = explode('-', $result[1]['datetime_cd']);
+                $dt1 = strtotime($dtExp1[0] . '-' . $dtExp1[1] . '-' . $dtExp1[2] . ' ' . $dtExp1[3] . ':00:00');
+                $dt2 = strtotime($dtExp2[0] . '-' . $dtExp2[1] . '-' . $dtExp2[2] . ' ' . $dtExp2[3] . ':00:00');
+                if ($dt1 <= $dt2) {
+                    $slowest = [
+                      'datetime_cd' => $result[1]['datetime_cd'],
+                      'result' => $result,
+                    ];
+                }
+            }
+        }
+
         $status = !empty($result);
-        return json_encode(compact('status', 'result'));
+        return json_encode([
+          'status' => $status,
+          'result' => $slowest['result'],
+        ]);
     }
 
     /**
@@ -147,17 +173,50 @@ class OutboundController extends MinikuraController
         $address['postal']      = $this->_editPostalFormat($physicaldestination['PostalCode']);
         $address['pref']        = $physicaldestination['StateOrRegion'];
 
-        $result = $this->getDatetime($address['postal']);
+        $postal = $address['postal'];
+        $trunkCds = $this->request->data['trunk_cds'];
+        $slowest = [];
+        foreach ($trunkCds as $val) {
+            $result = $this->getDatetime($postal, $val);
+            if (count($slowest) === 0) {
+                $slowest = [
+                  'datetime_cd' => $result[1]['datetime_cd'],
+                  'result' => $result,
+                ];
+            } else {
+                // 比較して遅い方を優先させる
+                $dtExp1 = explode('-', $slowest['datetime_cd']);
+                $dtExp2 = explode('-', $result[1]['datetime_cd']);
+                $dt1 = strtotime($dtExp1[0] . '-' . $dtExp1[1] . '-' . $dtExp1[2] . ' ' . $dtExp1[3] . ':00:00');
+                $dt2 = strtotime($dtExp2[0] . '-' . $dtExp2[1] . '-' . $dtExp2[2] . ' ' . $dtExp2[3] . ':00:00');
+                if ($dt1 <= $dt2) {
+                    $slowest = [
+                      'datetime_cd' => $result[1]['datetime_cd'],
+                      'result' => $result,
+                    ];
+                }
+            }
+        }
+
         $status = !empty($result);
         $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
-        return json_encode(compact('status', 'result', 'isIsolateIsland'));
+        return json_encode([
+          'status' => $status,
+          'result' => $slowest['result'],
+          'isIsolateIsland' => $isIsolateIsland
+        ]);
     }
 
-    private function getDatetime($postal)
+    private function getDatetime($postal, $calendar = null)
     {
-        $result = $this->DatetimeDeliveryOutbound->apiGet([
+        $params = [
             'postal' => $postal,
-        ]);
+        ];
+        if (isset($calendar)) {
+            $params['calendar'] = $calendar;
+        }
+
+        $result = $this->DatetimeDeliveryOutbound->apiGet($params);
         return $result->results;
     }
 
@@ -456,6 +515,21 @@ class OutboundController extends MinikuraController
         $isBack = Hash::get($this->request->query, 'back');
         $data = CakeSession::read(self::MODEL_NAME . 'FORM');
         $pointUse = CakeSession::read(self::MODEL_NAME_POINT_USE);
+
+        // 倉庫を確認
+        $tmpTrunkCds = [];
+        foreach ($boxList as $val) {
+            $tmpTrunkCds[$val["trunk_cd"]] = 1;
+        }
+        foreach ($itemList as $val) {
+            $tmpTrunkCds[$val["box"]["trunk_cd"]] = 1;
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
+
         if ($isBack && !empty($data)) {
             // 前回追加選択は最後のお届け先を選択
             if (Hash::get($data[self::MODEL_NAME], 'address_id') === AddressComponent::CREATE_NEW_ADDRESS_ID) {
@@ -467,11 +541,12 @@ class OutboundController extends MinikuraController
             $address = $this->Address->find($addressId);
             $postal = $address['postal'];
             // お届け希望日と時間
-            $dateItemList = $this->getDatetime($postal);
+            $dateItemList = $this->getDatetime($postal, $trunkCds);
             // 利用ポイント
             $this->request->data[self::MODEL_NAME_POINT_USE] = $pointUse[self::MODEL_NAME_POINT_USE];
             $isIsolateIsland = in_array($address['pref'], ISOLATE_ISLANDS);
         }
+
         $this->set('dateItemList', $dateItemList);
         $this->set('isolateIsland', $isIsolateIsland);
         CakeSession::delete(self::MODEL_NAME . 'FORM');
@@ -1002,6 +1077,33 @@ class OutboundController extends MinikuraController
         }
         $this->set('use_possible_point', $use_possible_point);
 
+        // 倉庫を確認
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_LIBRARY,
+            ]
+        ];
+        $info_item_list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $tmpTrunkCds = [];
+        foreach ($info_item_list as $item) {
+            if (isset($item_id)) {
+                if (in_array($item['item_id'], $item_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+            if (isset($box_id)) {
+                if (in_array($item['box']['box_id'], $box_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
+
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.library.datetime_cd')) {
                 $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
@@ -1287,6 +1389,33 @@ class OutboundController extends MinikuraController
         }
         $this->set('use_possible_point', $use_possible_point);
 
+        // 倉庫を確認
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_LIBRARY,
+            ]
+        ];
+        $info_item_list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $tmpTrunkCds = [];
+        foreach ($info_item_list as $item) {
+            if (isset($item_id)) {
+                if (in_array($item['item_id'], $item_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+            if (isset($box_id)) {
+                if (in_array($item['box']['box_id'], $box_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
+
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.library.datetime_cd')) {
                 $this->set('datetime_cd', CakeSession::Read('app.data.library.datetime_cd'));
@@ -1552,6 +1681,36 @@ class OutboundController extends MinikuraController
         }
         $this->set('use_possible_point', $use_possible_point);
 
+        // 倉庫を確認
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_CLOSET,
+            ]
+        ];
+        $info_item_list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $tmpTrunkCds = [];
+        $item_id = CakeSession::read('app.data.closet.item_id');
+        $box_id = CakeSession::read('app.data.closet.box_id');
+        foreach ($info_item_list as $item) {
+            if (isset($item_id)) {
+                if (in_array($item['item_id'], $item_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+            if (isset($box_id)) {
+                if (in_array($item['box']['box_id'], $box_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
+
+
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.closet.datetime_cd')) {
                 $this->set('datetime_cd', CakeSession::Read('app.data.closet.datetime_cd'));
@@ -1780,6 +1939,35 @@ class OutboundController extends MinikuraController
             $use_possible_point = floor(($use_possible_point/10))*10;
         }
         $this->set('use_possible_point', $use_possible_point);
+
+        // 倉庫を確認
+        $where = [
+            'item_status' => [BOXITEM_STATUS_INBOUND_DONE],
+            'box.product_cd' => [
+                PRODUCT_CD_CLOSET,
+            ]
+        ];
+        $info_item_list = $this->InfoItem->apiGetResultsWhere([], $where);
+        $tmpTrunkCds = [];
+        $item_id = CakeSession::read('app.data.closet.item_id');
+        $box_id = CakeSession::read('app.data.closet.box_id');
+        foreach ($info_item_list as $item) {
+            if (isset($item_id)) {
+                if (in_array($item['item_id'], $item_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+            if (isset($box_id)) {
+                if (in_array($item['box']['box_id'], $box_id)) {
+                    $tmpTrunkCds[$item['box']["trunk_cd"]] = 1;
+                }
+            }
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.closet.datetime_cd')) {

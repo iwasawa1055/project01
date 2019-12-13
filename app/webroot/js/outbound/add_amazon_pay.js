@@ -77,7 +77,8 @@ var AppAmazonPay =
 
       $.post('/Outbound/getAddressDatetimeByAmazon', {
               //address_id: elem_address.val()
-              amazon_order_reference_id: amazon_order_reference_id
+              amazon_order_reference_id: amazon_order_reference_id,
+              trunk_cds: JSON.parse($('#trunkCds').val())
           },
 
             function (data) {

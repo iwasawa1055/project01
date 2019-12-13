@@ -34,13 +34,19 @@ var AppOutboundLibraryInputAddress =
 
       if ($('#address_id').val() == 'add') {
           url = "/outbound/getAddressDatetimeByPostal";
-          params = {postal: $('#postal').val()}
+          params = {
+            postal: $('#postal').val(),
+            trunk_cds: JSON.parse($('#trunkCds').val())
+          }
           if ($('#postal').val() == '') {
             return false;
           }
       } else {
           url = "/outbound/getAddressDatetime";
-          params = {address_id: $('#address_id').val()}
+          params = {
+            address_id: $('#address_id').val(),
+            trunk_cds: JSON.parse($('#trunkCds').val())
+          }
       }
 
       $.ajax({
