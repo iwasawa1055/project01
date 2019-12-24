@@ -151,13 +151,14 @@
                     <label>お届け品の中に上記の品物が含まれますか？</label>
                     <div>
                       <?php echo $this->Form->input("Outbound.aircontent_select", ['legend' => false, 'type' => 'radio', 'options' => OUTBOUND_HAZMAT, 'error' => false,
-                      'class' => 'aircontent_select', 'before' => '<label>', 'after' => '</label>', 'separator' => '</label><label>']); ?>
+                      'class' => 'aircontent_select', 'before' => '<label>', 'after' => '</label>', 'separator' => '</label><label>',
+                      'hiddenField' => false, 'style' => 'width: auto; height: auto; display: inline-block; -webkit-appearance: checkbox;']); ?>
                       <?php echo $this->Form->error("Outbound.aircontent_select", null, ['wrap' => 'p']) ?>
                     </div>
                     <!--航空機輸送禁止品目が含まれている場合、ここから表示-->
                     <div class="aircontent">
                       <label>含まれている場合、その品目をご記入ください。</label>
-                      <?php echo $this->Form->textarea('Outbound.aircontent', ['class' => 'aircontent_text', 'error' => false]); ?>
+                      <?php echo $this->Form->textarea('Outbound.aircontent', ['class' => 'aircontent_text', 'error' => false, 'style' => 'background: #ffffff;']); ?>
                       <?php echo $this->Form->error('Outbound.aircontent', null, ['wrap' => 'p']) ?>
                     </div>
                     <!--航空機輸送禁止品目が含まれている場合、ここまで表示-->
