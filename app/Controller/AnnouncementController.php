@@ -5,10 +5,12 @@ App::uses('Receipt', 'Model');
 App::uses('Billing', 'Model');
 App::uses('ReceiptDetail', 'Model');
 App::uses('PickupYamato', 'Model');
+App::uses('InboundAndOutboundHistory', 'Model');
 
 class AnnouncementController extends MinikuraController
 {
     const MODEL_NAME = 'Announcement';
+    const MODEL_NAME_OUTBOUND_HISTORY = 'InboundAndOutboundHistory';
 
     /**
      * 制御前段処理.
@@ -46,14 +48,26 @@ class AnnouncementController extends MinikuraController
         // 出庫レシート出力判定
         $outbound_receipt_flag = false;
         if ($data['category_id'] === ANNOUNCEMENT_CATEGORY_ID_OUTBOUND) {
-            $text = str_replace(array("\r\n", "\r", "\n"), '', $data['text']);
-            // Library
-            if (preg_match('/^.*ML-\d{4}-\d{3}.*$/u', $text)) {
-                $outbound_receipt_flag = true;
-            }
-            // Closet
-            if (preg_match('/^.*MC-\d{4}-\d{3}.*$/u', $text)) {
-                $outbound_receipt_flag = true;
+
+            $this->loadModel(self::MODEL_NAME_OUTBOUND_HISTORY);
+
+            // 取り出し詳細情報取得
+            $search_options = [];
+            $api_param['works_type'] = '003';
+            $api_param['announcement_id'] = $id;
+            $outbound_history_list = $this->_getOutboundHistory($search_options, $api_param);
+            if (!empty($outbound_history_list)) {
+                $outbound_history = $outbound_history_list[0];
+                //  一時テーブルにある出庫情報
+                if (isset($outbound_history['link_status'])) {
+                    if ($outbound_history['link_status'] !== LINKAGE_LINK_STATUS_CANCEL) {
+                        $box_ids = explode(",", $outbound_history['box_ids']);
+                        $box = $this->InfoBox->apiGetResultsFind([], ['box_id' => $box_ids[0]]);
+                        if ($box['product_cd'] === PRODUCT_CD_LIBRARY || $box['product_cd'] === PRODUCT_CD_CLOSET) {
+                            $outbound_receipt_flag = true;
+                        }
+                    }
+                }
             }
         }
         $this->set('outbound_receipt_flag', $outbound_receipt_flag);
@@ -269,5 +283,26 @@ class AnnouncementController extends MinikuraController
         }
 
         return $pickup_yamato_change;
+    }
+
+    /*
+     * 取り出し履歴情報を取得
+     *
+     * @param array  $_search_param 絞り込み条件
+     * @param string $_api_param    APIパラメータ
+     *
+     * @return array 絞り込み後の取出し履歴情報
+     */
+    private function _getOutboundHistory($_search_options = [], $_api_param = [])
+    {
+        // 取り出し履歴取得
+        $result = $this->InboundAndOutboundHistory->apiGet($_api_param);
+        if ($result->isSuccess()) {
+            $outbound_history_list = $result->results;
+        }
+
+        $outbound_history_list = $this->InboundAndOutboundHistory->searchTerm($outbound_history_list, $_search_options, false);
+
+        return $outbound_history_list;
     }
 }

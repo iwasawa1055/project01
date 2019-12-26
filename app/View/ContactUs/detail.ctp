@@ -18,12 +18,12 @@
                       <?php if ($ticket_data['status'] === 'solved' || $ticket_data['status'] === 'closed'):?>
                       <span class="btn btn-success btn-xs dev_contact_us_margin">完了</span>
                       <?php else:?>
-                      <span class="btn btn-danger btn-xs dev_contact_us_margin">オープン</a>
+                      <span class="btn btn-danger btn-xs dev_contact_us_margin">オープン</a></span>
                       <?php endif;?>
                   </label>
                   <p class="form-control-static"><?php echo $ticket_data['subject'];?></p>
                 </div>
-                <div class="form-group col-lg-12">
+                <div class="fo  rm-group col-lg-12">
                   <label>お問い合わせの内容</label>
                   <p class="form-control-static"><?php echo nl2br($ticket_data['description']);?></p>
                 </div>

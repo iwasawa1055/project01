@@ -123,6 +123,7 @@
 
   <!-- A8 コンバージョン設定 -->
   <span id="a8sales"></span>
+  <script src="//statics.a8.net/a8sales/a8sales.js"></script>
   <script>
   var a8_item_json = document.getElementById('order_list_a8_json').value;
   var a8_params = {

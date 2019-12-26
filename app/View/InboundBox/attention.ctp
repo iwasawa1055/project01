@@ -62,8 +62,8 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
                             <?php echo $this->Form->error("BoxList.{$inbound_base_data['box_type']}.{$box_data['box_id']}.title", null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
                         </div>
                         <?php if(in_array($box_data['product_cd'], EXTERIOR_REMOVAL_PRODUCT_CD, true)): ?>
+                          <?php echo $this->Form->input("BoxList.{$inbound_base_data['box_type']}.{$box_data['box_id']}.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
                           <label class="input-check">
-                            <?php echo $this->Form->input("BoxList.{$inbound_base_data['box_type']}.{$box_data['box_id']}.wrapping_type", ['type' => 'hidden', 'value' => '0']); ?>
                               <?php
                               echo $this->Form->input(
                                   "BoxList.{$inbound_base_data['box_type']}.{$box_data['box_id']}.wrapping_type",

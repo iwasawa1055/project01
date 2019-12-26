@@ -351,12 +351,18 @@ class OutboundController extends MinikuraController
 
         // ポイント取得
         $pointBalance = [];
-        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-        $res = $this->PointBalance->apiGet();
-        if (!empty($res->error_message)) {
-            $this->Flash->set(POINT_BALANCE_ERROR);
-        } else {
-            $pointBalance = $res->results[0];
+        try {
+            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+            $res = $this->PointBalance->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->set(POINT_BALANCE_ERROR);
+            } else {
+                $pointBalance = $res->results[0];
+            }
+        } catch (Exception $e) {
+            $pointBalance = [
+                'error_message' => '現在ポイントを使用できません。'
+            ];
         }
         $this->set('pointBalance', $pointBalance);
 
@@ -400,12 +406,18 @@ class OutboundController extends MinikuraController
 
         // ポイント取得
         $pointBalance = [];
-        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-        $res = $this->PointBalance->apiGet();
-        if (!empty($res->error_message)) {
-            $this->Flash->set(POINT_BALANCE_ERROR);
-        } else {
-            $pointBalance = $res->results[0];
+        try {
+            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+            $res = $this->PointBalance->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->set(POINT_BALANCE_ERROR);
+            } else {
+                $pointBalance = $res->results[0];
+            }
+        } catch (Exception $e) {
+            $pointBalance = [
+                'error_message' => '現在ポイントを使用できません。'
+            ];
         }
         $this->set('pointBalance', $pointBalance);
 
@@ -480,12 +492,18 @@ class OutboundController extends MinikuraController
 
             // ポイント取得
             $pointBalance = [];
-            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-            $res = $this->PointBalance->apiGet();
-            if (!empty($res->error_message)) {
-                $this->Flash->set(POINT_BALANCE_ERROR);
-            } else {
-                $pointBalance = $res->results[0];
+            try {
+                $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+                $res = $this->PointBalance->apiGet();
+                if (!empty($res->error_message)) {
+                    $this->Flash->set(POINT_BALANCE_ERROR);
+                } else {
+                    $pointBalance = $res->results[0];
+                }
+            } catch (Exception $e) {
+                $data['PointUse']['use_point'] = '0';
+                $pointBalance['point_balance'] = '0';
+                $pointBalance['error_message'] = '現在ポイントを使用できません。';
             }
             $this->set('pointBalance', $pointBalance);
 
@@ -629,12 +647,18 @@ class OutboundController extends MinikuraController
 
             // ポイント取得
             $pointBalance = [];
-            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-            $res = $this->PointBalance->apiGet();
-            if (!empty($res->error_message)) {
-                $this->Flash->set(POINT_BALANCE_ERROR);
-            } else {
-                $pointBalance = $res->results[0];
+            try {
+                $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+                $res = $this->PointBalance->apiGet();
+                if (!empty($res->error_message)) {
+                    $this->Flash->set(POINT_BALANCE_ERROR);
+                } else {
+                    $pointBalance = $res->results[0];
+                }
+            } catch (Exception $e) {
+                $data['PointUse']['use_point'] = '0';
+                $pointBalance['point_balance'] = '0';
+                $pointBalance['error_message'] = '現在ポイントを使用できません。';
             }
             $this->set('pointBalance', $pointBalance);
 
@@ -946,20 +970,24 @@ class OutboundController extends MinikuraController
 
         // ポイント情報
         $point_data = $this->_getPointData();
-        $this->set('point_balance', $point_data['point_balance']);
-        $this->request->data['PointUseImmediate'] = $point_data;
-        $this->PointUseImmediate->set($this->request->data);
-        // 合計金額取得
-        $outbound_total_price = $this->_setLibraryPriceAndItem();
-        // 使用可能ポイント
-        $use_possible_point = $point_data['point_balance'];
-        if (!empty($use_possible_point)) {
-            if ($use_possible_point > $outbound_total_price) {
-                $use_possible_point = $outbound_total_price;
+        if (!isset($point_data['error_message'])) {
+            $this->set('point_balance', $point_data['point_balance']);
+            $this->request->data['PointUseImmediate'] = $point_data;
+            $this->PointUseImmediate->set($this->request->data);
+            // 合計金額取得
+            $outbound_total_price = $this->_setLibraryPriceAndItem();
+            // 使用可能ポイント
+            $use_possible_point = $point_data['point_balance'];
+            if (!empty($use_possible_point)) {
+                if ($use_possible_point > $outbound_total_price) {
+                    $use_possible_point = $outbound_total_price;
+                }
+                $use_possible_point = floor(($use_possible_point/10))*10;
             }
-            $use_possible_point = floor(($use_possible_point/10))*10;
+            $this->set('use_possible_point', $use_possible_point);
+        } else {
+            $this->set('point_error_message', $point_data['error_message']);
         }
-        $this->set('use_possible_point', $use_possible_point);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.library.datetime_cd')) {
@@ -1231,20 +1259,24 @@ class OutboundController extends MinikuraController
 
         // ポイント情報
         $point_data = $this->_getPointData();
-        $this->set('point_balance', $point_data['point_balance']);
-        $this->request->data['PointUseImmediate'] = $point_data;
-        $this->PointUseImmediate->set($this->request->data);
-        // 合計金額取得
-        $outbound_total_price = $this->_setLibraryPriceAndItem();
-        // 使用可能ポイント
-        $use_possible_point = $point_data['point_balance'];
-        if (!empty($use_possible_point)) {
-            if ($use_possible_point > $outbound_total_price) {
-                $use_possible_point = $outbound_total_price;
+        if (!isset($point_data['error_message'])) {
+            $this->set('point_balance', $point_data['point_balance']);
+            $this->request->data['PointUseImmediate'] = $point_data;
+            $this->PointUseImmediate->set($this->request->data);
+            // 合計金額取得
+            $outbound_total_price = $this->_setLibraryPriceAndItem();
+            // 使用可能ポイント
+            $use_possible_point = $point_data['point_balance'];
+            if (!empty($use_possible_point)) {
+                if ($use_possible_point > $outbound_total_price) {
+                    $use_possible_point = $outbound_total_price;
+                }
+                $use_possible_point = floor(($use_possible_point/10))*10;
             }
-            $use_possible_point = floor(($use_possible_point/10))*10;
+            $this->set('use_possible_point', $use_possible_point);
+        } else {
+            $this->set('point_error_message', $point_data['error_message']);
         }
-        $this->set('use_possible_point', $use_possible_point);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.library.datetime_cd')) {
@@ -1281,9 +1313,11 @@ class OutboundController extends MinikuraController
             }
 
             // ポイントの確認
-            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
-            if (!$this->PointUseImmediate->validates()) {
-                $error = true;
+            if (isset($outbound_total_price)) {
+                $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+                if (!$this->PointUseImmediate->validates()) {
+                    $error = true;
+                }
             }
 
             if ($error == true) {
@@ -1496,20 +1530,24 @@ class OutboundController extends MinikuraController
 
         // ポイント情報
         $point_data = $this->_getPointData();
-        $this->set('point_balance', $point_data['point_balance']);
-        $this->request->data['PointUseImmediate'] = $point_data;
-        $this->PointUseImmediate->set($this->request->data);
-        // 合計金額取得
-        $outbound_total_price = $this->_setClosetPriceAndItem();
-        // 使用可能ポイント
-        $use_possible_point = $point_data['point_balance'];
-        if (!empty($use_possible_point)) {
-            if ($use_possible_point > $outbound_total_price) {
-                $use_possible_point = $outbound_total_price;
+        if (!isset($point_data['error_message'])) {
+            $this->set('point_balance', $point_data['point_balance']);
+            $this->request->data['PointUseImmediate'] = $point_data;
+            $this->PointUseImmediate->set($this->request->data);
+            // 合計金額取得
+            $outbound_total_price = $this->_setClosetPriceAndItem();
+            // 使用可能ポイント
+            $use_possible_point = $point_data['point_balance'];
+            if (!empty($use_possible_point)) {
+                if ($use_possible_point > $outbound_total_price) {
+                    $use_possible_point = $outbound_total_price;
+                }
+                $use_possible_point = floor(($use_possible_point/10))*10;
             }
-            $use_possible_point = floor(($use_possible_point/10))*10;
+            $this->set('use_possible_point', $use_possible_point);
+        } else {
+            $this->set('point_error_message', $point_data['error_message']);
         }
-        $this->set('use_possible_point', $use_possible_point);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.closet.datetime_cd')) {
@@ -1725,20 +1763,24 @@ class OutboundController extends MinikuraController
 
         // ポイント情報
         $point_data = $this->_getPointData();
-        $this->set('point_balance', $point_data['point_balance']);
-        $this->request->data['PointUseImmediate'] = $point_data;
-        $this->PointUseImmediate->set($this->request->data);
-        // 合計金額取得
-        $outbound_total_price = $this->_setClosetPriceAndItem();
-        // 使用可能ポイント
-        $use_possible_point = $point_data['point_balance'];
-        if (!empty($use_possible_point)) {
-            if ($use_possible_point > $outbound_total_price) {
-                $use_possible_point = $outbound_total_price;
+        if (!isset($point_data['error_message'])) {
+            $this->set('point_balance', $point_data['point_balance']);
+            $this->request->data['PointUseImmediate'] = $point_data;
+            $this->PointUseImmediate->set($this->request->data);
+            // 合計金額取得
+            $outbound_total_price = $this->_setClosetPriceAndItem();
+            // 使用可能ポイント
+            $use_possible_point = $point_data['point_balance'];
+            if (!empty($use_possible_point)) {
+                if ($use_possible_point > $outbound_total_price) {
+                    $use_possible_point = $outbound_total_price;
+                }
+                $use_possible_point = floor(($use_possible_point/10))*10;
             }
-            $use_possible_point = floor(($use_possible_point/10))*10;
+            $this->set('use_possible_point', $use_possible_point);
+        } else {
+            $this->set('point_error_message', $point_data['error_message']);
         }
-        $this->set('use_possible_point', $use_possible_point);
 
         if ($this->request->is('get')) {
             if (CakeSession::Read('app.data.closet.datetime_cd')) {
@@ -1773,9 +1815,11 @@ class OutboundController extends MinikuraController
             CakeSession::Write('app.data.closet.datetime_cd', $_POST['datetime_cd']);
 
             // ポイントの確認
-            $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
-            if (!$this->PointUseImmediate->validates()) {
-                $error = true;
+            if (isset($outbound_total_price)) {
+                $this->PointUseImmediate->data[self::MODEL_NAME_POINT_USE_IMMEDIATE]['subtotal'] = $outbound_total_price;
+                if (!$this->PointUseImmediate->validates()) {
+                    $error = true;
+                }
             }
 
             if ($error == true) {
@@ -2296,25 +2340,35 @@ class OutboundController extends MinikuraController
 
     private function _getPointData()
     {
-        // 保有ポイント
-        $point_balance = '';
-        $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
-        $res = $this->PointBalance->apiGet();
-        if (empty($res->error_message)) {
-            $point_balance = $res->results[0]['point_balance'];
-        }
-
-        // 使用ポイント
-        $use_point = CakeSession::Read('app.data.outbound.use_point');
-        if ($this->request->is('post')) {
-            $use_point = $this->request->data['PointUseImmediate']['use_point'];
-            CakeSession::write('app.data.outbound.use_point', $use_point);
-        }
-
         $point_data = [
-            'use_point'     => $use_point,
-            'point_balance' => $point_balance,
+            'use_point'     => 0,
+            'point_balance' => 0,
         ];
+        try {
+            // 保有ポイント
+            $point_balance = '';
+            $this->loadModel(self::MODEL_NAME_POINT_BALANCE);
+            $res = $this->PointBalance->apiGet();
+            if (empty($res->error_message)) {
+                $point_balance = $res->results[0]['point_balance'];
+                // 使用ポイント
+                $use_point = CakeSession::Read('app.data.outbound.use_point');
+                if ($this->request->is('post')) {
+                    $use_point = $this->request->data['PointUseImmediate']['use_point'];
+                    CakeSession::write('app.data.outbound.use_point', $use_point);
+                }
+
+                $point_data = [
+                    'use_point'     => $use_point,
+                    'point_balance' => $point_balance,
+                ];
+            } else {
+                $point_data['error_message'] = POINT_BALANCE_ERROR;
+            }
+
+        } catch (Exception $e) {
+            $point_data['error_message'] = '現在ポイントを使用できません';
+        }
 
         return $point_data;
     }

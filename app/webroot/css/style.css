@@ -2359,7 +2359,7 @@ textarea:disabled {
 .grid li {
   position: relative;
   letter-spacing: normal;
-  margin: 0 1rem 1rem;
+  margin: 0 1rem 2.5rem;
   vertical-align: top;
 }
 
@@ -2427,7 +2427,7 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  font-family: Meiryo, メイリオ, 'MS Pgothic', 'ＭＳ Ｐゴシック', 'Hiragino Kaku Gothic', ヒラギノ角ゴ, Helvetica, Arial, sans-serif;
+  font-family: Meiryo, メイリオ, "MS Pgothic", "ＭＳ Ｐゴシック", "Hiragino Kaku Gothic", ヒラギノ角ゴ, Helvetica, Arial, sans-serif;
   background: red;
 }
 
@@ -2488,16 +2488,16 @@ header .wrapper .global-nav li a {
   font-size: 14px;
   font-size: 1.4rem;
   color: white;
-  letter-spacing: .1rem;
+  letter-spacing: 0.1rem;
 }
 
 header .wrapper .global-nav li a.login, header .wrapper .global-nav li a.signin {
-  padding: .6rem .8rem;
+  padding: 0.6rem 0.8rem;
   font-size: 12px;
   font-size: 1.2rem;
   background: #fff;
   color: red;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
 }
 
 header .wrapper .global-nav li a.login {
@@ -2505,7 +2505,7 @@ header .wrapper .global-nav li a.login {
 }
 
 header .wrapper .global-nav li a i {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 header .wrapper .nav-toggle {
@@ -2550,7 +2550,7 @@ header .wrapper .navbar-collapse {
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     width: 100%;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     background: red;
   }
   header .wrapper .global-nav li {
@@ -2581,7 +2581,7 @@ header .wrapper .navbar-collapse {
     padding-left: 1.5rem;
     font-size: 16px;
     font-size: 1.6rem;
-    letter-spacing: .1rem;
+    letter-spacing: 0.1rem;
   }
   header .wrapper .global-nav li a.login, header .wrapper .global-nav li a.signin {
     margin: 0;
@@ -2589,7 +2589,7 @@ header .wrapper .navbar-collapse {
     font-size: 16px;
     font-size: 1.6rem;
     color: white;
-    letter-spacing: .1rem;
+    letter-spacing: 0.1rem;
     background: transparent;
     border: none;
   }
@@ -2612,18 +2612,18 @@ header .wrapper .navbar-collapse {
         flex-wrap: wrap;
     width: 4.5rem;
     height: 3.4rem;
-    top: .75rem;
+    top: 0.75rem;
     right: 1.5rem;
-    padding: .9rem 1rem;
+    padding: 0.9rem 1rem;
     background: red;
     border: 0.1rem solid white;
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     cursor: pointer;
   }
   header .wrapper .nav-toggle span {
     display: block;
     width: 100%;
-    height: .2rem;
+    height: 0.2rem;
     left: 0;
     background: white;
   }
@@ -3135,7 +3135,7 @@ footer .copyright {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  width: calc(100% / 3 - 2rem);
+  width: calc(100% / 3 - 2.2rem);
   margin: 0 1rem 2rem;
   padding: 1rem;
   border: 0.1rem solid #dddddd;
@@ -5772,7 +5772,7 @@ footer .copyright {
   }
   .pagenation li {
     width: 4rem;
-    margin: 0 1rem;
+    margin: 0 0.5rem;
   }
   .pagenation li .number {
     width: 3rem;
@@ -5784,6 +5784,7 @@ footer .copyright {
   .pagenation li .txt {
     font-size: 10px;
     font-size: 1rem;
+    white-space: nowrap;
   }
 }
 
@@ -6087,31 +6088,30 @@ footer .copyright {
 }
 
 .inbound .grid .box-info .box-input-name::-webkit-input-placeholder {
-  opacity: 0;
+  color: #dddddd;
 }
 
 .inbound .grid .box-info .box-input-name:-ms-input-placeholder {
-  opacity: 0;
+  color: #dddddd;
 }
 
 .inbound .grid .box-info .box-input-name::-ms-input-placeholder {
-  opacity: 0;
+  color: #dddddd;
 }
 
 .inbound .grid .box-info .box-input-name::placeholder {
-  opacity: 0;
+  color: #dddddd;
 }
 
 .inbound .grid .box-info .box-input-name::-ms-input-placeholder {
-  opacity: 0;
+  color: #dddddd;
 }
 
 .inbound .grid .box-info .box-input-name:-ms-input-placeholder {
-  opacity: 0.5;
+  color: #dddddd;
 }
 
 .inbound .grid .box-info .box-input-name:focus {
-  color: red;
   border: 0.1rem solid red;
   -webkit-box-shadow: inset 0 0 4px rgba(255, 0, 0, 0.5);
           box-shadow: inset 0 0 4px rgba(255, 0, 0, 0.5);
@@ -6119,37 +6119,31 @@ footer .copyright {
 }
 
 .inbound .grid .box-info .box-input-name:focus::-webkit-input-placeholder {
-  color: red;
   font-weight: bold;
   opacity: 1;
 }
 
 .inbound .grid .box-info .box-input-name:focus:-ms-input-placeholder {
-  color: red;
   font-weight: bold;
   opacity: 1;
 }
 
 .inbound .grid .box-info .box-input-name:focus::-ms-input-placeholder {
-  color: red;
   font-weight: bold;
   opacity: 1;
 }
 
 .inbound .grid .box-info .box-input-name:focus::placeholder {
-  color: red;
   font-weight: bold;
   opacity: 1;
 }
 
 .inbound .grid .box-info .box-input-name:focus::-ms-input-placeholder {
-  color: red;
   font-weight: bold;
   opacity: 1;
 }
 
 .inbound .grid .box-info .box-input-name:focus:-ms-input-placeholder {
-  color: red;
   font-weight: bold;
   opacity: 1;
 }
@@ -6379,7 +6373,7 @@ li.l-mtd-desc {
 
 @media screen and (max-width: 48rem) {
   .inbound .grid li {
-    margin: 0 1rem 1rem;
+    margin: 0 0.5rem 1rem;
   }
   .inbound .grid li .item-name {
     font-size: 12px;
@@ -7218,18 +7212,25 @@ li.l-mtd-desc {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin-left: auto;
-}
-
-.l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel {
-  margin-right: 0.5rem;
 }
 
 .l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel .txt-cancel {
   margin-bottom: 0;
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #333333;
+}
+
+.l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel {
+  margin-bottom: 0.5rem;
 }
 
 .l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel .btn-red-line {
@@ -7512,15 +7513,14 @@ li.l-mtd-desc {
     margin: 1rem 0 0 auto;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel {
-    width: calc(100% / 2 - 0.5rem);
-    margin-right: 0.5rem;
+    width: 100%;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-txt-cancel .txt-cancel {
-    font-size: 12px;
-    font-size: 1.2rem;
+    font-size: 10px;
+    font-size: 1rem;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel {
-    width: calc(100% / 2);
+    width: 100%;
   }
   .l-history-dtl .l-deposit-info .l-cancel .l-btn-cancel .btn-red-line {
     font-size: 12px;
@@ -7946,7 +7946,7 @@ li.l-mtd-desc {
   }
   .pagenation li {
     width: 4rem;
-    margin: 0 1rem;
+    margin: 0 0.5rem;
   }
   .pagenation li .number {
     width: 3rem;
@@ -7958,6 +7958,7 @@ li.l-mtd-desc {
   .pagenation li .txt {
     font-size: 10px;
     font-size: 1rem;
+    white-space: nowrap;
   }
 }
 
@@ -8737,5 +8738,195 @@ li.l-mtd-desc {
   .ls-action-box .l-action {
     width: 100%;
     margin-bottom: 1rem;
+  }
+}
+
+.l-cpt {
+  padding: 2rem 3rem 3rem;
+}
+
+.l-cpt .anm-check {
+  max-width: 12.8rem;
+  max-height: 12.8rem;
+  margin: 0 auto 2rem;
+}
+
+.l-cpt .anm-check .circle {
+  fill: #5ddb00;
+  stroke-dasharray: 403 405;
+  stroke-dashoffset: 404;
+}
+
+.l-cpt .anm-check .line {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 6.999999880200103px;
+  stroke-dasharray: 100 102;
+  stroke-dashoffset: 101;
+}
+
+.l-cpt .anm-check .start .line {
+  -webkit-animation: line_draw 466ms ease-in-out 233ms forwards;
+          animation: line_draw 466ms ease-in-out 233ms forwards;
+}
+
+@-webkit-keyframes line_draw {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes line_draw {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.l-cpt .ttl {
+  margin-bottom: 1.5rem;
+  font-size: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.l-rcmd {
+  margin-bottom: 4rem;
+  padding: 3rem;
+  border: 0.1rem solid #333333;
+}
+
+.l-rcmd .ttl {
+  margin-bottom: 1.5rem;
+  font-size: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.l-rcmd .sub-ttl {
+  margin-bottom: 3rem;
+  font-size: 16px;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.ls-rcmd {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.ls-rcmd .l-rcmd-dtl {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: calc(100% / 5 - 2rem);
+  margin: 0 1rem;
+}
+
+.ls-rcmd .l-rcmd-dtl .ttl-desc {
+  font-size: 14px;
+  font-size: 1.4rem;
+  color: #666666;
+  text-align: center;
+}
+
+.ls-rcmd .l-rcmd-dtl .img-logo {
+  margin: 1rem 0;
+}
+
+.ls-rcmd .txt {
+  font-size: 16px;
+  font-size: 1.6rem;
+  color: #666666;
+  text-align: center;
+}
+
+.ls-rcmd .txt .value {
+  font-size: 24px;
+  font-size: 2.4rem;
+}
+
+.btn-rcmd {
+  max-width: 37rem;
+  margin: auto;
+}
+
+@media screen and (max-width: 48rem) {
+  .l-cpt {
+    padding: 3rem 1rem;
+  }
+  .l-cpt .ttl {
+    margin-bottom: 1.5rem;
+    font-size: 18px;
+    font-size: 1.8rem;
+  }
+  .l-rcmd {
+    margin-bottom: 2rem;
+    padding: 2rem 0.5rem 0.5rem;
+  }
+  .l-rcmd .ttl {
+    font-size: 18px;
+    font-size: 1.8rem;
+  }
+  .l-rcmd .sub-ttl {
+    font-size: 14px;
+    font-size: 1.4rem;
+  }
+  .ls-rcmd {
+    margin-bottom: 0;
+  }
+  .ls-rcmd .l-rcmd-dtl {
+    width: calc(100% / 2 - 1rem);
+    margin: 0 0.5rem 2rem;
+  }
+  .ls-rcmd .l-rcmd-dtl .ttl-desc {
+    font-size: 12px;
+    font-size: 1.2rem;
+  }
+  .ls-rcmd .l-rcmd-dtl .img-logo {
+    margin: 0.5rem 0;
+  }
+  .ls-rcmd .txt {
+    font-size: 14px;
+    font-size: 1.4rem;
+  }
+  .ls-rcmd .txt .value {
+    font-size: 18px;
+    font-size: 1.8rem;
+  }
+  .btn-rcmd {
+    font-size: 12px;
+    font-size: 1.2rem;
   }
 }
