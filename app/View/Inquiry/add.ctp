@@ -1,3 +1,5 @@
+<?php $this->Html->script('inquiry/add.js?'.time(), ['block' => 'scriptMinikura']); ?>
+
     <div class="row">
       <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> お問い合わせ</h1>
@@ -53,6 +55,12 @@
                     <?php echo $this->Form->textarea('ZendeskInquiry.bug_text', ['class' => "form-control", 'rows' => 5, 'error' => false]); ?>
                     <?php echo $this->Form->error('ZendeskInquiry.bug_text', null, ['wrap' => 'p']) ?>
                   </div>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label>こちらではありませんか？</label>
+                  <dev id="help_link">
+                    <p><a href="https://help.minikura.com/hc/ja" target="_blank">よくあるご質問はこちら</a></p>
+                  </dev>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>

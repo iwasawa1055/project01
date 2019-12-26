@@ -1,7 +1,7 @@
 var AppInputDetail =
 {
   a: function () {
-    $("#ZendeskContactUsComment").each(function(){
+    $("#ZendeskInquiryComment").each(function(){
       $(this).bind('keyup', contact_target(this));
     });
     function contact_target(elm){
@@ -14,7 +14,7 @@ var AppInputDetail =
             "contact_message" : $(this).val()
           };
           $.ajax({
-            url      : '/contact_us/as_get_contact_help',
+            url      : '/inquiry/as_get_contact_help',
             cache    : false,
             data     : data,
             dataType : 'json',
