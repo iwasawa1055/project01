@@ -457,8 +457,8 @@ class OutboundController extends MinikuraController
     {
         $boxList = $this->outboundList->getBoxList();
         foreach ($boxList as &$box_info) {
-            $box_info['min_keep_date']      = $this->Common->getMinimumKeepDate($box_info['inbound_date']);
-            $box_info['take_out_free_date'] = $this->Common->getTakeOutFreeDate($box_info['inbound_date']);
+            $box_info['min_keep_date']      = $this->Common->getMinimumKeepDate($box_info['last_inbound_date']);
+            $box_info['take_out_free_date'] = $this->Common->getTakeOutFreeDate($box_info['last_inbound_date']);
         }
         HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
@@ -561,8 +561,8 @@ class OutboundController extends MinikuraController
     {
         $boxList = $this->outboundList->getBoxList();
         foreach ($boxList as &$box_info) {
-            $box_info['min_keep_date']      = $this->Common->getMinimumKeepDate($box_info['inbound_date']);
-            $box_info['take_out_free_date'] = $this->Common->getTakeOutFreeDate($box_info['inbound_date']);
+            $box_info['min_keep_date']      = $this->Common->getMinimumKeepDate($box_info['last_inbound_date']);
+            $box_info['take_out_free_date'] = $this->Common->getTakeOutFreeDate($box_info['last_inbound_date']);
         }
         HashSorter::sort($boxList, InfoBox::DEFAULTS_SORT_KEY);
         $this->set('boxList', $boxList);
