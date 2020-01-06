@@ -58,9 +58,11 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>こちらではありませんか？</label>
-                  <dev id="help_link">
-                    <p><a href="https://help.minikura.com/hc/ja" target="_blank">よくあるご質問はこちら</a></p>
-                  </dev>
+                  <ul class="ls-help">
+                    <li class="l-dtl">
+                      <a class="lnk-txt" href="https://help.minikura.com/hc/ja" target="_blank">よくあるご質問はこちら</a>
+                    </li>
+                  </ul>
                 </div>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="submit" class="btn btn-danger btn-lg btn-block">確認する</button>

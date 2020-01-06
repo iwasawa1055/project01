@@ -20,12 +20,16 @@ var AppInputDetail =
             dataType : 'json',
             type     : 'POST'
           }).done(function (data, textStatus, jqXHR) {
-            $('#help_link a').remove();
-            $.each(data.result, function (index, data) {
-              if (index < 5) {
-                $('#help_link').append('<p><a href="' + data['html_url'] + '" target="_blank">' + data['title'] + '</a></p>');
-              }
-            });
+            $('.ls-help li').remove();
+            if (data.result.length === 0) {
+              $('.ls-help').append('<li class="l-dtl"><a class="lnk-txt" href="https://help.minikura.com/hc/ja" target="_blank">よくあるご質問はこちら</a></li>');
+            } else {
+              $.each(data.result, function (index, data) {
+                if (index < 5) {
+                  $('.ls-help').append('<li class="l-dtl"><a class="lnk-txt" href="' + data['html_url'] + '" target="_blank">' + data['title'] + '</a></li>');
+                }
+              });
+            }
           }).fail(function (data, textStatus, errorThrown) {
           }).always(function (data, textStatus, returnedObject) {
           });

@@ -1070,6 +1070,18 @@ ul.sale-caption {
   font-size: 12px;
 }
 
+.ls-help {
+  margin-top: 5px;
+  padding-left: 20px;
+}
+
+.ls-help .l-dtl {
+  margin-bottom: 5px;
+  padding-left: 0;
+  font-size: 14px;
+  list-style: disc;
+}
+
 .caution {
   font-size: 12px;
   font-weight: bold;
@@ -1332,5 +1344,14 @@ ul.sale-caption {
     width: 5rem;
     padding-top: 0;
     margin-right: 0.25rem;
+  }
+
+  .ls-help {
+    margin-top: 10px;
+  }
+
+  .ls-help .l-dtl {
+    margin-bottom: 10px;
+    font-size: 12px;
   }
 }

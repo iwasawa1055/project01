@@ -56,9 +56,11 @@
                 </div>
                 <div class="form-group col-lg-12">
                   <label>こちらではありませんか？</label>
-                  <dev id="help_link">
-                    <p><a href="https://help.minikura.com/hc/ja" target="_blank">よくあるご質問はこちら</a></p>
-                  </dev>
+                  <ul class="ls-help">
+                    <li>
+                      <a class="lnk-txt" href="https://help.minikura.com/hc/ja" target="_blank">よくあるご質問はこちら</a>
+                    </li>
+                  </ul>
                 </div>
                 <span class="col-lg-6 col-md-6 col-xs-12">
                 <a class="btn btn-primary btn-lg btn-block" href="/contact_us">戻る</a>

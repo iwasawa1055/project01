@@ -783,6 +783,16 @@ br.sp {
   text-decoration: line-through;
 }
 
+.lnk-txt {
+  color: red;
+  text-decoration: underline;
+}
+
+.lnk-txt:hover, .lnk-txt:focus, .lnk-txt:active {
+  color: red;
+  text-decoration: underline;
+}
+
 /** validation **/
 @media screen and (max-width: 48rem) {
   button {
