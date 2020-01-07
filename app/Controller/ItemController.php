@@ -12,7 +12,7 @@ class ItemController extends MinikuraController
     const MODEL_NAME = 'InfoItem';
     const MODEL_NAME_INFO_BOX = 'InfoBox';
     const MODEL_NAME_ITEM_EDIT = 'Item';
-    const MODEL_NAME_SALES = 'Sales';
+    // const MODEL_NAME_SALES = 'Sales';
 
     protected $paginate = array(
         'limit' => 20,
@@ -31,7 +31,7 @@ class ItemController extends MinikuraController
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_INFO_BOX);
         $this->loadModel(self::MODEL_NAME_ITEM_EDIT);
-        $this->loadModel(self::MODEL_NAME_SALES);
+        // $this->loadModel(self::MODEL_NAME_SALES);
 
         $this->set('sortSelectList', $this->_makeSelectSortUrl());
         $this->set('select_sort_value', Router::reverse($this->request));
@@ -152,7 +152,7 @@ class ItemController extends MinikuraController
         /* viewで表示分け用
         *  sales情報があれば$itemで取得済み => Model/Api/InfoItem.php
         */
-        $sales = $this->Sales->checkSales($item);
+        // $sales = $this->Sales->checkSales($item);
 
         // クリーニング可能フラグ
         $flgCleaning = true;

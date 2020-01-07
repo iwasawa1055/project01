@@ -337,16 +337,16 @@ class CustomerComponent extends Component
 
     public function isCustomerSales()
     {
-        if ($this->isLogined()) {
-            $o = new CustomerSales();
-            $result = $o->apiGet();
-            if (!empty($result->results[0])) {
-                $customer_sales = $result->results[0];
-                if ($customer_sales['sales_flag'] === '1') {
-                    return true;
-                }
-            }
-        }
+        // if ($this->isLogined()) {
+        //     $o = new CustomerSales();
+        //     $result = $o->apiGet();
+        //     if (!empty($result->results[0])) {
+        //         $customer_sales = $result->results[0];
+        //         if ($customer_sales['sales_flag'] === '1') {
+        //             return true;
+        //         }
+        //     }
+        // }
         return false;
     }
 
