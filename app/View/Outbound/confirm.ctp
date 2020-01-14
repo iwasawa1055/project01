@@ -70,7 +70,11 @@
             </div>
             <div class="form-group col-lg-12">
               <label>ご利用ポイント</label>
+              <?php if (!isset($pointBalance['error_message'])) : ?>
               <p class="form-control-static"><?php echo empty($pointUse['use_point']) ? '0' : $pointUse['use_point']; ?> ポイント</p>
+              <?php else : ?>
+              <p class="form-control-static"><?php echo $pointBalance['error_message']; ?></p>
+              <?php endif; ?>
             </div>
             <div class="form-group col-lg-12">
               <label>お届け先住所</label>

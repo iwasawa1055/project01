@@ -92,6 +92,11 @@ var AppAmazonPay =
                   $('.datetime_select').toggle(!data.isIsolateIsland);
                   $('.aircontent').hide(!data.isIsolateIsland);
                   $('.isolate_island_select').toggle(data.isIsolateIsland);
+                  if (data.isIsolateIsland && !$('.aircontent_select').prop('checked')) {
+                    $('#OutboundAircontentSelect1').prop('checked', true);
+                    $('.datetime_select').hide();
+                    $('.aircontent').show();
+                  }
 
                   $('#isolateIsland').val(data.isIsolateIsland);
               }

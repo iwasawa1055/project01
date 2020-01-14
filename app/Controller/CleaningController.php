@@ -93,15 +93,19 @@ class CleaningController extends MinikuraController
         $item_list = array_merge($selected_item_list, $item_list);
 
         // ポイント取得
-        $res = $this->PointBalance->apiGet();
-        if (!empty($res->error_message)) {
-            $this->Flash->validation($res->error_message, ['key' => 'point_get']);
-            return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
-        } else {
-            $point_balance = $res->results[0]['point_balance'];
+        try {
+            $res = $this->PointBalance->apiGet();
+            if (!empty($res->error_message)) {
+                $this->Flash->validation($res->error_message, ['key' => 'point_get']);
+                return $this->redirect(['controller' => 'cleaning', 'action' => 'input']);
+            } else {
+                $point_balance = $res->results[0]['point_balance'];
+                $this->set('point_blance', $point_balance);
+            }
+        } catch (Exception $e) {
+            $this->set('point_error_message', '現在ポイントを使用できません。');
         }
 
-        $this->set('point_blance', $point_balance);
         $this->set('item_list', $item_list);
         $this->set('price', Configure::read('app.kit.cleaning.item_group_cd'));
 
@@ -118,13 +122,16 @@ class CleaningController extends MinikuraController
                     $subtotal += $price[$item['item_group_cd']];
                 }
 
-                $point_data = $this->request->data[self::MODEL_NAME_POINT_USE];
-                $this->PointUse->set($point_data);
-                $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $point_balance;
-                $this->PointUse->data[self::MODEL_NAME_POINT_USE]['subtotal'] = $subtotal;
-                // validation
-                if (!$this->PointUse->validates()) {
-                    $error_flag = true;
+                $point_data = [];
+                if (isset($this->request->data[self::MODEL_NAME_POINT_USE])) {
+                    $point_data = $this->request->data[self::MODEL_NAME_POINT_USE];
+                    $this->PointUse->set($point_data);
+                    $this->PointUse->data[self::MODEL_NAME_POINT_USE]['point_balance'] = $point_balance;
+                    $this->PointUse->data[self::MODEL_NAME_POINT_USE]['subtotal'] = $subtotal;
+                    // validation
+                    if (!$this->PointUse->validates()) {
+                        $error_flag = true;
+                    }
                 }
                 // 選択アイテム
                 if (empty($selected_item_list)) {
@@ -235,7 +242,7 @@ class CleaningController extends MinikuraController
         }
 
         /** ポイント利用 */
-        if (!empty($point_data['use_point'])) {
+        if (isset($point_data['use_point']) && !empty($point_data['use_point'])) {
             // ポイント取得
             $res = $this->PointBalance->apiGet();
             if (!empty($res->error_message)) {
