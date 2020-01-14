@@ -213,7 +213,7 @@ class OutboundController extends MinikuraController
             'postal' => $postal,
         ];
         if (isset($calendar)) {
-            $params['calendar'] = $calendar;
+            $params['trunk_cd'] = $calendar;
         }
 
         $result = $this->DatetimeDeliveryOutboundV4->apiGetDatetime($params);
