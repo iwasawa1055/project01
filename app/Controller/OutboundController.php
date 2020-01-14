@@ -39,7 +39,7 @@ class OutboundController extends MinikuraController
 
         $this->loadModel('InfoBox');
         $this->loadModel('InfoItem');
-        $this->loadModel('DatetimeDeliveryOutbound');
+        $this->loadModel('DatetimeDeliveryOutboundV4');
         $this->loadModel(self::MODEL_NAME);
         $this->loadModel(self::MODEL_NAME_OUTBOUND_BANK);
         $this->loadModel(self::MODEL_NAME_OUTBOUND_CREDIT_CARD);
@@ -216,7 +216,7 @@ class OutboundController extends MinikuraController
             $params['calendar'] = $calendar;
         }
 
-        $result = $this->DatetimeDeliveryOutbound->apiGet($params);
+        $result = $this->DatetimeDeliveryOutboundV4->apiGetDatetime($params);
         return $result->results;
     }
 
