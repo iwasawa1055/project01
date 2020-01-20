@@ -585,6 +585,20 @@ class OutboundController extends MinikuraController
 
         $dateItemList = [];
 
+        // 倉庫を確認
+        $tmpTrunkCds = [];
+        foreach ($boxList as $val) {
+            $tmpTrunkCds[$val["trunk_cd"]] = 1;
+        }
+        foreach ($itemList as $val) {
+            $tmpTrunkCds[$val["box"]["trunk_cd"]] = 1;
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
+
         if ($this->request->is('post')) {
             $data = $this->request->data;
             // 届け先追加を選択の場合は追加画面へ遷移
@@ -688,6 +702,20 @@ class OutboundController extends MinikuraController
         $this->set('itemList', $itemList);
 
         $dateItemList = [];
+
+        // 倉庫を確認
+        $tmpTrunkCds = [];
+        foreach ($boxList as $val) {
+            $tmpTrunkCds[$val["trunk_cd"]] = 1;
+        }
+        foreach ($itemList as $val) {
+            $tmpTrunkCds[$val["box"]["trunk_cd"]] = 1;
+        }
+        $trunkCds = [];
+        foreach ($tmpTrunkCds as $key => $val) {
+            $trunkCds[] = $key;
+        }
+        $this->set('trunkCds', $trunkCds);
 
         if ($this->request->is('post')) {
             $data = $this->request->data;
