@@ -390,6 +390,7 @@ class OutboundController extends MinikuraController
                 // has error
                 $outBoxList = $this->outboundList->getBoxList();
                 $this->set('errorList', $errorList);
+                CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' res ' . print_r($errorList, true));
             }
         }
 
