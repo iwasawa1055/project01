@@ -21,6 +21,7 @@
           <div class="row">
             <div class="col-lg-12">
               <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
+              <?php echo $this->Flash->render(); ?>
               <?php if (!empty($itemList)) : ?>
               <h2>取り出すアイテム</h2>
               <?php endif; ?>
