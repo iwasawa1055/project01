@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<script type="text/javascript" src="/js/jquery.min.js"></script>
 <title>dev - customer</title>
 <?php
   echo $this->Html->meta('icon');
@@ -160,9 +161,6 @@ p {
   <?php foreach ($status_list as $status => $status_name) : ?>
   <div class="box_area" >
     <div class="box_status"><p><?php echo $status . ' : ' . $status_name; ?></p></div>
-    <?php if ($status == BOXITEM_STATUS_OUTBOUND_START) : ?>
-      <p style="color:red;">※「work_linkage_id」押下で出庫完了処理を実行します。複数出庫場合は同時に出庫依頼をかけたボックスも出庫されます</p>
-    <?php endif; ?>
     <?php if (isset($boxData[$status])) : ?>
     <?php foreach ($boxData[$status] as $box) : ?>
     <div class="box_info">
@@ -171,10 +169,6 @@ p {
       <p>box_name : <?php echo $box['box_name']; ?></p>
       <p>box_id : <?php echo $box['box_id']; ?></p>
       <p>kit_cd : <?php echo $box['kit_cd']; ?></p>
-      <?php if ($status == BOXITEM_STATUS_OUTBOUND_START) : ?>
-      <p class="border_top"><b>出庫</b></p>
-      <p>work_linkage_id : <a href="/dev/outbound_done?work_linkage_id=<?php echo $box['outbound_linkage_id']; ?>"><?php echo $box['outbound_linkage_id']; ?></a></p>
-      <?php endif; ?>
       <!-- 入庫受付 -->
       <?php if ($status == BOXITEM_STATUS_INBOUND_START) : ?>
       <p class="border_top"><b>ボックス入庫</b></p>
@@ -195,6 +189,17 @@ p {
       <?php if ($box['product_cd'] != PRODUCT_CD_HAKO) : ?>
       <p class="border_top"><b>アイテム情報 (<?php echo count($timeData[$box['box_id']]); ?>)</b></p>
       <div class="box_area" >
+      <div class="no_item_area_<?php echo $box['box_id']?>">
+      <div class="item_disp_on">
+        <a href="javascript:void(0)" >アイテム表示</a>
+        <input type="hidden" name="box_id" value="<?php echo $box['box_id']?>">
+      </div>
+      </div>
+      <div class="item_area_<?php echo $box['box_id']?>" style="display:none">
+        <div class="item_disp_off">
+          <a href="javascript:void(0)" >アイテム非表示</a>
+          <input type="hidden" name="box_id" value="<?php echo $box['box_id']?>">
+        </div>
       <?php foreach ($timeData[$box['box_id']] as $item) : ?>
         <div class="item_info">
           <p>item_status : <?php echo $item['item_status']; ?></p>
@@ -203,6 +208,10 @@ p {
         </div>
       <?php endforeach; ?>
       </div>
+      </div>
+      <?php else: ?>
+      <p class="border_top"><b>アイテム情報</b></p>
+      存在しない
       <?php endif; ?>
       <?php endif; ?>
 
@@ -211,7 +220,37 @@ p {
     <?php endif; ?>
   </div>
   <?php endforeach; ?>
+  <h2>出庫処理</h2>
+  <?php foreach ($history_linkage_list as $history_info) : ?>
+  <div class="box_info">
+    <p><b>work_linkage_id</b></p>
+    <p><a href="/dev/outbound_done?work_linkage_id=<?php echo $history_info['work_linkage_id']; ?>"><?php echo $history_info['work_linkage_id']; ?></a></p>
+    <p class="border_top"><b>ボックス情報</b></p>
+    <p><?php echo $history_info['box_ids']; ?></p>
+    <p class="border_top"><b>アイテム情報</b></p>
+    <p><?php echo $history_info['item_ids']; ?></p>
+  </div>
+  <?php endforeach; ?>
 </div>
 <?php endif; ?>
+
+<script type="text/javascript">
+  $('.item_disp_on').on('click', function(){
+
+    var box_id = $(this).find('input[name="box_id"]').val();
+
+    $('.no_item_area_' + box_id).hide();
+    $('.item_area_' + box_id).show();
+  });
+
+  $('.item_disp_off').on('click', function(){
+
+    var box_id = $(this).find('input[name="box_id"]').val();
+
+    $('.item_area_' + box_id).hide();
+    $('.no_item_area_' + box_id).show();
+  });
+</script>
+
 </body>
 </html>

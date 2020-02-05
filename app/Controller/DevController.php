@@ -105,17 +105,9 @@ class DevController extends MinikuraController
 
             $ib = new InfoBox();
             $ib->deleteCache();
-            $api_param['works_type'] = '003';
-            $box_linkage_list = $this->_getOutboundBoxLinkageList($api_param);
             $boxList = $ib->apiGetResults();
             $data = [];
             foreach ($boxList as $b) {
-                // 出庫時のlinkage_idを詰める
-                if ($b['box_status'] == '180') {
-                    if (isset($box_linkage_list[$b['box_id']])) {
-                        $b['outbound_linkage_id'] = $box_linkage_list[$b['box_id']];
-                    }
-                }
                 $data[$b['box_status']][] = $b;
             }
             ksort($data);
@@ -130,6 +122,11 @@ class DevController extends MinikuraController
                 $data[$b['box_id']][] = $b;
             }
             $this->set('timeData', $data);
+
+            // 出庫処理
+            $api_param['works_type'] = '003';
+            $history_linkage_list = $this->_getOutboundHistoryLinkageList($api_param);
+            $this->set('history_linkage_list', $history_linkage_list);
         }
     }
 
@@ -220,27 +217,25 @@ class DevController extends MinikuraController
      *
      * @return array 絞り込み後の取出し履歴情報
      */
-    private function _getOutboundBoxLinkageList($_api_param = [])
+    private function _getOutboundHistoryLinkageList($_api_param = [])
     {
-        $box_linkage_list = [];
+        $history_list = [];
+        $history_linkage_list = [];
 
         $this->loadModel('InboundAndOutboundHistory');
 
         // 取り出し履歴取得
         $result = $this->InboundAndOutboundHistory->apiGet($_api_param);
         if ($result->isSuccess()) {
-            $outbound_history_list = $result->results;
+            $history_list = $result->results;
         }
-        $outbound_history_list = $this->InboundAndOutboundHistory->searchTerm($outbound_history_list, [], false);
-        foreach ($outbound_history_list as $outbound_history) {
-            $box_id_list = explode(',', $outbound_history['box_ids']);
-            foreach ($box_id_list as $box_id) {
-                if (isset($outbound_history['work_linkage_id'])) {
-                    $box_linkage_list[$box_id] = $outbound_history['work_linkage_id'];
-                }
+        foreach ($history_list as $history_info) {
+            if (!isset($history_info['work_linkage_id'])) {
+                continue;
             }
+            $history_linkage_list[] = $history_info;
         }
 
-        return $box_linkage_list;
+        return $history_linkage_list;
     }
 }
