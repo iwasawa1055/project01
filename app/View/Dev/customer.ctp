@@ -228,7 +228,11 @@ p {
     <p class="border_top"><b>ボックス情報</b></p>
     <p><?php echo $history_info['box_ids']; ?></p>
     <p class="border_top"><b>アイテム情報</b></p>
+    <?php if (empty($history_info['item_ids'])): ?>
+    <p>情報なし</p>
+    <?php else: ?>
     <p><?php echo $history_info['item_ids']; ?></p>
+    <?php endif; ?>
   </div>
   <?php endforeach; ?>
 </div>
