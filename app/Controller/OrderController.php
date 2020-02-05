@@ -586,9 +586,7 @@ class OrderController extends MinikuraController
             $target_index = array_search($data['address_id'], array_column($address_list, 'address_id'));
             $data = array_merge($data, $address_list[$target_index]);
         }
-        $data['card_seq']       = 0;
-        $data['lastname_kana']  = '　';
-        $data['firstname_kana'] = '　';
+        $data['card_seq'] = 0;
 
         /** 住所登録 */
         if ($data['address_id'] == 'add') {

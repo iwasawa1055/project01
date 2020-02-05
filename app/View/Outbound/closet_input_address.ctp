@@ -240,28 +240,34 @@
             <section class="l-input-pnt">
               <label class="headline">ポイントのご利用</label>
               <ul class="l-pnt-detail">
+                <?php if (!isset($point_error_message)) : ?>
+                  <li>
+                    <p class="txt-pnt">お持ちのポイントをご利用料金に割り当てることが出来ます。<br>
+                      1ポイント1円として100ポイント以上の残高から10ポイント単位でご利用いただけます。</p>
+                  </li>
+                  <li>
+                    <h3 class="title-pnt-sub">今回のご利用料金合計<span class="val"><?php echo number_format($outbound_total_price);?></span>円</h3>
+                  </li>
+                  <li>
+                    <h3 class="title-pnt-sub">現在のお持ちのポイント<span class="val"><?php echo number_format($point_balance);?></span>ポイント</h3>
+                  </li>
+                  <li>
+                    <h3 class="title-pnt-sub">ご利用可能ポイント<span class="val"><?php echo number_format($use_possible_point);?></span>ポイント</h3>
+                  </li>
+                  <li>
+                    <p class="txt-pnt">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。<br>取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。
+                    </p>
+                  </li>
+                  <li>
+                    <label class="headline">ご利用になるポイントを入力ください</label>
+                      <?php echo $this->Form->input('PointUseImmediate.use_point', ['id' => 'use_point', 'class' => 'use_point', 'type' => 'text', 'placeholder'=>'例：100', 'error' => false, 'label' => false, 'div' => false]); ?>
+                      <?php echo $this->Form->error('PointUseImmediate.use_point', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+                  </li>
+                <?php else : ?>
                 <li>
-                  <p class="txt-pnt">お持ちのポイントをご利用料金に割り当てることが出来ます。<br>
-                    1ポイント1円として100ポイント以上の残高から10ポイント単位でご利用いただけます。</p>
+                  <p class="txt-pnt"><?php echo $point_error_message; ?></p>
                 </li>
-                <li>
-                  <h3 class="title-pnt-sub">今回のご利用料金合計<span class="val"><?php echo number_format($outbound_total_price);?></span>円</h3>
-                </li>
-                <li>
-                  <h3 class="title-pnt-sub">現在のお持ちのポイント<span class="val"><?php echo number_format($point_balance);?></span>ポイント</h3>
-                </li>
-                <li>
-                  <h3 class="title-pnt-sub">ご利用可能ポイント<span class="val"><?php echo number_format($use_possible_point);?></span>ポイント</h3>
-                </li>
-                <li>
-                  <p class="txt-pnt">ご利用状況によっては、お申込みされたポイントをご利用できない場合がございます。<br>取り出しのお知らせやオプションのお知らせにはポイント料金調整前の価格が表示されます。ご了承ください。
-                  </p>
-                </li>
-                <li>
-                  <label class="headline">ご利用になるポイントを入力ください</label>
-                    <?php echo $this->Form->input('PointUseImmediate.use_point', ['id' => 'use_point', 'class' => 'use_point', 'type' => 'text', 'placeholder'=>'例：100', 'error' => false, 'label' => false, 'div' => false]); ?>
-                    <?php echo $this->Form->error('PointUseImmediate.use_point', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-                </li>
+                  <?php endif; ?>
               </ul>
             </section>
           </li>
@@ -274,3 +280,4 @@
         <li><button class="btn-red" id="execute">確認</button></li>
       </ul>
     </div>
+    <input type="hidden" id="trunkCds" value='<?php echo json_encode($trunkCds); ?>'>

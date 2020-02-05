@@ -21,6 +21,7 @@
           <div class="row">
             <div class="col-lg-12">
               <?php echo $this->Form->error("Outbound.product", null, ['wrap' => 'p', 'class' => 'error-message-red']) ?>
+              <?php echo $this->Flash->render(); ?>
               <?php if (!empty($itemList)) : ?>
               <h2>取り出すアイテム</h2>
               <?php endif; ?>
@@ -67,6 +68,7 @@
           <div class="row">
             <div class="col-lg-12">
               <h2>ポイントのご利用</h2>
+              <?php if (!isset($pointBalance['error_message'])) : ?>
               <p class="form-control-point col-lg-12"> お持ちのポイントをご利用料金に割り当てることが出来ます。<a href="<?php echo Configure::read('site.static_content_url'); ?>/lineup/points.html" class="animsition-link">▶ポイントについて</a>
                 <br />
                 ※1ポイント＝1円換算<br />
@@ -88,6 +90,9 @@
                   <?php echo $this->Form->error("PointUse.use_point", null, ['wrap' => 'p']) ?>
                 </div>
               </div>
+              <?php else : ?>
+                <p class="form-control-point col-lg-12"><?php echo $pointBalance['error_message']; ?></p>
+              <?php endif; ?>
             </div>
           </div>
         </div>
@@ -129,13 +134,14 @@
                 <label>お届け品の中に上記の品物が含まれますか？</label>
                 <div>
                   <?php echo $this->Form->input("Outbound.aircontent_select", ['legend' => false, 'type' => 'radio', 'options' => OUTBOUND_HAZMAT, 'error' => false,
-                        'class' => 'aircontent_select', 'before' => '<label>', 'after' => '</label>', 'separator' => '</label><label>']); ?>
+                      'class' => 'aircontent_select', 'before' => '<label>', 'after' => '</label>', 'separator' => '</label><label>',
+                      'hiddenField' => false, 'style' => 'width: auto; height: auto; display: inline-block; -webkit-appearance: checkbox;']); ?>
                   <?php echo $this->Form->error("Outbound.aircontent_select", null, ['wrap' => 'p']) ?>
                 </div>
                 <!--航空機輸送禁止品目が含まれている場合、ここから表示-->
                 <div class="aircontent">
                   <label>含まれている場合、その品目をご記入ください。</label>
-                  <?php echo $this->Form->textarea('Outbound.aircontent', ['class' => 'aircontent_text', 'error' => false]); ?>
+                  <?php echo $this->Form->textarea('Outbound.aircontent', ['class' => 'aircontent_text', 'error' => false, 'style' => 'background: #ffffff;']); ?>
                   <?php echo $this->Form->error('Outbound.aircontent', null, ['wrap' => 'p']) ?>
                 </div>
                 <!--航空機輸送禁止品目が含まれている場合、ここまで表示-->
@@ -154,6 +160,7 @@
           </div>
           <input type="hidden" id="isolateIsland" value="<?php echo $isolateIsland; ?>">
         </div>
+        <input type="hidden" id="trunkCds" value='<?php echo json_encode($trunkCds); ?>'>
       </div>
       <?php echo $this->Form->end(); ?>
       <?php else:?>

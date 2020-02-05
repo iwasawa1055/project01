@@ -119,6 +119,9 @@ class OutboundList
         $this->boxList = [];
         $errorList = [];
         foreach ($list as $a) {
+            if (!in_array($a['box_id'], $idList, true)) {
+                continue;
+            }
             $boxId = $a['box_id'];
             $msg = $this->canAddBox($a);
             if (!empty($msg)) {
