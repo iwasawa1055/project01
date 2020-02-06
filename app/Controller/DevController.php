@@ -7,15 +7,18 @@ App::uses('InfoItem', 'Model');
 App::uses('InfoBox', 'Model');
 App::uses('DevOrderId', 'Model');
 App::uses('DevWorkId', 'Model');
+App::uses('DevWorkLinkageId', 'Model');
 App::uses('DevDeliVeryDone', 'Model');
 App::uses('DevDeliVeryCancel', 'Model');
 App::uses('DevInboundDone', 'Model');
 App::uses('DevOutboundDone', 'Model');
+App::uses('DevOutboundLingkageDone', 'Model');
 App::uses('DevBilling', 'Model');
 App::uses('DevUserApplying', 'Model');
 App::uses('DevUserDebt', 'Model');
 App::uses('OutboundList', 'Model');
 App::uses('AppMail', 'Lib');
+App::uses('InboundAndOutboundHistory', 'Model');
 
 class DevController extends MinikuraController
 {
@@ -95,7 +98,7 @@ class DevController extends MinikuraController
             $this->set('order_ids', $order->results);
             $work = (new DevWorkId())->apiGet(['work_type' => '001']);
             $this->set('work_ids_001', $work->results);
-            $work = (new DevWorkId())->apiGet(['work_type' => '003']);
+            $work = (new DevWorkLinkageId())->apiGet(['work_type' => '003']);
             $this->set('work_ids_003', $work->results);
             $work = (new DevWorkId())->apiGet(['work_type' => '006']);
             $this->set('work_ids_006', $work->results);
@@ -119,6 +122,11 @@ class DevController extends MinikuraController
                 $data[$b['box_id']][] = $b;
             }
             $this->set('timeData', $data);
+
+            // 出庫処理
+            $api_param['works_type'] = '003';
+            $history_linkage_list = $this->_getOutboundHistoryLinkageList($api_param);
+            $this->set('history_linkage_list', $history_linkage_list);
         }
     }
 
@@ -160,9 +168,9 @@ class DevController extends MinikuraController
     public function outbound_done()
     {
         $this->layout = "";
-        $id = Hash::get($this->request->query, 'work_id');
-        $dev = new DevOutboundDone();
-        $res = $dev->apiPatch(['work_id' => $id]);
+        $id = Hash::get($this->request->query, 'work_linkage_id');
+        $dev = new DevOutboundLingkageDone();
+        $res = $dev->apiPatch(['work_linkage_id' => $id]);
         return $this->after($res);
     }
     public function billing()
@@ -199,5 +207,35 @@ class DevController extends MinikuraController
         $this->layout = "";
         ApiCachedModel::deleteAllCache();
         return $this->redirect(['action' => 'index']);
+    }
+
+    /*
+     * 取り出し履歴情報を取得
+     *
+     * @param array  $_search_param 絞り込み条件
+     * @param string $_api_param    APIパラメータ
+     *
+     * @return array 絞り込み後の取出し履歴情報
+     */
+    private function _getOutboundHistoryLinkageList($_api_param = [])
+    {
+        $history_list = [];
+        $history_linkage_list = [];
+
+        $this->loadModel('InboundAndOutboundHistory');
+
+        // 取り出し履歴取得
+        $result = $this->InboundAndOutboundHistory->apiGet($_api_param);
+        if ($result->isSuccess()) {
+            $history_list = $result->results;
+        }
+        foreach ($history_list as $history_info) {
+            if (!isset($history_info['work_linkage_id'])) {
+                continue;
+            }
+            $history_linkage_list[] = $history_info;
+        }
+
+        return $history_linkage_list;
     }
 }
