@@ -76,6 +76,13 @@ class OutboundController extends MinikuraController
         $addressId = $this->request->data['address_id'];
         $address = $this->Address->find($addressId);
         $trunkCds = $this->request->data['trunk_cds'];
+
+        // TODO #34553 複数倉庫対応による到着日時の設定不具合報告内容
+        if (!is_array($trunkCds)) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' customer_info ' . print_r($this->Customer->getInfo(), true));
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' trunkCds ' . print_r($trunkCds, true));
+        }
+
         $slowest = [];
         foreach ($trunkCds as $val) {
             $result = $this->getDatetime($address['postal'], $val);
@@ -451,6 +458,13 @@ class OutboundController extends MinikuraController
             $trunkCds[] = $key;
         }
         $this->set('trunkCds', $trunkCds);
+
+        // TODO #34553 複数倉庫対応による到着日時の設定不具合報告内容
+        if (!is_array($trunkCds)) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' customer_info ' . print_r($this->Customer->getInfo(), true));
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' trunkCds ' . print_r($trunkCds, true));
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . ' box_list ' . print_r($boxList, true));
+        }
 
         // ポイント取得
         $pointBalance = [];
