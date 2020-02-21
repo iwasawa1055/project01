@@ -262,6 +262,13 @@ $(function () {
     return false;
 });
 
+$(function () {
+    $(window).on('load', function () {
+        $('.check').attr("class", "start");
+    });
+    return false;
+});
+
 $('.guidance').iziModal({
     group: "group",
     zindex: 100000,
