@@ -40,7 +40,7 @@ switch (true) {
         $config['site.mypage.url'] = 'https://sato-mypage.minikura.com';
         $config['site.static_content_url'] = 'https://sato-www.minikura.com';
 
-        $url = 'https://sato-user-api.minikura.com';
+        $url = 'https://a-api.minikura.com';
         $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';
         $config['api.minikura.access_point.minikura_v3'] = $url . '/v3/warehouse/minikura';
         $config['api.minikura.access_point.minikura_v4'] = $url . '/v4/minikura';
