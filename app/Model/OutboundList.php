@@ -119,7 +119,13 @@ class OutboundList
         $this->boxList = [];
         $errorList = [];
         foreach ($list as $a) {
-            if (!in_array($a['box_id'], $idList, true)) {
+            $is_exist_id = false;
+            foreach ($idList as $id) {
+                if ((string)$id === $a['box_id']) {
+                    $is_exist_id = true;
+                }
+            }
+            if (!$is_exist_id) {
                 continue;
             }
             $boxId = $a['box_id'];
