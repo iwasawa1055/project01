@@ -42,12 +42,13 @@ class DatetimeDeliveryOutboundV4 extends ApiModel
                 if (count($cd) === 4) {
                     if (!empty($cd[3]) && array_key_exists($cd[3], $this->time_code)) {
                         $time = $this->time_code[$cd[3]];
-                        $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]} {$time}";
+                        $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]} (".$this->_getWeek($cd[0].'-'.$cd[1].'-'.$cd[2]).") {$time}";
+                        // $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]} {$time}";
                     } else {
-                        $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]}";
+                        $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]} (".$this->_getWeek($cd[0].'-'.$cd[1].'-'.$cd[2]).")";
                     }
                 } else if (count($cd) === 3) {
-                    $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]}";
+                    $value['text'] = "{$cd[0]}/{$cd[1]}/{$cd[2]} (".$this->_getWeek($cd[0].'-'.$cd[1].'-'.$cd[2]).")";
                 }
                 $res[] = $value;
             }
@@ -56,5 +57,19 @@ class DatetimeDeliveryOutboundV4 extends ApiModel
         }
 
         return $d;
+    }
+
+    private function _getWeek($date) {
+      $week = [
+        '日', //0
+        '月', //1
+        '火', //2
+        '水', //3
+        '木', //4
+        '金', //5
+        '土', //6
+      ];
+
+      return $week[date('w', strtotime($date))];
     }
 }

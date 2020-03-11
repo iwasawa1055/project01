@@ -20,6 +20,7 @@ var AppAmazonPay =
         // 引数取得
         var params = {};
         params.amazon_order_reference_id = AppAmazonPayWallet.AmazonOrderReferenceId;
+        params.trunk_cds = JSON.parse($('#trunkCds').val());
 
         // API実行
         if (params.postal != '') {

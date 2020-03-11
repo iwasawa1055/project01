@@ -216,3 +216,4 @@
       </ul>
     </div>
     <?php endif;?>
+    <input type="hidden" id="trunkCds" value='<?php echo json_encode($trunkCds); ?>'>

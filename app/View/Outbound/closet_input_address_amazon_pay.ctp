@@ -89,3 +89,4 @@
         <li><button class="btn-red" id="execute">確認</button></li>
       </ul>
     </div>
+    <input type="hidden" id="trunkCds" value='<?php echo json_encode($trunkCds); ?>'>

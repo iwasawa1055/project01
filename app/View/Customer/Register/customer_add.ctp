@@ -34,6 +34,15 @@
             </li>
           </ul>
         </div>
+        <div class="campaign">
+          <a class="lnk" href="https://minikura.com/trial6/" target="_blank">
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/trial6-pc@1x.png 1x, /images/trial6-pc@2x.png 2x">
+              <source media="(max-width: 767px)" srcset="/images/trial6-sp@1x.png 1x, /images/trial6-sp@2x.png 2x">
+              <img src="/images/trial6-pc@1x.png" alt="今なら1箱6ヶ月無料体験 トライアルキャンペーン実施中！" class="img">
+            </picture>
+          </a>
+        </div>
       </section>
       <?php echo $this->Form->create('FacebookUser', ['url' => ['controller' => 'register', 'action' => 'customer_complete_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
       <?php echo $this->Form->hidden('FacebookUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>

@@ -2100,7 +2100,7 @@ textarea:disabled {
 .register {
   width: 100%;
   max-width: 80rem;
-  margin: auto;
+  margin: 0 auto 5rem;
   padding-top: 5rem;
 }
 
@@ -2136,6 +2136,15 @@ textarea:disabled {
   font-size: 1.6rem;
   color: red;
   font-weight: bold;
+}
+
+.campaign {
+  margin-top: 6rem;
+  border: 0.1rem solid red;
+}
+
+.campaign .lnk {
+  display: block;
 }
 
 .cleaning [class^="grid"] li {
@@ -2344,6 +2353,10 @@ textarea:disabled {
     font-size: 18px;
     font-size: 1.8rem;
     font-weight: bold;
+  }
+  .campaign {
+    width: calc(100% - 2rem);
+    margin: 3rem 1rem;
   }
 }
 
@@ -8938,5 +8951,97 @@ li.l-mtd-desc {
   .btn-rcmd {
     font-size: 12px;
     font-size: 1.2rem;
+  }
+}
+
+.login {
+  max-width: 70rem;
+  margin: auto;
+  padding-top: 4.5rem;
+}
+
+.login .l-login {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  padding-bottom: 1rem;
+  border: 0.1rem solid #dddddd;
+}
+
+.login .l-login .l-ls-login {
+  margin-bottom: 2rem;
+}
+
+.login .l-login .l-ls-login .l-dtl-login {
+  margin-bottom: 1rem;
+}
+
+.login .l-login .l-ls-action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 1rem;
+}
+
+.login .l-login .l-ls-action .l-dtl-action {
+  width: calc(100% / 2 - 1rem);
+  text-align: center;
+}
+
+.login .l-login .l-ls-action .l-dtl-action:first-child {
+  margin-right: 1rem;
+}
+
+.login .l-login .l-ls-action .l-dtl-action:last-child {
+  margin-left: 1rem;
+}
+
+.login .l-login .l-ls-action .txt-reset {
+  color: red;
+  font-weight: bold;
+}
+
+.login .l-login .txt-amazon {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.login .l-login .img-amazon {
+  max-width: 25rem;
+}
+
+@media screen and (max-width: 1280px) {
+  .login {
+    margin: auto;
+    padding-top: 4.5rem;
+  }
+  .login .page-header {
+    margin: 2rem 1rem 1rem;
+  }
+  .login .l-login {
+    width: calc(100% - 2rem);
+    margin: 0 1rem 2rem;
+    padding: 1rem;
+  }
+  .login .l-login .l-ls-action .l-dtl-action {
+    width: calc(100% / 2 - 0.5rem);
+  }
+  .login .l-login .l-ls-action .l-dtl-action:first-child {
+    margin-right: 0.5rem;
+  }
+  .login .l-login .l-ls-action .l-dtl-action:last-child {
+    margin-left: 0.5rem;
+  }
+  .login .l-login .txt-amazon {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .login .l-login .img-amazon {
+    max-width: 35rem;
   }
 }
