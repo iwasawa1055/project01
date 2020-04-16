@@ -549,7 +549,7 @@ const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しま
 // LIBRARY出庫金額
 const LIBRARY_OUTBOUND_BASIC_PRICE = 356; //出庫基本料金(税込)
 const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金(税込)
-const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 935; //1箱解約時出庫基本料金(税込)
+const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 1080; //1箱解約時出庫基本料金(税込)
 
 // CLOSET出庫金額
 const CLOSET_OUTBOUND_BASIC_PRICE = 458; //出庫基本料金(税込)
