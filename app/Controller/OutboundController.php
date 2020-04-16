@@ -2365,7 +2365,7 @@ class OutboundController extends MinikuraController
                 $outbound_box_list[$bi]['item'] = $item_list[$bi];
                 $box = $this->_getLibraryBoxByBoxId($bi);
                 $outbound_box_list[$bi]['box'] = $box[0];
-                if (date('Y-m-d', strtotime('16 month ago')) > $box[0]['last_inbound_date']) {
+                if (date('Y-m-d', strtotime('12 month ago')) > $box[0]['last_inbound_date']) {
                     $outbound_box_list[$bi]['price'] = 0;
                 } else {
                     $outbound_box_list[$bi]['price'] = LIBRARY_OUTBOUND_CANCELLATION_PRICE;
@@ -2503,7 +2503,7 @@ class OutboundController extends MinikuraController
                 $outbound_box_list[$bi]['item'] = $item_list[$bi];
                 $box = $this->_getClosetBoxByBoxId($bi);
                 $outbound_box_list[$bi]['box'] = $box[0];
-                if (date('Y-m-d', strtotime('16 month ago')) > $box[0]['last_inbound_date']) {
+                if (date('Y-m-d', strtotime('12 month ago')) > $box[0]['last_inbound_date']) {
                     $outbound_box_list[$bi]['price'] = 0;
                 } else {
                     $outbound_box_list[$bi]['price'] = CLOSET_OUTBOUND_CANCELLATION_PRICE;
