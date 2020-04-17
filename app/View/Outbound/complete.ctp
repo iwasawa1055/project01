@@ -29,7 +29,7 @@
                 <img src="/images/order/photo-hako@1x.jpg" srcset="/images/order/photo-hako@1x.jpg 1x, /images/order/photo-hako@2x.jpg 2x" alt="minikuraHAKO">
               </picture>
             </div>
-            <p class="txt"><span class="value">¥200</span>/月</p>
+            <p class="txt"><span class="value">¥250</span>/月</p>
           </li>
           <li id="mono" class="l-rcmd-dtl">
             <h4 class="ttl-desc">1点ごとのアイテム管理<img src="/images/logo/mono.svg" alt="minikuraMONO" class="img-logo"></h4>
@@ -38,7 +38,7 @@
                 <img src="/images/order/photo-mono@1x.jpg" srcset="/images/order/photo-mono@1x.jpg 1x, /images/order/photo-mono@2x.jpg 2x" alt="minikuraMONO">
               </picture>
             </div>
-            <p class="txt"><span class="value">¥250</span>/月</p>
+            <p class="txt"><span class="value">¥300</span>/月</p>
           </li>
           <li id="closet" class="l-rcmd-dtl">
             <h4 class="ttl-desc">ハンガー保管<img src="/images/logo/closet.svg" alt="minikuraCloset" class="img-logo"></h4>
@@ -47,7 +47,7 @@
                 <img src="/images/order/photo-closet@1x.jpg" srcset="/images/order/photo-closet@1x.jpg 1x, /images/order/photo-closet@2x.jpg 2x" alt="minikuraCloset">
               </picture>
             </div>
-            <p class="txt"><span class="value">¥450</span>/月</p>
+            <p class="txt"><span class="value">¥500</span>/月</p>
           </li>
           <li id="library" class="l-rcmd-dtl">
             <h4 class="ttl-desc">書籍に最適</span><img src="/images/logo/library.svg" alt="minikuraLibrary" class="img-logo"></h4>

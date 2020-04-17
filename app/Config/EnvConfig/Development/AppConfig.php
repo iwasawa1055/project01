@@ -63,10 +63,10 @@ switch (true) {
         $config['site.mypage.url'] = 'https://yoshioka-mypage.minikura.com';
         $config['site.static_content_url'] = 'https://yoshioka-contents.minikura.com';
         break;
-    case $_SERVER['HTTP_HOST'] === 'ishikawa1053-www.minikura.com':
+    case $_SERVER['HTTP_HOST'] === 'ishikawa1053-contents.minikura.com':
     case $_SERVER['SERVER_NAME'] === 'ishikawa1053-mypage.minikura.com':
         $config['site.mypage.url'] = 'https://ishikawa1053-mypage.minikura.com';
-        $config['site.static_content_url'] = 'https://ishikawa1053-www.minikura.com';
+        $config['site.static_content_url'] = 'https://ishikawa1053-contents.minikura.com';
 
         $url = 'https://dev-api.minikura.com';
         $config['api.minikura.oem_key'] = 'mB9JCKud0_o_yQgYYhulLTpuR9plqU5BjkXU9pgb_tiyn16xwfxpSA--';

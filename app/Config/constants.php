@@ -270,12 +270,12 @@ const PRODUCT_DATA_ARRAY = [
     PRODUCT_CD_MONO => [
         'photo_name'    => 'mono',
         'box_price'     => 0,
-        'monthly_price' => 250,
+        'monthly_price' => 300,
     ],
     PRODUCT_CD_HAKO => [
         'photo_name'    => 'hako',
         'box_price'     => 0,
-        'monthly_price' => 200,
+        'monthly_price' => 250,
     ],
     PRODUCT_CD_CLEANING_PACK => [
         'photo_name'    => 'cleaning',
@@ -289,7 +289,7 @@ const PRODUCT_DATA_ARRAY = [
     PRODUCT_CD_CLOSET => [
         'photo_name'    => 'closet',
         'box_price'     => 0,
-        'monthly_price' => 450,
+        'monthly_price' => 500,
     ],
 ];
 
