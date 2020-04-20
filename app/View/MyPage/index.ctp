@@ -10,7 +10,7 @@
           <picture>
             <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
             <source media="(max-width: 767px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
-            <img src="/images/free-box-pc@1x.png" alt="2020年6月1日よりご利用料金が変更になります 詳しくはこちら">
+            <img src="/images/price-revision-pc@1x.png" alt="2020年6月1日よりご利用料金が変更になります 詳しくはこちら">
           </picture>
         </a>
       </li>
