@@ -6,10 +6,19 @@
 
     <ul class="l-banner">
       <li class="l-banner-dtl">
+        <a href="https://minikura.com/info/news/430" target="_blank">
+          <picture>
+            <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
+            <source media="(max-width: 767px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
+            <img src="/images/price-revision-pc@1x.png" alt="2020年6月1日よりご利用料金が変更になります 詳しくはこちら">
+          </picture>
+        </a>
+      </li>
+      <li class="l-banner-dtl">
         <a href="/news/detail/414">
           <picture>
             <source media="(min-width: 768px)" srcset="/images/free-box-pc@1x.png 1x, /images/free-box-pc@2x.png 2x">
-            <source media="(min-width: 1px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
+            <source media="(max-width: 767px)" srcset="/images/free-box-sp@1x.png 1x, /images/free-box-sp@2x.png 2x">
             <img src="/images/free-box-pc@1x.png" alt="ボックス代金が無料になりました 詳しくはこちら">
           </picture>
         </a>
@@ -18,7 +27,7 @@
         <a href="/inbound/box/add">
           <picture>
             <source media="(min-width: 768px)" srcset="/images/collected-day-pc@1x.png 1x, /images/collected-day-pc@2x.png 2x">
-            <source media="(min-width: 1px)" srcset="/images/collected-day-sp@1x.png 1x, /images/collected-day-sp@2x.png 2x">
+            <source media="(max-width: 767px)" srcset="/images/collected-day-sp@1x.png 1x, /images/collected-day-sp@2x.png 2x">
             <img src="/images/collected-day-pc@1x.png" alt="13時までのお預け入れ申込で当日にお荷物の受取に伺います">
           </picture>
         </a>
