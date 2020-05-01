@@ -2140,7 +2140,9 @@ textarea:disabled {
 
 .campaign {
   margin-top: 6rem;
-  border: 0.1rem solid red;
+  /* border: 0.1rem solid red; */
+  max-width: 96rem;
+  margin: 6rem auto;
 }
 
 .campaign .lnk {
