@@ -16,7 +16,7 @@
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
       <ul class="l-banner">
         <li class="l-banner-dtl">
-          <a href="/news/detail/417">
+          <a href="/news/detail/430">
             <picture>
               <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
               <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
@@ -60,7 +60,8 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-hs">200</span>円(税抜)/箱</p>
+                <p class="price">月額保管料<span class="price-hs">250</span>円(税抜)/箱</p>
+                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -135,7 +136,8 @@
           <div class="lineup-caption">
             <ul class="lineup-price">
               <li>
-                <p class="price">月額保管料<span class="price-ms">250</span>円(税抜)</p>
+                <p class="price">月額保管料<span class="price-ms">300</span>円(税抜)</p>
+                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -194,6 +196,48 @@
             <?php echo $this->Form->error('PaymentGMOKitByCreditCard.mono_book_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
         </li>
+        <li id="closet" class="item type_hanger">
+          <p class="rib new"></p>
+          <h3><span>ハンガー保管</span>minikuraCloset</h3>
+          <div class="lineup-pict">
+            <picture>
+              <img src="/images/order/photo-closet@1x.jpg" srcset="/images/order/photo-closet@1x.jpg 1x, /images/order/photo-closet@2x.jpg 2x" alt="minikuraCloset">
+            </picture>
+          </div>
+          <div class="lineup-caption">
+            <ul class="lineup-price">
+              <li>
+                <p class="price">月額保管料<span class="price-hs">500</span>円(税抜)</p>
+                <p class="txt-revision">（6月1日からの料金表記です）</p>
+                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
+                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
+                <p class="captions">
+                  サービス申し込みから翌々月の最終営業日までにボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
+                </p>
+              </li>
+              <li class="option">
+              </li>
+            </ul>
+            <ul class="select-item">
+              <li>
+                <a class="view-caption"><img src="/images/order/question.svg">専用ボックス</a>
+              </li>
+              <li>
+                <div class="spinner">
+                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
+                  <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hanger_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hanger", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
+                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
+                </div>
+              </li>
+              <li class="captions">
+                <p class="size">W40cm×H40cm×D40cm</p>
+                <p class="caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
+              </li>
+            </ul>
+            <p class="select-num"><span id="hanger_total">0</span>個選択済み</p>
+            <?php echo $this->Form->error('PaymentNekoposKitByCreditCard.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+          </div>
+        </li>
         <li id="library" class="item type_other">
           <p class="rib popular"></p>
           <h3><span>書籍に最適</span>minikuraLibrary</h3>
@@ -233,47 +277,6 @@
             </ul>
             <p class="select-num"><span id="library_total">0</span>個選択済み</p>
             <?php echo $this->Form->error('PaymentGMOKitByCreditCard.library_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-          </div>
-        </li>
-        <li id="closet" class="item type_hanger">
-          <p class="rib new"></p>
-          <h3><span>ハンガー保管</span>minikuraCloset</h3>
-          <div class="lineup-pict">
-            <picture>
-              <img src="/images/order/photo-closet@1x.jpg" srcset="/images/order/photo-closet@1x.jpg 1x, /images/order/photo-closet@2x.jpg 2x" alt="minikuraCloset">
-            </picture>
-          </div>
-          <div class="lineup-caption">
-            <ul class="lineup-price">
-              <li>
-                <p class="price">月額保管料<span class="price-hs">450</span>円(税抜)</p>
-                <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
-                <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
-                <p class="captions">
-                  サービス申し込みから翌々月の最終営業日までにボックスのお預け入れが完了すると、サービスのお申し込みの初期費用が無料になります。
-                </p>
-              </li>
-              <li class="option">
-              </li>
-            </ul>
-            <ul class="select-item">
-              <li>
-                <a class="view-caption"><img src="/images/order/question.svg">専用ボックス</a>
-              </li>
-              <li>
-                <div class="spinner">
-                  <input type="button" name="spinner_down" class="dsn-btn-spinner spinner-down">
-                  <?php echo $this->Form->input('PaymentGMOKitByCreditCard.hanger_num', ['type' => 'text', 'default' => '0', 'class' => "input-spinner box_type_hanger", 'error' => false, 'label' => false, 'div' => false, 'readonly' => 'readonly']); ?>
-                  <input type="button" name="spinner_up" class="dsn-btn-spinner spinner-up">
-                </div>
-              </li>
-              <li class="captions">
-                <p class="size">W40cm×H40cm×D40cm</p>
-                <p class="caption">そのまま宅配便で送れる40cm四方の大容量なチャック付き不織布専用バッグです。</p>
-              </li>
-            </ul>
-            <p class="select-num"><span id="hanger_total">0</span>個選択済み</p>
-            <?php echo $this->Form->error('PaymentNekoposKitByCreditCard.hanger_num', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
           </div>
         </li>
         <li id="cleaning" class="item type_other">

@@ -3220,6 +3220,12 @@ footer .copyright {
   font-weight: bold;
 }
 
+.lineup .items .item .lineup-caption .lineup-price .txt-revision {
+  margin-bottom: 0.5rem;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
 .lineup .items .item .lineup-caption .lineup-price .application {
   margin-bottom: 0.5rem;
   display: -webkit-box;
