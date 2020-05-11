@@ -17,7 +17,7 @@
       <h1 class="page-header"><i class="fa fa-shopping-cart"></i> サービスの申し込み</h1>
       <ul class="l-banner">
         <li class="l-banner-dtl">
-          <a href="/news/detail/417">
+          <a href="/news/detail/430">
             <picture>
               <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
               <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
@@ -62,6 +62,7 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-hs">250</span>円(税抜)/箱</p>
+                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -137,6 +138,7 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-ms">300</span>円(税抜)</p>
+                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">

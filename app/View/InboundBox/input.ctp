@@ -12,7 +12,7 @@ $this->Html->script('pickupYamato', ['block' => 'scriptMinikura']);
             <h1 class="page-header"><i class="fa fa-arrow-circle-o-up"></i> ボックス預け入れ</h1>
             <ul class="l-banner">
               <li class="l-banner-dtl">
-                <a href="/news/detail/417">
+                <a href="/news/detail/430">
                   <picture>
                     <source media="(min-width: 768px)" srcset="/images/price-revision-pc@1x.png 1x, /images/price-revision-pc@2x.png 2x">
                     <source media="(min-width: 1px)" srcset="/images/price-revision-sp@1x.png 1x, /images/price-revision-sp@2x.png 2x">
