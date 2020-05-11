@@ -179,6 +179,16 @@ class CustomerComponent extends Component
         return false;
     }
 
+    public function isGoogle()
+    {
+        $model = new CustomerGoogle();
+        $res = $model->apiGet();
+        if (isset($res->results[0])) {
+            return true;
+        }
+        return false;
+    }
+
     public function getName()
     {
         if ($this->isLogined()) {

@@ -41,6 +41,7 @@ class ApiModel extends AppModel
     const SESSION_API_DIVISION = 'api.division';
     const SESSION_AMAZON_PAY_ACCESS_KEY = 'amazon_pay.access_key';
     const SESSION_FACEBOOK_ACCESS_KEY = 'facebook.access_key';
+    const SESSION_GOOGLE_ACCESS_KEY = 'google.access_key';
 
     protected $oem_key = null;
     protected $access_point = null;

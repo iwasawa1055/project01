@@ -194,6 +194,46 @@ class LoginController extends MinikuraController
 
     }
 
+     /**
+     * google ログイン
+     */
+    public function login_by_google()
+    {
+        $this->loadModel('CustomerLogingoogle');
+        $this->CustomerLogingoogle->set($this->request->data);
+
+        if ($this->CustomerLogingoogle->validates()) {
+
+            $res = $this->CustomerLogingoogle->login();
+            if (!empty($res->error_message)) {
+                // パスワード不正など
+                $this->request->data['CustomerLogin']['password'] = '';
+                $this->Flash->validation('googleアカウントで会員登録された方のみご利用可能です。', ['key' => 'google_access_token']);
+                return $this->render('index');
+            }
+
+            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $this->request->data['CustomerLogingoogle']['access_token']);
+
+            // ログイン処理
+            $this->request->data['CustomerLogin']['password'] = '';
+            $cookie_enable = false;
+            $this->_execLogin($res, $cookie_enable);
+
+            // ユーザー環境値登録
+            $this->Customer->postEnvAuthed();
+
+            // ログイン前のページに戻る
+            $this->_endJunction();
+
+        } else {
+            $this->Flash->validation('googleアカウント ログインエラー', ['key' => 'google_access_token']);
+            $this->redirect(['controller' => 'login', 'action' => 'index']);
+        }
+
+        $this->redirect(['controller' => 'login', 'action' => 'index']);
+
+    }
+    
     public function logout()
     {
         $this->loadModel('CustomerLogin');

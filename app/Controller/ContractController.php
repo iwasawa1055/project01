@@ -27,6 +27,11 @@ class ContractController extends MinikuraController
             $data['facebook_flg'] = true;
         }
 
+        // $data['google_flg'] = false;
+        // if ($this->Customer->isGoogle()) {
+        //     $data['google_flg'] = true;
+        // }
+
         $this->set('data', $data);
     }
 
@@ -70,6 +75,48 @@ class ContractController extends MinikuraController
 
         if (isset($res->results[0])) {
             $this->CustomerFacebook->apiDelete(['facebook_user_id' => $res->results[0]['facebook_user_id']]);
+        }
+
+        return $this->redirect(['controller' => 'contract', 'action' => 'index']);
+    }
+
+    public function register_google()
+    {
+
+        // google情報
+        $data = $this->request->data['GoogleUser'];
+
+        // Google連携
+        $this->loadModel('Customergoogle');
+        $this->CustomerGoogle->set(['google_user_id' => $data['google_user_id']]);
+        $res = $this->CustomerGoogle->regist();
+
+        if ($res->status == 0) {
+            if ($res->message == 'Record Already - google_user_id') {
+                $this->Flash->validation('お客様のGoogleアカウントは既に連携が登録されています。', ['key' => 'google_error']);
+            } elseif ($res->message == 'Record Already - token') {
+                $this->Flash->validation('お客様のMinikuraアカウントは既にGoogle連携登録されています。', ['key' => 'google_error']);
+            } else {
+                $this->Flash->validation('Google連携に失敗しました。', ['key' => 'google_error']);
+            }
+        } else {
+            // Google用access_tokenを保存
+            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $data['access_token']);
+        }
+
+        return $this->redirect(['controller' => 'contract', 'action' => 'index']);
+    }
+
+    /**
+     * SNS連携解除
+     */
+    public function unregister_google()
+    {
+        $this->loadModel('CustomerGoogle');
+        $res = $this->CustomerGoogle->apiGet();
+
+        if (isset($res->results[0])) {
+            $this->CustomerGoogle->apiDelete(['google_user_id' => $res->results[0]['google_user_id']]);
         }
 
         return $this->redirect(['controller' => 'contract', 'action' => 'index']);

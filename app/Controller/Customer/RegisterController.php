@@ -13,6 +13,8 @@ class RegisterController extends MinikuraController
     const MODEL_NAME_REGIST    = 'CustomerRegistInfo';
     const MODEL_NAME_FB_REGIST = 'CustomerFacebook';
     const MODEL_NAME_FB_CHECK  = 'FacebookUser';
+    const MODEL_NAME_GOOGLE_REGIST = 'CustomerGoogle';
+    const MODEL_NAME_GOOGLE_CHECK  = 'GoogleUser';
 
     /** tmp file */
     const REGISTER_EMAIL_FILE_DIR   = TMP . 'register_email';
@@ -160,6 +162,10 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_facebook()
     {
+        echo('<pre>');
+        var_dump($this->request->data);
+        echo('</pre>');
+        exit;
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
                 'Register/customer_add',
@@ -190,6 +196,47 @@ class RegisterController extends MinikuraController
 
         // facebook情報を保持
         CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_FB_CHECK]);
+
+        // 個人情報入力画面へリダイレクトする
+        return $this->redirect(['controller' => 'register', 'action' => 'add_personal']);
+
+    }
+
+    /**
+     * google情報取得フォーム
+     */
+    public function customer_complete_google()
+    {
+        //* session referer 確認
+        if (in_array(CakeSession::read('app.data.session_referer'), [
+                'Register/customer_add',
+                'Register/customer_complete_google',
+            ], true) === false ) {
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+
+        CakeSession::Write('app.data.session_referer', $this->name . '/' . $this->action);
+
+        $this->loadModel(self::MODEL_NAME_GOOGLE_CHECK);
+
+        //google既存チェック
+        $this->GoogleUser->set($this->request->data);
+        if ($this->GoogleUser->validates()) {
+            $res = $this->GoogleUser->get_account_data();
+            if (!empty($res->error_message)) {
+                $this->GoogleUser->validationErrors['google'][0] = '既にgoogleアカウントで登録済みです';
+                return $this->render('customer_add');
+            }
+        } else {
+            return $this->render('customer_add');
+        }
+        // alliance_cdを保存
+        if (CakeSession::Read('app.data.alliance_cd')) {
+            $this->request->data[self::MODEL_NAME_GOOGLE_CHECK]['alliance_cd'] = CakeSession::Read('app.data.alliance_cd');
+        }
+
+        // google情報を保持
+        CakeSession::write(self::MODEL_NAME_REGIST, $this->request->data[self::MODEL_NAME_GOOGLE_CHECK]);
 
         // 個人情報入力画面へリダイレクトする
         return $this->redirect(['controller' => 'register', 'action' => 'add_personal']);
@@ -467,6 +514,19 @@ class RegisterController extends MinikuraController
             }
 
             CakeSession::write(CustomerLogin::SESSION_FACEBOOK_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
+        }
+
+        // Google連携
+        if (isset($data['google_user_id'])) {
+            // FB連携
+            $this->CustomerGoogle->set(['google_user_id' => $data['google_user_id']]);
+            $res = $this->CustomerGoogle->regist();
+            if (!empty($res->error_message)) {
+                $this->Flash->validation($res->error_message, ['key' => 'complete_error']);
+                return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
+            }
+
+            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
         }
 
         CakeSession::delete(self::MODEL_NAME_REGIST);

@@ -63,6 +63,16 @@
         </div>
       </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="dsn-amazon-login">
+            <h3>Googleアカウントで会員登録された方はこちらからログインできます。</h3>
+            <a href="javascript:void(0);" class="" style="width:200px; height:35px">でログイン</a>
+            <?php //echo (!is_null($google_access_token))? '<p class="error-message">' . $google_access_token . '</p>' : ""; ?>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 <script src="/js/login.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>

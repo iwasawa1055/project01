@@ -23,6 +23,11 @@
               <?php echo $this->Form->error('FacebookUser.facebook', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
+              <div class="g-signin2 dev_id_google_registform" data-onsuccess="onSignIn"></div>
+              <p class="txt-caption">minikuraが許可なくお客さまのGoogleへ投稿することはございません。</p>
+              <?php //echo $this->Form->error('GooglekUser.google', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+            </li>
+            <li>
               <h3>メールアドレスで新規会員登録</h3>
               <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'register', 'action' => 'customer_add'], 'novalidate' => true]); ?>
 
@@ -51,4 +56,12 @@
       <?php echo $this->Form->hidden('FacebookUser.email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('FacebookUser.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('FacebookUser.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->end(); ?>
+
+      <?php echo $this->Form->create('GoogleUser', ['url' => ['controller' => 'register', 'action' => 'customer_complete_google'],"id" => "dev_id_google_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+      <?php echo $this->Form->hidden('GoogleUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('GoogleUser.google_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('GoogleUser.email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('GoogleUser.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('GoogleUser.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->end(); ?>
