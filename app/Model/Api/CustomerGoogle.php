@@ -6,7 +6,7 @@ class CustomerGoogle extends ApiModel
 {
     public function __construct()
     {
-        parent::__construct('CustomerGoogle', '/customer', 'Google_v5');
+        parent::__construct('CustomerGoogle', '/customer', 'google_v5');
     }
 
     public function regist()
@@ -16,7 +16,7 @@ class CustomerGoogle extends ApiModel
     }
 
     public $validate = [
-        'facebook_user_id' => [
+        'google_user_id' => [
             'notBlank' => [
                 'rule' => 'notBlank',
                 'required' => true,

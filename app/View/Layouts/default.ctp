@@ -17,8 +17,7 @@
 <meta property="og:description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！" />
 <meta name="twitter:card" content="summary" />
 <meta name="format-detection" content="telephone=no">
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com">
+<!-- <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script> -->
 <title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->fetch('meta');

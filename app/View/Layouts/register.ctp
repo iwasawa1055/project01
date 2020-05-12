@@ -9,8 +9,6 @@
     <meta name="description" content="箱であずかる収納サービス minikura。箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com">
     <?php echo $this->fetch('meta'); ?>
 
     <title>登録方法選択 - minikura</title>
@@ -52,6 +50,7 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
     <!-- End Google Tag Manager -->
+    <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
   </head>
 
   <body id="page-top">
@@ -124,6 +123,5 @@
         }(document, 'script', 'facebook-jssdk'));
     </script>
     <script src="/js/app_dev_facebook.js"></script>
-    <script src="/js/app_dev_google.js"></script>
   </body>
 </html>

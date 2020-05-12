@@ -162,10 +162,6 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_facebook()
     {
-        echo('<pre>');
-        var_dump($this->request->data);
-        echo('</pre>');
-        exit;
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
                 'Register/customer_add',
@@ -478,6 +474,12 @@ class RegisterController extends MinikuraController
             $this->CustomerRegistInfo->data['CustomerRegistInfo']['password'] = uniqid();
         }
 
+        // google登録の仮パスワードを発行
+        if (isset($data['google_user_id'])) {
+            // 仮のパスワードを設定
+            $this->CustomerRegistInfo->data['CustomerRegistInfo']['password'] = uniqid();
+        }
+
         if (!$this->entryFlag) {
             // 本登録
             $res = $this->CustomerRegistInfo->regist();
@@ -518,7 +520,7 @@ class RegisterController extends MinikuraController
 
         // Google連携
         if (isset($data['google_user_id'])) {
-            // FB連携
+            // Google連携
             $this->CustomerGoogle->set(['google_user_id' => $data['google_user_id']]);
             $res = $this->CustomerGoogle->regist();
             if (!empty($res->error_message)) {
