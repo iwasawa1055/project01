@@ -552,8 +552,8 @@ const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金(�
 const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 1080; //1箱解約時出庫基本料金(税込)
 
 // CLOSET出庫金額
-const CLOSET_OUTBOUND_BASIC_PRICE = 458; //出庫基本料金(税込)
-const CLOSET_OUTBOUND_PER_ITEM_PRICE = 50; //1アイテムあたり出庫基本料金(税込)
+const CLOSET_OUTBOUND_BASIC_PRICE = 495; //出庫基本料金(税込)
+const CLOSET_OUTBOUND_PER_ITEM_PRICE = 55; //1アイテムあたり出庫基本料金(税込)
 const CLOSET_OUTBOUND_CANCELLATION_PRICE = 1080; //1箱解約時出庫基本料金(税込)
 
 // REGISTER(会員登録)用
