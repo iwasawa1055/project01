@@ -60,10 +60,7 @@
 
       <?php echo $this->Form->create('GoogleUser', ['url' => ['controller' => 'register', 'action' => 'customer_complete_google'], "id" => "dev_id_google_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
       <?php echo $this->Form->hidden('GoogleUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('GoogleUser.google_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('GoogleUser.email', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('GoogleUser.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
-      <?php echo $this->Form->hidden('GoogleUser.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+      <?php echo $this->Form->hidden('GoogleUser.id_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->end(); ?>
       <script>
         function onLoadCallback() {
@@ -87,10 +84,7 @@
                 console.log(auth2.currentUser.get().tc.access_token);
                 console.log(auth2.currentUser.get().tc.id_token);
                 $('#dev_id_google_registform input[name="data[GoogleUser][access_token]"]').val(auth2.currentUser.get().tc.access_token);
-                $('#dev_id_google_registform input[name="data[GoogleUser][google_user_id]"]').val(auth2.currentUser.get().getId());
-                $('#dev_id_google_registform input[name="data[GoogleUser][email]"]').val(auth2.currentUser.get().Pt.yu);
-                $('#dev_id_google_registform input[name="data[GoogleUser][firstname]"]').val(auth2.currentUser.get().Pt.BW);
-                $('#dev_id_google_registform input[name="data[GoogleUser][lastname]"]').val(auth2.currentUser.get().Pt.CU);
+                $('#dev_id_google_registform input[name="data[GoogleUser][id_token]"]').val(auth2.currentUser.get().tc.id_token);
                 $("#dev_id_google_registform").submit();
               });
         }

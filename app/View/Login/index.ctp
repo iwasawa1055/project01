@@ -67,8 +67,12 @@
         <div class="panel-body">
           <div class="dsn-amazon-login">
             <h3>Googleアカウントで会員登録された方はこちらからログインできます。</h3>
-            <a href="javascript:void(0);" class="" style="width:200px; height:35px">でログイン</a>
-            <?php //echo (!is_null($google_access_token))? '<p class="error-message">' . $google_access_token . '</p>' : ""; ?>
+            <div class="g-signin2" onclick="signIn();">Google Sign In</div>
+            <?php echo $this->Form->create('CustomerLoginGoogle', ['url' => ['controller' => 'login', 'action' => 'login_by_facebook'], "id" => "dev_id_google_loginform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+            <?php echo $this->Form->hidden('CustomerLoginGoogle.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+            <?php echo $this->Form->hidden('CustomerLoginGoogle.id_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+            <?php echo $this->Form->end(); ?>
+            <?php //echo (!is_null($google_id_token))? '<p class="error-message">' . $google_id_token . '</p>' : ""; ?>
           </div>
         </div>
       </div>
@@ -99,3 +103,30 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 </script>
+<script>
+        function onLoadCallback() {
+          console.log('onLoadCallback');
+          gapi.load('auth2', function() {
+            gapi.auth2.init({
+                client_id: '56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com',
+                fetch_basic_profile: false,
+                scope: 'email profile openid'
+            });
+          });
+        }
+        function signIn() {
+            console.log('signIn');
+            var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signIn().then(function() {
+                console.log(auth2.currentUser.get().getId());
+                console.log(auth2.currentUser.get().Pt.yu); //email
+                console.log(auth2.currentUser.get().Pt.CU); //苗字
+                console.log(auth2.currentUser.get().Pt.BW); //名前
+                console.log(auth2.currentUser.get().tc.access_token);
+                console.log(auth2.currentUser.get().tc.id_token);
+                $('#dev_id_google_loginform input[name="data[GoogleUser][access_token]"]').val(auth2.currentUser.get().tc.access_token);
+                $('#dev_id_google_loginform input[name="data[GoogleUser][id_token]"]').val(auth2.currentUser.get().tc.id_token);
+                $("#dev_id_google_loginform").submit();
+              });
+        }
+      </script>

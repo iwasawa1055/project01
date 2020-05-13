@@ -203,6 +203,17 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_google()
     {
+        // アクセストークンを取得
+        $request_array = $this->request->data;
+        if($request_array['GoogleUser']['id_token'] === null) {
+            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_id_token_null');
+            $this->Flash->validation('Googleアカウントエラー', ['key' => 'id_token']);
+            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        }
+        
+        $this->loadModel('GoogleModel');
+        $this->request->data = $this->GoogleModel->getUserInfo($request_array);
+
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
                 'Register/customer_add',

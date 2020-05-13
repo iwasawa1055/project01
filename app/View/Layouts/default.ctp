@@ -17,7 +17,6 @@
 <meta property="og:description" content="箱であずかる収納サービス minikura。宅配便とWebでカンタン、詰めて送るだけ。クラウド収納でお部屋はもっと広くなる！" />
 <meta name="twitter:card" content="summary" />
 <meta name="format-detection" content="telephone=no">
-<!-- <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script> -->
 <title><?php $this->Title->p(); ?></title>
 <?php
   echo $this->fetch('meta');
@@ -66,6 +65,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
 <!-- End Google Tag Manager -->
+<!-- <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script> -->
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
