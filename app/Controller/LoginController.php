@@ -201,21 +201,22 @@ class LoginController extends MinikuraController
     {
         // アクセストークンを取得
         $request_array = $this->request->data;
-        if($request_array['GoogleUser']['access_token'] === null) {
-            CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_access_token_null');
-            $this->Flash->validation('Googleアカウントエラー', ['key' => 'google_access_token']);
-            $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
-        }
-        
+        // if($request_array['GoogleUser']['access_token'] === null) {
+        //     CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_access_token_null');
+        //     $this->Flash->validation('Googleアカウントエラー', ['key' => 'google_access_token']);
+        //     $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
+        // }
+
         $this->loadModel('GoogleModel');
-        $this->request->data = $this->GoogleModel->getUserInfo($request_array);
+        $this->request->data = $this->GoogleModel->getUserInfo_login($request_array);
 
-        $this->loadModel('CustomerLogingoogle');
-        $this->CustomerLogingoogle->set($this->request->data);
+        $this->loadModel('CustomerLoginGoogle');
+        $this->CustomerLoginGoogle->set($this->request->data);
 
-        if ($this->CustomerLogingoogle->validates()) {
+        if ($this->CustomerLoginGoogle->validates()) {
 
-            $res = $this->CustomerLogingoogle->login();
+            $res = $this->CustomerLoginGoogle->login();
+
             if (!empty($res->error_message)) {
                 // パスワード不正など
                 $this->request->data['CustomerLogin']['password'] = '';
@@ -223,7 +224,7 @@ class LoginController extends MinikuraController
                 return $this->render('index');
             }
 
-            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $this->request->data['CustomerLogingoogle']['access_token']);
+            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $this->request->data['CustomerLoginGoogle']['access_token']);
 
             // ログイン処理
             $this->request->data['CustomerLogin']['password'] = '';
