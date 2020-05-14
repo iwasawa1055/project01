@@ -203,6 +203,11 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_google()
     {
+        // アクセストークンとIDトークンを取得
+        $request_array = $this->request->data;
+        
+        $this->loadModel('GoogleModel');
+        $this->request->data = $this->GoogleModel->getUserInfo_regist($request_array);
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
                 'Register/customer_add',
@@ -329,8 +334,10 @@ class RegisterController extends MinikuraController
 
             // パスワードをバリデーション追加(FBユーザー以外)
             if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false && !$this->entryFlag) {
-                $validation_item[] = 'password';
-                $validation_item[] = 'password_confirm';
+                if (isset($this->request->data[self::MODEL_NAME_REGIST]['google_user_id']) == false && !$this->entryFlag) {
+                    $validation_item[] = 'password';
+                    $validation_item[] = 'password_confirm';
+                }
             }
 
             if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
@@ -469,13 +476,7 @@ class RegisterController extends MinikuraController
         }
 
         // Facebook登録のみ仮のパスワードを発行
-        if (isset($data['facebook_user_id'])) {
-            // 仮のパスワードを設定
-            $this->CustomerRegistInfo->data['CustomerRegistInfo']['password'] = uniqid();
-        }
-
-        // google登録の仮パスワードを発行
-        if (isset($data['google_user_id'])) {
+        if (isset($data['facebook_user_id']) || isset($data['google_user_id'])) {
             // 仮のパスワードを設定
             $this->CustomerRegistInfo->data['CustomerRegistInfo']['password'] = uniqid();
         }

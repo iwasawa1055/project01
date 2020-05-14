@@ -25,5 +25,12 @@ class GoogleUser extends ApiModel
                 'message' => ['notBlank', 'google_user_id'],
             ],
         ],
+        'id_token' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'id_token'],
+            ],
+        ],
     ];
 }

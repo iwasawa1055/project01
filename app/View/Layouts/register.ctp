@@ -124,6 +124,6 @@
         }(document, 'script', 'facebook-jssdk'));
     </script>
     <script src="/js/app_dev_facebook.js"></script>
-    <script src="/js/app_dev_google.js"></script>    
+    <script src="/js/app_dev_google.js"></script>
   </body>
 </html>
