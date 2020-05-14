@@ -521,6 +521,10 @@ class RegisterController extends MinikuraController
         // Google連携
         if (isset($data['google_user_id'])) {
             // Google連携
+            echo('<pre>');
+            var_dump($data);
+            echo('</pre>');
+            exit;
             $this->CustomerGoogle->set(['google_user_id' => $data['google_user_id']]);
             $res = $this->CustomerGoogle->regist();
             if (!empty($res->error_message)) {

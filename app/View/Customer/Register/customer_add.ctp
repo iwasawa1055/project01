@@ -65,7 +65,7 @@
       <?php echo $this->Form->hidden('GoogleUser.firstname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('GoogleUser.lastname', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->end(); ?>
-      <script>
+      <!-- <script>
         function onLoadCallback() {
           console.log('onLoadCallback');
           gapi.load('auth2', function() {
@@ -94,4 +94,4 @@
                 $("#dev_id_google_registform").submit();
               });
         }
-      </script>
+      </script> -->

@@ -51,6 +51,7 @@
     })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
     <!-- End Google Tag Manager -->
     <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+    <meta name="google-signin-client_id" content="56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com">
   </head>
 
   <body id="page-top">
@@ -123,5 +124,6 @@
         }(document, 'script', 'facebook-jssdk'));
     </script>
     <script src="/js/app_dev_facebook.js"></script>
+    <script src="/js/app_dev_google.js"></script>    
   </body>
 </html>
