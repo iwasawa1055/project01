@@ -138,17 +138,19 @@ $this->Html->script('customer/register/add', ['block' => 'scriptMinikura']);
               <p class="txt-caption">半角英数記号でご入力ください。</p>
             </li>
             <?php if (isset($this->request->data['CustomerRegistInfo']['facebook_user_id']) == false && !$entry_flag) : ?>
-            <li>
-              <label class="headline">パスワード<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.password', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcDeF12', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
-              <p class="txt-caption">半角英数記号6文字以上でご入力ください。</p>
-              <?php echo $this->Form->error('CustomerRegistInfo.password', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-            </li>
-            <li>
-              <label class="headline">パスワード（確認用）<span class="required">※</span></label>
-              <?php echo $this->Form->input('CustomerRegistInfo.password_confirm', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcD1234', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
-              <?php echo $this->Form->error('CustomerRegistInfo.password_confirm', null, ['size' => 20, 'maxlength' => 20, 'wrap' => 'p', 'class' => 'valid-il']) ?>
-            </li>
+              <?php if (isset($this->request->data['CustomerRegistInfo']['google_user_id']) == false && !$entry_flag) : ?>
+                <li>
+                  <label class="headline">パスワード<span class="required">※</span></label>
+                  <?php echo $this->Form->input('CustomerRegistInfo.password', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcDeF12', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
+                  <p class="txt-caption">半角英数記号6文字以上でご入力ください。</p>
+                  <?php echo $this->Form->error('CustomerRegistInfo.password', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
+                </li>
+                <li>
+                  <label class="headline">パスワード（確認用）<span class="required">※</span></label>
+                  <?php echo $this->Form->input('CustomerRegistInfo.password_confirm', ['size' => 20, 'maxlength' => 20, 'placeholder'=>'例：aBcD1234', 'label' => false, 'error' => false, 'div' => false, 'type' => 'password']); ?>
+                  <?php echo $this->Form->error('CustomerRegistInfo.password_confirm', null, ['size' => 20, 'maxlength' => 20, 'wrap' => 'p', 'class' => 'valid-il']) ?>
+                </li>
+             <?php endif; ?>
             <?php endif; ?>
             <li>
               <label class="headline">お知らせメール<span class="required">※</span></label>
