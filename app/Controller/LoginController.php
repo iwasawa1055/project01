@@ -201,11 +201,6 @@ class LoginController extends MinikuraController
     {
         // アクセストークンを取得
         $request_array = $this->request->data;
-        // if($request_array['GoogleUser']['access_token'] === null) {
-        //     CakeLog::write(DEBUG_LOG, $this->name . '::' . $this->action . '_access_token_null');
-        //     $this->Flash->validation('Googleアカウントエラー', ['key' => 'google_access_token']);
-        //     $this->redirect(['controller' => 'register', 'action' => 'customer_add']);
-        // }
 
         $this->loadModel('GoogleModel');
         $this->request->data = $this->GoogleModel->getUserInfo_login($request_array);

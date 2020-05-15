@@ -333,12 +333,10 @@ class RegisterController extends MinikuraController
                 'newsletter',
             ];
 
-            // パスワードをバリデーション追加(FBユーザーとgoogleユーザー以外)
-            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false && !$this->entryFlag) {
-                if (isset($this->request->data[self::MODEL_NAME_REGIST]['google_user_id']) == false && !$this->entryFlag) {
+            //パスワードをバリデーション追加(FBユーザーとgoogleユーザー以外)
+            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false && $this->request->data[self::MODEL_NAME_REGIST]['google_user_id'] == false && !$this->entryFlag) {
                     $validation_item[] = 'password';
                     $validation_item[] = 'password_confirm';
-                }
             }
 
             if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {

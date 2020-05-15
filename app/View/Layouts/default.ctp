@@ -65,7 +65,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
 <!-- End Google Tag Manager -->
-<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -158,6 +157,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>"></script>
   <?php endif; ?>
 <?php endif; ?>
-
+<script src="/js/app_dev_google.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
 </body>
 </html>

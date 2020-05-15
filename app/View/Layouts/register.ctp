@@ -50,7 +50,6 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-K4MN3W');</script>
     <!-- End Google Tag Manager -->
-    <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
   </head>
 
   <body id="page-top">
@@ -61,7 +60,6 @@
     <div id="header">
       <?php echo $this->element('Register/nav'); ?>
     </div>
-
     <?php echo $this->fetch('content'); ?>
 
     <div class="footer">
@@ -124,5 +122,6 @@
     </script>
     <script src="/js/app_dev_facebook.js"></script>
     <script src="/js/app_dev_google.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
   </body>
 </html>
