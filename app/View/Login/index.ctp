@@ -62,8 +62,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="panel panel-default">
+      <div class="panel panel-default">
         <div class="panel-body">
           <div class="dsn-amazon-login">
             <h3>Googleアカウントで会員登録された方はこちらからログインできます。</h3>
@@ -78,7 +77,6 @@
         </div>
       </div>
     </div>
-  </div>
 <script src="/js/login.js"></script>
 <script type='text/javascript' async='async' src="<?php echo Configure::read('app.amazon_pay.Widgets_url'); ?>" ></script>
 <?php $this->Html->script('login_dev', ['block' => 'scriptMinikura']); ?>

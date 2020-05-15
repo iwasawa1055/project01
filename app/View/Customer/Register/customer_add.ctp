@@ -21,8 +21,6 @@
               <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_regist"><img src="/images/icon-fb.svg" class="icon">Facebookで登録</a>
               <p class="txt-caption">minikuraが許可なくお客さまのFacebookへ投稿することはございません。</p>
               <?php echo $this->Form->error('FacebookUser.facebook', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-            </li>
-            <li>
               <div class="g-signin2" onclick="signIn();">Google Sign In</div>
               <p class="txt-caption">minikuraが許可なくお客さまのGoogleを操作することはございません。</p>
               <?php echo $this->Form->error('GoogleUser.google', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
