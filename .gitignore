@@ -46,3 +46,4 @@ news_feed.xml
 
 
 vendor/
+!/app/Vendor/google_api/vendor/
