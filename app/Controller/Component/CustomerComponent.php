@@ -13,6 +13,7 @@ App::uses('ContactUsCorporate', 'Model');
 App::uses('CustomerEmail', 'Model');
 App::uses('CustomerSales', 'Model');
 App::uses('CustomerFacebook', 'Model');
+App::uses('CustomerGoogle', 'Model');
 
 App::uses('EntryCustomerEnv', 'Model');
 App::uses('EntryCustomerPassword', 'Model');

@@ -131,6 +131,32 @@
             </div>
           </div>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h2>SNS連携</h2>
+                <div class="form-group col-lg-12">
+                  <label>Googleログイン</label>
+                  <p>
+                      <?php if ($customer->isGoogle()) : ?>
+                        <label class="sns">
+                          <span class="btn btn-info btn-md pull-right" onclick="javascript:location.href='/contract/unregister_google'">連携を解除する</span>
+                        </label>
+                        <p class="facebook-message">※google側の連携を外す場合は<a class="" href="" target="_blank">こちら</a>をご確認ください</p>
+                      <?php else: ?>
+                        <label class="sns">
+                          <div class="g-signin2" onclick="Login();"><span class="btn btn-info btn-md pull-right">連携する</span></div>
+                          <?php $google_access_token = $this->Flash->render('google_error'); ?>
+                          <?php echo (!is_null($google_access_token))? '<p class="error-message">' . $google_access_token . '</p>' : ""; ?>
+                        </label>
+                      <?php endif; ?>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <?php endif;?>
         <?php if (!$customer->isPrivateCustomer()):?>
         <div class="panel panel-default">
@@ -155,6 +181,11 @@
     <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'contract', 'action' => 'register_facebook'], "id" => "dev_id_facebook_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
     <?php echo $this->Form->hidden('FacebookUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
     <?php echo $this->Form->hidden('FacebookUser.facebook_user_id', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+    <?php echo $this->Form->end(); ?>
+
+    <?php echo $this->Form->create('CustomerRegistInfo', ['url' => ['controller' => 'contract', 'action' => 'register_google'], "id" => "dev_id_google_loginform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
+    <?php echo $this->Form->hidden('CustomerLoginGoogle.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
+    <?php echo $this->Form->hidden('CustomerLoginGoogle.id_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
     <?php echo $this->Form->end(); ?>
     <?php $this->Html->script('app_dev_facebook', ['block' => 'scriptMinikura']); ?>
     <script>

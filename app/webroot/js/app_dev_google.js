@@ -14,7 +14,7 @@ function onLoadCallback() {
 }
 // 登録用 
 function signIn() {
-    console.log('signIn');
+    console.log('signIn.regist');
     var auth2 = gapi.auth2.getAuthInstance();
       auth2.signIn().then(function() {
         console.log(auth2.currentUser.get().getAuthResponse().id_token);
@@ -26,7 +26,7 @@ function signIn() {
 }
 // ログイン用
 function Login() {
-    console.log('signIn');
+    console.log('signIn.login');
     var auth2 = gapi.auth2.getAuthInstance();
       auth2.signIn().then(function() {
         console.log(auth2.currentUser.get().getAuthResponse().id_token);
