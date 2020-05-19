@@ -24,7 +24,7 @@ class DatetimeDeliveryOutboundV4 extends ApiModel
         '4' => '14～16時',
         '5' => '16～18時',
         '6' => '18～20時',
-        '7' => '20～21時',
+        '7' => '19～21時',
     ];
 
     public function apiGetDatetime($data)
