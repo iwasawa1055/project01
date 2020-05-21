@@ -203,11 +203,8 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_google()
     {
-        // アクセストークンとIDトークンを取得
-        $request_array = $this->request->data;
-
         $this->loadModel('GoogleModel');
-        $this->request->data = $this->GoogleModel->getUserInfo_regist($request_array);
+        $this->request->data = $this->GoogleModel->getUserInfo_regist($this->request->data);
 
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
@@ -529,7 +526,6 @@ class RegisterController extends MinikuraController
                 return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
             }
 
-            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
         }
 
         CakeSession::delete(self::MODEL_NAME_REGIST);

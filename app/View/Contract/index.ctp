@@ -143,7 +143,7 @@
                         <label class="sns">
                           <span class="btn btn-info btn-md pull-right" onclick="javascript:location.href='/contract/unregister_google'">連携を解除する</span>
                         </label>
-                        <p class="facebook-message">※google側の連携を外す場合は<a class="" href="" target="_blank">こちら</a>をご確認ください</p>
+                        <p class="facebook-message">※google側の連携を外す場合は<a class="" href="https://myaccount.google.com/permissions" target="_blank">こちら</a>をご確認ください</p>
                       <?php else: ?>
                         <label class="sns">
                           <div class="g-signin2" onclick="Login();"><span class="btn btn-info btn-md pull-right">連携する</span></div>

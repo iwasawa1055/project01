@@ -199,11 +199,8 @@ class LoginController extends MinikuraController
      */
     public function login_by_google()
     {
-        // アクセストークンを取得
-        $request_array = $this->request->data;
-
         $this->loadModel('GoogleModel');
-        $this->request->data = $this->GoogleModel->getUserInfo_login($request_array);
+        $this->request->data = $this->GoogleModel->getUserInfo_login($this->request->data);
 
         $this->loadModel('CustomerLoginGoogle');
         $this->CustomerLoginGoogle->set($this->request->data);
