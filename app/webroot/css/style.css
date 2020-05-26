@@ -946,6 +946,42 @@ button[class^="btn"] {
   margin-right: 1rem;
 }
 
+.google {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  height: 4.5rem;
+  margin-top: 1.5rem;
+  color: #333333;
+  background-color: white;
+  border: 0.1rem solid #333333;
+}
+
+.google.btn {
+  padding: 0;
+}
+
+.google .icon {
+  width: 4rem;
+  height: 4rem;
+  margin-right: 1rem;
+  background: url(/images/icon-google.svg) no-repeat;
+  background-position: center;
+  background-size: 1.8rem;
+}
+
 .send-mail {
   display: -webkit-box;
   display: -ms-flexbox;
