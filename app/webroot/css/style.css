@@ -2888,6 +2888,9 @@ footer .copyright {
 }
 
 .col-login li {
+  -ms-flex-item-align: stretch;
+  -ms-grid-row-align: stretch;
+  align-self: stretch;
   width: calc(100% / 2);
   margin: 0;
   padding: 0;
