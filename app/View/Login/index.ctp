@@ -66,7 +66,7 @@
         <div class="panel-body">
           <div class="dsn-amazon-login">
             <h3>Googleアカウントで会員登録された方はこちらからログインできます。</h3>
-            <a href="#" class="btn google" onclick="Login();"><span class="icon"></span>Googleで登録</a>
+            <a href="#" class="btn google" onclick="Login();"><span class="icon"></span>Googleでログイン</a>
             <?php echo $this->Form->create('CustomerLoginGoogle', ['url' => ['controller' => 'login', 'action' => 'login_by_google'], "id" => "dev_id_google_loginform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
             <?php echo $this->Form->hidden('CustomerLoginGoogle.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
             <?php echo $this->Form->hidden('CustomerLoginGoogle.id_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
