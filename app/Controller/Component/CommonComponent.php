@@ -83,7 +83,7 @@ class CommonComponent extends Component
         $free_start_date = '';
 
         // 最低保管後の年月日を取得
-        $datetime = new DateTime($_date . ' +16 month');
+        $datetime = new DateTime($_date . ' +12 month');
         $tmp_free_start_date = $datetime->format('Y-m-01');
 
         // 取り出し無料開始日が過去の場合は対象外
