@@ -21,8 +21,7 @@
               <a href="javascript:void(0);" class="btn fb btn-facebook dev_facebook_regist"><img src="/images/icon-fb.svg" class="icon">Facebookで登録</a>
               <p class="txt-caption">minikuraが許可なくお客さまのFacebookへ投稿することはございません。</p>
               <?php echo $this->Form->error('FacebookUser.facebook', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
-              <div class="g-signin2" onclick="signIn();">Google Sign In</div>
-              <p class="txt-caption">minikuraが許可なくお客さまのGoogleを操作することはございません。</p>
+              <a href="#" class="btn google" onclick="signIn();"><span class="icon"></span>Googleで登録</a>
               <?php echo $this->Form->error('GoogleUser.google', null, ['wrap' => 'p', 'class' => 'valid-il']) ?>
             </li>
             <li>
@@ -57,31 +56,5 @@
       <?php echo $this->Form->end(); ?>
 
       <?php echo $this->Form->create('GoogleUser', ['url' => ['controller' => 'register', 'action' => 'customer_complete_google'], "id" => "dev_id_google_registform", 'inputDefaults' => ['label' => false, 'div' => false], 'novalidate' => true]); ?>
-      <?php echo $this->Form->hidden('GoogleUser.access_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->hidden('GoogleUser.id_token', ['value'=>'', 'label' => false, 'error' => false, 'div' => false]); ?>
       <?php echo $this->Form->end(); ?>
-
-<script>
-  function onLoadCallback() {
-  console.log('onLoadCallback');
-  gapi.load('auth2', function() {
-    gapi.auth2.init({
-        client_id: '56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com',
-        fetch_basic_profile: false,
-        scope: 'email profile openid'
-    });
-  });
-}
-
-function signIn() {
-    console.log('signIn');
-    var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signIn().then(function() {
-        console.log(auth2.currentUser.get().getAuthResponse().id_token);
-        console.log(auth2.currentUser.get().getAuthResponse().access_token);
-        $('#dev_id_google_registform input[name="data[GoogleUser][access_token]"]').val(auth2.currentUser.get().getAuthResponse().access_token);
-        $('#dev_id_google_registform input[name="data[GoogleUser][id_token]"]').val(auth2.currentUser.get().getAuthResponse().id_token);
-        $("#dev_id_google_registform").submit();
-      });
-}
-</script>

@@ -27,10 +27,10 @@ class ContractController extends MinikuraController
             $data['facebook_flg'] = true;
         }
 
-        // $data['google_flg'] = false;
-        // if ($this->Customer->isGoogle()) {
-        //     $data['google_flg'] = true;
-        // }
+        $data['google_flg'] = false;
+        if ($this->Customer->isGoogle()) {
+            $data['google_flg'] = true;
+        }
 
         $this->set('data', $data);
     }
@@ -80,15 +80,20 @@ class ContractController extends MinikuraController
         return $this->redirect(['controller' => 'contract', 'action' => 'index']);
     }
 
+    /**
+     * SNS連携(google)
+     */
     public function register_google()
     {
-
         // google情報
-        $data = $this->request->data['GoogleUser'];
+        $data = $this->request->data;
+
+        $this->loadModel('GoogleModel');
+        $data = $this->GoogleModel->getUserInfo_login($data);
 
         // Google連携
-        $this->loadModel('Customergoogle');
-        $this->CustomerGoogle->set(['google_user_id' => $data['google_user_id']]);
+        $this->loadModel('CustomerGoogle');
+        $this->CustomerGoogle->set(['google_user_id' => $data['CustomerLoginGoogle']['google_user_id']]);
         $res = $this->CustomerGoogle->regist();
 
         if ($res->status == 0) {
@@ -101,14 +106,14 @@ class ContractController extends MinikuraController
             }
         } else {
             // Google用access_tokenを保存
-            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $data['access_token']);
+            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $data['CustomerLoginGoogle']['access_token']);
         }
 
         return $this->redirect(['controller' => 'contract', 'action' => 'index']);
     }
 
     /**
-     * SNS連携解除
+     * SNS連携解除(google)
      */
     public function unregister_google()
     {

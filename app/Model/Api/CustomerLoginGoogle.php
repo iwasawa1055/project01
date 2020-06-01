@@ -40,5 +40,12 @@ class CustomerLoginGoogle extends ApiModel
                 'message' => ['notBlank', 'access_token'],
             ],
         ],
+        'id_token' => [
+            'notBlank' => [
+                'rule' => 'notBlank',
+                'required' => true,
+                'message' => ['notBlank', 'id_token'],
+            ],
+        ],
     ];
 }

@@ -100,9 +100,9 @@ $config['app']['amazon_pay']['region'] = 'jp';
 $config['app']['amazon_pay']['sandbox'] = 'true';
 
 /**
- * Amazon Pay 設定値
+ * Google client_id 設定値
  */
-$config['app']['google']['id_token'] = '56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com';
+$config['app']['google']['client_id'] = '56091862582-mljt29dmcdgcj1fojhaqqpom9ud4mige.apps.googleusercontent.com';
 
 /**
  * エラー表示(デフォルトは表示)

@@ -75,6 +75,28 @@ section.select-login .login-amazon {
 	width: 200px;
 }
 
+.btn.google {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20rem;
+	height: 3.5rem;
+	margin-top: 1.5rem;
+	padding: 0;
+	color: #333;
+	background-color: white;
+	border: 0.1rem solid #333;
+}
+
+.btn.google .icon {
+	width: 4rem;
+	height: 4rem;
+	margin-right: 1rem;
+	background: url(/images/icon-google.svg) no-repeat;
+	background-position: center;
+	background-size: 1.8rem;
+}
+
 @media screen and (max-width: 991px) {
 #dsn-amazon-pay {
 	display: block;

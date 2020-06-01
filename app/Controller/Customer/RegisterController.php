@@ -203,11 +203,8 @@ class RegisterController extends MinikuraController
      */
     public function customer_complete_google()
     {
-        // アクセストークンとIDトークンを取得
-        $request_array = $this->request->data;
-
         $this->loadModel('GoogleModel');
-        $this->request->data = $this->GoogleModel->getUserInfo_regist($request_array);
+        $this->request->data = $this->GoogleModel->getUserInfo_regist($this->request->data);
 
         //* session referer 確認
         if (in_array(CakeSession::read('app.data.session_referer'), [
@@ -333,12 +330,10 @@ class RegisterController extends MinikuraController
                 'newsletter',
             ];
 
-            // パスワードをバリデーション追加(FBユーザーとgoogleユーザー以外)
-            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false && !$this->entryFlag) {
-                if (isset($this->request->data[self::MODEL_NAME_REGIST]['google_user_id']) == false && !$this->entryFlag) {
+            //パスワードをバリデーション追加(FBユーザーとgoogleユーザー以外)
+            if (isset($this->request->data[self::MODEL_NAME_REGIST]['facebook_user_id']) == false && $this->request->data[self::MODEL_NAME_REGIST]['google_user_id'] == false && !$this->entryFlag) {
                     $validation_item[] = 'password';
                     $validation_item[] = 'password_confirm';
-                }
             }
 
             if (!$this->CustomerRegistInfo->validates(['fieldList' => $validation_item])) {
@@ -524,10 +519,6 @@ class RegisterController extends MinikuraController
         // Google連携
         if (isset($data['google_user_id'])) {
             // Google連携
-            echo('<pre>');
-            var_dump($data);
-            echo('</pre>');
-            exit;
             $this->CustomerGoogle->set(['google_user_id' => $data['google_user_id']]);
             $res = $this->CustomerGoogle->regist();
             if (!empty($res->error_message)) {
@@ -535,7 +526,6 @@ class RegisterController extends MinikuraController
                 return $this->redirect(['controller' => 'register', 'action' => 'customer_add_personal']);
             }
 
-            CakeSession::write(CustomerLogin::SESSION_GOOGLE_ACCESS_KEY, $this->CustomerRegistInfo->data[self::MODEL_NAME_REGIST]['access_token']);
         }
 
         CakeSession::delete(self::MODEL_NAME_REGIST);
