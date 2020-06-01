@@ -270,12 +270,12 @@ const PRODUCT_DATA_ARRAY = [
     PRODUCT_CD_MONO => [
         'photo_name'    => 'mono',
         'box_price'     => 0,
-        'monthly_price' => 250,
+        'monthly_price' => 300,
     ],
     PRODUCT_CD_HAKO => [
         'photo_name'    => 'hako',
         'box_price'     => 0,
-        'monthly_price' => 200,
+        'monthly_price' => 250,
     ],
     PRODUCT_CD_CLEANING_PACK => [
         'photo_name'    => 'cleaning',
@@ -289,7 +289,7 @@ const PRODUCT_DATA_ARRAY = [
     PRODUCT_CD_CLOSET => [
         'photo_name'    => 'closet',
         'box_price'     => 0,
-        'monthly_price' => 450,
+        'monthly_price' => 500,
     ],
 ];
 
@@ -549,12 +549,12 @@ const POINT_HISTORY_ERROR = 'ポイント履歴の情報の取得に失敗しま
 // LIBRARY出庫金額
 const LIBRARY_OUTBOUND_BASIC_PRICE = 356; //出庫基本料金(税込)
 const LIBRARY_OUTBOUND_PER_ITEM_PRICE = 35; //1冊あたり出庫基本料金(税込)
-const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 935; //1箱解約時出庫基本料金(税込)
+const LIBRARY_OUTBOUND_CANCELLATION_PRICE = 1100; //1箱解約時出庫基本料金(税込)
 
 // CLOSET出庫金額
-const CLOSET_OUTBOUND_BASIC_PRICE = 458; //出庫基本料金(税込)
-const CLOSET_OUTBOUND_PER_ITEM_PRICE = 50; //1アイテムあたり出庫基本料金(税込)
-const CLOSET_OUTBOUND_CANCELLATION_PRICE = 935; //1箱解約時出庫基本料金(税込)
+const CLOSET_OUTBOUND_BASIC_PRICE = 495; //出庫基本料金(税込)
+const CLOSET_OUTBOUND_PER_ITEM_PRICE = 55; //1アイテムあたり出庫基本料金(税込)
+const CLOSET_OUTBOUND_CANCELLATION_PRICE = 1100; //1箱解約時出庫基本料金(税込)
 
 // REGISTER(会員登録)用
 const REGISTER_CUSTOMER_DEFAULT_BIRTH_START_YEAR = 1920;

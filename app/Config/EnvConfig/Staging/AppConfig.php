@@ -86,7 +86,7 @@ $config['app']['first_order']['direct_inbound']['max_box'] = 20;
 
 
 // クリーニング費用設定
-$config['app']['kit']['cleaning']['item_group_cd']['010'] = 700;
+$config['app']['kit']['cleaning']['item_group_cd']['010'] = 900;
 $config['app']['kit']['cleaning']['item_group_cd']['030'] = 3800;
 
 $config['app']['kit']['cleaning']['work_type']['010'] = "030";
