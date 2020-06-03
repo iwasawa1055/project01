@@ -11,7 +11,7 @@ minikura@terrada.co.jp
 
 寺田倉庫 「 」 Warehouse TERRADA
 minikura：https://minikura.com
-Login：https://mypage.minikura.com/login
+Login：https://minikura.com/login/
 Contact ： minikura@terrada.co.jp
 
 Any unauthorized copying and reproduction of the content of this email is strictly prohibited.
