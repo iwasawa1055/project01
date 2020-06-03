@@ -877,7 +877,7 @@ button[class^="btn"] {
 
 .btn-disabled {
   color: white;
-  background: #dddddd;
+  background-color: #dddddd;
   border: 0.1rem solid #dddddd;
   pointer-events: none;
 }
@@ -1317,6 +1317,10 @@ textarea:disabled {
 
 .label-txt {
   margin-left: 0.5rem;
+}
+
+.label-txt .lnk {
+  color: red;
 }
 
 .input-disabled {
