@@ -472,3 +472,15 @@ box_select_checkbox{
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
 }
+
+/* 
+/order/input_card　のレイアウトが間に合ってないので一時的に追加
+2020/06/03 k.yanai
+*/
+.lineup .items .item .lineup-caption .lineup-price .txt-price .red {
+  color: red;
+}
+
+.lineup .items .item .lineup-caption .lineup-price .txt-price .strong {
+  font-weight: bold;
+}
