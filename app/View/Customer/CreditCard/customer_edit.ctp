@@ -7,6 +7,7 @@ if ($action === 'customer_add') {
 }
 $return = Hash::get($this->request->query, 'return');
 ?>
+<?php $this->Html->css('/css/style.css', ['block' => 'css']); ?>
 <?php $this->Html->script(Configure::read("app.gmo.token_url"), ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('libGmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
 <?php $this->Html->script('gmoCreditCardPayment', ['block' => 'scriptMinikura']); ?>
@@ -112,9 +113,32 @@ $return = Hash::get($this->request->query, 'return');
                   <input type="url" id="holdername" class="form-control" name="holdername" placeholder="TERRADA MINIKURA" size="28" maxlength="30" value="<?php echo isset($this->request->data['PaymentGMOCreditCard']['holder_name']) ? $this->request->data['PaymentGMOCreditCard']['holder_name'] : ""; ?>" novalidate>
                   <p class="help-block">（※半角大文字英数字、半角スペース）</p>
                 </div>
+
+                <?php if ($action === 'customer_add'): ?>
+                <div class="form-group col-lg-12">
+                  <label class="input-check">
+                    <input type="checkbox" class="cb-square" name="chk-agree">
+                    <span class="icon"></span>
+                    <span class="label-txt">
+                      <a href="https://minikura.com/use_agreement/" class="lnk" target="_blank">minikura利用規約</a>
+                      に同意する
+                    </span>
+                  </label>
+                </div>
+                <?php endif; ?>
+
+                <?php if ($action === 'customer_add'): ?>
+                <span class="col-lg-12 col-md-12 col-xs-12">
+                  <a class="btn btn-danger btn-lg btn-block btn-disabled" id="btn-add">
+                  <div id="execute"><?php echo $buttonName; ?></div>
+                  </a>
+                </span>
+                <?php else: ?>
                 <span class="col-lg-12 col-md-12 col-xs-12">
                   <button type="button" id="execute" class="btn btn-danger btn-lg btn-block"><?php echo $buttonName; ?></button>
                 </span>
+                <?php endif; ?>
+
                 <?php if ($action === 'customer_add'): ?>
                     <input type="hidden" id="registerd_credit_card" value="0">
                 <?php else: ?>
