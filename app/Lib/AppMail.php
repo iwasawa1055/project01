@@ -14,7 +14,7 @@ class AppMail
     public function sendPasswordReset($to, $hash)
     {
         $from = null;
-        $subject = 'パスワードリセット';
+        $subject = '【minikura】パスワードリセット';
         $templete = 'password_reset';
         $data = [ 'url' => Configure::read('site.url') . '/customer/password_reset/add?hash=' . $hash ];
         $this->sendTemplate($from, $to, $subject, $templete, $data);
