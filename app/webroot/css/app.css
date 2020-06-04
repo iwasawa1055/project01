@@ -555,6 +555,14 @@ table .product-name {
   background-color: #ff0000;
 }
 
+.btn-disabled {
+  color: #fff;
+  background-color: #ddd;
+  border: 1px solid #ddd;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .pagination > .active > a,
 .pagination > .active > a:focus,
 .pagination > .active > a:hover,

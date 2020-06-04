@@ -283,3 +283,15 @@ $('.guidance').iziModal({
     overlayColor: 'rgba(0, 0, 0, 0.5)',
     overlayClose: false,
 });
+
+$(function () {
+    $('#btn-add').addClass('btn-disabled');
+    $('[name=chk-agree]').change(function () {
+        if ($('[name=chk-agree]:eq(0)').prop('checked')) {
+            $('#btn-add').removeClass('btn-disabled');
+        } else {
+            $('#btn-add').addClass('btn-disabled');
+        }
+    });
+    return false;
+});
