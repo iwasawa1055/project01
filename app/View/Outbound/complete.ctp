@@ -66,7 +66,7 @@
               </picture>
             </div>
             <p class="txt"><span class="value lt">¥11,000</span>/6ヶ月 </p>
-            <p class="txt red">10％OFF！6月15日11:00まで<span class="value">¥9,900</span>！</p>          </li>
+            <p class="txt red">10％OFF！6月15日18:00まで<span class="value">¥9,900</span>！</p>          </li>
         </ul>
         <a class="btn-d-gray btn-rcmd" href="/order/add">サービスを見る</a>
       </div>
