@@ -63,7 +63,6 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-hs">250</span>円(税抜)/箱</p>
-                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -139,7 +138,6 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-ms">300</span>円(税抜)</p>
-                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -210,7 +208,6 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-hs">500</span>円(税抜)</p>
-                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
