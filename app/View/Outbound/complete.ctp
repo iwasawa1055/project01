@@ -65,8 +65,8 @@
                 <img src="/images/order/photo-cleaning@1x.jpg" srcset="/images/order/photo-cleaning@1x.jpg 1x, /images/order/photo-cleaning@2x.jpg 2x" alt="minikuraクリーニングパック">
               </picture>
             </div>
-            <p class="txt"><span class="value">¥12,000</span>/6ヶ月 </p>
-          </li>
+            <p class="txt"><span class="value lt">¥11,000</span>/6ヶ月 </p>
+            <p class="txt red">10％OFF！6月15日18:00まで<span class="value">¥9,900</span>！</p>          </li>
         </ul>
         <a class="btn-d-gray btn-rcmd" href="/order/add">サービスを見る</a>
       </div>

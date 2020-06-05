@@ -62,7 +62,6 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-hs">250</span>円(税抜)/箱</p>
-                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -138,7 +137,6 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">月額保管料<span class="price-ms">300</span>円(税抜)</p>
-                <p class="txt-revision">（6月1日からの料金表記です）</p>
                 <p class="price">初期費用<span class="price-lb">0</span>円/箱</p>
                 <a class="application">※初期費用の無料期間とは<img src="/images/question.svg"></a>
                 <p class="captions">
@@ -209,7 +207,8 @@
             <ul class="lineup-price">
               <li>
                 <p class="price">6ヶ月保管＋クリーニング料セット</p>
-                <p class="price">サービス申し込み料<span class="price-lb">11,000</span>円</p>
+                <p class="price">サービス申し込み料<strong class="strong lt">11,000</strong>円(税抜)</p>
+                <p class="txt-price"><strong class="strong red">10％OFF！6月15日18:00まで9,900円！</strong></p>s
                 <a class="application">※サービス申し込み料とは<img src="/images/question.svg"></a>
                 <p class="captions">
                   専用ボックス、預け入れ送料、半年間の保管料金、10点クリーニング、ボックスごとの取り出し料金が含まれます。
